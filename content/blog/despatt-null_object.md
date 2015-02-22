@@ -1,12 +1,12 @@
 +++
 date = "2015-02-22T02:22:23Z"
-title = "Design Pattern: Null Object"
+title = "デザインパターン: Null Object"
 tags = ["design_pattern", "code", "python"]
 blogimport = true
 type = "post"
 +++
 
-Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうパターンです.
+Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうデザインパターンです.
 
 このパターンのメリットは, `if (obj == null) `のような面倒臭い記述を除去出来るところです.
 また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます.
