@@ -5,25 +5,25 @@
 
     <div class="content container">
 <div class="posts">
-
-      {{ range .Data.Pages }}
+  {{ range .Data.Pages }}
   {{ if eq .Type "post" }}
   <div class="post">
-    <h1 class="post-title">
+    <h2 class="post-title">
       <a href="{{ .Permalink }}">
         {{ .Title }}
       </a>
-    </h1>
+    </h2>
+    <span class="post-date">
+    {{ if .Params.tags }}<ul class="post-tags top">{{ range .Params.tags }}
+        <li><a href="/tags/{{.}}">#{{.}}</a></li>
+    {{ end }}</ul> | {{ end }}
 
-    <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
-
+      {{ .Date.Format "Jan 2, 2006" }}
+    </span>
     {{if .Params.series}}
       {{ $name := index .Params.series 0 }}
       <p class="seriesname">Series: <a href="{{.Site.BaseUrl}}/series/{{$name | urlize}}">{{$name}}</a></p>
     {{end}}
-
-
-    {{ .Content }}
   </div>
   {{end}}
   {{ end }}
