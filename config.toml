@@ -1,11 +1,11 @@
-baseurl = "http://npf.io/"
-languageCode = "en-us"
-title = "npf.io"
+baseurl = "http://blog.s-shun.net/"
+languageCode = "ja"
+title = "プログラム〜ン"
 theme = "hyde"
-copyright = "Nate Finch"
+copyright = "Sato Shun"
 
 [Author]
-	name = "Nate Finch"
+	name = "Sato Shun"
 
 [Permalinks]
 	blog = "/:year/:month/:filename/"
@@ -17,9 +17,7 @@ copyright = "Nate Finch"
 	series-desc = "series-desc"
 
 [params]
-	description = "code by Nate Finch"
-	twitter = "https://twitter.com/natethefinch"
-	github = "https://github.com/natefinch"
-	gplus = "https://plus.google.com/+NateFinch"
-	disqus = "npfio"
-
+	description = "code by Sato Shun"
+	twitter = "https://twitter.com/meatball_sato"
+	github = "https://github.com/satoshun"
+	gplus = "https://plus.google.com/"
