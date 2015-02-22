@@ -1,7 +1,7 @@
 +++
 date = "2015-02-22T02:08:23Z"
 title = "AnsibleでGhostアプリをデプロイ"
-tags = ["Ansible", "system"]
+tags = ["ansible", "system"]
 blogimport = true
 type = "post"
 +++
