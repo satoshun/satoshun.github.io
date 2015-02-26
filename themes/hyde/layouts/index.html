@@ -7,7 +7,7 @@
 <div class="posts">
   {{ range .Data.Pages }}
   {{ if eq .Type "post" }}
-  <div class="post">
+  <div>
     <h2 class="post-title">
       <a href="{{ .Permalink }}">
         {{ .Title }}
@@ -29,6 +29,7 @@
   {{ end }}
 </div>
 
+  {{ template "theme/chrome/scripts.html" . }}
 
   </body>
 </html>
