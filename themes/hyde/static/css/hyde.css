@@ -32,7 +32,7 @@
  */
 
 html {
-  font-family: "Raleway", sans-serif;
+  font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 }
 @media (min-width: 48rem) {
   html {

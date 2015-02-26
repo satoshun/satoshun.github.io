@@ -48,7 +48,7 @@ body {
 }
 
 html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
   line-height: 1.5;
 }
@@ -307,6 +307,12 @@ tbody tr:nth-child(odd) th {
 
 .post {
   margin-bottom: .5em;
+}
+
+.post h2,
+.post h3 {
+  padding-bottom: 6px;
+  border-bottom: 1px #ddd solid;
 }
 
 /* Blog post or page title */
