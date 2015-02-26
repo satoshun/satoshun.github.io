@@ -6,6 +6,7 @@ type = "post"
 +++
 
 Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます.
+immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.
 
 
 ## immutableであるメリット
