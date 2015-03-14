@@ -9,6 +9,7 @@ copyright = "Sato Shun"
 
 [Permalinks]
 	blog = "/:year/:month/:filename/"
+	book = "/:year/:month/:filename/"
 	code = "/:filename/"
 
 [Taxonomies]

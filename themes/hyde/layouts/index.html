@@ -2,34 +2,31 @@
 <body>
 
 {{ template "theme/chrome/sidebar.html" . }}
-
-    <div class="content container">
-<div class="posts">
-  {{ range .Data.Pages }}
-  {{ if eq .Type "post" }}
-  <div>
-    <h2 class="post-title">
-      <a href="{{ .Permalink }}">
-        {{ .Title }}
-      </a>
-    </h2>
-    <span class="post-date">
-    {{ if .Params.tags }}<ul class="post-tags top">{{ range .Params.tags }}
-        <li><a href="/tags/{{.}}">#{{.}}</a></li>
-    {{ end }}</ul> | {{ end }}
-
-      {{ .Date.Format "Jan 2, 2006" }}
-    </span>
-    {{if .Params.series}}
-      {{ $name := index .Params.series 0 }}
-      <p class="seriesname">Series: <a href="{{.Site.BaseUrl}}/series/{{$name | urlize}}">{{$name}}</a></p>
-    {{end}}
+  <div class="content container">
+    <div class="posts">
+      {{ range .Data.Pages }}
+      {{ if eq .Type "post" }}
+      <div>
+        <h2 class="post-title">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h2>
+        <span class="post-date">
+          {{ if .Params.tags }}<ul class="post-tags top">{{ range .Params.tags }}
+            <li><a href="/tags/{{.}}">#{{.}}</a></li>
+          {{ end }}</ul> | {{ end }}
+          {{ .Date.Format "Jan 2, 2006" }}
+        </span>
+        {{if .Params.series}}
+          {{ $name := index .Params.series 0 }}
+          <p class="seriesname">Series: <a href="{{.Site.BaseUrl}}/series/{{$name | urlize}}">{{$name}}</a></p>
+        {{end}}
+      </div>
+      {{end}}
+      {{end}}
+    </div>
   </div>
-  {{end}}
-  {{ end }}
-</div>
 
   {{ template "theme/chrome/scripts.html" . }}
 
-  </body>
+</body>
 </html>
