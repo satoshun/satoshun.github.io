@@ -1,0 +1,11 @@
+<div class="sidebar">
+
+  <div class="container sidebar-sticky">
+      {{ with .Site.Params.twitter }}<a href="{{.}}"><i class="fa fa-twitter-square"></i></a>&nbsp;&nbsp;{{end}}
+      {{ with .Site.Params.github }}<a href="{{.}}"><i class="fa fa-github-square"></i></a>&nbsp;&nbsp;{{end}}
+      {{ with .Site.Params.gplus }}<a href="{{.}}"><i class="fa fa-google-plus"></i></a>{{end}}
+
+    <p class="footnote">powered by <a href="http://hugo.spf13.com">Hugo</a> <br/>
+    &copy; {{.Now.Format "2006"}} Sato Shun. All rights reserved.</p>
+  </div>
+</div>

@@ -58,19 +58,27 @@ pre {
 
 .sidebar {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2rem 1.0rem .4em 2.0em;
   color: rgba(255,255,255,.5);
   background-color: #300030;
 }
-@media (min-width: 48rem) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18rem;
-    text-align: left;
-  }
+
+.profile-image-container {
+  margin-bottom: 10px;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.profile-image {
+  width: 70px;
+  height: 70px;
+  -webkit-border-radius: 70px;
+  border-radius: 70px;
+  margin: 0;
+  text-align: center;
+  display: inline-block;
 }
 
 /* Sidebar links */
@@ -87,14 +95,25 @@ pre {
 
 /* Sidebar nav */
 .sidebar-nav {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
   padding-left: 0;
   list-style: none;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.sidebar-nav li {
+  display: inline-block;
+  margin: 0 20px;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .subnav {
- list-style: none;
+  list-style: none;
   padding-left: 0;
 }
 
@@ -117,10 +136,7 @@ a.sidebar-nav-item:focus {
 
 @media (min-width: 48rem) {
   .sidebar-sticky {
-    position: absolute;
-    right:  1rem;
-    top: 1rem;
-    left:   1rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -138,17 +154,13 @@ a.sidebar-nav-item:focus {
 
 @media (min-width: 48rem) {
   .content {
-    max-width: 38rem;
-    margin-left: 20rem;
-    margin-right: 2rem;
+    margin: 0 auto;
   }
 }
 
 @media (min-width: 64rem) {
   .content {
-    max-width: 44rem;
-    margin-left: 20rem;
-    margin-right: 2rem;
+    margin: 0 auto;
   }
 }
 

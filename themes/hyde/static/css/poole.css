@@ -259,7 +259,7 @@ tbody tr:nth-child(odd) th {
  */
 
 .container {
-  max-width: 38rem;
+  max-width: 820px;
   padding-left:  1rem;
   padding-right: 1rem;
   margin-left:  auto;
@@ -311,6 +311,7 @@ tbody tr:nth-child(odd) th {
 
 .post h2,
 .post h3 {
+  margin: 1em 0;
   padding-bottom: 6px;
   border-bottom: 1px #ddd solid;
 }

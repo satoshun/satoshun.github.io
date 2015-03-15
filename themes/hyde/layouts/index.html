@@ -1,7 +1,7 @@
 {{ template "theme/chrome/head.html" . }}
 <body>
 
-{{ template "theme/chrome/sidebar.html" . }}
+  {{ template "theme/chrome/sidebar.html" . }}
   <div class="content container">
     <div class="posts">
       {{ range .Data.Pages }}
@@ -25,8 +25,7 @@
       {{end}}
     </div>
   </div>
-
+  {{ template "theme/chrome/footer.html" . }}
   {{ template "theme/chrome/scripts.html" . }}
-
 </body>
 </html>
