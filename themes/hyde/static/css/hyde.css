@@ -32,7 +32,7 @@
  */
 
 html {
-  font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: arial, sans-serif !important;
 }
 @media (min-width: 48rem) {
   html {
@@ -41,7 +41,7 @@ html {
 }
 @media (min-width: 58rem) {
   html {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 

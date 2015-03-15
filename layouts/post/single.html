@@ -1,6 +1,5 @@
 {{ template "theme/chrome/head.html" . }}
 <body>
-
   {{ template "theme/chrome/sidebar.html" . }}
 
   <div class="content container">
@@ -13,7 +12,9 @@
     {{end}}
     {{ .Content }}
 
-    {{ if .Params.tags }}<ul class="post-tags">{{ range .Params.tags }}
+    {{ template "theme/chrome/social.html" . }}
+
+    {{ if .Params.tags }}<ul class="post-tags last">{{ range .Params.tags }}
         <li class="post-tags-box"><a href="/tags/{{.}}">#{{.}}</a></li>
     {{ end }}</ul>{{ end }}
     {{ if .Params.series }}
@@ -37,6 +38,8 @@
         </ul>
 	{{end}}
 </div>
+  {{ template "theme/chrome/author.html" . }}
+
 </div>
 {{ template "theme/chrome/scripts.html" . }}
 </body>
