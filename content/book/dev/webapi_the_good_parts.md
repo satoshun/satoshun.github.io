@@ -1,13 +1,13 @@
 +++
 date = "2015-03-15T00:00:00Z"
-title = "本: Web API: The Good Parts"
+title = "読んだ: Web API: The Good Parts"
 tags = ["book", "web", "api"]
 blogimport = true
 type = "post"
 +++
 
 
-この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは, 感想的なものです.
+この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは感想的なものです.
 
 
 ## Web APIとは何か
