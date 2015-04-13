@@ -57,28 +57,31 @@ pre {
  */
 
 .sidebar {
-  text-align: center;
-  padding: 2rem 1.0rem .4em 2.0em;
-  color: rgba(255,255,255,.5);
-  background-color: #300030;
+  padding: 6px 0;
+  position: relative;
+  color: rgba(255,255,255,.9);
+  background-color: #79b74a;
 }
 
-.profile-image-container {
-  margin-bottom: 10px;
+.sidebar-footer {
+  text-align: center;
 }
 
 .center {
   margin: 0 auto;
 }
 
+.profile-image-container {
+  margin-right: 14px;
+}
+
 .profile-image {
-  width: 70px;
-  height: 70px;
-  -webkit-border-radius: 70px;
-  border-radius: 70px;
+  width: 48px;
+  height: 48px;
+  -webkit-border-radius: 48px;
+  border-radius: 48px;
   margin: 0;
   text-align: center;
-  display: inline-block;
 }
 
 /* Sidebar links */
@@ -87,6 +90,11 @@ pre {
 }
 
 /* About section */
+.sidebar-unit {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .sidebar-about h1 {
   color: #fff;
   margin-top: 0;
@@ -95,10 +103,28 @@ pre {
 
 /* Sidebar nav */
 .sidebar-nav {
-  padding-left: 0;
   list-style: none;
   text-align: center;
-  margin: 0 auto;
+}
+
+@media (min-width: 550px) {
+  .sidebar-nav {
+    position: absolute;
+    margin: auto;
+    right: 0;
+    top: 14px;
+  }
+}
+
+@media (max-width: 550px) {
+  .sidebar-nav {
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-sticky {
+    text-align: center;
+  }
 }
 
 .sidebar-nav li {
@@ -140,6 +166,9 @@ a.sidebar-nav-item:focus {
   }
 }
 
+.sidebar-sticky {
+  position: relative;
+}
 
 /* Container
  *
@@ -183,7 +212,7 @@ a.sidebar-nav-item:focus {
 }
 
 .brand {
-  font-size: 2.0em;
+  font-size: 1.4em;
   margin-bottom: 0;
 }
 
@@ -293,3 +322,4 @@ a.sidebar-nav-item:focus {
 .theme-base-0f .related-posts li a:hover {
   color: #8f5536;
 }
+
