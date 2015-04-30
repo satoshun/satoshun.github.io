@@ -1,5 +1,5 @@
 +++
-date = "2015-02-22T02:20:23Z"
+date = "2015-02-22T00:00:00Z"
 title = "様々な言語のフィボナッチ関数"
 tags = ["algorithm", "code", "java", "javascript", "golang", "python", "shell"]
 blogimport = true

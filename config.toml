@@ -1,6 +1,6 @@
 baseurl = "http://blog.s-shun.net/"
 languageCode = "ja"
-title = "プログラム〜ン"
+title = "プログラムーン"
 theme = "hyde"
 copyright = "Sato Shun"
 
@@ -18,7 +18,7 @@ copyright = "Sato Shun"
 	series-desc = "series-desc"
 
 [params]
-	description = "write, code by Sato Shun"
+	description = "Android, Python, Reactive, DB関連を書きます"
 	twitter = "https://twitter.com/satoshun_xyz"
 	github = "https://github.com/satoshun"
 	gplus = "https://plus.google.com/102988556020375542271"

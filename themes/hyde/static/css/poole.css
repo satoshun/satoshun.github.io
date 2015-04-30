@@ -309,11 +309,13 @@ tbody tr:nth-child(odd) th {
   margin-bottom: .5em;
 }
 
-.post h2,
-.post h3 {
+.post h2 {
   margin: 1em 0;
   padding-bottom: 6px;
   border-bottom: 1px #ddd solid;
+}
+.post h3 {
+  padding-bottom: 4px;
 }
 
 /* Blog post or page title */
