@@ -1,6 +1,6 @@
 +++
 date = "2015-04-27T00:00:00Z"
-title = "Android: Reactive"
+title = "Android: Reactive Programming"
 tags = ["android"]
 blogimport = true
 type = "post"

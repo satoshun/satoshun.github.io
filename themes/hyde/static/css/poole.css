@@ -334,7 +334,8 @@ tbody tr:nth-child(odd) th {
   padding: 0;
 }
 .post-tags.last {
-  margin-bottom: 3.0em;
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
 }
 .post-tags.top {
   display: inline-block;
@@ -343,9 +344,8 @@ tbody tr:nth-child(odd) th {
   display: inline-block;
 }
 .post-tags .post-tags-box {
-  border-radius: 3px;
-  background: #95a5a6;
-  padding: 2px;
+  background: #79b74a;
+  padding: 2px 5px;
 }
 .post-tags .post-tags-box a {
   font-size: 0.8rem;

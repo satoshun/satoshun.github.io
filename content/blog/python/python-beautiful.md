@@ -1,12 +1,12 @@
 +++
 date = "2015-04-30T00:00:00Z"
-title = "Python: Pythonライクな書き方 パート1"
+title = "Python: Pythonライクな書き方 Part1"
 tags = ["python"]
 blogimport = true
 type = "post"
 +++
 
-Pythonライクな書き方についてまとめました. パート1です.
+Pythonライクな書き方について紹介します. Part1です.
 
 
 ## for文関連
