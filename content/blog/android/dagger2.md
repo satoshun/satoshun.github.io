@@ -1,7 +1,7 @@
 +++
 date = "2015-05-08T00:00:00Z"
 title = "Android: Dagger2でDIをする Part1"
-tags = ["android"]
+tags = ["android", "dagger"]
 blogimport = true
 type = "post"
 +++
@@ -84,9 +84,15 @@ DIが便利なのは分かっていただけたと思います. しかし, い�
 
 ## Dagger2概念
 
-Dagger2は大きく分けて, `Component`, `Module`の2つの要素があります.
-これはGraphオブジェクトと呼ばれるものを生成するのに必要です.
-Graphはクラス間の依存関係を定義したオブジェクトで，これを利用しクラス感の依存関係を解決します.
+Dagger2は大きく分けて, `Component`, `Module` `Provide`, `Inject` の4つの要素があります.
+上記を定義しクラス間の依存関係を解決します.
+
+- @Inject: 依存を注入します.
+- @Module: インスタンスをProvideするメソッド郡を定義します.
+- @Provide; 依存を解決するためのインスタンスを提供します.
+- @Component: @Injectと@Module間の関係を定義します.
+
+これだけでは分からないと思うので, 具体的な例をあげて説明します.
 
 
 ## 依存関係の定義

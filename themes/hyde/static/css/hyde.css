@@ -59,8 +59,8 @@ pre {
 .sidebar {
   padding: 6px 0;
   position: relative;
-  color: rgba(255,255,255,.9);
-  background-color: #79b74a;
+  color: rgba(255,255,255,.95);
+  background-color: #000;
 }
 
 .sidebar-footer {
@@ -106,13 +106,19 @@ pre {
   list-style: none;
   text-align: center;
 }
+.sidebar-sub {
+  background-color: rgb(34,34,34);
+}
+
+.sidebar-nav li {
+  display: inline-block;
+  padding: 0 1.5em;
+}
 
 @media (min-width: 550px) {
   .sidebar-nav {
-    position: absolute;
     margin: auto;
-    right: 0;
-    top: 14px;
+    padding: .5em 1.0em;
   }
 }
 
@@ -122,14 +128,17 @@ pre {
     margin: 0;
   }
 
+  .sidebar-nav li {
+    padding: 0 .6em;
+  }
+
   .sidebar-sticky {
     text-align: center;
   }
 }
 
-.sidebar-nav li {
-  display: inline-block;
-  margin: 0 20px;
+.sidebar-nav {
+  padding-left: 0;
 }
 
 .clearfix:after {

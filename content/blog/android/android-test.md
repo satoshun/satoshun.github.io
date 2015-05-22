@@ -7,3 +7,7 @@ type = "post"
 draft = true
 +++
 
+
+## 参考
+
+- http://developer.android.com/intl/ja/tools/testing/testing_android.html
