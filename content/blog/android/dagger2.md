@@ -1,6 +1,6 @@
 +++
 date = "2015-05-08T00:00:00Z"
-title = "Android: Dagger2でDIをする Part1"
+title = "Android: Dagger2でDIをする. 基本編 Part1"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
