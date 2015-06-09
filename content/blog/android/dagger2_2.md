@@ -1,7 +1,7 @@
 +++
 date = "2015-05-24T00:00:00Z"
 title = "Android: Dagger2でDIをする. u2020から読み解く編 Part2"
-tags = ["android", "dagger"]
+tags = ["android", "dagger", "retrofit"]
 blogimport = true
 type = "post"
 +++
