@@ -1,4 +1,4 @@
-baseurl = "http://blog.s-shun.net/"
+baseurl = "http://satoshun.github.io"
 languageCode = "ja"
 title = "プログラムーン"
 theme = "hyde"

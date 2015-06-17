@@ -1,7 +1,7 @@
 <div class="sidebar">
   <div class="container sidebar-sticky clearfix">
     <div class="sidebar-about sidebar-unit">
-      <h1 class="brand"><a href="{{.Site.BaseUrl}}" style="font-weight: bold;">{{ .Site.Title }}</a></h1>
+      <h1 class="brand"><a href="{{.Site.BaseURL}}" style="font-weight: bold;">{{ .Site.Title }}</a></h1>
       <div class="lead">
       {{ with .Site.Params.description }} {{.}} {{ else }}An elegant open source and mobile first theme for <a href="http://hugo.spf13.com">hugo</a> made by <a href="http://twitter.com/mdo">@mdo</a>. Originally made for Jekyll.{{end}}
       </div>
@@ -12,10 +12,10 @@
 <div class="sidebar sidebar-sub">
   <div class="container sidebar-sticky clearfix">
     <ul class="sidebar-nav sidebar-unit">
-      <li><a href="{{.Site.BaseUrl}}/" class="glyphicon glyphicon-home"></a></li>
-      <li><a href="{{.Site.BaseUrl}}/blog">BLOG</a></li>
-      <li><a href="{{.Site.BaseUrl}}/book">BOOK</a></li>
-      <li><a href="{{.Site.BaseUrl}}/index.xml">RSS</a></li>
+      <li><a href="{{.Site.BaseURL}}/" class="glyphicon glyphicon-home"></a></li>
+      <li><a href="{{.Site.BaseURL}}/blog">BLOG</a></li>
+      <li><a href="{{.Site.BaseURL}}/book">BOOK</a></li>
+      <li><a href="{{.Site.BaseURL}}/index.xml">RSS</a></li>
       {{ range .Site.Menus.main }}
         <li><a href="{{.Url}}">{{ .Name }} </a></li>
       {{end}}
