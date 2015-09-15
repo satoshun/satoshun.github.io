@@ -6,7 +6,7 @@ blogimport = true
 type = "post"
 +++
 
-[Picasso](https://github.com/square/picasso)で使われているデザインパターンを紹介する記事になります.
+[Picasso](https://github.com/square/picasso)で使われているデザインパターンを紹介する記事です.
 
 
 ## Singletonパターン
@@ -32,8 +32,10 @@ public static Picasso with(Context context) {
 Picasso#withは, すでにPicassoのインスタンス `singleton` が生成されていればそれを返し,
 生成されていなければ, インスタンスを生成して返します.
 
-このパターンのメリットは, インスタンスを高々1つしか作らないのでメモリ的に有利な点です.
-しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフでなければいけません.
+このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる)
+しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.
+
+スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.
 
 
 ## Builderパターン
@@ -91,24 +93,24 @@ public static class Builder {
   }
 ```
 
-必ず必要なパラメータContextはコンストラクタ引数として渡し, オプション的なパラメータは必要に応じてsetします.
-パラメータのセットが完了したら, buildメソッドをコールします.
+必ず必要なパラメータContextはコンストラクタ引数として渡し, オプション的なパラメータは必要に応じてセットします.
+最後に, buildメソッドをコールして, 対象のインスタンスを取得します.
 
-```
+```java
 new Builder(context) // 必ず必要なパラメータ
     .debugging(true) // debuggingをtrueに
     .memoryCache(memoryCacheInstance) // 専用のmemoryCacheを使う
     .build(); // パラメータに異常がなければインスタンスを返す
 ```
 
-Builderパターンを使うことで, コンストラクタの数を減らすことが出来ます.
-また, Hoge(int, int, int)の時, 与えるintの順番を間違える可能性がありますが,
-Builderパターンだと名前付きメソッドで値を指定できるので, 間違える可能性を下げることが出来ます.
+Builderパターンを使うことで, コンストラクタが指数的に増えてしまう問題を防ぐことが出来ます.
+また, Hoge(int, int, int)の時, 与えるintの順番を間違える可能性が高いですが,
+Builderパターンだと名前付きメソッドで値を指定出来るので, よりリーダブルであると思います(主観).
 
 
 ## static factoryパターン
 
-static factoryパターンは,　コンストラクタの代わりに, クラスのインスタンスを返すstatic methodを使用するパターンです.
+static factoryパターンは, コンストラクタの代わりに, クラスのインスタンスを返すstatic methodを使用するパターンです.
 
 ```java
 public static Picasso with(Context context) {
@@ -184,12 +186,16 @@ public void into(Target target) {
 3. data.hasImage()がfalseなら, cancelRequestをコールしてreturn
 4. メインのロジックの実行
 
-メソッドのエラー処理の部分をメソッドの最初に, メインロジックの部分をその後に書くことで, 可読性を上げることが出来ます.
+メソッドのエラー処理の部分をメソッドの最初に, メインロジックの部分をその後にそれぞれ分割することで, 可読性を上げることが出来ます.
+アスペクト指向プログラミングに近い考え方だと思います.
+
+アスペクト指向とは, メインロジック以外の副次的なロジック(セキュリティ要件を満たしているか, ログを取るなどなど)を, 宣言的に外部から注入できるプログラミングパラダイムです.
+1つのメソッド, ルーチンの中に, 複数の異なるロジックが含まれていると可読性が損なわれるので, その部分を切り出すことが出来ます.
 
 
 ## ViewHolderパターン
 
-Android特有のパターンです. ListViewで子要素を切り替えるたびに毎回View#findViewByIdをViewを実行するのはコストが高いので,
+Android特有のパターンです. ListViewで子要素を切り替えるたびに毎回View#findViewByIdを実行するのはコストが高いので,
 Cacheしておくパターンです.(Picasso本体ではなく, exampleフォルダのコード例になります)
 
 https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66
@@ -216,8 +222,8 @@ static class ViewHolder {
 }
 ```
 
-BaseAdapter#getViewで, Viewを生成するときにそのViewが保持すべきwidgetをViewHolderに保存しておきます.
-こうすることで, 次回以降の処理を短くすることが出来ます.
+BaseAdapter#getViewで, Viewを生成するときに処理に必要な情報をViewHolderに保存しておきます.
+こうすることで, 次回以降のコストを減らすことが出来ます.
 
 
 ## Observerパターン

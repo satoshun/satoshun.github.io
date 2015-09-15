@@ -4,14 +4,14 @@
 {{ template "theme/chrome/sidebar.html" . }}
 
 <div class="content container">
-<div class="post">
-  <h1 class="post-title">{{ .Title }}</h1>
-  <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
-      {{ .Content }}
-
-      {{ template "partials/comments.html" . }}
+  <div class="post">
+    <h1 class="post-title">{{ .Title }}</h1>
+    <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+    {{ .Content }}
+    <div class="mt15"></div>
+    {{ template "theme/chrome/social.html" . }}
+  </div>
+  <div class="mb15"></div>
 </div>
-</div>
-
-  </body>
+</body>
 </html>

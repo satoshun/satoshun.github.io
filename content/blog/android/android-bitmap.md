@@ -1,10 +1,10 @@
 +++
 date = "2015-03-06T23:44:03Z"
-draft = true
 title = "Android: Bitmapのメモリ管理"
 tags = ["android"]
 blogimport = true
 type = "post"
+draft = true
 +++
 
 

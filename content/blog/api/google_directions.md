@@ -1,6 +1,6 @@
 +++
 date = "2015-02-22T00:00:00Z"
-title = "様々な言語のフィボナッチ関数"
+title = "Android: Google Directions API"
 tags = ["android", "webapi"]
 blogimport = true
 type = "post"
