@@ -336,6 +336,31 @@ a.sidebar-nav-item:focus {
   margin-bottom: 15px;
 }
 
+.mb30 {
+  margin-bottom: 30px;
+}
+
 .mt15 {
   margin-top: 15px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.icon__post {
+  width: 72px;
+  display: inline-block;
+}
+
+.address__post {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0 10px 0;
+  margin: 70px 0 20px 0;
+}
+
+.address__post p {
+  display: inline-block;
+  margin-left: 20px;
 }

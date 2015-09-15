@@ -6,13 +6,13 @@ copyright = "Sato Shun"
 
 [Author]
 	name = "Sato Shun"
+	bio = ""
 
 [Permalinks]
 	blog = "/:year/:month/:filename/"
 	book = "/:year/:month/:filename/"
 	hobby = "/:year/:month/:filename/"
 	gallery = "/:year/:month/:filename/"
-	code = "/:filename/"
 
 [Taxonomies]
 	tag = "tags"
@@ -24,3 +24,4 @@ copyright = "Sato Shun"
 	twitter = "https://twitter.com/ss_114514"
 	github = "https://github.com/satoshun"
 	gplus = "https://plus.google.com/102988556020375542271"
+	icon = "http://satoshun.github.io/icon.png"

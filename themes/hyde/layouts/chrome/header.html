@@ -1,0 +1,10 @@
+<section class="site-nav">
+  <header>
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+      {{ with .Site.Params.inc.about_link }}<a href="{{ . }}">About</a>{{ end }}
+    </nav>
+  </header>
+</section>

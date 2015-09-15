@@ -1,6 +1,8 @@
 {{ template "theme/chrome/head.html" . }}
+
 <body>
-  {{ template "theme/chrome/sidebar.html" . }}
+  {{ template "theme/chrome/header.html" . }}
+  {{ template "theme/chrome/cover.html" . }}
   <div class="content container">
     <div class="posts">
       {{ range .Data.Pages }}
