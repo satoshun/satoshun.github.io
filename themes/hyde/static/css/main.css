@@ -2812,3 +2812,11 @@ article {
       margin: 0; }
     .index img {
       display: none; } }
+
+#navigation a {
+  vertical-align: middle;
+}
+
+.brand img {
+  margin: 0;
+}

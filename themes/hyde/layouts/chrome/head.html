@@ -7,14 +7,6 @@
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  {{if .Params.repo}}
-    {{if .Params.pkg}}
-    <meta name="go-import" content="npf.io/{{.Params.pkg}} git https://gopkg.in/natefinch/{{.Params.repo}}">
-    {{else}}
-    <meta name="go-import" content="npf.io/{{.Params.repo}} git https://gopkg.in/natefinch/{{.Params.repo}}">
-    {{end}}
-  {{end}}
-
   <title> {{ .Title }} {{if ne .Title .Site.Title}} &middot; {{ .Site.Title }} {{end}}</title>
 
   <!-- CSS -->
@@ -26,8 +18,7 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.png">
 
   <!-- RSS -->
   <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
