@@ -1,6 +1,6 @@
 baseurl = "http://satoshun.github.io"
 languageCode = "ja"
-title = "Don't Stop The World"
+title = "STSNブログ"
 theme = "hyde"
 copyright = "Sato Shun"
 
@@ -21,7 +21,7 @@ copyright = "Sato Shun"
 
 [params]
 	description = "Android, Python, Reactive, DB(RDS), etc"
-	twitter = "https://twitter.com/ss_114514"
+	twitter = "https://twitter.com/stsn_jp"
 	github = "https://github.com/satoshun"
 	gplus = "https://plus.google.com/102988556020375542271"
 	icon = "http://satoshun.github.io/icon.png"
