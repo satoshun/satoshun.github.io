@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/09/android-app-events/</loc>
+    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/08/improve-android-performance1/</loc>
+    <lastmod>2015-08-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/06/sitestats/</loc>
+    <lastmod>2015-06-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/06/reading_picasso/</loc>
+    <lastmod>2015-06-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/06/anchoring_effect/</loc>
+    <lastmod>2015-06-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/05/dagger2_2/</loc>
+    <lastmod>2015-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/05/hot_cold/</loc>
+    <lastmod>2015-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/05/dagger2/</loc>
+    <lastmod>2015-05-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/04/python-beautiful/</loc>
+    <lastmod>2015-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/04/droid-kaigi/</loc>
+    <lastmod>2015-04-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/04/normalization/</loc>
+    <lastmod>2015-04-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/04/history_data/</loc>
+    <lastmod>2015-04-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/04/mysql_memory_error/</loc>
+    <lastmod>2015-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</loc>
+    <lastmod>2015-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/03/master_of_database/</loc>
+    <lastmod>2015-03-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/03/webapi_the_good_parts/</loc>
+    <lastmod>2015-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/03/shadow_dom/</loc>
+    <lastmod>2015-03-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/despatt-valueobject/</loc>
+    <lastmod>2015-02-22T04:53:36+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/go-pr_goji/</loc>
+    <lastmod>2015-02-22T04:11:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/android-resource_string/</loc>
+    <lastmod>2015-02-22T04:10:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/android-pull_to_refresh/</loc>
+    <lastmod>2015-02-22T04:09:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/tips-ser/</loc>
+    <lastmod>2015-02-22T02:40:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/css-clearfix/</loc>
+    <lastmod>2015-02-22T02:32:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/despatt-null_object/</loc>
+    <lastmod>2015-02-22T02:22:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</loc>
+    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/go-nil_receiver/</loc>
+    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/ansible-go_deploy/</loc>
+    <lastmod>2015-02-22T01:08:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</loc>
+    <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/algorithm/</loc>
+    <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
+    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/ansible/</loc>
+    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/api/</loc>
+    <lastmod>2015-03-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/book/</loc>
+    <lastmod>2015-03-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/book/</loc>
+    <lastmod>2015-03-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/chrome_extension/</loc>
+    <lastmod>2015-06-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/code/</loc>
+    <lastmod>2015-02-22T04:53:36+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/css/</loc>
+    <lastmod>2015-02-22T02:32:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/dagger/</loc>
+    <lastmod>2015-05-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/database/</loc>
+    <lastmod>2015-04-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/db/</loc>
+    <lastmod>2015-03-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/design_pattern/</loc>
+    <lastmod>2015-06-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/frontend/</loc>
+    <lastmod>2015-03-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/gallery/</loc>
+    <lastmod>2015-06-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/gallery/</loc>
+    <lastmod>2015-06-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/github/</loc>
+    <lastmod>2015-02-22T04:11:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/go/</loc>
+    <lastmod>2015-02-22T04:11:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/golang/</loc>
+    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/html5/</loc>
+    <lastmod>2015-03-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/java/</loc>
+    <lastmod>2015-04-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/javascript/</loc>
+    <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/mysql/</loc>
+    <lastmod>2015-04-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/psychology/</loc>
+    <lastmod>2015-06-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/python/</loc>
+    <lastmod>2015-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/rdb/</loc>
+    <lastmod>2015-04-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/reactive/</loc>
+    <lastmod>2015-05-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/retrofit/</loc>
+    <lastmod>2015-05-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/series/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/series-desc/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/shell/</loc>
+    <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/system/</loc>
+    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/tips/</loc>
+    <lastmod>2015-02-22T02:40:23+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/web/</loc>
+    <lastmod>2015-03-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2015-09-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

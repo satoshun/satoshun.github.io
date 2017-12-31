@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/tips/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 22 Feb 2015 02:40:23 UTC</updated>
+    
+    
+    <item>
+      <title>tips: 気軽にローカルにサーバを立てる</title>
+      <link>https://satoshun.github.io/2015/02/tips-ser/</link>
+      <pubDate>Sun, 22 Feb 2015 02:40:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/tips-ser/</guid>
+      <description>&lt;p&gt;サクッとローカルサーバを立てるためのTipsを紹介します.&lt;/p&gt;
+
+&lt;p&gt;下記コマンドは, Pythonが入っていれば, 問題なく動きます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ python -m CGIHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;僕は, 上記コマンドをaliasに登録しています.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;alias ser=&#39;python -m CGIHTTPServer&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで, serでサーバが立つようになりました.&lt;/p&gt;
+
+&lt;p&gt;ちなみに, Portを指定することも出来ます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ ser
+Serving HTTP on 0.0.0.0 port 8000 ...
+
+$ ser 8001
+Serving HTTP on 0.0.0.0 port 8001 ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単にローカルサーバを立てることが出来るようになりました.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

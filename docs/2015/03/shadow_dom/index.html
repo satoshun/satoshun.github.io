@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> HTML5: Shadow DOMについて  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header>
+    <nav id="navigation">
+      <a class="brand" href="/">
+          <img src="/favicon_orig.png" alt="logo">
+      </a>
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">HTML5: Shadow DOMについて</h1>
+    <span class="post-date">Sat, Mar 14, 2015</span>
+    
+
+<p>Web Componentsの機能の一つ Shadow DOMについて説明します.</p>
+
+<h2 id="shadow-domとは">Shadow DOMとは?</h2>
+
+<p>外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.</p>
+
+<h2 id="shadow-domの誕生背景">Shadow DOMの誕生背景</h2>
+
+<p>なぜShadow DOMが出てきたかについて説明します.</p>
+
+<p>CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,</p>
+
+<pre><code class="language-css">.hoge {
+  font-size: 30px;
+}
+</code></pre>
+
+<p>と書くと, <code>hoge</code>をclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分で<code>hoge</code>クラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます.
+仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.</p>
+
+<p>フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.</p>
+
+<h2 id="使い方">使い方</h2>
+
+<p>Shadow DOMを作るには<code>createShadowRoot</code>APIを使います. 以下, Shadow DOM版Hello Worldです.</p>
+
+<pre><code class="language-html">  &lt;div id=&quot;shadow&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+  function insertShadow() {
+    // Shadow DOMの作成
+    var shadow = document.querySelector('#shadow').createShadowRoot();
+    shadow.textContent = 'Hello world';
+  }
+  insertShadow();
+  &lt;/script&gt;
+</code></pre>
+
+<p>Shadow DOMが挿入され, Hello Worldと表示されます.</p>
+
+<p>上の例ではShadow DOMの良さが全く現れていないので, もう1つ例をあげます. Shadow DOMは, templateと組み合わせることでより強力に使うことが出来ます.</p>
+
+<pre><code class="language-html">  &lt;div id=&quot;hello1&quot;&gt;Hello world1&lt;/div&gt;
+  &lt;div id=&quot;hello2&quot;&gt;&lt;/div&gt;
+  &lt;template id=&quot;templateHello&quot;&gt;
+    &lt;!-- ここのスタイルは, 外部に影響を与えない! --&gt;
+    &lt;style&gt;
+      div {
+        color: red;
+      }
+    &lt;/style&gt;
+    &lt;div&gt;Hello world2&lt;/div&gt;
+  &lt;/template&gt;
+  &lt;script&gt;
+  function insertShadow2() {
+    var target = document.querySelector('#hello2').createShadowRoot(),
+        hello = document.querySelector('#templateHello').content;
+    target.appendChild(hello.cloneNode(true));
+  }
+  insertShadow2();
+  &lt;/script&gt;
+</code></pre>
+
+<p>上記のように書くと, Hello world1は黒いままで, <code>color: red;</code>は効きません. なぜなら, Shadow DOMでtemplateの中身は外部と隔離されているためです. これがShadow DOMです.</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>Shadow DOMの概要, 簡単な使い方について書いてみました.</p>
+
+<p>2014年現在は実用するには厳しいですが, 2017年くらいには実用的になっていると思います(なんとなく). 今すぐに使いたい人は <a href="https://github.com/Polymer/polymer">https://github.com/Polymer/polymer</a> などのpolyfillを使うのがいいかと思います.</p>
+
+<h2 id="参考サイト">参考サイト</h2>
+
+<ul>
+<li>Shadow DOM 101: <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/</a></li>
+<li>Web Componentsで行うHTMLのコンポーネント化: <a href="http://ameblo.jp/ca-1pixel/entry-11815188808.html">http://ameblo.jp/ca-1pixel/entry-11815188808.html</a></li>
+</ul>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://satoshun.github.io/icon.png" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='http://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='http://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>

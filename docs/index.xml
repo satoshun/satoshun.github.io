@@ -1,0 +1,2530 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 06 Sep 2015 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました</title>
+      <link>https://satoshun.github.io/2015/09/android-app-events/</link>
+      <pubDate>Sun, 06 Sep 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/09/android-app-events/</guid>
+      <description>
+
+&lt;p&gt;イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.&lt;/p&gt;
+
+&lt;p&gt;アプリの技術的機能, 特徴は以下になります.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;HTTPを介してイベントのデータを取得する
+
+&lt;ul&gt;
+&lt;li&gt;検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある&lt;/li&gt;
+&lt;li&gt;それら複数のサーバーはJSONを返すが, 微妙にJSONの構造が異なる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Data-Bindingライブラリを使う&lt;/li&gt;
+&lt;li&gt;MVP(Model-View-Presenter)パターンを使う
+
+&lt;ul&gt;
+&lt;li&gt;Activity(Fragment)に機能が集中しないようにしたい!&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記を中心にどのように実装をしたかを説明をしていきます.&lt;/p&gt;
+
+&lt;p&gt;フルソースコードはここにあります. &lt;a href=&#34;https://github.com/satoshun/AndroidEvents&#34;&gt;https://github.com/satoshun/AndroidEvents&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;httpを介してイベントのデータを取得する&#34;&gt;HTTPを介してイベントのデータを取得する&lt;/h2&gt;
+
+&lt;p&gt;connpass, Atnd, Zusaarの3つのAPIを使うことにしました. &lt;a href=&#34;http://square.github.io/retrofit/&#34;&gt;Retrofit&lt;/a&gt;でAPIを定義し,
+JSONのパースには&lt;a href=&#34;https://github.com/google/gson&#34;&gt;Gson&lt;/a&gt;, データの処理には&lt;a href=&#34;https://github.com/ReactiveX/RxJava&#34;&gt;RxJava&lt;/a&gt;を使いました.&lt;/p&gt;
+
+&lt;p&gt;例えば, connpass APIは以下のように定義しました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/** Get data from Conpass  */
+public interface Connpass {
+    @GET(&amp;quot;/v1/event&amp;quot;)
+    Observable&amp;lt;ConnpassResponse&amp;gt; search(
+            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
+
+    @GET(&amp;quot;/v1/event&amp;quot;)
+    Observable&amp;lt;ConnpassResponse&amp;gt; search(
+            @Query(&amp;quot;keyword&amp;quot;) String keyword,
+            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
+Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます.
+(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
+今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Observable.merge(
+  connpass.search(keyword, generateYmd()),
+  atnd.search(keyword, generateYmd()),
+  zusaar.search(keyword, generateYmd()))
+  .subscribe(...)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Observable.merge&lt;/code&gt;は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
+あとは, これをsubscribeして, データを取得します.(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id=&#34;data-bindingライブラリを使う&#34;&gt;Data-Bindingライブラリを使う&lt;/h2&gt;
+
+&lt;p&gt;Data-BindingはXMLレイアウトにbindしたいデータ(インスタンス)を記述することで, よしなにデータを出力してくれる機能です.
+AngularJSのデータバインディングをイメージして貰えると良いと思います.
+書くコード量が減り, とても便利なライブラリでした. (&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
+ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EventAdapter extends BaseAdapter {
+    /*
+      .. ....
+     */
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        if (view == null) {
+            AdapterEventBinding binding = AdapterEventBinding.inflate(inflater, parent, false);
+            view = binding.getRoot();
+            view.setTag(binding);
+        }
+
+        AdapterEventBinding binding = (AdapterEventBinding) view.getTag();
+        Event event = getItem(position);
+        binding.setEvent(event);
+        binding.setDateFormat(DATE_FORMAT);
+
+        return view;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;AdapterEventBindingをViewHolderの代わりに使っています.
+(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&lt;/a&gt;)
+なかなか良いと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;mvp-model-view-presenter-パターンを使う&#34;&gt;MVP(Model-View-Presenter)パターンを使う&lt;/h2&gt;
+
+&lt;p&gt;MVPパターンとは, MVCの親戚?のようなパターンで, 責務をModel, View, Presenterにそれぞれ分割するパターンです.&lt;/p&gt;
+
+&lt;p&gt;Android開発は, Activity(Fragment)の責務が大きくなりがちです. 具体的にはActivityは以下のよう責務を持ちます.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ユーザからのイベントハンドリング
+
+&lt;ul&gt;
+&lt;li&gt;クリック, ロングクリック, &amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;システムからのイベントハンドリング
+
+&lt;ul&gt;
+&lt;li&gt;画面回転, アプリ終了, &amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;データの取得する際の非同期処理
+
+&lt;ul&gt;
+&lt;li&gt;HTTP(network), SQLite, SharedPreferences, &amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;取得したデータをパースしてViewにパースしたデータを割り当てる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これらを全て1つのActivityで処理をすると, どうしてもFat-Activityになってしまいます. (１つのAcitvityが1000行ありますみたいな)&lt;/p&gt;
+
+&lt;p&gt;そこでMVPです.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Presenter
+
+&lt;ul&gt;
+&lt;li&gt;Modelから(非同期に)データを取得し, Viewに取得したデータをどのようにに表示するかを指定する(ビューロジック)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Model
+
+&lt;ul&gt;
+&lt;li&gt;データを取得してアプリで使いやすい形にデータをパースする. いわゆるビジネスロジック.&lt;/li&gt;
+&lt;li&gt;Retrofitを叩く&lt;/li&gt;
+&lt;li&gt;SQLiteにQueryを発行する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;View(Activity)
+
+&lt;ul&gt;
+&lt;li&gt;ユーザからのクリックイベントなど, イベントのハンドリングをする(onClickとか)&lt;/li&gt;
+&lt;li&gt;イベントの処理はPresenterに任せる&lt;/li&gt;
+&lt;li&gt;必要なデータをPresenterから受け取り, 画面に表示する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;このように責務を分割することで, Activityの責務が薄くなります.
+今回のコードも今まで自分が書いたコードと比較すると, 大分良くなった気がします(当人比)&lt;/p&gt;
+
+&lt;h2 id=&#34;その他-メモ&#34;&gt;その他, メモ&lt;/h2&gt;
+
+&lt;h3 id=&#34;dagger2&#34;&gt;Dagger2&lt;/h3&gt;
+
+&lt;p&gt;DI(Dependency Injection)をするためのツールで, 実装をデバッグ時, 本番時, テスト時に切り替えられるライブラリです.
+デバッグ時はデータの取得先を変えたい, テスト時にはネットワークアクセスしないで欲しい, などといった時に力を発揮します.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;MVPパターンの話をしましたが, MVPが絶対良いという話ではないです.
+しかし, 何もパターンがないとFat-Activityになってしまったり, 無秩序なコードになってしまいがちなので, そのような場合は, MVPのようなパターンを導入したほうが良いと思います.&lt;/p&gt;
+
+&lt;p&gt;まだアプリ自体はまだ付けたい機能があるため, 公開していません. 近々しようと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;references&#34;&gt;references&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://antonioleiva.com/mvp-android/&#34;&gt;MVP for Android: how to organize the presentation layer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Improving Android: 列挙にはenumではなくIntDef, StringDef annotationを使う</title>
+      <link>https://satoshun.github.io/2015/08/improve-android-performance1/</link>
+      <pubDate>Tue, 11 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/08/improve-android-performance1/</guid>
+      <description>
+
+&lt;p&gt;enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.&lt;/p&gt;
+
+&lt;p&gt;列挙型としてのenumは, 以下のように書くことが出来ます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;enum Month {
+    JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
+    JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+}
+
+/** 指定した月が何日まであるかを返す */
+int getDate(Month month) {
+    ////
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また, enumではなく定数を使うとしたら以下のように書くことが出来ます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;static final int JANUARY = 1;
+static final int FEBRUARY = 2;
+static final int MARCH = 3;
+static final int APRIL = 4;
+...
+static final int NOVEMBER = 11;
+static final int DECEMBER = 12;
+
+/** 指定した月が何日まであるかを返す */
+int getDate(int month) {
+    ////
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定数を使うバージョンだと, &lt;code&gt;getDate(int)&lt;/code&gt;のため, 予期せぬ値が入ってきてしまう可能性があります. enumの場合は, &lt;code&gt;getDate(Month)&lt;/code&gt;のため, type-safeを提供してくれます. これは, 大きなメリットです.&lt;/p&gt;
+
+&lt;p&gt;しかし, enumは, 定数を使うバージョンと比較すると, apkサイズが大きくなってしまうデメリットがあります. Androidではメモリリソースはとても貴重なため, enumを使うのは極力避けたほうが良いです.&lt;/p&gt;
+
+&lt;p&gt;Androidでは, IntDef(StringDef) annotationを使うことで, type-safeに定数を使うことが出来ます.&lt;/p&gt;
+
+&lt;p&gt;上記のMonthのコードをIntDef annotationを使い, 書き換えてみます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// Monthに代入することが出来る定数を宣言
+@IntDef({JANUARY, FEBRUARY, MARCH, APRIL, ...})
+@Retention(RetentionPolicy.SOURCE)
+public @interface Month {};
+static final int JANUARY = 1;
+static final int FEBRUARY = 2;
+static final int MARCH = 3;
+static final int APRIL = 4;
+...
+
+int getDate(@Month int month) {
+    ////
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Month annotationをIntDefで定義し, &lt;code&gt;getDate(@Month int)&lt;/code&gt;と書くことでtype-safeにgetDateメソッドを宣言することが出来ます.
+この書き方は, 「enumのtype-safe」と「定数のパフォーマンス」を満たしています.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;定数はtype-safeでないため, IntDef(StringDef) annotationを使い, type-safeを提供する&lt;/li&gt;
+&lt;li&gt;enumはパフォーマンスに影響を与える可能性があるため, IntDef(StringDef) annotationを使うことを検討する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tools.android.com/tech-docs/support-annotations&#34;&gt;Support Annotations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    
+    
+    <item>
+      <title>Android: Picassoで使われているデザインパターン</title>
+      <link>https://satoshun.github.io/2015/06/reading_picasso/</link>
+      <pubDate>Fri, 12 Jun 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/06/reading_picasso/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso&#34;&gt;Picasso&lt;/a&gt;で使われているデザインパターンを紹介する記事です.&lt;/p&gt;
+
+&lt;h2 id=&#34;singletonパターン&#34;&gt;Singletonパターン&lt;/h2&gt;
+
+&lt;p&gt;Singletonパターンは, インスタンスの生成を1つに制限するパターンになります.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
+  if (singleton == null) {
+    synchronized (Picasso.class) {
+      if (singleton == null) {
+        singleton = new Builder(context).build();
+      }
+    }
+  }
+  return singleton;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Picasso#withは, すでにPicassoのインスタンス &lt;code&gt;singleton&lt;/code&gt; が生成されていればそれを返し,
+生成されていなければ, インスタンスを生成して返します.&lt;/p&gt;
+
+&lt;p&gt;このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる)
+しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.&lt;/p&gt;
+
+&lt;p&gt;スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.&lt;/p&gt;
+
+&lt;h2 id=&#34;builderパターン&#34;&gt;Builderパターン&lt;/h2&gt;
+
+&lt;p&gt;Builderパターンはインスタンス生成時に多数のパラメータが必要なときに便利なパターンです.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static class Builder {
+  private final Context context;
+  private Downloader downloader;
+  private ExecutorService service;
+  private Cache cache;
+  private Listener listener;
+  private RequestTransformer transformer;
+  private List&amp;lt;RequestHandler&amp;gt; requestHandlers;
+  private Bitmap.Config defaultBitmapConfig;
+
+  private boolean indicatorsEnabled;
+  private boolean loggingEnabled;
+
+  public Builder(Context context) {
+    if (context == null) {
+      throw new IllegalArgumentException(&amp;quot;Context must not be null.&amp;quot;);
+    }
+    this.context = context.getApplicationContext();
+  }
+
+  ...
+  ...
+
+  public Picasso build() {
+    Context context = this.context;
+
+    if (downloader == null) {
+      downloader = Utils.createDefaultDownloader(context);
+    }
+    if (cache == null) {
+      cache = new LruCache(context);
+    }
+    if (service == null) {
+      service = new PicassoExecutorService();
+    }
+    if (transformer == null) {
+      transformer = RequestTransformer.IDENTITY;
+    }
+
+    Stats stats = new Stats(cache);
+
+    Dispatcher dispatcher = new Dispatcher(context, service, HANDLER, downloader, cache, stats);
+
+    return new Picasso(context, dispatcher, cache, listener, transformer, requestHandlers, stats,
+        defaultBitmapConfig, indicatorsEnabled, loggingEnabled);
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;必ず必要なパラメータContextはコンストラクタ引数として渡し, オプション的なパラメータは必要に応じてセットします.
+最後に, buildメソッドをコールして, 対象のインスタンスを取得します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;new Builder(context) // 必ず必要なパラメータ
+    .debugging(true) // debuggingをtrueに
+    .memoryCache(memoryCacheInstance) // 専用のmemoryCacheを使う
+    .build(); // パラメータに異常がなければインスタンスを返す
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Builderパターンを使うことで, コンストラクタが指数的に増えてしまう問題を防ぐことが出来ます.
+また, Hoge(int, int, int)の時, 与えるintの順番を間違える可能性が高いですが,
+Builderパターンだと名前付きメソッドで値を指定出来るので, よりリーダブルであると思います(主観).&lt;/p&gt;
+
+&lt;h2 id=&#34;static-factoryパターン&#34;&gt;static factoryパターン&lt;/h2&gt;
+
+&lt;p&gt;static factoryパターンは, コンストラクタの代わりに, クラスのインスタンスを返すstatic methodを使用するパターンです.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
+  if (singleton == null) {
+    synchronized (Picasso.class) {
+      if (singleton == null) {
+        singleton = new Builder(context).build();
+      }
+    }
+  }
+  return singleton;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Picasso#with(Context)は, Picassoのインスタンスを返します. static factoryメソッドを使うことで, コンストラクタ以上の柔軟性を提供することが出来ます.
+上の例で言うと, Picasso#withは, シングルトンパターンにより, 毎回インスタンスを生成する必要がありません. コンストラクタを使う場合は, 毎回インスタンスを生成する必要があります.
+さらに, static factoryは自分自身だけでなく, サブクラス, インターフェースの実装を返すことも可能です.
+上の例で言うとPicasso#withはPicassoのサブクラスを返しても問題なく動作します(もちろんサブクラスにバグがなければ).&lt;/p&gt;
+
+&lt;h2 id=&#34;早期リターンパターン-early-return-pattern&#34;&gt;早期リターンパターン(early return pattern)&lt;/h2&gt;
+
+&lt;p&gt;早期リターンパターンは, &lt;strong&gt;メソッドの先頭&lt;/strong&gt; で, 何もせずにメソッドを終了するか, 例外をスローするパターンです.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public void into(Target target) {
+  long started = System.nanoTime();
+
+  // こっから例外などの判定
+  checkMain();
+
+  if (target == null) {
+    throw new IllegalArgumentException(&amp;quot;Target must not be null.&amp;quot;);
+  }
+  if (deferred) {
+    throw new IllegalStateException(&amp;quot;Fit cannot be used with a Target.&amp;quot;);
+  }
+
+  if (!data.hasImage()) {
+    picasso.cancelRequest(target);
+    target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
+    return;
+  }
+  // 例外などの判定修了
+
+  // こっからメインロジック
+  Request request = createRequest(started);
+  String requestKey = createKey(request);
+
+  if (shouldReadFromMemoryCache(memoryPolicy)) {
+    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
+    if (bitmap != null) {
+      picasso.cancelRequest(target);
+      target.onBitmapLoaded(bitmap, MEMORY);
+      return;
+    }
+  }
+
+  target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
+
+  Action action =
+      new TargetAction(picasso, target, request, memoryPolicy, networkPolicy, errorDrawable,
+          requestKey, tag, errorResId);
+  picasso.enqueueAndSubmit(action);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;変数targetがnullなら例外をスロー&lt;/li&gt;
+&lt;li&gt;変数deferredがtrueなら例外をスロー&lt;/li&gt;
+&lt;li&gt;data.hasImage()がfalseなら, cancelRequestをコールしてreturn&lt;/li&gt;
+&lt;li&gt;メインのロジックの実行&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;メソッドのエラー処理の部分をメソッドの最初に, メインロジックの部分をその後にそれぞれ分割することで, 可読性を上げることが出来ます.
+アスペクト指向プログラミングに近い考え方だと思います.&lt;/p&gt;
+
+&lt;p&gt;アスペクト指向とは, メインロジック以外の副次的なロジック(セキュリティ要件を満たしているか, ログを取るなどなど)を, 宣言的に外部から注入できるプログラミングパラダイムです.
+1つのメソッド, ルーチンの中に, 複数の異なるロジックが含まれていると可読性が損なわれるので, その部分を切り出すことが出来ます.&lt;/p&gt;
+
+&lt;h2 id=&#34;viewholderパターン&#34;&gt;ViewHolderパターン&lt;/h2&gt;
+
+&lt;p&gt;Android特有のパターンです. ListViewで子要素を切り替えるたびに毎回View#findViewByIdを実行するのはコストが高いので,
+Cacheしておくパターンです.(Picasso本体ではなく, exampleフォルダのコード例になります)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&#34;&gt;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Override public View getView(int position, View view, ViewGroup parent) {
+  ViewHolder holder;
+  if (view == null) {
+    view = LayoutInflater.from(context).inflate(R.layout.sample_list_detail_item, parent, false);
+    holder = new ViewHolder();
+    holder.image = (ImageView) view.findViewById(R.id.photo);
+    holder.text = (TextView) view.findViewById(R.id.url);
+    view.setTag(holder);
+  } else {
+    holder = (ViewHolder) view.getTag();
+  }
+
+  ...
+}
+
+static class ViewHolder {
+  ImageView image;
+  TextView text;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;BaseAdapter#getViewで, Viewを生成するときに処理に必要な情報をViewHolderに保存しておきます.
+こうすることで, 次回以降のコストを減らすことが出来ます.&lt;/p&gt;
+
+&lt;h2 id=&#34;observerパターン&#34;&gt;Observerパターン&lt;/h2&gt;
+
+&lt;p&gt;非同期な処理が完了, 状態が変化したことを, クライアント(主に呼び出し元のインスタンス)に通知をする時に使われるパターンです. 非常にポピュラーなパターンです.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void into(ImageView target, Callback callback) {
+  long started = System.nanoTime();
+  checkMain();
+
+  ...
+
+  if (shouldReadFromMemoryCache(memoryPolicy)) {
+    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
+    if (bitmap != null) {
+      picasso.cancelRequest(target);
+      setBitmap(target, picasso.context, bitmap, MEMORY, noFade, picasso.indicatorsEnabled);
+      if (picasso.loggingEnabled) {
+        log(OWNER_MAIN, VERB_COMPLETED, request.plainId(), &amp;quot;from &amp;quot; + MEMORY);
+      }
+      if (callback != null) {
+        callback.onSuccess();
+      }
+      return;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;into(ImageView, Callback)の, Callbackの部分がObserverパターンのポイントになります.
+intoメソッドは非同期な処理のため, 結果が成功したかを返り値として受け取ることが出来ません.
+そこで, 非同期処理が終わったら, 引数で渡したcallbackをコールするようにすることで結果を受け取ることが出来ます.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>心理学: 人間は合理的な判断は出来ない</title>
+      <link>https://satoshun.github.io/2015/06/anchoring_effect/</link>
+      <pubDate>Mon, 08 Jun 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/06/anchoring_effect/</guid>
+      <description>
+
+&lt;p&gt;人間は合理的な判断をしているようで, 実はそんなにしていないという話をします.&lt;/p&gt;
+
+&lt;h2 id=&#34;例-値引き商品&#34;&gt;例: 値引き商品&lt;/h2&gt;
+
+&lt;p&gt;普段, 1,000円のとんかつ定食があるとします. その日は割引セールで40%OFFの600円になっていました.
+この時に本来は, 「このとんかつ定食が600円」が高いかどうかで判断を下さないといけません.
+しかし, 脳では「普段より400円安い!お得!!」と判断し, お得なとんかつ定食を選ぶ可能性があがります.&lt;/p&gt;
+
+&lt;p&gt;この現象を, アンカリング効果(Anchoring effect)と呼びます. 1,000円がアンカー(一種の基準)になり,
+600円を非常にお得と判断してしまいます. 例えば, 隣の店で全く同じとんかつ定食が600円で売られているとしても,
+こちらのとんかつ定食がお得だと判断します. これは合理的な判断とはいえません.&lt;/p&gt;
+
+&lt;p&gt;ものを販売する時はアンカーを意識して値段設定すると, ユーザの心を揺さぶることが出来ます.&lt;/p&gt;
+
+&lt;p&gt;合理的に判断するなら, 割引前の値段には影響を受けてはダメです. メーカーは定価を高めに設定しています. 冷凍食品なんかは常に割引セールをしています.&lt;/p&gt;
+
+&lt;h2 id=&#34;例-全く無関係な数字&#34;&gt;例: 全く無関係な数字&lt;/h2&gt;
+
+&lt;p&gt;「値引き商品だったら, なんとなく影響を受けている気がする」という人は多いと思います. しかし, 全く無関係な数字にも人間は影響を受けます.&lt;/p&gt;
+
+&lt;p&gt;事前に10 or 50という数字を見せられているとします. 次にAndroid5.0のシェア率答えてもらいます. この時, Android5.0のシェア率に関してなんら情報を持っていなければ,
+10 or 50という数字に大きく影響を受けることが分かっています. これは10 or 50という数字が基準(アンカリング)とし, 正解だと思う数字に調整するためです.&lt;/p&gt;
+
+&lt;p&gt;これは, 直感的には「そんなことないよと」言いたいところですが, 多くの人間が無関係な数字に影響を受けるようです.&lt;/p&gt;
+
+&lt;p&gt;合理的に判断するなら, 事前の数字に影響を受けてはダメです. しかし, よほど意識しない限り人間の脳は無関係な数字にも影響を受けてしまいます.&lt;/p&gt;
+
+&lt;h2 id=&#34;例-いろいろなレンジ帯の商品群&#34;&gt;例: いろいろなレンジ帯の商品群&lt;/h2&gt;
+
+&lt;p&gt;ある高級マットレスA,Bがあるとします. マットレスAは78,000円, マットレスBは128,000円の時に, マットレスBを選ばせるためにはどうするのがよいでしょうか?
+それは, マットレスC 488,000円を売り出すことです.&lt;/p&gt;
+
+&lt;p&gt;マットレスA 78,000円, マットレスB 128,000円, マットレスC 488,000円とあると,
+マットレスAだと安すぎて不安, マットレスCだと高すぎるし, ちょうど中間帯のマットレスBを買おうと誘導することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;多くの電気メーカー, 自動車メーカー等が幅広い価格帯を持っているのは, お手頃感, お得感を出すためだと考えられます.&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B00ARDNMEQ/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00ARDNMEQ&amp;linkCode=as2&amp;tag=satoshunblog-22&#34;&gt;ファスト＆スロー　（上）&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=satoshunblog-22&amp;l=as2&amp;o=9&amp;a=B00ARDNMEQ&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jma2-jp.org/wiki/?アンカリング効果&#34;&gt;アンカリング効果 - マーケティングWiki　～マーケティング用語集&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>
+      <link>https://satoshun.github.io/2015/05/dagger2_2/</link>
+      <pubDate>Sun, 24 May 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/05/dagger2_2/</guid>
+      <description>
+
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;この記事では, JakeWhartonさんの&lt;a href=&#34;https://github.com/JakeWharton/u2020&#34;&gt;u2020&lt;/a&gt;から, AndroidでDagger2を使うときの実践的な方法を紹介します.
+u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.&lt;/p&gt;
+
+&lt;p&gt;DI, Dagger2の基本について知りたい方は, &lt;a href=&#34;https://satoshun.github.io/2015/05/dagger2/&#34;&gt;Part1&lt;/a&gt;を見て下さい.&lt;/p&gt;
+
+&lt;p&gt;目次&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;debugとproductionでModuleを切り替える&lt;/li&gt;
+&lt;li&gt;Debug専用のViewを作る&lt;/li&gt;
+&lt;li&gt;Mockモードの定義
+-　まとめ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;debugとproductionでmoduleを切り替える&#34;&gt;debugとproductionでModuleを切り替える&lt;/h2&gt;
+
+&lt;p&gt;gradleは, &lt;code&gt;productFlavors&lt;/code&gt;を設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります.
+そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています.
+具体的には,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/src/production/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
+&lt;li&gt;/src/internalDebug/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
+&lt;li&gt;/src/internalRelease/java/com/jakewharton/u2020/Modules.javaに&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています.
+これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.&lt;/p&gt;
+
+&lt;p&gt;こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Debugのみログを有効にしたい&lt;/li&gt;
+&lt;li&gt;APIのエンドポイントを変えたい&lt;/li&gt;
+&lt;li&gt;debug専用のViewを出したい&lt;/li&gt;
+&lt;li&gt;Test用のインスタンスをinjectしたい&lt;/li&gt;
+&lt;li&gt;etc, etc&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以下では, より細かく説明していきます.&lt;/p&gt;
+
+&lt;h2 id=&#34;debug専用のviewを作る&#34;&gt;Debug専用のViewを作る&lt;/h2&gt;
+
+&lt;p&gt;u2020では, Debug専用のView &lt;code&gt;DebugAppContainer&lt;/code&gt;があります.
+&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/u2020.gif&#34; target=&#34;\_blank&#34;&gt;Debug専用のView&lt;/a&gt;
+はこんな感じです. Debugビルドの時は, このContainerをinjectしています.&lt;/p&gt;
+
+&lt;p&gt;DebugAppContainerは簡単にいえば, &lt;code&gt;DrawerLayout&lt;/code&gt;を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.&lt;/p&gt;
+
+&lt;h2 id=&#34;mockモードの定義&#34;&gt;Mockモードの定義&lt;/h2&gt;
+
+&lt;p&gt;u2020ではMockモードがあり, Mockデータを表示機能があります.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class DebugDataModule {
+  ...
+  ...
+
+  @Provides @Singleton @ApiEndpoint
+  StringPreference provideEndpointPreference(SharedPreferences preferences) {
+    return new StringPreference(preferences, &amp;quot;debug_endpoint&amp;quot;, ApiEndpoints.MOCK_MODE.url);
+  }
+
+  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
+    return ApiEndpoints.isMockMode(endpoint.get());
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
+サーバ問題を解決しています. retrofitの&lt;code&gt;MockRestAdapter&lt;/code&gt;を組み合わせ, mockからデータを取得しています.&lt;/p&gt;
+
+&lt;h2 id=&#34;activityのlifecycleのログを取る&#34;&gt;activityのlifecycleのログを取る&lt;/h2&gt;
+
+&lt;p&gt;Applicationクラスには, &lt;code&gt;registerActivityLifecycleCallbacks&lt;/code&gt;メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &amp;hellip;)でイベントを受け取ることが出来ます.
+&lt;code&gt;ActivityLifecycleCallbackss&lt;/code&gt;インターフェースの定義は以下になります.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+public void onActivityStarted(Activity activity) {}
+public void onActivityResumed(Activity activity) {}
+public void onActivityPaused(Activity activity) {}
+public void onActivityStopped(Activity activity) {}
+public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+public void onActivityDestroyed(Activity activity) {}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;u2020では,　&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java&#34;&gt;SocketActivityHierarchyServer&lt;/a&gt;クラスをデバッグ, Activityが正しく振舞っているかを確認しています.&lt;/p&gt;
+
+&lt;p&gt;一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&amp;hellip;)&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;u2020はDagger以外にもノウハウが多くあり, 非常に勉強になりました. 正直10%くらいしか理解できていないので, 次はu2020全体にフォーカスを当てた記事を書くので楽しみに待っていて下さい.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>ReactiveX: Hot, Coldの違い</title>
+      <link>https://satoshun.github.io/2015/05/hot_cold/</link>
+      <pubDate>Fri, 22 May 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/05/hot_cold/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://reactivex.io/&#34;&gt;ReactiveX&lt;/a&gt;における, &lt;code&gt;Cold/Hot&lt;/code&gt; Observableの違いを説明します.&lt;/p&gt;
+
+&lt;p&gt;(本文中の「subscribeする」と, 「Observerを登録する」は同義です.)&lt;/p&gt;
+
+&lt;h2 id=&#34;cold-observable&#34;&gt;Cold Observable&lt;/h2&gt;
+
+&lt;p&gt;Cold ObservableはSubscribeされると動作を開始します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;var source = Rx.Observable.range(1, 10);
+
+// 何か処理
+// ...
+
+source.subscribe(function(x) {
+  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば, 上のコードだと, sourceを定義した時点ではストリームが生成されておらず,
+source.subscribeされた時に, 初めてストリームが生成されます.
+遅延評価(lazy evaluation)のような振る舞いをします.&lt;/p&gt;
+
+&lt;p&gt;次に, 1つのCold Observableに対して複数subscribeしたとします.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;var source = Rx.Observable.range(1, 10);
+
+// 何か処理
+// ...
+
+source.subscribe(function(x) {
+  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+});
+source.subscribe(function(x) {
+  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つのsubscribeに対して, 別々のストリームが生成されます. 各subscribeは, &lt;code&gt;完全に独立して動作&lt;/code&gt;します.&lt;/p&gt;
+
+&lt;p&gt;Cold Observableをまとめると,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;subscribeされるまでCold状態(ストリームが生成されない)&lt;/li&gt;
+&lt;li&gt;ストリームはObserverごとに独立して生成される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;hot-observable&#34;&gt;Hot Observable&lt;/h2&gt;
+
+&lt;p&gt;次にHot Observableです. Hot Observableはsubscribeしないでもストリームが生成されます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;var source = Rx.Observable.interval(1000);
+var hot = source.publish();
+
+// この時点ではストリームは生成されていない
+hot.subscribe(function() {
+  console.log(&#39;part1&#39;);
+});
+
+// ストリームが生成される
+hot.connect();
+
+hot.subscribe(function() {
+  console.log(&#39;part2&#39;);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;RxJSでは, publishメソッドをコールするとHotなObservableを作成することが出来ます. それに対して, connectするとストリームが流れ始めます.
+subscribeとは無関係にストリームが生成されるのがポイントです. Observerが登録されていない時は, データは消滅します.
+また, HotなObservableは, 1つのストリームに対して複数subscribeすることが出来ます. Coldの場合は, ストリームとsubscribeは, 1対1だったのが, Hotの場合は1対多になります.&lt;/p&gt;
+
+&lt;p&gt;Hot Observableをまとめると,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;subscribeとは無関係にストリームが生成される&lt;/li&gt;
+&lt;li&gt;複数Observerを1つのストリームの上に乗せることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;Hot, ColdなObservableについて説明しました. 1つのストリーム(同じデータ)に対して複数のことをしたいときはHot, そうでない時はColdを使えば良いと思います. 基本的にはColdを扱うことが多いとは思います.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: Dagger2でDIをする. 基本編 Part1</title>
+      <link>https://satoshun.github.io/2015/05/dagger2/</link>
+      <pubDate>Fri, 08 May 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/05/dagger2/</guid>
+      <description>
+
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します.
+Dagger2はDI(Dependency Injection)をするライブラリです.&lt;/p&gt;
+
+&lt;h2 id=&#34;diとは&#34;&gt;DIとは?&lt;/h2&gt;
+
+&lt;p&gt;DIとはDependency Injectionの略で, 訳すと「依存性の注入」です.
+ここでいう依存とは &lt;code&gt;クラス同士の依存関係&lt;/code&gt;のことを表します.
+クラス同士の依存関係は, 委譲パターンの時に現れます.&lt;/p&gt;
+
+&lt;p&gt;例えば, 以下のコードがあったとします.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
+    public Blogger() {
+    }
+
+    public void post(String title) {
+        // 何かメインの処理
+        // ...
+
+        // fileにlogを取る
+        FileLogger logger = new FileLogger(title);
+        logger.logging();
+    }
+}
+
+class FileLogger implements Logger {
+    @Override
+    public void logging(String... messages) {
+        // fileにmessagesを書き出す
+        File file = new File(&amp;quot;hoge.txt&amp;quot;);
+        ...
+    }
+}
+
+interface Logger {
+    void logging(String messgae);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;クラスBloggerはクラスFileLoggerに依存している&lt;/code&gt;. ことが分かります. なぜなら, 関数post内でFileLoggerクラスを利用しているためです.
+この書き方だと, BloggerクラスはFileLoggerに依存しているため, Loggerインターフェースを実装した旨味がありません.&lt;/p&gt;
+
+&lt;p&gt;次に, 少しコードを変更して, Loggerインターフェースを実装したインスタンスを引数で渡せるように変更します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
+    Logger logger;
+
+    public Blogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    public void post(String title) {
+        // 何かメインの処理
+        // ...
+
+        // logを取る
+        logger.logging();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることで外部から引数で, Loggerインターフェースを実装した, FileLoggerクラス等を注入できるようになります. これがDI(依存性の注入)パターンです.&lt;/p&gt;
+
+&lt;p&gt;これの何が嬉しいんでしょうか? それは, Bloggerクラスを変更せずに, logの取り方を変えることが出来る点です!　委譲する先のクラス(Logger)を簡単に変更することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;余談ですが, AngularJSを使ったことのある方なら&lt;code&gt;function($scope, $resources) {}&lt;/code&gt;のようなコードを見たことがあると思います. これも典型的なDIパターンになります.&lt;/p&gt;
+
+&lt;p&gt;DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
+なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.&lt;/p&gt;
+
+&lt;h2 id=&#34;dagger2概念&#34;&gt;Dagger2概念&lt;/h2&gt;
+
+&lt;p&gt;Dagger2は大きく分けて, &lt;code&gt;Component&lt;/code&gt;, &lt;code&gt;Module&lt;/code&gt; &lt;code&gt;Provide&lt;/code&gt;, &lt;code&gt;Inject&lt;/code&gt; の4つの要素があります.
+上記を定義しクラス間の依存関係を解決します.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;@Inject: 依存を注入します.&lt;/li&gt;
+&lt;li&gt;@Module: インスタンスをProvideするメソッド郡を定義します.&lt;/li&gt;
+&lt;li&gt;@Provide; 依存を解決するためのインスタンスを提供します.&lt;/li&gt;
+&lt;li&gt;@Component: @Injectと@Module間の関係を定義します.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これだけでは分からないと思うので, 具体的な例をあげて説明します.&lt;/p&gt;
+
+&lt;h2 id=&#34;依存関係の定義&#34;&gt;依存関係の定義&lt;/h2&gt;
+
+&lt;p&gt;最初に依存関係を定義します. &lt;code&gt;javax.inject.Inject&lt;/code&gt;アノテーションを使います.&lt;/p&gt;
+
+&lt;p&gt;上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// inject field directly
+class Blogger {
+    @Inject Logger logger;
+
+    public Blogger() {
+    }
+}
+
+or
+
+// Constructor Injection
+class Blogger {
+    Logger logger;
+
+    @Inject
+    public Blogger(Logger logger) {
+        this.logger = logger;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで, 依存関係の定義は完了です. Field, Constructor Injectionの両方の書き方を覚えて下さい.&lt;/p&gt;
+
+&lt;h2 id=&#34;moduleの作成&#34;&gt;Moduleの作成&lt;/h2&gt;
+
+&lt;p&gt;Moduleには, 上記の&lt;code&gt;@Inject&lt;/code&gt;で定義したクラスのインスタンスの生成方法を記述します.
+&lt;code&gt;@Module&lt;/code&gt;と&lt;code&gt;@Provides&lt;/code&gt;アノテーションを使い, 定義します.&lt;/p&gt;
+
+&lt;p&gt;Loggerを提供するModuleを作成します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Module
+class DebugModule {
+    @Provides
+    Logger provideLogger() {
+        return new FileLogger();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで, Loggerを提供するModuleの定義が出来ました.&lt;/p&gt;
+
+&lt;p&gt;最後にComponentを作成します.&lt;/p&gt;
+
+&lt;h2 id=&#34;componentの作成&#34;&gt;Componentの作成&lt;/h2&gt;
+
+&lt;p&gt;Componentは複数Moduleをまとめたものです.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component(modules = DebugModule.class)
+interface ApplicationComponent {
+    Blogger make();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで, 依存関係を解決してBloggerを生成することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;アプリ側では以下のように記述します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;ApplicationComponent component = DaggerApplicationComponent.create();
+Blogger blogger = component.make();
+blogger.post();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これが基本的なDagger2の使い方です. まとめると&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;@Injectで, 依存関係を定義する&lt;/li&gt;
+&lt;li&gt;@Module, @Providesで依存関係を解決するようにインスタンスを提供する&lt;/li&gt;
+&lt;li&gt;@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する&lt;/li&gt;
+&lt;li&gt;アプリで依存解決Graphを使い, DIを行う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+
+&lt;p&gt;DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
+最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
+Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).&lt;/p&gt;
+
+&lt;p&gt;Part2では, より実践的なDagger2の使い方について説明します.&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014&#34;&gt;Dependency Injection with Dagger 2 (Devoxx 2014)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345&#34;&gt;Dependency Injection With Dagger 2 on Android&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=oK_XtfXPkqw&#34;&gt;DAGGER 2 - A New Type of dependency injection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://kakutani.com/trans/fowler/injection.html&#34;&gt;Inversion of Control コンテナと Dependency Injection パターン&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Python: Pythonライクな書き方 Part1</title>
+      <link>https://satoshun.github.io/2015/04/python-beautiful/</link>
+      <pubDate>Thu, 30 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/python-beautiful/</guid>
+      <description>
+
+&lt;p&gt;Pythonライクな書き方について紹介します. Part1です.&lt;/p&gt;
+
+&lt;h2 id=&#34;for文関連&#34;&gt;for文関連&lt;/h2&gt;
+
+&lt;h3 id=&#34;indexを使いたいとき&#34;&gt;indexを使いたいとき&lt;/h3&gt;
+
+&lt;p&gt;Bad: range, lenを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
+for i in range(len(names)):
+    print i, names[i]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: enumerateを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for i, name in enumerate(names):
+    print i, name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;2つのコレクションを扱うとき&#34;&gt;2つのコレクションを扱うとき&lt;/h3&gt;
+
+&lt;p&gt;Bad: indexを使ってアクセスする&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
+ages = [12, 19, 11]
+
+for i in range(min(len(names), len(ages))):
+    print names[i], ages[i]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: 組み込み関数zipを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for name, age in zip(names, ages):
+    print name, age
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;dictionaryでkey-valueを使う&#34;&gt;dictionaryでkey, valueを使う&lt;/h2&gt;
+
+&lt;p&gt;Bad: keyでアクセス, valueを取得する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;persons = {&#39;TDN&#39;: 12, &#39;tanaka&#39;: 24, &#39;nakata&#39;: 11}
+for k in persons:
+    print k, persons[k]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: itemsメソッドを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;persons = {&#39;TDN&#39;: 12, &#39;tanaka&#39;: 24, &#39;nakata&#39;: 11}
+for k, v in persons.items():
+    print k, v
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;値の入れかえ-swap-values&#34;&gt;値の入れかえ(swap values)&lt;/h2&gt;
+
+&lt;p&gt;Bad: tmp変数を定義する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;a = 0
+b = 10
+
+tmp = a
+a = b
+b = tmp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: onelineで交換する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;a, b = 0, 10
+
+a, b = b, a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;dictionaryの作成&#34;&gt;dictionaryの作成&lt;/h2&gt;
+
+&lt;p&gt;indexを使う方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
+d = dict(enumerate(names))
+
+&amp;gt; {0: &#39;TDN&#39;, 1: &#39;suzuki&#39;, 2: &#39;tom&#39;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2つのリストのペアを使う方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
+ages = [12, 19, 11]
+d = dict(zip(names, ages))
+
+&amp;gt; {&#39;tom&#39;: 11, &#39;suzuki&#39;: 19, &#39;TDN&#39;: 12}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;dictionaryを使ったグルーピング&#34;&gt;dictionaryを使ったグルーピング&lt;/h2&gt;
+
+&lt;p&gt;Bad: ifでいちいちチェックする&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
+d = {}
+for name in names:
+    key = name[0]
+    if key not in d:
+        d[key] = []
+    d[key].append(name)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: setdefaultを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
+d = {}
+for name in names:
+    key = name[0]
+    d.setdefault(key, []).append(name)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: defaultdictを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from collections import defaultdict
+
+names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
+d = defaultdict(list)
+for name in names:
+    key = name[0]
+    d[key].append(name)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;効率のよいソート&#34;&gt;効率のよいソート&lt;/h2&gt;
+
+&lt;p&gt;Bad: cmpを用いてソートする&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
+def cmp_function(a, b):
+    if len(a) &amp;gt; len(b):
+        return 1
+    if len(a) &amp;lt; len(b):
+        return -1
+    return 0
+sorted(names, cmp=cmp_function)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: keyを用いてソートする&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sorted(names, key=len)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ファイルを開く-閉じる時&#34;&gt;ファイルを開く, 閉じる時&lt;/h2&gt;
+
+&lt;p&gt;Bad: finallyを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;f = open(&#39;build.gradle&#39;)
+try:
+    data = f.read()
+finally:
+    f.close()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: withを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;with open(&#39;build.gradle&#39;) as f:
+    data = f.read()
+
+
+## リスト内包
+
+Bad: forをわざわざ使う
+
+```python
+total = 0
+for i in range(10):
+    total += i ** 2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: リスト内包, ジェネレータを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;total = sum(i ** 2 for i in range(10))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;文字列結合&#34;&gt;文字列結合&lt;/h2&gt;
+
+&lt;p&gt;Bad: stringを + でつないでいく&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
+s = &#39;&#39;
+for name in names:
+    s += name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: joinメソッドを使う&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
+&#39;&#39;.join(names)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;デコレータを使う&#34;&gt;デコレータを使う&lt;/h2&gt;
+
+&lt;p&gt;Bad: メソッド内にcacheのロジックが入りこんでいる&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def get_data(filepath, saved={}):
+    if filepath in saved:
+        return cache[filepath]
+
+    with open(filepaht, &#39;r&#39;) as f:
+        saved[filepath] = f.read()
+    return saved[filepath]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good: cacheのロジックを外部に切り出す&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from functools import wraps
+
+def cache(func):
+    saved = {}
+
+    @wraps(func)
+    def wrapper(filepath):
+        if filepath in saved:
+            return saved[filepath]
+        result = func(filepath)
+        saved[filepath] = result
+        return result
+    return wrapper
+
+
+@cache
+def get_data(filepath):
+    with open(filepath, &#39;r&#39;) as f:
+        return f.read()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;contextmanagerを使う&#34;&gt;contextmanagerを使う&lt;/h2&gt;
+
+&lt;p&gt;Before: 例外をpassしているのが正しいのか, 実装し忘れか判断が付き難い&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import os
+
+try:
+    os.remove(&#39;.tmp&#39;)
+except OSError:
+    pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After: ignoredのように明示的な名前をつけて定義する&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import os
+from contextlib import contextmanager
+
+@contextmanager
+def ignored(*exc):
+    try:
+        yield
+    except exc:
+        pass
+
+
+with ignored(OSError):
+    os.remove(&#39;tmp&#39;)  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;パート2に続く..&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OSGv2VnC0go&#34;&gt;Transforming Code into Beautiful, Idiomatic Python&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: AndroidKaigiまとめ</title>
+      <link>https://satoshun.github.io/2015/04/droid-kaigi/</link>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
+      <description>
+
+&lt;p&gt;AndroidKaigiの記事まとめです.&lt;/p&gt;
+
+&lt;h2 id=&#34;droidkaigi-welcome-talk&#34;&gt;DroidKaigi - Welcome talk&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/LCwLL9vYMqpbEX&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/mhidaka/droidkaigi-welcome-talk&#34; title=&#34;DroidKaigi - Welcome talk&#34; target=&#34;_blank&#34;&gt;DroidKaigi - Welcome talk&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/mhidaka&#34; target=&#34;_blank&#34;&gt;mhidaka&lt;/a&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;エンジニアのための勉強会をやるよ!みたいな内容&lt;/p&gt;
+
+&lt;h2 id=&#34;activity-fragment-customview-の使い分け-マッチョなactivityにさよならする方法&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/oLqEqctvlWuBjW&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yanzm/droid-kaigi2015-yanzm&#34; title=&#34;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&#34; target=&#34;_blank&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yanzm&#34; target=&#34;_blank&#34;&gt;Yuki Anzai&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;cardboardのuxをカメラで向上する&#34;&gt;CardboardのUXをカメラで向上する&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/cYFQ3fMRP9v2Co&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2/cardboardux-droidkaigi-2&#34; title=&#34;CardboardのUXをカメラで向上する (droidkaigi 2015/04)&#34; target=&#34;_blank&#34;&gt;CardboardのUXをカメラで向上する (droidkaigi &lt;sup&gt;2015&lt;/sup&gt;&amp;frasl;&lt;sub&gt;04&lt;/sub&gt;)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2&#34; target=&#34;_blank&#34;&gt;Kenichi Takahashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;絶対落ちないアプリの作り方&#34;&gt;絶対落ちないアプリの作り方&lt;/h2&gt;
+
+&lt;h2 id=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NJrOgCsRpwAMFK&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/droidkaigi&#34; title=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34; target=&#34;_blank&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;開発を効率的に進めるられるまでの道程&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/1Aqkd8c46ElhCZ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/TakaoSumitomo/ss-47393000&#34; title=&#34;開発を効率的に進めるられるまでの道程&#34; target=&#34;_blank&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/TakaoSumitomo&#34; target=&#34;_blank&#34;&gt;Takao Sumitomo&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリの企画-プロトタイプからリリースに至るまで&#34;&gt;アプリの企画、プロトタイプからリリースに至るまで&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+    &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;20d5e0c8f80941bdb6307016b1f19f5e&#34; data-ratio=&#34;1.3333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;初学者に嬉しいandroid開発環境&#34;&gt;初学者に嬉しいAndroid開発環境&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/gb7mYJ9Wfg7GfL&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/hiroyukikusu/droidkaigi2015androidmvc&#34; title=&#34;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&#34; target=&#34;_blank&#34;&gt;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/hiroyukikusu&#34; target=&#34;_blank&#34;&gt;Hiroyuki Kusu&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;大容量データのダウンロード戦略&#34;&gt;大容量データのダウンロード戦略&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;複数Threadでダウンロードしても, 帯域があまっていないと早くならない.&lt;/li&gt;
+&lt;li&gt;100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す.&lt;/li&gt;
+&lt;li&gt;小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;android学ぶ君へ-生き抜くためのナレッジ共有&#34;&gt;Android学ぶ君へ。生き抜くためのナレッジ共有&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/lnJGNQs9xH8Hcg&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/shinobuokano7/android-47395733&#34; title=&#34;Android学ぶを君へ。生き抜くためのナレッジ共有&#34; target=&#34;_blank&#34;&gt;Android学ぶを君へ。生き抜くためのナレッジ共有&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/shinobuokano7&#34; target=&#34;_blank&#34;&gt;Shinobu Okano&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;進化するart&#34;&gt;進化するART&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/c1cu1ebUO55H7R&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kmt-t/art-47396171&#34; title=&#34;進化するArt&#34; target=&#34;_blank&#34;&gt;進化するArt&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kmt-t&#34; target=&#34;_blank&#34;&gt;kmt-t&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;JITコンパイラがAOTコンパイラに
+
+&lt;ul&gt;
+&lt;li&gt;アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;新言語kotlinでandroidプログラミング&#34;&gt;新言語KotlinでAndroidプログラミング&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;fafade9e78a545999d1f284554a8b2b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;artのメモリ管理&#34;&gt;ARTのメモリ管理&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NqIaruLYWs1qrx&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/haru067/20150425-droid-kaigi&#34; title=&#34;ARTのメモリ管理&#34; target=&#34;_blank&#34;&gt;ARTのメモリ管理&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/haru067&#34; target=&#34;_blank&#34;&gt;haru067&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;bitmapは怖くない&#34;&gt;Bitmapは怖くない。&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;3b26b52270e54eb299aca52b2d5362b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;droidkaigi-つかえるgradleプロジェクトの作り方&#34;&gt;DroidKaigi つかえるGradleプロジェクトの作り方&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/w72iM4KuNiuODu&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle&#34; title=&#34;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&#34; target=&#34;_blank&#34;&gt;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/MakotoYamazaki&#34; target=&#34;_blank&#34;&gt;Makoto Yamazaki&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;モバイルにおける電力最適化のための1プラクティス&#34;&gt;モバイルにおける電力最適化のための1プラクティス&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/49W6EiQJQBTRUf&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/suguruoho/droid-kaigi&#34; title=&#34;Droid kaigiプレゼン&#34; target=&#34;_blank&#34;&gt;Droid kaigiプレゼン&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/suguruoho&#34; target=&#34;_blank&#34;&gt;Suguru Oho&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリを公開する前に-最低限知っておきたいセキュリティ事項&#34;&gt;アプリを公開する前に、最低限知っておきたいセキュリティ事項&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&#34;&gt;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;デザイナーがxmlを書くことでできる改善しやすいアプリ開発&#34;&gt;デザイナーがXMLを書くことでできる改善しやすいアプリ開発&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;7b6fdc66dd214760b1d0a625c4383429&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;jellybeanとkitkatで実現するマテリアルデザイン&#34;&gt;JellyBeanとKitKatで実現するマテリアルデザイン&lt;/h2&gt;
+
+&lt;h2 id=&#34;material-designを取り入れたデザインリニューアル&#34;&gt;Material Designを取り入れたデザインリニューアル&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/67LrJFOc6qjXNJ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yuki930/ss-47398513&#34; title=&#34;マテリアルデザインを用いたデザインリニューアル [フリル編]&#34; target=&#34;_blank&#34;&gt;マテリアルデザインを用いたデザインリニューアル [フリル編]&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yuki930&#34; target=&#34;_blank&#34;&gt;YUKI YAMAGUCHI&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;僕らのデータ同期プラクティス&#34;&gt;僕らのデータ同期プラクティス&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/EBnpDPziJkPUES&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/Nkzn/ss-47398311&#34; title=&#34;僕らのデータ同期プラクティス&#34; target=&#34;_blank&#34;&gt;僕らのデータ同期プラクティス&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/Nkzn&#34; target=&#34;_blank&#34;&gt;Yukiya Nakagawa&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;android-と-selinux-androidsola&#34;&gt;Android と SELinux androidsola&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/ngRg1O9vffTufA&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/sola1980/androidse-linux&#34; title=&#34;AndroidとSELinux&#34; target=&#34;_blank&#34;&gt;AndroidとSELinux&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/sola1980&#34; target=&#34;_blank&#34;&gt;Akihiro Maeda&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;感想-まとめ&#34;&gt;感想, まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EventBusを使う際の設計はどうするの? カオスになりそう.&lt;/li&gt;
+&lt;li&gt;画面向き変更はハマりどころが多そう. ノウハウためたい&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>データベース: RDBと第1~3正規形について</title>
+      <link>https://satoshun.github.io/2015/04/normalization/</link>
+      <pubDate>Sun, 19 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/normalization/</guid>
+      <description>
+
+&lt;p&gt;正規形は, リレーショナルデータベース設計における理論の1つです. 正規化を行うことで, データの重複をなくし, 効率良くデータを保持することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;この記事では, リレーショナルデータベースについて説明し, 第1-3正規化について説明します.(BCNF, 第4-6正規化は次の記事で説明します)&lt;/p&gt;
+
+&lt;h2 id=&#34;リレーショナルデータベースモデル-rdb-について&#34;&gt;リレーショナルデータベースモデル(RDB)について&lt;/h2&gt;
+
+&lt;p&gt;最初にリレーションについて説明します. リレーションは見出し(heading)と本体(body)からなります. 見出しは, SQLでいうところの属性に相当します. 例えば, 生徒なら下のようなデータを持つと考えられます.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;田中&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;004&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;上記表がリレーションの一例になります. &lt;code&gt;{学生番号, 名前, 年齢}&lt;/code&gt;が見出し, &lt;code&gt;{{001, 田中, 17}, {002, 多田野, 19}, {003, 木下, 19}, {004, 西岡, 18}}&lt;/code&gt;が本体になります. ここで&lt;code&gt;{}&lt;/code&gt;を使っているのは, リレーショナルにおける見出し, 本体はそれぞれタプルで表現されるためです. そのため各要素には順序が存在せず, 重複が許されません(重複があっても意味がない).&lt;/p&gt;
+
+&lt;p&gt;ここで集合という言葉が出てきましたが, RDBは&lt;strong&gt;集合論&lt;/strong&gt; に基づいた理論です. データを集合で表現し, 集合演算を行いデータを操作します.&lt;/p&gt;
+
+&lt;p&gt;データの表現の仕方が分かったので, 次にどのようにしてデータを操作するかについて説明します. SQLでいうところの, SELECT, INSERT, JOINなどのクエリに当たります. それらはクエリは, RDBの世界では集合演算で説明することができます.(OUTER JOINなど一部定義されていないものもあります)&lt;/p&gt;
+
+&lt;p&gt;集合演算の有名なものには以下があります.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;直積(デカルト積): SQLの&lt;code&gt;FROM&lt;/code&gt;に相当. あるリレーションT1とT2のタプルを組み合わせたリレーションを返す&lt;/li&gt;
+&lt;li&gt;差: 片方のリレーションにのみ含まれるリレーションを返す&lt;/li&gt;
+&lt;li&gt;積: T1, T2, 両方のリレーションに含まれるリレーションを返す&lt;/li&gt;
+&lt;li&gt;和: T1, T2のリレーションに含まれるタプルを含んだリレーションを返す&lt;/li&gt;
+&lt;li&gt;射影: SQLの&lt;code&gt;SELECT hoge&lt;/code&gt;のhoge部分に相当. T1に含まれるタプルの属性を選択したリレーションを返す&lt;/li&gt;
+&lt;li&gt;制限: SQLの&lt;code&gt;WHERE&lt;/code&gt;に相当. 指定した条件を満たすリレーションを返す&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記演算を使うことで, 適切なデータを取得することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;次に, &lt;strong&gt;候補キー&lt;/strong&gt; について説明します. 候補キーはタプルを一意に特定することが出来る&lt;strong&gt;見出しの最小の属性組&lt;/strong&gt; になります. 例えば, 生徒の通勤手段を表現するリレーションがあるとします.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;上記リレーションの場合, {学生番号, 通勤手段}が候補キーになります. その2つの属性を指定することで, 一意にタプルを選択することが可能なためです.(候補キーには@をつけています)&lt;/p&gt;
+
+&lt;p&gt;また, 候補キーに似た概念にスーパーキーがあります. 上記で候補キーは「見出しの最小の属性組」と説明しました. しかし, スーパーキーは「最小」でなくて良く, タプルを特定できれば, いくつ見出しを含んでもかまいません. {学生番号, 通勤手段, 名前}, {学生番号, 通勤手段, 名前, 年齢}などがスーパーキーになります. 実際にリレーションを作るときは, どの属性組が候補キーになるかを考慮することが大切です.&lt;/p&gt;
+
+&lt;h2 id=&#34;第1正規形&#34;&gt;第1正規形&lt;/h2&gt;
+
+&lt;p&gt;第1正規形はリレーションであることの必須条件になります. 第1正規形の定義は以下になります.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;繰り返しデータがない, データが一意に定まる
+
+&lt;ul&gt;
+&lt;li&gt;ある属性に複数の要素(リスト)が含まれていると, あるタプルを選択した時に, リスト内のどの要素を示しているかによって値が一意に求まらないので, 第1正規形を満たさなくなります. また, NULLを持つ場合にも, データが一意に定まらないため, 第1正規形を満たさなくなります.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;データに重複がない&lt;/li&gt;
+&lt;li&gt;順序が定まっていない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;例えば, 下のリレーションは第1正規形ではありません.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;学生番号&lt;/th&gt;
+&lt;th&gt;通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車,バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;なぜなら, 通勤手段が一意に定まらないためです. なので, 下のように変換して上げる必要があります.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで, {学生番号, 通勤手段}を指定することで, 一意にタプルが指定できるようになりました.&lt;/p&gt;
+
+&lt;h3 id=&#34;余談-nullについて&#34;&gt;余談: NULLについて&lt;/h3&gt;
+
+&lt;p&gt;最初に言っておくと, &lt;strong&gt;NULLは値ではありません&lt;/strong&gt; . NULLは値がまだ決まっていないことを指し示すマーカーのようなものです. 空文字列などとは全く異なる概念です. NULLがなにかというと, いってみればどんな値でも入り得る箱のようなものです. &amp;ldquo;Hello&amp;rdquo;が入るかもしれないし, &amp;ldquo;プギャー&amp;rdquo;が入るかもしれない. それは, 一意に値が定まらないことを意味しています. データが一意に決まらないということは, RDBの理論から外れてしまうので, 最大限NULLが入らないような論理設計にすべきだと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;第2正規形&#34;&gt;第2正規形&lt;/h2&gt;
+
+&lt;p&gt;最初に関数従属について説明します. 候補キーの真部分集合T1から, 非キー属性(候補キー以外の属性)T2が一意に求まるときに, T2はT1に関数従属しているといいます. 第2正規形は, 関数従属を取り除く作業になります.&lt;/p&gt;
+
+&lt;p&gt;実際に第2正規化を行って説明します. まず最初に, 関数従属があると何が問題かについて説明します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;一見, 問題がなさそうなリレーションに見えます. しかしある操作をすると, 問題があることが分かります. 例えば, 2行目の多田野をTDNに更新します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;TDN&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;学生番号001の学生の名前が{多田野, TDN}になってしまいました. これは明らかにおかしいです. これは, 非キー属性{名前}は, {学生番号}に従属しているためです. 分かりやすくいうと, リレーション内にデータの重複があるとためです. なので, リレーションを分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;また年齢も, {学生番号}に関数従属しているので分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで第2正規形の完成です. これで関数従属によるデータの重複, データ不整合を防ぐことが出来ます.&lt;/p&gt;
+
+&lt;h2 id=&#34;第3正規形&#34;&gt;第3正規形&lt;/h2&gt;
+
+&lt;p&gt;最初に推移的関数従属について説明します. 候補キーT1から, 非キー属性T2が決まり, さらに非キー属性T3が決まるとします. その時, T3は推移的従属性があると言います. T3は, T1, T2から推移的に従属しているためです. 第3正規形では推移的従属性を取り除く作業になります.&lt;/p&gt;
+
+&lt;p&gt;実際に第3正規化を行い説明します. 下のリレーションがあるとします.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これも一見良さそうですが問題があります. 学生番号001の講師名を英語に更新してみます.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;田所&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;数学の教師が{田所, 遠野}の2人になってしまいました. これは問題があります.(同じ授業には同じ講師が出る暗黙的ルールがあるとします)
+これは問題です. これは, 講師名は, 授業名から一意に求めることが出来る, {学生番号} =&amp;gt; {授業名} =&amp;gt; {講師名}の推移的従属性があるためです. なので, リレーションを分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで, 推移的関数従属がなくなり, 第3正規形を満たしました.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;第1~3正規形をまとめると,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;第1正規形: リレーションになるための最低条件&lt;/li&gt;
+&lt;li&gt;第2正規形: 関数従属性の除去&lt;/li&gt;
+&lt;li&gt;第3正規形: 推移的関数従属性の除去&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;になります.&lt;/p&gt;
+
+&lt;p&gt;第1~3正規化は重複を防ぐための, 最低限のリレーション変換なので慣れておく必要があります.&lt;/p&gt;
+
+&lt;p&gt;リレーショナルデータベースは, 歴史も長く, 数学的な理論に裏付けされた素晴らしい理論だと思います. NoSQLなどの技術が台頭しても, RDBの理論, 技術は大切だと思うので, 忘れずに今後も磨いていきます. BCNF以降の正規形については, 後日アップします.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>データベース: 履歴データについて</title>
+      <link>https://satoshun.github.io/2015/04/history_data/</link>
+      <pubDate>Thu, 09 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/history_data/</guid>
+      <description>
+
+&lt;p&gt;RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.&lt;/p&gt;
+
+&lt;h2 id=&#34;履歴データとは&#34;&gt;履歴データとは?&lt;/h2&gt;
+
+&lt;p&gt;スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.&lt;/p&gt;
+
+&lt;h2 id=&#34;フラグを付ける&#34;&gt;フラグを付ける&lt;/h2&gt;
+
+&lt;p&gt;最初に一番オーソドックス?な, フラグをつけて管理する方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;active&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE active = 1;&lt;/code&gt; とします.&lt;/p&gt;
+
+&lt;p&gt;この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;activeフラグはカーディナリティが低く効率が悪い&lt;/li&gt;
+&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
+&lt;li&gt;activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;単純で分かりやすいですが, あまり使わないほうが良い方法のようです.&lt;/p&gt;
+
+&lt;h2 id=&#34;範囲を指定する&#34;&gt;範囲を指定する&lt;/h2&gt;
+
+&lt;p&gt;次は範囲を指定する方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;th&gt;end_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-22&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-07&lt;/td&gt;
+&lt;td&gt;9999-01-01&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-02-01&lt;/td&gt;
+&lt;td&gt;9999-01-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date;&lt;/code&gt; とします.&lt;/p&gt;
+
+&lt;p&gt;この方法も分かりやすいのですが, バッドノウハウです.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
+&lt;li&gt;start_date, end_dateの値を決めるロジックを, アプリ側 もしくは, トリガーに組み込む必要がある&lt;/li&gt;
+&lt;li&gt;end_dateに非常に大きな値 or NULLを入れる必要がある&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;NULLはRDBにとって癌のようなもので, 出来る限り除去したほうが良いとされています. そういう意味で, あまり良い方法とは言えません.&lt;/p&gt;
+
+&lt;h2 id=&#34;active-inactiveなデータを分割&#34;&gt;active, inactiveなデータを分割&lt;/h2&gt;
+
+&lt;p&gt;テーブル分割をする方法です. RDBっぽい解決方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-04-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;この方法の場合, 頻繁に参照するであろう&lt;code&gt;products&lt;/code&gt;テーブルのサイズが小さくなるので検索パフォーマンスが安定します. しかし,  &lt;code&gt;products&lt;/code&gt;テーブルから, &lt;code&gt;old_products&lt;/code&gt;テーブルに移すロジックを, アプリ側 or トリガーで制御する必要があります.&lt;/p&gt;
+
+&lt;h2 id=&#34;upcomingテーブルを使う&#34;&gt;upcomingテーブルを使う&lt;/h2&gt;
+
+&lt;p&gt;上記の方法の拡張版です. 過去のデータだけでなく, 未来のデータを&lt;code&gt;upcoming_products&lt;/code&gt;テーブルに入れる方法です. テーブルの更新を自動的にやりたいときに有効です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-04-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;upcoming_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-05-12&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;400&lt;/td&gt;
+&lt;td&gt;2015-05-13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;バッチ処理を行い, &lt;code&gt;upcoming_products&lt;/code&gt;テーブルの &lt;code&gt;start_date&lt;/code&gt; が有効になったら, &lt;code&gt;products&lt;/code&gt;テーブルに移動します.&lt;/p&gt;
+
+&lt;h2 id=&#34;外部キー制約への対応&#34;&gt;外部キー制約への対応&lt;/h2&gt;
+
+&lt;p&gt;上記のようなルールでテーブル分割をすると, &lt;code&gt;products.id&lt;/code&gt;を外部キーに指定し, 運用することが困難になります(頻繁に&lt;code&gt;old_products&lt;/code&gt;テーブルに移動されるため). そこで, マスターテーブルを作ってしまう方法があります.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;master_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;master_products.id&lt;/code&gt;テーブルを外部キーに指定して運用します. これで外部キーの問題が解決出来ました.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;履歴データを保持する方法を紹介しました. 個人的には最後の方法が好みなのですが, idのみを保持するテーブルが出来てしまい, リレーショナルモデル的にどうなの?という気がしています. 何か他にいい方法があったらTwitterでぜひ教えて下さい. なんでもします.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>[ERROR] InnoDB: Cannot allocate memory for the buffer pool の対処法</title>
+      <link>https://satoshun.github.io/2015/04/mysql_memory_error/</link>
+      <pubDate>Tue, 07 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/mysql_memory_error/</guid>
+      <description>
+
+&lt;p&gt;上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## swap領域の確認
+$ swapon -s
+Filename                Type        Size    Used    Priority
+
+## swap領域の確保
+$ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k
+
+## swap領域の作成
+$ sudo mkswap /swapfile
+
+## swap領域の割り当て
+$ sudo swapon /swapfile
+
+$ swapon -s
+Filename                Type        Size    Used    Priority
+/swapfile                               file        1048572 4320    -1
+
+$ free
+             total       used       free     shared    buffers     cached
+Mem:        760132     689248      70884       4672       7740      48944
+-/+ buffers/cache:     632564     127568
+Swap:      1048572      88556     960016
+
+## 再起動時にもswapを割り当てるように設定
+$ sudo vi /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでおｋ.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;パフォーマンス的にはスワップ領域を確保するのではなく, メモリを増設したほうが良いと思います.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: FragmentPagerAdapterでハマった話</title>
+      <link>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</link>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</guid>
+      <description>
+
+&lt;p&gt;ハマったのでメモ. 以下のことをしたかった.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;データ取得するまで, Fragment内でProgress Barを出力&lt;/li&gt;
+&lt;li&gt;ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新&lt;/li&gt;
+&lt;li&gt;UIに反映&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;notifydatasetchangedメソッドが効かない&#34;&gt;notifyDataSetChangedメソッドが効かない&lt;/h2&gt;
+
+&lt;p&gt;データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました.
+notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.&lt;/p&gt;
+
+&lt;p&gt;FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)&lt;/p&gt;
+
+&lt;p&gt;これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.&lt;/p&gt;
+
+&lt;h2 id=&#34;fragmentstatepageradapterを使う&#34;&gt;FragmentStatePagerAdapterを使う&lt;/h2&gt;
+
+&lt;p&gt;FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.&lt;/p&gt;
+
+&lt;p&gt;以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentPagerAdapter {
+    ...
+    ...
+
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.&lt;/p&gt;
+
+&lt;p&gt;次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentStatePagerAdapter {
+    private List&amp;lt;Fragment&amp;gt; mFragments;
+
+    ...
+    ...
+
+    @Override
+    public int getItemPosition(Object object) {
+        Fragment target = (Fragment) object;
+        if (mFragments.contains(target)) {
+            return POSITION_UNCHANGED;
+        }
+
+        return POSITION_NONE;
+    }
+
+    public void refresh() {
+        mFragments.clear();
+        notifyDataSetChanged();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すとFragmentを再生成してくれます. つまり, データを更新した後に &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すように実装すれば良いわけです.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;FragmentPagerAdapterはFragmentの再生成をしない代わりに, パフォーマンスが高くなっています. 場合によって使い分ける必要がありそうです.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>読んだ: 達人に学ぶDB設計 徹底指南書</title>
+      <link>https://satoshun.github.io/2015/03/master_of_database/</link>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/03/master_of_database/</guid>
+      <description>
+
+&lt;p&gt;この記事には僕の主観, 解釈が入っています. 本のまとめというよりかは, 感想的なものです.&lt;/p&gt;
+
+&lt;h2 id=&#34;データベースを制する者はシステムを制す&#34;&gt;データベースを制する者はシステムを制す&lt;/h2&gt;
+
+&lt;p&gt;システムを構築する時に, 要件定義をし, どのようにデータが必要, 保持するかを決定することはとても大切です. 拡張性が高く, 正しいデータ設計をすると, 要件修正があった時にも, 大きな変更をすることはありません. データ中心のアプローチは現在の主流です.&lt;/p&gt;
+
+&lt;p&gt;view(外部スキーマ)とmodel(論理スキーマ)を分離しておくことも大切です.  論理スキーマを正規化などの技術を使い, リレーショナル・データベースの基本に沿った設計をすることで, 外部スキーマで柔軟に組み合わせて使用することが出来ます.&lt;/p&gt;
+
+&lt;h2 id=&#34;論理設計と物理設計&#34;&gt;論理設計と物理設計&lt;/h2&gt;
+
+&lt;p&gt;論理設計は物理設計に先立って行われる必要があり, 論理設計は物理設計とは独立して設計することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;論理設計では, エンティティ抽出が行われます. エンティティは要件定義に基づいて行われます. 例えば, 要件「ユーザがブログを投稿できる」があったとしたら，ユーザとブログがエンティティとして抽出できます. そして, 各エンティティがどのような属性(列)を持っているかを定義して, どのような関係(1対多になっているかなど)になっているかをER図などで示します.&lt;/p&gt;
+
+&lt;p&gt;物理設計では, パフォーマンス, キャパシティの2つの要素が仕様を満たすようにすることが大切です. キャパシティは, データファイル, インデックスファイル, システムファイル, 一時ファイル, ログファイル(トランザクション履歴的なもの)の5つのファイルがあり, それぞれのファイルがどれくらいのサイズになるかを見積もります. パフォーマンスは, TPS(Transaction Per Second)のスループットがどれくらい出れば良いかを設定し, CPU, メインメモリを見積もります.&lt;/p&gt;
+
+&lt;p&gt;冗長設計(RAID, レプリケーション), バックアップ設計(フル, 差分, 増分バックアップ)をし, 不測の事態でもデータがなくならないようにすることも大切です.&lt;/p&gt;
+
+&lt;h2 id=&#34;論理設計と正規化-なぜテーブルは分割する必要があるのか&#34;&gt;論理設計と正規化 ～なぜテーブルは分割する必要があるのか？&lt;/h2&gt;
+
+&lt;p&gt;正規化は, テーブルをどのように定義すればいいかのプラクティスです. 正規化をすることでデータの重複を防ぎ, データサイズを小さくし, データ不整合を防ぐことが出来ます. 正規化はRDSにおける, リファクタリングのような感じです.&lt;/p&gt;
+
+&lt;p&gt;正規化には, 第5まであります. テーブルを分割することで, データの重複を除去していきます. 詳しくは&lt;a href=&#34;http://www.techscore.com/tech/sql/SQL16/16_02.html/&#34;&gt;こちら&lt;/a&gt;が分かりやすいです.&lt;/p&gt;
+
+&lt;p&gt;まとめると, 正規化メリットは
+- データの重複を防ぐ
+- データサイズを小さく保つことが出来る
+- 正規化のノウハウは広く共有されているので, 他の人にも分かりやすいテーブル設計になりやすい&lt;/p&gt;
+
+&lt;h2 id=&#34;er図-複数のテーブルの関係を表現する&#34;&gt;ER図 ～複数のテーブルの関係を表現する&lt;/h2&gt;
+
+&lt;p&gt;正規化をすると, 必然的にテーブルが増加していきます. その結果, テーブル同士の依存関係が複雑になり管理が困難になります. ER(Entity Relationship)図で図示することで, 理解を助ける事ができます. Entityにはテーブルの属性, プライマリーキーなどを記述し, Entityの関係(Relationship)を線のようなものでつないでいきます. 詳しくは&lt;a href=&#34;http://itref.fc2web.com/technology/entity_relationship_diagram.html&#34;&gt;こちら&lt;/a&gt;が分かりやすいです.&lt;/p&gt;
+
+&lt;p&gt;ER図を作成するメリットは, DB管理者以外の, アプリケーションエンジニアやマネージャーなどにも理解しやすいことだと思います. (メモ: Google Spread SheetでDB設計を書くと, 自動でER図に変換してくれたりすると嬉しい)&lt;/p&gt;
+
+&lt;h2 id=&#34;論理設計とパフォーマンス-正規化の欠点と非正規化&#34;&gt;論理設計とパフォーマンス ～正規化の欠点と非正規化&lt;/h2&gt;
+
+&lt;p&gt;正規化をすると, データ整合性が保ちやすくなります. しかし, テーブルの数が増えるため, 必要なデータを取得するときに, &lt;code&gt;join&lt;/code&gt;を多用することになります. joinはコストが高いオペレーションなので, パフォーマンスに影響が出る可能性があります. 正規化は往々にして &lt;strong&gt;検索のコストを上げる&lt;/strong&gt; ことになります.&lt;/p&gt;
+
+&lt;p&gt;なので, パフォーマンスがシビアに要求される箇所は, 非正規化を行い解決します. 非正規化には, 「集約データを属性に持たせる」 or 「単純に正規化と逆のことをやる」. の2種類があります. 「集約データを属性に持たせる」とは, 例えば, ショッピングサイトでお買い物をしたとすると, オーダーテーブル, オーダーと注文した商品を関係づけるテーブル, 商品テーブルの3つのテーブルが必要だとします.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;オーダーテーブル
+- オーダーID, ユーザID, 注文時間
+
+オーダーと注文した商品を関係づけるテーブル
+- オーダーID, 商品ID, 個数
+
+商品テーブル
+- 商品ID, 名前, 値段
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここで, 注文したオーダーの値段が知りたいとき, オーダーと注文した商品を関係づけるテーブルと商品テーブルをjoinする必要が有ります. これは非常にコストが掛かりパフォーマンスに影響が出そうです. そこで, オーダーテーブルに合計金額を保存することにします. そうすれば, あるオーダーの値段が単純なSQLで取得することが出来ます. 多少冗長でも, よく使うであろうデータを持たせておくことで, パフォーマンスを改善できます. その代わり, 「データサイズが増える」. 「データ不整合になりやすい」. といったデメリットがあります.&lt;/p&gt;
+
+&lt;h2 id=&#34;データベースとパフォーマンス&#34;&gt;データベースとパフォーマンス&lt;/h2&gt;
+
+&lt;p&gt;パフォーマンスを上げるためには, インデックスの設計をする必要があります. インデックスには, 「アプリケーションコードを修正する必要がない」. 「データに何も影響を与えずにパフォーマンスを上げることが出来る」といったメリットがあります. しかし, 「インデックスファイル分, ストレージを余計に必要とする」.「データ更新時にインデックスを再構築するため, データ更新の速度が遅くなる」といったデメリットがあります.&lt;/p&gt;
+
+&lt;p&gt;インデックスを作る列には下記の点に留意する必要が有ります.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カーディナリティの高い列に作成. また値に偏りがない.&lt;/li&gt;
+&lt;li&gt;WHERE, JOIN条件に使用されている列に作成&lt;/li&gt;
+&lt;li&gt;LIKE述語は前方一致のみインデックスが適用される(LIKE &amp;lsquo;abc%&amp;rsquo; はインデックスが効くが, LIKE &amp;lsquo;%abc&amp;rsquo; はインデックスが効かない)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;論理設計のバッドノウハウ&#34;&gt;論理設計のバッドノウハウ&lt;/h2&gt;
+
+&lt;p&gt;箇条書きで説明します.&lt;/p&gt;
+
+&lt;p&gt;ダブルミーニング
+- カラムの表している意味が行(列)ごとに違う. 例えば, 体重かと思ったら, BMI値が入っている人もいるなど
+    - 無駄に混乱を生むので使わないほうが良い&lt;/p&gt;
+
+&lt;p&gt;単一参照モデル
+- 1つのテーブルに区別カラムを持たせ, いろいろな種類のデータを挿入する
+    - アプリケーション側で, 区別カラムを特定する必要があり, それを忘れるとバグが混入する. 無駄に混乱を生むので使わないほうが良い&lt;/p&gt;
+
+&lt;p&gt;ダブルマスタ
+- システムの統合で, 同じ用な意味を持つテーブルが複数ある状態
+    - システムのクレンジングをする必要がある&lt;/p&gt;
+
+&lt;h2 id=&#34;論理設計のグレーノウハウ&#34;&gt;論理設計のグレーノウハウ&lt;/h2&gt;
+
+&lt;p&gt;代理キーは極力使わないようにする. 代理キーではなくて, タイムスタンプや, 日付, インターバル(開始, 終了年度)といったものを組み合わせると, 代理キーの作成を防ぐことが出来る.
+- 基本, 自然キー以外を主キーに使うのはナンセンス
+- 履歴などを保持したい場合は, インターバルやタイムスタンプ列を導入して解決出来ることがある&lt;/p&gt;
+
+&lt;p&gt;列持ちテーブルではなくて, 行持ちテーブルを使う.
+- 列持ちテーブル: id, name, 子1, 子2, 子3 のように列を保持
+- 行持ちテーブル: id, nameというテーブルと, ID, 子(行持ち)というテーブルの2つで保持する&lt;/p&gt;
+
+&lt;p&gt;集計キー
+- 地方コードを列として追加 =&amp;gt; テーブルのサイズが大きくなり, パフォーマンスが悪化する恐れあり
+- (県コード,地方コード)のrelationを表したテーブルを作成する. しかし結合が必要. Viewを使う, case when + group byを使う方法もある&lt;/p&gt;
+
+&lt;h2 id=&#34;感想-メモ&#34;&gt;感想, メモ&lt;/h2&gt;
+
+&lt;p&gt;広くデータベースのことが説明されている名著でした. 次は, MySQLとか, Postgreなどの具体的なDBの本を読もうと思います.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

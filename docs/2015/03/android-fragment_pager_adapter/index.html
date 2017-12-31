@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Android: FragmentPagerAdapterでハマった話  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header>
+    <nav id="navigation">
+      <a class="brand" href="/">
+          <img src="/favicon_orig.png" alt="logo">
+      </a>
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Android: FragmentPagerAdapterでハマった話</h1>
+    <span class="post-date">Wed, Mar 18, 2015</span>
+    
+
+<p>ハマったのでメモ. 以下のことをしたかった.</p>
+
+<ul>
+<li>データ取得するまで, Fragment内でProgress Barを出力</li>
+<li>ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新</li>
+<li>UIに反映</li>
+</ul>
+
+<h2 id="notifydatasetchangedメソッドが効かない">notifyDataSetChangedメソッドが効かない</h2>
+
+<p>データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました.
+notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.</p>
+
+<p>FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)</p>
+
+<p>これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.</p>
+
+<h2 id="fragmentstatepageradapterを使う">FragmentStatePagerAdapterを使う</h2>
+
+<p>FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.</p>
+
+<p>以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.</p>
+
+<pre><code class="language-java">public class PagerAdapter extends FragmentPagerAdapter {
+    ...
+    ...
+
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+}
+</code></pre>
+
+<p>FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.</p>
+
+<p>次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.</p>
+
+<pre><code class="language-java">public class PagerAdapter extends FragmentStatePagerAdapter {
+    private List&lt;Fragment&gt; mFragments;
+
+    ...
+    ...
+
+    @Override
+    public int getItemPosition(Object object) {
+        Fragment target = (Fragment) object;
+        if (mFragments.contains(target)) {
+            return POSITION_UNCHANGED;
+        }
+
+        return POSITION_NONE;
+    }
+
+    public void refresh() {
+        mFragments.clear();
+        notifyDataSetChanged();
+    }
+}
+</code></pre>
+
+<p>getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, <code>POSITION_NONE</code> を返すとFragmentを再生成してくれます. つまり, データを更新した後に <code>POSITION_NONE</code> を返すように実装すれば良いわけです.</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>FragmentPagerAdapterはFragmentの再生成をしない代わりに, パフォーマンスが高くなっています. 場合によって使い分ける必要がありそうです.</p>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://satoshun.github.io/icon.png" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='http://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='http://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>

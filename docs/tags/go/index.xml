@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/go/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 22 Feb 2015 04:11:23 UTC</updated>
+    
+    
+    <item>
+      <title>Go: GojiにPRした話</title>
+      <link>https://satoshun.github.io/2015/02/go-pr_goji/</link>
+      <pubDate>Sun, 22 Feb 2015 04:11:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/go-pr_goji/</guid>
+      <description>
+
+&lt;p&gt;Goにハマりつつあります. 最近家ではGo or Androidって感じです.&lt;/p&gt;
+
+&lt;p&gt;最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, GojiにPRをしたのでその話.&lt;/p&gt;
+
+&lt;h2 id=&#34;goji&#34;&gt;Goji?&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Goji is a minimalistic web framework that values composability and simplicity&lt;/code&gt; です. SinatraのようなMicro Frameworkになっています.&lt;/p&gt;
+
+&lt;h2 id=&#34;どこにprしたか&#34;&gt;どこにPRしたか?&lt;/h2&gt;
+
+&lt;p&gt;バグではなくて, こっちのほうがGoライクにだよ!と思ったのでPRをしました.
+計2回PRしたので, それぞれ紹介します.&lt;/p&gt;
+
+&lt;h2 id=&#34;switch-type-assertion&#34;&gt;switch type assertion&lt;/h2&gt;
+
+&lt;p&gt;1つ目は, switch type assertionについてです.
+switch文の冒頭にある, type assertionの結果を使うようにしました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--- a/web/pattern.go
++++ b/web/pattern.go
+@@ -32,13 +32,13 @@ type Pattern interface {
+ }
+
+ func parsePattern(p interface{}) Pattern {
+-       switch p.(type) {
++       switch v := p.(type) {
+        case Pattern:
+-               return p.(Pattern)
++               return v
+        case *regexp.Regexp:
+-               return parseRegexpPattern(p.(*regexp.Regexp))
++               return parseRegexpPattern(v)
+        case string:
+-               return parseStringPattern(p.(string))
++               return parseStringPattern(v)
+        default:
+                log.Fatalf(&amp;quot;Unknown pattern type %v. Expected a web.Pattern, &amp;quot;+
+                        &amp;quot;regexp.Regexp, or a string.&amp;quot;, p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こちらのほうが, caseの中で個別にtype assertionをする必要がないので, 良いと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;range-syntax&#34;&gt;range syntax&lt;/h2&gt;
+
+&lt;p&gt;次は, range syntaxです.
+s.patsはsliceになっており, 最初はlenで実装していましたが, rangeを使ったほうがスッキリするじゃないかと思いPRしました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-       for i := 0; i &amp;lt; len(s.pats); i++ {
++       for i, pat := range s.pats {
+                sli := s.literals[i]
+                if !strings.HasPrefix(path, sli) {
+                        return false
+@@ -55,7 +55,7 @@ func (s stringPattern) match(r *http.Request, c *C, dryrun bool) bool {
+                        return false
+                }
+                if !dryrun {
+-                       matches[s.pats[i]] = path[:m]
++                       matches[pat] = path[:m]
+                }
+                path = path[m:]
+        }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これは, 正直好みの問題かなとも思います. しかしrangeを使うほうが, 全ての&lt;code&gt;s.pats&lt;/code&gt;でループするということを強調できるので, readableかなと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;GojiへのPRがプライベートでの初PRになりました. 今回くらい簡単な内容でしたら問題無いですが, もっと英語を勉強せねばとも思います.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

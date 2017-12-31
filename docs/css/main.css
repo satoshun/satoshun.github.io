@@ -2246,7 +2246,7 @@ a {
   .site-nav .dropdown {
     display: inline-block; }
   .site-nav nav {
-    padding: 22px 0px;
+    padding: 22px 30px;
     float: left;
     height: 80px;
     display: table-cell; }
@@ -2254,7 +2254,7 @@ a {
     padding-right: 0; }
     .site-nav #navigation a {
       border: 0;
-      margin: 0 1.8em 0 0em;
+      margin: 0 0.9em;
       display: inline-block; }
       .site-nav #navigation a:hover {
         color: #2077b2; }

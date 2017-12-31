@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> AnsibleでGoアプリをデプロイ  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header>
+    <nav id="navigation">
+      <a class="brand" href="/">
+          <img src="/favicon_orig.png" alt="logo">
+      </a>
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">AnsibleでGoアプリをデプロイ</h1>
+    <span class="post-date">Sun, Feb 22, 2015</span>
+    
+
+<p>ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.</p>
+
+<p>下の手順でデプロイを行っています.</p>
+
+<ul>
+<li>Macでコンパイルして, Linux-amd64用のバイナリ生成(<strong><a href="#caution1">注意1</a></strong>)</li>
+<li>バイナリをサーバにデプロイ(コピー)</li>
+<li>アプリのリスタート(supervisorで再起動)</li>
+</ul>
+
+<p>実際のPlaybookは以下のようになります.</p>
+
+<p>deploy.yml</p>
+
+<pre><code>---
+- hosts: local
+  connection: local
+  tasks:
+    - include: build.yml
+
+
+- hosts: app
+  user: &quot;{{ user }}&quot;
+  tasks:
+    - include: update_binary.yml
+    - include: restart.yml
+</code></pre>
+
+<p>各タスクについて, 説明してきます.</p>
+
+<h2 id="linux-amd64用のバイナリ生成">Linux-amd64用のバイナリ生成</h2>
+
+<p>Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.</p>
+
+<p>やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.</p>
+
+<p>Makefile</p>
+
+<pre><code class="language-make">get:
+  go get -v
+
+build-amd64: get
+  GOOS=linux GOARCH=amd64 go build .
+</code></pre>
+
+<p>build.yml</p>
+
+<pre><code class="language-yml">---
+- name: build src
+  command: make build-amd64 chdir={{ local_home }}
+</code></pre>
+
+<p>local_homeは変数で, Makefileがあるディレクトリを定義しています.</p>
+
+<h2 id="バイナリをデプロイ">バイナリをデプロイ</h2>
+
+<p>ファイルをサーバーにコピーする時は, copyモジュールを使います.</p>
+
+<p>update_binary.yml</p>
+
+<pre><code class="language-yml">---
+- name: update binary
+  copy:
+    src={{ local_home }}/{{ project_name }}
+    dest={{ go_bin }}/{{ project_name }}
+</code></pre>
+
+<p>srcにバイナリのpath, destにバイナリをデプロイするpathを指定します.</p>
+
+<h2 id="アプリのリスタート">アプリのリスタート</h2>
+
+<p>supervisorctlモジュールを使います.</p>
+
+<p>restart.yml</p>
+
+<pre><code class="language-yml">---
+- name: restart binary
+  sudo: yes
+  supervisorctl: name={{ project_name }} state=restarted
+</code></pre>
+
+<p>ちなみに, supervisor confファイルは以下のようにしています.</p>
+
+<pre><code class="language-ini">[program:{{ project_name }}]
+user={{ user }}
+command={{ go_bin }}/{{ project_name }}
+autostart=true
+autorestart=true
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
+stdout_logfile_maxbytes = 10MB
+stdout_logfile_backups = 10
+stderr_logfile = /var/log/supervisor/%(program_name)s-error.log
+stopsignal=INT
+</code></pre>
+
+<p>commandにGoのバイナリを指定して, あとはいつものおまじないです.</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>デプロイスクリプトを作っておくことは, 非常によいことだと思います. Ansibleはshell scriptくらいの気軽さで書け, エラーハンドリングなどをよしなにやってくれるのでさくっと書けてお勧めです.</p>
+
+<h3 id="a-name-caution1-a-注意1"><a name="caution1"></a>注意1</h3>
+
+<p>HomebrewでGoをクロスプラットフォームにビルド出来るようにするには,
+&ndash;cross-compile-allオプションを付けてあげます.</p>
+
+<pre><code class="language-shell">$ brew install go --cross-compile-all
+</code></pre>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://satoshun.github.io/icon.png" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='http://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='http://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>

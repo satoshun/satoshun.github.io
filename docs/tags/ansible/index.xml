@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/ansible/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 22 Feb 2015 02:08:23 UTC</updated>
+    
+    
+    <item>
+      <title>AnsibleでGhostアプリをデプロイ</title>
+      <link>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</link>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</guid>
+      <description>
+
+&lt;p&gt;VPSに&lt;a href=&#34;http://ghost.org&#34;&gt;Ghost&lt;/a&gt;を, Ansibleでデプロイしている話.&lt;/p&gt;
+
+&lt;p&gt;サーバー側で使っているソフトウェアは, supervisor, nodeです.&lt;/p&gt;
+
+&lt;h2 id=&#34;githubでソース管理&#34;&gt;GitHubでソース管理&lt;/h2&gt;
+
+&lt;p&gt;CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(&lt;a href=&#34;https://github.com/satoshun/ghost&#34;&gt;https://github.com/satoshun/ghost&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;このリポジトリを, デプロイしていきます.&lt;/p&gt;
+
+&lt;h2 id=&#34;デプロイ時の手順&#34;&gt;デプロイ時の手順&lt;/h2&gt;
+
+&lt;p&gt;サーバで以下のタスクを行います.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gitリポジトリを最新の状態にする(git pull origin master)&lt;/li&gt;
+&lt;li&gt;npm moduleの更新(npm install)&lt;/li&gt;
+&lt;li&gt;gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod)&lt;/li&gt;
+&lt;li&gt;ghostプロセスの再起動(supervisorctl restart ghost)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Playbookは以下になります.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
+- hosts: all
+  user: &amp;quot;{{ user }}&amp;quot;
+  tasks:
+    - include: update_source.yml
+    - include: update_package.yml
+    - include: restart.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;各タスクについて説明していきます.&lt;/p&gt;
+
+&lt;h3 id=&#34;git-pullする&#34;&gt;Git pullする&lt;/h3&gt;
+
+&lt;p&gt;Gitモジュールがあるので, それを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Update Git repository
+  git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;npm-moduleの更新&#34;&gt;npm moduleの更新&lt;/h3&gt;
+
+&lt;p&gt;npmモジュールがあるので, それを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Update npm module
+  npm: path=&amp;lt;path to project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gruntの実行&#34;&gt;gruntの実行&lt;/h3&gt;
+
+&lt;p&gt;commandモジュールを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Run grunt init
+  command: &amp;quot;grunt init chdir=&amp;lt;path to project&amp;gt;&amp;quot;
+
+- name: Run grunt prod
+  command: &amp;quot;grunt prod chdir=&amp;lt;path to project&amp;gt;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ghost再起動&#34;&gt;Ghost再起動&lt;/h3&gt;
+
+&lt;p&gt;supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Restart Ghost
+  sudo: yes
+  supervisorctl: name=ghost state=restarted
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>AnsibleでGoアプリをデプロイ</title>
+      <link>https://satoshun.github.io/2015/02/ansible-go_deploy/</link>
+      <pubDate>Sun, 22 Feb 2015 01:08:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/ansible-go_deploy/</guid>
+      <description>
+
+&lt;p&gt;ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.&lt;/p&gt;
+
+&lt;p&gt;下の手順でデプロイを行っています.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Macでコンパイルして, Linux-amd64用のバイナリ生成(&lt;strong&gt;&lt;a href=&#34;#caution1&#34;&gt;注意1&lt;/a&gt;&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;バイナリをサーバにデプロイ(コピー)&lt;/li&gt;
+&lt;li&gt;アプリのリスタート(supervisorで再起動)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;実際のPlaybookは以下のようになります.&lt;/p&gt;
+
+&lt;p&gt;deploy.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+- hosts: local
+  connection: local
+  tasks:
+    - include: build.yml
+
+
+- hosts: app
+  user: &amp;quot;{{ user }}&amp;quot;
+  tasks:
+    - include: update_binary.yml
+    - include: restart.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;各タスクについて, 説明してきます.&lt;/p&gt;
+
+&lt;h2 id=&#34;linux-amd64用のバイナリ生成&#34;&gt;Linux-amd64用のバイナリ生成&lt;/h2&gt;
+
+&lt;p&gt;Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.&lt;/p&gt;
+
+&lt;p&gt;やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.&lt;/p&gt;
+
+&lt;p&gt;Makefile&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-make&#34;&gt;get:
+  go get -v
+
+build-amd64: get
+  GOOS=linux GOARCH=amd64 go build .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;build.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
+- name: build src
+  command: make build-amd64 chdir={{ local_home }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;local_homeは変数で, Makefileがあるディレクトリを定義しています.&lt;/p&gt;
+
+&lt;h2 id=&#34;バイナリをデプロイ&#34;&gt;バイナリをデプロイ&lt;/h2&gt;
+
+&lt;p&gt;ファイルをサーバーにコピーする時は, copyモジュールを使います.&lt;/p&gt;
+
+&lt;p&gt;update_binary.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
+- name: update binary
+  copy:
+    src={{ local_home }}/{{ project_name }}
+    dest={{ go_bin }}/{{ project_name }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;srcにバイナリのpath, destにバイナリをデプロイするpathを指定します.&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリのリスタート&#34;&gt;アプリのリスタート&lt;/h2&gt;
+
+&lt;p&gt;supervisorctlモジュールを使います.&lt;/p&gt;
+
+&lt;p&gt;restart.yml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
+- name: restart binary
+  sudo: yes
+  supervisorctl: name={{ project_name }} state=restarted
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみに, supervisor confファイルは以下のようにしています.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;[program:{{ project_name }}]
+user={{ user }}
+command={{ go_bin }}/{{ project_name }}
+autostart=true
+autorestart=true
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
+stdout_logfile_maxbytes = 10MB
+stdout_logfile_backups = 10
+stderr_logfile = /var/log/supervisor/%(program_name)s-error.log
+stopsignal=INT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;commandにGoのバイナリを指定して, あとはいつものおまじないです.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;デプロイスクリプトを作っておくことは, 非常によいことだと思います. Ansibleはshell scriptくらいの気軽さで書け, エラーハンドリングなどをよしなにやってくれるのでさくっと書けてお勧めです.&lt;/p&gt;
+
+&lt;h3 id=&#34;a-name-caution1-a-注意1&#34;&gt;&lt;a name=&#34;caution1&#34;&gt;&lt;/a&gt;注意1&lt;/h3&gt;
+
+&lt;p&gt;HomebrewでGoをクロスプラットフォームにビルド出来るようにするには,
+&amp;ndash;cross-compile-allオプションを付けてあげます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ brew install go --cross-compile-all
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

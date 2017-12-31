@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/database/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 19 Apr 2015 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>データベース: RDBと第1~3正規形について</title>
+      <link>https://satoshun.github.io/2015/04/normalization/</link>
+      <pubDate>Sun, 19 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/normalization/</guid>
+      <description>
+
+&lt;p&gt;正規形は, リレーショナルデータベース設計における理論の1つです. 正規化を行うことで, データの重複をなくし, 効率良くデータを保持することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;この記事では, リレーショナルデータベースについて説明し, 第1-3正規化について説明します.(BCNF, 第4-6正規化は次の記事で説明します)&lt;/p&gt;
+
+&lt;h2 id=&#34;リレーショナルデータベースモデル-rdb-について&#34;&gt;リレーショナルデータベースモデル(RDB)について&lt;/h2&gt;
+
+&lt;p&gt;最初にリレーションについて説明します. リレーションは見出し(heading)と本体(body)からなります. 見出しは, SQLでいうところの属性に相当します. 例えば, 生徒なら下のようなデータを持つと考えられます.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;田中&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;004&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;上記表がリレーションの一例になります. &lt;code&gt;{学生番号, 名前, 年齢}&lt;/code&gt;が見出し, &lt;code&gt;{{001, 田中, 17}, {002, 多田野, 19}, {003, 木下, 19}, {004, 西岡, 18}}&lt;/code&gt;が本体になります. ここで&lt;code&gt;{}&lt;/code&gt;を使っているのは, リレーショナルにおける見出し, 本体はそれぞれタプルで表現されるためです. そのため各要素には順序が存在せず, 重複が許されません(重複があっても意味がない).&lt;/p&gt;
+
+&lt;p&gt;ここで集合という言葉が出てきましたが, RDBは&lt;strong&gt;集合論&lt;/strong&gt; に基づいた理論です. データを集合で表現し, 集合演算を行いデータを操作します.&lt;/p&gt;
+
+&lt;p&gt;データの表現の仕方が分かったので, 次にどのようにしてデータを操作するかについて説明します. SQLでいうところの, SELECT, INSERT, JOINなどのクエリに当たります. それらはクエリは, RDBの世界では集合演算で説明することができます.(OUTER JOINなど一部定義されていないものもあります)&lt;/p&gt;
+
+&lt;p&gt;集合演算の有名なものには以下があります.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;直積(デカルト積): SQLの&lt;code&gt;FROM&lt;/code&gt;に相当. あるリレーションT1とT2のタプルを組み合わせたリレーションを返す&lt;/li&gt;
+&lt;li&gt;差: 片方のリレーションにのみ含まれるリレーションを返す&lt;/li&gt;
+&lt;li&gt;積: T1, T2, 両方のリレーションに含まれるリレーションを返す&lt;/li&gt;
+&lt;li&gt;和: T1, T2のリレーションに含まれるタプルを含んだリレーションを返す&lt;/li&gt;
+&lt;li&gt;射影: SQLの&lt;code&gt;SELECT hoge&lt;/code&gt;のhoge部分に相当. T1に含まれるタプルの属性を選択したリレーションを返す&lt;/li&gt;
+&lt;li&gt;制限: SQLの&lt;code&gt;WHERE&lt;/code&gt;に相当. 指定した条件を満たすリレーションを返す&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上記演算を使うことで, 適切なデータを取得することが出来ます.&lt;/p&gt;
+
+&lt;p&gt;次に, &lt;strong&gt;候補キー&lt;/strong&gt; について説明します. 候補キーはタプルを一意に特定することが出来る&lt;strong&gt;見出しの最小の属性組&lt;/strong&gt; になります. 例えば, 生徒の通勤手段を表現するリレーションがあるとします.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;上記リレーションの場合, {学生番号, 通勤手段}が候補キーになります. その2つの属性を指定することで, 一意にタプルを選択することが可能なためです.(候補キーには@をつけています)&lt;/p&gt;
+
+&lt;p&gt;また, 候補キーに似た概念にスーパーキーがあります. 上記で候補キーは「見出しの最小の属性組」と説明しました. しかし, スーパーキーは「最小」でなくて良く, タプルを特定できれば, いくつ見出しを含んでもかまいません. {学生番号, 通勤手段, 名前}, {学生番号, 通勤手段, 名前, 年齢}などがスーパーキーになります. 実際にリレーションを作るときは, どの属性組が候補キーになるかを考慮することが大切です.&lt;/p&gt;
+
+&lt;h2 id=&#34;第1正規形&#34;&gt;第1正規形&lt;/h2&gt;
+
+&lt;p&gt;第1正規形はリレーションであることの必須条件になります. 第1正規形の定義は以下になります.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;繰り返しデータがない, データが一意に定まる
+
+&lt;ul&gt;
+&lt;li&gt;ある属性に複数の要素(リスト)が含まれていると, あるタプルを選択した時に, リスト内のどの要素を示しているかによって値が一意に求まらないので, 第1正規形を満たさなくなります. また, NULLを持つ場合にも, データが一意に定まらないため, 第1正規形を満たさなくなります.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;データに重複がない&lt;/li&gt;
+&lt;li&gt;順序が定まっていない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;例えば, 下のリレーションは第1正規形ではありません.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;学生番号&lt;/th&gt;
+&lt;th&gt;通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車,バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;なぜなら, 通勤手段が一意に定まらないためです. なので, 下のように変換して上げる必要があります.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで, {学生番号, 通勤手段}を指定することで, 一意にタプルが指定できるようになりました.&lt;/p&gt;
+
+&lt;h3 id=&#34;余談-nullについて&#34;&gt;余談: NULLについて&lt;/h3&gt;
+
+&lt;p&gt;最初に言っておくと, &lt;strong&gt;NULLは値ではありません&lt;/strong&gt; . NULLは値がまだ決まっていないことを指し示すマーカーのようなものです. 空文字列などとは全く異なる概念です. NULLがなにかというと, いってみればどんな値でも入り得る箱のようなものです. &amp;ldquo;Hello&amp;rdquo;が入るかもしれないし, &amp;ldquo;プギャー&amp;rdquo;が入るかもしれない. それは, 一意に値が定まらないことを意味しています. データが一意に決まらないということは, RDBの理論から外れてしまうので, 最大限NULLが入らないような論理設計にすべきだと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;第2正規形&#34;&gt;第2正規形&lt;/h2&gt;
+
+&lt;p&gt;最初に関数従属について説明します. 候補キーの真部分集合T1から, 非キー属性(候補キー以外の属性)T2が一意に求まるときに, T2はT1に関数従属しているといいます. 第2正規形は, 関数従属を取り除く作業になります.&lt;/p&gt;
+
+&lt;p&gt;実際に第2正規化を行って説明します. まず最初に, 関数従属があると何が問題かについて説明します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;一見, 問題がなさそうなリレーションに見えます. しかしある操作をすると, 問題があることが分かります. 例えば, 2行目の多田野をTDNに更新します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;TDN&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;学生番号001の学生の名前が{多田野, TDN}になってしまいました. これは明らかにおかしいです. これは, 非キー属性{名前}は, {学生番号}に従属しているためです. 分かりやすくいうと, リレーション内にデータの重複があるとためです. なので, リレーションを分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;また年齢も, {学生番号}に関数従属しているので分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;@通勤手段&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;バス&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;電車&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;自転車&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで第2正規形の完成です. これで関数従属によるデータの重複, データ不整合を防ぐことが出来ます.&lt;/p&gt;
+
+&lt;h2 id=&#34;第3正規形&#34;&gt;第3正規形&lt;/h2&gt;
+
+&lt;p&gt;最初に推移的関数従属について説明します. 候補キーT1から, 非キー属性T2が決まり, さらに非キー属性T3が決まるとします. その時, T3は推移的従属性があると言います. T3は, T1, T2から推移的に従属しているためです. 第3正規形では推移的従属性を取り除く作業になります.&lt;/p&gt;
+
+&lt;p&gt;実際に第3正規化を行い説明します. 下のリレーションがあるとします.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これも一見良さそうですが問題があります. 学生番号001の講師名を英語に更新してみます.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;田所&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;数学の教師が{田所, 遠野}の2人になってしまいました. これは問題があります.(同じ授業には同じ講師が出る暗黙的ルールがあるとします)
+これは問題です. これは, 講師名は, 授業名から一意に求めることが出来る, {学生番号} =&amp;gt; {授業名} =&amp;gt; {講師名}の推移的従属性があるためです. なので, リレーションを分割します.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@学生番号&lt;/th&gt;
+&lt;th&gt;名前&lt;/th&gt;
+&lt;th&gt;年齢&lt;/th&gt;
+&lt;th&gt;授業名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;001&lt;/td&gt;
+&lt;td&gt;多田野&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;002&lt;/td&gt;
+&lt;td&gt;木下&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;003&lt;/td&gt;
+&lt;td&gt;西岡&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;@授業名&lt;/th&gt;
+&lt;th&gt;講師名&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;数学&lt;/td&gt;
+&lt;td&gt;遠野&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;国語&lt;/td&gt;
+&lt;td&gt;谷岡&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これで, 推移的関数従属がなくなり, 第3正規形を満たしました.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;第1~3正規形をまとめると,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;第1正規形: リレーションになるための最低条件&lt;/li&gt;
+&lt;li&gt;第2正規形: 関数従属性の除去&lt;/li&gt;
+&lt;li&gt;第3正規形: 推移的関数従属性の除去&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;になります.&lt;/p&gt;
+
+&lt;p&gt;第1~3正規化は重複を防ぐための, 最低限のリレーション変換なので慣れておく必要があります.&lt;/p&gt;
+
+&lt;p&gt;リレーショナルデータベースは, 歴史も長く, 数学的な理論に裏付けされた素晴らしい理論だと思います. NoSQLなどの技術が台頭しても, RDBの理論, 技術は大切だと思うので, 忘れずに今後も磨いていきます. BCNF以降の正規形については, 後日アップします.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>データベース: 履歴データについて</title>
+      <link>https://satoshun.github.io/2015/04/history_data/</link>
+      <pubDate>Thu, 09 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/history_data/</guid>
+      <description>
+
+&lt;p&gt;RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.&lt;/p&gt;
+
+&lt;h2 id=&#34;履歴データとは&#34;&gt;履歴データとは?&lt;/h2&gt;
+
+&lt;p&gt;スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.&lt;/p&gt;
+
+&lt;h2 id=&#34;フラグを付ける&#34;&gt;フラグを付ける&lt;/h2&gt;
+
+&lt;p&gt;最初に一番オーソドックス?な, フラグをつけて管理する方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;active&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE active = 1;&lt;/code&gt; とします.&lt;/p&gt;
+
+&lt;p&gt;この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;activeフラグはカーディナリティが低く効率が悪い&lt;/li&gt;
+&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
+&lt;li&gt;activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;単純で分かりやすいですが, あまり使わないほうが良い方法のようです.&lt;/p&gt;
+
+&lt;h2 id=&#34;範囲を指定する&#34;&gt;範囲を指定する&lt;/h2&gt;
+
+&lt;p&gt;次は範囲を指定する方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;th&gt;end_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-22&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-07&lt;/td&gt;
+&lt;td&gt;9999-01-01&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-02-01&lt;/td&gt;
+&lt;td&gt;9999-01-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date;&lt;/code&gt; とします.&lt;/p&gt;
+
+&lt;p&gt;この方法も分かりやすいのですが, バッドノウハウです.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
+&lt;li&gt;start_date, end_dateの値を決めるロジックを, アプリ側 もしくは, トリガーに組み込む必要がある&lt;/li&gt;
+&lt;li&gt;end_dateに非常に大きな値 or NULLを入れる必要がある&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;NULLはRDBにとって癌のようなもので, 出来る限り除去したほうが良いとされています. そういう意味で, あまり良い方法とは言えません.&lt;/p&gt;
+
+&lt;h2 id=&#34;active-inactiveなデータを分割&#34;&gt;active, inactiveなデータを分割&lt;/h2&gt;
+
+&lt;p&gt;テーブル分割をする方法です. RDBっぽい解決方法です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-04-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;この方法の場合, 頻繁に参照するであろう&lt;code&gt;products&lt;/code&gt;テーブルのサイズが小さくなるので検索パフォーマンスが安定します. しかし,  &lt;code&gt;products&lt;/code&gt;テーブルから, &lt;code&gt;old_products&lt;/code&gt;テーブルに移すロジックを, アプリ側 or トリガーで制御する必要があります.&lt;/p&gt;
+
+&lt;h2 id=&#34;upcomingテーブルを使う&#34;&gt;upcomingテーブルを使う&lt;/h2&gt;
+
+&lt;p&gt;上記の方法の拡張版です. 過去のデータだけでなく, 未来のデータを&lt;code&gt;upcoming_products&lt;/code&gt;テーブルに入れる方法です. テーブルの更新を自動的にやりたいときに有効です.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;250&lt;/td&gt;
+&lt;td&gt;2015-04-06&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;2015-04-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-03-01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;upcoming_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;price&lt;/th&gt;
+&lt;th&gt;start_date&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;肉&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;2015-05-12&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;卵&lt;/td&gt;
+&lt;td&gt;400&lt;/td&gt;
+&lt;td&gt;2015-05-13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;バッチ処理を行い, &lt;code&gt;upcoming_products&lt;/code&gt;テーブルの &lt;code&gt;start_date&lt;/code&gt; が有効になったら, &lt;code&gt;products&lt;/code&gt;テーブルに移動します.&lt;/p&gt;
+
+&lt;h2 id=&#34;外部キー制約への対応&#34;&gt;外部キー制約への対応&lt;/h2&gt;
+
+&lt;p&gt;上記のようなルールでテーブル分割をすると, &lt;code&gt;products.id&lt;/code&gt;を外部キーに指定し, 運用することが困難になります(頻繁に&lt;code&gt;old_products&lt;/code&gt;テーブルに移動されるため). そこで, マスターテーブルを作ってしまう方法があります.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;master_products&lt;/code&gt;テーブル&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;master_products.id&lt;/code&gt;テーブルを外部キーに指定して運用します. これで外部キーの問題が解決出来ました.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;履歴データを保持する方法を紹介しました. 個人的には最後の方法が好みなのですが, idのみを保持するテーブルが出来てしまい, リレーショナルモデル的にどうなの?という気がしています. 何か他にいい方法があったらTwitterでぜひ教えて下さい. なんでもします.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>[ERROR] InnoDB: Cannot allocate memory for the buffer pool の対処法</title>
+      <link>https://satoshun.github.io/2015/04/mysql_memory_error/</link>
+      <pubDate>Tue, 07 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/mysql_memory_error/</guid>
+      <description>
+
+&lt;p&gt;上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## swap領域の確認
+$ swapon -s
+Filename                Type        Size    Used    Priority
+
+## swap領域の確保
+$ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k
+
+## swap領域の作成
+$ sudo mkswap /swapfile
+
+## swap領域の割り当て
+$ sudo swapon /swapfile
+
+$ swapon -s
+Filename                Type        Size    Used    Priority
+/swapfile                               file        1048572 4320    -1
+
+$ free
+             total       used       free     shared    buffers     cached
+Mem:        760132     689248      70884       4672       7740      48944
+-/+ buffers/cache:     632564     127568
+Swap:      1048572      88556     960016
+
+## 再起動時にもswapを割り当てるように設定
+$ sudo vi /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでおｋ.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;パフォーマンス的にはスワップ領域を確保するのではなく, メモリを増設したほうが良いと思います.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

@@ -1,12 +1,13 @@
 baseurl = "https://satoshun.github.io"
 languageCode = "ja"
-title = "STSNブログ"
+title = "stsnブログ"
 theme = "hyde"
 copyright = "Sato Shun"
+publishDir = "docs"
 
 [Author]
 	name = "Sato Shun"
-	bio = ""
+	bio = "Androidえんじにあー"
 
 [Permalinks]
 	blog = "/:year/:month/:filename/"

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/system/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sun, 22 Feb 2015 02:08:23 UTC</updated>
+    
+    
+    <item>
+      <title>AnsibleでGhostアプリをデプロイ</title>
+      <link>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</link>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</guid>
+      <description>
+
+&lt;p&gt;VPSに&lt;a href=&#34;http://ghost.org&#34;&gt;Ghost&lt;/a&gt;を, Ansibleでデプロイしている話.&lt;/p&gt;
+
+&lt;p&gt;サーバー側で使っているソフトウェアは, supervisor, nodeです.&lt;/p&gt;
+
+&lt;h2 id=&#34;githubでソース管理&#34;&gt;GitHubでソース管理&lt;/h2&gt;
+
+&lt;p&gt;CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(&lt;a href=&#34;https://github.com/satoshun/ghost&#34;&gt;https://github.com/satoshun/ghost&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;このリポジトリを, デプロイしていきます.&lt;/p&gt;
+
+&lt;h2 id=&#34;デプロイ時の手順&#34;&gt;デプロイ時の手順&lt;/h2&gt;
+
+&lt;p&gt;サーバで以下のタスクを行います.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Gitリポジトリを最新の状態にする(git pull origin master)&lt;/li&gt;
+&lt;li&gt;npm moduleの更新(npm install)&lt;/li&gt;
+&lt;li&gt;gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod)&lt;/li&gt;
+&lt;li&gt;ghostプロセスの再起動(supervisorctl restart ghost)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Playbookは以下になります.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
+- hosts: all
+  user: &amp;quot;{{ user }}&amp;quot;
+  tasks:
+    - include: update_source.yml
+    - include: update_package.yml
+    - include: restart.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;各タスクについて説明していきます.&lt;/p&gt;
+
+&lt;h3 id=&#34;git-pullする&#34;&gt;Git pullする&lt;/h3&gt;
+
+&lt;p&gt;Gitモジュールがあるので, それを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Update Git repository
+  git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;npm-moduleの更新&#34;&gt;npm moduleの更新&lt;/h3&gt;
+
+&lt;p&gt;npmモジュールがあるので, それを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Update npm module
+  npm: path=&amp;lt;path to project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;gruntの実行&#34;&gt;gruntの実行&lt;/h3&gt;
+
+&lt;p&gt;commandモジュールを使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Run grunt init
+  command: &amp;quot;grunt init chdir=&amp;lt;path to project&amp;gt;&amp;quot;
+
+- name: Run grunt prod
+  command: &amp;quot;grunt prod chdir=&amp;lt;path to project&amp;gt;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ghost再起動&#34;&gt;Ghost再起動&lt;/h3&gt;
+
+&lt;p&gt;supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: Restart Ghost
+  sudo: yes
+  supervisorctl: name=ghost state=restarted
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>

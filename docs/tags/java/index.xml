@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/java/</link>
+    <language>ja</language>
+    <author>Sato Shun</author>
+    <copyright>2015 Sato Shun</copyright>
+    <updated>Sat, 25 Apr 2015 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: AndroidKaigiまとめ</title>
+      <link>https://satoshun.github.io/2015/04/droid-kaigi/</link>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
+      <description>
+
+&lt;p&gt;AndroidKaigiの記事まとめです.&lt;/p&gt;
+
+&lt;h2 id=&#34;droidkaigi-welcome-talk&#34;&gt;DroidKaigi - Welcome talk&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/LCwLL9vYMqpbEX&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/mhidaka/droidkaigi-welcome-talk&#34; title=&#34;DroidKaigi - Welcome talk&#34; target=&#34;_blank&#34;&gt;DroidKaigi - Welcome talk&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/mhidaka&#34; target=&#34;_blank&#34;&gt;mhidaka&lt;/a&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;エンジニアのための勉強会をやるよ!みたいな内容&lt;/p&gt;
+
+&lt;h2 id=&#34;activity-fragment-customview-の使い分け-マッチョなactivityにさよならする方法&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/oLqEqctvlWuBjW&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yanzm/droid-kaigi2015-yanzm&#34; title=&#34;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&#34; target=&#34;_blank&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yanzm&#34; target=&#34;_blank&#34;&gt;Yuki Anzai&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;cardboardのuxをカメラで向上する&#34;&gt;CardboardのUXをカメラで向上する&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/cYFQ3fMRP9v2Co&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2/cardboardux-droidkaigi-2&#34; title=&#34;CardboardのUXをカメラで向上する (droidkaigi 2015/04)&#34; target=&#34;_blank&#34;&gt;CardboardのUXをカメラで向上する (droidkaigi &lt;sup&gt;2015&lt;/sup&gt;&amp;frasl;&lt;sub&gt;04&lt;/sub&gt;)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2&#34; target=&#34;_blank&#34;&gt;Kenichi Takahashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;絶対落ちないアプリの作り方&#34;&gt;絶対落ちないアプリの作り方&lt;/h2&gt;
+
+&lt;h2 id=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NJrOgCsRpwAMFK&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/droidkaigi&#34; title=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34; target=&#34;_blank&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;開発を効率的に進めるられるまでの道程&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/1Aqkd8c46ElhCZ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/TakaoSumitomo/ss-47393000&#34; title=&#34;開発を効率的に進めるられるまでの道程&#34; target=&#34;_blank&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/TakaoSumitomo&#34; target=&#34;_blank&#34;&gt;Takao Sumitomo&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリの企画-プロトタイプからリリースに至るまで&#34;&gt;アプリの企画、プロトタイプからリリースに至るまで&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+    &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;20d5e0c8f80941bdb6307016b1f19f5e&#34; data-ratio=&#34;1.3333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;初学者に嬉しいandroid開発環境&#34;&gt;初学者に嬉しいAndroid開発環境&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/gb7mYJ9Wfg7GfL&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/hiroyukikusu/droidkaigi2015androidmvc&#34; title=&#34;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&#34; target=&#34;_blank&#34;&gt;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/hiroyukikusu&#34; target=&#34;_blank&#34;&gt;Hiroyuki Kusu&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;大容量データのダウンロード戦略&#34;&gt;大容量データのダウンロード戦略&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;複数Threadでダウンロードしても, 帯域があまっていないと早くならない.&lt;/li&gt;
+&lt;li&gt;100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す.&lt;/li&gt;
+&lt;li&gt;小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;android学ぶ君へ-生き抜くためのナレッジ共有&#34;&gt;Android学ぶ君へ。生き抜くためのナレッジ共有&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/lnJGNQs9xH8Hcg&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/shinobuokano7/android-47395733&#34; title=&#34;Android学ぶを君へ。生き抜くためのナレッジ共有&#34; target=&#34;_blank&#34;&gt;Android学ぶを君へ。生き抜くためのナレッジ共有&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/shinobuokano7&#34; target=&#34;_blank&#34;&gt;Shinobu Okano&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;進化するart&#34;&gt;進化するART&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/c1cu1ebUO55H7R&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kmt-t/art-47396171&#34; title=&#34;進化するArt&#34; target=&#34;_blank&#34;&gt;進化するArt&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kmt-t&#34; target=&#34;_blank&#34;&gt;kmt-t&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;JITコンパイラがAOTコンパイラに
+
+&lt;ul&gt;
+&lt;li&gt;アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;新言語kotlinでandroidプログラミング&#34;&gt;新言語KotlinでAndroidプログラミング&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;fafade9e78a545999d1f284554a8b2b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;artのメモリ管理&#34;&gt;ARTのメモリ管理&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NqIaruLYWs1qrx&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/haru067/20150425-droid-kaigi&#34; title=&#34;ARTのメモリ管理&#34; target=&#34;_blank&#34;&gt;ARTのメモリ管理&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/haru067&#34; target=&#34;_blank&#34;&gt;haru067&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;bitmapは怖くない&#34;&gt;Bitmapは怖くない。&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;3b26b52270e54eb299aca52b2d5362b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;droidkaigi-つかえるgradleプロジェクトの作り方&#34;&gt;DroidKaigi つかえるGradleプロジェクトの作り方&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/w72iM4KuNiuODu&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle&#34; title=&#34;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&#34; target=&#34;_blank&#34;&gt;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/MakotoYamazaki&#34; target=&#34;_blank&#34;&gt;Makoto Yamazaki&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;モバイルにおける電力最適化のための1プラクティス&#34;&gt;モバイルにおける電力最適化のための1プラクティス&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/49W6EiQJQBTRUf&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/suguruoho/droid-kaigi&#34; title=&#34;Droid kaigiプレゼン&#34; target=&#34;_blank&#34;&gt;Droid kaigiプレゼン&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/suguruoho&#34; target=&#34;_blank&#34;&gt;Suguru Oho&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリを公開する前に-最低限知っておきたいセキュリティ事項&#34;&gt;アプリを公開する前に、最低限知っておきたいセキュリティ事項&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&#34;&gt;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;デザイナーがxmlを書くことでできる改善しやすいアプリ開発&#34;&gt;デザイナーがXMLを書くことでできる改善しやすいアプリ開発&lt;/h2&gt;
+
+&lt;div style=&#34;width: 50%&#34;&gt;
+  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;7b6fdc66dd214760b1d0a625c4383429&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;jellybeanとkitkatで実現するマテリアルデザイン&#34;&gt;JellyBeanとKitKatで実現するマテリアルデザイン&lt;/h2&gt;
+
+&lt;h2 id=&#34;material-designを取り入れたデザインリニューアル&#34;&gt;Material Designを取り入れたデザインリニューアル&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/67LrJFOc6qjXNJ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yuki930/ss-47398513&#34; title=&#34;マテリアルデザインを用いたデザインリニューアル [フリル編]&#34; target=&#34;_blank&#34;&gt;マテリアルデザインを用いたデザインリニューアル [フリル編]&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yuki930&#34; target=&#34;_blank&#34;&gt;YUKI YAMAGUCHI&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;僕らのデータ同期プラクティス&#34;&gt;僕らのデータ同期プラクティス&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/EBnpDPziJkPUES&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/Nkzn/ss-47398311&#34; title=&#34;僕らのデータ同期プラクティス&#34; target=&#34;_blank&#34;&gt;僕らのデータ同期プラクティス&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/Nkzn&#34; target=&#34;_blank&#34;&gt;Yukiya Nakagawa&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;android-と-selinux-androidsola&#34;&gt;Android と SELinux androidsola&lt;/h2&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/ngRg1O9vffTufA&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/sola1980/androidse-linux&#34; title=&#34;AndroidとSELinux&#34; target=&#34;_blank&#34;&gt;AndroidとSELinux&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/sola1980&#34; target=&#34;_blank&#34;&gt;Akihiro Maeda&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;感想-まとめ&#34;&gt;感想, まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;EventBusを使う際の設計はどうするの? カオスになりそう.&lt;/li&gt;
+&lt;li&gt;画面向き変更はハマりどころが多そう. ノウハウためたい&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: FragmentPagerAdapterでハマった話</title>
+      <link>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</link>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</guid>
+      <description>
+
+&lt;p&gt;ハマったのでメモ. 以下のことをしたかった.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;データ取得するまで, Fragment内でProgress Barを出力&lt;/li&gt;
+&lt;li&gt;ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新&lt;/li&gt;
+&lt;li&gt;UIに反映&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;notifydatasetchangedメソッドが効かない&#34;&gt;notifyDataSetChangedメソッドが効かない&lt;/h2&gt;
+
+&lt;p&gt;データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました.
+notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.&lt;/p&gt;
+
+&lt;p&gt;FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)&lt;/p&gt;
+
+&lt;p&gt;これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.&lt;/p&gt;
+
+&lt;h2 id=&#34;fragmentstatepageradapterを使う&#34;&gt;FragmentStatePagerAdapterを使う&lt;/h2&gt;
+
+&lt;p&gt;FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.&lt;/p&gt;
+
+&lt;p&gt;以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentPagerAdapter {
+    ...
+    ...
+
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.&lt;/p&gt;
+
+&lt;p&gt;次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentStatePagerAdapter {
+    private List&amp;lt;Fragment&amp;gt; mFragments;
+
+    ...
+    ...
+
+    @Override
+    public int getItemPosition(Object object) {
+        Fragment target = (Fragment) object;
+        if (mFragments.contains(target)) {
+            return POSITION_UNCHANGED;
+        }
+
+        return POSITION_NONE;
+    }
+
+    public void refresh() {
+        mFragments.clear();
+        notifyDataSetChanged();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すとFragmentを再生成してくれます. つまり, データを更新した後に &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すように実装すれば良いわけです.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;FragmentPagerAdapterはFragmentの再生成をしない代わりに, パフォーマンスが高くなっています. 場合によって使い分ける必要がありそうです.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: strings.xmlのまとめ</title>
+      <link>https://satoshun.github.io/2015/02/android-resource_string/</link>
+      <pubDate>Sun, 22 Feb 2015 04:10:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/android-resource_string/</guid>
+      <description>
+
+&lt;p&gt;res/values/strings.xmlは, 文字列関連のリソースを管理するファイルです. 文字列をプログラム外で定義することで, 多国語の対応, デバッグブルドの時にサーバのURLを変更する等が, コードをいじらずに容易に行えます.&lt;/p&gt;
+
+&lt;p&gt;また, 意外といろいろな機能があったので, 紹介したいと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;Application&amp;lt;/string&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のように記述して使います. アプリケーション側では, 下のように取得します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getString(R.string.app_name);
+
+or
+
+context.getString(R.string.app_name);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;特に, 説明はいらないと思います.&lt;/p&gt;
+
+&lt;h2 id=&#34;arrayの定義&#34;&gt;arrayの定義&lt;/h2&gt;
+
+&lt;p&gt;strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.&lt;/p&gt;
+
+&lt;p&gt;string-array要素で定義してあげます.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;string-array name=&amp;quot;sports&amp;quot;&amp;gt;
+    &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt;
+    &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt;
+    &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt;
+    &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt;
+&amp;lt;/string-array&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;アプリケーション側では下のように取得します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getResources().getStringArray(R.array.sports)
+
+or
+
+context.getResources().getStringArray(R.array.sports)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.&lt;/p&gt;
+
+&lt;h2 id=&#34;値展開&#34;&gt;値展開&lt;/h2&gt;
+
+&lt;p&gt;strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt;
+&amp;lt;string name=&amp;quot;hoge&amp;quot;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt;
+&amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt;
+&amp;lt;string name=&amp;quot;hogestr&amp;quot;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;アプリケーション側では, 下のように指定します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getString(R.string.hoge, 100)); // Hello 100
+getString(R.string.hogestr, &amp;quot;value&amp;quot;, 100)); // value 100 value
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;%1$s&lt;/code&gt; は「第1引数の文字列」をここに展開しろ. &lt;code&gt;%2$d&lt;/code&gt;は「第2引数の数字」をここに展開しろ. という意味になります&lt;/p&gt;
+
+&lt;h2 id=&#34;plurals&#34;&gt;plurals&lt;/h2&gt;
+
+&lt;p&gt;あまり使ったことはないですが, pluralsという要素があります.&lt;/p&gt;
+
+&lt;p&gt;これは, quantity stringsと呼ばれ, 数字(量)の大きさに応じて, 文字列を変化させることが出来ます. switch分岐が出来るイメージです.&lt;/p&gt;
+
+&lt;p&gt;下のように記述します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plurals name=&amp;quot;number&amp;quot;&amp;gt;
+    &amp;lt;item quantity=&amp;quot;one&amp;quot;&amp;gt;one&amp;lt;/item&amp;gt;
+    &amp;lt;item quantity=&amp;quot;other&amp;quot;&amp;gt;other %1$d&amp;lt;/item&amp;gt;
+&amp;lt;/plurals&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;quantityには, zero, one, two, few, many, otherが指定できます.&lt;/p&gt;
+
+&lt;p&gt;アプリケーション側の記述です.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;getResources().getQuantityString(R.plurals.number, 1, 1)); // one
+getResources().getQuantityString(R.plurals.number, 10, 100)); // other 100
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第二引数にquantityに与える数字を指定します. 1ならone, 0ならzeroがそれぞれ対応します. 複数形の場合に文字列を変えたいときなどに有効です.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;strings.xmlには, 意外といろいろな機能がありました. switch的な処理が書けるpluralsは頭の片隅に入れておくと良さそう.&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/samples/BasicNetworking/res/values/strings.html&#34;&gt;strings.xml | Android Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://y-anz-m.blogspot.jp/2011/03/android-xml.html&#34;&gt;Android　複雑な文字列を xml で定義する&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Android: Pull to Refreshの実装(SwipeRefreshLayout)</title>
+      <link>https://satoshun.github.io/2015/02/android-pull_to_refresh/</link>
+      <pubDate>Sun, 22 Feb 2015 04:09:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/android-pull_to_refresh/</guid>
+      <description>
+
+&lt;p&gt;AndroidでPull to Refreshの実装方法です. ListViewなどを下方向に引っ張ると, データを更新するように出来ます. Gmailとかで使われているあれです.&lt;/p&gt;
+
+&lt;p&gt;具体的には, &lt;code&gt;SwipeRefreshLayout&lt;/code&gt;を使って実装します. 以下でコードで説明していきます.&lt;/p&gt;
+
+&lt;h2 id=&#34;xml側の記述&#34;&gt;XML側の記述&lt;/h2&gt;
+
+&lt;p&gt;ListViewに覆いかぶさるように定義します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;android.support.v4.widget.SwipeRefreshLayout
+    android:id=&amp;quot;@+id/refresh&amp;quot;
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+    android:layout_height=&amp;quot;match_parent&amp;quot; &amp;gt;
+
+    &amp;lt;ListView
+        android:id=&amp;quot;@android:id/list&amp;quot;
+        android:layout_width=&amp;quot;match_parent&amp;quot;
+        android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt;
+&amp;lt;/android.support.v4.widget.SwipeRefreshLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;XML側はこれで完了です.
+これで, ListViewを引っ張ると「Pull to Refresh」のアニメーションが起こります.&lt;/p&gt;
+
+&lt;h2 id=&#34;activity側の記述&#34;&gt;Activity側の記述&lt;/h2&gt;
+
+&lt;p&gt;Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.&lt;/p&gt;
+
+&lt;p&gt;実装例です. &lt;code&gt;setOnRefreshListener&lt;/code&gt;でListenerを登録します.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;
+private SwipeRefreshLayout mSwipe;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+  ...
+  mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh);
+  // Callback登録
+  mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+          /* ここに適当な処理を書く */
+          mSwipe.setRefreshing(false);
+      }
+  });
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ListViewを引っ張ると, &lt;code&gt;setOnRefreshListener&lt;/code&gt;メソッドがコールされます.
+&lt;code&gt;setOnRefreshListener&lt;/code&gt;の最後に, &lt;code&gt;setRefreshing(false)&lt;/code&gt;をコールします. これは, 更新アニメーションをOffにするものです.&lt;/p&gt;
+
+&lt;h2 id=&#34;アニメーションの色を変える&#34;&gt;アニメーションの色を変える&lt;/h2&gt;
+
+&lt;p&gt;上のバーに出てくるアニメーションの色を変えることが出来ます.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;setColorScheme&lt;/code&gt;を使います.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;mSwipe.setColorScheme(android.R.color.holo_blue_bright,
+    android.R.color.holo_green_light,
+    android.R.color.holo_orange_light,
+    android.R.color.holo_red_light);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで, 4色でアニメーションが行われます.&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;簡単にGmailライクなリフレッシュアニメーションが作れました.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>様々な言語のフィボナッチ関数</title>
+      <link>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</link>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</guid>
+      <description>
+
+&lt;p&gt;Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.&lt;/p&gt;
+
+&lt;p&gt;極力, その言語特有の機能を使って実装するようにしました.&lt;/p&gt;
+
+&lt;h2 id=&#34;go&#34;&gt;Go&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;type fibonacci int&lt;/code&gt;で, int型にfibonacci用の関数を生やしました.
+せっかくなので, goroutineも使ってみました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+type fibonacci int
+
+func (self fibonacci) value() chan int {
+  ch := make(chan int, 1)
+  a, b := 0, 1
+  index := 0
+  go func() {
+    defer close(ch)
+    for {
+      if int(self) &amp;lt; index {
+        break
+      }
+      a, b = b, a+b
+      index++
+      ch &amp;lt;- a
+    }
+  }()
+
+  return ch
+}
+
+func main() {
+  var i fibonacci
+  i = 10
+  for v := range i.value() {
+    fmt.Printf(&amp;quot;%d &amp;quot;, v)
+  }
+  fmt.Println()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
+
+&lt;p&gt;iteratorを定義して, 実装しました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Fibonacci(object):
+    def __init__(self, i):
+        self.__i = i
+        self.index = 0
+
+    def __iter__(self):
+        self.a = 0
+        self.b = 1
+        return self
+
+    def __next__(self):
+        while self.__i &amp;gt;= self.index:
+            self.index += 1
+            self.a, self.b = self.b, self.a + self.b
+            return self.a
+        raise StopIteration()
+
+
+if __name__ == &#39;__main__&#39;:
+    f = Fibonacci(10)
+    for number in f:
+        print(number, end=&#39; &#39;)
+    print()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;bash&#34;&gt;bash&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$[]&lt;/code&gt;でexpressionを表現しています. これ実装するまで知りませんでした.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
+
+function fib()
+{
+    case $1 in
+        0) echo 0 ;;
+        [1-2]) echo 1 ;;
+        *) echo $[`fib $[$1-1]` + `fib $[$1-2]`] ;;
+    esac
+}
+
+for i in {0..10}; do
+    fib $i
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;javascript&#34;&gt;JavaScript&lt;/h2&gt;
+
+&lt;p&gt;単純な再起で実装しました.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function fib(i) {
+  return function inner(i) {
+    return i &amp;gt; 2 ? inner(i - 1) + inner(i - 2) : (i === 2 ? 1 : i);
+  }(i);
+}
+
+for (var i = 0; i &amp;lt;= 10; i++) {
+  console.log(fib(i));
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;java&#34;&gt;Java&lt;/h2&gt;
+
+&lt;p&gt;Java8のstreamを使って実装しました. filter非常に便利.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import java.util.*;
+
+
+public class Fibonacci {
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10));
+        System.out.println(fibonacci(20));
+    }
+
+    public static int fibonacci(int n) {
+        List&amp;lt;Integer&amp;gt; data = new ArrayList&amp;lt;Integer&amp;gt;() {{
+            add(0); add(1); add(1); add(2); add(3);
+        }};
+
+        for (int i = 4; i &amp;lt; n; i++) {
+            data.add(
+                data
+                    .stream()
+                    .filter(nn -&amp;gt; nn &amp;gt;= data.get(data.size()-2))
+                    .mapToInt(nn -&amp;gt; nn)
+                    .sum()
+                );
+        }
+        return data.get(n);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;fibonacciの計算には向かないけど, Java8のstreamが便利でした. Javaも進化しているんだなと.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>
