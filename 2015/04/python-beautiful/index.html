@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Python: Pythonライクな書き方 Part1  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Python: Pythonライクな書き方 Part1</h1>
+    <span class="post-date">Thu, Apr 30, 2015</span>
+    
+
+<p>Pythonライクな書き方について紹介します. Part1です.</p>
+
+<h2 id="for文関連">for文関連</h2>
+
+<h3 id="indexを使いたいとき">indexを使いたいとき</h3>
+
+<p>Bad: range, lenを使う</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
+for i in range(len(names)):
+    print i, names[i]
+</code></pre>
+
+<p>Good: enumerateを使う</p>
+
+<pre><code class="language-python">for i, name in enumerate(names):
+    print i, name
+</code></pre>
+
+<h3 id="2つのコレクションを扱うとき">2つのコレクションを扱うとき</h3>
+
+<p>Bad: indexを使ってアクセスする</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
+ages = [12, 19, 11]
+
+for i in range(min(len(names), len(ages))):
+    print names[i], ages[i]
+</code></pre>
+
+<p>Good: 組み込み関数zipを使う</p>
+
+<pre><code class="language-python">for name, age in zip(names, ages):
+    print name, age
+</code></pre>
+
+<h2 id="dictionaryでkey-valueを使う">dictionaryでkey, valueを使う</h2>
+
+<p>Bad: keyでアクセス, valueを取得する</p>
+
+<pre><code class="language-python">persons = {'TDN': 12, 'tanaka': 24, 'nakata': 11}
+for k in persons:
+    print k, persons[k]
+</code></pre>
+
+<p>Good: itemsメソッドを使う</p>
+
+<pre><code class="language-python">persons = {'TDN': 12, 'tanaka': 24, 'nakata': 11}
+for k, v in persons.items():
+    print k, v
+</code></pre>
+
+<h2 id="値の入れかえ-swap-values">値の入れかえ(swap values)</h2>
+
+<p>Bad: tmp変数を定義する</p>
+
+<pre><code class="language-python">a = 0
+b = 10
+
+tmp = a
+a = b
+b = tmp
+</code></pre>
+
+<p>Good: onelineで交換する</p>
+
+<pre><code class="language-python">a, b = 0, 10
+
+a, b = b, a
+</code></pre>
+
+<h2 id="dictionaryの作成">dictionaryの作成</h2>
+
+<p>indexを使う方法</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
+d = dict(enumerate(names))
+
+&gt; {0: 'TDN', 1: 'suzuki', 2: 'tom'}
+</code></pre>
+
+<p>2つのリストのペアを使う方法</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
+ages = [12, 19, 11]
+d = dict(zip(names, ages))
+
+&gt; {'tom': 11, 'suzuki': 19, 'TDN': 12}
+</code></pre>
+
+<h2 id="dictionaryを使ったグルーピング">dictionaryを使ったグルーピング</h2>
+
+<p>Bad: ifでいちいちチェックする</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
+d = {}
+for name in names:
+    key = name[0]
+    if key not in d:
+        d[key] = []
+    d[key].append(name)
+</code></pre>
+
+<p>Good: setdefaultを使う</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
+d = {}
+for name in names:
+    key = name[0]
+    d.setdefault(key, []).append(name)
+</code></pre>
+
+<p>Good: defaultdictを使う</p>
+
+<pre><code class="language-python">from collections import defaultdict
+
+names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
+d = defaultdict(list)
+for name in names:
+    key = name[0]
+    d[key].append(name)
+</code></pre>
+
+<h2 id="効率のよいソート">効率のよいソート</h2>
+
+<p>Bad: cmpを用いてソートする</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
+def cmp_function(a, b):
+    if len(a) &gt; len(b):
+        return 1
+    if len(a) &lt; len(b):
+        return -1
+    return 0
+sorted(names, cmp=cmp_function)
+</code></pre>
+
+<p>Good: keyを用いてソートする</p>
+
+<pre><code class="language-python">sorted(names, key=len)
+</code></pre>
+
+<h2 id="ファイルを開く-閉じる時">ファイルを開く, 閉じる時</h2>
+
+<p>Bad: finallyを使う</p>
+
+<pre><code class="language-python">f = open('build.gradle')
+try:
+    data = f.read()
+finally:
+    f.close()
+</code></pre>
+
+<p>Good: withを使う</p>
+
+<pre><code class="language-python">with open('build.gradle') as f:
+    data = f.read()
+
+
+## リスト内包
+
+Bad: forをわざわざ使う
+
+```python
+total = 0
+for i in range(10):
+    total += i ** 2
+</code></pre>
+
+<p>Good: リスト内包, ジェネレータを使う</p>
+
+<pre><code>total = sum(i ** 2 for i in range(10))
+</code></pre>
+
+<h2 id="文字列結合">文字列結合</h2>
+
+<p>Bad: stringを + でつないでいく</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
+s = ''
+for name in names:
+    s += name
+</code></pre>
+
+<p>Good: joinメソッドを使う</p>
+
+<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
+''.join(names)
+</code></pre>
+
+<h2 id="デコレータを使う">デコレータを使う</h2>
+
+<p>Bad: メソッド内にcacheのロジックが入りこんでいる</p>
+
+<pre><code class="language-python">def get_data(filepath, saved={}):
+    if filepath in saved:
+        return cache[filepath]
+
+    with open(filepaht, 'r') as f:
+        saved[filepath] = f.read()
+    return saved[filepath]
+</code></pre>
+
+<p>Good: cacheのロジックを外部に切り出す</p>
+
+<pre><code class="language-python">from functools import wraps
+
+def cache(func):
+    saved = {}
+
+    @wraps(func)
+    def wrapper(filepath):
+        if filepath in saved:
+            return saved[filepath]
+        result = func(filepath)
+        saved[filepath] = result
+        return result
+    return wrapper
+
+
+@cache
+def get_data(filepath):
+    with open(filepath, 'r') as f:
+        return f.read()
+</code></pre>
+
+<h2 id="contextmanagerを使う">contextmanagerを使う</h2>
+
+<p>Before: 例外をpassしているのが正しいのか, 実装し忘れか判断が付き難い</p>
+
+<pre><code class="language-python">import os
+
+try:
+    os.remove('.tmp')
+except OSError:
+    pass
+</code></pre>
+
+<p>After: ignoredのように明示的な名前をつけて定義する</p>
+
+<pre><code class="language-python">import os
+from contextlib import contextmanager
+
+@contextmanager
+def ignored(*exc):
+    try:
+        yield
+    except exc:
+        pass
+
+
+with ignored(OSError):
+    os.remove('tmp')  
+</code></pre>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>パート2に続く..</p>
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://www.youtube.com/watch?v=OSGv2VnC0go">Transforming Code into Beautiful, Idiomatic Python</a></p>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://satoshun.github.io/icon.png" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='http://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='http://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>

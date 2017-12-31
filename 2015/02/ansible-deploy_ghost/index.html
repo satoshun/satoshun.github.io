@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> AnsibleでGhostアプリをデプロイ  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">AnsibleでGhostアプリをデプロイ</h1>
+    <span class="post-date">Sun, Feb 22, 2015</span>
+    
+
+<p>VPSに<a href="http://ghost.org">Ghost</a>を, Ansibleでデプロイしている話.</p>
+
+<p>サーバー側で使っているソフトウェアは, supervisor, nodeです.</p>
+
+<h2 id="githubでソース管理">GitHubでソース管理</h2>
+
+<p>CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(<a href="https://github.com/satoshun/ghost">https://github.com/satoshun/ghost</a>)</p>
+
+<p>このリポジトリを, デプロイしていきます.</p>
+
+<h2 id="デプロイ時の手順">デプロイ時の手順</h2>
+
+<p>サーバで以下のタスクを行います.</p>
+
+<ul>
+<li>Gitリポジトリを最新の状態にする(git pull origin master)</li>
+<li>npm moduleの更新(npm install)</li>
+<li>gruntの実行(grunt init &amp;&amp; grunt prod)</li>
+<li>ghostプロセスの再起動(supervisorctl restart ghost)</li>
+</ul>
+
+<p>Playbookは以下になります.</p>
+
+<pre><code class="language-yml">---
+- hosts: all
+  user: &quot;{{ user }}&quot;
+  tasks:
+    - include: update_source.yml
+    - include: update_package.yml
+    - include: restart.yml
+</code></pre>
+
+<p>各タスクについて説明していきます.</p>
+
+<h3 id="git-pullする">Git pullする</h3>
+
+<p>Gitモジュールがあるので, それを使います.</p>
+
+<pre><code class="language-yml">- name: Update Git repository
+  git: repo=&lt;git url&gt; dest=&lt;path to project&gt;
+</code></pre>
+
+<h3 id="npm-moduleの更新">npm moduleの更新</h3>
+
+<p>npmモジュールがあるので, それを使います.</p>
+
+<pre><code class="language-yml">- name: Update npm module
+  npm: path=&lt;path to project&gt;
+</code></pre>
+
+<h3 id="gruntの実行">gruntの実行</h3>
+
+<p>commandモジュールを使います.</p>
+
+<pre><code class="language-yml">- name: Run grunt init
+  command: &quot;grunt init chdir=&lt;path to project&gt;&quot;
+
+- name: Run grunt prod
+  command: &quot;grunt prod chdir=&lt;path to project&gt;&quot;
+</code></pre>
+
+<h3 id="ghost再起動">Ghost再起動</h3>
+
+<p>supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.</p>
+
+<pre><code class="language-yml">- name: Restart Ghost
+  sudo: yes
+  supervisorctl: name=ghost state=restarted
+</code></pre>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://satoshun.github.io/icon.png" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='http://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='http://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>
