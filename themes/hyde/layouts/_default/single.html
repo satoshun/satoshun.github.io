@@ -1,0 +1,26 @@
+{{ template "theme/chrome/head.html" . }}
+<body>
+
+{{ template "theme/chrome/header.html" . }}
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">{{ .Title }}</h1>
+    <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+    {{ .Content }}
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="{{.Site.Params.icon}}" />
+       <p>Written by <strong><a rel="author" href="{{ .Site.Params.twitter }}" title="{{ .Site.Author.name }}" target="_blank">{{ .Site.Author.name }}</a></strong><br>
+       <span class="muted">{{ .Site.Author.bio }}</span>
+       </p>
+      </address>
+    </footer>
+
+    {{ template "theme/chrome/social.html" . }}
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>
