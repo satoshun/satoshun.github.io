@@ -1,4 +1,0 @@
-+++
-type = "post"
-draft = true
-+++
