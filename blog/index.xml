@@ -6,8 +6,62 @@
     <link>https://satoshun.github.io/blog/</link>
     <language>ja</language>
     <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 06 Sep 2015 00:00:00 UTC</updated>
+    <copyright>2018 Sato Shun</copyright>
+    <updated>Sun, 07 Jan 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: 拡張関数からprotectedメソッドにアクセスする</title>
+      <link>https://satoshun.github.io/2018/01/extension-function-with-protected/</link>
+      <pubDate>Sun, 07 Jan 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/01/extension-function-with-protected/</guid>
+      <description>
+
+&lt;p&gt;LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package android.arch.lifecycle;
+
+public abstract class LiveData&amp;lt;T&amp;gt; {
+    protected void onActive() {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch.lifecycle
+
+fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
+  onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch
+
+fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
+  onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;なぜかこのような挙動になるか&#34;&gt;なぜかこのような挙動になるか?&lt;/h2&gt;
+
+&lt;p&gt;protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&#34;&gt;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2498,53 +2552,6 @@ notifyDataSetChangedメソッドを叩いても, データがUIに反映され�
 &lt;ul&gt;
 &lt;li&gt;Shadow DOM 101: &lt;a href=&#34;http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/&#34;&gt;http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Web Componentsで行うHTMLのコンポーネント化: &lt;a href=&#34;http://ameblo.jp/ca-1pixel/entry-11815188808.html&#34;&gt;http://ameblo.jp/ca-1pixel/entry-11815188808.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>デザインパターン: Value Object</title>
-      <link>https://satoshun.github.io/2015/02/despatt-valueobject/</link>
-      <pubDate>Sun, 22 Feb 2015 04:53:36 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/02/despatt-valueobject/</guid>
-      <description>
-
-&lt;p&gt;Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます.
-immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;immutableであるメリット&#34;&gt;immutableであるメリット&lt;/h2&gt;
-
-&lt;p&gt;immutableであるメリットとしては&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;状態を持たないので, 呼び出し順序を考慮しなくて良い&lt;/li&gt;
-&lt;li&gt;値が書き換わらないため, thread safeである&lt;/li&gt;
-&lt;li&gt;プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Calendar getYesterday() {
-    Calendar rightnow = Calendar.getInstance(); // ここの時点ではrightnowは, 今の時間を示している
-    rightnow.add(Calendar.DATE, -1); // ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない
-    return rightnow;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, &lt;code&gt;rightnow.add(Calendar.DATE, -1)&lt;/code&gt;を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
-オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;indentityキーを持たないメリット&#34;&gt;indentityキーを持たないメリット&lt;/h2&gt;
-
-&lt;p&gt;Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います. identityキーが重要かどうかで, パターンが変わってくるので, 慣れが必要そうです.&lt;/p&gt;
-
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&#34;&gt;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

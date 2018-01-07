@@ -6,8 +6,62 @@
     <link>https://satoshun.github.io/tags/android/</link>
     <language>ja</language>
     <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 06 Sep 2015 00:00:00 UTC</updated>
+    <copyright>2018 Sato Shun</copyright>
+    <updated>Sun, 07 Jan 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: 拡張関数からprotectedメソッドにアクセスする</title>
+      <link>https://satoshun.github.io/2018/01/extension-function-with-protected/</link>
+      <pubDate>Sun, 07 Jan 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/01/extension-function-with-protected/</guid>
+      <description>
+
+&lt;p&gt;LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package android.arch.lifecycle;
+
+public abstract class LiveData&amp;lt;T&amp;gt; {
+    protected void onActive() {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch.lifecycle
+
+fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
+  onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch
+
+fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
+  onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;なぜかこのような挙動になるか&#34;&gt;なぜかこのような挙動になるか?&lt;/h2&gt;
+
+&lt;p&gt;protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&#34;&gt;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
