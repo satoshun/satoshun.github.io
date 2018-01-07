@@ -1,5 +1,5 @@
 +++
-date = "2018-01-07T03:33:50Z"
+date = "2018-01-07"
 title = "Kotlin: 拡張関数からprotectedメソッドにアクセスする"
 tags = ["android", "kotlin"]
 blogimport = true
