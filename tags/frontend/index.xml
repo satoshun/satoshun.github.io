@@ -1,103 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Frontend on stsnブログ</title>
     <link>https://satoshun.github.io/tags/frontend/</link>
+    <description>Recent content in Frontend on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sat, 14 Mar 2015 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sat, 14 Mar 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>HTML5: Shadow DOMについて</title>
       <link>https://satoshun.github.io/2015/03/shadow_dom/</link>
-      <pubDate>Sat, 14 Mar 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/03/shadow_dom/</guid>
-      <description>
-
-&lt;p&gt;Web Componentsの機能の一つ Shadow DOMについて説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;shadow-domとは&#34;&gt;Shadow DOMとは?&lt;/h2&gt;
-
-&lt;p&gt;外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.&lt;/p&gt;
-
-&lt;h2 id=&#34;shadow-domの誕生背景&#34;&gt;Shadow DOMの誕生背景&lt;/h2&gt;
-
-&lt;p&gt;なぜShadow DOMが出てきたかについて説明します.&lt;/p&gt;
-
-&lt;p&gt;CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;.hoge {
-  font-size: 30px;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;と書くと, &lt;code&gt;hoge&lt;/code&gt;をclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分で&lt;code&gt;hoge&lt;/code&gt;クラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます.
-仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.&lt;/p&gt;
-
-&lt;p&gt;フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.&lt;/p&gt;
-
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;p&gt;Shadow DOMを作るには&lt;code&gt;createShadowRoot&lt;/code&gt;APIを使います. 以下, Shadow DOM版Hello Worldです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;  &amp;lt;div id=&amp;quot;shadow&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
-
-  &amp;lt;script&amp;gt;
-  function insertShadow() {
-    // Shadow DOMの作成
-    var shadow = document.querySelector(&#39;#shadow&#39;).createShadowRoot();
-    shadow.textContent = &#39;Hello world&#39;;
-  }
-  insertShadow();
-  &amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Shadow DOMが挿入され, Hello Worldと表示されます.&lt;/p&gt;
-
-&lt;p&gt;上の例ではShadow DOMの良さが全く現れていないので, もう1つ例をあげます. Shadow DOMは, templateと組み合わせることでより強力に使うことが出来ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;  &amp;lt;div id=&amp;quot;hello1&amp;quot;&amp;gt;Hello world1&amp;lt;/div&amp;gt;
-  &amp;lt;div id=&amp;quot;hello2&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
-  &amp;lt;template id=&amp;quot;templateHello&amp;quot;&amp;gt;
-    &amp;lt;!-- ここのスタイルは, 外部に影響を与えない! --&amp;gt;
-    &amp;lt;style&amp;gt;
-      div {
-        color: red;
-      }
-    &amp;lt;/style&amp;gt;
-    &amp;lt;div&amp;gt;Hello world2&amp;lt;/div&amp;gt;
-  &amp;lt;/template&amp;gt;
-  &amp;lt;script&amp;gt;
-  function insertShadow2() {
-    var target = document.querySelector(&#39;#hello2&#39;).createShadowRoot(),
-        hello = document.querySelector(&#39;#templateHello&#39;).content;
-    target.appendChild(hello.cloneNode(true));
-  }
-  insertShadow2();
-  &amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記のように書くと, Hello world1は黒いままで, &lt;code&gt;color: red;&lt;/code&gt;は効きません. なぜなら, Shadow DOMでtemplateの中身は外部と隔離されているためです. これがShadow DOMです.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;Shadow DOMの概要, 簡単な使い方について書いてみました.&lt;/p&gt;
-
-&lt;p&gt;2014年現在は実用するには厳しいですが, 2017年くらいには実用的になっていると思います(なんとなく). 今すぐに使いたい人は &lt;a href=&#34;https://github.com/Polymer/polymer&#34;&gt;https://github.com/Polymer/polymer&lt;/a&gt; などのpolyfillを使うのがいいかと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考サイト&#34;&gt;参考サイト&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Shadow DOM 101: &lt;a href=&#34;http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/&#34;&gt;http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Web Componentsで行うHTMLのコンポーネント化: &lt;a href=&#34;http://ameblo.jp/ca-1pixel/entry-11815188808.html&#34;&gt;http://ameblo.jp/ca-1pixel/entry-11815188808.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Web Componentsの機能の一つ Shadow DOMについて説明します.
+Shadow DOMとは? 外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.
+Shadow DOMの誕生背景 なぜShadow DOMが出てきたかについて説明します.
+CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,
+.hoge { font-size: 30px; }  と書くと, hogeをclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分でhogeクラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます. 仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.
+フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.
+使い方 Shadow DOMを作るにはcreateShadowRootAPIを使います. 以下, Shadow DOM版Hello Worldです.
+&amp;lt;div id=&amp;quot;shadow&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; function insertShadow() { // Shadow DOMの作成 var shadow = document.querySelector(&#39;#shadow&#39;).createShadowRoot(); shadow.textContent = &#39;Hello world&#39;; } insertShadow(); &amp;lt;/script&amp;gt;  Shadow DOMが挿入され, Hello Worldと表示されます.</description>
     </item>
-    
     
   </channel>
 </rss>

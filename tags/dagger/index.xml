@@ -1,312 +1,47 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Dagger on stsnブログ</title>
     <link>https://satoshun.github.io/tags/dagger/</link>
+    <description>Recent content in Dagger on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 24 May 2015 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 24 May 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>
       <link>https://satoshun.github.io/2015/05/dagger2_2/</link>
-      <pubDate>Sun, 24 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/05/dagger2_2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, JakeWhartonさんの&lt;a href=&#34;https://github.com/JakeWharton/u2020&#34;&gt;u2020&lt;/a&gt;から, AndroidでDagger2を使うときの実践的な方法を紹介します.
-u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.&lt;/p&gt;
-
-&lt;p&gt;DI, Dagger2の基本について知りたい方は, &lt;a href=&#34;https://satoshun.github.io/2015/05/dagger2/&#34;&gt;Part1&lt;/a&gt;を見て下さい.&lt;/p&gt;
-
-&lt;p&gt;目次&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;debugとproductionでModuleを切り替える&lt;/li&gt;
-&lt;li&gt;Debug専用のViewを作る&lt;/li&gt;
-&lt;li&gt;Mockモードの定義
--　まとめ&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;debugとproductionでmoduleを切り替える&#34;&gt;debugとproductionでModuleを切り替える&lt;/h2&gt;
-
-&lt;p&gt;gradleは, &lt;code&gt;productFlavors&lt;/code&gt;を設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります.
-そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています.
-具体的には,&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;/src/production/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalDebug/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalRelease/java/com/jakewharton/u2020/Modules.javaに&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています.
-これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Debugのみログを有効にしたい&lt;/li&gt;
-&lt;li&gt;APIのエンドポイントを変えたい&lt;/li&gt;
-&lt;li&gt;debug専用のViewを出したい&lt;/li&gt;
-&lt;li&gt;Test用のインスタンスをinjectしたい&lt;/li&gt;
-&lt;li&gt;etc, etc&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以下では, より細かく説明していきます.&lt;/p&gt;
-
-&lt;h2 id=&#34;debug専用のviewを作る&#34;&gt;Debug専用のViewを作る&lt;/h2&gt;
-
-&lt;p&gt;u2020では, Debug専用のView &lt;code&gt;DebugAppContainer&lt;/code&gt;があります.
-&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/u2020.gif&#34; target=&#34;\_blank&#34;&gt;Debug専用のView&lt;/a&gt;
-はこんな感じです. Debugビルドの時は, このContainerをinjectしています.&lt;/p&gt;
-
-&lt;p&gt;DebugAppContainerは簡単にいえば, &lt;code&gt;DrawerLayout&lt;/code&gt;を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.&lt;/p&gt;
-
-&lt;h2 id=&#34;mockモードの定義&#34;&gt;Mockモードの定義&lt;/h2&gt;
-
-&lt;p&gt;u2020ではMockモードがあり, Mockデータを表示機能があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class DebugDataModule {
-  ...
-  ...
-
-  @Provides @Singleton @ApiEndpoint
-  StringPreference provideEndpointPreference(SharedPreferences preferences) {
-    return new StringPreference(preferences, &amp;quot;debug_endpoint&amp;quot;, ApiEndpoints.MOCK_MODE.url);
-  }
-
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
-    return ApiEndpoints.isMockMode(endpoint.get());
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
-サーバ問題を解決しています. retrofitの&lt;code&gt;MockRestAdapter&lt;/code&gt;を組み合わせ, mockからデータを取得しています.&lt;/p&gt;
-
-&lt;h2 id=&#34;activityのlifecycleのログを取る&#34;&gt;activityのlifecycleのログを取る&lt;/h2&gt;
-
-&lt;p&gt;Applicationクラスには, &lt;code&gt;registerActivityLifecycleCallbacks&lt;/code&gt;メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &amp;hellip;)でイベントを受け取ることが出来ます.
-&lt;code&gt;ActivityLifecycleCallbackss&lt;/code&gt;インターフェースの定義は以下になります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
-public void onActivityStarted(Activity activity) {}
-public void onActivityResumed(Activity activity) {}
-public void onActivityPaused(Activity activity) {}
-public void onActivityStopped(Activity activity) {}
-public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
-public void onActivityDestroyed(Activity activity) {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;u2020では,　&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java&#34;&gt;SocketActivityHierarchyServer&lt;/a&gt;クラスをデバッグ, Activityが正しく振舞っているかを確認しています.&lt;/p&gt;
-
-&lt;p&gt;一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&amp;hellip;)&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;u2020はDagger以外にもノウハウが多くあり, 非常に勉強になりました. 正直10%くらいしか理解できていないので, 次はu2020全体にフォーカスを当てた記事を書くので楽しみに待っていて下さい.&lt;/p&gt;
-</description>
+      <description>概要 この記事では, JakeWhartonさんのu2020から, AndroidでDagger2を使うときの実践的な方法を紹介します. u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.
+DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
+目次
+ debugとproductionでModuleを切り替える Debug専用のViewを作る Mockモードの定義 -　まとめ  debugとproductionでModuleを切り替える gradleは, productFlavorsを設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります. そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています. 具体的には,
+ /src/production/java/com/jakewharton/u2020/Modules.java /src/internalDebug/java/com/jakewharton/u2020/Modules.java /src/internalRelease/java/com/jakewharton/u2020/Modules.javaに  それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています. これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.
+こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.
+ Debugのみログを有効にしたい APIのエンドポイントを変えたい debug専用のViewを出したい Test用のインスタンスをinjectしたい etc, etc&amp;hellip;  以下では, より細かく説明していきます.
+Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
+DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
+Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
+public final class DebugDataModule { .</description>
     </item>
-    
-    
     
     <item>
       <title>Android: Dagger2でDIをする. 基本編 Part1</title>
       <link>https://satoshun.github.io/2015/05/dagger2/</link>
-      <pubDate>Fri, 08 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Fri, 08 May 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/05/dagger2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します.
-Dagger2はDI(Dependency Injection)をするライブラリです.&lt;/p&gt;
-
-&lt;h2 id=&#34;diとは&#34;&gt;DIとは?&lt;/h2&gt;
-
-&lt;p&gt;DIとはDependency Injectionの略で, 訳すと「依存性の注入」です.
-ここでいう依存とは &lt;code&gt;クラス同士の依存関係&lt;/code&gt;のことを表します.
-クラス同士の依存関係は, 委譲パターンの時に現れます.&lt;/p&gt;
-
-&lt;p&gt;例えば, 以下のコードがあったとします.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    public Blogger() {
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // fileにlogを取る
-        FileLogger logger = new FileLogger(title);
-        logger.logging();
-    }
-}
-
-class FileLogger implements Logger {
-    @Override
-    public void logging(String... messages) {
-        // fileにmessagesを書き出す
-        File file = new File(&amp;quot;hoge.txt&amp;quot;);
-        ...
-    }
-}
-
-interface Logger {
-    void logging(String messgae);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;クラスBloggerはクラスFileLoggerに依存している&lt;/code&gt;. ことが分かります. なぜなら, 関数post内でFileLoggerクラスを利用しているためです.
-この書き方だと, BloggerクラスはFileLoggerに依存しているため, Loggerインターフェースを実装した旨味がありません.&lt;/p&gt;
-
-&lt;p&gt;次に, 少しコードを変更して, Loggerインターフェースを実装したインスタンスを引数で渡せるように変更します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    Logger logger;
-
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // logを取る
-        logger.logging();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こうすることで外部から引数で, Loggerインターフェースを実装した, FileLoggerクラス等を注入できるようになります. これがDI(依存性の注入)パターンです.&lt;/p&gt;
-
-&lt;p&gt;これの何が嬉しいんでしょうか? それは, Bloggerクラスを変更せずに, logの取り方を変えることが出来る点です!　委譲する先のクラス(Logger)を簡単に変更することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;余談ですが, AngularJSを使ったことのある方なら&lt;code&gt;function($scope, $resources) {}&lt;/code&gt;のようなコードを見たことがあると思います. これも典型的なDIパターンになります.&lt;/p&gt;
-
-&lt;p&gt;DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
-なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;dagger2概念&#34;&gt;Dagger2概念&lt;/h2&gt;
-
-&lt;p&gt;Dagger2は大きく分けて, &lt;code&gt;Component&lt;/code&gt;, &lt;code&gt;Module&lt;/code&gt; &lt;code&gt;Provide&lt;/code&gt;, &lt;code&gt;Inject&lt;/code&gt; の4つの要素があります.
-上記を定義しクラス間の依存関係を解決します.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Inject: 依存を注入します.&lt;/li&gt;
-&lt;li&gt;@Module: インスタンスをProvideするメソッド郡を定義します.&lt;/li&gt;
-&lt;li&gt;@Provide; 依存を解決するためのインスタンスを提供します.&lt;/li&gt;
-&lt;li&gt;@Component: @Injectと@Module間の関係を定義します.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これだけでは分からないと思うので, 具体的な例をあげて説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;依存関係の定義&#34;&gt;依存関係の定義&lt;/h2&gt;
-
-&lt;p&gt;最初に依存関係を定義します. &lt;code&gt;javax.inject.Inject&lt;/code&gt;アノテーションを使います.&lt;/p&gt;
-
-&lt;p&gt;上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// inject field directly
-class Blogger {
-    @Inject Logger logger;
-
-    public Blogger() {
-    }
-}
-
-or
-
-// Constructor Injection
-class Blogger {
-    Logger logger;
-
-    @Inject
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係の定義は完了です. Field, Constructor Injectionの両方の書き方を覚えて下さい.&lt;/p&gt;
-
-&lt;h2 id=&#34;moduleの作成&#34;&gt;Moduleの作成&lt;/h2&gt;
-
-&lt;p&gt;Moduleには, 上記の&lt;code&gt;@Inject&lt;/code&gt;で定義したクラスのインスタンスの生成方法を記述します.
-&lt;code&gt;@Module&lt;/code&gt;と&lt;code&gt;@Provides&lt;/code&gt;アノテーションを使い, 定義します.&lt;/p&gt;
-
-&lt;p&gt;Loggerを提供するModuleを作成します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;@Module
-class DebugModule {
-    @Provides
-    Logger provideLogger() {
-        return new FileLogger();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, Loggerを提供するModuleの定義が出来ました.&lt;/p&gt;
-
-&lt;p&gt;最後にComponentを作成します.&lt;/p&gt;
-
-&lt;h2 id=&#34;componentの作成&#34;&gt;Componentの作成&lt;/h2&gt;
-
-&lt;p&gt;Componentは複数Moduleをまとめたものです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component(modules = DebugModule.class)
-interface ApplicationComponent {
-    Blogger make();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係を解決してBloggerを生成することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;アプリ側では以下のように記述します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;ApplicationComponent component = DaggerApplicationComponent.create();
-Blogger blogger = component.make();
-blogger.post();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これが基本的なDagger2の使い方です. まとめると&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Injectで, 依存関係を定義する&lt;/li&gt;
-&lt;li&gt;@Module, @Providesで依存関係を解決するようにインスタンスを提供する&lt;/li&gt;
-&lt;li&gt;@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する&lt;/li&gt;
-&lt;li&gt;アプリで依存解決Graphを使い, DIを行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
-
-&lt;p&gt;DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
-最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
-Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).&lt;/p&gt;
-
-&lt;p&gt;Part2では, より実践的なDagger2の使い方について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014&#34;&gt;Dependency Injection with Dagger 2 (Devoxx 2014)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345&#34;&gt;Dependency Injection With Dagger 2 on Android&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=oK_XtfXPkqw&#34;&gt;DAGGER 2 - A New Type of dependency injection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://kakutani.com/trans/fowler/injection.html&#34;&gt;Inversion of Control コンテナと Dependency Injection パターン&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>概要 この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します. Dagger2はDI(Dependency Injection)をするライブラリです.
+DIとは? DIとはDependency Injectionの略で, 訳すと「依存性の注入」です. ここでいう依存とは クラス同士の依存関係のことを表します. クラス同士の依存関係は, 委譲パターンの時に現れます.
+例えば, 以下のコードがあったとします.
+class Blogger { public Blogger() { } public void post(String title) { // 何かメインの処理 // ... // fileにlogを取る FileLogger logger = new FileLogger(title); logger.logging(); } } class FileLogger implements Logger { @Override public void logging(String... messages) { // fileにmessagesを書き出す File file = new File(&amp;quot;hoge.txt&amp;quot;); ... } } interface Logger { void logging(String messgae); }  クラスBloggerはクラスFileLoggerに依存している.</description>
     </item>
-    
     
   </channel>
 </rss>

@@ -1,43 +1,277 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Tags on stsnブログ</title>
     <link>https://satoshun.github.io/tags/</link>
+    <description>Recent content in Tags on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 22 Feb 2015 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 22 Feb 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Algorithm</title>
+      <link>https://satoshun.github.io/tags/algorithm/</link>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/algorithm/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sun, 28 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Ansible</title>
+      <link>https://satoshun.github.io/tags/ansible/</link>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/ansible/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Api</title>
+      <link>https://satoshun.github.io/tags/api/</link>
+      <pubDate>Sun, 15 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/api/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Book</title>
+      <link>https://satoshun.github.io/tags/book/</link>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/book/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Code</title>
+      <link>https://satoshun.github.io/tags/code/</link>
+      <pubDate>Sun, 22 Feb 2015 04:53:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/code/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Css</title>
+      <link>https://satoshun.github.io/tags/css/</link>
+      <pubDate>Sun, 22 Feb 2015 02:32:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/css/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Dagger</title>
+      <link>https://satoshun.github.io/tags/dagger/</link>
+      <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/dagger/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Database</title>
+      <link>https://satoshun.github.io/tags/database/</link>
+      <pubDate>Sun, 19 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/database/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Db</title>
+      <link>https://satoshun.github.io/tags/db/</link>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/db/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Design_pattern</title>
+      <link>https://satoshun.github.io/tags/design_pattern/</link>
+      <pubDate>Fri, 12 Jun 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/design_pattern/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Frontend</title>
+      <link>https://satoshun.github.io/tags/frontend/</link>
+      <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/frontend/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Github</title>
+      <link>https://satoshun.github.io/tags/github/</link>
+      <pubDate>Sun, 22 Feb 2015 04:11:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/github/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Go</title>
+      <link>https://satoshun.github.io/tags/go/</link>
+      <pubDate>Sun, 22 Feb 2015 04:11:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/go/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Golang</title>
+      <link>https://satoshun.github.io/tags/golang/</link>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Html5</title>
+      <link>https://satoshun.github.io/tags/html5/</link>
+      <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/html5/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Java</title>
+      <link>https://satoshun.github.io/tags/java/</link>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/java/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Javascript</title>
+      <link>https://satoshun.github.io/tags/javascript/</link>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/javascript/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Kotlin</title>
+      <link>https://satoshun.github.io/tags/kotlin/</link>
+      <pubDate>Sun, 07 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Mysql</title>
+      <link>https://satoshun.github.io/tags/mysql/</link>
+      <pubDate>Thu, 09 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Psychology</title>
+      <link>https://satoshun.github.io/tags/psychology/</link>
+      <pubDate>Mon, 08 Jun 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/psychology/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Python</title>
+      <link>https://satoshun.github.io/tags/python/</link>
+      <pubDate>Thu, 30 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/python/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Rdb</title>
+      <link>https://satoshun.github.io/tags/rdb/</link>
+      <pubDate>Sun, 19 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/rdb/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Reactive</title>
+      <link>https://satoshun.github.io/tags/reactive/</link>
+      <pubDate>Fri, 22 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/reactive/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Retrofit</title>
+      <link>https://satoshun.github.io/tags/retrofit/</link>
+      <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/retrofit/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Shell</title>
+      <link>https://satoshun.github.io/tags/shell/</link>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/shell/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>System</title>
+      <link>https://satoshun.github.io/tags/system/</link>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/system/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Tips</title>
+      <link>https://satoshun.github.io/tags/tips/</link>
+      <pubDate>Sun, 22 Feb 2015 02:40:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/tips/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Web</title>
+      <link>https://satoshun.github.io/tags/web/</link>
+      <pubDate>Sun, 15 Mar 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/web/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

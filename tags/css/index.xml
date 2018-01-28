@@ -1,98 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Css on stsnブログ</title>
     <link>https://satoshun.github.io/tags/css/</link>
+    <description>Recent content in Css on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 22 Feb 2015 02:32:23 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 22 Feb 2015 02:32:23 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/css/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>CSS: Clearfixについて</title>
       <link>https://satoshun.github.io/2015/02/css-clearfix/</link>
-      <pubDate>Sun, 22 Feb 2015 02:32:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 02:32:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/css-clearfix/</guid>
-      <description>
-
-&lt;p&gt;CSSには「clearfix」と呼ばれるテクニックがあります.&lt;/p&gt;
-
-&lt;p&gt;この記事では, なぜclearfixを使うのか, clearfixとは何なのかについて説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;floatの問題点&#34;&gt;floatの問題点&lt;/h2&gt;
-
-&lt;p&gt;clearfixを説明する前に, floatプロパティの問題点について説明します.&lt;/p&gt;
-
-&lt;p&gt;まず例をあげます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div&amp;gt;
-  &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt;
-  &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt;
-  &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記HTMLは, imgが右に寄り, その左側にtest1, test2と表示されます.
-floatは, 指定したエレメント以降のエレメントを反対側に回りこませることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;回りこみを止めたいときは, &lt;code&gt;clear: both;&lt;/code&gt;プロパティを指定します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div&amp;gt;
-  &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt;
-  &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt;
-  &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-
-&amp;lt;!-- clear:bothがないと, このdivも左側に回りこむ --&amp;gt;
-&amp;lt;div style=&amp;quot;clear:both;&amp;quot;&amp;gt;
-  hogehoge
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;clear:both;&lt;/code&gt;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.&lt;/p&gt;
-
-&lt;p&gt;とは言っても, floatingの解除は忘れてしまいがちです. そこでclearfixと呼ばれるテクニックを使います.&lt;/p&gt;
-
-&lt;h2 id=&#34;clearfixとは&#34;&gt;clearfixとは&lt;/h2&gt;
-
-&lt;p&gt;clearfixとは, after擬似要素を使いfloatを解除するテクニックです.&lt;/p&gt;
-
-&lt;p&gt;具体的には以下のように記述します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;.clearfix:after {
-  content: &amp;quot;&amp;quot;;
-  clear: both;
-  display: block;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;clear: both;&lt;/code&gt;をしてくれる要素をafter擬似要素で挿入しているだけです.
-これを, 親エレメントにつけておけば, floatを解除してくれます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;clearfix&amp;quot;&amp;gt;
-  &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt;
-  &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt;
-  &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt;
-&amp;lt;/div&amp;gt;
-&amp;lt;!-- ここにclear:both; 擬似要素が挿入される --&amp;gt;
-&amp;lt;div&amp;gt;
-  hogehoge
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;後続の要素に&lt;code&gt;clear:both;&lt;/code&gt;を記述しなくてよいので, 無駄なミスを防ぐことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;floatはCSSのハマリポイントの1つだと思います. 要素の高さが取得できないなどの時は, floatが解除されていないかを疑いましょう.&lt;/p&gt;
-
-&lt;p&gt;他にも, いろいろなclearfixの書き方があるので, 調べてみて下さい.&lt;/p&gt;
-</description>
+      <description>CSSには「clearfix」と呼ばれるテクニックがあります.
+この記事では, なぜclearfixを使うのか, clearfixとは何なのかについて説明します.
+floatの問題点 clearfixを説明する前に, floatプロパティの問題点について説明します.
+まず例をあげます.
+&amp;lt;div&amp;gt; &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt;  上記HTMLは, imgが右に寄り, その左側にtest1, test2と表示されます. floatは, 指定したエレメント以降のエレメントを反対側に回りこませることが出来ます.
+回りこみを止めたいときは, clear: both;プロパティを指定します.
+&amp;lt;div&amp;gt; &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;!-- clear:bothがないと, このdivも左側に回りこむ --&amp;gt; &amp;lt;div style=&amp;quot;clear:both;&amp;quot;&amp;gt; hogehoge &amp;lt;/div&amp;gt;  clear:both;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.
+とは言っても, floatingの解除は忘れてしまいがちです. そこでclearfixと呼ばれるテクニックを使います.
+clearfixとは clearfixとは, after擬似要素を使いfloatを解除するテクニックです.
+具体的には以下のように記述します.
+.clearfix:after { content: &amp;quot;&amp;quot;; clear: both; display: block; }  clear: both;をしてくれる要素をafter擬似要素で挿入しているだけです. これを, 親エレメントにつけておけば, floatを解除してくれます.</description>
     </item>
-    
     
   </channel>
 </rss>

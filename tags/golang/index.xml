@@ -1,362 +1,62 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Golang on stsnブログ</title>
     <link>https://satoshun.github.io/tags/golang/</link>
+    <description>Recent content in Golang on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 22 Feb 2015 02:08:23 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Golang: nil pointer receiverの話</title>
       <link>https://satoshun.github.io/2015/02/go-nil_receiver/</link>
-      <pubDate>Sun, 22 Feb 2015 02:08:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/go-nil_receiver/</guid>
-      <description>
-
-&lt;p&gt;nil pointer receiverについてお話しようと思います. 具体例をあげたほうが分かりやすいので, コードを元に説明していきます.&lt;/p&gt;
-
-&lt;p&gt;gist: &lt;a href=&#34;https://gist.github.com/satoshun/3dc1302dbc163c9a9245&#34;&gt;https://gist.github.com/satoshun/3dc1302dbc163c9a9245&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;にソースコードがあります.&lt;/p&gt;
-
-&lt;h2 id=&#34;nil-pointer-receiver&#34;&gt;nil pointer receiver&lt;/h2&gt;
-
-&lt;p&gt;nilについて. 下のコードを見てください.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type A struct {
-}
-
-func (a *A) b() {
-    fmt.Println(1000)
-}
-
-func main() {
-    var a *A = nil
-    a.b()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;どう考えても, &lt;code&gt;runtime error: nil pointer access&lt;/code&gt; 的なものが出るだろうと思っていました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sato$ go run main.go
-1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです!
-この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.&lt;/p&gt;
-
-&lt;p&gt;ちなみに, Value receiverの場合はエラーが出ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type A struct {
-}
-
-// b is value receiver
-func (a A) b() {
-    fmt.Println(1000)
-}
-
-func main() {
-    var a *A = nil
-    a.b()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;nil Pointer receiverは, &lt;a href=&#34;http://blog.s-shun.net/design_pattern-null_object/&#34;&gt;Null Objectパターン&lt;/a&gt;と似ている気がしました. Receiverのほうでは, nilでも動くようにしておく必要がありそうです.&lt;/p&gt;
-</description>
+      <description>nil pointer receiverについてお話しようと思います. 具体例をあげたほうが分かりやすいので, コードを元に説明していきます.
+gist: https://gist.github.com/satoshun/3dc1302dbc163c9a9245
+にソースコードがあります.
+nil pointer receiver nilについて. 下のコードを見てください.
+package main import &amp;quot;fmt&amp;quot; type A struct { } func (a *A) b() { fmt.Println(1000) } func main() { var a *A = nil a.b() }  どう考えても, runtime error: nil pointer access 的なものが出るだろうと思っていました.
+sato$ go run main.go 1000  ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです! この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.
+ちなみに, Value receiverの場合はエラーが出ます.
+package main import &amp;quot;fmt&amp;quot; type A struct { } // b is value receiver func (a A) b() { fmt.</description>
     </item>
-    
-    
     
     <item>
       <title>AnsibleでGoアプリをデプロイ</title>
       <link>https://satoshun.github.io/2015/02/ansible-go_deploy/</link>
-      <pubDate>Sun, 22 Feb 2015 01:08:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 01:08:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/ansible-go_deploy/</guid>
-      <description>
-
-&lt;p&gt;ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.&lt;/p&gt;
-
-&lt;p&gt;下の手順でデプロイを行っています.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Macでコンパイルして, Linux-amd64用のバイナリ生成(&lt;strong&gt;&lt;a href=&#34;#caution1&#34;&gt;注意1&lt;/a&gt;&lt;/strong&gt;)&lt;/li&gt;
-&lt;li&gt;バイナリをサーバにデプロイ(コピー)&lt;/li&gt;
-&lt;li&gt;アプリのリスタート(supervisorで再起動)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;実際のPlaybookは以下のようになります.&lt;/p&gt;
-
-&lt;p&gt;deploy.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;---
-- hosts: local
-  connection: local
-  tasks:
-    - include: build.yml
-
-
-- hosts: app
-  user: &amp;quot;{{ user }}&amp;quot;
-  tasks:
-    - include: update_binary.yml
-    - include: restart.yml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;各タスクについて, 説明してきます.&lt;/p&gt;
-
-&lt;h2 id=&#34;linux-amd64用のバイナリ生成&#34;&gt;Linux-amd64用のバイナリ生成&lt;/h2&gt;
-
-&lt;p&gt;Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.&lt;/p&gt;
-
-&lt;p&gt;やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.&lt;/p&gt;
-
-&lt;p&gt;Makefile&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-make&#34;&gt;get:
-  go get -v
-
-build-amd64: get
-  GOOS=linux GOARCH=amd64 go build .
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;build.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
-- name: build src
-  command: make build-amd64 chdir={{ local_home }}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;local_homeは変数で, Makefileがあるディレクトリを定義しています.&lt;/p&gt;
-
-&lt;h2 id=&#34;バイナリをデプロイ&#34;&gt;バイナリをデプロイ&lt;/h2&gt;
-
-&lt;p&gt;ファイルをサーバーにコピーする時は, copyモジュールを使います.&lt;/p&gt;
-
-&lt;p&gt;update_binary.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
-- name: update binary
-  copy:
-    src={{ local_home }}/{{ project_name }}
-    dest={{ go_bin }}/{{ project_name }}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;srcにバイナリのpath, destにバイナリをデプロイするpathを指定します.&lt;/p&gt;
-
-&lt;h2 id=&#34;アプリのリスタート&#34;&gt;アプリのリスタート&lt;/h2&gt;
-
-&lt;p&gt;supervisorctlモジュールを使います.&lt;/p&gt;
-
-&lt;p&gt;restart.yml&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;---
-- name: restart binary
-  sudo: yes
-  supervisorctl: name={{ project_name }} state=restarted
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ちなみに, supervisor confファイルは以下のようにしています.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;[program:{{ project_name }}]
-user={{ user }}
-command={{ go_bin }}/{{ project_name }}
-autostart=true
-autorestart=true
-stdout_logfile = /var/log/supervisor/%(program_name)s.log
-stdout_logfile_maxbytes = 10MB
-stdout_logfile_backups = 10
-stderr_logfile = /var/log/supervisor/%(program_name)s-error.log
-stopsignal=INT
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;commandにGoのバイナリを指定して, あとはいつものおまじないです.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;デプロイスクリプトを作っておくことは, 非常によいことだと思います. Ansibleはshell scriptくらいの気軽さで書け, エラーハンドリングなどをよしなにやってくれるのでさくっと書けてお勧めです.&lt;/p&gt;
-
-&lt;h3 id=&#34;a-name-caution1-a-注意1&#34;&gt;&lt;a name=&#34;caution1&#34;&gt;&lt;/a&gt;注意1&lt;/h3&gt;
-
-&lt;p&gt;HomebrewでGoをクロスプラットフォームにビルド出来るようにするには,
-&amp;ndash;cross-compile-allオプションを付けてあげます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ brew install go --cross-compile-all
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.
+下の手順でデプロイを行っています.
+ Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動)  実際のPlaybookは以下のようになります.
+deploy.yml
+--- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;quot;{{ user }}&amp;quot; tasks: - include: update_binary.yml - include: restart.yml  各タスクについて, 説明してきます.
+Linux-amd64用のバイナリ生成 Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.
+やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.
+Makefile
+get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build .  build.yml
+--- - name: build src command: make build-amd64 chdir={{ local_home }}  local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
     </item>
-    
-    
     
     <item>
       <title>様々な言語のフィボナッチ関数</title>
       <link>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</link>
-      <pubDate>Sun, 22 Feb 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</guid>
-      <description>
-
-&lt;p&gt;Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.&lt;/p&gt;
-
-&lt;p&gt;極力, その言語特有の機能を使って実装するようにしました.&lt;/p&gt;
-
-&lt;h2 id=&#34;go&#34;&gt;Go&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;type fibonacci int&lt;/code&gt;で, int型にfibonacci用の関数を生やしました.
-せっかくなので, goroutineも使ってみました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type fibonacci int
-
-func (self fibonacci) value() chan int {
-  ch := make(chan int, 1)
-  a, b := 0, 1
-  index := 0
-  go func() {
-    defer close(ch)
-    for {
-      if int(self) &amp;lt; index {
-        break
-      }
-      a, b = b, a+b
-      index++
-      ch &amp;lt;- a
-    }
-  }()
-
-  return ch
-}
-
-func main() {
-  var i fibonacci
-  i = 10
-  for v := range i.value() {
-    fmt.Printf(&amp;quot;%d &amp;quot;, v)
-  }
-  fmt.Println()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
-
-&lt;p&gt;iteratorを定義して, 実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Fibonacci(object):
-    def __init__(self, i):
-        self.__i = i
-        self.index = 0
-
-    def __iter__(self):
-        self.a = 0
-        self.b = 1
-        return self
-
-    def __next__(self):
-        while self.__i &amp;gt;= self.index:
-            self.index += 1
-            self.a, self.b = self.b, self.a + self.b
-            return self.a
-        raise StopIteration()
-
-
-if __name__ == &#39;__main__&#39;:
-    f = Fibonacci(10)
-    for number in f:
-        print(number, end=&#39; &#39;)
-    print()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;bash&#34;&gt;bash&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$[]&lt;/code&gt;でexpressionを表現しています. これ実装するまで知りませんでした.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
-
-function fib()
-{
-    case $1 in
-        0) echo 0 ;;
-        [1-2]) echo 1 ;;
-        *) echo $[`fib $[$1-1]` + `fib $[$1-2]`] ;;
-    esac
-}
-
-for i in {0..10}; do
-    fib $i
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;javascript&#34;&gt;JavaScript&lt;/h2&gt;
-
-&lt;p&gt;単純な再起で実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function fib(i) {
-  return function inner(i) {
-    return i &amp;gt; 2 ? inner(i - 1) + inner(i - 2) : (i === 2 ? 1 : i);
-  }(i);
-}
-
-for (var i = 0; i &amp;lt;= 10; i++) {
-  console.log(fib(i));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;java&#34;&gt;Java&lt;/h2&gt;
-
-&lt;p&gt;Java8のstreamを使って実装しました. filter非常に便利.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import java.util.*;
-
-
-public class Fibonacci {
-    public static void main(String[] args) {
-        System.out.println(fibonacci(10));
-        System.out.println(fibonacci(20));
-    }
-
-    public static int fibonacci(int n) {
-        List&amp;lt;Integer&amp;gt; data = new ArrayList&amp;lt;Integer&amp;gt;() {{
-            add(0); add(1); add(1); add(2); add(3);
-        }};
-
-        for (int i = 4; i &amp;lt; n; i++) {
-            data.add(
-                data
-                    .stream()
-                    .filter(nn -&amp;gt; nn &amp;gt;= data.get(data.size()-2))
-                    .mapToInt(nn -&amp;gt; nn)
-                    .sum()
-                );
-        }
-        return data.get(n);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;fibonacciの計算には向かないけど, Java8のstreamが便利でした. Javaも進化しているんだなと.&lt;/p&gt;
-</description>
+      <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
+極力, その言語特有の機能を使って実装するようにしました.
+Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
+package main import &amp;quot;fmt&amp;quot; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
-    
     
   </channel>
 </rss>

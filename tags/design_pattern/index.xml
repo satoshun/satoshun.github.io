@@ -1,434 +1,60 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Design_pattern on stsnブログ</title>
     <link>https://satoshun.github.io/tags/design_pattern/</link>
+    <description>Recent content in Design_pattern on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Fri, 12 Jun 2015 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Fri, 12 Jun 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/design_pattern/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Android: Picassoで使われているデザインパターン</title>
       <link>https://satoshun.github.io/2015/06/reading_picasso/</link>
-      <pubDate>Fri, 12 Jun 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Fri, 12 Jun 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/06/reading_picasso/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso&#34;&gt;Picasso&lt;/a&gt;で使われているデザインパターンを紹介する記事です.&lt;/p&gt;
-
-&lt;h2 id=&#34;singletonパターン&#34;&gt;Singletonパターン&lt;/h2&gt;
-
-&lt;p&gt;Singletonパターンは, インスタンスの生成を1つに制限するパターンになります.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
-  if (singleton == null) {
-    synchronized (Picasso.class) {
-      if (singleton == null) {
-        singleton = new Builder(context).build();
-      }
-    }
-  }
-  return singleton;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Picasso#withは, すでにPicassoのインスタンス &lt;code&gt;singleton&lt;/code&gt; が生成されていればそれを返し,
-生成されていなければ, インスタンスを生成して返します.&lt;/p&gt;
-
-&lt;p&gt;このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる)
-しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.&lt;/p&gt;
-
-&lt;p&gt;スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.&lt;/p&gt;
-
-&lt;h2 id=&#34;builderパターン&#34;&gt;Builderパターン&lt;/h2&gt;
-
-&lt;p&gt;Builderパターンはインスタンス生成時に多数のパラメータが必要なときに便利なパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static class Builder {
-  private final Context context;
-  private Downloader downloader;
-  private ExecutorService service;
-  private Cache cache;
-  private Listener listener;
-  private RequestTransformer transformer;
-  private List&amp;lt;RequestHandler&amp;gt; requestHandlers;
-  private Bitmap.Config defaultBitmapConfig;
-
-  private boolean indicatorsEnabled;
-  private boolean loggingEnabled;
-
-  public Builder(Context context) {
-    if (context == null) {
-      throw new IllegalArgumentException(&amp;quot;Context must not be null.&amp;quot;);
-    }
-    this.context = context.getApplicationContext();
-  }
-
-  ...
-  ...
-
-  public Picasso build() {
-    Context context = this.context;
-
-    if (downloader == null) {
-      downloader = Utils.createDefaultDownloader(context);
-    }
-    if (cache == null) {
-      cache = new LruCache(context);
-    }
-    if (service == null) {
-      service = new PicassoExecutorService();
-    }
-    if (transformer == null) {
-      transformer = RequestTransformer.IDENTITY;
-    }
-
-    Stats stats = new Stats(cache);
-
-    Dispatcher dispatcher = new Dispatcher(context, service, HANDLER, downloader, cache, stats);
-
-    return new Picasso(context, dispatcher, cache, listener, transformer, requestHandlers, stats,
-        defaultBitmapConfig, indicatorsEnabled, loggingEnabled);
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;必ず必要なパラメータContextはコンストラクタ引数として渡し, オプション的なパラメータは必要に応じてセットします.
-最後に, buildメソッドをコールして, 対象のインスタンスを取得します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;new Builder(context) // 必ず必要なパラメータ
-    .debugging(true) // debuggingをtrueに
-    .memoryCache(memoryCacheInstance) // 専用のmemoryCacheを使う
-    .build(); // パラメータに異常がなければインスタンスを返す
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Builderパターンを使うことで, コンストラクタが指数的に増えてしまう問題を防ぐことが出来ます.
-また, Hoge(int, int, int)の時, 与えるintの順番を間違える可能性が高いですが,
-Builderパターンだと名前付きメソッドで値を指定出来るので, よりリーダブルであると思います(主観).&lt;/p&gt;
-
-&lt;h2 id=&#34;static-factoryパターン&#34;&gt;static factoryパターン&lt;/h2&gt;
-
-&lt;p&gt;static factoryパターンは, コンストラクタの代わりに, クラスのインスタンスを返すstatic methodを使用するパターンです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
-  if (singleton == null) {
-    synchronized (Picasso.class) {
-      if (singleton == null) {
-        singleton = new Builder(context).build();
-      }
-    }
-  }
-  return singleton;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Picasso#with(Context)は, Picassoのインスタンスを返します. static factoryメソッドを使うことで, コンストラクタ以上の柔軟性を提供することが出来ます.
-上の例で言うと, Picasso#withは, シングルトンパターンにより, 毎回インスタンスを生成する必要がありません. コンストラクタを使う場合は, 毎回インスタンスを生成する必要があります.
-さらに, static factoryは自分自身だけでなく, サブクラス, インターフェースの実装を返すことも可能です.
-上の例で言うとPicasso#withはPicassoのサブクラスを返しても問題なく動作します(もちろんサブクラスにバグがなければ).&lt;/p&gt;
-
-&lt;h2 id=&#34;早期リターンパターン-early-return-pattern&#34;&gt;早期リターンパターン(early return pattern)&lt;/h2&gt;
-
-&lt;p&gt;早期リターンパターンは, &lt;strong&gt;メソッドの先頭&lt;/strong&gt; で, 何もせずにメソッドを終了するか, 例外をスローするパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public void into(Target target) {
-  long started = System.nanoTime();
-
-  // こっから例外などの判定
-  checkMain();
-
-  if (target == null) {
-    throw new IllegalArgumentException(&amp;quot;Target must not be null.&amp;quot;);
-  }
-  if (deferred) {
-    throw new IllegalStateException(&amp;quot;Fit cannot be used with a Target.&amp;quot;);
-  }
-
-  if (!data.hasImage()) {
-    picasso.cancelRequest(target);
-    target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
-    return;
-  }
-  // 例外などの判定修了
-
-  // こっからメインロジック
-  Request request = createRequest(started);
-  String requestKey = createKey(request);
-
-  if (shouldReadFromMemoryCache(memoryPolicy)) {
-    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
-    if (bitmap != null) {
-      picasso.cancelRequest(target);
-      target.onBitmapLoaded(bitmap, MEMORY);
-      return;
-    }
-  }
-
-  target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
-
-  Action action =
-      new TargetAction(picasso, target, request, memoryPolicy, networkPolicy, errorDrawable,
-          requestKey, tag, errorResId);
-  picasso.enqueueAndSubmit(action);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;変数targetがnullなら例外をスロー&lt;/li&gt;
-&lt;li&gt;変数deferredがtrueなら例外をスロー&lt;/li&gt;
-&lt;li&gt;data.hasImage()がfalseなら, cancelRequestをコールしてreturn&lt;/li&gt;
-&lt;li&gt;メインのロジックの実行&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;メソッドのエラー処理の部分をメソッドの最初に, メインロジックの部分をその後にそれぞれ分割することで, 可読性を上げることが出来ます.
-アスペクト指向プログラミングに近い考え方だと思います.&lt;/p&gt;
-
-&lt;p&gt;アスペクト指向とは, メインロジック以外の副次的なロジック(セキュリティ要件を満たしているか, ログを取るなどなど)を, 宣言的に外部から注入できるプログラミングパラダイムです.
-1つのメソッド, ルーチンの中に, 複数の異なるロジックが含まれていると可読性が損なわれるので, その部分を切り出すことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;viewholderパターン&#34;&gt;ViewHolderパターン&lt;/h2&gt;
-
-&lt;p&gt;Android特有のパターンです. ListViewで子要素を切り替えるたびに毎回View#findViewByIdを実行するのはコストが高いので,
-Cacheしておくパターンです.(Picasso本体ではなく, exampleフォルダのコード例になります)&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&#34;&gt;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Override public View getView(int position, View view, ViewGroup parent) {
-  ViewHolder holder;
-  if (view == null) {
-    view = LayoutInflater.from(context).inflate(R.layout.sample_list_detail_item, parent, false);
-    holder = new ViewHolder();
-    holder.image = (ImageView) view.findViewById(R.id.photo);
-    holder.text = (TextView) view.findViewById(R.id.url);
-    view.setTag(holder);
-  } else {
-    holder = (ViewHolder) view.getTag();
-  }
-
-  ...
-}
-
-static class ViewHolder {
-  ImageView image;
-  TextView text;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;BaseAdapter#getViewで, Viewを生成するときに処理に必要な情報をViewHolderに保存しておきます.
-こうすることで, 次回以降のコストを減らすことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;observerパターン&#34;&gt;Observerパターン&lt;/h2&gt;
-
-&lt;p&gt;非同期な処理が完了, 状態が変化したことを, クライアント(主に呼び出し元のインスタンス)に通知をする時に使われるパターンです. 非常にポピュラーなパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void into(ImageView target, Callback callback) {
-  long started = System.nanoTime();
-  checkMain();
-
-  ...
-
-  if (shouldReadFromMemoryCache(memoryPolicy)) {
-    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
-    if (bitmap != null) {
-      picasso.cancelRequest(target);
-      setBitmap(target, picasso.context, bitmap, MEMORY, noFade, picasso.indicatorsEnabled);
-      if (picasso.loggingEnabled) {
-        log(OWNER_MAIN, VERB_COMPLETED, request.plainId(), &amp;quot;from &amp;quot; + MEMORY);
-      }
-      if (callback != null) {
-        callback.onSuccess();
-      }
-      return;
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;into(ImageView, Callback)の, Callbackの部分がObserverパターンのポイントになります.
-intoメソッドは非同期な処理のため, 結果が成功したかを返り値として受け取ることが出来ません.
-そこで, 非同期処理が終わったら, 引数で渡したcallbackをコールするようにすることで結果を受け取ることが出来ます.&lt;/p&gt;
-</description>
+      <description>Picassoで使われているデザインパターンを紹介する記事です.
+Singletonパターン Singletonパターンは, インスタンスの生成を1つに制限するパターンになります.
+https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672
+public static Picasso with(Context context) { if (singleton == null) { synchronized (Picasso.class) { if (singleton == null) { singleton = new Builder(context).build(); } } } return singleton; }  Picasso#withは, すでにPicassoのインスタンス singleton が生成されていればそれを返し, 生成されていなければ, インスタンスを生成して返します.
+このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる) しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.
+スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.
+Builderパターン Builderパターンはインスタンス生成時に多数のパラメータが必要なときに便利なパターンです.
+https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702
+public static class Builder { private final Context context; private Downloader downloader; private ExecutorService service; private Cache cache; private Listener listener; private RequestTransformer transformer; private List&amp;lt;RequestHandler&amp;gt; requestHandlers; private Bitmap.</description>
     </item>
-    
-    
     
     <item>
       <title>デザインパターン: Value Object</title>
       <link>https://satoshun.github.io/2015/02/despatt-valueobject/</link>
-      <pubDate>Sun, 22 Feb 2015 04:53:36 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 04:53:36 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/despatt-valueobject/</guid>
-      <description>
-
-&lt;p&gt;Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます.
-immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;immutableであるメリット&#34;&gt;immutableであるメリット&lt;/h2&gt;
-
-&lt;p&gt;immutableであるメリットとしては&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;状態を持たないので, 呼び出し順序を考慮しなくて良い&lt;/li&gt;
-&lt;li&gt;値が書き換わらないため, thread safeである&lt;/li&gt;
-&lt;li&gt;プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Calendar getYesterday() {
-    Calendar rightnow = Calendar.getInstance(); // ここの時点ではrightnowは, 今の時間を示している
-    rightnow.add(Calendar.DATE, -1); // ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない
-    return rightnow;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, &lt;code&gt;rightnow.add(Calendar.DATE, -1)&lt;/code&gt;を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
-オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;indentityキーを持たないメリット&#34;&gt;indentityキーを持たないメリット&lt;/h2&gt;
-
-&lt;p&gt;Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います. identityキーが重要かどうかで, パターンが変わってくるので, 慣れが必要そうです.&lt;/p&gt;
-
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&#34;&gt;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます. immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.
+immutableであるメリット immutableであるメリットとしては
+ 状態を持たないので, 呼び出し順序を考慮しなくて良い 値が書き換わらないため, thread safeである プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い  1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.
+public static Calendar getYesterday() { Calendar rightnow = Calendar.getInstance(); // ここの時点ではrightnowは, 今の時間を示している rightnow.add(Calendar.DATE, -1); // ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない return rightnow; }  上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, rightnow.add(Calendar.DATE, -1)を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます. オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.
+indentityキーを持たないメリット Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います.</description>
     </item>
-    
-    
     
     <item>
       <title>デザインパターン: Null Object</title>
       <link>https://satoshun.github.io/2015/02/despatt-null_object/</link>
-      <pubDate>Sun, 22 Feb 2015 02:22:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 02:22:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/despatt-null_object/</guid>
-      <description>
-
-&lt;p&gt;Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうデザインパターンです.&lt;/p&gt;
-
-&lt;p&gt;このパターンのメリットは, &lt;code&gt;if (obj == null)&lt;/code&gt;のような面倒臭い記述を除去出来るところです.
-また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます.
-(nullの時の処理を, Objectに持たせることが出来るパターン)&lt;/p&gt;
-
-&lt;h2 id=&#34;例&#34;&gt;例&lt;/h2&gt;
-
-&lt;p&gt;例があった方が分かり易いので, 簡単なサンプルプログラムです.&lt;/p&gt;
-
-&lt;p&gt;まずは, Null Objectを使わない場合になります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return NullStudent(id)
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-
-student = Student.get_student(1)
-if student is not None:
-    student.show()
-else:
-    print(&#39;not student&#39;)
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次にNull objectパターンを使い, &lt;code&gt;if student is not None:&lt;/code&gt; を除去します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return NullStudent(id)
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-    @property
-    def is_null(self):
-        return False
-
-
-class NullStudent(Student):
-    @property
-    def is_null(self):
-        return True
-
-
-student = Student.get_student(1)
-if student.is_null:
-    print(&#39;not student&#39;)
-else:
-    student.show()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;NullStudentクラスを定義し, &lt;code&gt;is_null&lt;/code&gt;メソッドでTrueを返すようにすることで, Nullの処理を委譲しまう.&lt;/p&gt;
-
-&lt;p&gt;しかし, これだけだと旨味が少ないので, ポリモーフィズムを使ってさらに書き換えてみます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return None
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-    @property
-    def is_null(self):
-        return False
-
-
-class NullStudent(Student):
-    @property
-    def is_null(self):
-        return True
-
-    def show(self):
-        print(&#39;null student&#39;)
-
-
-student = Student.get_student(100)
-student.show()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでオブジェクト指向的なコードになりました.&lt;/p&gt;
-
-&lt;h3 id=&#34;まとめ&#34;&gt;まとめ&lt;/h3&gt;
-
-&lt;p&gt;nullの時のboilerplate的な処理をオブジェクトに閉じ込めることが出来るパターンになります.
-&lt;code&gt;if hoge != null&lt;/code&gt;が良く出てくるようなら, このパターンを使うと良いと思います.&lt;/p&gt;
-</description>
+      <description>Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうデザインパターンです.
+このパターンのメリットは, if (obj == null)のような面倒臭い記述を除去出来るところです. また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます. (nullの時の処理を, Objectに持たせることが出来るパターン)
+例 例があった方が分かり易いので, 簡単なサンプルプログラムです.
+まずは, Null Objectを使わない場合になります.
+class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&#39;id:{}&#39;.format(self.id)) student = Student.get_student(1) if student is not None: student.show() else: print(&#39;not student&#39;)  次にNull objectパターンを使い, if student is not None: を除去します.
+class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&#39;id:{}&#39;.</description>
     </item>
-    
     
   </channel>
 </rss>

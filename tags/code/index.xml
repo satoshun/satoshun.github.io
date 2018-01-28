@@ -1,409 +1,71 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Code on stsnブログ</title>
     <link>https://satoshun.github.io/tags/code/</link>
+    <description>Recent content in Code on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 22 Feb 2015 04:53:36 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 22 Feb 2015 04:53:36 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>デザインパターン: Value Object</title>
       <link>https://satoshun.github.io/2015/02/despatt-valueobject/</link>
-      <pubDate>Sun, 22 Feb 2015 04:53:36 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 04:53:36 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/despatt-valueobject/</guid>
-      <description>
-
-&lt;p&gt;Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます.
-immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;immutableであるメリット&#34;&gt;immutableであるメリット&lt;/h2&gt;
-
-&lt;p&gt;immutableであるメリットとしては&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;状態を持たないので, 呼び出し順序を考慮しなくて良い&lt;/li&gt;
-&lt;li&gt;値が書き換わらないため, thread safeである&lt;/li&gt;
-&lt;li&gt;プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Calendar getYesterday() {
-    Calendar rightnow = Calendar.getInstance(); // ここの時点ではrightnowは, 今の時間を示している
-    rightnow.add(Calendar.DATE, -1); // ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない
-    return rightnow;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, &lt;code&gt;rightnow.add(Calendar.DATE, -1)&lt;/code&gt;を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
-オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;indentityキーを持たないメリット&#34;&gt;indentityキーを持たないメリット&lt;/h2&gt;
-
-&lt;p&gt;Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います. identityキーが重要かどうかで, パターンが変わってくるので, 慣れが必要そうです.&lt;/p&gt;
-
-&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&#34;&gt;https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます. immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.
+immutableであるメリット immutableであるメリットとしては
+ 状態を持たないので, 呼び出し順序を考慮しなくて良い 値が書き換わらないため, thread safeである プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い  1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.
+public static Calendar getYesterday() { Calendar rightnow = Calendar.getInstance(); // ここの時点ではrightnowは, 今の時間を示している rightnow.add(Calendar.DATE, -1); // ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない return rightnow; }  上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, rightnow.add(Calendar.DATE, -1)を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます. オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.
+indentityキーを持たないメリット Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います.</description>
     </item>
-    
-    
     
     <item>
       <title>デザインパターン: Null Object</title>
       <link>https://satoshun.github.io/2015/02/despatt-null_object/</link>
-      <pubDate>Sun, 22 Feb 2015 02:22:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 02:22:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/despatt-null_object/</guid>
-      <description>
-
-&lt;p&gt;Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうデザインパターンです.&lt;/p&gt;
-
-&lt;p&gt;このパターンのメリットは, &lt;code&gt;if (obj == null)&lt;/code&gt;のような面倒臭い記述を除去出来るところです.
-また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます.
-(nullの時の処理を, Objectに持たせることが出来るパターン)&lt;/p&gt;
-
-&lt;h2 id=&#34;例&#34;&gt;例&lt;/h2&gt;
-
-&lt;p&gt;例があった方が分かり易いので, 簡単なサンプルプログラムです.&lt;/p&gt;
-
-&lt;p&gt;まずは, Null Objectを使わない場合になります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return NullStudent(id)
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-
-student = Student.get_student(1)
-if student is not None:
-    student.show()
-else:
-    print(&#39;not student&#39;)
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次にNull objectパターンを使い, &lt;code&gt;if student is not None:&lt;/code&gt; を除去します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return NullStudent(id)
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-    @property
-    def is_null(self):
-        return False
-
-
-class NullStudent(Student):
-    @property
-    def is_null(self):
-        return True
-
-
-student = Student.get_student(1)
-if student.is_null:
-    print(&#39;not student&#39;)
-else:
-    student.show()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;NullStudentクラスを定義し, &lt;code&gt;is_null&lt;/code&gt;メソッドでTrueを返すようにすることで, Nullの処理を委譲しまう.&lt;/p&gt;
-
-&lt;p&gt;しかし, これだけだと旨味が少ないので, ポリモーフィズムを使ってさらに書き換えてみます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Student(object):
-    def __init__(self, id):
-        self.id = id
-
-    @staticmethod
-    def get_student(id):
-        if id &amp;lt;= 10:
-            return Student(id)
-        return None
-
-    def show(self):
-        print(&#39;id:{}&#39;.format(self.id))
-
-    @property
-    def is_null(self):
-        return False
-
-
-class NullStudent(Student):
-    @property
-    def is_null(self):
-        return True
-
-    def show(self):
-        print(&#39;null student&#39;)
-
-
-student = Student.get_student(100)
-student.show()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでオブジェクト指向的なコードになりました.&lt;/p&gt;
-
-&lt;h3 id=&#34;まとめ&#34;&gt;まとめ&lt;/h3&gt;
-
-&lt;p&gt;nullの時のboilerplate的な処理をオブジェクトに閉じ込めることが出来るパターンになります.
-&lt;code&gt;if hoge != null&lt;/code&gt;が良く出てくるようなら, このパターンを使うと良いと思います.&lt;/p&gt;
-</description>
+      <description>Null Objectパターンは, オブジェクト自身にNullかどうかの判定をしてもらうデザインパターンです.
+このパターンのメリットは, if (obj == null)のような面倒臭い記述を除去出来るところです. また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます. (nullの時の処理を, Objectに持たせることが出来るパターン)
+例 例があった方が分かり易いので, 簡単なサンプルプログラムです.
+まずは, Null Objectを使わない場合になります.
+class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&#39;id:{}&#39;.format(self.id)) student = Student.get_student(1) if student is not None: student.show() else: print(&#39;not student&#39;)  次にNull objectパターンを使い, if student is not None: を除去します.
+class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&#39;id:{}&#39;.</description>
     </item>
-    
-    
     
     <item>
       <title>Golang: nil pointer receiverの話</title>
       <link>https://satoshun.github.io/2015/02/go-nil_receiver/</link>
-      <pubDate>Sun, 22 Feb 2015 02:08:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/go-nil_receiver/</guid>
-      <description>
-
-&lt;p&gt;nil pointer receiverについてお話しようと思います. 具体例をあげたほうが分かりやすいので, コードを元に説明していきます.&lt;/p&gt;
-
-&lt;p&gt;gist: &lt;a href=&#34;https://gist.github.com/satoshun/3dc1302dbc163c9a9245&#34;&gt;https://gist.github.com/satoshun/3dc1302dbc163c9a9245&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;にソースコードがあります.&lt;/p&gt;
-
-&lt;h2 id=&#34;nil-pointer-receiver&#34;&gt;nil pointer receiver&lt;/h2&gt;
-
-&lt;p&gt;nilについて. 下のコードを見てください.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type A struct {
-}
-
-func (a *A) b() {
-    fmt.Println(1000)
-}
-
-func main() {
-    var a *A = nil
-    a.b()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;どう考えても, &lt;code&gt;runtime error: nil pointer access&lt;/code&gt; 的なものが出るだろうと思っていました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sato$ go run main.go
-1000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです!
-この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.&lt;/p&gt;
-
-&lt;p&gt;ちなみに, Value receiverの場合はエラーが出ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type A struct {
-}
-
-// b is value receiver
-func (a A) b() {
-    fmt.Println(1000)
-}
-
-func main() {
-    var a *A = nil
-    a.b()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;nil Pointer receiverは, &lt;a href=&#34;http://blog.s-shun.net/design_pattern-null_object/&#34;&gt;Null Objectパターン&lt;/a&gt;と似ている気がしました. Receiverのほうでは, nilでも動くようにしておく必要がありそうです.&lt;/p&gt;
-</description>
+      <description>nil pointer receiverについてお話しようと思います. 具体例をあげたほうが分かりやすいので, コードを元に説明していきます.
+gist: https://gist.github.com/satoshun/3dc1302dbc163c9a9245
+にソースコードがあります.
+nil pointer receiver nilについて. 下のコードを見てください.
+package main import &amp;quot;fmt&amp;quot; type A struct { } func (a *A) b() { fmt.Println(1000) } func main() { var a *A = nil a.b() }  どう考えても, runtime error: nil pointer access 的なものが出るだろうと思っていました.
+sato$ go run main.go 1000  ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです! この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.
+ちなみに, Value receiverの場合はエラーが出ます.
+package main import &amp;quot;fmt&amp;quot; type A struct { } // b is value receiver func (a A) b() { fmt.</description>
     </item>
-    
-    
     
     <item>
       <title>様々な言語のフィボナッチ関数</title>
       <link>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</link>
-      <pubDate>Sun, 22 Feb 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</guid>
-      <description>
-
-&lt;p&gt;Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.&lt;/p&gt;
-
-&lt;p&gt;極力, その言語特有の機能を使って実装するようにしました.&lt;/p&gt;
-
-&lt;h2 id=&#34;go&#34;&gt;Go&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;type fibonacci int&lt;/code&gt;で, int型にfibonacci用の関数を生やしました.
-せっかくなので, goroutineも使ってみました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type fibonacci int
-
-func (self fibonacci) value() chan int {
-  ch := make(chan int, 1)
-  a, b := 0, 1
-  index := 0
-  go func() {
-    defer close(ch)
-    for {
-      if int(self) &amp;lt; index {
-        break
-      }
-      a, b = b, a+b
-      index++
-      ch &amp;lt;- a
-    }
-  }()
-
-  return ch
-}
-
-func main() {
-  var i fibonacci
-  i = 10
-  for v := range i.value() {
-    fmt.Printf(&amp;quot;%d &amp;quot;, v)
-  }
-  fmt.Println()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
-
-&lt;p&gt;iteratorを定義して, 実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Fibonacci(object):
-    def __init__(self, i):
-        self.__i = i
-        self.index = 0
-
-    def __iter__(self):
-        self.a = 0
-        self.b = 1
-        return self
-
-    def __next__(self):
-        while self.__i &amp;gt;= self.index:
-            self.index += 1
-            self.a, self.b = self.b, self.a + self.b
-            return self.a
-        raise StopIteration()
-
-
-if __name__ == &#39;__main__&#39;:
-    f = Fibonacci(10)
-    for number in f:
-        print(number, end=&#39; &#39;)
-    print()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;bash&#34;&gt;bash&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$[]&lt;/code&gt;でexpressionを表現しています. これ実装するまで知りませんでした.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
-
-function fib()
-{
-    case $1 in
-        0) echo 0 ;;
-        [1-2]) echo 1 ;;
-        *) echo $[`fib $[$1-1]` + `fib $[$1-2]`] ;;
-    esac
-}
-
-for i in {0..10}; do
-    fib $i
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;javascript&#34;&gt;JavaScript&lt;/h2&gt;
-
-&lt;p&gt;単純な再起で実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function fib(i) {
-  return function inner(i) {
-    return i &amp;gt; 2 ? inner(i - 1) + inner(i - 2) : (i === 2 ? 1 : i);
-  }(i);
-}
-
-for (var i = 0; i &amp;lt;= 10; i++) {
-  console.log(fib(i));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;java&#34;&gt;Java&lt;/h2&gt;
-
-&lt;p&gt;Java8のstreamを使って実装しました. filter非常に便利.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import java.util.*;
-
-
-public class Fibonacci {
-    public static void main(String[] args) {
-        System.out.println(fibonacci(10));
-        System.out.println(fibonacci(20));
-    }
-
-    public static int fibonacci(int n) {
-        List&amp;lt;Integer&amp;gt; data = new ArrayList&amp;lt;Integer&amp;gt;() {{
-            add(0); add(1); add(1); add(2); add(3);
-        }};
-
-        for (int i = 4; i &amp;lt; n; i++) {
-            data.add(
-                data
-                    .stream()
-                    .filter(nn -&amp;gt; nn &amp;gt;= data.get(data.size()-2))
-                    .mapToInt(nn -&amp;gt; nn)
-                    .sum()
-                );
-        }
-        return data.get(n);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;fibonacciの計算には向かないけど, Java8のstreamが便利でした. Javaも進化しているんだなと.&lt;/p&gt;
-</description>
+      <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
+極力, その言語特有の機能を使って実装するようにしました.
+Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
+package main import &amp;quot;fmt&amp;quot; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
-    
     
   </channel>
 </rss>

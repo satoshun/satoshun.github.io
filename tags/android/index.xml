@@ -1,1279 +1,182 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Android on stsnブログ</title>
     <link>https://satoshun.github.io/tags/android/</link>
+    <description>Recent content in Android on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 07 Jan 2018 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 28 Jan 2018 00:00:00 +0000</lastBuildDate>
     
+	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Android: ViewがどのFragmentに属しているかをViewから取得する</title>
+      <link>https://satoshun.github.io/2018/01/android-how_to_get_fragment_from_view/</link>
+      <pubDate>Sun, 28 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/01/android-how_to_get_fragment_from_view/</guid>
+      <description>ViewがどのFragmentに属しているかを取得する方法の紹介になります。 前々からtag、id以外の仕組みで取得出来ないかなと考えていたら、GlideでViewからFragmentを取得するコードがありました。
+@Nullable private Fragment findSupportFragment(@NonNull View target, @NonNull FragmentActivity activity) { tempViewToSupportFragment.clear(); findAllSupportFragmentsWithViews( activity.getSupportFragmentManager().getFragments(), tempViewToSupportFragment); Fragment result = null; View activityRoot = activity.findViewById(android.R.id.content); View current = target; while (!current.equals(activityRoot)) { result = tempViewToSupportFragment.get(current); if (result != null) { break; } if (current.getParent() instanceof View) { current = (View) current.getParent(); } else { break; } } tempViewToSupportFragment.clear(); return result; } private static void findAllSupportFragmentsWithViews( @Nullable Collection&amp;lt;Fragment&amp;gt; topLevelFragments, @NonNull Map&amp;lt;View, Fragment&amp;gt; result) { if (topLevelFragments == null) { return; } for (Fragment fragment : topLevelFragments) { // getFragment()s in the support FragmentManager may contain null values, see #1991.</description>
+    </item>
     
     <item>
       <title>Kotlin: 拡張関数からprotectedメソッドにアクセスする</title>
       <link>https://satoshun.github.io/2018/01/extension-function-with-protected/</link>
-      <pubDate>Sun, 07 Jan 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 07 Jan 2018 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2018/01/extension-function-with-protected/</guid>
-      <description>
-
-&lt;p&gt;LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package android.arch.lifecycle;
-
-public abstract class LiveData&amp;lt;T&amp;gt; {
-    protected void onActive() {
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch.lifecycle
-
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
-  onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch
-
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
-  onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;なぜかこのような挙動になるか&#34;&gt;なぜかこのような挙動になるか?&lt;/h2&gt;
-
-&lt;p&gt;protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&#34;&gt;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description> LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。
+package android.arch.lifecycle; public abstract class LiveData&amp;lt;T&amp;gt; { protected void onActive() { } }  onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。
+package android.arch.lifecycle fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる }  同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。
+package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot; }  なぜかこのような挙動になるか? protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。
+まとめ protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう
+参考  https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a  </description>
     </item>
-    
-    
     
     <item>
       <title>Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました</title>
       <link>https://satoshun.github.io/2015/09/android-app-events/</link>
-      <pubDate>Sun, 06 Sep 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/09/android-app-events/</guid>
-      <description>
-
-&lt;p&gt;イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.&lt;/p&gt;
-
-&lt;p&gt;アプリの技術的機能, 特徴は以下になります.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;HTTPを介してイベントのデータを取得する
-
-&lt;ul&gt;
-&lt;li&gt;検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある&lt;/li&gt;
-&lt;li&gt;それら複数のサーバーはJSONを返すが, 微妙にJSONの構造が異なる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Data-Bindingライブラリを使う&lt;/li&gt;
-&lt;li&gt;MVP(Model-View-Presenter)パターンを使う
-
-&lt;ul&gt;
-&lt;li&gt;Activity(Fragment)に機能が集中しないようにしたい!&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上記を中心にどのように実装をしたかを説明をしていきます.&lt;/p&gt;
-
-&lt;p&gt;フルソースコードはここにあります. &lt;a href=&#34;https://github.com/satoshun/AndroidEvents&#34;&gt;https://github.com/satoshun/AndroidEvents&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;httpを介してイベントのデータを取得する&#34;&gt;HTTPを介してイベントのデータを取得する&lt;/h2&gt;
-
-&lt;p&gt;connpass, Atnd, Zusaarの3つのAPIを使うことにしました. &lt;a href=&#34;http://square.github.io/retrofit/&#34;&gt;Retrofit&lt;/a&gt;でAPIを定義し,
-JSONのパースには&lt;a href=&#34;https://github.com/google/gson&#34;&gt;Gson&lt;/a&gt;, データの処理には&lt;a href=&#34;https://github.com/ReactiveX/RxJava&#34;&gt;RxJava&lt;/a&gt;を使いました.&lt;/p&gt;
-
-&lt;p&gt;例えば, connpass APIは以下のように定義しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/** Get data from Conpass  */
-public interface Connpass {
-    @GET(&amp;quot;/v1/event&amp;quot;)
-    Observable&amp;lt;ConnpassResponse&amp;gt; search(
-            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
-
-    @GET(&amp;quot;/v1/event&amp;quot;)
-    Observable&amp;lt;ConnpassResponse&amp;gt; search(
-            @Query(&amp;quot;keyword&amp;quot;) String keyword,
-            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
-Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます.
-(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
-今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Observable.merge(
-  connpass.search(keyword, generateYmd()),
-  atnd.search(keyword, generateYmd()),
-  zusaar.search(keyword, generateYmd()))
-  .subscribe(...)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;Observable.merge&lt;/code&gt;は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
-あとは, これをsubscribeして, データを取得します.(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h2 id=&#34;data-bindingライブラリを使う&#34;&gt;Data-Bindingライブラリを使う&lt;/h2&gt;
-
-&lt;p&gt;Data-BindingはXMLレイアウトにbindしたいデータ(インスタンス)を記述することで, よしなにデータを出力してくれる機能です.
-AngularJSのデータバインディングをイメージして貰えると良いと思います.
-書くコード量が減り, とても便利なライブラリでした. (&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
-ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EventAdapter extends BaseAdapter {
-    /*
-      .. ....
-     */
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            AdapterEventBinding binding = AdapterEventBinding.inflate(inflater, parent, false);
-            view = binding.getRoot();
-            view.setTag(binding);
-        }
-
-        AdapterEventBinding binding = (AdapterEventBinding) view.getTag();
-        Event event = getItem(position);
-        binding.setEvent(event);
-        binding.setDateFormat(DATE_FORMAT);
-
-        return view;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AdapterEventBindingをViewHolderの代わりに使っています.
-(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&lt;/a&gt;)
-なかなか良いと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;mvp-model-view-presenter-パターンを使う&#34;&gt;MVP(Model-View-Presenter)パターンを使う&lt;/h2&gt;
-
-&lt;p&gt;MVPパターンとは, MVCの親戚?のようなパターンで, 責務をModel, View, Presenterにそれぞれ分割するパターンです.&lt;/p&gt;
-
-&lt;p&gt;Android開発は, Activity(Fragment)の責務が大きくなりがちです. 具体的にはActivityは以下のよう責務を持ちます.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ユーザからのイベントハンドリング
-
-&lt;ul&gt;
-&lt;li&gt;クリック, ロングクリック, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;システムからのイベントハンドリング
-
-&lt;ul&gt;
-&lt;li&gt;画面回転, アプリ終了, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;データの取得する際の非同期処理
-
-&lt;ul&gt;
-&lt;li&gt;HTTP(network), SQLite, SharedPreferences, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;取得したデータをパースしてViewにパースしたデータを割り当てる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これらを全て1つのActivityで処理をすると, どうしてもFat-Activityになってしまいます. (１つのAcitvityが1000行ありますみたいな)&lt;/p&gt;
-
-&lt;p&gt;そこでMVPです.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Presenter
-
-&lt;ul&gt;
-&lt;li&gt;Modelから(非同期に)データを取得し, Viewに取得したデータをどのようにに表示するかを指定する(ビューロジック)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Model
-
-&lt;ul&gt;
-&lt;li&gt;データを取得してアプリで使いやすい形にデータをパースする. いわゆるビジネスロジック.&lt;/li&gt;
-&lt;li&gt;Retrofitを叩く&lt;/li&gt;
-&lt;li&gt;SQLiteにQueryを発行する&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;View(Activity)
-
-&lt;ul&gt;
-&lt;li&gt;ユーザからのクリックイベントなど, イベントのハンドリングをする(onClickとか)&lt;/li&gt;
-&lt;li&gt;イベントの処理はPresenterに任せる&lt;/li&gt;
-&lt;li&gt;必要なデータをPresenterから受け取り, 画面に表示する&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;このように責務を分割することで, Activityの責務が薄くなります.
-今回のコードも今まで自分が書いたコードと比較すると, 大分良くなった気がします(当人比)&lt;/p&gt;
-
-&lt;h2 id=&#34;その他-メモ&#34;&gt;その他, メモ&lt;/h2&gt;
-
-&lt;h3 id=&#34;dagger2&#34;&gt;Dagger2&lt;/h3&gt;
-
-&lt;p&gt;DI(Dependency Injection)をするためのツールで, 実装をデバッグ時, 本番時, テスト時に切り替えられるライブラリです.
-デバッグ時はデータの取得先を変えたい, テスト時にはネットワークアクセスしないで欲しい, などといった時に力を発揮します.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;MVPパターンの話をしましたが, MVPが絶対良いという話ではないです.
-しかし, 何もパターンがないとFat-Activityになってしまったり, 無秩序なコードになってしまいがちなので, そのような場合は, MVPのようなパターンを導入したほうが良いと思います.&lt;/p&gt;
-
-&lt;p&gt;まだアプリ自体はまだ付けたい機能があるため, 公開していません. 近々しようと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;references&#34;&gt;references&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://antonioleiva.com/mvp-android/&#34;&gt;MVP for Android: how to organize the presentation layer&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.
+アプリの技術的機能, 特徴は以下になります.
+ HTTPを介してイベントのデータを取得する  検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある それら複数のサーバーはJSONを返すが, 微妙にJSONの構造が異なる  Data-Bindingライブラリを使う MVP(Model-View-Presenter)パターンを使う  Activity(Fragment)に機能が集中しないようにしたい!   上記を中心にどのように実装をしたかを説明をしていきます.
+フルソースコードはここにあります. https://github.com/satoshun/AndroidEvents
+HTTPを介してイベントのデータを取得する connpass, Atnd, Zusaarの3つのAPIを使うことにしました. RetrofitでAPIを定義し, JSONのパースにはGson, データの処理にはRxJavaを使いました.
+例えば, connpass APIは以下のように定義しました.
+/** Get data from Conpass */ public interface Connpass { @GET(&amp;quot;/v1/event&amp;quot;) Observable&amp;lt;ConnpassResponse&amp;gt; search( @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds); @GET(&amp;quot;/v1/event&amp;quot;) Observable&amp;lt;ConnpassResponse&amp;gt; search( @Query(&amp;quot;keyword&amp;quot;) String keyword, @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds); }  keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です. Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます. (https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10)
+次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.</description>
     </item>
-    
-    
     
     <item>
       <title>Improving Android: 列挙にはenumではなくIntDef, StringDef annotationを使う</title>
       <link>https://satoshun.github.io/2015/08/improve-android-performance1/</link>
-      <pubDate>Tue, 11 Aug 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Tue, 11 Aug 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/08/improve-android-performance1/</guid>
-      <description>
-
-&lt;p&gt;enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.&lt;/p&gt;
-
-&lt;p&gt;列挙型としてのenumは, 以下のように書くことが出来ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;enum Month {
-    JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
-    JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
-}
-
-/** 指定した月が何日まであるかを返す */
-int getDate(Month month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;また, enumではなく定数を使うとしたら以下のように書くことが出来ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;static final int JANUARY = 1;
-static final int FEBRUARY = 2;
-static final int MARCH = 3;
-static final int APRIL = 4;
-...
-static final int NOVEMBER = 11;
-static final int DECEMBER = 12;
-
-/** 指定した月が何日まであるかを返す */
-int getDate(int month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;定数を使うバージョンだと, &lt;code&gt;getDate(int)&lt;/code&gt;のため, 予期せぬ値が入ってきてしまう可能性があります. enumの場合は, &lt;code&gt;getDate(Month)&lt;/code&gt;のため, type-safeを提供してくれます. これは, 大きなメリットです.&lt;/p&gt;
-
-&lt;p&gt;しかし, enumは, 定数を使うバージョンと比較すると, apkサイズが大きくなってしまうデメリットがあります. Androidではメモリリソースはとても貴重なため, enumを使うのは極力避けたほうが良いです.&lt;/p&gt;
-
-&lt;p&gt;Androidでは, IntDef(StringDef) annotationを使うことで, type-safeに定数を使うことが出来ます.&lt;/p&gt;
-
-&lt;p&gt;上記のMonthのコードをIntDef annotationを使い, 書き換えてみます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// Monthに代入することが出来る定数を宣言
-@IntDef({JANUARY, FEBRUARY, MARCH, APRIL, ...})
-@Retention(RetentionPolicy.SOURCE)
-public @interface Month {};
-static final int JANUARY = 1;
-static final int FEBRUARY = 2;
-static final int MARCH = 3;
-static final int APRIL = 4;
-...
-
-int getDate(@Month int month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Month annotationをIntDefで定義し, &lt;code&gt;getDate(@Month int)&lt;/code&gt;と書くことでtype-safeにgetDateメソッドを宣言することが出来ます.
-この書き方は, 「enumのtype-safe」と「定数のパフォーマンス」を満たしています.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;定数はtype-safeでないため, IntDef(StringDef) annotationを使い, type-safeを提供する&lt;/li&gt;
-&lt;li&gt;enumはパフォーマンスに影響を与える可能性があるため, IntDef(StringDef) annotationを使うことを検討する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://tools.android.com/tech-docs/support-annotations&#34;&gt;Support Annotations&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.
+列挙型としてのenumは, 以下のように書くことが出来ます.
+enum Month { JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER } /** 指定した月が何日まであるかを返す */ int getDate(Month month) { //// }  また, enumではなく定数を使うとしたら以下のように書くことが出来ます.
+static final int JANUARY = 1; static final int FEBRUARY = 2; static final int MARCH = 3; static final int APRIL = 4; ... static final int NOVEMBER = 11; static final int DECEMBER = 12; /** 指定した月が何日まであるかを返す */ int getDate(int month) { //// }  定数を使うバージョンだと, getDate(int)のため, 予期せぬ値が入ってきてしまう可能性があります.</description>
     </item>
-    
-    
     
     <item>
       <title>Android: Picassoで使われているデザインパターン</title>
       <link>https://satoshun.github.io/2015/06/reading_picasso/</link>
-      <pubDate>Fri, 12 Jun 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Fri, 12 Jun 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/06/reading_picasso/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso&#34;&gt;Picasso&lt;/a&gt;で使われているデザインパターンを紹介する記事です.&lt;/p&gt;
-
-&lt;h2 id=&#34;singletonパターン&#34;&gt;Singletonパターン&lt;/h2&gt;
-
-&lt;p&gt;Singletonパターンは, インスタンスの生成を1つに制限するパターンになります.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
-  if (singleton == null) {
-    synchronized (Picasso.class) {
-      if (singleton == null) {
-        singleton = new Builder(context).build();
-      }
-    }
-  }
-  return singleton;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Picasso#withは, すでにPicassoのインスタンス &lt;code&gt;singleton&lt;/code&gt; が生成されていればそれを返し,
-生成されていなければ, インスタンスを生成して返します.&lt;/p&gt;
-
-&lt;p&gt;このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる)
-しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.&lt;/p&gt;
-
-&lt;p&gt;スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.&lt;/p&gt;
-
-&lt;h2 id=&#34;builderパターン&#34;&gt;Builderパターン&lt;/h2&gt;
-
-&lt;p&gt;Builderパターンはインスタンス生成時に多数のパラメータが必要なときに便利なパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static class Builder {
-  private final Context context;
-  private Downloader downloader;
-  private ExecutorService service;
-  private Cache cache;
-  private Listener listener;
-  private RequestTransformer transformer;
-  private List&amp;lt;RequestHandler&amp;gt; requestHandlers;
-  private Bitmap.Config defaultBitmapConfig;
-
-  private boolean indicatorsEnabled;
-  private boolean loggingEnabled;
-
-  public Builder(Context context) {
-    if (context == null) {
-      throw new IllegalArgumentException(&amp;quot;Context must not be null.&amp;quot;);
-    }
-    this.context = context.getApplicationContext();
-  }
-
-  ...
-  ...
-
-  public Picasso build() {
-    Context context = this.context;
-
-    if (downloader == null) {
-      downloader = Utils.createDefaultDownloader(context);
-    }
-    if (cache == null) {
-      cache = new LruCache(context);
-    }
-    if (service == null) {
-      service = new PicassoExecutorService();
-    }
-    if (transformer == null) {
-      transformer = RequestTransformer.IDENTITY;
-    }
-
-    Stats stats = new Stats(cache);
-
-    Dispatcher dispatcher = new Dispatcher(context, service, HANDLER, downloader, cache, stats);
-
-    return new Picasso(context, dispatcher, cache, listener, transformer, requestHandlers, stats,
-        defaultBitmapConfig, indicatorsEnabled, loggingEnabled);
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;必ず必要なパラメータContextはコンストラクタ引数として渡し, オプション的なパラメータは必要に応じてセットします.
-最後に, buildメソッドをコールして, 対象のインスタンスを取得します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;new Builder(context) // 必ず必要なパラメータ
-    .debugging(true) // debuggingをtrueに
-    .memoryCache(memoryCacheInstance) // 専用のmemoryCacheを使う
-    .build(); // パラメータに異常がなければインスタンスを返す
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Builderパターンを使うことで, コンストラクタが指数的に増えてしまう問題を防ぐことが出来ます.
-また, Hoge(int, int, int)の時, 与えるintの順番を間違える可能性が高いですが,
-Builderパターンだと名前付きメソッドで値を指定出来るので, よりリーダブルであると思います(主観).&lt;/p&gt;
-
-&lt;h2 id=&#34;static-factoryパターン&#34;&gt;static factoryパターン&lt;/h2&gt;
-
-&lt;p&gt;static factoryパターンは, コンストラクタの代わりに, クラスのインスタンスを返すstatic methodを使用するパターンです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static Picasso with(Context context) {
-  if (singleton == null) {
-    synchronized (Picasso.class) {
-      if (singleton == null) {
-        singleton = new Builder(context).build();
-      }
-    }
-  }
-  return singleton;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Picasso#with(Context)は, Picassoのインスタンスを返します. static factoryメソッドを使うことで, コンストラクタ以上の柔軟性を提供することが出来ます.
-上の例で言うと, Picasso#withは, シングルトンパターンにより, 毎回インスタンスを生成する必要がありません. コンストラクタを使う場合は, 毎回インスタンスを生成する必要があります.
-さらに, static factoryは自分自身だけでなく, サブクラス, インターフェースの実装を返すことも可能です.
-上の例で言うとPicasso#withはPicassoのサブクラスを返しても問題なく動作します(もちろんサブクラスにバグがなければ).&lt;/p&gt;
-
-&lt;h2 id=&#34;早期リターンパターン-early-return-pattern&#34;&gt;早期リターンパターン(early return pattern)&lt;/h2&gt;
-
-&lt;p&gt;早期リターンパターンは, &lt;strong&gt;メソッドの先頭&lt;/strong&gt; で, 何もせずにメソッドを終了するか, 例外をスローするパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public void into(Target target) {
-  long started = System.nanoTime();
-
-  // こっから例外などの判定
-  checkMain();
-
-  if (target == null) {
-    throw new IllegalArgumentException(&amp;quot;Target must not be null.&amp;quot;);
-  }
-  if (deferred) {
-    throw new IllegalStateException(&amp;quot;Fit cannot be used with a Target.&amp;quot;);
-  }
-
-  if (!data.hasImage()) {
-    picasso.cancelRequest(target);
-    target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
-    return;
-  }
-  // 例外などの判定修了
-
-  // こっからメインロジック
-  Request request = createRequest(started);
-  String requestKey = createKey(request);
-
-  if (shouldReadFromMemoryCache(memoryPolicy)) {
-    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
-    if (bitmap != null) {
-      picasso.cancelRequest(target);
-      target.onBitmapLoaded(bitmap, MEMORY);
-      return;
-    }
-  }
-
-  target.onPrepareLoad(setPlaceholder ? getPlaceholderDrawable() : null);
-
-  Action action =
-      new TargetAction(picasso, target, request, memoryPolicy, networkPolicy, errorDrawable,
-          requestKey, tag, errorResId);
-  picasso.enqueueAndSubmit(action);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;変数targetがnullなら例外をスロー&lt;/li&gt;
-&lt;li&gt;変数deferredがtrueなら例外をスロー&lt;/li&gt;
-&lt;li&gt;data.hasImage()がfalseなら, cancelRequestをコールしてreturn&lt;/li&gt;
-&lt;li&gt;メインのロジックの実行&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;メソッドのエラー処理の部分をメソッドの最初に, メインロジックの部分をその後にそれぞれ分割することで, 可読性を上げることが出来ます.
-アスペクト指向プログラミングに近い考え方だと思います.&lt;/p&gt;
-
-&lt;p&gt;アスペクト指向とは, メインロジック以外の副次的なロジック(セキュリティ要件を満たしているか, ログを取るなどなど)を, 宣言的に外部から注入できるプログラミングパラダイムです.
-1つのメソッド, ルーチンの中に, 複数の異なるロジックが含まれていると可読性が損なわれるので, その部分を切り出すことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;viewholderパターン&#34;&gt;ViewHolderパターン&lt;/h2&gt;
-
-&lt;p&gt;Android特有のパターンです. ListViewで子要素を切り替えるたびに毎回View#findViewByIdを実行するのはコストが高いので,
-Cacheしておくパターンです.(Picasso本体ではなく, exampleフォルダのコード例になります)&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&#34;&gt;https://github.com/square/picasso/blob/ceafe59cbecbc1e1a75cc6a14d028ebba3145cbe/picasso-sample/src/main/java/com/example/picasso/SampleListDetailAdapter.java#L66&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Override public View getView(int position, View view, ViewGroup parent) {
-  ViewHolder holder;
-  if (view == null) {
-    view = LayoutInflater.from(context).inflate(R.layout.sample_list_detail_item, parent, false);
-    holder = new ViewHolder();
-    holder.image = (ImageView) view.findViewById(R.id.photo);
-    holder.text = (TextView) view.findViewById(R.id.url);
-    view.setTag(holder);
-  } else {
-    holder = (ViewHolder) view.getTag();
-  }
-
-  ...
-}
-
-static class ViewHolder {
-  ImageView image;
-  TextView text;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;BaseAdapter#getViewで, Viewを生成するときに処理に必要な情報をViewHolderに保存しておきます.
-こうすることで, 次回以降のコストを減らすことが出来ます.&lt;/p&gt;
-
-&lt;h2 id=&#34;observerパターン&#34;&gt;Observerパターン&lt;/h2&gt;
-
-&lt;p&gt;非同期な処理が完了, 状態が変化したことを, クライアント(主に呼び出し元のインスタンス)に通知をする時に使われるパターンです. 非常にポピュラーなパターンです.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&#34;&gt;https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L647&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void into(ImageView target, Callback callback) {
-  long started = System.nanoTime();
-  checkMain();
-
-  ...
-
-  if (shouldReadFromMemoryCache(memoryPolicy)) {
-    Bitmap bitmap = picasso.quickMemoryCacheCheck(requestKey);
-    if (bitmap != null) {
-      picasso.cancelRequest(target);
-      setBitmap(target, picasso.context, bitmap, MEMORY, noFade, picasso.indicatorsEnabled);
-      if (picasso.loggingEnabled) {
-        log(OWNER_MAIN, VERB_COMPLETED, request.plainId(), &amp;quot;from &amp;quot; + MEMORY);
-      }
-      if (callback != null) {
-        callback.onSuccess();
-      }
-      return;
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;into(ImageView, Callback)の, Callbackの部分がObserverパターンのポイントになります.
-intoメソッドは非同期な処理のため, 結果が成功したかを返り値として受け取ることが出来ません.
-そこで, 非同期処理が終わったら, 引数で渡したcallbackをコールするようにすることで結果を受け取ることが出来ます.&lt;/p&gt;
-</description>
+      <description>Picassoで使われているデザインパターンを紹介する記事です.
+Singletonパターン Singletonパターンは, インスタンスの生成を1つに制限するパターンになります.
+https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L672
+public static Picasso with(Context context) { if (singleton == null) { synchronized (Picasso.class) { if (singleton == null) { singleton = new Builder(context).build(); } } } return singleton; }  Picasso#withは, すでにPicassoのインスタンス singleton が生成されていればそれを返し, 生成されていなければ, インスタンスを生成して返します.
+このパターンのメリットは, インスタンスを多くても1つしか作らないのでメモリ的に有利な点です(使い回せる) しかし, singletonなインスタンスは, 複数のクラスから使われる可能性があるので, スレッドセーフである必要があります.
+スレッドセーフにするためには, 全てのfieldの値をfinalにする. 排他的制御を入れるなどの方法があります.
+Builderパターン Builderパターンはインスタンス生成時に多数のパラメータが必要なときに便利なパターンです.
+https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/Picasso.java#L702
+public static class Builder { private final Context context; private Downloader downloader; private ExecutorService service; private Cache cache; private Listener listener; private RequestTransformer transformer; private List&amp;lt;RequestHandler&amp;gt; requestHandlers; private Bitmap.</description>
     </item>
-    
-    
     
     <item>
       <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>
       <link>https://satoshun.github.io/2015/05/dagger2_2/</link>
-      <pubDate>Sun, 24 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/05/dagger2_2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, JakeWhartonさんの&lt;a href=&#34;https://github.com/JakeWharton/u2020&#34;&gt;u2020&lt;/a&gt;から, AndroidでDagger2を使うときの実践的な方法を紹介します.
-u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.&lt;/p&gt;
-
-&lt;p&gt;DI, Dagger2の基本について知りたい方は, &lt;a href=&#34;https://satoshun.github.io/2015/05/dagger2/&#34;&gt;Part1&lt;/a&gt;を見て下さい.&lt;/p&gt;
-
-&lt;p&gt;目次&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;debugとproductionでModuleを切り替える&lt;/li&gt;
-&lt;li&gt;Debug専用のViewを作る&lt;/li&gt;
-&lt;li&gt;Mockモードの定義
--　まとめ&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;debugとproductionでmoduleを切り替える&#34;&gt;debugとproductionでModuleを切り替える&lt;/h2&gt;
-
-&lt;p&gt;gradleは, &lt;code&gt;productFlavors&lt;/code&gt;を設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります.
-そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています.
-具体的には,&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;/src/production/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalDebug/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalRelease/java/com/jakewharton/u2020/Modules.javaに&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています.
-これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Debugのみログを有効にしたい&lt;/li&gt;
-&lt;li&gt;APIのエンドポイントを変えたい&lt;/li&gt;
-&lt;li&gt;debug専用のViewを出したい&lt;/li&gt;
-&lt;li&gt;Test用のインスタンスをinjectしたい&lt;/li&gt;
-&lt;li&gt;etc, etc&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以下では, より細かく説明していきます.&lt;/p&gt;
-
-&lt;h2 id=&#34;debug専用のviewを作る&#34;&gt;Debug専用のViewを作る&lt;/h2&gt;
-
-&lt;p&gt;u2020では, Debug専用のView &lt;code&gt;DebugAppContainer&lt;/code&gt;があります.
-&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/u2020.gif&#34; target=&#34;\_blank&#34;&gt;Debug専用のView&lt;/a&gt;
-はこんな感じです. Debugビルドの時は, このContainerをinjectしています.&lt;/p&gt;
-
-&lt;p&gt;DebugAppContainerは簡単にいえば, &lt;code&gt;DrawerLayout&lt;/code&gt;を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.&lt;/p&gt;
-
-&lt;h2 id=&#34;mockモードの定義&#34;&gt;Mockモードの定義&lt;/h2&gt;
-
-&lt;p&gt;u2020ではMockモードがあり, Mockデータを表示機能があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class DebugDataModule {
-  ...
-  ...
-
-  @Provides @Singleton @ApiEndpoint
-  StringPreference provideEndpointPreference(SharedPreferences preferences) {
-    return new StringPreference(preferences, &amp;quot;debug_endpoint&amp;quot;, ApiEndpoints.MOCK_MODE.url);
-  }
-
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
-    return ApiEndpoints.isMockMode(endpoint.get());
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
-サーバ問題を解決しています. retrofitの&lt;code&gt;MockRestAdapter&lt;/code&gt;を組み合わせ, mockからデータを取得しています.&lt;/p&gt;
-
-&lt;h2 id=&#34;activityのlifecycleのログを取る&#34;&gt;activityのlifecycleのログを取る&lt;/h2&gt;
-
-&lt;p&gt;Applicationクラスには, &lt;code&gt;registerActivityLifecycleCallbacks&lt;/code&gt;メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &amp;hellip;)でイベントを受け取ることが出来ます.
-&lt;code&gt;ActivityLifecycleCallbackss&lt;/code&gt;インターフェースの定義は以下になります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
-public void onActivityStarted(Activity activity) {}
-public void onActivityResumed(Activity activity) {}
-public void onActivityPaused(Activity activity) {}
-public void onActivityStopped(Activity activity) {}
-public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
-public void onActivityDestroyed(Activity activity) {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;u2020では,　&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java&#34;&gt;SocketActivityHierarchyServer&lt;/a&gt;クラスをデバッグ, Activityが正しく振舞っているかを確認しています.&lt;/p&gt;
-
-&lt;p&gt;一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&amp;hellip;)&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;u2020はDagger以外にもノウハウが多くあり, 非常に勉強になりました. 正直10%くらいしか理解できていないので, 次はu2020全体にフォーカスを当てた記事を書くので楽しみに待っていて下さい.&lt;/p&gt;
-</description>
+      <description>概要 この記事では, JakeWhartonさんのu2020から, AndroidでDagger2を使うときの実践的な方法を紹介します. u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.
+DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
+目次
+ debugとproductionでModuleを切り替える Debug専用のViewを作る Mockモードの定義 -　まとめ  debugとproductionでModuleを切り替える gradleは, productFlavorsを設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります. そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています. 具体的には,
+ /src/production/java/com/jakewharton/u2020/Modules.java /src/internalDebug/java/com/jakewharton/u2020/Modules.java /src/internalRelease/java/com/jakewharton/u2020/Modules.javaに  それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています. これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.
+こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.
+ Debugのみログを有効にしたい APIのエンドポイントを変えたい debug専用のViewを出したい Test用のインスタンスをinjectしたい etc, etc&amp;hellip;  以下では, より細かく説明していきます.
+Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
+DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
+Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
+public final class DebugDataModule { .</description>
     </item>
-    
-    
     
     <item>
       <title>Android: Dagger2でDIをする. 基本編 Part1</title>
       <link>https://satoshun.github.io/2015/05/dagger2/</link>
-      <pubDate>Fri, 08 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Fri, 08 May 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/05/dagger2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します.
-Dagger2はDI(Dependency Injection)をするライブラリです.&lt;/p&gt;
-
-&lt;h2 id=&#34;diとは&#34;&gt;DIとは?&lt;/h2&gt;
-
-&lt;p&gt;DIとはDependency Injectionの略で, 訳すと「依存性の注入」です.
-ここでいう依存とは &lt;code&gt;クラス同士の依存関係&lt;/code&gt;のことを表します.
-クラス同士の依存関係は, 委譲パターンの時に現れます.&lt;/p&gt;
-
-&lt;p&gt;例えば, 以下のコードがあったとします.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    public Blogger() {
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // fileにlogを取る
-        FileLogger logger = new FileLogger(title);
-        logger.logging();
-    }
-}
-
-class FileLogger implements Logger {
-    @Override
-    public void logging(String... messages) {
-        // fileにmessagesを書き出す
-        File file = new File(&amp;quot;hoge.txt&amp;quot;);
-        ...
-    }
-}
-
-interface Logger {
-    void logging(String messgae);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;クラスBloggerはクラスFileLoggerに依存している&lt;/code&gt;. ことが分かります. なぜなら, 関数post内でFileLoggerクラスを利用しているためです.
-この書き方だと, BloggerクラスはFileLoggerに依存しているため, Loggerインターフェースを実装した旨味がありません.&lt;/p&gt;
-
-&lt;p&gt;次に, 少しコードを変更して, Loggerインターフェースを実装したインスタンスを引数で渡せるように変更します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    Logger logger;
-
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // logを取る
-        logger.logging();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こうすることで外部から引数で, Loggerインターフェースを実装した, FileLoggerクラス等を注入できるようになります. これがDI(依存性の注入)パターンです.&lt;/p&gt;
-
-&lt;p&gt;これの何が嬉しいんでしょうか? それは, Bloggerクラスを変更せずに, logの取り方を変えることが出来る点です!　委譲する先のクラス(Logger)を簡単に変更することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;余談ですが, AngularJSを使ったことのある方なら&lt;code&gt;function($scope, $resources) {}&lt;/code&gt;のようなコードを見たことがあると思います. これも典型的なDIパターンになります.&lt;/p&gt;
-
-&lt;p&gt;DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
-なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;dagger2概念&#34;&gt;Dagger2概念&lt;/h2&gt;
-
-&lt;p&gt;Dagger2は大きく分けて, &lt;code&gt;Component&lt;/code&gt;, &lt;code&gt;Module&lt;/code&gt; &lt;code&gt;Provide&lt;/code&gt;, &lt;code&gt;Inject&lt;/code&gt; の4つの要素があります.
-上記を定義しクラス間の依存関係を解決します.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Inject: 依存を注入します.&lt;/li&gt;
-&lt;li&gt;@Module: インスタンスをProvideするメソッド郡を定義します.&lt;/li&gt;
-&lt;li&gt;@Provide; 依存を解決するためのインスタンスを提供します.&lt;/li&gt;
-&lt;li&gt;@Component: @Injectと@Module間の関係を定義します.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これだけでは分からないと思うので, 具体的な例をあげて説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;依存関係の定義&#34;&gt;依存関係の定義&lt;/h2&gt;
-
-&lt;p&gt;最初に依存関係を定義します. &lt;code&gt;javax.inject.Inject&lt;/code&gt;アノテーションを使います.&lt;/p&gt;
-
-&lt;p&gt;上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// inject field directly
-class Blogger {
-    @Inject Logger logger;
-
-    public Blogger() {
-    }
-}
-
-or
-
-// Constructor Injection
-class Blogger {
-    Logger logger;
-
-    @Inject
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係の定義は完了です. Field, Constructor Injectionの両方の書き方を覚えて下さい.&lt;/p&gt;
-
-&lt;h2 id=&#34;moduleの作成&#34;&gt;Moduleの作成&lt;/h2&gt;
-
-&lt;p&gt;Moduleには, 上記の&lt;code&gt;@Inject&lt;/code&gt;で定義したクラスのインスタンスの生成方法を記述します.
-&lt;code&gt;@Module&lt;/code&gt;と&lt;code&gt;@Provides&lt;/code&gt;アノテーションを使い, 定義します.&lt;/p&gt;
-
-&lt;p&gt;Loggerを提供するModuleを作成します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;@Module
-class DebugModule {
-    @Provides
-    Logger provideLogger() {
-        return new FileLogger();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, Loggerを提供するModuleの定義が出来ました.&lt;/p&gt;
-
-&lt;p&gt;最後にComponentを作成します.&lt;/p&gt;
-
-&lt;h2 id=&#34;componentの作成&#34;&gt;Componentの作成&lt;/h2&gt;
-
-&lt;p&gt;Componentは複数Moduleをまとめたものです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component(modules = DebugModule.class)
-interface ApplicationComponent {
-    Blogger make();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係を解決してBloggerを生成することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;アプリ側では以下のように記述します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;ApplicationComponent component = DaggerApplicationComponent.create();
-Blogger blogger = component.make();
-blogger.post();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これが基本的なDagger2の使い方です. まとめると&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Injectで, 依存関係を定義する&lt;/li&gt;
-&lt;li&gt;@Module, @Providesで依存関係を解決するようにインスタンスを提供する&lt;/li&gt;
-&lt;li&gt;@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する&lt;/li&gt;
-&lt;li&gt;アプリで依存解決Graphを使い, DIを行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
-
-&lt;p&gt;DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
-最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
-Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).&lt;/p&gt;
-
-&lt;p&gt;Part2では, より実践的なDagger2の使い方について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014&#34;&gt;Dependency Injection with Dagger 2 (Devoxx 2014)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345&#34;&gt;Dependency Injection With Dagger 2 on Android&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=oK_XtfXPkqw&#34;&gt;DAGGER 2 - A New Type of dependency injection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://kakutani.com/trans/fowler/injection.html&#34;&gt;Inversion of Control コンテナと Dependency Injection パターン&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>概要 この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します. Dagger2はDI(Dependency Injection)をするライブラリです.
+DIとは? DIとはDependency Injectionの略で, 訳すと「依存性の注入」です. ここでいう依存とは クラス同士の依存関係のことを表します. クラス同士の依存関係は, 委譲パターンの時に現れます.
+例えば, 以下のコードがあったとします.
+class Blogger { public Blogger() { } public void post(String title) { // 何かメインの処理 // ... // fileにlogを取る FileLogger logger = new FileLogger(title); logger.logging(); } } class FileLogger implements Logger { @Override public void logging(String... messages) { // fileにmessagesを書き出す File file = new File(&amp;quot;hoge.txt&amp;quot;); ... } } interface Logger { void logging(String messgae); }  クラスBloggerはクラスFileLoggerに依存している.</description>
     </item>
-    
-    
     
     <item>
       <title>Android: AndroidKaigiまとめ</title>
       <link>https://satoshun.github.io/2015/04/droid-kaigi/</link>
-      <pubDate>Sat, 25 Apr 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
-      <description>
-
-&lt;p&gt;AndroidKaigiの記事まとめです.&lt;/p&gt;
-
-&lt;h2 id=&#34;droidkaigi-welcome-talk&#34;&gt;DroidKaigi - Welcome talk&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/LCwLL9vYMqpbEX&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/mhidaka/droidkaigi-welcome-talk&#34; title=&#34;DroidKaigi - Welcome talk&#34; target=&#34;_blank&#34;&gt;DroidKaigi - Welcome talk&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/mhidaka&#34; target=&#34;_blank&#34;&gt;mhidaka&lt;/a&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;エンジニアのための勉強会をやるよ!みたいな内容&lt;/p&gt;
-
-&lt;h2 id=&#34;activity-fragment-customview-の使い分け-マッチョなactivityにさよならする方法&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/oLqEqctvlWuBjW&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yanzm/droid-kaigi2015-yanzm&#34; title=&#34;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&#34; target=&#34;_blank&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yanzm&#34; target=&#34;_blank&#34;&gt;Yuki Anzai&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;cardboardのuxをカメラで向上する&#34;&gt;CardboardのUXをカメラで向上する&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/cYFQ3fMRP9v2Co&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2/cardboardux-droidkaigi-2&#34; title=&#34;CardboardのUXをカメラで向上する (droidkaigi 2015/04)&#34; target=&#34;_blank&#34;&gt;CardboardのUXをカメラで向上する (droidkaigi &lt;sup&gt;2015&lt;/sup&gt;&amp;frasl;&lt;sub&gt;04&lt;/sub&gt;)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2&#34; target=&#34;_blank&#34;&gt;Kenichi Takahashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;絶対落ちないアプリの作り方&#34;&gt;絶対落ちないアプリの作り方&lt;/h2&gt;
-
-&lt;h2 id=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NJrOgCsRpwAMFK&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/droidkaigi&#34; title=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34; target=&#34;_blank&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;開発を効率的に進めるられるまでの道程&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/1Aqkd8c46ElhCZ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/TakaoSumitomo/ss-47393000&#34; title=&#34;開発を効率的に進めるられるまでの道程&#34; target=&#34;_blank&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/TakaoSumitomo&#34; target=&#34;_blank&#34;&gt;Takao Sumitomo&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;アプリの企画-プロトタイプからリリースに至るまで&#34;&gt;アプリの企画、プロトタイプからリリースに至るまで&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-    &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;20d5e0c8f80941bdb6307016b1f19f5e&#34; data-ratio=&#34;1.3333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;初学者に嬉しいandroid開発環境&#34;&gt;初学者に嬉しいAndroid開発環境&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/gb7mYJ9Wfg7GfL&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/hiroyukikusu/droidkaigi2015androidmvc&#34; title=&#34;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&#34; target=&#34;_blank&#34;&gt;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/hiroyukikusu&#34; target=&#34;_blank&#34;&gt;Hiroyuki Kusu&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;大容量データのダウンロード戦略&#34;&gt;大容量データのダウンロード戦略&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;複数Threadでダウンロードしても, 帯域があまっていないと早くならない.&lt;/li&gt;
-&lt;li&gt;100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す.&lt;/li&gt;
-&lt;li&gt;小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;android学ぶ君へ-生き抜くためのナレッジ共有&#34;&gt;Android学ぶ君へ。生き抜くためのナレッジ共有&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/lnJGNQs9xH8Hcg&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/shinobuokano7/android-47395733&#34; title=&#34;Android学ぶを君へ。生き抜くためのナレッジ共有&#34; target=&#34;_blank&#34;&gt;Android学ぶを君へ。生き抜くためのナレッジ共有&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/shinobuokano7&#34; target=&#34;_blank&#34;&gt;Shinobu Okano&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;進化するart&#34;&gt;進化するART&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/c1cu1ebUO55H7R&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kmt-t/art-47396171&#34; title=&#34;進化するArt&#34; target=&#34;_blank&#34;&gt;進化するArt&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kmt-t&#34; target=&#34;_blank&#34;&gt;kmt-t&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;JITコンパイラがAOTコンパイラに
-
-&lt;ul&gt;
-&lt;li&gt;アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;新言語kotlinでandroidプログラミング&#34;&gt;新言語KotlinでAndroidプログラミング&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;fafade9e78a545999d1f284554a8b2b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;artのメモリ管理&#34;&gt;ARTのメモリ管理&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NqIaruLYWs1qrx&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/haru067/20150425-droid-kaigi&#34; title=&#34;ARTのメモリ管理&#34; target=&#34;_blank&#34;&gt;ARTのメモリ管理&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/haru067&#34; target=&#34;_blank&#34;&gt;haru067&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;bitmapは怖くない&#34;&gt;Bitmapは怖くない。&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;3b26b52270e54eb299aca52b2d5362b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;droidkaigi-つかえるgradleプロジェクトの作り方&#34;&gt;DroidKaigi つかえるGradleプロジェクトの作り方&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/w72iM4KuNiuODu&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle&#34; title=&#34;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&#34; target=&#34;_blank&#34;&gt;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/MakotoYamazaki&#34; target=&#34;_blank&#34;&gt;Makoto Yamazaki&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;モバイルにおける電力最適化のための1プラクティス&#34;&gt;モバイルにおける電力最適化のための1プラクティス&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/49W6EiQJQBTRUf&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/suguruoho/droid-kaigi&#34; title=&#34;Droid kaigiプレゼン&#34; target=&#34;_blank&#34;&gt;Droid kaigiプレゼン&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/suguruoho&#34; target=&#34;_blank&#34;&gt;Suguru Oho&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;アプリを公開する前に-最低限知っておきたいセキュリティ事項&#34;&gt;アプリを公開する前に、最低限知っておきたいセキュリティ事項&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&#34;&gt;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;デザイナーがxmlを書くことでできる改善しやすいアプリ開発&#34;&gt;デザイナーがXMLを書くことでできる改善しやすいアプリ開発&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;7b6fdc66dd214760b1d0a625c4383429&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;jellybeanとkitkatで実現するマテリアルデザイン&#34;&gt;JellyBeanとKitKatで実現するマテリアルデザイン&lt;/h2&gt;
-
-&lt;h2 id=&#34;material-designを取り入れたデザインリニューアル&#34;&gt;Material Designを取り入れたデザインリニューアル&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/67LrJFOc6qjXNJ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yuki930/ss-47398513&#34; title=&#34;マテリアルデザインを用いたデザインリニューアル [フリル編]&#34; target=&#34;_blank&#34;&gt;マテリアルデザインを用いたデザインリニューアル [フリル編]&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yuki930&#34; target=&#34;_blank&#34;&gt;YUKI YAMAGUCHI&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;僕らのデータ同期プラクティス&#34;&gt;僕らのデータ同期プラクティス&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/EBnpDPziJkPUES&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/Nkzn/ss-47398311&#34; title=&#34;僕らのデータ同期プラクティス&#34; target=&#34;_blank&#34;&gt;僕らのデータ同期プラクティス&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/Nkzn&#34; target=&#34;_blank&#34;&gt;Yukiya Nakagawa&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;android-と-selinux-androidsola&#34;&gt;Android と SELinux androidsola&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/ngRg1O9vffTufA&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/sola1980/androidse-linux&#34; title=&#34;AndroidとSELinux&#34; target=&#34;_blank&#34;&gt;AndroidとSELinux&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/sola1980&#34; target=&#34;_blank&#34;&gt;Akihiro Maeda&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;感想-まとめ&#34;&gt;感想, まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EventBusを使う際の設計はどうするの? カオスになりそう.&lt;/li&gt;
-&lt;li&gt;画面向き変更はハマりどころが多そう. ノウハウためたい&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>AndroidKaigiの記事まとめです.
+DroidKaigi - Welcome talk   DroidKaigi - Welcome talk  from mhidaka
+エンジニアのための勉強会をやるよ!みたいな内容
+Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法   Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -  from Yuki Anzai 
+CardboardのUXをカメラで向上する   CardboardのUXをカメラで向上する (droidkaigi 2015&amp;frasl;04)  from Kenichi Takahashi 
+絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル   あるゲームアプリケーションの構成とアップデートサイクル  from Kentaro Iizuka 
+開発を効率的に進めるられるまでの道程   開発を効率的に進めるられるまでの道程  from Takao Sumitomo 
+アプリの企画、プロトタイプからリリースに至るまで   初学者に嬉しいAndroid開発環境   【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)  from Hiroyuki Kusu</description>
     </item>
-    
-    
     
     <item>
       <title>Android: FragmentPagerAdapterでハマった話</title>
       <link>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</link>
-      <pubDate>Wed, 18 Mar 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Wed, 18 Mar 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/03/android-fragment_pager_adapter/</guid>
-      <description>
-
-&lt;p&gt;ハマったのでメモ. 以下のことをしたかった.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;データ取得するまで, Fragment内でProgress Barを出力&lt;/li&gt;
-&lt;li&gt;ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新&lt;/li&gt;
-&lt;li&gt;UIに反映&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;notifydatasetchangedメソッドが効かない&#34;&gt;notifyDataSetChangedメソッドが効かない&lt;/h2&gt;
-
-&lt;p&gt;データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました.
-notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.&lt;/p&gt;
-
-&lt;p&gt;FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)&lt;/p&gt;
-
-&lt;p&gt;これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.&lt;/p&gt;
-
-&lt;h2 id=&#34;fragmentstatepageradapterを使う&#34;&gt;FragmentStatePagerAdapterを使う&lt;/h2&gt;
-
-&lt;p&gt;FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.&lt;/p&gt;
-
-&lt;p&gt;以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentPagerAdapter {
-    ...
-    ...
-
-    public void refresh() {
-        notifyDataSetChanged();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.&lt;/p&gt;
-
-&lt;p&gt;次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class PagerAdapter extends FragmentStatePagerAdapter {
-    private List&amp;lt;Fragment&amp;gt; mFragments;
-
-    ...
-    ...
-
-    @Override
-    public int getItemPosition(Object object) {
-        Fragment target = (Fragment) object;
-        if (mFragments.contains(target)) {
-            return POSITION_UNCHANGED;
-        }
-
-        return POSITION_NONE;
-    }
-
-    public void refresh() {
-        mFragments.clear();
-        notifyDataSetChanged();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すとFragmentを再生成してくれます. つまり, データを更新した後に &lt;code&gt;POSITION_NONE&lt;/code&gt; を返すように実装すれば良いわけです.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;FragmentPagerAdapterはFragmentの再生成をしない代わりに, パフォーマンスが高くなっています. 場合によって使い分ける必要がありそうです.&lt;/p&gt;
-</description>
+      <description>ハマったのでメモ. 以下のことをしたかった.
+ データ取得するまで, Fragment内でProgress Barを出力 ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新 UIに反映  notifyDataSetChangedメソッドが効かない データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました. notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.
+FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)
+これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.
+FragmentStatePagerAdapterを使う FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.
+以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.
+public class PagerAdapter extends FragmentPagerAdapter { ... ... public void refresh() { notifyDataSetChanged(); } }  FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.
+次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.
+public class PagerAdapter extends FragmentStatePagerAdapter { private List&amp;lt;Fragment&amp;gt; mFragments; ... ... @Override public int getItemPosition(Object object) { Fragment target = (Fragment) object; if (mFragments.</description>
     </item>
-    
-    
     
     <item>
       <title>Android: strings.xmlのまとめ</title>
       <link>https://satoshun.github.io/2015/02/android-resource_string/</link>
-      <pubDate>Sun, 22 Feb 2015 04:10:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 04:10:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/android-resource_string/</guid>
-      <description>
-
-&lt;p&gt;res/values/strings.xmlは, 文字列関連のリソースを管理するファイルです. 文字列をプログラム外で定義することで, 多国語の対応, デバッグブルドの時にサーバのURLを変更する等が, コードをいじらずに容易に行えます.&lt;/p&gt;
-
-&lt;p&gt;また, 意外といろいろな機能があったので, 紹介したいと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;Application&amp;lt;/string&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;のように記述して使います. アプリケーション側では, 下のように取得します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getString(R.string.app_name);
-
-or
-
-context.getString(R.string.app_name);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;特に, 説明はいらないと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;arrayの定義&#34;&gt;arrayの定義&lt;/h2&gt;
-
-&lt;p&gt;strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.&lt;/p&gt;
-
-&lt;p&gt;string-array要素で定義してあげます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;string-array name=&amp;quot;sports&amp;quot;&amp;gt;
-    &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt;
-    &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt;
-    &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt;
-    &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt;
-&amp;lt;/string-array&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;アプリケーション側では下のように取得します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getResources().getStringArray(R.array.sports)
-
-or
-
-context.getResources().getStringArray(R.array.sports)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.&lt;/p&gt;
-
-&lt;h2 id=&#34;値展開&#34;&gt;値展開&lt;/h2&gt;
-
-&lt;p&gt;strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt;
-&amp;lt;string name=&amp;quot;hoge&amp;quot;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt;
-&amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt;
-&amp;lt;string name=&amp;quot;hogestr&amp;quot;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;アプリケーション側では, 下のように指定します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;getString(R.string.hoge, 100)); // Hello 100
-getString(R.string.hogestr, &amp;quot;value&amp;quot;, 100)); // value 100 value
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;%1$s&lt;/code&gt; は「第1引数の文字列」をここに展開しろ. &lt;code&gt;%2$d&lt;/code&gt;は「第2引数の数字」をここに展開しろ. という意味になります&lt;/p&gt;
-
-&lt;h2 id=&#34;plurals&#34;&gt;plurals&lt;/h2&gt;
-
-&lt;p&gt;あまり使ったことはないですが, pluralsという要素があります.&lt;/p&gt;
-
-&lt;p&gt;これは, quantity stringsと呼ばれ, 数字(量)の大きさに応じて, 文字列を変化させることが出来ます. switch分岐が出来るイメージです.&lt;/p&gt;
-
-&lt;p&gt;下のように記述します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plurals name=&amp;quot;number&amp;quot;&amp;gt;
-    &amp;lt;item quantity=&amp;quot;one&amp;quot;&amp;gt;one&amp;lt;/item&amp;gt;
-    &amp;lt;item quantity=&amp;quot;other&amp;quot;&amp;gt;other %1$d&amp;lt;/item&amp;gt;
-&amp;lt;/plurals&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;quantityには, zero, one, two, few, many, otherが指定できます.&lt;/p&gt;
-
-&lt;p&gt;アプリケーション側の記述です.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;getResources().getQuantityString(R.plurals.number, 1, 1)); // one
-getResources().getQuantityString(R.plurals.number, 10, 100)); // other 100
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;第二引数にquantityに与える数字を指定します. 1ならone, 0ならzeroがそれぞれ対応します. 複数形の場合に文字列を変えたいときなどに有効です.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;strings.xmlには, 意外といろいろな機能がありました. switch的な処理が書けるpluralsは頭の片隅に入れておくと良さそう.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://developer.android.com/samples/BasicNetworking/res/values/strings.html&#34;&gt;strings.xml | Android Developers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://y-anz-m.blogspot.jp/2011/03/android-xml.html&#34;&gt;Android　複雑な文字列を xml で定義する&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>res/values/strings.xmlは, 文字列関連のリソースを管理するファイルです. 文字列をプログラム外で定義することで, 多国語の対応, デバッグブルドの時にサーバのURLを変更する等が, コードをいじらずに容易に行えます.
+また, 意外といろいろな機能があったので, 紹介したいと思います.
+基本的な使い方 &amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;Application&amp;lt;/string&amp;gt;  のように記述して使います. アプリケーション側では, 下のように取得します.
+getString(R.string.app_name); or context.getString(R.string.app_name);  特に, 説明はいらないと思います.
+arrayの定義 strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.
+string-array要素で定義してあげます.
+&amp;lt;string-array name=&amp;quot;sports&amp;quot;&amp;gt; &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt; &amp;lt;/string-array&amp;gt;  アプリケーション側では下のように取得します.
+getResources().getStringArray(R.array.sports) or context.getResources().getStringArray(R.array.sports)  Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.
+値展開 strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.
+&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;quot;hoge&amp;quot;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;quot;hogestr&amp;quot;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt;  アプリケーション側では, 下のように指定します.</description>
     </item>
-    
-    
     
     <item>
       <title>Android: Pull to Refreshの実装(SwipeRefreshLayout)</title>
       <link>https://satoshun.github.io/2015/02/android-pull_to_refresh/</link>
-      <pubDate>Sun, 22 Feb 2015 04:09:23 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 04:09:23 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/android-pull_to_refresh/</guid>
-      <description>
-
-&lt;p&gt;AndroidでPull to Refreshの実装方法です. ListViewなどを下方向に引っ張ると, データを更新するように出来ます. Gmailとかで使われているあれです.&lt;/p&gt;
-
-&lt;p&gt;具体的には, &lt;code&gt;SwipeRefreshLayout&lt;/code&gt;を使って実装します. 以下でコードで説明していきます.&lt;/p&gt;
-
-&lt;h2 id=&#34;xml側の記述&#34;&gt;XML側の記述&lt;/h2&gt;
-
-&lt;p&gt;ListViewに覆いかぶさるように定義します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;android.support.v4.widget.SwipeRefreshLayout
-    android:id=&amp;quot;@+id/refresh&amp;quot;
-    android:layout_width=&amp;quot;match_parent&amp;quot;
-    android:layout_height=&amp;quot;match_parent&amp;quot; &amp;gt;
-
-    &amp;lt;ListView
-        android:id=&amp;quot;@android:id/list&amp;quot;
-        android:layout_width=&amp;quot;match_parent&amp;quot;
-        android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt;
-&amp;lt;/android.support.v4.widget.SwipeRefreshLayout&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;XML側はこれで完了です.
-これで, ListViewを引っ張ると「Pull to Refresh」のアニメーションが起こります.&lt;/p&gt;
-
-&lt;h2 id=&#34;activity側の記述&#34;&gt;Activity側の記述&lt;/h2&gt;
-
-&lt;p&gt;Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.&lt;/p&gt;
-
-&lt;p&gt;実装例です. &lt;code&gt;setOnRefreshListener&lt;/code&gt;でListenerを登録します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;
-private SwipeRefreshLayout mSwipe;
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-  ...
-  mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh);
-  // Callback登録
-  mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override
-      public void onRefresh() {
-          /* ここに適当な処理を書く */
-          mSwipe.setRefreshing(false);
-      }
-  });
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ListViewを引っ張ると, &lt;code&gt;setOnRefreshListener&lt;/code&gt;メソッドがコールされます.
-&lt;code&gt;setOnRefreshListener&lt;/code&gt;の最後に, &lt;code&gt;setRefreshing(false)&lt;/code&gt;をコールします. これは, 更新アニメーションをOffにするものです.&lt;/p&gt;
-
-&lt;h2 id=&#34;アニメーションの色を変える&#34;&gt;アニメーションの色を変える&lt;/h2&gt;
-
-&lt;p&gt;上のバーに出てくるアニメーションの色を変えることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;setColorScheme&lt;/code&gt;を使います.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;mSwipe.setColorScheme(android.R.color.holo_blue_bright,
-    android.R.color.holo_green_light,
-    android.R.color.holo_orange_light,
-    android.R.color.holo_red_light);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 4色でアニメーションが行われます.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;簡単にGmailライクなリフレッシュアニメーションが作れました.&lt;/p&gt;
-</description>
+      <description>AndroidでPull to Refreshの実装方法です. ListViewなどを下方向に引っ張ると, データを更新するように出来ます. Gmailとかで使われているあれです.
+具体的には, SwipeRefreshLayoutを使って実装します. 以下でコードで説明していきます.
+XML側の記述 ListViewに覆いかぶさるように定義します.
+&amp;lt;android.support.v4.widget.SwipeRefreshLayout android:id=&amp;quot;@+id/refresh&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; &amp;gt; &amp;lt;ListView android:id=&amp;quot;@android:id/list&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt; &amp;lt;/android.support.v4.widget.SwipeRefreshLayout&amp;gt;  XML側はこれで完了です. これで, ListViewを引っ張ると「Pull to Refresh」のアニメーションが起こります.
+Activity側の記述 Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.
+実装例です. setOnRefreshListenerでListenerを登録します.
+private SwipeRefreshLayout mSwipe; @Override protected void onCreate(Bundle savedInstanceState) { ... mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh); // Callback登録 mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() { @Override public void onRefresh() { /* ここに適当な処理を書く */ mSwipe.setRefreshing(false); } }); }  ListViewを引っ張ると, setOnRefreshListenerメソッドがコールされます. setOnRefreshListenerの最後に, setRefreshing(false)をコールします.</description>
     </item>
-    
     
   </channel>
 </rss>

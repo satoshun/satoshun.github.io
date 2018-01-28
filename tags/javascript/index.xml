@@ -1,169 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>stsnブログ</title>
-      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <title>Javascript on stsnブログ</title>
     <link>https://satoshun.github.io/tags/javascript/</link>
+    <description>Recent content in Javascript on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <author>Sato Shun</author>
-    <copyright>2015 Sato Shun</copyright>
-    <updated>Sun, 22 Feb 2015 00:00:00 UTC</updated>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 22 Feb 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>様々な言語のフィボナッチ関数</title>
       <link>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</link>
-      <pubDate>Sun, 22 Feb 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
+      <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
+      
       <guid>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</guid>
-      <description>
-
-&lt;p&gt;Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.&lt;/p&gt;
-
-&lt;p&gt;極力, その言語特有の機能を使って実装するようにしました.&lt;/p&gt;
-
-&lt;h2 id=&#34;go&#34;&gt;Go&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;type fibonacci int&lt;/code&gt;で, int型にfibonacci用の関数を生やしました.
-せっかくなので, goroutineも使ってみました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
-
-import &amp;quot;fmt&amp;quot;
-
-type fibonacci int
-
-func (self fibonacci) value() chan int {
-  ch := make(chan int, 1)
-  a, b := 0, 1
-  index := 0
-  go func() {
-    defer close(ch)
-    for {
-      if int(self) &amp;lt; index {
-        break
-      }
-      a, b = b, a+b
-      index++
-      ch &amp;lt;- a
-    }
-  }()
-
-  return ch
-}
-
-func main() {
-  var i fibonacci
-  i = 10
-  for v := range i.value() {
-    fmt.Printf(&amp;quot;%d &amp;quot;, v)
-  }
-  fmt.Println()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
-
-&lt;p&gt;iteratorを定義して, 実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Fibonacci(object):
-    def __init__(self, i):
-        self.__i = i
-        self.index = 0
-
-    def __iter__(self):
-        self.a = 0
-        self.b = 1
-        return self
-
-    def __next__(self):
-        while self.__i &amp;gt;= self.index:
-            self.index += 1
-            self.a, self.b = self.b, self.a + self.b
-            return self.a
-        raise StopIteration()
-
-
-if __name__ == &#39;__main__&#39;:
-    f = Fibonacci(10)
-    for number in f:
-        print(number, end=&#39; &#39;)
-    print()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;bash&#34;&gt;bash&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;$[]&lt;/code&gt;でexpressionを表現しています. これ実装するまで知りませんでした.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
-
-function fib()
-{
-    case $1 in
-        0) echo 0 ;;
-        [1-2]) echo 1 ;;
-        *) echo $[`fib $[$1-1]` + `fib $[$1-2]`] ;;
-    esac
-}
-
-for i in {0..10}; do
-    fib $i
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;javascript&#34;&gt;JavaScript&lt;/h2&gt;
-
-&lt;p&gt;単純な再起で実装しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;function fib(i) {
-  return function inner(i) {
-    return i &amp;gt; 2 ? inner(i - 1) + inner(i - 2) : (i === 2 ? 1 : i);
-  }(i);
-}
-
-for (var i = 0; i &amp;lt;= 10; i++) {
-  console.log(fib(i));
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;java&#34;&gt;Java&lt;/h2&gt;
-
-&lt;p&gt;Java8のstreamを使って実装しました. filter非常に便利.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import java.util.*;
-
-
-public class Fibonacci {
-    public static void main(String[] args) {
-        System.out.println(fibonacci(10));
-        System.out.println(fibonacci(20));
-    }
-
-    public static int fibonacci(int n) {
-        List&amp;lt;Integer&amp;gt; data = new ArrayList&amp;lt;Integer&amp;gt;() {{
-            add(0); add(1); add(1); add(2); add(3);
-        }};
-
-        for (int i = 4; i &amp;lt; n; i++) {
-            data.add(
-                data
-                    .stream()
-                    .filter(nn -&amp;gt; nn &amp;gt;= data.get(data.size()-2))
-                    .mapToInt(nn -&amp;gt; nn)
-                    .sum()
-                );
-        }
-        return data.get(n);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;fibonacciの計算には向かないけど, Java8のstreamが便利でした. Javaも進化しているんだなと.&lt;/p&gt;
-</description>
+      <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
+極力, その言語特有の機能を使って実装するようにしました.
+Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
+package main import &amp;quot;fmt&amp;quot; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
-    
     
   </channel>
 </rss>
