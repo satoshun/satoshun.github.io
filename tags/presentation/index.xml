@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Presentation on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/presentation/</link>
+    <description>Recent content in Presentation on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Fri, 09 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/presentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DroidKaigi2018で「なんとなく動いているProguardから脱出するために」というテーマで発表しました</title>
+      <link>https://satoshun.github.io/2018/02/droidkaigi-2018/</link>
+      <pubDate>Fri, 09 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/02/droidkaigi-2018/</guid>
+      <description>DroidKaigi2018でセッションが採択されたので発表しました。
+ https://goo.gl/S95MJs
+正直、Proguardは目新しいトピックでないのでそんなに聞きに来てくれないだろうなと思っていました。 しかし、Room3という広い部屋が割り当てられて、さらに当日はかなりの人が聞きに来てくれました。本当に聞きに来てくれた人ありがとうございます😊😊😊
+Twitterの反応を見る限りだと、分かりやすいと言っている人が多くいたので嬉しかったです。 Proguardは苦手意識を持っている人が多いと思っていて、なのでstep by stepで順序良く聞けるような発表を心掛けたのでその効果が少しは出たのかなと思っています。
+反省点としては、自分が想定したより時間に余裕があったので何か面白いことを喋ろうとしたら何も思いつかないでフガフガしてしまったところです。 今後はフガフガせずに、アドリブ力みたいなものを身につけていきたいと思います!
+あと、もう一つ反省点としてすべるのが怖くて積極的にネタみたいなものをスライドに入れられなかったことです。一応考えていたものは
+ 「Self-Styled Proguardエバンジェリストです」と自己紹介しようとした。 僕の発表資料はProguardに失敗してやや冗長になってしまいましたけど、みなさんのAPKサイズはProguardに成功して小さくなることを期待しています。みたいなことを言おうとした。  みたいなことを言って笑いを取りたかったなと後悔しています(笑いを取れるとは言っていない)。
+来年もDroidKaigiあるとしたらCfP出してまた登壇できるように頑張ります。 そして運営の皆さん本当にありがとうございました。凄い楽しかったです(•ө•)♡</description>
+    </item>
+    
+  </channel>
+</rss>
