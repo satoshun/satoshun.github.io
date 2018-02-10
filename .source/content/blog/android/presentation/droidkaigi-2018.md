@@ -4,7 +4,14 @@ title = "DroidKaigi2018で「なんとなく動いているProguardから脱出�
 tags = ["android", "presentation"]
 blogimport = true
 type = "post"
+thumbnail = "https://goo.gl/SMQW6M"
 +++
+
+<br>
+
+![DroidKaigi](https://goo.gl/SMQW6M)
+
+<br><br><br>
 
 DroidKaigi2018でセッションが採択されたので発表しました。
 
