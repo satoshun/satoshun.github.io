@@ -1,19 +1,19 @@
 <div class="blog-cover">
   <section>
     <div class="container">
-      <h1>{{ .Site.Title }}</h1>
+      <h1><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
       {{ with .Site.Params.description }}<h3>{{ . }}</h3>{{ end }}
 
       {{ with .Site.Params.twitter }}
-      <a href="{{ . }}" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter"></i></a>
+      <a class="social-icon" href="{{ . }}" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter"></i></a>
       {{ end }}
       {{ with .Site.Params.github }}
-      <a href="{{ . }}" title="Follow on Github" target="_blank"><i class="icon icon-github"></i></a>
+      <a class="social-icon" href="{{ . }}" title="Follow on Github" target="_blank"><i class="icon icon-github"></i></a>
       {{ end }}
       {{ with .Site.Params.facebook }}
-      <a href="http://facebook.com/{{ . }}" title="Like on Facebook" target="_blank"><i class="icon icon-facebook"></i></a>
+      <a class="social-icon" href="http://facebook.com/{{ . }}" title="Like on Facebook" target="_blank"><i class="icon icon-facebook"></i></a>
       {{ end }}
-      <a href="/index.xml" title="RSS Feed">
+      <a class="social-icon" href="/index.xml" title="RSS Feed">
         <i class="icon icon-rss"></i>
       </a>
     </div>
