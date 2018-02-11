@@ -15,7 +15,7 @@ thumbnail = "https://goo.gl/SMQW6M"
 
 DroidKaigi2018でセッションが採択されたので発表しました。
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSfnJcFK28DL1nnc2JVlZdGvtzjbv9Jw0A2UYMESKl0jRrk5qD02n9B1F-ss9L-5Ifvra_FnhkKTEgv/embed?start=false&loop=false&delayms=3000" frameborder="0" width="720" height="600" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSfnJcFK28DL1nnc2JVlZdGvtzjbv9Jw0A2UYMESKl0jRrk5qD02n9B1F-ss9L-5Ifvra_FnhkKTEgv/embed?start=false&loop=false&delayms=3000" frameborder="0" class="presentation-slide" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 https://goo.gl/S95MJs
 
