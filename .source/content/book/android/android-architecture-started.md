@@ -14,7 +14,7 @@ https://peaks.cc/books/architecture_patterns
 
 - MVP
     - PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう
-        - PresenterでViewのことを知りたくない
+        - PresenterでView、Modelが何を出来るかを知らなければならない
     - Contractみたいなインタフェースを切るのは好き
         - それを見ただけで何をそのページでやっているのかが掴めるので
     - PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう

@@ -31,7 +31,7 @@
 &lt;li&gt;PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう
 
 &lt;ul&gt;
-&lt;li&gt;PresenterでViewのことを知りたくない&lt;/li&gt;
+&lt;li&gt;PresenterでView、Modelが何を出来るかを知らなければならない&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Contractみたいなインタフェースを切るのは好き
 
