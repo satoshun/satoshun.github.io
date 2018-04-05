@@ -7,7 +7,73 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 02 Mar 2018 00:28:00 UTC</updated>
+    <updated>Thu, 05 Apr 2018 00:10:00 UTC</updated>
+    
+    
+    <item>
+      <title>ActivityやFragmentにコメントを書くことについて</title>
+      <link>https://satoshun.github.io/2018/04/about_writing_comment/</link>
+      <pubDate>Thu, 05 Apr 2018 00:10:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/04/about_writing_comment/</guid>
+      <description>
+
+&lt;p&gt;ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。&lt;/p&gt;
+
+&lt;p&gt;例えば以下のようなActivityがあるとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : Activity() {
+    ...
+    ...
+
+    private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {
+        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを見た時、なんで &lt;code&gt;loginCount &amp;lt;= 100&lt;/code&gt;にしているの? heavy userやん? って思う可能性があるのでコメントを追加したくなります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : Activity() {
+    private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {
+         // 100回以上ログインした場合は超heavy userなので100以上はheavy userではない
+        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「超Heavy Userっていうのがいて、それにHeavy Userは含まれていないのね。」というのが理解できます。&lt;/p&gt;
+
+&lt;p&gt;ただ、自分の考えでは上記のコードは根本的に間違っていて、そもそもActivityでコメントが必要な複雑なことをしているのが問題だと思います。
+なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。&lt;/p&gt;
+
+&lt;p&gt;なので上記のコードだと、例えばUserモデル(データ)クラスのようなものを作ってそこにロジックを書くのが良いと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;data class User(private val loginCount: Int, private val firstAccess: Boolean) {
+    private fun isHeavyUser() : Boolean() {
+         // 100回以上ログインした場合は超heavy userなので100以上はheavy userではない
+        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
+    }
+
+    private fun hyperHeavyUser(): Boolean() { /** */ }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;人間に理解し難いビジネスロジックのコメントは、モデルクラス(世の中的にはドメインモデルとか言われているのカナ?)に書くのが良いと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;Activityにコメントを書きたくなったら、クラスを分割したほうが良い&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;とはいえActivityにコメントを書く正しいケースもあると思うので、そこらへんは柔軟にオナシャス&lt;/li&gt;
+&lt;li&gt;コメントはコードと違い、コンピュータがコンパイルして正当性を確かめてくれるわけでないので、正しく運用するのがコードより難しいと思う&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2249,317 +2315,6 @@ with ignored(OSError):
 &lt;p&gt;第1~3正規化は重複を防ぐための, 最低限のリレーション変換なので慣れておく必要があります.&lt;/p&gt;
 
 &lt;p&gt;リレーショナルデータベースは, 歴史も長く, 数学的な理論に裏付けされた素晴らしい理論だと思います. NoSQLなどの技術が台頭しても, RDBの理論, 技術は大切だと思うので, 忘れずに今後も磨いていきます. BCNF以降の正規形については, 後日アップします.&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>データベース: 履歴データについて</title>
-      <link>https://satoshun.github.io/2015/04/history_data/</link>
-      <pubDate>Thu, 09 Apr 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/04/history_data/</guid>
-      <description>
-
-&lt;p&gt;RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.&lt;/p&gt;
-
-&lt;h2 id=&#34;履歴データとは&#34;&gt;履歴データとは?&lt;/h2&gt;
-
-&lt;p&gt;スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.&lt;/p&gt;
-
-&lt;h2 id=&#34;フラグを付ける&#34;&gt;フラグを付ける&lt;/h2&gt;
-
-&lt;p&gt;最初に一番オーソドックス?な, フラグをつけて管理する方法です.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;active&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;200&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;250&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;肉&lt;/td&gt;
-&lt;td&gt;100&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE active = 1;&lt;/code&gt; とします.&lt;/p&gt;
-
-&lt;p&gt;この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;activeフラグはカーディナリティが低く効率が悪い&lt;/li&gt;
-&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
-&lt;li&gt;activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;単純で分かりやすいですが, あまり使わないほうが良い方法のようです.&lt;/p&gt;
-
-&lt;h2 id=&#34;範囲を指定する&#34;&gt;範囲を指定する&lt;/h2&gt;
-
-&lt;p&gt;次は範囲を指定する方法です.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;th&gt;end_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;200&lt;/td&gt;
-&lt;td&gt;2015-03-22&lt;/td&gt;
-&lt;td&gt;2015-04-06&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;250&lt;/td&gt;
-&lt;td&gt;2015-04-07&lt;/td&gt;
-&lt;td&gt;9999-01-01&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;肉&lt;/td&gt;
-&lt;td&gt;100&lt;/td&gt;
-&lt;td&gt;2015-02-01&lt;/td&gt;
-&lt;td&gt;9999-01-01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date;&lt;/code&gt; とします.&lt;/p&gt;
-
-&lt;p&gt;この方法も分かりやすいのですが, バッドノウハウです.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある&lt;/li&gt;
-&lt;li&gt;start_date, end_dateの値を決めるロジックを, アプリ側 もしくは, トリガーに組み込む必要がある&lt;/li&gt;
-&lt;li&gt;end_dateに非常に大きな値 or NULLを入れる必要がある&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;NULLはRDBにとって癌のようなもので, 出来る限り除去したほうが良いとされています. そういう意味で, あまり良い方法とは言えません.&lt;/p&gt;
-
-&lt;h2 id=&#34;active-inactiveなデータを分割&#34;&gt;active, inactiveなデータを分割&lt;/h2&gt;
-
-&lt;p&gt;テーブル分割をする方法です. RDBっぽい解決方法です.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;250&lt;/td&gt;
-&lt;td&gt;2015-04-06&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;肉&lt;/td&gt;
-&lt;td&gt;100&lt;/td&gt;
-&lt;td&gt;2015-04-01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;200&lt;/td&gt;
-&lt;td&gt;2015-03-01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;この方法の場合, 頻繁に参照するであろう&lt;code&gt;products&lt;/code&gt;テーブルのサイズが小さくなるので検索パフォーマンスが安定します. しかし,  &lt;code&gt;products&lt;/code&gt;テーブルから, &lt;code&gt;old_products&lt;/code&gt;テーブルに移すロジックを, アプリ側 or トリガーで制御する必要があります.&lt;/p&gt;
-
-&lt;h2 id=&#34;upcomingテーブルを使う&#34;&gt;upcomingテーブルを使う&lt;/h2&gt;
-
-&lt;p&gt;上記の方法の拡張版です. 過去のデータだけでなく, 未来のデータを&lt;code&gt;upcoming_products&lt;/code&gt;テーブルに入れる方法です. テーブルの更新を自動的にやりたいときに有効です.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;250&lt;/td&gt;
-&lt;td&gt;2015-04-06&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;肉&lt;/td&gt;
-&lt;td&gt;100&lt;/td&gt;
-&lt;td&gt;2015-04-01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;code&gt;old_products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;200&lt;/td&gt;
-&lt;td&gt;2015-03-01&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;code&gt;upcoming_products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;th&gt;name&lt;/th&gt;
-&lt;th&gt;price&lt;/th&gt;
-&lt;th&gt;start_date&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;肉&lt;/td&gt;
-&lt;td&gt;200&lt;/td&gt;
-&lt;td&gt;2015-05-12&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;卵&lt;/td&gt;
-&lt;td&gt;400&lt;/td&gt;
-&lt;td&gt;2015-05-13&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;バッチ処理を行い, &lt;code&gt;upcoming_products&lt;/code&gt;テーブルの &lt;code&gt;start_date&lt;/code&gt; が有効になったら, &lt;code&gt;products&lt;/code&gt;テーブルに移動します.&lt;/p&gt;
-
-&lt;h2 id=&#34;外部キー制約への対応&#34;&gt;外部キー制約への対応&lt;/h2&gt;
-
-&lt;p&gt;上記のようなルールでテーブル分割をすると, &lt;code&gt;products.id&lt;/code&gt;を外部キーに指定し, 運用することが困難になります(頻繁に&lt;code&gt;old_products&lt;/code&gt;テーブルに移動されるため). そこで, マスターテーブルを作ってしまう方法があります.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;master_products&lt;/code&gt;テーブル&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;code&gt;master_products.id&lt;/code&gt;テーブルを外部キーに指定して運用します. これで外部キーの問題が解決出来ました.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;履歴データを保持する方法を紹介しました. 個人的には最後の方法が好みなのですが, idのみを保持するテーブルが出来てしまい, リレーショナルモデル的にどうなの?という気がしています. 何か他にいい方法があったらTwitterでぜひ教えて下さい. なんでもします.&lt;/p&gt;
 </description>
     </item>
     
