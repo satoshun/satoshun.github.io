@@ -21,23 +21,24 @@ class HogeActivity : Activity() {
 }
 ```
 
-これを見た時、なんで `loginCount <= 100`にしているの? heavy userやん? って思う可能性があるのでコメントを追加したくなります。
+これを見た時、「なんで `loginCount <= 100`にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。
 
 ```kotlin
 class HogeActivity : Activity() {
     private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {
-         // 100回以上ログインした場合は超heavy userなので100以上はheavy userではない
+         // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない
         return firstAccess || (loginCount >= 10 && loginCount <= 100)
     }
 }
 ```
 
-「超Heavy Userっていうのがいて、それにHeavy Userは含まれていないのね。」というのが理解できます。
+「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。
 
-ただ、自分の考えでは上記のコードは根本的に間違っていて、そもそもActivityでコメントが必要な複雑なことをしているのが問題だと思います。
-なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。
+ただ、自分の考えでは上記のコードは根本的に間違っていると思っていて、そもそもActivityでコメントが必要なほど複雑なことをしているのが問題だと思います。
+なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。なんでも出来る層でいろいろやってしまうと、
+いわゆるfat activity問題が起こってしまいます。
 
-なので上記のコードだと、例えばUserモデル(データ)クラスのようなものを作ってそこにロジックを書くのが良いと思います。
+なので上記のコードだと、例えばUserモデル(データ)クラスのようなものを作ってそこにロジックを書いて、必要に応じてコメントを付加するのが良いと思います。
 
 ```kotlin
 data class User(private val loginCount: Int, private val firstAccess: Boolean) {
