@@ -20,8 +20,9 @@
       <guid>https://satoshun.github.io/2018/04/about_writing_comment/</guid>
       <description>ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。
 例えば以下のようなActivityがあるとします。
-class HogeActivity : Activity() { ... ... private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } }  これを見た時、なんで loginCount &amp;lt;= 100にしているの? heavy userやん? って思う可能性があるのでコメントを追加したくなります。
-class HogeActivity : Activity() { private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { // 100回以上ログインした場合は超heavy userなので100以上はheavy userではない return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } }  「超Heavy Userっていうのがいて、それにHeavy Userは含まれていないのね。」というのが理解できます。</description>
+class HogeActivity : Activity() { ... ... private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } }  これを見た時、「なんで loginCount &amp;lt;= 100にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。
+class HogeActivity : Activity() { private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } }  「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。
+ただ、自分の考えでは上記のコードは根本的に間違っていると思っていて、そもそもActivityでコメントが必要なほど複雑なことをしているのが問題だと思います。 なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。なんでも出来る層でいろいろやってしまうと、 いわゆるfat activity問題が起こってしまいます。</description>
     </item>
     
   </channel>
