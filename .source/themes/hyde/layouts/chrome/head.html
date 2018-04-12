@@ -22,9 +22,19 @@
   {{ end }}
 
   <meta property="twitter:title" content="{{ .Title }}">
+
+  {{ if .Description }}
   <meta property="twitter:description" content="{{ .Description }}">
+  {{ else if .Content }}
+  <meta property="twitter:description" content="{{ .Content | truncate 80 }}">
+  {{ else }}
+  <meta property="twitter:description" content="Android, Python, Reactive, DB(RDS), etc">
+  {{ end }}
+
   {{ if .Params.thumbnail }}
-    <meta property="twitter:image" content="{{ .Params.thumbnail }}">
+  <meta property="twitter:image" content="{{ .Params.thumbnail }}">
+  {{ else }}
+  <meta property="twitter:image" content="{{ .Site.Params.icon }}">
   {{ end }}
 
   <!-- Enable responsiveness on mobile devices-->
