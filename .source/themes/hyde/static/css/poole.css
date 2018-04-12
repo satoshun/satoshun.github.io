@@ -311,6 +311,10 @@ tbody tr:nth-child(odd) th {
   margin-bottom: .5em;
 }
 
+.post-title {
+  margin-bottom: 0.5em;
+}
+
 .post h2 {
   margin: 1em 0;
   padding-bottom: 6px;
