@@ -7,7 +7,42 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Thu, 12 Apr 2018 07:10:00 UTC</updated>
+    <updated>Mon, 16 Apr 2018 22:50:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: ローカルで明示的に型を宣言することについて</title>
+      <link>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</link>
+      <pubDate>Mon, 16 Apr 2018 22:50:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</guid>
+      <description>
+
+&lt;p&gt;ポエムです。&lt;/p&gt;
+
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+
+&lt;p&gt;基本的にローカルで明示的に型を宣言するのは好ましくない&lt;/p&gt;
+
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+
+&lt;p&gt;Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val userName = dataSource.getUserName()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。&lt;/p&gt;
+
+&lt;p&gt;Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1674,133 +1709,6 @@ with ignored(OSError):
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OSGv2VnC0go&#34;&gt;Transforming Code into Beautiful, Idiomatic Python&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: AndroidKaigiまとめ</title>
-      <link>https://satoshun.github.io/2015/04/droid-kaigi/</link>
-      <pubDate>Sat, 25 Apr 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
-      <description>
-
-&lt;p&gt;AndroidKaigiの記事まとめです.&lt;/p&gt;
-
-&lt;h2 id=&#34;droidkaigi-welcome-talk&#34;&gt;DroidKaigi - Welcome talk&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/LCwLL9vYMqpbEX&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/mhidaka/droidkaigi-welcome-talk&#34; title=&#34;DroidKaigi - Welcome talk&#34; target=&#34;_blank&#34;&gt;DroidKaigi - Welcome talk&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/mhidaka&#34; target=&#34;_blank&#34;&gt;mhidaka&lt;/a&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;エンジニアのための勉強会をやるよ!みたいな内容&lt;/p&gt;
-
-&lt;h2 id=&#34;activity-fragment-customview-の使い分け-マッチョなactivityにさよならする方法&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/oLqEqctvlWuBjW&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yanzm/droid-kaigi2015-yanzm&#34; title=&#34;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&#34; target=&#34;_blank&#34;&gt;Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yanzm&#34; target=&#34;_blank&#34;&gt;Yuki Anzai&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;cardboardのuxをカメラで向上する&#34;&gt;CardboardのUXをカメラで向上する&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/cYFQ3fMRP9v2Co&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2/cardboardux-droidkaigi-2&#34; title=&#34;CardboardのUXをカメラで向上する (droidkaigi 2015/04)&#34; target=&#34;_blank&#34;&gt;CardboardのUXをカメラで向上する (droidkaigi &lt;sup&gt;2015&lt;/sup&gt;&amp;frasl;&lt;sub&gt;04&lt;/sub&gt;)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/KenichiTakahashi2&#34; target=&#34;_blank&#34;&gt;Kenichi Takahashi&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;絶対落ちないアプリの作り方&#34;&gt;絶対落ちないアプリの作り方&lt;/h2&gt;
-
-&lt;h2 id=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NJrOgCsRpwAMFK&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kentaroiizuka/droidkaigi&#34; title=&#34;あるゲームアプリケーションの構成とアップデートサイクル&#34; target=&#34;_blank&#34;&gt;あるゲームアプリケーションの構成とアップデートサイクル&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kentaroiizuka&#34; target=&#34;_blank&#34;&gt;Kentaro Iizuka&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;開発を効率的に進めるられるまでの道程&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/1Aqkd8c46ElhCZ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/TakaoSumitomo/ss-47393000&#34; title=&#34;開発を効率的に進めるられるまでの道程&#34; target=&#34;_blank&#34;&gt;開発を効率的に進めるられるまでの道程&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/TakaoSumitomo&#34; target=&#34;_blank&#34;&gt;Takao Sumitomo&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;アプリの企画-プロトタイプからリリースに至るまで&#34;&gt;アプリの企画、プロトタイプからリリースに至るまで&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-    &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;20d5e0c8f80941bdb6307016b1f19f5e&#34; data-ratio=&#34;1.3333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;初学者に嬉しいandroid開発環境&#34;&gt;初学者に嬉しいAndroid開発環境&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/gb7mYJ9Wfg7GfL&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/hiroyukikusu/droidkaigi2015androidmvc&#34; title=&#34;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&#34; target=&#34;_blank&#34;&gt;【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/hiroyukikusu&#34; target=&#34;_blank&#34;&gt;Hiroyuki Kusu&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;大容量データのダウンロード戦略&#34;&gt;大容量データのダウンロード戦略&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;複数Threadでダウンロードしても, 帯域があまっていないと早くならない.&lt;/li&gt;
-&lt;li&gt;100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す.&lt;/li&gt;
-&lt;li&gt;小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;android学ぶ君へ-生き抜くためのナレッジ共有&#34;&gt;Android学ぶ君へ。生き抜くためのナレッジ共有&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/lnJGNQs9xH8Hcg&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/shinobuokano7/android-47395733&#34; title=&#34;Android学ぶを君へ。生き抜くためのナレッジ共有&#34; target=&#34;_blank&#34;&gt;Android学ぶを君へ。生き抜くためのナレッジ共有&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/shinobuokano7&#34; target=&#34;_blank&#34;&gt;Shinobu Okano&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;進化するart&#34;&gt;進化するART&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/c1cu1ebUO55H7R&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/kmt-t/art-47396171&#34; title=&#34;進化するArt&#34; target=&#34;_blank&#34;&gt;進化するArt&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/kmt-t&#34; target=&#34;_blank&#34;&gt;kmt-t&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;JITコンパイラがAOTコンパイラに
-
-&lt;ul&gt;
-&lt;li&gt;アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;新言語kotlinでandroidプログラミング&#34;&gt;新言語KotlinでAndroidプログラミング&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;fafade9e78a545999d1f284554a8b2b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;artのメモリ管理&#34;&gt;ARTのメモリ管理&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/NqIaruLYWs1qrx&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/haru067/20150425-droid-kaigi&#34; title=&#34;ARTのメモリ管理&#34; target=&#34;_blank&#34;&gt;ARTのメモリ管理&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/haru067&#34; target=&#34;_blank&#34;&gt;haru067&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;bitmapは怖くない&#34;&gt;Bitmapは怖くない。&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;3b26b52270e54eb299aca52b2d5362b1&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;droidkaigi-つかえるgradleプロジェクトの作り方&#34;&gt;DroidKaigi つかえるGradleプロジェクトの作り方&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/w72iM4KuNiuODu&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle&#34; title=&#34;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&#34; target=&#34;_blank&#34;&gt;20150425 DroidKaigi つかえるGradleプロジェクトの作り方&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/MakotoYamazaki&#34; target=&#34;_blank&#34;&gt;Makoto Yamazaki&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;モバイルにおける電力最適化のための1プラクティス&#34;&gt;モバイルにおける電力最適化のための1プラクティス&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/49W6EiQJQBTRUf&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/suguruoho/droid-kaigi&#34; title=&#34;Droid kaigiプレゼン&#34; target=&#34;_blank&#34;&gt;Droid kaigiプレゼン&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/suguruoho&#34; target=&#34;_blank&#34;&gt;Suguru Oho&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;アプリを公開する前に-最低限知っておきたいセキュリティ事項&#34;&gt;アプリを公開する前に、最低限知っておきたいセキュリティ事項&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&#34;&gt;http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;デザイナーがxmlを書くことでできる改善しやすいアプリ開発&#34;&gt;デザイナーがXMLを書くことでできる改善しやすいアプリ開発&lt;/h2&gt;
-
-&lt;div style=&#34;width: 50%&#34;&gt;
-  &lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;7b6fdc66dd214760b1d0a625c4383429&#34; data-ratio=&#34;1.33333333333333&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;jellybeanとkitkatで実現するマテリアルデザイン&#34;&gt;JellyBeanとKitKatで実現するマテリアルデザイン&lt;/h2&gt;
-
-&lt;h2 id=&#34;material-designを取り入れたデザインリニューアル&#34;&gt;Material Designを取り入れたデザインリニューアル&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/67LrJFOc6qjXNJ&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/yuki930/ss-47398513&#34; title=&#34;マテリアルデザインを用いたデザインリニューアル [フリル編]&#34; target=&#34;_blank&#34;&gt;マテリアルデザインを用いたデザインリニューアル [フリル編]&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/yuki930&#34; target=&#34;_blank&#34;&gt;YUKI YAMAGUCHI&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;僕らのデータ同期プラクティス&#34;&gt;僕らのデータ同期プラクティス&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/EBnpDPziJkPUES&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/Nkzn/ss-47398311&#34; title=&#34;僕らのデータ同期プラクティス&#34; target=&#34;_blank&#34;&gt;僕らのデータ同期プラクティス&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/Nkzn&#34; target=&#34;_blank&#34;&gt;Yukiya Nakagawa&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;android-と-selinux-androidsola&#34;&gt;Android と SELinux androidsola&lt;/h2&gt;
-
-&lt;p&gt;&lt;iframe src=&#34;//www.slideshare.net/slideshow/embed_code/key/ngRg1O9vffTufA&#34; width=&#34;425&#34; height=&#34;355&#34; frameborder=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; style=&#34;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&#34; allowfullscreen&gt; &lt;/iframe&gt; &lt;div style=&#34;margin-bottom:5px&#34;&gt; &lt;strong&gt; &lt;a href=&#34;//www.slideshare.net/sola1980/androidse-linux&#34; title=&#34;AndroidとSELinux&#34; target=&#34;_blank&#34;&gt;AndroidとSELinux&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&#34;//www.slideshare.net/sola1980&#34; target=&#34;_blank&#34;&gt;Akihiro Maeda&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;感想-まとめ&#34;&gt;感想, まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;EventBusを使う際の設計はどうするの? カオスになりそう.&lt;/li&gt;
-&lt;li&gt;画面向き変更はハマりどころが多そう. ノウハウためたい&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
