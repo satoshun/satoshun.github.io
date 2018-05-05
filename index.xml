@@ -7,7 +7,30 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Mon, 16 Apr 2018 22:50:00 UTC</updated>
+    <updated>Sat, 05 May 2018 03:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>型の声</title>
+      <link>https://satoshun.github.io/2018/05/type_feeling/</link>
+      <pubDate>Sat, 05 May 2018 03:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/05/type_feeling/</guid>
+      <description>&lt;p&gt;Javaなどのクラスベースの言語でコードを書くときに、実装が最初に思い浮かぶ人は型の声を聞けていません。&lt;/p&gt;
+
+&lt;p&gt;まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。
+振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。&lt;/p&gt;
+
+&lt;p&gt;型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;to be continued.&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1434,281 +1457,6 @@ Androidの場合, テスト, Debug, Production環境の大きく3つの環境が
 &lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=oK_XtfXPkqw&#34;&gt;DAGGER 2 - A New Type of dependency injection&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://kakutani.com/trans/fowler/injection.html&#34;&gt;Inversion of Control コンテナと Dependency Injection パターン&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Python: Pythonライクな書き方 Part1</title>
-      <link>https://satoshun.github.io/2015/04/python-beautiful/</link>
-      <pubDate>Thu, 30 Apr 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/04/python-beautiful/</guid>
-      <description>
-
-&lt;p&gt;Pythonライクな書き方について紹介します. Part1です.&lt;/p&gt;
-
-&lt;h2 id=&#34;for文関連&#34;&gt;for文関連&lt;/h2&gt;
-
-&lt;h3 id=&#34;indexを使いたいとき&#34;&gt;indexを使いたいとき&lt;/h3&gt;
-
-&lt;p&gt;Bad: range, lenを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
-for i in range(len(names)):
-    print i, names[i]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: enumerateを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for i, name in enumerate(names):
-    print i, name
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;2つのコレクションを扱うとき&#34;&gt;2つのコレクションを扱うとき&lt;/h3&gt;
-
-&lt;p&gt;Bad: indexを使ってアクセスする&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
-ages = [12, 19, 11]
-
-for i in range(min(len(names), len(ages))):
-    print names[i], ages[i]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: 組み込み関数zipを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for name, age in zip(names, ages):
-    print name, age
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;dictionaryでkey-valueを使う&#34;&gt;dictionaryでkey, valueを使う&lt;/h2&gt;
-
-&lt;p&gt;Bad: keyでアクセス, valueを取得する&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;persons = {&#39;TDN&#39;: 12, &#39;tanaka&#39;: 24, &#39;nakata&#39;: 11}
-for k in persons:
-    print k, persons[k]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: itemsメソッドを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;persons = {&#39;TDN&#39;: 12, &#39;tanaka&#39;: 24, &#39;nakata&#39;: 11}
-for k, v in persons.items():
-    print k, v
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;値の入れかえ-swap-values&#34;&gt;値の入れかえ(swap values)&lt;/h2&gt;
-
-&lt;p&gt;Bad: tmp変数を定義する&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;a = 0
-b = 10
-
-tmp = a
-a = b
-b = tmp
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: onelineで交換する&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;a, b = 0, 10
-
-a, b = b, a
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;dictionaryの作成&#34;&gt;dictionaryの作成&lt;/h2&gt;
-
-&lt;p&gt;indexを使う方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
-d = dict(enumerate(names))
-
-&amp;gt; {0: &#39;TDN&#39;, 1: &#39;suzuki&#39;, 2: &#39;tom&#39;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;2つのリストのペアを使う方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
-ages = [12, 19, 11]
-d = dict(zip(names, ages))
-
-&amp;gt; {&#39;tom&#39;: 11, &#39;suzuki&#39;: 19, &#39;TDN&#39;: 12}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;dictionaryを使ったグルーピング&#34;&gt;dictionaryを使ったグルーピング&lt;/h2&gt;
-
-&lt;p&gt;Bad: ifでいちいちチェックする&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
-d = {}
-for name in names:
-    key = name[0]
-    if key not in d:
-        d[key] = []
-    d[key].append(name)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: setdefaultを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
-d = {}
-for name in names:
-    key = name[0]
-    d.setdefault(key, []).append(name)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: defaultdictを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from collections import defaultdict
-
-names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
-d = defaultdict(list)
-for name in names:
-    key = name[0]
-    d[key].append(name)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;効率のよいソート&#34;&gt;効率のよいソート&lt;/h2&gt;
-
-&lt;p&gt;Bad: cmpを用いてソートする&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;]
-def cmp_function(a, b):
-    if len(a) &amp;gt; len(b):
-        return 1
-    if len(a) &amp;lt; len(b):
-        return -1
-    return 0
-sorted(names, cmp=cmp_function)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: keyを用いてソートする&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;sorted(names, key=len)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ファイルを開く-閉じる時&#34;&gt;ファイルを開く, 閉じる時&lt;/h2&gt;
-
-&lt;p&gt;Bad: finallyを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;f = open(&#39;build.gradle&#39;)
-try:
-    data = f.read()
-finally:
-    f.close()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: withを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;with open(&#39;build.gradle&#39;) as f:
-    data = f.read()
-
-
-## リスト内包
-
-Bad: forをわざわざ使う
-
-```python
-total = 0
-for i in range(10):
-    total += i ** 2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: リスト内包, ジェネレータを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;total = sum(i ** 2 for i in range(10))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;文字列結合&#34;&gt;文字列結合&lt;/h2&gt;
-
-&lt;p&gt;Bad: stringを + でつないでいく&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
-s = &#39;&#39;
-for name in names:
-    s += name
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: joinメソッドを使う&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;names = [&#39;TDN&#39;, &#39;suzuki&#39;, &#39;tom&#39;, &#39;sato&#39;, &#39;seko&#39;]
-&#39;&#39;.join(names)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;デコレータを使う&#34;&gt;デコレータを使う&lt;/h2&gt;
-
-&lt;p&gt;Bad: メソッド内にcacheのロジックが入りこんでいる&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def get_data(filepath, saved={}):
-    if filepath in saved:
-        return cache[filepath]
-
-    with open(filepaht, &#39;r&#39;) as f:
-        saved[filepath] = f.read()
-    return saved[filepath]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good: cacheのロジックを外部に切り出す&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from functools import wraps
-
-def cache(func):
-    saved = {}
-
-    @wraps(func)
-    def wrapper(filepath):
-        if filepath in saved:
-            return saved[filepath]
-        result = func(filepath)
-        saved[filepath] = result
-        return result
-    return wrapper
-
-
-@cache
-def get_data(filepath):
-    with open(filepath, &#39;r&#39;) as f:
-        return f.read()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;contextmanagerを使う&#34;&gt;contextmanagerを使う&lt;/h2&gt;
-
-&lt;p&gt;Before: 例外をpassしているのが正しいのか, 実装し忘れか判断が付き難い&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import os
-
-try:
-    os.remove(&#39;.tmp&#39;)
-except OSError:
-    pass
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After: ignoredのように明示的な名前をつけて定義する&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import os
-from contextlib import contextmanager
-
-@contextmanager
-def ignored(*exc):
-    try:
-        yield
-    except exc:
-        pass
-
-
-with ignored(OSError):
-    os.remove(&#39;tmp&#39;)  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;パート2に続く..&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OSGv2VnC0go&#34;&gt;Transforming Code into Beautiful, Idiomatic Python&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

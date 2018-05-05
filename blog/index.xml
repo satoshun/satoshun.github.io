@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 16 Apr 2018 22:50:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 May 2018 03:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>型の声</title>
+      <link>https://satoshun.github.io/2018/05/type_feeling/</link>
+      <pubDate>Sat, 05 May 2018 03:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/05/type_feeling/</guid>
+      <description>Javaなどのクラスベースの言語でコードを書くときに、実装が最初に思い浮かぶ人は型の声を聞けていません。
+まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。 振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。
+型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。
+人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。
+
+to be continued.</description>
+    </item>
     
     <item>
       <title>Kotlin: ローカルで明示的に型を宣言することについて</title>
