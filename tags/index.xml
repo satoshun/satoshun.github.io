@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 22 Feb 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aac</title>
+      <link>https://satoshun.github.io/tags/aac/</link>
+      <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/aac/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Algorithm</title>
@@ -180,6 +189,15 @@
       <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jetpack</title>
+      <link>https://satoshun.github.io/tags/jetpack/</link>
+      <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
     </item>
     
