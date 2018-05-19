@@ -12,12 +12,12 @@ LiveDataは最新の値をキャッシュするため、エラー値の取扱な
 定義は以下のようになります。
 
 ```kotlin
-fun <T> oneShotLiveData(): MutableLiveData<T> {
+fun <T> singleLiveData(): MutableLiveData<T> {
   // skip用の初期値を入れておく
   return MutableLiveData<T>().also { it.value = null }
 }
 
-fun <T> LiveData<T>.observeOneShot(owner: LifecycleOwner, observer: ((T?) -> Unit)) {
+fun <T> LiveData<T>.observeSingle(owner: LifecycleOwner, observer: ((T?) -> Unit)) {
   // 最初の値は常にskipすることで、キャッシュを無視する
   val firstIgnore = AtomicBoolean(true)
   this.observe(owner, Observer {
@@ -32,12 +32,12 @@ fun <T> LiveData<T>.observeOneShot(owner: LifecycleOwner, observer: ((T?) -> Uni
 ```kotlin
 // TestViewModel.kt
 class TestViewModel: ViewModel() {
-  val errorOneShot = oneShotLiveData<String>()
+  val errorEvent = singleLiveData<String>()
 }
 
 // TestActivity.kt
 testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java)
-testViewModel.errorOneShot.observeOneShot(activity) {
+testViewModel.errorEvent.observeSingle(activity) {
   Log.d("one", it.toString())
 }
 ```

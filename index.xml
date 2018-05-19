@@ -23,12 +23,12 @@
 
 &lt;p&gt;定義は以下のようになります。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; oneShotLiveData(): MutableLiveData&amp;lt;T&amp;gt; {
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; {
   // skip用の初期値を入れておく
   return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null }
 }
 
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeOneShot(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) {
+fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) {
   // 最初の値は常にskipすることで、キャッシュを無視する
   val firstIgnore = AtomicBoolean(true)
   this.observe(owner, Observer {
@@ -42,12 +42,12 @@ fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeOneShot(owner: LifecycleO
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// TestViewModel.kt
 class TestViewModel: ViewModel() {
-  val errorOneShot = oneShotLiveData&amp;lt;String&amp;gt;()
+  val errorEvent = singleLiveData&amp;lt;String&amp;gt;()
 }
 
 // TestActivity.kt
 testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java)
-testViewModel.errorOneShot.observeOneShot(activity) {
+testViewModel.errorEvent.observeSingle(activity) {
   Log.d(&amp;quot;one&amp;quot;, it.toString())
 }
 &lt;/code&gt;&lt;/pre&gt;
