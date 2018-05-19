@@ -7,7 +7,51 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 05 May 2018 03:00:00 UTC</updated>
+    <updated>Sat, 19 May 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>CoroutineBindingライブラリを作りました</title>
+      <link>https://satoshun.github.io/2018/05/coroutinebinding-intro/</link>
+      <pubDate>Sat, 19 May 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/05/coroutinebinding-intro/</guid>
+      <description>
+
+&lt;p&gt;CoroutineBindingライブラリを作ったのでその紹介です。
+&lt;a href=&#34;https://github.com/satoshun/CoroutineBinding&#34;&gt;https://github.com/satoshun/CoroutineBinding&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Android開発でCoroutineの流れが来ていると思っていて、&lt;a href=&#34;https://github.com/JakeWharton/RxBinding&#34;&gt;RxBinding&lt;/a&gt;のような感じで、
+CoroutineフレンドリーにViewのイベントを受け取れたら便利そうだなと思い作りました。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;例えばclickのイベントを受け取りたいとします。
+CoroutineBindingでは以下のように書くことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root)
+launch(UI) {
+    for (click in root.clicks()) {
+    Log.d(&amp;quot;clicked&amp;quot;, click.toString())
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun View.clicks(capacity: Int = 0): ReceiveChannel&amp;lt;Unit&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;が拡張関数で定義されており、RxBinding-kotlinのように使うことが出来ます。
+他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Coroutineを使っている人なら便利に使えると思うので、ぜひ使って下さい!&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun/CoroutineBinding&#34;&gt;https://github.com/satoshun/CoroutineBinding&lt;/a&gt; 何かあればissueや、PRを貰えると嬉しいです&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1265,198 +1309,6 @@ subscribeとは無関係にストリームが生成されるのがポイント�
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;Hot, ColdなObservableについて説明しました. 1つのストリーム(同じデータ)に対して複数のことをしたいときはHot, そうでない時はColdを使えば良いと思います. 基本的にはColdを扱うことが多いとは思います.&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: Dagger2でDIをする. 基本編 Part1</title>
-      <link>https://satoshun.github.io/2015/05/dagger2/</link>
-      <pubDate>Fri, 08 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/05/dagger2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します.
-Dagger2はDI(Dependency Injection)をするライブラリです.&lt;/p&gt;
-
-&lt;h2 id=&#34;diとは&#34;&gt;DIとは?&lt;/h2&gt;
-
-&lt;p&gt;DIとはDependency Injectionの略で, 訳すと「依存性の注入」です.
-ここでいう依存とは &lt;code&gt;クラス同士の依存関係&lt;/code&gt;のことを表します.
-クラス同士の依存関係は, 委譲パターンの時に現れます.&lt;/p&gt;
-
-&lt;p&gt;例えば, 以下のコードがあったとします.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    public Blogger() {
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // fileにlogを取る
-        FileLogger logger = new FileLogger(title);
-        logger.logging();
-    }
-}
-
-class FileLogger implements Logger {
-    @Override
-    public void logging(String... messages) {
-        // fileにmessagesを書き出す
-        File file = new File(&amp;quot;hoge.txt&amp;quot;);
-        ...
-    }
-}
-
-interface Logger {
-    void logging(String messgae);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;クラスBloggerはクラスFileLoggerに依存している&lt;/code&gt;. ことが分かります. なぜなら, 関数post内でFileLoggerクラスを利用しているためです.
-この書き方だと, BloggerクラスはFileLoggerに依存しているため, Loggerインターフェースを実装した旨味がありません.&lt;/p&gt;
-
-&lt;p&gt;次に, 少しコードを変更して, Loggerインターフェースを実装したインスタンスを引数で渡せるように変更します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Blogger {
-    Logger logger;
-
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-
-    public void post(String title) {
-        // 何かメインの処理
-        // ...
-
-        // logを取る
-        logger.logging();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こうすることで外部から引数で, Loggerインターフェースを実装した, FileLoggerクラス等を注入できるようになります. これがDI(依存性の注入)パターンです.&lt;/p&gt;
-
-&lt;p&gt;これの何が嬉しいんでしょうか? それは, Bloggerクラスを変更せずに, logの取り方を変えることが出来る点です!　委譲する先のクラス(Logger)を簡単に変更することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;余談ですが, AngularJSを使ったことのある方なら&lt;code&gt;function($scope, $resources) {}&lt;/code&gt;のようなコードを見たことがあると思います. これも典型的なDIパターンになります.&lt;/p&gt;
-
-&lt;p&gt;DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
-なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;dagger2概念&#34;&gt;Dagger2概念&lt;/h2&gt;
-
-&lt;p&gt;Dagger2は大きく分けて, &lt;code&gt;Component&lt;/code&gt;, &lt;code&gt;Module&lt;/code&gt; &lt;code&gt;Provide&lt;/code&gt;, &lt;code&gt;Inject&lt;/code&gt; の4つの要素があります.
-上記を定義しクラス間の依存関係を解決します.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Inject: 依存を注入します.&lt;/li&gt;
-&lt;li&gt;@Module: インスタンスをProvideするメソッド郡を定義します.&lt;/li&gt;
-&lt;li&gt;@Provide; 依存を解決するためのインスタンスを提供します.&lt;/li&gt;
-&lt;li&gt;@Component: @Injectと@Module間の関係を定義します.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これだけでは分からないと思うので, 具体的な例をあげて説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;依存関係の定義&#34;&gt;依存関係の定義&lt;/h2&gt;
-
-&lt;p&gt;最初に依存関係を定義します. &lt;code&gt;javax.inject.Inject&lt;/code&gt;アノテーションを使います.&lt;/p&gt;
-
-&lt;p&gt;上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// inject field directly
-class Blogger {
-    @Inject Logger logger;
-
-    public Blogger() {
-    }
-}
-
-or
-
-// Constructor Injection
-class Blogger {
-    Logger logger;
-
-    @Inject
-    public Blogger(Logger logger) {
-        this.logger = logger;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係の定義は完了です. Field, Constructor Injectionの両方の書き方を覚えて下さい.&lt;/p&gt;
-
-&lt;h2 id=&#34;moduleの作成&#34;&gt;Moduleの作成&lt;/h2&gt;
-
-&lt;p&gt;Moduleには, 上記の&lt;code&gt;@Inject&lt;/code&gt;で定義したクラスのインスタンスの生成方法を記述します.
-&lt;code&gt;@Module&lt;/code&gt;と&lt;code&gt;@Provides&lt;/code&gt;アノテーションを使い, 定義します.&lt;/p&gt;
-
-&lt;p&gt;Loggerを提供するModuleを作成します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;@Module
-class DebugModule {
-    @Provides
-    Logger provideLogger() {
-        return new FileLogger();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, Loggerを提供するModuleの定義が出来ました.&lt;/p&gt;
-
-&lt;p&gt;最後にComponentを作成します.&lt;/p&gt;
-
-&lt;h2 id=&#34;componentの作成&#34;&gt;Componentの作成&lt;/h2&gt;
-
-&lt;p&gt;Componentは複数Moduleをまとめたものです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component(modules = DebugModule.class)
-interface ApplicationComponent {
-    Blogger make();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで, 依存関係を解決してBloggerを生成することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;アプリ側では以下のように記述します.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;ApplicationComponent component = DaggerApplicationComponent.create();
-Blogger blogger = component.make();
-blogger.post();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これが基本的なDagger2の使い方です. まとめると&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;@Injectで, 依存関係を定義する&lt;/li&gt;
-&lt;li&gt;@Module, @Providesで依存関係を解決するようにインスタンスを提供する&lt;/li&gt;
-&lt;li&gt;@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する&lt;/li&gt;
-&lt;li&gt;アプリで依存解決Graphを使い, DIを行う&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
-
-&lt;p&gt;DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
-最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
-Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).&lt;/p&gt;
-
-&lt;p&gt;Part2では, より実践的なDagger2の使い方について説明します.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014&#34;&gt;Dependency Injection with Dagger 2 (Devoxx 2014)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345&#34;&gt;Dependency Injection With Dagger 2 on Android&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=oK_XtfXPkqw&#34;&gt;DAGGER 2 - A New Type of dependency injection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://kakutani.com/trans/fowler/injection.html&#34;&gt;Inversion of Control コンテナと Dependency Injection パターン&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

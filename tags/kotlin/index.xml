@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 16 Apr 2018 22:50:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CoroutineBindingライブラリを作りました</title>
+      <link>https://satoshun.github.io/2018/05/coroutinebinding-intro/</link>
+      <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/05/coroutinebinding-intro/</guid>
+      <description> CoroutineBindingライブラリを作ったのでその紹介です。 https://github.com/satoshun/CoroutineBinding
+Android開発でCoroutineの流れが来ていると思っていて、RxBindingのような感じで、 CoroutineフレンドリーにViewのイベントを受け取れたら便利そうだなと思い作りました。
+使い方 例えばclickのイベントを受け取りたいとします。 CoroutineBindingでは以下のように書くことが出来ます。
+val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root) launch(UI) { for (click in root.clicks()) { Log.d(&amp;quot;clicked&amp;quot;, click.toString()) } }  fun View.clicks(capacity: Int = 0): ReceiveChannel&amp;lt;Unit&amp;gt;  が拡張関数で定義されており、RxBinding-kotlinのように使うことが出来ます。 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。
+まとめ  Coroutineを使っている人なら便利に使えると思うので、ぜひ使って下さい! https://github.com/satoshun/CoroutineBinding 何かあればissueや、PRを貰えると嬉しいです  </description>
+    </item>
     
     <item>
       <title>Kotlin: ローカルで明示的に型を宣言することについて</title>
