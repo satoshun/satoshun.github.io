@@ -22,16 +22,12 @@ CoroutineBindingでは以下のように書くことが出来ます。
 val root = findViewById<ViewGroup>(R.id.root)
 launch(UI) {
     for (click in root.clicks()) {
-    Log.d("clicked", click.toString())
+       Log.d("clicked", click.toString())
     }
 }
 ```
 
-```kotlin
-fun View.clicks(capacity: Int = 0): ReceiveChannel<Unit>
-```
-
-が拡張関数で定義されており、RxBinding-kotlinのように使うことが出来ます。
+RxBindingのように使うことが出来ます!
 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。
 
 ## まとめ

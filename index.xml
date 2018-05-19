@@ -32,15 +32,12 @@ CoroutineBindingでは以下のように書くことが出来ます。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root)
 launch(UI) {
     for (click in root.clicks()) {
-    Log.d(&amp;quot;clicked&amp;quot;, click.toString())
+       Log.d(&amp;quot;clicked&amp;quot;, click.toString())
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun View.clicks(capacity: Int = 0): ReceiveChannel&amp;lt;Unit&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;が拡張関数で定義されており、RxBinding-kotlinのように使うことが出来ます。
+&lt;p&gt;RxBindingのように使うことが出来ます!
 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;

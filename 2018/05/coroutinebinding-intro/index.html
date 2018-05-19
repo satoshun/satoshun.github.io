@@ -98,15 +98,12 @@ CoroutineBindingでは以下のように書くことが出来ます。</p>
 <pre><code class="language-kotlin">val root = findViewById&lt;ViewGroup&gt;(R.id.root)
 launch(UI) {
     for (click in root.clicks()) {
-    Log.d(&quot;clicked&quot;, click.toString())
+       Log.d(&quot;clicked&quot;, click.toString())
     }
 }
 </code></pre>
 
-<pre><code class="language-kotlin">fun View.clicks(capacity: Int = 0): ReceiveChannel&lt;Unit&gt;
-</code></pre>
-
-<p>が拡張関数で定義されており、RxBinding-kotlinのように使うことが出来ます。
+<p>RxBindingのように使うことが出来ます!
 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。</p>
 
 <h2 id="まとめ">まとめ</h2>
