@@ -1,6 +1,6 @@
 +++
 date = "2018-05-19T00:00:00Z"
-title = "Android: 拡張関数でLiveDataでSingle Eventを扱う"
+title = "Android: 拡張関数でLiveDataのSingle Eventを扱う"
 tags = ["android", "jetpack", "aac"]
 blogimport = true
 type = "post"
