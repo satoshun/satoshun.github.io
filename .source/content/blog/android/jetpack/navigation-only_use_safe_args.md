@@ -1,6 +1,6 @@
 +++
 date = "2018-05-20T00:00:00Z"
-title = "Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない"
+title = "Android: Navigationのsafe args Gradle pluginだけを使ってもいいかもしれない"
 tags = ["android", "jetpack", "navigation"]
 blogimport = true
 type = "post"
