@@ -11,7 +11,7 @@
     
     
     <item>
-      <title>Android: Navigationのsafe args Gradle pluginだけを使ってもいいかもしれない</title>
+      <title>Android: Navigationのsafeargs Gradle pluginだけを使ってもいいかもしれない</title>
       <link>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</link>
       <pubDate>Sun, 20 May 2018 00:00:00 UTC</pubDate>
       <author>Sato Shun</author>
@@ -21,9 +21,9 @@
 &lt;p&gt;Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
 ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。&lt;/p&gt;
 
-&lt;p&gt;このライブラリの機能に、safe argsというものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。&lt;/p&gt;
+&lt;p&gt;このライブラリの機能に、&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing#Safe-args&#34;&gt;safeargs&lt;/a&gt;というものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。&lt;/p&gt;
 
-&lt;h2 id=&#34;safe-argsを使ってみる&#34;&gt;safe argsを使ってみる&lt;/h2&gt;
+&lt;h2 id=&#34;safeargsを使ってみる&#34;&gt;safeargsを使ってみる&lt;/h2&gt;
 
 &lt;p&gt;一般的にFragmentに適当な値を渡すときは&lt;code&gt;Bundle&lt;/code&gt;を通して渡します。&lt;/p&gt;
 
