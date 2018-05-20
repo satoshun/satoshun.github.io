@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2018-05-20">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2018/05/navigation-only_use_safe_args/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="jetpack">
+  
+    <meta property="og:tags" content="navigation">
+  
+
+  <meta property="twitter:title" content="Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない">
+
+  
+  <meta property="twitter:description" content="
+
+Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
+ざっくりと説明すると、画面の遷移の実装を助け …">
+  
+
+  
+  <meta property="twitter:image" content="https://goo.gl/zMdhry">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない</h1>
+    <span class="post-date">Sun, May 20, 2018</span>
+    
+
+<p>Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
+ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。</p>
+
+<p>このライブラリの機能に、safe argsというものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。</p>
+
+<h2 id="safe-argsを使ってみる">safe argsを使ってみる</h2>
+
+<p>一般的にFragmentに適当な値を渡すときは<code>Bundle</code>を通して渡します。</p>
+
+<pre><code class="language-kotlin">// 呼び出し側
+val bundle = Bundle()
+bundle.putInt(&quot;step&quot;, 10)
+
+// 呼び出され側
+val step = arguments?.getInt(&quot;step&quot;)
+</code></pre>
+
+<p>これの問題点としては、typesafeで無いところです。例えばリファクタリングなどで、片方の文字列を<code>&quot;step2&quot;</code>にしてしまうと、ランタイムエラーになります。</p>
+
+<p>これを解決にするためにNavigationではsafe argsという機能を提供しています。
+これは、DataBindingのように、クラスを生成することでtypesafeを実現します。</p>
+
+<pre><code class="language-xml">&lt;navigation xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+            xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+            xmlns:tools=&quot;http://schemas.android.com/tools&quot;&gt;
+  &lt;fragment
+      android:name=&quot;com.example.android.codelabs.navigation.HogeFragment&quot;
+      android:label=&quot;Hoge&quot;&gt;
+
+    &lt;argument
+        android:name=&quot;step&quot;
+        app:type=&quot;integer&quot;
+        android:defaultValue=&quot;1&quot;/&gt;
+  &lt;/fragment&gt;
+&lt;/navigation&gt;
+</code></pre>
+
+<p>とnavigationを記述すると、</p>
+
+<pre><code class="language-java">public class HogeFragmentArgs {
+  private int step = 1;
+
+  private HogeFragmentArgs() {
+  }
+
+  public static HogeFragmentArgs fromBundle(Bundle bundle) {
+    HogeFragmentArgs result = new HogeFragmentArgs();
+    if (bundle.containsKey(&quot;step&quot;)) {
+      result.step = bundle.getInt(&quot;step&quot;);
+    }
+    return result;
+  }
+
+  public int getStep() {
+    return step;
+  }
+
+  public Bundle toBundle() {
+    Bundle __outBundle = new Bundle();
+    __outBundle.putInt(&quot;step&quot;, this.step);
+    return __outBundle;
+  }
+
+  public static class Builder {
+    private int step = 1;
+
+    public Builder(HogeFragmentArgs original) {
+      this.step = original.step;
+    }
+
+    public Builder() {
+    }
+
+    public HogeFragmentArgs build() {
+      HogeFragmentArgs result = new HogeFragmentArgs();
+      result.step = this.step;
+      return result;
+    }
+
+    public Builder setStep(int step) {
+      this.step = step;
+      return this;
+    }
+
+    public int getStep() {
+      return step;
+    }
+  }
+}
+</code></pre>
+
+<p>上記のクラスが生成されます。これを使うことでtypesafeを実現出来ます。</p>
+
+<pre><code class="language-kotlin">// 呼び出し側
+HogeFragmentArgs.Builder()
+    .setStep(10)
+    .build()
+    .toBunble()
+
+// 呼び出され側
+val args = HogeFragmentArgs.fromBundle(arguments)
+</code></pre>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>Navigationは大きいライブラリなので、とりあえずの練習でsafe argsの機能だけつまみ食いするのは、
+個人的には良さそうだと思っています。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://github.com/googlecodelabs/android-navigation">https://github.com/googlecodelabs/android-navigation</a></li>
+</ul>
+
+    <div class="mt15"></div>
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://goo.gl/zMdhry" />
+       <p>Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+       <span class="muted">Androidえんじにあー</span>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  <a class='hatena-bookmark-button' data-hatena-bookmark-layout='vertical-balloon' data-hatena-bookmark-lang='ja' expr:data-hatena-bookmark-title='data:post.title' expr:href='"http://b.hatena.ne.jp/entry/" + data:post.canonicalUrl' title='このエントリーをはてなブックマークに追加'><img src='https://b.st-hatena.com/images/entry-button/button-only@2x.png' alt='このエントリーをはてなブックマークに追加' width='20' height='20' style='border: none;' /></a><script type='text/javascript' src='https://b.st-hatena.com/js/bookmark_button.js' charset='utf-8' async='async'></script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

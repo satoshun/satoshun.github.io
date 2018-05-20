@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jetpack on stsnブログ</title>
-    <link>https://satoshun.github.io/tags/jetpack/</link>
-    <description>Recent content in Jetpack on stsnブログ</description>
+    <title>Navigation on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/navigation/</link>
+    <description>Recent content in Navigation on stsnブログ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
     <lastBuildDate>Sun, 20 May 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://satoshun.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://satoshun.github.io/tags/navigation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -25,19 +25,6 @@ safe argsを使ってみる 一般的にFragmentに適当な値を渡すとき�
 これを解決にするためにNavigationではsafe argsという機能を提供しています。 これは、DataBindingのように、クラスを生成することでtypesafeを実現します。
 &amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot; xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot; xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;&amp;gt; &amp;lt;fragment android:name=&amp;quot;com.example.android.codelabs.navigation.HogeFragment&amp;quot; android:label=&amp;quot;Hoge&amp;quot;&amp;gt; &amp;lt;argument android:name=&amp;quot;step&amp;quot; app:type=&amp;quot;integer&amp;quot; android:defaultValue=&amp;quot;1&amp;quot;/&amp;gt; &amp;lt;/fragment&amp;gt; &amp;lt;/navigation&amp;gt;  とnavigationを記述すると、
 public class HogeFragmentArgs { private int step = 1; private HogeFragmentArgs() { } public static HogeFragmentArgs fromBundle(Bundle bundle) { HogeFragmentArgs result = new HogeFragmentArgs(); if (bundle.</description>
-    </item>
-    
-    <item>
-      <title>Android: 拡張関数でLiveDataのSingle Eventを扱う</title>
-      <link>https://satoshun.github.io/2018/05/singlelivedata/</link>
-      <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/2018/05/singlelivedata/</guid>
-      <description>LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。 適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。
-定義は以下のようになります。
-fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; { // skip用の初期値を入れておく return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null } } fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) { // 最初の値は常にskipすることで、キャッシュを無視する val firstIgnore = AtomicBoolean(true) this.observe(owner, Observer { if (firstIgnore.getAndSet(false)) return@Observer observer(it) }) }  使う時はこんな感じで使います。
-// TestViewModel.kt class TestViewModel: ViewModel() { val errorEvent = singleLiveData&amp;lt;String&amp;gt;() } // TestActivity.kt testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java) testViewModel.errorEvent.observeSingle(activity) { Log.d(&amp;quot;one&amp;quot;, it.toString()) }  メリットはサブクラスを作らずに済むところです。
-参考  https://github.</description>
     </item>
     
   </channel>

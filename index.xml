@@ -7,7 +7,133 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 19 May 2018 00:00:00 UTC</updated>
+    <updated>Sun, 20 May 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない</title>
+      <link>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</link>
+      <pubDate>Sun, 20 May 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</guid>
+      <description>
+
+&lt;p&gt;Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
+ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。&lt;/p&gt;
+
+&lt;p&gt;このライブラリの機能に、safe argsというものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。&lt;/p&gt;
+
+&lt;h2 id=&#34;safe-argsを使ってみる&#34;&gt;safe argsを使ってみる&lt;/h2&gt;
+
+&lt;p&gt;一般的にFragmentに適当な値を渡すときは&lt;code&gt;Bundle&lt;/code&gt;を通して渡します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 呼び出し側
+val bundle = Bundle()
+bundle.putInt(&amp;quot;step&amp;quot;, 10)
+
+// 呼び出され側
+val step = arguments?.getInt(&amp;quot;step&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これの問題点としては、typesafeで無いところです。例えばリファクタリングなどで、片方の文字列を&lt;code&gt;&amp;quot;step2&amp;quot;&lt;/code&gt;にしてしまうと、ランタイムエラーになります。&lt;/p&gt;
+
+&lt;p&gt;これを解決にするためにNavigationではsafe argsという機能を提供しています。
+これは、DataBindingのように、クラスを生成することでtypesafeを実現します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+            xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
+            xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;&amp;gt;
+  &amp;lt;fragment
+      android:name=&amp;quot;com.example.android.codelabs.navigation.HogeFragment&amp;quot;
+      android:label=&amp;quot;Hoge&amp;quot;&amp;gt;
+
+    &amp;lt;argument
+        android:name=&amp;quot;step&amp;quot;
+        app:type=&amp;quot;integer&amp;quot;
+        android:defaultValue=&amp;quot;1&amp;quot;/&amp;gt;
+  &amp;lt;/fragment&amp;gt;
+&amp;lt;/navigation&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とnavigationを記述すると、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class HogeFragmentArgs {
+  private int step = 1;
+
+  private HogeFragmentArgs() {
+  }
+
+  public static HogeFragmentArgs fromBundle(Bundle bundle) {
+    HogeFragmentArgs result = new HogeFragmentArgs();
+    if (bundle.containsKey(&amp;quot;step&amp;quot;)) {
+      result.step = bundle.getInt(&amp;quot;step&amp;quot;);
+    }
+    return result;
+  }
+
+  public int getStep() {
+    return step;
+  }
+
+  public Bundle toBundle() {
+    Bundle __outBundle = new Bundle();
+    __outBundle.putInt(&amp;quot;step&amp;quot;, this.step);
+    return __outBundle;
+  }
+
+  public static class Builder {
+    private int step = 1;
+
+    public Builder(HogeFragmentArgs original) {
+      this.step = original.step;
+    }
+
+    public Builder() {
+    }
+
+    public HogeFragmentArgs build() {
+      HogeFragmentArgs result = new HogeFragmentArgs();
+      result.step = this.step;
+      return result;
+    }
+
+    public Builder setStep(int step) {
+      this.step = step;
+      return this;
+    }
+
+    public int getStep() {
+      return step;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のクラスが生成されます。これを使うことでtypesafeを実現出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 呼び出し側
+HogeFragmentArgs.Builder()
+    .setStep(10)
+    .build()
+    .toBunble()
+
+// 呼び出され側
+val args = HogeFragmentArgs.fromBundle(arguments)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;Navigationは大きいライブラリなので、とりあえずの練習でsafe argsの機能だけつまみ食いするのは、
+個人的には良さそうだと思っています。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/googlecodelabs/android-navigation&#34;&gt;https://github.com/googlecodelabs/android-navigation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1161,113 +1287,6 @@ intoメソッドは非同期な処理のため, 結果が成功したかを返�
 &lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B00ARDNMEQ/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00ARDNMEQ&amp;linkCode=as2&amp;tag=satoshunblog-22&#34;&gt;ファスト＆スロー　（上）&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=satoshunblog-22&amp;l=as2&amp;o=9&amp;a=B00ARDNMEQ&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://jma2-jp.org/wiki/?アンカリング効果&#34;&gt;アンカリング効果 - マーケティングWiki　～マーケティング用語集&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>
-      <link>https://satoshun.github.io/2015/05/dagger2_2/</link>
-      <pubDate>Sun, 24 May 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/05/dagger2_2/</guid>
-      <description>
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;この記事では, JakeWhartonさんの&lt;a href=&#34;https://github.com/JakeWharton/u2020&#34;&gt;u2020&lt;/a&gt;から, AndroidでDagger2を使うときの実践的な方法を紹介します.
-u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.&lt;/p&gt;
-
-&lt;p&gt;DI, Dagger2の基本について知りたい方は, &lt;a href=&#34;https://satoshun.github.io/2015/05/dagger2/&#34;&gt;Part1&lt;/a&gt;を見て下さい.&lt;/p&gt;
-
-&lt;p&gt;目次&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;debugとproductionでModuleを切り替える&lt;/li&gt;
-&lt;li&gt;Debug専用のViewを作る&lt;/li&gt;
-&lt;li&gt;Mockモードの定義
--　まとめ&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;debugとproductionでmoduleを切り替える&#34;&gt;debugとproductionでModuleを切り替える&lt;/h2&gt;
-
-&lt;p&gt;gradleは, &lt;code&gt;productFlavors&lt;/code&gt;を設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります.
-そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています.
-具体的には,&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;/src/production/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalDebug/java/com/jakewharton/u2020/Modules.java&lt;/li&gt;
-&lt;li&gt;/src/internalRelease/java/com/jakewharton/u2020/Modules.javaに&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています.
-これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Debugのみログを有効にしたい&lt;/li&gt;
-&lt;li&gt;APIのエンドポイントを変えたい&lt;/li&gt;
-&lt;li&gt;debug専用のViewを出したい&lt;/li&gt;
-&lt;li&gt;Test用のインスタンスをinjectしたい&lt;/li&gt;
-&lt;li&gt;etc, etc&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以下では, より細かく説明していきます.&lt;/p&gt;
-
-&lt;h2 id=&#34;debug専用のviewを作る&#34;&gt;Debug専用のViewを作る&lt;/h2&gt;
-
-&lt;p&gt;u2020では, Debug専用のView &lt;code&gt;DebugAppContainer&lt;/code&gt;があります.
-&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/u2020.gif&#34; target=&#34;\_blank&#34;&gt;Debug専用のView&lt;/a&gt;
-はこんな感じです. Debugビルドの時は, このContainerをinjectしています.&lt;/p&gt;
-
-&lt;p&gt;DebugAppContainerは簡単にいえば, &lt;code&gt;DrawerLayout&lt;/code&gt;を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.&lt;/p&gt;
-
-&lt;h2 id=&#34;mockモードの定義&#34;&gt;Mockモードの定義&lt;/h2&gt;
-
-&lt;p&gt;u2020ではMockモードがあり, Mockデータを表示機能があります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class DebugDataModule {
-  ...
-  ...
-
-  @Provides @Singleton @ApiEndpoint
-  StringPreference provideEndpointPreference(SharedPreferences preferences) {
-    return new StringPreference(preferences, &amp;quot;debug_endpoint&amp;quot;, ApiEndpoints.MOCK_MODE.url);
-  }
-
-  @Provides @Singleton @IsMockMode boolean provideIsMockMode(@ApiEndpoint StringPreference endpoint) {
-    return ApiEndpoints.isMockMode(endpoint.get());
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
-サーバ問題を解決しています. retrofitの&lt;code&gt;MockRestAdapter&lt;/code&gt;を組み合わせ, mockからデータを取得しています.&lt;/p&gt;
-
-&lt;h2 id=&#34;activityのlifecycleのログを取る&#34;&gt;activityのlifecycleのログを取る&lt;/h2&gt;
-
-&lt;p&gt;Applicationクラスには, &lt;code&gt;registerActivityLifecycleCallbacks&lt;/code&gt;メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &amp;hellip;)でイベントを受け取ることが出来ます.
-&lt;code&gt;ActivityLifecycleCallbackss&lt;/code&gt;インターフェースの定義は以下になります.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
-public void onActivityStarted(Activity activity) {}
-public void onActivityResumed(Activity activity) {}
-public void onActivityPaused(Activity activity) {}
-public void onActivityStopped(Activity activity) {}
-public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
-public void onActivityDestroyed(Activity activity) {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;u2020では,　&lt;a href=&#34;https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java&#34;&gt;SocketActivityHierarchyServer&lt;/a&gt;クラスをデバッグ, Activityが正しく振舞っているかを確認しています.&lt;/p&gt;
-
-&lt;p&gt;一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&amp;hellip;)&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;u2020はDagger以外にもノウハウが多くあり, 非常に勉強になりました. 正直10%くらいしか理解できていないので, 次はu2020全体にフォーカスを当てた記事を書くので楽しみに待っていて下さい.&lt;/p&gt;
 </description>
     </item>
     

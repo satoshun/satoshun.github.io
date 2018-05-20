@@ -4,7 +4,7 @@ title = "Android: Navigationのsafe args Gradle pluginだけを使うのは良�
 tags = ["android", "jetpack", "navigation"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。

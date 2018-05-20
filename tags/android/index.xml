@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: Navigationのsafe args Gradle pluginだけを使うのは良いかもしれない</title>
+      <link>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</link>
+      <pubDate>Sun, 20 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</guid>
+      <description>Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。 ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。
+このライブラリの機能に、safe argsというものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。
+safe argsを使ってみる 一般的にFragmentに適当な値を渡すときはBundleを通して渡します。
+// 呼び出し側 val bundle = Bundle() bundle.putInt(&amp;quot;step&amp;quot;, 10) // 呼び出され側 val step = arguments?.getInt(&amp;quot;step&amp;quot;)  これの問題点としては、typesafeで無いところです。例えばリファクタリングなどで、片方の文字列を&amp;quot;step2&amp;quot;にしてしまうと、ランタイムエラーになります。
+これを解決にするためにNavigationではsafe argsという機能を提供しています。 これは、DataBindingのように、クラスを生成することでtypesafeを実現します。
+&amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot; xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot; xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;&amp;gt; &amp;lt;fragment android:name=&amp;quot;com.example.android.codelabs.navigation.HogeFragment&amp;quot; android:label=&amp;quot;Hoge&amp;quot;&amp;gt; &amp;lt;argument android:name=&amp;quot;step&amp;quot; app:type=&amp;quot;integer&amp;quot; android:defaultValue=&amp;quot;1&amp;quot;/&amp;gt; &amp;lt;/fragment&amp;gt; &amp;lt;/navigation&amp;gt;  とnavigationを記述すると、
+public class HogeFragmentArgs { private int step = 1; private HogeFragmentArgs() { } public static HogeFragmentArgs fromBundle(Bundle bundle) { HogeFragmentArgs result = new HogeFragmentArgs(); if (bundle.</description>
+    </item>
     
     <item>
       <title>Android: 拡張関数でLiveDataのSingle Eventを扱う</title>
