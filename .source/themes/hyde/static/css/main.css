@@ -2846,3 +2846,16 @@ article {
   color: rgba(0,0,0,.68);
   text-decoration: none;
 }
+
+.tag-list-item {
+  display: inline-block;
+  margin-bottom: 2em;
+}
+
+.tag-list-item a {
+  display: block;
+}
+
+.tag-list {
+  padding-left: 0px;
+}
