@@ -8,7 +8,14 @@
     <h1 class="post-title">{{ .Title }}</h1>
     <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
     {{ .Content }}
-    <div class="mt15"></div>
+    <div class="mt30"></div>
+    {{ if .Params.tags }}
+      <ul class="article-post-tags">
+        {{ range .Params.tags }}
+          <li><a href="/tags/{{.}}">{{.}}</a></li>
+        {{ end }}
+      </ul>
+    {{ end }}
     <footer>
       <address class="address__post">
        <img class="icon__post" src="{{.Site.Params.icon}}" />

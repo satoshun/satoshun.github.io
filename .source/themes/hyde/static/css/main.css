@@ -2818,3 +2818,31 @@ article {
 .brand img {
   margin: 0;
 }
+
+.article-post-tags {
+  margin-bottom: 0.8em;
+  list-style-type: none;
+  padding: 0;
+}
+.article-post-tags.last {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+}
+.article-post-tags.top {
+  display: inline-block;
+}
+.article-post-tags li {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: none;
+  background: rgba(0,0,0,.05);
+}
+.article-post-tags li:hover {
+  background: rgba(0,0,0,.15)
+}
+.article-post-tags li a {
+  font-size: 0.9em;
+  color: rgba(0,0,0,.68);
+  text-decoration: none;
+}
