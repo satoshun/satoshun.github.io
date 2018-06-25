@@ -1,15 +1,15 @@
 +++
-date = "2018-06-22T00:00:00Z"
-title = "Dagger-AndroidでUserScopeのようなカスタムのScopeを使って、同一インスタンスを使う方法"
+date = "2018-06-25T00:00:00Z"
+title = "Dagger-AndroidでUserScopeのようなカスタムのScopeを使い、特定のActivity間のみで同一インスタンスを使う方法"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
 +++
 
-[Dagger](https://github.com/google/dagger)を使い、複数のActivityで同一のインスタンスを使う時は、スコープを使うことで実現できます。
-すべてのActivityで共通のインスタンスを使うには `Singleton`スコープとAppComponentを組み合わせて使えば良いですが、特定のActivity間でのみ使いたい場合にはこの方法は使えません。
+[Dagger](https://github.com/google/dagger)を使い、複数のインスタンス間で同一のインスタンスを使う時は、スコープを使うことで実現できます。
+Androidでは、すべてのActivityで共通のインスタンスを使うには `Singleton`スコープとAppComponentを組み合わせて使う方法がよく知られています。しかし、__特定__のActivity間でのみ共通のインスタンスを使いたい場合にはこの方法は使えません。
 
-この記事では、Dagger-Androidを使ったサンプルコードをベースに説明します。
+この記事では、Dagger-Androidを使ったサンプルコードをベースに、「特定のActivity間のみで同一インスタンスを使う方法」を説明します。
 また、基本的なDaggerの使い方は知っている前提で説明していきます。
 
 サンプルコードは[こちら](https://github.com/satoshun-example/DaggerScopeExample)になります。
@@ -17,9 +17,9 @@ type = "post"
 
 ---
 
-では説明していきます。今回のサンプルコードの目指すところは
+では説明していきます。今回のサンプルの目指すところは
 - UserScopeを定義し、MainActivity、UserScopedActivityで同一の`UserManager`インスタンスを使用する
-です。
+とします。
 
 まず最初にUserScopeを定義します。
 
@@ -47,10 +47,10 @@ interface UserSubcomponent {
 }
 ```
 
-このように書くことで、Component(Subcomponent)とScopeを結びつけることが出来ます。
-ここでは、UserSubcomponentに`UserScope`スコープを持たせます。
+ここでは、UserSubcomponentに`UserScope`スコープを持たせています。
+このように書くことで、SubcomponentとScopeを結びつけることが出来ます。
 
-最後にAppComponentを作ります。
+次にAppComponentを作ります。
 
 ```kotlin
 @Singleton
@@ -70,6 +70,7 @@ interface AppComponent : AndroidInjector<App> {
 
   override fun inject(app: App)
 
+  // AppComponentとUserSubcomponentを結びつける
   val userComponentBuilder: UserSubcomponent.Builder
 }
 ```
@@ -77,11 +78,9 @@ interface AppComponent : AndroidInjector<App> {
 ここでのポイントは`AppComponent`に、`val userComponentBuilder: UserSubcomponent.Builder`を定義することです。
 こうすることで、`AppComponent`に`UserSubcomponent`を結び付けることが出来ます。
 
-```text
-AppComponent <- UserSubcomponent
-```
-
 これで基本的な部分の定義は完了しました。
+
+---
 
 次に、各ActivityをComponentに結びつけていきます。
 サンプルではMainActivity、UserScopedActivityとNoUserScopedActivityの3つのActivityを定義しており、
@@ -89,15 +88,9 @@ AppComponent <- UserSubcomponent
 - MainActivity、UserScopedActivityはUserScopeに従い、インスタンスを共通で使いたい
 - NoUserScopedActivityはUserScopeに従わない、コンパイルエラーにしたい
 
-を達成していきます。
-
-- MainActivity、UserScopedActivityを`UserSubcomponent`に定義する
-  - UserSubcomponentは`UserScope`に紐付いているため、このようにすればMainActivity、UserScopedActivityを`UserScope`に従わせることが出来る
-- NoUserScopedActivityを`AppComponent`に定義する
-
-と定義すれば上記を達成できます。
-
 ## MainActivity、UserScopedActivityをUserSubcomponentに定義する
+
+MainActivity、UserScopedActivityを`UserSubcomponent`に定義することで、MainActivity、UserScopedActivityを`UserScope`に従わせることが出来ます。
 
 ```kotlin
 // UserSubcomponent.kt
@@ -132,6 +125,8 @@ interface UserScopedActivityModule {
 ```
 
 ## NoUserScopedActivityをAppComponentに定義する
+
+NoUserScopedActivityを`AppComponent`に定義することで、NoUserScopedActivityで`UserScope`を使っていたらコンパイルエラーにすることが出来ます。
 
 ```kotlin
 // AppComponent.kt
@@ -203,7 +198,7 @@ class UserScopedActivity : AppCompatActivity() {
 // NoUserScopedActivity.kt
 class NoUserScopedActivity : AppCompatActivity() {
 
-  //  compile error if added below code
+  //  下のコードのコメントアウトを取るとコンパイルエラー
   //  @Inject lateinit var userManager: UserManager
   ...
 }
@@ -245,7 +240,7 @@ interface UserScopedActivityModule {
   - しかし、MainActivity、UserScopedActivityで同一インスタンスを使うことは出来ない
 
 何故かと言うと、`ContributesAndroidInjector`はSubcomponentを作るシンタックスシュガーのようなものですが、
-`MainActivityModule`と`UserScopedActivityModule`はそれぞれ独立した形でSubcomponentを作るため、独立したComponent間でインスタンスを共通で使うことが出来ません。
+`MainActivityModule`と`UserScopedActivityModule`はそれぞれ独立した形でSubcomponentを作るため、独立したComponent間でインスタンスを共通で使うことが出来ないためです。今回のように、`UserSubcomponent`を定義して、そのComponentをベースにしてあげる必要があります。
 
 ## まとめ
 
