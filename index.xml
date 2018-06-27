@@ -7,7 +7,267 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 20 May 2018 00:00:00 UTC</updated>
+    <updated>Tue, 26 Jun 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Dagger-AndroidでUserScopeのようなカスタムのScopeを使い、特定のActivity間のみで同一インスタンスを使う方法</title>
+      <link>https://satoshun.github.io/2018/06/dagger-android-with_custom_scope/</link>
+      <pubDate>Tue, 26 Jun 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/06/dagger-android-with_custom_scope/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/google/dagger&#34;&gt;Dagger&lt;/a&gt;を使い、複数のインスタンス間で同一のインスタンスを使う時は、スコープを使うことで実現できます。
+Androidでは、すべてのActivityで共通のインスタンスを使うには &lt;code&gt;Singleton&lt;/code&gt;スコープとAppComponentを組み合わせて使う方法がよく知られています。
+しかし、&lt;strong&gt;特定&lt;/strong&gt;のActivity間でのみ共通のインスタンスを使いたい場合にはこの方法は使えません。Singletonだと&lt;strong&gt;すべて&lt;/strong&gt;のActivity間で共通のインスタンスが使えてしまいます。&lt;/p&gt;
+
+&lt;p&gt;この記事では、Dagger-Androidを使ったサンプルコードをベースに、「特定のActivity間のみで同一インスタンスを使う方法」を説明します。
+また、基本的なDaggerの使い方は知っている前提で説明していきます。&lt;/p&gt;
+
+&lt;p&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-example/DaggerScopeExample&#34;&gt;こちら&lt;/a&gt;になります。
+コードを見ると理解がより深まると思うので、ぜひご覧になってください😊&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;では説明していきます。今回のサンプルコードの目指すところは&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;UserScopeを定義し、MainActivity、UserScopedActivityで同一の&lt;code&gt;UserManager&lt;/code&gt;インスタンスを使用する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;とします。&lt;/p&gt;
+
+&lt;p&gt;まず最初にUserScopeを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Scope
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class UserScope
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次にUserSubcomponentを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@UserScope
+@Subcomponent
+interface UserSubcomponent {
+  @Subcomponent.Builder
+  interface Builder {
+    fun build(): UserSubcomponent
+  }
+
+  val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでは、UserSubcomponentに&lt;code&gt;UserScope&lt;/code&gt;スコープを持たせています。
+このように書くことで、SubcomponentとScopeを結びつけることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;次にAppComponentを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Singleton
+@Component(
+    modules = [
+      AndroidSupportInjectionModule::class
+    ]
+)
+interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; {
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun application(application: App): Builder
+
+    fun build(): AppComponent
+  }
+
+  override fun inject(app: App)
+
+  // AppComponentとUserSubcomponentを結びつける
+  val userComponentBuilder: UserSubcomponent.Builder
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでのポイントは&lt;code&gt;AppComponent&lt;/code&gt;に、&lt;code&gt;val userComponentBuilder: UserSubcomponent.Builder&lt;/code&gt;を定義することです。
+こうすることで、&lt;code&gt;AppComponent&lt;/code&gt;に&lt;code&gt;UserSubcomponent&lt;/code&gt;を結び付けることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;これで基本的な部分の定義は完了しました。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;次に、各ActivityをComponentに結びつけていきます。
+サンプルではMainActivity、UserScopedActivityとNoUserScopedActivityの3つのActivityを定義しており、
+それぞれのActivityは以下のように振る舞わせたいとします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MainActivity、UserScopedActivityはUserScopeに従い、インスタンスを共通で使いたい&lt;/li&gt;
+&lt;li&gt;NoUserScopedActivityはUserScopeに従わない、コンパイルエラーにしたい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mainactivity-userscopedactivityをusersubcomponentに従わせる&#34;&gt;MainActivity、UserScopedActivityをUserSubcomponentに従わせる&lt;/h2&gt;
+
+&lt;p&gt;MainActivity、UserScopedActivityを&lt;code&gt;UserSubcomponent&lt;/code&gt;に定義することで、MainActivity、UserScopedActivityを&lt;code&gt;UserScope&lt;/code&gt;に従わせることが出来ます。
+なぜなら、&lt;code&gt;UserSubcomponent&lt;/code&gt;は&lt;code&gt;UserScope&lt;/code&gt;に紐付いているためです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// UserSubcomponent.kt
+@UserScope
+@Subcomponent(modules = [
+  MainActivityModule::class,
+  UserScopedActivityModule::class
+])
+interface UserSubcomponent {
+  @Subcomponent.Builder
+  interface Builder {
+    fun build(): UserSubcomponent
+  }
+
+  val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
+}
+
+// MainActivityModule.kt
+@Module
+interface MainActivityModule {
+  @ContributesAndroidInjector
+  fun contributeMainActivity(): MainActivity
+}
+
+// UserScopedActivityModule.kt
+@Module
+interface UserScopedActivityModule {
+  @ContributesAndroidInjector
+  fun contributeUserScopedActivity(): UserScopedActivity
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;nouserscopedactivityはuserscopeに従わない&#34;&gt;NoUserScopedActivityはUserScopeに従わない&lt;/h2&gt;
+
+&lt;p&gt;NoUserScopedActivityを&lt;code&gt;AppComponent&lt;/code&gt;に定義することで、NoUserScopedActivityで&lt;code&gt;UserScope&lt;/code&gt;を使っていたらコンパイルエラーにすることが出来ます。
+&lt;code&gt;AppComponent&lt;/code&gt;は&lt;code&gt;UserScope&lt;/code&gt;に紐付いていないためです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// AppComponent.kt
+@Singleton
+@Component(
+    modules = [
+      AndroidSupportInjectionModule::class,
+      NoUserScopedActivityModule::class
+    ]
+)
+interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; {
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    fun application(application: App): Builder
+
+    fun build(): AppComponent
+  }
+
+  override fun inject(app: App)
+
+  val userComponentBuilder: UserSubcomponent.Builder
+}
+
+// NoUserScopedActivityModule.kt
+@Module
+interface NoUserScopedActivityModule {
+  @ContributesAndroidInjector
+  fun contributeNoUserScopedActivity(): NoUserScopedActivity
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、定義は完了です。実際に正しく動くかを確認してみます。
+適当に&lt;code&gt;UserScope&lt;/code&gt;に従う&lt;code&gt;UserManager&lt;/code&gt;を定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// UserManager.kt
+@UserScope
+class UserManager @Inject constructor() {
+  var value = 100
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これは&lt;code&gt;UserScope&lt;/code&gt;に従うので、MainActivity、UserScopedActivityには期待通り同一インスタンスが&lt;code&gt;Inject&lt;/code&gt;できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// MainActivity.kt
+class MainActivity : AppCompatActivity() {
+
+  // ok
+  @Inject lateinit var userManager: UserManager
+
+  ...
+}
+// UserScopedActivity.kt
+class UserScopedActivity : AppCompatActivity() {
+
+  // ok: MainActivityと同じインスタンスが注入される
+  @Inject lateinit var userManager: UserManager
+
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;しかし、NoUserScopedActivityに&lt;code&gt;Inject&lt;/code&gt;しようとするとコンパイルエラーになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// NoUserScopedActivity.kt
+class NoUserScopedActivity : AppCompatActivity() {
+
+  //  下のコメントアウトを取るとコンパイルエラー
+  //  @Inject lateinit var userManager: UserManager
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;NoUserScopedActivityを&lt;code&gt;UserScope&lt;/code&gt;に従う形で定義してないためです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MainActivity、UserScopedActivityはUserScopeに従い、インスタンスを共通で使いたい&lt;/li&gt;
+&lt;li&gt;NoUserScopedActivityはUserScopeに従わない、コンパイルエラーにしたい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;が達成できました。&lt;/p&gt;
+
+&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;そもそも、&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;定義時に、&lt;code&gt;UserScope&lt;/code&gt;スコープを付与してあげればいいんじゃないかと思うかもしれません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// MainActivityModule.kt
+@Module
+interface MainActivityModule {
+  @UserScope
+  @ContributesAndroidInjector
+  fun contributeMainActivity(): MainActivity
+}
+
+// UserScopedActivityModule.kt
+@Module
+interface UserScopedActivityModule {
+  @UserScope
+  @ContributesAndroidInjector
+  fun contributeUserScopedActivity(): UserScopedActivity
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このやり方だと、今回のケースには不都合です。&lt;/p&gt;
+
+&lt;p&gt;MainActivity、UserScopedActivityは&lt;code&gt;UserScope&lt;/code&gt;に従うのでコンパイルは通ります。
+しかし、MainActivity、UserScopedActivityで同一インスタンスを使うことは出来ません。&lt;/p&gt;
+
+&lt;p&gt;何故かと言うと、&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;はSubcomponentを作るシンタックスシュガーのようなものですが、
+&lt;code&gt;MainActivityModule&lt;/code&gt;と&lt;code&gt;UserScopedActivityModule&lt;/code&gt;はそれぞれ独立したSubcomponentを作るので、独立したComponent間で同一インスタンスを使うことが出来ないためです。&lt;/p&gt;
+
+&lt;p&gt;今回のように、&lt;code&gt;UserSubcomponent&lt;/code&gt;を定義して、そのComponentをベースに所属させる必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;特定のActivityのみで共通のインスタンスを使いたいときは、結構めんどう
+
+&lt;ul&gt;
+&lt;li&gt;冗長な気がするので、もっといい方法があったら教えてください😋&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;がどういう動作をするのかを知っておくと、いざというときに便利&lt;/li&gt;
+&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-example/DaggerScopeExample&#34;&gt;こちら&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1231,62 +1491,6 @@ static class ViewHolder {
 &lt;p&gt;into(ImageView, Callback)の, Callbackの部分がObserverパターンのポイントになります.
 intoメソッドは非同期な処理のため, 結果が成功したかを返り値として受け取ることが出来ません.
 そこで, 非同期処理が終わったら, 引数で渡したcallbackをコールするようにすることで結果を受け取ることが出来ます.&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>心理学: 人間は合理的な判断は出来ない</title>
-      <link>https://satoshun.github.io/2015/06/anchoring_effect/</link>
-      <pubDate>Mon, 08 Jun 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/06/anchoring_effect/</guid>
-      <description>
-
-&lt;p&gt;人間は合理的な判断をしているようで, 実はそんなにしていないという話をします.&lt;/p&gt;
-
-&lt;h2 id=&#34;例-値引き商品&#34;&gt;例: 値引き商品&lt;/h2&gt;
-
-&lt;p&gt;普段, 1,000円のとんかつ定食があるとします. その日は割引セールで40%OFFの600円になっていました.
-この時に本来は, 「このとんかつ定食が600円」が高いかどうかで判断を下さないといけません.
-しかし, 脳では「普段より400円安い!お得!!」と判断し, お得なとんかつ定食を選ぶ可能性があがります.&lt;/p&gt;
-
-&lt;p&gt;この現象を, アンカリング効果(Anchoring effect)と呼びます. 1,000円がアンカー(一種の基準)になり,
-600円を非常にお得と判断してしまいます. 例えば, 隣の店で全く同じとんかつ定食が600円で売られているとしても,
-こちらのとんかつ定食がお得だと判断します. これは合理的な判断とはいえません.&lt;/p&gt;
-
-&lt;p&gt;ものを販売する時はアンカーを意識して値段設定すると, ユーザの心を揺さぶることが出来ます.&lt;/p&gt;
-
-&lt;p&gt;合理的に判断するなら, 割引前の値段には影響を受けてはダメです. メーカーは定価を高めに設定しています. 冷凍食品なんかは常に割引セールをしています.&lt;/p&gt;
-
-&lt;h2 id=&#34;例-全く無関係な数字&#34;&gt;例: 全く無関係な数字&lt;/h2&gt;
-
-&lt;p&gt;「値引き商品だったら, なんとなく影響を受けている気がする」という人は多いと思います. しかし, 全く無関係な数字にも人間は影響を受けます.&lt;/p&gt;
-
-&lt;p&gt;事前に10 or 50という数字を見せられているとします. 次にAndroid5.0のシェア率答えてもらいます. この時, Android5.0のシェア率に関してなんら情報を持っていなければ,
-10 or 50という数字に大きく影響を受けることが分かっています. これは10 or 50という数字が基準(アンカリング)とし, 正解だと思う数字に調整するためです.&lt;/p&gt;
-
-&lt;p&gt;これは, 直感的には「そんなことないよと」言いたいところですが, 多くの人間が無関係な数字に影響を受けるようです.&lt;/p&gt;
-
-&lt;p&gt;合理的に判断するなら, 事前の数字に影響を受けてはダメです. しかし, よほど意識しない限り人間の脳は無関係な数字にも影響を受けてしまいます.&lt;/p&gt;
-
-&lt;h2 id=&#34;例-いろいろなレンジ帯の商品群&#34;&gt;例: いろいろなレンジ帯の商品群&lt;/h2&gt;
-
-&lt;p&gt;ある高級マットレスA,Bがあるとします. マットレスAは78,000円, マットレスBは128,000円の時に, マットレスBを選ばせるためにはどうするのがよいでしょうか?
-それは, マットレスC 488,000円を売り出すことです.&lt;/p&gt;
-
-&lt;p&gt;マットレスA 78,000円, マットレスB 128,000円, マットレスC 488,000円とあると,
-マットレスAだと安すぎて不安, マットレスCだと高すぎるし, ちょうど中間帯のマットレスBを買おうと誘導することが出来ます.&lt;/p&gt;
-
-&lt;p&gt;多くの電気メーカー, 自動車メーカー等が幅広い価格帯を持っているのは, お手頃感, お得感を出すためだと考えられます.&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B00ARDNMEQ/ref=as_li_tf_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00ARDNMEQ&amp;linkCode=as2&amp;tag=satoshunblog-22&#34;&gt;ファスト＆スロー　（上）&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=satoshunblog-22&amp;l=as2&amp;o=9&amp;a=B00ARDNMEQ&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://jma2-jp.org/wiki/?アンカリング効果&#34;&gt;アンカリング効果 - マーケティングWiki　～マーケティング用語集&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

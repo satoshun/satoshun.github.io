@@ -1,5 +1,5 @@
 +++
-date = "2018-06-25T00:00:00Z"
+date = "2018-06-26T00:00:00Z"
 title = "Dagger-AndroidでUserScopeのようなカスタムのScopeを使い、特定のActivity間のみで同一インスタンスを使う方法"
 tags = ["android", "dagger"]
 blogimport = true
