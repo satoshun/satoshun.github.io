@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: typealiasを使ってめんどうなアノテーションを省略する</title>
+      <link>https://satoshun.github.io/2018/07/typealias_omit_annotation/</link>
+      <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/07/typealias_omit_annotation/</guid>
+      <description>Kotlinではtypealiasと呼ばれる、既存のタイプに対して別名をつける機能があります。 https://kotlinlang.org/docs/reference/type-aliases.html
+典型的な使い方として、下のような複雑な型に名前をつけると可読性が高くなります。
+typealias MyHandler = (Int, String, Any) -&amp;gt; Unit  さらにtypealiasは、アノテーションをつけることも出来ます。
+typealias NonWildcardList&amp;lt;T&amp;gt; = List&amp;lt;@JvmSuppressWildcards T&amp;gt;  JvmSuppressWildcardsはDagger(参考リンク)やretrofit(参考リンク)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。</description>
+    </item>
     
     <item>
       <title>CoroutineBindingライブラリを作りました</title>
