@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 12 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: ContraintLayoutでネガティブマージンを実現する</title>
+      <link>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</link>
+      <pubDate>Wed, 25 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</guid>
+      <description>ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。 この記事ではSpaceを使ったネガティブマージンの実現について説明します。
+例 ネガティブマージンと同等の大きさを持ったSpaceを定義して、そこにConstraintを設定するだけです。
+&amp;lt;androidx.constraintlayout.widget.ConstraintLayout xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot; xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot; xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; android:clipToPadding=&amp;quot;false&amp;quot; android:padding=&amp;quot;80dp&amp;quot;&amp;gt; &amp;lt;Space android:id=&amp;quot;@+id/negative&amp;quot; android:layout_width=&amp;quot;15dp&amp;quot; android:layout_height=&amp;quot;15dp&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt; &amp;lt;ImageView android:id=&amp;quot;@+id/icon&amp;quot; android:layout_width=&amp;quot;30dp&amp;quot; android:layout_height=&amp;quot;30dp&amp;quot; android:contentDescription=&amp;quot;icon&amp;quot; app:layout_constraintBottom_toBottomOf=&amp;quot;@id/negative&amp;quot; app:layout_constraintEnd_toEndOf=&amp;quot;@id/negative&amp;quot; tools:src=&amp;quot;@tools:sample/avatars&amp;quot; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;  簡単に説明すると、Spaceに15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。 上記の例だと、
+ android:layout_marginStart=&amp;quot;-15px&amp;quot; android:layout_marginTop=&amp;quot;-15px&amp;quot;  と同等の振る舞いをしています。
+まとめ ConstraintLayoutではネイティブでネガティブマージンに対応していないため、Spaceを使った、ややテクニカルな方法で実現するのが良いと思われます。</description>
+    </item>
     
     <item>
       <title>Kotlin: typealiasを使ってめんどうなアノテーションを省略する</title>

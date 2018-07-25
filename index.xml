@@ -7,7 +7,69 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Thu, 12 Jul 2018 00:00:00 UTC</updated>
+    <updated>Wed, 25 Jul 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: ContraintLayoutでネガティブマージンを実現する</title>
+      <link>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</link>
+      <pubDate>Wed, 25 Jul 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</guid>
+      <description>
+
+&lt;p&gt;ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
+この記事では&lt;a href=&#34;https://developer.android.com/reference/android/widget/Space&#34;&gt;Space&lt;/a&gt;を使ったネガティブマージンの実現について説明します。&lt;/p&gt;
+
+&lt;h2 id=&#34;例&#34;&gt;例&lt;/h2&gt;
+
+&lt;p&gt;ネガティブマージンと同等の大きさを持った&lt;code&gt;Space&lt;/code&gt;を定義して、そこにConstraintを設定するだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+    xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
+    xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+    android:layout_height=&amp;quot;match_parent&amp;quot;
+    android:clipToPadding=&amp;quot;false&amp;quot;
+    android:padding=&amp;quot;80dp&amp;quot;&amp;gt;
+
+  &amp;lt;Space
+      android:id=&amp;quot;@+id/negative&amp;quot;
+      android:layout_width=&amp;quot;15dp&amp;quot;
+      android:layout_height=&amp;quot;15dp&amp;quot;
+      app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+      app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+
+  &amp;lt;ImageView
+      android:id=&amp;quot;@+id/icon&amp;quot;
+      android:layout_width=&amp;quot;30dp&amp;quot;
+      android:layout_height=&amp;quot;30dp&amp;quot;
+      android:contentDescription=&amp;quot;icon&amp;quot;
+      app:layout_constraintBottom_toBottomOf=&amp;quot;@id/negative&amp;quot;
+      app:layout_constraintEnd_toEndOf=&amp;quot;@id/negative&amp;quot;
+      tools:src=&amp;quot;@tools:sample/avatars&amp;quot; /&amp;gt;
+&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/LQrkHsAeTBvqlZWuw1Ccpm_dvrnCsdK7aH2rMB6HYakF_jv3q6Zf_-QBtfOo1eD0EjLBOjxy11nx2TAlZstr354XRiSXt7HUxENJXji8ZxWNxeJUTe8g9jIstSO1PRMsw7f8O5xuCakktrJLSUPLk01CI1N6OJ9MGMvsSbSDO6o4t7oeipkV9f7klqmzdxtoxESyDzoEI5SfeMOxynhmTGLwv6RnaASEOzVyL2xEW8eq63erAiu6ptdwl-_rQkxAnAIhYpSuPZjweCPBzf3GiMJi5gx_Ciz348GmoSaTIhuGM6grHd181fBGkZQkbvgg5ggrk5pLlja1N4eZA54n5rgzKs5gT36fA8K_ZFrAQI0H50cvAbesIeDVb05MZ2pP592Kwb8moTt6xp0TTFYrJf-c-MVljio-JvAKuUC0fPWPpdgMyxkJHW4AzK9l-Yo4f2-dUdfEf06J6ktMOsld0Yzsyu07Hki6MSGeBjU3bJ3R0vDi-W6SBUNmcDzJu5kC-2ItGmq4sN8fq06XJMSwVTmfDAyfHOluWHOTlL5LV3YVvYZxxgGJ6_ldqdD2HZ0ZW8wuNpfrHTxGLYCHR5EN5ouY5ILx-snrNAfQPQ9Z9Ph0U_4UeCMlODslXyRpueecgOSBJUhwc47xrQ04b-xOJz_01EWEA61x=w1452-h720-no&#34; alt=&#34;constraintlayout-image&#34; width=&#34;600px&#34;/&gt;&lt;/p&gt;
+
+&lt;p&gt;簡単に説明すると、&lt;code&gt;Space&lt;/code&gt;に15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。
+上記の例だと、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;android:layout_marginStart=&amp;quot;-15px&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;android:layout_marginTop=&amp;quot;-15px&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と同等の振る舞いをしています。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;ConstraintLayoutではネイティブでネガティブマージンに対応していないため、&lt;code&gt;Space&lt;/code&gt;を使った、ややテクニカルな方法で実現するのが良いと思われます。&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1180,88 +1242,6 @@ ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#fi
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://antonioleiva.com/mvp-android/&#34;&gt;MVP for Android: how to organize the presentation layer&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Improving Android: 列挙にはenumではなくIntDef, StringDef annotationを使う</title>
-      <link>https://satoshun.github.io/2015/08/improve-android-performance1/</link>
-      <pubDate>Tue, 11 Aug 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/08/improve-android-performance1/</guid>
-      <description>
-
-&lt;p&gt;enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.&lt;/p&gt;
-
-&lt;p&gt;列挙型としてのenumは, 以下のように書くことが出来ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;enum Month {
-    JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
-    JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
-}
-
-/** 指定した月が何日まであるかを返す */
-int getDate(Month month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;また, enumではなく定数を使うとしたら以下のように書くことが出来ます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;static final int JANUARY = 1;
-static final int FEBRUARY = 2;
-static final int MARCH = 3;
-static final int APRIL = 4;
-...
-static final int NOVEMBER = 11;
-static final int DECEMBER = 12;
-
-/** 指定した月が何日まであるかを返す */
-int getDate(int month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;定数を使うバージョンだと, &lt;code&gt;getDate(int)&lt;/code&gt;のため, 予期せぬ値が入ってきてしまう可能性があります. enumの場合は, &lt;code&gt;getDate(Month)&lt;/code&gt;のため, type-safeを提供してくれます. これは, 大きなメリットです.&lt;/p&gt;
-
-&lt;p&gt;しかし, enumは, 定数を使うバージョンと比較すると, apkサイズが大きくなってしまうデメリットがあります. Androidではメモリリソースはとても貴重なため, enumを使うのは極力避けたほうが良いです.&lt;/p&gt;
-
-&lt;p&gt;Androidでは, IntDef(StringDef) annotationを使うことで, type-safeに定数を使うことが出来ます.&lt;/p&gt;
-
-&lt;p&gt;上記のMonthのコードをIntDef annotationを使い, 書き換えてみます.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// Monthに代入することが出来る定数を宣言
-@IntDef({JANUARY, FEBRUARY, MARCH, APRIL, ...})
-@Retention(RetentionPolicy.SOURCE)
-public @interface Month {};
-static final int JANUARY = 1;
-static final int FEBRUARY = 2;
-static final int MARCH = 3;
-static final int APRIL = 4;
-...
-
-int getDate(@Month int month) {
-    ////
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Month annotationをIntDefで定義し, &lt;code&gt;getDate(@Month int)&lt;/code&gt;と書くことでtype-safeにgetDateメソッドを宣言することが出来ます.
-この書き方は, 「enumのtype-safe」と「定数のパフォーマンス」を満たしています.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;定数はtype-safeでないため, IntDef(StringDef) annotationを使い, type-safeを提供する&lt;/li&gt;
-&lt;li&gt;enumはパフォーマンスに影響を与える可能性があるため, IntDef(StringDef) annotationを使うことを検討する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://tools.android.com/tech-docs/support-annotations&#34;&gt;Support Annotations&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
