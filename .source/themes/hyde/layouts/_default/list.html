@@ -1,9 +1,9 @@
-{{ template "theme/chrome/head.html" . }}
+{{ template "chrome/head.html" . }}
 
 <body>
 
-  {{ template "theme/chrome/header.html" . }}
-  {{ template "theme/chrome/cover.html" . }}
+  {{ template "chrome/header.html" . }}
+  {{ template "chrome/cover.html" . }}
   <div class="content container">
     <h1 class="title">{{ .Title }}</h1>
     <ul class="posts tag-list">
@@ -15,6 +15,6 @@
     {{ end }}
     </ul>
   </div>
-  {{ template "theme/chrome/scripts.html" . }}
+  {{ template "chrome/scripts.html" . }}
 </body>
 </html>
