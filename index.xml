@@ -7,7 +7,80 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Wed, 25 Jul 2018 00:00:00 UTC</updated>
+    <updated>Thu, 02 Aug 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: Inline Functionだけではメソッドカウントは減らない</title>
+      <link>https://satoshun.github.io/2018/08/inline_function_decrease_method_count/</link>
+      <pubDate>Thu, 02 Aug 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/08/inline_function_decrease_method_count/</guid>
+      <description>
+
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;R8/Proguardをちゃんと使う&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思っていました。けど、そんなことはなかったという話です。&lt;/p&gt;
+
+&lt;p&gt;実際に動かして確認してみます。下記の関数を追加し、Build APK → Analyze APKでclasses.dexのメソッドカウントを調べてみます。&lt;/p&gt;
+
+&lt;p&gt;まずは、R8無しで調べてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun hoge() {
+    println(&amp;quot;hogehoge&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然メソッドカウントが1増えています。&lt;/p&gt;
+
+&lt;p&gt;次に、inlineを付けてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;inline fun hoge() {
+    println(&amp;quot;hogehoge&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こちらもメソッドカウントが1増えました。
+show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Metadata(
+    mv = {1, 1, 10},
+    bv = {1, 0, 2},
+    k = 2,
+    d1 = {&amp;quot;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&amp;quot;},
+    d2 = {&amp;quot;hoge&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;production sources for module app&amp;quot;}
+)
+public final class MainActivityKt {
+    public static final void hoge() {
+        String var1 = &amp;quot;hogehoge&amp;quot;;
+        System.out.println(var1);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただし、ここで重要なのは、inlineをつけたメソッドはインライン化されるため、上記のメソッドは生成されるけど、実際にはコールされない点です。
+コールされない、参照がないのでR8で削除することができます。&lt;/p&gt;
+
+&lt;p&gt;実際にR8/Proguardを有効にしてBuild APK → Analyze APKで確認したところ、inlineをつけた場合はメソッドカウントが増えていないことが確認できました。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;InlineメソッドはR8/Proguardと組み合わせればメソッドカウントを減らす効果がある
+
+&lt;ul&gt;
+&lt;li&gt;とはいえ、5.0(ART)からはruntimeからmultidexをサポートしているので、昔ほどメソッドカウントを意識する必要はないと思う&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1059,189 +1132,6 @@ fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&#34;&gt;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました</title>
-      <link>https://satoshun.github.io/2015/09/android-app-events/</link>
-      <pubDate>Sun, 06 Sep 2015 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2015/09/android-app-events/</guid>
-      <description>
-
-&lt;p&gt;イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.&lt;/p&gt;
-
-&lt;p&gt;アプリの技術的機能, 特徴は以下になります.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;HTTPを介してイベントのデータを取得する
-
-&lt;ul&gt;
-&lt;li&gt;検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある&lt;/li&gt;
-&lt;li&gt;それら複数のサーバーはJSONを返すが, 微妙にJSONの構造が異なる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Data-Bindingライブラリを使う&lt;/li&gt;
-&lt;li&gt;MVP(Model-View-Presenter)パターンを使う
-
-&lt;ul&gt;
-&lt;li&gt;Activity(Fragment)に機能が集中しないようにしたい!&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上記を中心にどのように実装をしたかを説明をしていきます.&lt;/p&gt;
-
-&lt;p&gt;フルソースコードはここにあります. &lt;a href=&#34;https://github.com/satoshun/AndroidEvents&#34;&gt;https://github.com/satoshun/AndroidEvents&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;httpを介してイベントのデータを取得する&#34;&gt;HTTPを介してイベントのデータを取得する&lt;/h2&gt;
-
-&lt;p&gt;connpass, Atnd, Zusaarの3つのAPIを使うことにしました. &lt;a href=&#34;http://square.github.io/retrofit/&#34;&gt;Retrofit&lt;/a&gt;でAPIを定義し,
-JSONのパースには&lt;a href=&#34;https://github.com/google/gson&#34;&gt;Gson&lt;/a&gt;, データの処理には&lt;a href=&#34;https://github.com/ReactiveX/RxJava&#34;&gt;RxJava&lt;/a&gt;を使いました.&lt;/p&gt;
-
-&lt;p&gt;例えば, connpass APIは以下のように定義しました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;/** Get data from Conpass  */
-public interface Connpass {
-    @GET(&amp;quot;/v1/event&amp;quot;)
-    Observable&amp;lt;ConnpassResponse&amp;gt; search(
-            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
-
-    @GET(&amp;quot;/v1/event&amp;quot;)
-    Observable&amp;lt;ConnpassResponse&amp;gt; search(
-            @Query(&amp;quot;keyword&amp;quot;) String keyword,
-            @Query(&amp;quot;ymd&amp;quot;) List&amp;lt;String&amp;gt; ymds);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
-Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます.
-(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
-今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Observable.merge(
-  connpass.search(keyword, generateYmd()),
-  atnd.search(keyword, generateYmd()),
-  zusaar.search(keyword, generateYmd()))
-  .subscribe(...)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;Observable.merge&lt;/code&gt;は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
-あとは, これをsubscribeして, データを取得します.(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h2 id=&#34;data-bindingライブラリを使う&#34;&gt;Data-Bindingライブラリを使う&lt;/h2&gt;
-
-&lt;p&gt;Data-BindingはXMLレイアウトにbindしたいデータ(インスタンス)を記述することで, よしなにデータを出力してくれる機能です.
-AngularJSのデータバインディングをイメージして貰えると良いと思います.
-書くコード量が減り, とても便利なライブラリでした. (&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
-ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class EventAdapter extends BaseAdapter {
-    /*
-      .. ....
-     */
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            AdapterEventBinding binding = AdapterEventBinding.inflate(inflater, parent, false);
-            view = binding.getRoot();
-            view.setTag(binding);
-        }
-
-        AdapterEventBinding binding = (AdapterEventBinding) view.getTag();
-        Event event = getItem(position);
-        binding.setEvent(event);
-        binding.setDateFormat(DATE_FORMAT);
-
-        return view;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AdapterEventBindingをViewHolderの代わりに使っています.
-(&lt;a href=&#34;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&#34;&gt;https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34&lt;/a&gt;)
-なかなか良いと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;mvp-model-view-presenter-パターンを使う&#34;&gt;MVP(Model-View-Presenter)パターンを使う&lt;/h2&gt;
-
-&lt;p&gt;MVPパターンとは, MVCの親戚?のようなパターンで, 責務をModel, View, Presenterにそれぞれ分割するパターンです.&lt;/p&gt;
-
-&lt;p&gt;Android開発は, Activity(Fragment)の責務が大きくなりがちです. 具体的にはActivityは以下のよう責務を持ちます.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ユーザからのイベントハンドリング
-
-&lt;ul&gt;
-&lt;li&gt;クリック, ロングクリック, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;システムからのイベントハンドリング
-
-&lt;ul&gt;
-&lt;li&gt;画面回転, アプリ終了, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;データの取得する際の非同期処理
-
-&lt;ul&gt;
-&lt;li&gt;HTTP(network), SQLite, SharedPreferences, &amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;取得したデータをパースしてViewにパースしたデータを割り当てる&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これらを全て1つのActivityで処理をすると, どうしてもFat-Activityになってしまいます. (１つのAcitvityが1000行ありますみたいな)&lt;/p&gt;
-
-&lt;p&gt;そこでMVPです.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Presenter
-
-&lt;ul&gt;
-&lt;li&gt;Modelから(非同期に)データを取得し, Viewに取得したデータをどのようにに表示するかを指定する(ビューロジック)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Model
-
-&lt;ul&gt;
-&lt;li&gt;データを取得してアプリで使いやすい形にデータをパースする. いわゆるビジネスロジック.&lt;/li&gt;
-&lt;li&gt;Retrofitを叩く&lt;/li&gt;
-&lt;li&gt;SQLiteにQueryを発行する&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;View(Activity)
-
-&lt;ul&gt;
-&lt;li&gt;ユーザからのクリックイベントなど, イベントのハンドリングをする(onClickとか)&lt;/li&gt;
-&lt;li&gt;イベントの処理はPresenterに任せる&lt;/li&gt;
-&lt;li&gt;必要なデータをPresenterから受け取り, 画面に表示する&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;このように責務を分割することで, Activityの責務が薄くなります.
-今回のコードも今まで自分が書いたコードと比較すると, 大分良くなった気がします(当人比)&lt;/p&gt;
-
-&lt;h2 id=&#34;その他-メモ&#34;&gt;その他, メモ&lt;/h2&gt;
-
-&lt;h3 id=&#34;dagger2&#34;&gt;Dagger2&lt;/h3&gt;
-
-&lt;p&gt;DI(Dependency Injection)をするためのツールで, 実装をデバッグ時, 本番時, テスト時に切り替えられるライブラリです.
-デバッグ時はデータの取得先を変えたい, テスト時にはネットワークアクセスしないで欲しい, などといった時に力を発揮します.&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;MVPパターンの話をしましたが, MVPが絶対良いという話ではないです.
-しかし, 何もパターンがないとFat-Activityになってしまったり, 無秩序なコードになってしまいがちなので, そのような場合は, MVPのようなパターンを導入したほうが良いと思います.&lt;/p&gt;
-
-&lt;p&gt;まだアプリ自体はまだ付けたい機能があるため, 公開していません. 近々しようと思います.&lt;/p&gt;
-
-&lt;h2 id=&#34;references&#34;&gt;references&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://antonioleiva.com/mvp-android/&#34;&gt;MVP for Android: how to organize the presentation layer&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

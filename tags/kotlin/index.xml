@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 12 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: Inline Functionだけではメソッドカウントは減らない</title>
+      <link>https://satoshun.github.io/2018/08/inline_function_decrease_method_count/</link>
+      <pubDate>Thu, 02 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/08/inline_function_decrease_method_count/</guid>
+      <description>結論  R8/Proguardをちゃんと使う  背景 Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思っていました。けど、そんなことはなかったという話です。
+実際に動かして確認してみます。下記の関数を追加し、Build APK → Analyze APKでclasses.dexのメソッドカウントを調べてみます。
+まずは、R8無しで調べてみます。
+fun hoge() { println(&amp;quot;hogehoge&amp;quot;) }  当然メソッドカウントが1増えています。
+次に、inlineを付けてみます。
+inline fun hoge() { println(&amp;quot;hogehoge&amp;quot;) }  こちらもメソッドカウントが1増えました。 show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。
+@Metadata( mv = {1, 1, 10}, bv = {1, 0, 2}, k = 2, d1 = {&amp;quot;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&amp;quot;}, d2 = {&amp;quot;hoge&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;production sources for module app&amp;quot;} ) public final class MainActivityKt { public static final void hoge() { String var1 = &amp;quot;hogehoge&amp;quot;; System.</description>
+    </item>
     
     <item>
       <title>Kotlin: typealiasを使ってめんどうなアノテーションを省略する</title>
