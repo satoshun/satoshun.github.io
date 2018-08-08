@@ -20,7 +20,7 @@ adb shellコマンドから起動時間を調べるコマンドです。計11回
 ```shell
 for i in {0..10}
 do
-    adb shell am start -S -W jp.ameba/.ui.main.MainGuestActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN >> hoge.txt
+    adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN >> hoge.txt
     sleep 10
 done
 ```

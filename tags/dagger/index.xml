@@ -22,7 +22,7 @@
 これは、startup timeを改善するための機能です。どれくらい差があるかを担当アプリで実際に調べてみました。
 確認に使用した端末はAndroid8系のGalaxyと、Android7系のXperiaの計2台になります。
 確認に使用したシェルスクリプト adb shellコマンドから起動時間を調べるコマンドです。計11回startup timeを確認する事ができます。
-for i in {0..10} do adb shell am start -S -W jp.ameba/.ui.main.MainGuestActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt sleep 10 done  下記を参考にしました。
+for i in {0..10} do adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt sleep 10 done  下記を参考にしました。
  https://developer.android.com/topic/performance/vitals/launch-time  fastInit有効の場合 下記をbuild.gradleに追加します。
 kapt { javacOptions { option(&amp;quot;-Adagger.fastInit=enabled&amp;quot;) } }  結果:
 平均: 1609ms  fastInit無効の場合 結果:
