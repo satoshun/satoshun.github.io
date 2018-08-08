@@ -7,7 +7,84 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Thu, 02 Aug 2018 00:00:00 UTC</updated>
+    <updated>Wed, 08 Aug 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: Dagger 2.17のfastInitを試してみた</title>
+      <link>https://satoshun.github.io/2018/08/android-dagger__fastinit_mode/</link>
+      <pubDate>Wed, 08 Aug 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/08/android-dagger__fastinit_mode/</guid>
+      <description>
+
+&lt;p&gt;Dagge 2.17でfastInitオプションが追加されました。
+&lt;a href=&#34;https://google.github.io/dagger/compiler-options&#34;&gt;https://google.github.io/dagger/compiler-options&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これは、startup timeを改善するための機能です。どれくらい差があるかを担当アプリで実際に調べてみました。&lt;/p&gt;
+
+&lt;p&gt;確認に使用した端末はAndroid8系のGalaxyと、Android7系のXperiaの計2台になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;確認に使用したシェルスクリプト&#34;&gt;確認に使用したシェルスクリプト&lt;/h2&gt;
+
+&lt;p&gt;adb shellコマンドから起動時間を調べるコマンドです。計11回startup timeを確認する事ができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;for i in {0..10}
+do
+    adb shell am start -S -W jp.ameba/.ui.main.MainGuestActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt
+    sleep 10
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下記を参考にしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/performance/vitals/launch-time&#34;&gt;https://developer.android.com/topic/performance/vitals/launch-time&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;fastinit有効の場合&#34;&gt;fastInit有効の場合&lt;/h2&gt;
+
+&lt;p&gt;下記をbuild.gradleに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;kapt {
+    javacOptions {
+        option(&amp;quot;-Adagger.fastInit=enabled&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;結果:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;平均: 1609ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;fastinit無効の場合&#34;&gt;fastInit無効の場合&lt;/h2&gt;
+
+&lt;p&gt;結果:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;平均: 1607ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;ほぼ変わらない数字が出てきてしまいました。悲しい。
+Dagger生成コードを見る限りだと、最初のComponentのcreateのタイミングでComponentが持っているフィールドの初期化が行われていなかったので、早くなりそうだなと思ったんですが、実際にはほぼ変わりませんでした。&lt;/p&gt;
+
+&lt;p&gt;芳しくない結果になった推測として&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;担当アプリのDaggerの書き方が正しくないからこの結果になった?
+
+&lt;ul&gt;
+&lt;li&gt;要調査、しかし一般的なAndroid-Daggerを使った書き方をしているので正しいはず&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;確認に使用したコマンドが良くないのかも?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;なにか分かったら追記します、もしくは間違っている点があればご指摘いただければ幸いです😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1078,60 +1155,6 @@ private fun findAllFragments(
 
 &lt;ul&gt;
 &lt;li&gt;ViewからFragmentを取得できる方法は正攻法では無いと思っていたんですが、それなりに簡潔な方法で取得できる方法がありました&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: 拡張関数からprotectedメソッドにアクセスする</title>
-      <link>https://satoshun.github.io/2018/01/extension-function-with-protected/</link>
-      <pubDate>Sun, 07 Jan 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/01/extension-function-with-protected/</guid>
-      <description>
-
-&lt;p&gt;LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package android.arch.lifecycle;
-
-public abstract class LiveData&amp;lt;T&amp;gt; {
-    protected void onActive() {
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch.lifecycle
-
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
-  onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package android.arch
-
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() {
-  onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;なぜかこのような挙動になるか&#34;&gt;なぜかこのような挙動になるか?&lt;/h2&gt;
-
-&lt;p&gt;protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&#34;&gt;https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
