@@ -33,7 +33,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -297,6 +297,24 @@
       <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/retrofit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rxandroid</title>
+      <link>https://satoshun.github.io/tags/rxandroid/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/rxandroid/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rxjava</title>
+      <link>https://satoshun.github.io/tags/rxjava/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/rxjava/</guid>
       <description></description>
     </item>
     

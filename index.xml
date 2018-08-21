@@ -7,7 +7,90 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Wed, 08 Aug 2018 00:00:00 UTC</updated>
+    <updated>Tue, 21 Aug 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>RxAndroidのasyncパラメータを試してみた</title>
+      <link>https://satoshun.github.io/2018/08/rx-android-async-parameter/</link>
+      <pubDate>Tue, 21 Aug 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/08/rx-android-async-parameter/</guid>
+      <description>
+
+&lt;p&gt;RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これは&lt;code&gt;Message#setAsynchronous&lt;/code&gt;を使うことで、UIのパフォーマンス向上を狙った機能です。
+下のリンクに詳細な内容が書かれています。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://medium.com/@sweers/rxandroids-new-async-api-4ab5b3ad3e93&#34;&gt;RxAndroid’s New Async API&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;この記事では、asyncがfalseの場合とtrueの場合でどれくらいの差が出るかを検証してみました。&lt;/p&gt;
+
+&lt;p&gt;検証に使用したサンプルプロジェクトは以下になります。
+&lt;a href=&#34;https://github.com/satoshun-android-example/RxAndroidExample&#34;&gt;https://github.com/satoshun-android-example/RxAndroidExample&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;サンプルプロジェクトをかいつまんで説明します。&lt;/p&gt;
+
+&lt;p&gt;まず2つのスケジューラを作成し、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false)
+private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// asyncがfalseの場合
+Observable
+    .fromCallable { System.currentTimeMillis() }
+    .delay(index, TimeUnit.MILLISECONDS)
+    .observeOn(mainScheduler)
+    .subscribe(...)
+
+// asyncがtrueの場合
+Observable
+    .fromCallable { System.currentTimeMillis() }
+    .delay(index, TimeUnit.MILLISECONDS)
+    .observeOn(asyncMainScheduler)
+    .subscribe(...)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;フルコードは以下になります。
+&lt;a href=&#34;https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt&#34;&gt;https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;結果は、以下のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;// API27 エミュレータ
+main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和
+main=130857ms, async=126582ms
+main=131401ms, async=126909ms
+main=130763ms, async=126504ms
+main=132758ms, async=127972ms
+
+// API21 エミュレータ
+main=129869ms, async=125795ms
+main=130050ms, async=125888ms
+main=129935ms, async=125853ms
+main=129908ms, async=125838ms
+main=129927ms, async=125824ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。&lt;/p&gt;
+
+&lt;p&gt;ただ注意点として、この機能は副作用がある可能性があります(なのでデフォルトではasyncはfasle)。ただ、Uberで1年間、プロダクションで運用したところ、特に大きな問題は起きなかったらしいので  &lt;a href=&#34;https://github.com/ReactiveX/RxAndroid/pull/416&#34;&gt;https://github.com/ReactiveX/RxAndroid/pull/416&lt;/a&gt; 、ほぼ安全と考えて良さそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう&lt;/li&gt;
+&lt;li&gt;導入は以下のコードを追加するだけなので、とても簡単&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;RxAndroidPlugins.setInitMainThreadSchedulerHandler {
+    AndroidSchedulers.from(Looper.getMainLooper(), true)
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1053,109 +1136,6 @@ Proguardは苦手意識を持っている人が多いと思っていて、なの
 
 &lt;p&gt;来年もDroidKaigiあるとしたらCfP出してまた登壇できるように頑張ります。
 そして運営の皆さん本当にありがとうございました。凄い楽しかったです(•ө•)♡&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: ViewがどのFragmentに属しているかをViewから取得する</title>
-      <link>https://satoshun.github.io/2018/01/android-how_to_get_fragment_from_view/</link>
-      <pubDate>Sun, 28 Jan 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/01/android-how_to_get_fragment_from_view/</guid>
-      <description>
-
-&lt;p&gt;ViewがどのFragmentに属しているかを取得する方法の紹介になります。
-前々からtag、id以外の仕組みで取得出来ないかなと考えていたら、GlideでViewからFragmentを取得するコードがありました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Nullable
-private Fragment findSupportFragment(@NonNull View target, @NonNull FragmentActivity activity) {
-  tempViewToSupportFragment.clear();
-  findAllSupportFragmentsWithViews(
-      activity.getSupportFragmentManager().getFragments(), tempViewToSupportFragment);
-  Fragment result = null;
-  View activityRoot = activity.findViewById(android.R.id.content);
-  View current = target;
-  while (!current.equals(activityRoot)) {
-    result = tempViewToSupportFragment.get(current);
-    if (result != null) {
-      break;
-    }
-    if (current.getParent() instanceof View) {
-      current = (View) current.getParent();
-    } else {
-      break;
-    }
-  }
-
-  tempViewToSupportFragment.clear();
-  return result;
-}
-
-private static void findAllSupportFragmentsWithViews(
-     @Nullable Collection&amp;lt;Fragment&amp;gt; topLevelFragments,
-     @NonNull Map&amp;lt;View, Fragment&amp;gt; result) {
-   if (topLevelFragments == null) {
-     return;
-   }
-   for (Fragment fragment : topLevelFragments) {
-    // getFragment()s in the support FragmentManager may contain null values, see #1991.
-    if (fragment == null || fragment.getView() == null) {
-      continue;
-    }
-    result.put(fragment.getView(), fragment);
-    findAllSupportFragmentsWithViews(fragment.getChildFragmentManager().getFragments(), result);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/bumptech/glide/blob/master/library/src/main/java/com/bumptech/glide/manager/RequestManagerRetriever.java#L192&#34;&gt;https://github.com/bumptech/glide/blob/master/library/src/main/java/com/bumptech/glide/manager/RequestManagerRetriever.java#L192&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;説明すると、ターゲットのViewが所属しているactivity(&lt;code&gt;View#getContext&lt;/code&gt;から取得できる)ので、&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;activity.getSupportFragmentManager().getFragments()&lt;/code&gt;と&lt;code&gt;fragment.getChildFragmentManager().getFragments()&lt;/code&gt;から、Activityが保持している全Fragmentを取得する&lt;/li&gt;
-&lt;li&gt;それらのFragmentのTopのViewを取得する&lt;/li&gt;
-&lt;li&gt;ターゲットのViewのgetParentを辿っていき、2で取得したViewと一致するViewを探す&lt;/li&gt;
-&lt;li&gt;一致したViewが所属するFragment == ターゲットのViewが所属するFragment&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;という流れになっています。&lt;/p&gt;
-
-&lt;p&gt;Glideのコードは効率的なコードなのでやや複雑ですが、Kotlinで効率性を考えずにに書くなら以下のようにも書けます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun View.findAttachFragment(): Fragment? {
-  val activity = context as? FragmentActivity ?: return null
-  val allFragments = findAllFragments(activity.supportFragmentManager.fragments)
-
-  val root = activity.findViewById&amp;lt;View&amp;gt;(android.R.id.content)
-  var result: Fragment? = null
-  var current = this
-  while (current != root) {
-    result = allFragments.firstOrNull { it.view == current }
-    if (result != null) break
-    current = current.parent as? View ?: break
-  }
-  return result
-}
-
-private fun findAllFragments(
-    fragments: List&amp;lt;Fragment?&amp;gt;?
-): List&amp;lt;Fragment&amp;gt; {
-  if (fragments == null || fragments.isEmpty()) return emptyList()
-  val fragments = fragments.filter { it?.view != null }.filterNotNull()
-  return fragments + findAllFragments(fragments.map { it.childFragmentManager.fragments }.flatten())
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-example/GetViewFragmentSample&#34;&gt;https://github.com/satoshun-example/GetViewFragmentSample&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ViewからFragmentを取得できる方法は正攻法では無いと思っていたんですが、それなりに簡潔な方法で取得できる方法がありました&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
