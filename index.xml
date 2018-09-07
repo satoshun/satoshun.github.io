@@ -7,7 +7,117 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Tue, 21 Aug 2018 00:00:00 UTC</updated>
+    <updated>Fri, 07 Sep 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Daggerでprivate valで依存関係を取得したかった</title>
+      <link>https://satoshun.github.io/2018/09/android-dagger-simple-example/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/09/android-dagger-simple-example/</guid>
+      <description>
+
+&lt;p&gt;みなさんこんにちは&lt;/p&gt;
+
+&lt;p&gt;今回はDaggerの話をします。Dagger + Kotlinの1つ気になる点として&lt;code&gt;@Inject lateinit var&lt;/code&gt; になってしまうところがあると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity {
+    @Inject lateinit var hoge: Hoge
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをなんとか出来ないかなと思って考えてみました。&lt;/p&gt;
+
+&lt;p&gt;結論から言うと最終形はこのようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity {
+    private val hoge: Hoge by inject()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。&lt;/p&gt;
+
+&lt;p&gt;今回は&lt;code&gt;IntoMap&lt;/code&gt;を使って実装することにしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;IntoMap&lt;/code&gt;とはその名の通りMapにバインドするためのアノテーションです。
+詳しくは&lt;a href=&#34;https://google.github.io/dagger/multibindings.html&#34;&gt;ドキュメント&lt;/a&gt;を見てください。&lt;/p&gt;
+
+&lt;p&gt;サンプルコードで説明していきます。&lt;/p&gt;
+
+&lt;p&gt;まずはIntoMapを使い、MapへのバインドをModuleに定義していきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Module
+interface HogeModule {
+    @Binds @IntoMap @ClassKey(Hoge1::class) fun bindHoge1(hoge: Hoge1): Any
+    @Binds @IntoMap @ClassKey(Hoge2::class) fun bindHoge2(hoge: Hoge2): Any
+}
+
+class Hoge1 @Inject constructor()
+class Hoge2 @Inject constructor()
+
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class ClassKey(val value: KClass&amp;lt;out Any&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;作ったModuleをComponentに組み込みます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Component(modules = [HogeModule::class])
+interface AppComponent {
+    val values: Map&amp;lt;Class&amp;lt;out Any&amp;gt;, @JvmSuppressWildcards Provider&amp;lt;Any&amp;gt;&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして、ApplicationでAppComponentを生成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class App : Application() {
+    val values: Map&amp;lt;Class&amp;lt;out Any&amp;gt;, @JvmSuppressWildcards Provider&amp;lt;Any&amp;gt;&amp;gt; by lazy {
+    DaggerAppComponent.builder().build().values
+    }
+
+    inline fun &amp;lt;reified T&amp;gt; get(): T = values[T::class.java]!!.get() as T
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして、Activity用に拡張関数を定義して、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;inline fun &amp;lt;reified T&amp;gt; Activity.inject() = lazy { get&amp;lt;T&amp;gt;() }
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;完成です!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : AppCompatActivity {
+    private val hoge: Hoge by inject()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;このアプローチの問題点は、というか問題点しかないんですけど、&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;ランタイムで落ちる可能性がある
+
+&lt;ul&gt;
+&lt;li&gt;Daggerの良さであるアノテーション時のチェックが消え去る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ScopeとかSubcomponentとかの対応方法が良く分かんない
+
+&lt;ul&gt;
+&lt;li&gt;まあこれは考えていないだけなので、もしかしたらいい方法があるかもしれない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;いわゆるService Locatorパターンになってしまい微妙&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/SimpleDaggerExample&#34;&gt;https://github.com/satoshun-android-example/SimpleDaggerExample&lt;/a&gt; にあります。よかったら見てください😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1093,49 +1203,6 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
 &lt;li&gt;データ側はRx、UI側に反映する時はLiveDataが良さそう&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>DroidKaigi2018で「なんとなく動いているProguardから脱出するために」というテーマで発表しました</title>
-      <link>https://satoshun.github.io/2018/02/droidkaigi-2018/</link>
-      <pubDate>Fri, 09 Feb 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/02/droidkaigi-2018/</guid>
-      <description>&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://goo.gl/SMQW6M&#34; alt=&#34;DroidKaigi&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;DroidKaigi2018でセッションが採択されたので発表しました。&lt;/p&gt;
-
-&lt;iframe src=&#34;https://docs.google.com/presentation/d/e/2PACX-1vSfnJcFK28DL1nnc2JVlZdGvtzjbv9Jw0A2UYMESKl0jRrk5qD02n9B1F-ss9L-5Ifvra_FnhkKTEgv/embed?start=false&amp;loop=false&amp;delayms=3000&#34; frameborder=&#34;0&#34; class=&#34;presentation-slide&#34; allowfullscreen=&#34;true&#34; mozallowfullscreen=&#34;true&#34; webkitallowfullscreen=&#34;true&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://goo.gl/S95MJs&#34;&gt;https://goo.gl/S95MJs&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;正直、Proguardは目新しいトピックでないのでそんなに聞きに来てくれないだろうなと思っていました。
-しかし、Room3という広い部屋が割り当てられて、さらに当日はかなりの人が聞きに来てくれました。本当に聞きに来てくれた人ありがとうございます😊😊😊&lt;/p&gt;
-
-&lt;p&gt;Twitterの反応を見る限りだと、分かりやすいと言っている人が多くいたので嬉しかったです。
-Proguardは苦手意識を持っている人が多いと思っていて、なのでstep by stepで順序良く聞けるような発表を心掛けたのでその効果が少しは出たのかなと思っています。&lt;/p&gt;
-
-&lt;p&gt;反省点としては、自分が想定したより時間に余裕があったので何か面白いことを喋ろうとしたら何も思いつかないでフガフガしてしまったところです。
-今後はフガフガせずに、アドリブ力みたいなものを身につけていきたいと思います!&lt;/p&gt;
-
-&lt;p&gt;あと、もう一つ反省点としてすべるのが怖くて積極的にネタみたいなものをスライドに入れられなかったことです。一応考えていたものは&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;「Self-Styled Proguardエバンジェリストです」と自己紹介しようとした。&lt;/li&gt;
-&lt;li&gt;僕の発表資料はProguardに失敗してやや冗長になってしまいましたけど、みなさんのAPKサイズはProguardに成功して小さくなることを期待しています。みたいなことを言おうとした。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;みたいなことを言って笑いを取りたかったなと後悔しています(笑いを取れるとは言っていない)。&lt;/p&gt;
-
-&lt;p&gt;来年もDroidKaigiあるとしたらCfP出してまた登壇できるように頑張ります。
-そして運営の皆さん本当にありがとうございました。凄い楽しかったです(•ө•)♡&lt;/p&gt;
 </description>
     </item>
     

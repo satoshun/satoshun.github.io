@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 08 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Daggerでprivate valで依存関係を取得したかった</title>
+      <link>https://satoshun.github.io/2018/09/android-dagger-simple-example/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/09/android-dagger-simple-example/</guid>
+      <description>みなさんこんにちは
+今回はDaggerの話をします。Dagger + Kotlinの1つ気になる点として@Inject lateinit var になってしまうところがあると思います。
+class HogeActivity { @Inject lateinit var hoge: Hoge }  これをなんとか出来ないかなと思って考えてみました。
+結論から言うと最終形はこのようになります。
+class HogeActivity { private val hoge: Hoge by inject() }  private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。
+今回はIntoMapを使って実装することにしました。
+IntoMapとはその名の通りMapにバインドするためのアノテーションです。 詳しくはドキュメントを見てください。
+サンプルコードで説明していきます。
+まずはIntoMapを使い、MapへのバインドをModuleに定義していきます。
+@Module interface HogeModule { @Binds @IntoMap @ClassKey(Hoge1::class) fun bindHoge1(hoge: Hoge1): Any @Binds @IntoMap @ClassKey(Hoge2::class) fun bindHoge2(hoge: Hoge2): Any } class Hoge1 @Inject constructor() class Hoge2 @Inject constructor() @MustBeDocumented @Retention(AnnotationRetention.RUNTIME) @MapKey annotation class ClassKey(val value: KClass&amp;lt;out Any&amp;gt;)  Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。</description>
+    </item>
     
     <item>
       <title>Android: Dagger 2.17のfastInitを試してみた</title>
