@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 07 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 17 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Inline classesとGsonでprimitive型をクラスで受けとる</title>
+      <link>https://satoshun.github.io/2018/09/android-gson-inlineclasses/</link>
+      <pubDate>Mon, 17 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/09/android-gson-inlineclasses/</guid>
+      <description>（この記事は1.3-M2を使っています。）
+Kotlin 1.3でInline classesが入ります。これはパフォーマンスに影響を与えずに、値のラッパークラスを作成することが出来ます。
+例えば、次のように書くことが出来ます。
+inline class UserId(val id: String) { val url get() = &amp;quot;http://$id&amp;quot; } val userId = UserId(&amp;quot;user-dayo&amp;quot;) println(userId.url)  このコードは一見、UserIdクラスが生成されそうです。しかし、コンパイルされたコードではUserIdクラスは生成されません。
+public static final class UserId$Erased { ... @NotNull public static final String getUrl(String $this) { return &amp;quot;http://&amp;quot; + $this; } ... } String userId = &amp;quot;user-dayo&amp;quot;; String var1 = UserId$Erased.getUrl(userId); System.out.println(var1);  UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成されたUserId$Erasedクラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。
+ここからが本題です。 Inline classesがAndroid開発のどこで役立つのかを考えたときに、 Gsonなどのライブラリによってdeserialize/serializeされるクラスで有効使えると思いました。
+例えば、次のコードがあったとします。
+data class Response( @SerializedName(&amp;quot;user_id&amp;quot;) val userId: String, @SerializedName(&amp;quot;friend_id&amp;quot;) val friendId: String )  これはuserIdとfriendIdをStringで受け取っており、このStringが何のStringかの情報が欠落しています。型による分類が出来てない状態です。</description>
+    </item>
     
     <item>
       <title>Daggerでprivate valで依存関係を取得したかった</title>

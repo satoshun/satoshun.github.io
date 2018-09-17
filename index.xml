@@ -7,7 +7,84 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 07 Sep 2018 00:00:00 UTC</updated>
+    <updated>Mon, 17 Sep 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Inline classesとGsonでprimitive型をクラスで受けとる</title>
+      <link>https://satoshun.github.io/2018/09/android-gson-inlineclasses/</link>
+      <pubDate>Mon, 17 Sep 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/09/android-gson-inlineclasses/</guid>
+      <description>&lt;p&gt;（この記事は1.3-M2を使っています。）&lt;/p&gt;
+
+&lt;p&gt;Kotlin 1.3でInline classesが入ります。これはパフォーマンスに影響を与えずに、値のラッパークラスを作成することが出来ます。&lt;/p&gt;
+
+&lt;p&gt;例えば、次のように書くことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;inline class UserId(val id: String) {
+    val url get() = &amp;quot;http://$id&amp;quot;
+}
+
+val userId = UserId(&amp;quot;user-dayo&amp;quot;)
+println(userId.url)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このコードは一見、UserIdクラスが生成されそうです。しかし、コンパイルされたコードではUserIdクラスは生成されません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static final class UserId$Erased {
+    ...
+
+    @NotNull
+    public static final String getUrl(String $this) {
+        return &amp;quot;http://&amp;quot; + $this;
+    }
+
+    ...
+}
+
+String userId = &amp;quot;user-dayo&amp;quot;;
+String var1 = UserId$Erased.getUrl(userId);
+System.out.println(var1);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成された&lt;code&gt;UserId$Erased&lt;/code&gt;クラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。&lt;/p&gt;
+
+&lt;p&gt;ここからが本題です。
+Inline classesがAndroid開発のどこで役立つのかを考えたときに、 Gsonなどのライブラリによってdeserialize/serializeされるクラスで有効使えると思いました。&lt;/p&gt;
+
+&lt;p&gt;例えば、次のコードがあったとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;data class Response(
+    @SerializedName(&amp;quot;user_id&amp;quot;) val userId: String,
+    @SerializedName(&amp;quot;friend_id&amp;quot;) val friendId: String
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これはuserIdとfriendIdをStringで受け取っており、このStringが何のStringかの情報が欠落しています。型による分類が出来てない状態です。&lt;/p&gt;
+
+&lt;p&gt;これにInline classesを使ってみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;inline class UserId(private val id: String) {
+    val url get() = &amp;quot;http://my/$id&amp;quot;
+}
+
+inline class FriendId(private val id: String) {
+    val url get() = &amp;quot;http://friend/$id&amp;quot;
+}
+
+data class Response(
+    @SerializedName(&amp;quot;user_id&amp;quot;) val userId: UserId,
+    @SerializedName(&amp;quot;friend_id&amp;quot;) val friendId: FriendId
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;UserIdとFriendIdクラスで受け取ることが出来ます。Inline classesがコンパイルされると、wrapされた値の型が展開されるためです。UserId、FriendIdのwrapされた値はStringなので、コンパイル後はStringが展開され、Stringでdeserialize/serializeされます。しかし、コンパイルされる前までは型安全の恩恵を受け取ることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;Inline classesを使えば、Adapterを作成することなく、カスタムのクラスで受け取れるため非常に便利です(・o・)&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1126,82 +1203,6 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
 &lt;ul&gt;
 &lt;li&gt;とはいえActivityにコメントを書く正しいケースもあると思うので、そこらへんは柔軟にオナシャス&lt;/li&gt;
 &lt;li&gt;コメントはコードと違い、コンピュータがコンパイルして正当性を確かめてくれるわけでないので、正しく運用するのがコードより難しいと思う&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>感想: Androidアプリ設計パターン入門</title>
-      <link>https://satoshun.github.io/2018/03/android-architecture-started/</link>
-      <pubDate>Fri, 02 Mar 2018 00:28:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/03/android-architecture-started/</guid>
-      <description>
-
-&lt;p&gt;Androidアプリ設計パターン入門を読んだのでざっくりと感想。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://peaks.cc/books/architecture_patterns&#34;&gt;https://peaks.cc/books/architecture_patterns&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MVP
-
-&lt;ul&gt;
-&lt;li&gt;PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう
-
-&lt;ul&gt;
-&lt;li&gt;PresenterでView、Modelが何を出来るかを知らなければならない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Contractみたいなインタフェースを切るのは好き
-
-&lt;ul&gt;
-&lt;li&gt;それを見ただけで何をそのページでやっているのかが掴めるので&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;MVVM
-
-&lt;ul&gt;
-&lt;li&gt;個人的にはMVPより好き
-
-&lt;ul&gt;
-&lt;li&gt;ViewModelがViewの参照を持たなくて良いので少しスッキリする
-
-&lt;ul&gt;
-&lt;li&gt;ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う
-
-&lt;ul&gt;
-&lt;li&gt;DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Flux
-
-&lt;ul&gt;
-&lt;li&gt;単一方向データフローは凄い良いと思う
-
-&lt;ul&gt;
-&lt;li&gt;単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い&lt;/li&gt;
-&lt;li&gt;FluxもAACとの相性は良いと思う&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;負債の話
-
-&lt;ul&gt;
-&lt;li&gt;負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;メモ
-
-&lt;ul&gt;
-&lt;li&gt;データ層の抽象化に関してはRepository的なものを作るで良さそう&lt;/li&gt;
-&lt;li&gt;データ側はRx、UI側に反映する時はLiveDataが良さそう&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
