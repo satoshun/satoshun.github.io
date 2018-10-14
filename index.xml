@@ -7,7 +7,74 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Mon, 17 Sep 2018 00:00:00 UTC</updated>
+    <updated>Sun, 14 Oct 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>UnitテストでViewModelのonClearedをテストする</title>
+      <link>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</link>
+      <pubDate>Sun, 14 Oct 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</guid>
+      <description>
+
+&lt;p&gt;ふとAACの&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModel&#34;&gt;ViewModel&lt;/a&gt;のonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。&lt;/p&gt;
+
+&lt;p&gt;環境は&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;junit:junit:4.12&amp;quot;
+&amp;quot;androidx.test:rules:1.1.0-beta02&amp;quot;
+&amp;quot;androidx.test:runner:1.1.0-beta02&amp;quot;
+&amp;quot;androidx.test.ext:junit:1.0.0-beta02&amp;quot;
+&amp;quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;quot;
+&amp;quot;org.robolectric:robolectric:4.0-beta-1&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;になります。&lt;/p&gt;
+
+&lt;p&gt;また、サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt&#34;&gt;GitHub&lt;/a&gt;にあるので、参考してください😊&lt;/p&gt;
+
+&lt;h3 id=&#34;1-viewmodelstore-を使う&#34;&gt;1. &lt;code&gt;ViewModelStore&lt;/code&gt;を使う&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;ViewModelProviders.of(activity).get(class)&lt;/code&gt;からViewModelを取得したときに、取得したViewModelは&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModelStore&#34;&gt;ViewModelStore&lt;/a&gt;にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(AndroidJUnit4::class)
+class BaseViewModelTest {
+  @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java)
+
+  @Test
+  fun `dispose a coroutine when finished lifecycle of ViewModel`() {
+    activityRule.activity.viewModelStore.clear() // ViewModelが開放される
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このテストはコード的には簡単ですが、ViewModelStoreがViewModelのライフサイクルを管理しているということを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。&lt;/p&gt;
+
+&lt;p&gt;なので、素直にonDestroyをコールするテストも書いてみます。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-instrumentation-callactivityondestroy-を使う&#34;&gt;2. &lt;code&gt;Instrumentation.callActivityOnDestroy&lt;/code&gt;を使う&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;Instrumentation&lt;/code&gt;クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
+&lt;code&gt;Instrumentation&lt;/code&gt;は&lt;code&gt;InstrumentationRegistry&lt;/code&gt;クラスから取得することができ、次のように書くことで、&lt;code&gt;onDestroy&lt;/code&gt;をコールすることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Test
+fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
+  // onDestroyがコールされViewModelが開放される
+  InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、Unitテストで&lt;code&gt;ViewModel.onCleared&lt;/code&gt;のテストをすることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;以上です。Happy Testing☆彡&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt&#34;&gt;サンプルコード&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1136,73 +1203,6 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
 
 &lt;ul&gt;
 &lt;li&gt;Data Binding便利だけどやっぱつれぇわ&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>ActivityやFragmentにコメントを書くことについて</title>
-      <link>https://satoshun.github.io/2018/04/about_writing_comment/</link>
-      <pubDate>Thu, 05 Apr 2018 00:10:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/04/about_writing_comment/</guid>
-      <description>
-
-&lt;p&gt;ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。&lt;/p&gt;
-
-&lt;p&gt;例えば以下のようなActivityがあるとします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : Activity() {
-    ...
-    ...
-
-    private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {
-        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを見た時、「なんで &lt;code&gt;loginCount &amp;lt;= 100&lt;/code&gt;にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : Activity() {
-    private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {
-         // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない
-        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。&lt;/p&gt;
-
-&lt;p&gt;ただ、自分の考えでは上記のコードは根本的に間違っていると思っていて、そもそもActivityでコメントが必要なほど複雑なことをしているのが問題だと思います。
-なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。なんでも出来る層でいろいろやってしまうと、
-いわゆるfat activity問題が起こってしまいます。&lt;/p&gt;
-
-&lt;p&gt;なので上記のコードだと、例えばUserモデル(データ)クラスのようなものを作ってそこにロジックを書いて、必要に応じてコメントを付加するのが良いと思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;data class User(private val loginCount: Int, private val firstAccess: Boolean) {
-    private fun isHeavyUser() : Boolean() {
-         // 100回以上ログインした場合は超heavy userなので100以上はheavy userではない
-        return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)
-    }
-
-    private fun hyperHeavyUser(): Boolean() { /** */ }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;人間に理解し難いビジネスロジックのコメントは、モデルクラス(世の中的にはドメインモデルとか言われているのカナ?)に書くのが良いと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;Activityにコメントを書きたくなったら、クラスを分割したほうが良い&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;とはいえActivityにコメントを書く正しいケースもあると思うので、そこらへんは柔軟にオナシャス&lt;/li&gt;
-&lt;li&gt;コメントはコードと違い、コンピュータがコンパイルして正当性を確かめてくれるわけでないので、正しく運用するのがコードより難しいと思う&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

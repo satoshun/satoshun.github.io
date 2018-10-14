@@ -33,7 +33,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Mon, 17 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -213,7 +213,7 @@
     <item>
       <title>Jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sun, 20 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
@@ -351,6 +351,15 @@
       <pubDate>Sun, 22 Feb 2015 02:40:23 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/tips/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unittest</title>
+      <link>https://satoshun.github.io/tags/unittest/</link>
+      <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/unittest/</guid>
       <description></description>
     </item>
     
