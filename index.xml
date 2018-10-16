@@ -7,7 +7,78 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 14 Oct 2018 00:00:00 UTC</updated>
+    <updated>Tue, 16 Oct 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlinで3つの関数のパラメータを省略する</title>
+      <link>https://satoshun.github.io/2018/10/kotlin-decrease-function_params/</link>
+      <pubDate>Tue, 16 Oct 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/10/kotlin-decrease-function_params/</guid>
+      <description>
+
+&lt;p&gt;Kotlinでは拡張関数が定義されており、拡張関数を使うことで1つ関数のパラメータを省略できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun hoge(a: String) {
+  println(a)
+}
+
+-&amp;gt;
+
+fun String.hoge() {
+  println(this)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、インターフェース（クラス）内で拡張関数を定義することで、さらに1つの関数のパラメータを省略できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface User
+
+fun hoge(a: String, b: User) {
+  println(a)
+  println(b)
+}
+
+-&amp;gt;
+
+interface User {
+  fun String.hoge() {
+    println(this)
+    println(this@User)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;さらに、reified type parameterを使うことで、関数のパラメータを省略できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; hoge(a: String, b: User, c: Class&amp;lt;T&amp;gt;) {
+  println(a)
+  println(b)
+  println(c)
+}
+
+-&amp;gt;
+
+class User {
+  inline fun &amp;lt;reified T&amp;gt; String.hoge() {
+    println(this)
+    println(this@User)
+    println(T::class)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;interfaceだと、inline関数が使えないのでクラスで定義してあります。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Kotlinの拡張関数、reified便利😊&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1118,91 +1189,6 @@ launch(UI) {
 
 &lt;ul&gt;
 &lt;li&gt;ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: Data Bindingを使っていると本当のエラーログが出ない話 &#43; 対処法</title>
-      <link>https://satoshun.github.io/2018/04/android_improve-error-log/</link>
-      <pubDate>Thu, 12 Apr 2018 07:10:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/04/android_improve-error-log/</guid>
-      <description>
-
-&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
-
-&lt;p&gt;Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。&lt;/p&gt;
-
-&lt;p&gt;理由としては、Data Bindingの生成が失敗すると、&lt;code&gt;MainActivityBinding&lt;/code&gt;みたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。
-デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)&lt;/p&gt;
-
-&lt;h2 id=&#34;解決法&#34;&gt;解決法&lt;/h2&gt;
-
-&lt;p&gt;全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-gradle&#34;&gt;kapt {
-    javacOptions {
-        option(&amp;quot;-Xmaxerrs&amp;quot;, 5000)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。&lt;/p&gt;
-
-&lt;p&gt;これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。&lt;/p&gt;
-
-&lt;p&gt;before(一部ログ修正しています)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plaintext&#34;&gt;...
-// 長いエラーログ
-...
-...
-  symbol:   class DataBindingComponent
-  location: class ActivityMainBinding
-e: ActivityMainBinding.java:91: error: cannot find symbol
-      @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-                                                                ^
-  symbol:   class DataBindingComponent
-  location: class ActivityMainBinding
-e: ActivityMainBinding.java:102: error: cannot find symbol
-      @Nullable DataBindingComponent component) {
-                ^
-  symbol:   class DataBindingComponent
-  location: class ActivityMainBinding
-:app:kaptProductDebugKotlin FAILED
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;after&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plaintext&#34;&gt;...
-// 長いエラーログ
-...
-...
-e: :96: error: incompatible types: possible lossy conversion from long to int
-    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
-                                                ^
-e::96: error: incompatible types: possible lossy conversion from long to int
-    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
-                                                     ^
-e: :96: error: incompatible types: possible lossy conversion from long to int
-    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
-                                                           ^
-e: .java:96: error: incompatible types: possible lossy conversion from long to int
-    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
-                                                                   ^
-:app:kaptProductDebugKotlin FAILED
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;beforeではDataBindingの参照エラーしか出ていないんですが、afterではIntDefでのエラーログが出ていることが分かります。
-これが本当に欲しかったエラーログで、これを修正することで無事解決することが出来ました。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Data Binding便利だけどやっぱつれぇわ&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
