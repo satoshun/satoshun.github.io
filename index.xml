@@ -7,7 +7,76 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Tue, 16 Oct 2018 00:00:00 UTC</updated>
+    <updated>Sat, 03 Nov 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>拡張関数 &#43; ジェネリック型でよりタイプセーフを得る</title>
+      <link>https://satoshun.github.io/2018/11/extension-typesafe/</link>
+      <pubDate>Sat, 03 Nov 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/11/extension-typesafe/</guid>
+      <description>
+
+&lt;p&gt;Kotlinの拡張関数の話です。&lt;/p&gt;
+
+&lt;p&gt;以下のクラスがあったとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A&amp;lt;T&amp;gt;(val value: T) {
+  fun isNull(): Boolean {
+    return value != null
+  }
+}
+
+fun main() {
+  val a1: A&amp;lt;Int&amp;gt; = ...
+  a1.isNull()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このとき、&lt;code&gt;a1.isNull()&lt;/code&gt;の結果は自明です。なぜなら&lt;code&gt;A&amp;lt;Int&amp;gt;&lt;/code&gt;で宣言している時点でnonNullが確定しているためです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun main() {
+  val a2: A&amp;lt;Int?&amp;gt; = ...
+  a2.isNull()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このとき、&lt;code&gt;a2.isNull()&lt;/code&gt;の結果は自明ではありません。
+なぜなら&lt;code&gt;A&amp;lt;Int?&amp;gt;&lt;/code&gt;でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。&lt;/p&gt;
+
+&lt;p&gt;この2つの例から、&lt;code&gt;a1.isNull()&lt;/code&gt;はそもそもnonNullなので&lt;code&gt;isNull()&lt;/code&gt;メソッドをコールできないほうが良いのではないか？という考えが浮かびます。&lt;/p&gt;
+
+&lt;p&gt;Kotlinの拡張関数を使うことで達成できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A&amp;lt;T&amp;gt;(val value: T)
+
+// nullableのときにコールできるようにする
+fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull(): Boolean {
+  return value != null
+}
+
+fun main() {
+  val a1: A&amp;lt;Int&amp;gt; = ...
+  a1.isNull() // コンパイルエラー!!
+
+  val a2: A&amp;lt;Int?&amp;gt; = ...
+  a2.isNull()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull()&lt;/code&gt;と宣言することでnullable時のみコールできます。&lt;/p&gt;
+
+&lt;p&gt;ジェネリック型がnullable時のみコールしたい場合に有効なテクニックでした😃&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/&#34;&gt;http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1155,41 +1224,6 @@ launch(UI) {
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;to be continued.&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: ローカルで明示的に型を宣言することについて</title>
-      <link>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</link>
-      <pubDate>Mon, 16 Apr 2018 22:50:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</guid>
-      <description>
-
-&lt;p&gt;ポエムです。&lt;/p&gt;
-
-&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
-
-&lt;p&gt;基本的にローカルで明示的に型を宣言するのは好ましくない&lt;/p&gt;
-
-&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
-
-&lt;p&gt;Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val userName = dataSource.getUserName()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。&lt;/p&gt;
-
-&lt;p&gt;Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 16 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>拡張関数 &#43; ジェネリック型でよりタイプセーフを得る</title>
+      <link>https://satoshun.github.io/2018/11/extension-typesafe/</link>
+      <pubDate>Sat, 03 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/11/extension-typesafe/</guid>
+      <description>Kotlinの拡張関数の話です。
+以下のクラスがあったとします。
+class A&amp;lt;T&amp;gt;(val value: T) { fun isNull(): Boolean { return value != null } } fun main() { val a1: A&amp;lt;Int&amp;gt; = ... a1.isNull() }  このとき、a1.isNull()の結果は自明です。なぜならA&amp;lt;Int&amp;gt;で宣言している時点でnonNullが確定しているためです。
+fun main() { val a2: A&amp;lt;Int?&amp;gt; = ... a2.isNull() }  このとき、a2.isNull()の結果は自明ではありません。 なぜならA&amp;lt;Int?&amp;gt;でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。
+この2つの例から、a1.isNull()はそもそもnonNullなのでisNull()メソッドをコールできないほうが良いのではないか？という考えが浮かびます。
+Kotlinの拡張関数を使うことで達成できます。
+class A&amp;lt;T&amp;gt;(val value: T) // nullableのときにコールできるようにする fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull(): Boolean { return value != null } fun main() { val a1: A&amp;lt;Int&amp;gt; = .</description>
+    </item>
     
     <item>
       <title>Kotlinで3つの関数のパラメータを省略する</title>
