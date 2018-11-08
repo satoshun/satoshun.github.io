@@ -7,7 +7,90 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 03 Nov 2018 00:00:00 UTC</updated>
+    <updated>Wed, 07 Nov 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>KotlinのNon-Null型にnullを代入する方法</title>
+      <link>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</link>
+      <pubDate>Wed, 07 Nov 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</guid>
+      <description>
+
+&lt;p&gt;Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
+KotlinのNon-Null型に対してnullを代入しようとすると、代入するタイミングで例外を吐きます。
+JavaとKotlinを一緒に使っていると、この例外に遭遇することがあると思います。&lt;/p&gt;
+
+&lt;p&gt;具体的には以下の挙動をします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Hoge {
+    // nullを返すメソッド
+    static String getName() {
+        return null;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val d: String = Hoge.getName() // ここで例外が投げられる
+println(d.length) // これは実行されない
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このコードは、&lt;code&gt;val d: String = Hoge.getName()&lt;/code&gt;で&lt;code&gt;IllegalStateException&lt;/code&gt;を投げます。
+Non-Null型にnullを代入しようとしているからです。&lt;/p&gt;
+
+&lt;p&gt;次に、代入するタイミングで例外を投げなくする方法を紹介します。&lt;/p&gt;
+
+&lt;p&gt;具体的には以下のコードで達成できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; castNull(): T = null as T
+
+
+val d: String = castNull() // ここでは例外が投げられない
+println(d.length) // ここで例外が投げられる
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜこのような挙動になるのかを説明します。まず &lt;code&gt;castNull()&lt;/code&gt;メソッドに定義されたジェネリック型Tは&lt;code&gt;Any?&lt;/code&gt;をupperに持ちます。
+Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+CHECKCAST java/lang/Object
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;CHECKCAST&lt;/code&gt;しかしておらず、nullかどうかのチェックをしていません。
+なので、&lt;code&gt;val d: String = castNull()&lt;/code&gt;ではnullチェックがされないため例外が投げられず、実際にメソッドをコールする&lt;code&gt;println(d.length)&lt;/code&gt;のタイミングで例外が投げられます。&lt;/p&gt;
+
+&lt;p&gt;Non-Null型である&lt;code&gt;String&lt;/code&gt;にnullを代入することが出来ました。&lt;/p&gt;
+
+&lt;p&gt;次に、&lt;code&gt;fun &amp;lt;T: Any&amp;gt; castNull(): T = null as T&lt;/code&gt;と、Non-Null型をupperにした場合のバイトコードは次になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+DUP
+IFNONNULL L1
+NEW kotlin/TypeCastException
+DUP
+LDC &amp;quot;null cannot be cast to non-null type T&amp;quot;
+INVOKESPECIAL kotlin/TypeCastException.&amp;lt;init&amp;gt; (Ljava/lang/String;)V
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こちらのバイトコードには、nullチェックが入っていることが分かります。nullチェックをしているため、&lt;code&gt;val d: String = castNull()&lt;/code&gt;のタイミングで例外が投げられます。&lt;/p&gt;
+
+&lt;p&gt;Nullableな型をupperに持つ、持たないでnullチェックをするかどうかが決まる、という話でした。&lt;/p&gt;
+
+&lt;p&gt;この挙動は &lt;a href=&#34;https://youtrack.jetbrains.com/issue/KT-8135&#34;&gt;https://youtrack.jetbrains.com/issue/KT-8135&lt;/a&gt; ISSUEにバグとして報告されているので、今後異なるバイトコードが生成される可能性があります。
+もし、この挙動に依存するようなコードを書いている場合は注意が必要です。&lt;/p&gt;
+
+&lt;p&gt;実世界では、mockito-kotlinがこの挙動に依存しているので、より興味がある方はぜひ読んでください😃 &lt;a href=&#34;https://github.com/nhaarman/mockito-kotlin/blob/2.x/mockito-kotlin/src/main/kotlin/com/nhaarman/mockitokotlin2/internal/CreateInstance.kt#L46&#34;&gt;ここのあたりで使っています&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nhaarman/mockito-kotlin&#34;&gt;https://github.com/nhaarman/mockito-kotlin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://youtrack.jetbrains.com/issue/KT-8135&#34;&gt;https://youtrack.jetbrains.com/issue/KT-8135&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1201,29 +1284,6 @@ launch(UI) {
 &lt;li&gt;Coroutineを使っている人なら便利に使えると思うので、ぜひ使って下さい!&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/satoshun/CoroutineBinding&#34;&gt;https://github.com/satoshun/CoroutineBinding&lt;/a&gt; 何かあればissueや、PRを貰えると嬉しいです&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>型の声</title>
-      <link>https://satoshun.github.io/2018/05/type_feeling/</link>
-      <pubDate>Sat, 05 May 2018 03:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/05/type_feeling/</guid>
-      <description>&lt;p&gt;Javaなどのクラスベースの言語でコードを書くときに、実装が最初に思い浮かぶ人は型の声を聞けていません。&lt;/p&gt;
-
-&lt;p&gt;まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。
-振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。&lt;/p&gt;
-
-&lt;p&gt;型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;to be continued.&lt;/p&gt;
 </description>
     </item>
     

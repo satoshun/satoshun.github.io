@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 03 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 07 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>KotlinのNon-Null型にnullを代入する方法</title>
+      <link>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</link>
+      <pubDate>Wed, 07 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</guid>
+      <description>Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。 KotlinのNon-Null型に対してnullを代入しようとすると、代入するタイミングで例外を吐きます。 JavaとKotlinを一緒に使っていると、この例外に遭遇することがあると思います。
+具体的には以下の挙動をします。
+public class Hoge { // nullを返すメソッド static String getName() { return null; } }  val d: String = Hoge.getName() // ここで例外が投げられる println(d.length) // これは実行されない  このコードは、val d: String = Hoge.getName()でIllegalStateExceptionを投げます。 Non-Null型にnullを代入しようとしているからです。
+次に、代入するタイミングで例外を投げなくする方法を紹介します。
+具体的には以下のコードで達成できます。
+fun &amp;lt;T&amp;gt; castNull(): T = null as T val d: String = castNull() // ここでは例外が投げられない println(d.length) // ここで例外が投げられる  なぜこのような挙動になるのかを説明します。まず castNull()メソッドに定義されたジェネリック型TはAny?をupperに持ちます。 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。
+GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String; CHECKCAST java/lang/Object  CHECKCASTしかしておらず、nullかどうかのチェックをしていません。 なので、val d: String = castNull()ではnullチェックがされないため例外が投げられず、実際にメソッドをコールするprintln(d.</description>
+    </item>
     
     <item>
       <title>拡張関数 &#43; ジェネリック型でよりタイプセーフを得る</title>
