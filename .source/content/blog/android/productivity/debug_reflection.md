@@ -59,10 +59,21 @@ fun createMoshiBuilder() = Moshi.Builder()
 現状、最低限のクラスはアノテーションプロセッサーで作成するようになっているので、完全除去というわけではありません。
 例えば、アノテーションプロセッサーで`DaggerAppComponent`は作られます。
 
-大規模になってくるとDaggerのアノテーションプロセッサーにかかる時間も馬鹿にならないので、それを回避することが期待されます。
+最初にも書いたのですが、Daggerリフレクションは絶賛開発中で、Scope、セッターインジェクションなど、多くの機能が使えない状態です。
+ここが揃ってくればデバッグ時にはDaggerリフレクションを使うことで、ビルド時間の短縮が可能になってくると思います。
 
-最初にも書いたのですが、現状絶賛開発中で、Scope、setterインジェクションなどの多くの機能が使えない状態です。
-ここが揃ってくればデバッグ時にはDaggerリフレクションを使い、ビルド時間の短縮が可能になってくると思います。
+具体的なコードは、以下のようになります。
+Mavenにアップデートされていないので、SdkSearchからコードをコピーして使っています。
+
+```groovy
+implementation "com.google.dagger:dagger:2.18"
+debugImplementation project(':dagger-reflect:reflect') // SdkSearchからコピー
+kaptDebug project(':dagger-reflect:reflect-compiler') // SdkSearchからコピー
+kaptRelease "com.google.dagger:dagger-compiler:2.18"
+```
+
+デバッグ時にはDaggerリフレクションを使い、リリース時にはdagger-compilerを使っています。
+コードは全く修正することなく、ビルド時間の短縮が可能になります。
 
 ## まとめ
 
@@ -72,3 +83,9 @@ fun createMoshiBuilder() = Moshi.Builder()
   - 何か進みがあったらまたまとめようと思います
 
 今回の記事を検証するために作った[サンプルコードはここ](https://github.com/satoshun-android-example/DebugReflectExample)にあります。
+
+## 参考
+
+- https://github.com/JakeWharton/SdkSearch
+- https://github.com/square/moshi
+- https://jakewharton.com/helping-dagger-help-you/
