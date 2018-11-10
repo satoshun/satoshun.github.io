@@ -4,7 +4,6 @@ title = "Android: デバッグ時にMoshi、Daggerリフレクションライブ
 tags = ["android"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 ビルド時間の短縮は開発効率を上げる大きな要素です。
