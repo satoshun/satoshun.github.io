@@ -7,7 +7,125 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 10 Nov 2018 00:00:00 UTC</updated>
+    <updated>Sun, 11 Nov 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: Contracts &#43; 拡張関数でより便利に</title>
+      <link>https://satoshun.github.io/2018/11/more_convenient_contracts/</link>
+      <pubDate>Sun, 11 Nov 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/11/more_convenient_contracts/</guid>
+      <description>
+
+&lt;p&gt;Kotlin 1.3.0からContractsが実装されました。
+Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。&lt;/p&gt;
+
+&lt;p&gt;例えば、&lt;code&gt;isNullOrEmpty&lt;/code&gt;メソッドがfalse返すなら、
+Contractsによりnullでないことが保証されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a: String? = ...
+if (!a.isNullOrEmpty()) {
+    println(a.length) // !!が必要ない
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Contractsがない時代だと呼び出し元で&lt;code&gt;isNullOrEmpty&lt;/code&gt;がどんな振る舞いをするかを知るすべがなかったので、
+&lt;code&gt;!!&lt;/code&gt;をつける必要があったのですが、Contractsによりnullでないことが保証できるので、&lt;code&gt;!!&lt;/code&gt;を省略できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;isNullOrEmpty&lt;/code&gt;の実装は次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@kotlin.internal.InlineOnly
+public inline fun CharSequence?.isNullOrEmpty(): Boolean {
+    contract {
+        returns(false) implies (this@isNullOrEmpty != null)
+    }
+
+    return this == null || this.length == 0
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;contract&lt;/code&gt;はDSL（関数）として定義されています。
+これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;isNullOrEmpty&lt;/code&gt;の場合は&lt;code&gt;returns(false) implies (this@isNullOrEmpty != null)&lt;/code&gt;が契約として定義されています。&lt;/p&gt;
+
+&lt;p&gt;これは、&lt;code&gt;「returns(false)&lt;/code&gt;: falseを返すなら &lt;code&gt;(this@isNullOrEmpty != null)&lt;/code&gt;: 自分自身がnullじゃない」という意味になります。
+なので呼び出し元ではfalseが返ってきたら、nullではないことが保証されるので、smartcastにより&lt;code&gt;!!&lt;/code&gt;をつける必要がなくなるわけです。&lt;/p&gt;
+
+&lt;p&gt;なので、例えば&lt;code&gt;T.isEmpty(t: T?): Boolean&lt;/code&gt;のようなメソッドがあり、ついでにnullチェックもこの関数の中でやっているようなときは、
+contractを定義することでより使いやすい関数にすることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;他の例を見てみます。スコープ関数&lt;code&gt;apply&lt;/code&gt;の実装は次になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@kotlin.internal.InlineOnly
+public inline fun &amp;lt;T&amp;gt; T.apply(block: T.() -&amp;gt; Unit): T {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+    block()
+    return this
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;apply&lt;/code&gt;関数内では、&lt;code&gt;callsInPlace(block, InvocationKind.EXACTLY_ONCE)&lt;/code&gt;が契約として定義されています。
+これは、&lt;code&gt;block&lt;/code&gt;関数が必ず1度呼び出されることを意味します。
+これにより、以下のように書くことが可能になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a: String
+hoge.apply {
+    a = &amp;quot;hoge&amp;quot;
+}
+println(a)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;apply&lt;/code&gt;関数は1度しか呼び出されないので&lt;code&gt;val a: String&lt;/code&gt;の初期化が、&lt;code&gt;apply&lt;/code&gt;関数内で正しく行われることが保証されます。
+Kotlin 1.3.0以前のcontractが内時代では上記のコードはコンパイルエラーになっていたのですが、
+contractにより、実行することが可能になりました。&lt;/p&gt;
+
+&lt;p&gt;今まで見てきたのはKotlinのスタンダートライブラリに入っていた関数ですが、カスタムで定義することも可能です。
+今回は例として、&lt;code&gt;ActivityScenario.onActivity&lt;/code&gt;メソッドをcontract + 拡張関数を使ってより便利にしたいと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/android/android-test/blob/f2f3589c9d6e2ff5740117192cb7e13bd8873a0f/core/java/androidx/test/core/app/ActivityScenario.java#L500&#34;&gt;ActivityScenario.onActivity&lt;/a&gt;メソッドは、callbackを登録すると、Activityの準備ができたタイミングでcallbackが叩かれます。そして、この&lt;code&gt;onActivity&lt;/code&gt;メソッドは一度しかコールされず、実行したスレッドをブロックします。なので、前述した&lt;code&gt;apply&lt;/code&gt;関数と同じcontractを書くことが可能です。&lt;/p&gt;
+
+&lt;p&gt;以下のように拡張関数を書きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@UseExperimental(ExperimentalContracts::class)
+fun &amp;lt;T : Activity&amp;gt; ActivityScenario&amp;lt;T&amp;gt;.onActivity2(block: (T) -&amp;gt; Unit) {
+  contract {
+    callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+  }
+  onActivity {
+    block(it)
+  }
+}
+
+
+// コンパイルエラーにならない!!
+val activity: Activity
+scenario.onActivity2 {
+    activity = it
+}
+println(activity)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;@UseExperimental(ExperimentalContracts::class)&lt;/code&gt;をつけることで、ユーザ定義のcontractを定義することが出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1度しかコールされないcallbackや、関数内でnullチェックをする場合はcontractを使うと超便利になるかも&lt;/li&gt;
+&lt;li&gt;拡張関数を新しく定義することで、既存のメソッドをよりkotlin-friendlyなメソッドにできるかも!?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&#34;&gt;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -408,7 +526,9 @@ fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
       <pubDate>Mon, 17 Sep 2018 00:00:00 UTC</pubDate>
       <author>Sato Shun</author>
       <guid>https://satoshun.github.io/2018/09/android-gson-inlineclasses/</guid>
-      <description>&lt;p&gt;（この記事は1.3-M2を使っています。）&lt;/p&gt;
+      <description>
+
+&lt;p&gt;（この記事は1.3-M2を使っています。）&lt;/p&gt;
 
 &lt;p&gt;Kotlin 1.3でInline classesが入ります。これはパフォーマンスに影響を与えずに、値のラッパークラスを作成することが出来ます。&lt;/p&gt;
 
@@ -422,7 +542,8 @@ val userId = UserId(&amp;quot;user-dayo&amp;quot;)
 println(userId.url)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;このコードは一見、UserIdクラスが生成されそうです。しかし、コンパイルされたコードではUserIdクラスは生成されません。&lt;/p&gt;
+&lt;p&gt;このコードは一見、UserIdインスタンスが生成されそうです。
+しかし、コンパイルされたコードではUserIdインスタンスは生成されません。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static final class UserId$Erased {
     ...
@@ -471,9 +592,14 @@ data class Response(
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;UserIdとFriendIdクラスで受け取ることが出来ます。Inline classesがコンパイルされると、wrapされた値の型が展開されるためです。UserId、FriendIdのwrapされた値はStringなので、コンパイル後はStringが展開され、Stringでdeserialize/serializeされます。しかし、コンパイルされる前までは型安全の恩恵を受け取ることが出来ます。&lt;/p&gt;
+&lt;p&gt;Inline classesがコンパイルされると、Stringに展開されるので正しく動作します。
+本来、カスタムのクラスで値を受け取るときはAdapterを別途定義する必要があったですが、その必要がなくなりました😄&lt;/p&gt;
 
-&lt;p&gt;Inline classesを使えば、Adapterを作成することなく、カスタムのクラスで受け取れるため非常に便利です(・o・)&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Inline classesを使えば、カスタムのAdapterを作成することなくserialize/deserializeできるので非常に便利です☺&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -1289,61 +1415,6 @@ val args = HogeFragmentArgs.fromBundle(arguments)
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/googlecodelabs/android-navigation&#34;&gt;https://github.com/googlecodelabs/android-navigation&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: 拡張関数でLiveDataのSingle Eventを扱う</title>
-      <link>https://satoshun.github.io/2018/05/singlelivedata/</link>
-      <pubDate>Sat, 19 May 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/05/singlelivedata/</guid>
-      <description>
-
-&lt;p&gt;LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。
-適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。&lt;/p&gt;
-
-&lt;p&gt;定義は以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; {
-  // skip用の初期値を入れておく
-  return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null }
-}
-
-fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) {
-  // 最初の値は常にskipすることで、キャッシュを無視する
-  val firstIgnore = AtomicBoolean(true)
-  this.observe(owner, Observer {
-    if (firstIgnore.getAndSet(false)) return@Observer
-    observer(it)
-  })
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使う時はこんな感じで使います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// TestViewModel.kt
-class TestViewModel: ViewModel() {
-  val errorEvent = singleLiveData&amp;lt;String&amp;gt;()
-}
-
-// TestActivity.kt
-testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java)
-testViewModel.errorEvent.observeSingle(activity) {
-  Log.d(&amp;quot;one&amp;quot;, it.toString())
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;メリットはサブクラスを作らずに済むところです。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java&#34;&gt;https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://medium.com/@star_zero/singleliveevent-livedata-with-multi-observers-384e17c60a16&#34;&gt;https://medium.com/@star_zero/singleliveevent-livedata-with-multi-observers-384e17c60a16&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

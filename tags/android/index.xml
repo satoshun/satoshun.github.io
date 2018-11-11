@@ -61,7 +61,7 @@ implementation &amp;quot;com.google.dagger:dagger:2.18&amp;quot; debugImplementa
       <description>（この記事は1.3-M2を使っています。）
 Kotlin 1.3でInline classesが入ります。これはパフォーマンスに影響を与えずに、値のラッパークラスを作成することが出来ます。
 例えば、次のように書くことが出来ます。
-inline class UserId(val id: String) { val url get() = &amp;quot;http://$id&amp;quot; } val userId = UserId(&amp;quot;user-dayo&amp;quot;) println(userId.url)  このコードは一見、UserIdクラスが生成されそうです。しかし、コンパイルされたコードではUserIdクラスは生成されません。
+inline class UserId(val id: String) { val url get() = &amp;quot;http://$id&amp;quot; } val userId = UserId(&amp;quot;user-dayo&amp;quot;) println(userId.url)  このコードは一見、UserIdインスタンスが生成されそうです。 しかし、コンパイルされたコードではUserIdインスタンスは生成されません。
 public static final class UserId$Erased { ... @NotNull public static final String getUrl(String $this) { return &amp;quot;http://&amp;quot; + $this; } ... } String userId = &amp;quot;user-dayo&amp;quot;; String var1 = UserId$Erased.getUrl(userId); System.out.println(var1);  UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成されたUserId$Erasedクラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。
 ここからが本題です。 Inline classesがAndroid開発のどこで役立つのかを考えたときに、 Gsonなどのライブラリによってdeserialize/serializeされるクラスで有効使えると思いました。
 例えば、次のコードがあったとします。

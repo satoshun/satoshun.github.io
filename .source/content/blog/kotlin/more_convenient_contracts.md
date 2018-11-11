@@ -1,10 +1,9 @@
 +++
 date = "2018-11-11"
 title = "Kotlin: Contracts + 拡張関数でより便利に"
-tags = ["kotlin"]
+tags = ["kotlin", "contracts"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 Kotlin 1.3.0からContractsが実装されました。

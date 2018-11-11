@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/11/more_convenient_contracts/</loc>
+    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/11/debug_reflection/</loc>
     <lastmod>2018-11-10T00:00:00+00:00</lastmod>
   </url>
@@ -295,7 +300,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-11-10T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -320,6 +325,12 @@
   <url>
     <loc>https://satoshun.github.io/tags/constraintlayout/</loc>
     <lastmod>2018-07-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/contracts/</loc>
+    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -409,7 +420,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2018-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -527,7 +538,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-11-10T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
