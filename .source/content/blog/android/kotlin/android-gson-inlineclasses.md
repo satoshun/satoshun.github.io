@@ -21,7 +21,8 @@ val userId = UserId("user-dayo")
 println(userId.url)
 ```
 
-このコードは一見、UserIdクラスが生成されそうです。しかし、コンパイルされたコードではUserIdクラスは生成されません。
+このコードは一見、UserIdインスタンスが生成されそうです。
+しかし、コンパイルされたコードではUserIdインスタンスは生成されません。
 
 ```java
 public static final class UserId$Erased {
@@ -73,6 +74,9 @@ data class Response(
 )
 ```
 
-UserIdとFriendIdクラスで受け取ることが出来ます。Inline classesがコンパイルされると、wrapされた値の型が展開されるためです。UserId、FriendIdのwrapされた値はStringなので、コンパイル後はStringが展開され、Stringでdeserialize/serializeされます。しかし、コンパイルされる前までは型安全の恩恵を受け取ることが出来ます。
+Inline classesがコンパイルされると、Stringに展開されるので正しく動作します。
+本来、カスタムのクラスで値を受け取るときはAdapterを別途定義する必要があったですが、その必要がなくなりました😄
 
-Inline classesを使えば、Adapterを作成することなく、カスタムのクラスで受け取れるため非常に便利です(・o・)
+## まとめ
+
+- Inline classesを使えば、カスタムのAdapterを作成することなくserialize/deserializeできるので非常に便利です☺
