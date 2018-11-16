@@ -1,14 +1,17 @@
 +++
-date = "2018-11-14"
+date = "2018-11-16"
 title = "Activity、Fragment、Viewにコンストラクタインジェクションする"
 tags = ["android", "factory", "dagger"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
-Daggerライブラリを使い、ActivityなどAndroidフレームワークが提供するクラスにコンストラクタインジェクションしたい、
+Daggerライブラリを使い、Androidフレームワークが提供するActivityなどのクラスにコンストラクタインジェクションしたい、
 そんな夢をみたAndroidエンジニアは数多くいると思います。
+
+この記事ではそんな夢を叶える方法を紹介します。
+
+[サンプルコードはここに](https://github.com/satoshun-android-example/ConstructorInjectionExample)あります。
 
 ## FragmentFactory
 
@@ -21,7 +24,7 @@ class MainFragment : Fragment() {
 }
 ```
 
-これを以下のようにし、コンストラクタインジェクションにしたい。
+これをコンストラクタインジェクションにしたい。
 
 ```kotlin
 class MainFragment @Inject constructor(
@@ -31,10 +34,10 @@ class MainFragment @Inject constructor(
 }
 ```
 
-`androidx.fragment:fragment:1.1.0-alpha01`から、FragmentFactoryが追加されました!
+`androidx.fragment:fragment:1.1.0-alpha01`から、FragmentFactoryが追加されました!!
 これを使うことでコンストラクタインジェクションが可能になります。
 
-次のように使います。
+MainFragmentインスタンスを生成する`FragmentFactory`を作成します。
 
 ```kotlin
 class MainFragmentFactory @Inject constructor(
@@ -53,9 +56,9 @@ class MainFragmentFactory @Inject constructor(
 }
 ```
 
-`FragmentFactory.instantiate`をoverrideし、そこでFragmentのインスタンスを生成します。
+`FragmentFactory.instantiate`をoverrideし、そこでMainFragmentのインスタンスを生成します。
 
-次に、`MainFragmentFactory`を`FragmentManager`に登録します。
+最後に、作成した`MainFragmentFactory`をActivityの`FragmentManager`に登録します。
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -64,15 +67,16 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     DaggerAppComponent.create().inject(this)
     supportFragmentManager.fragmentFactory = fragmentFactory
+
     super.onCreate(savedInstanceState)
     ...
 ```
 
 `SupportFragmentManager.fragmentFactory`に登録します。
-これで、Fragmentを生成するときに`MainFragmentFactory`がフックされます。
+これで、Fragmentが生成されるとき`MainFragmentFactory`がフックされます。
 
-`SupportFragmentManager.fragmentFactory`をコールするタイミングは`super.onCreate(savedInstanceState)`の前が良いと思います。
-それは`super.onCreate`のタイミングでFragmentが復元されるためです。
+`SupportFragmentManager.fragmentFactory`にFactoryを登録するタイミングは`super.onCreate(savedInstanceState)`の前が良いと思います。
+それは`super.onCreate`のタイミングで以前のFragmentが復元されるためです。
 復元されるタイミングで適切なFactoryがないとクラッシュするので、復元する前で登録する必要があります。
 
 ## LayoutInflater.Factory
@@ -93,7 +97,8 @@ class MainTextView(
 }
 ```
 
-`LayoutInflater.Factory`を使うことで、前のカスタムコンストラクタを持ったViewを生成できるようになります。
+カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
+`LayoutInflater.Factory`を使うことで、インスタンスを生成できるようになります。
 
 ```kotlin
 class MainLayoutInflaterFactory @Inject constructor(
@@ -110,7 +115,7 @@ class MainLayoutInflaterFactory @Inject constructor(
 
 `LayoutInflater.Factory.onCreateView`をoverrideし、`MainTextView`インスタンスを生成します。
 
-最後に作った`MainLayoutInflaterFactory`を登録します。
+最後に、作成した`MainLayoutInflaterFactory`をActivityの`layoutInflater.factory`に登録します。
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -119,15 +124,16 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     DaggerAppComponent.create().inject(this)
     layoutInflater.factory = layoutInflaterFactory
+
     super.onCreate(savedInstanceState)
     ...
 ```
 
-Activityの`layoutInflater.factory`に登録します。登録するタイミングはsetContentViewの前で良いと思います。
-今回は`super.onCreate(savedInstanceState)`の前で登録してますが、後でも問題ないと思います。
+Activityの`LayoutInflater.factory`に登録します。登録するタイミングはsetContentViewの前が良いと思います。
 
-##　AppComponentFactory
+## AppComponentFactory
 
+次にActivityです。
 Activityに依存関係を注入する時、普通にやると以下のコードになると思います。
 
 ```kotlin
@@ -138,7 +144,7 @@ class MainActivity : Activity() {
 }
 ```
 
-これを以下のようにし、コンストラクタインジェクションにしたい。
+これをコンストラクタインジェクションにしたい。
 
 ```kotlin
 class MainActivity @Inject constructor(
@@ -154,7 +160,7 @@ class MainActivity @Inject constructor(
 
 これを解決するべく、API28からAppComponentFactoryというクラスが追加されました!!
 
-これは次のように使います。
+MainActivityインスタンスを生成する`AppComponentFactory`を作成します。
 
 ```kotlin
 @Suppress("unused")
@@ -167,7 +173,7 @@ class MainAppComponentFactory : AppComponentFactory() {
     intent: Intent?
   ): Activity {
     if (className == MainActivity::class.java.name) {
-      return application.appComponent.mainActivity // Daggerからインスタンスを生成する
+      return application.appComponent.mainActivity
     }
     return super.instantiateActivityCompat(cl, className, intent)
   }
@@ -178,6 +184,8 @@ class MainAppComponentFactory : AppComponentFactory() {
   }
 }
 ```
+
+次にAndroidマニフェストに`MainAppComponentFactory`を登録します。
 
 ```xml
 ...
@@ -194,6 +202,14 @@ class MainAppComponentFactory : AppComponentFactory() {
     ...
 ```
 
-Androidマニフェストに登録した`MainAppComponentFactory`がActivityを生成するタイミングでフックされます。
 `AppComponentFactory.instantiateActivityCompat`をoverrideし、`MainActivity`インスタンスを生成します。
-これで、カスタム定義のコンストラクタを使う事ができます!!
+
+これで、カスタムのコンストラクタを持ったActivityインスタンスを生成することが出来ます!!
+
+## まとめ
+
+- Fragment、Viewは今からでも使い始めることができる。Daggerなどのライブラリと組み合わせると最高☆
+- AppComponentFactoryはAPI28からなので...5年後くらいでしょうか😢
+- [サンプルコードはここです](https://github.com/satoshun-android-example/ConstructorInjectionExample)
+
+何か疑問点があれば、twitterやサンプルコードのISSUEなどで聞いてください😃
