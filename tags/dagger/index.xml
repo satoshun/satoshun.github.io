@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 07 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 16 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Activity、Fragment、Viewにコンストラクタインジェクションする</title>
+      <link>https://satoshun.github.io/2018/11/android_all_inject_ctor/</link>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/11/android_all_inject_ctor/</guid>
+      <description>Daggerライブラリを使い、Androidフレームワークが提供するActivityなどのクラスにコンストラクタインジェクションしたい、 そんな夢をみたAndroidエンジニアは数多くいると思います。
+この記事ではそんな夢を叶える方法を紹介します。
+サンプルコードはここにあります。
+FragmentFactory Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。
+class MainFragment : Fragment() { lateinit var userHandler: UserHandler ... }  これをコンストラクタインジェクションにしたい。
+class MainFragment @Inject constructor( private val userHandler: UserHandler ) : Fragment() { ... }  androidx.fragment:fragment:1.1.0-alpha01から、FragmentFactoryが追加されました!! これを使うことでコンストラクタインジェクションが可能になります。
+MainFragmentインスタンスを生成するFragmentFactoryを作成します。
+class MainFragmentFactory @Inject constructor( private val fragment: Provider&amp;lt;MainFragment&amp;gt; ) : FragmentFactory() { override fun instantiate( classLoader: ClassLoader, className: String, args: Bundle? ): Fragment { if (className == MainFragment::class.java.name) { return fragment.get() } return super.</description>
+    </item>
     
     <item>
       <title>Daggerでprivate valで依存関係を取得したかった</title>

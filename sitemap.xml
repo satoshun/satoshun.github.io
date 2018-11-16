@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/11/android_all_inject_ctor/</loc>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/11/more_convenient_contracts/</loc>
     <lastmod>2018-11-11T00:00:00+00:00</lastmod>
   </url>
@@ -276,7 +281,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-11-10T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -300,7 +305,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -342,7 +347,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2018-09-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -361,6 +366,12 @@
   <url>
     <loc>https://satoshun.github.io/tags/design_pattern/</loc>
     <lastmod>2015-06-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/factory/</loc>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -538,7 +549,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-11-11T00:00:00+00:00</lastmod>
+    <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

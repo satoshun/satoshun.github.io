@@ -7,7 +7,218 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 11 Nov 2018 00:00:00 UTC</updated>
+    <updated>Fri, 16 Nov 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Activity、Fragment、Viewにコンストラクタインジェクションする</title>
+      <link>https://satoshun.github.io/2018/11/android_all_inject_ctor/</link>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/11/android_all_inject_ctor/</guid>
+      <description>
+
+&lt;p&gt;Daggerライブラリを使い、Androidフレームワークが提供するActivityなどのクラスにコンストラクタインジェクションしたい、
+そんな夢をみたAndroidエンジニアは数多くいると思います。&lt;/p&gt;
+
+&lt;p&gt;この記事ではそんな夢を叶える方法を紹介します。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ConstructorInjectionExample&#34;&gt;サンプルコードはここに&lt;/a&gt;あります。&lt;/p&gt;
+
+&lt;h2 id=&#34;fragmentfactory&#34;&gt;FragmentFactory&lt;/h2&gt;
+
+&lt;p&gt;Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment : Fragment() {
+  lateinit var userHandler: UserHandler
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをコンストラクタインジェクションにしたい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment @Inject constructor(
+  private val userHandler: UserHandler
+) : Fragment() {
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;androidx.fragment:fragment:1.1.0-alpha01&lt;/code&gt;から、FragmentFactoryが追加されました!!
+これを使うことでコンストラクタインジェクションが可能になります。&lt;/p&gt;
+
+&lt;p&gt;MainFragmentインスタンスを生成する&lt;code&gt;FragmentFactory&lt;/code&gt;を作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragmentFactory @Inject constructor(
+  private val fragment: Provider&amp;lt;MainFragment&amp;gt;
+) : FragmentFactory() {
+  override fun instantiate(
+    classLoader: ClassLoader,
+    className: String,
+    args: Bundle?
+  ): Fragment {
+    if (className == MainFragment::class.java.name) {
+      return fragment.get()
+    }
+    return super.instantiate(classLoader, className, args)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;FragmentFactory.instantiate&lt;/code&gt;をoverrideし、そこでMainFragmentのインスタンスを生成します。&lt;/p&gt;
+
+&lt;p&gt;最後に、作成した&lt;code&gt;MainFragmentFactory&lt;/code&gt;をActivityの&lt;code&gt;FragmentManager&lt;/code&gt;に登録します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity() {
+  @Inject lateinit var fragmentFactory: MainFragmentFactory
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    DaggerAppComponent.create().inject(this)
+    supportFragmentManager.fragmentFactory = fragmentFactory
+
+    super.onCreate(savedInstanceState)
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;SupportFragmentManager.fragmentFactory&lt;/code&gt;に登録します。
+これで、Fragmentが生成されるとき&lt;code&gt;MainFragmentFactory&lt;/code&gt;がフックされます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;SupportFragmentManager.fragmentFactory&lt;/code&gt;にFactoryを登録するタイミングは&lt;code&gt;super.onCreate(savedInstanceState)&lt;/code&gt;の前が良いと思います。
+それは&lt;code&gt;super.onCreate&lt;/code&gt;のタイミングで以前のFragmentが復元されるためです。
+復元されるタイミングで適切なFactoryがないとクラッシュするので、復元する前で登録する必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;layoutinflater-factory&#34;&gt;LayoutInflater.Factory&lt;/h2&gt;
+
+&lt;p&gt;次にViewです。&lt;code&gt;LayoutInflater.Factory&lt;/code&gt;が定義されています。
+これを使うことでカスタムのコンストラクタを持ったViewを定義することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainTextView(
+  context: Context,
+  private val userHandler: UserHandler
+) : TextView(context) {
+  class Factory @Inject constructor(private val userHandler: UserHandler) {
+    fun create(context: Context): MainTextView {
+      return MainTextView(context, userHandler)
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
+&lt;code&gt;LayoutInflater.Factory&lt;/code&gt;を使うことで、インスタンスを生成できるようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainLayoutInflaterFactory @Inject constructor(
+  private val factory: MainTextView.Factory
+) : LayoutInflater.Factory {
+  override fun onCreateView(name: String, context: Context, attrs: AttributeSet?): View? {
+    if (name == MainTextView::class.java.name) {
+      return factory.create(context)
+    }
+    return null
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;LayoutInflater.Factory.onCreateView&lt;/code&gt;をoverrideし、&lt;code&gt;MainTextView&lt;/code&gt;インスタンスを生成します。&lt;/p&gt;
+
+&lt;p&gt;最後に、作成した&lt;code&gt;MainLayoutInflaterFactory&lt;/code&gt;をActivityの&lt;code&gt;layoutInflater.factory&lt;/code&gt;に登録します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity() {
+  private lateinit var layoutInflaterFactory: MainLayoutInflaterFactory
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    DaggerAppComponent.create().inject(this)
+    layoutInflater.factory = layoutInflaterFactory
+
+    super.onCreate(savedInstanceState)
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Activityの&lt;code&gt;LayoutInflater.factory&lt;/code&gt;に登録します。登録するタイミングはsetContentViewの前が良いと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;appcomponentfactory&#34;&gt;AppComponentFactory&lt;/h2&gt;
+
+&lt;p&gt;次にActivityです。
+Activityに依存関係を注入する時、普通にやると以下のコードになると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : Activity() {
+  @Inject lateinit var presenter: UserPresenter
+  @Inject lateinit var analytics: Analytics
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをコンストラクタインジェクションにしたい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity @Inject constructor(
+  private val presenter: UserPresenter,
+  private val analytics: Analytics
+): Activity() {
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;しかし、この書き方はうまくいきません。なぜならActivityインスタンスはシステム側で自動的に生成されるためです。
+カスタム定義のコンストラクタだと、システム側でインスタンスを生成することが出来ません。&lt;/p&gt;
+
+&lt;p&gt;これを解決するべく、API28からAppComponentFactoryというクラスが追加されました!!&lt;/p&gt;
+
+&lt;p&gt;MainActivityインスタンスを生成する&lt;code&gt;AppComponentFactory&lt;/code&gt;を作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Suppress(&amp;quot;unused&amp;quot;)
+class MainAppComponentFactory : AppComponentFactory() {
+  private lateinit var application: App
+
+  override fun instantiateActivityCompat(
+    cl: ClassLoader,
+    className: String,
+    intent: Intent?
+  ): Activity {
+    if (className == MainActivity::class.java.name) {
+      return application.appComponent.mainActivity
+    }
+    return super.instantiateActivityCompat(cl, className, intent)
+  }
+
+  override fun instantiateApplicationCompat(cl: ClassLoader, className: String): Application {
+    application = super.instantiateApplicationCompat(cl, className) as App
+    return application
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次にAndroidマニフェストに&lt;code&gt;MainAppComponentFactory&lt;/code&gt;を登録します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;...
+  &amp;lt;application
+    android:allowBackup=&amp;quot;true&amp;quot;
+    android:name=&amp;quot;.App&amp;quot;
+    android:appComponentFactory=&amp;quot;com.github.satoshun.example.sample.MainAppComponentFactory&amp;quot;
+    android:icon=&amp;quot;@mipmap/ic_launcher&amp;quot;
+    android:label=&amp;quot;@string/app_name&amp;quot;
+    android:roundIcon=&amp;quot;@mipmap/ic_launcher_round&amp;quot;
+    android:supportsRtl=&amp;quot;true&amp;quot;
+    android:theme=&amp;quot;@style/AppTheme&amp;quot;
+    tools:replace=&amp;quot;android:appComponentFactory&amp;quot;&amp;gt;
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;AppComponentFactory.instantiateActivityCompat&lt;/code&gt;をoverrideし、&lt;code&gt;MainActivity&lt;/code&gt;インスタンスを生成します。&lt;/p&gt;
+
+&lt;p&gt;これで、カスタムのコンストラクタを持ったActivityインスタンスを生成することが出来ます!!&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fragment、Viewは今からでも使い始めることができる。Daggerなどのライブラリと組み合わせると最高☆&lt;/li&gt;
+&lt;li&gt;AppComponentFactoryはAPI28からなので&amp;hellip;5年後くらいでしょうか😢&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ConstructorInjectionExample&#34;&gt;サンプルコードはここです&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;何か疑問点があれば、twitterやサンプルコードのISSUEなどで聞いてください😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1289,132 +1500,6 @@ interface UserScopedActivityModule {
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;がどういう動作をするのかを知っておくと、いざというときに便利&lt;/li&gt;
 &lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-example/DaggerScopeExample&#34;&gt;こちら&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: Navigationのsafeargs Gradle pluginだけを使ってもいいかもしれない</title>
-      <link>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</link>
-      <pubDate>Sun, 20 May 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/05/navigation-only_use_safe_args/</guid>
-      <description>
-
-&lt;p&gt;Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
-ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。&lt;/p&gt;
-
-&lt;p&gt;このライブラリの機能に、&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing#Safe-args&#34;&gt;safeargs&lt;/a&gt;というものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。&lt;/p&gt;
-
-&lt;h2 id=&#34;safeargsを使ってみる&#34;&gt;safeargsを使ってみる&lt;/h2&gt;
-
-&lt;p&gt;一般的にFragmentに適当な値を渡すときは&lt;code&gt;Bundle&lt;/code&gt;を通して渡します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 呼び出し側
-val bundle = Bundle()
-bundle.putInt(&amp;quot;step&amp;quot;, 10)
-
-// 呼び出され側
-val step = arguments?.getInt(&amp;quot;step&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これの問題点としては、typesafeで無いところです。例えばリファクタリングなどで、片方の文字列を&lt;code&gt;&amp;quot;step2&amp;quot;&lt;/code&gt;にしてしまうと、ランタイムエラーになります。&lt;/p&gt;
-
-&lt;p&gt;これを解決にするためにNavigationではsafe argsという機能を提供しています。
-これは、DataBindingのように、クラスを生成することでtypesafeを実現します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
-            xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
-            xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;&amp;gt;
-  &amp;lt;fragment
-      android:name=&amp;quot;com.example.android.codelabs.navigation.HogeFragment&amp;quot;
-      android:label=&amp;quot;Hoge&amp;quot;&amp;gt;
-
-    &amp;lt;argument
-        android:name=&amp;quot;step&amp;quot;
-        app:type=&amp;quot;integer&amp;quot;
-        android:defaultValue=&amp;quot;1&amp;quot;/&amp;gt;
-  &amp;lt;/fragment&amp;gt;
-&amp;lt;/navigation&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とnavigationを記述すると、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class HogeFragmentArgs {
-  private int step = 1;
-
-  private HogeFragmentArgs() {
-  }
-
-  public static HogeFragmentArgs fromBundle(Bundle bundle) {
-    HogeFragmentArgs result = new HogeFragmentArgs();
-    if (bundle.containsKey(&amp;quot;step&amp;quot;)) {
-      result.step = bundle.getInt(&amp;quot;step&amp;quot;);
-    }
-    return result;
-  }
-
-  public int getStep() {
-    return step;
-  }
-
-  public Bundle toBundle() {
-    Bundle __outBundle = new Bundle();
-    __outBundle.putInt(&amp;quot;step&amp;quot;, this.step);
-    return __outBundle;
-  }
-
-  public static class Builder {
-    private int step = 1;
-
-    public Builder(HogeFragmentArgs original) {
-      this.step = original.step;
-    }
-
-    public Builder() {
-    }
-
-    public HogeFragmentArgs build() {
-      HogeFragmentArgs result = new HogeFragmentArgs();
-      result.step = this.step;
-      return result;
-    }
-
-    public Builder setStep(int step) {
-      this.step = step;
-      return this;
-    }
-
-    public int getStep() {
-      return step;
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上記のクラスが生成されます。これを使うことでtypesafeを実現出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 呼び出し側
-HogeFragmentArgs.Builder()
-    .setStep(10)
-    .build()
-    .toBunble()
-
-// 呼び出され側
-val args = HogeFragmentArgs.fromBundle(arguments)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;Navigationは大きいライブラリなので、とりあえずの練習でsafe argsの機能だけつまみ食いするのは、
-個人的には良さそうだと思っています。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/googlecodelabs/android-navigation&#34;&gt;https://github.com/googlecodelabs/android-navigation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
