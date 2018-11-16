@@ -22,7 +22,7 @@
 この記事ではそんな夢を叶える方法を紹介します。
 サンプルコードはここにあります。
 FragmentFactory Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。
-class MainFragment : Fragment() { lateinit var userHandler: UserHandler ... }  これをコンストラクタインジェクションにしたい。
+class MainFragment : Fragment() { @Inject lateinit var userHandler: UserHandler ... }  これをコンストラクタインジェクションにしたい。
 class MainFragment @Inject constructor( private val userHandler: UserHandler ) : Fragment() { ... }  androidx.fragment:fragment:1.1.0-alpha01から、FragmentFactoryが追加されました!! これを使うことでコンストラクタインジェクションが可能になります。
 MainFragmentインスタンスを生成するFragmentFactoryを作成します。
 class MainFragmentFactory @Inject constructor( private val fragment: Provider&amp;lt;MainFragment&amp;gt; ) : FragmentFactory() { override fun instantiate( classLoader: ClassLoader, className: String, args: Bundle? ): Fragment { if (className == MainFragment::class.java.name) { return fragment.get() } return super.</description>

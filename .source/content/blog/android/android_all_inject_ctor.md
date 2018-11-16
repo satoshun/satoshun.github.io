@@ -19,7 +19,7 @@ Fragmentに依存関係を注入する時、普通にやると以下のコード
 
 ```kotlin
 class MainFragment : Fragment() {
-  lateinit var userHandler: UserHandler
+  @Inject lateinit var userHandler: UserHandler
   ...
 }
 ```

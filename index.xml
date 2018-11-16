@@ -30,7 +30,7 @@
 &lt;p&gt;Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment : Fragment() {
-  lateinit var userHandler: UserHandler
+  @Inject lateinit var userHandler: UserHandler
   ...
 }
 &lt;/code&gt;&lt;/pre&gt;

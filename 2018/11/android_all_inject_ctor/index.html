@@ -99,7 +99,7 @@ Daggerライブラリを使い、Androidフレームワークが提供するActi
 <p>Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。</p>
 
 <pre><code class="language-kotlin">class MainFragment : Fragment() {
-  lateinit var userHandler: UserHandler
+  @Inject lateinit var userHandler: UserHandler
   ...
 }
 </code></pre>
