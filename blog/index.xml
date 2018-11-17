@@ -61,10 +61,10 @@ Moshiリフレクション Moshiにはmoshi-codegenと呼ばれる、アノテ�
 具体的には、デバッグ時、リリース時にbuild.gradleで指定するライブラリを、Moshiに登録するAdapterを変更します。
 // bulid.gradle implementation &amp;quot;com.squareup.moshi:moshi:1.8.0&amp;quot; debugImplementation &amp;quot;com.squareup.moshi:moshi-kotlin:1.8.0&amp;quot; kaptRelease &amp;quot;com.squareup.moshi:moshi-kotlin-codegen:1.8.0&amp;quot;  // debug時 fun createMoshiBuilder() = Moshi.Builder() .add(KotlinJsonAdapterFactory()) // KotlinJsonAdapterFactoryを指定する .build() // release時 fun createMoshiBuilder() = Moshi.Builder() .build()  このように書くことで、リリース時のみkaptを実行するようになります。
 Daggerリフレクション これはSdkSearch内で開発が行われているライブラリです。有名なAndroidエンジニアであるJake Whartonさんが開発をしています。
-これもMoshiと同様に、リフレクションを使うことでアノテーションプロセッサーを極力使わないようにしています。 現状、最低限のクラスはアノテーションプロセッサーで作成するようになっているので、完全除去というわけではありません。 例えば、アノテーションプロセッサーでDaggerAppComponentは作られます。
-最初にも書いたのですが、Daggerリフレクションは絶賛開発中で、Scope、セッターインジェクションなど、多くの機能が使えない状態です。 ここが揃ってくればデバッグ時にはDaggerリフレクションを使うことで、ビルド時間の短縮が可能になってくると思います。
-具体的なコードは、以下のようになります。 Mavenにアップデートされていないので、SdkSearchからコードをコピーして使っています。
-implementation &amp;quot;com.google.dagger:dagger:2.18&amp;quot; debugImplementation project(&#39;:dagger-reflect:reflect&#39;) // SdkSearchからコピー kaptDebug project(&#39;:dagger-reflect:reflect-compiler&#39;) // SdkSearchからコピー kaptRelease &amp;quot;com.google.dagger:dagger-compiler:2.18&amp;quot;  デバッグ時にはDaggerリフレクションを使い、リリース時にはdagger-compilerを使っています。 コードは全く修正することなく、ビルド時間の短縮が可能になります。</description>
+これもMoshiと同様に、リフレクションを使っています。 Daggerリフレクションでは、必要最低限のクラスはアノテーションプロセッサーで作成するようになっています。 アノテーションプロセッサーの完全除去というわけではありません。例えば、アノテーションプロセッサーでDaggerAppComponentは作られます。 しかし、かなりの数のクラスを作成しなくなってっています。
+最初にも書いたのですが、Daggerリフレクションは絶賛開発中で、Scope、セッターインジェクションなど、多くの機能が使えない状態です。 ここが揃ってくればデバッグ時にはDaggerリフレクションを使うことで、プロダクションビルドと同等の動作で、ビルド時間の短縮が可能になってくると思います。
+具体的なコードは、以下のようになります。 Mavenにアップデートされていないので、SdkSearchからソースコードをコピーして使います。
+implementation &amp;quot;com.google.dagger:dagger:2.18&amp;quot; debugImplementation project(&#39;:dagger-reflect:reflect&#39;) // SdkSearchからコピー kaptDebug project(&#39;:dagger-reflect:reflect-compiler&#39;) // SdkSearchからコピー kaptRelease &amp;quot;com.google.dagger:dagger-compiler:2.18&amp;quot;  デバッグ時にはDaggerリフレクションを使い、リリース時にはdagger-compilerを使っています。 Daggerリフレクションは、コードは全く修正することなく使うことが出来ます。</description>
     </item>
     
     <item>
