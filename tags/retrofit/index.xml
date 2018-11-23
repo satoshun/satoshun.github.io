@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 24 May 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/retrofit/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Retrofitでカスタムアノテーションを使う</title>
+      <link>https://satoshun.github.io/2018/11/retrofit_custom_annotation/</link>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/11/retrofit_custom_annotation/</guid>
+      <description>Retrofit 2.5.0からカスタムアノテーションが使えるようになったので、それの紹介です。
+例をあげて説明します。特定のリクエストのヘッダーに認証情報を付与したいとします。
+まず最初にアノテーションを定義します。
+annotation class RequireAuth  次に、上記で定義したアノテーションを使い、Apiを定義します。
+interface ApiService { @RequireAuth @GET(&amp;quot;login&amp;quot;) fun login(: retrofit2.Call&amp;lt;Unit&amp;gt; }  次に、RequireAuthを処理するためのokhttp3.Interceptorを定義します。
+class AuthInterceptor : Interceptor { override fun intercept(chain: Interceptor.Chain): Response { var request = chain.request() val invocation = request.tag(Invocation::class.java) val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java) if (authAnnotation != null) { request = request .newBuilder() .addHeader(&amp;quot;Authorization&amp;quot;, &amp;quot;Basic AAAAA&amp;quot;).build() } return chain.proceed(request) } }  ここでのポイントは、val invocation = request.tag(Invocation::class.java)です。 Retrofit 2.5.0からInvocationが追加され、RequestからInvocationが取得できるようになりました。 Invocationには、処理しているRequestのjava.lang.reflect.Methodが格納されており、 そこからアノテーションの情報を取得することができます。</description>
+    </item>
     
     <item>
       <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>

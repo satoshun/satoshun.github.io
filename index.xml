@@ -7,7 +7,111 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 16 Nov 2018 00:00:00 UTC</updated>
+    <updated>Fri, 23 Nov 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Retrofitでカスタムアノテーションを使う</title>
+      <link>https://satoshun.github.io/2018/11/retrofit_custom_annotation/</link>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/11/retrofit_custom_annotation/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/retrofit/blob/master/CHANGELOG.md#version-250-2018-11-18&#34;&gt;Retrofit 2.5.0&lt;/a&gt;からカスタムアノテーションが使えるようになったので、それの紹介です。&lt;/p&gt;
+
+&lt;p&gt;例をあげて説明します。特定のリクエストのヘッダーに認証情報を付与したいとします。&lt;/p&gt;
+
+&lt;p&gt;まず最初にアノテーションを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;annotation class RequireAuth
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、上記で定義したアノテーションを使い、Apiを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface ApiService {
+  @RequireAuth
+  @GET(&amp;quot;login&amp;quot;)
+  fun login(: retrofit2.Call&amp;lt;Unit&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、&lt;code&gt;RequireAuth&lt;/code&gt;を処理するための&lt;code&gt;okhttp3.Interceptor&lt;/code&gt;を定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class AuthInterceptor : Interceptor {
+  override fun intercept(chain: Interceptor.Chain): Response {
+    var request = chain.request()
+
+    val invocation = request.tag(Invocation::class.java)
+    val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java)
+    if (authAnnotation != null) {
+      request = request
+        .newBuilder()
+        .addHeader(&amp;quot;Authorization&amp;quot;, &amp;quot;Basic AAAAA&amp;quot;).build()
+    }
+    return chain.proceed(request)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでのポイントは、&lt;code&gt;val invocation = request.tag(Invocation::class.java)&lt;/code&gt;です。
+Retrofit 2.5.0から&lt;code&gt;Invocation&lt;/code&gt;が追加され、&lt;code&gt;Request&lt;/code&gt;から&lt;code&gt;Invocation&lt;/code&gt;が取得できるようになりました。
+&lt;code&gt;Invocation&lt;/code&gt;には、処理している&lt;code&gt;Request&lt;/code&gt;の&lt;code&gt;java.lang.reflect.Method&lt;/code&gt;が格納されており、
+そこからアノテーションの情報を取得することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java)&lt;/code&gt;で、
+メソッドに&lt;code&gt;RequireAuth&lt;/code&gt;アノテーションが付与されているかどうかを知ることが出来ます。
+&lt;code&gt;RequireAuth&lt;/code&gt;アノテーションがついていれば、&lt;code&gt;Request&lt;/code&gt;のヘッダーに認証情報を追加します。&lt;/p&gt;
+
+&lt;p&gt;最後に、上記の&lt;code&gt;Interceptor&lt;/code&gt;をOkHttpクライアントに付与します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val client = OkHttpClient.Builder()
+    .addInterceptor(AuthInterceptor())
+    .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでRetrofitでカスタムアノテーションを使うことが出来ます!!&lt;/p&gt;
+
+&lt;h2 id=&#34;invocation以前の場合&#34;&gt;Invocation以前の場合&lt;/h2&gt;
+
+&lt;p&gt;Invocation以前は、&lt;code&gt;Headers&lt;/code&gt;を使い認証情報を付与するテクニックがありました。
+詳しくは&lt;a href=&#34;https://speakerdeck.com/jakewharton/making-retrofit-work-for-you-ohio-devfest-2016?slide=39&#34;&gt;Making Retrofit Work For You&lt;/a&gt;にあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Headers(&amp;quot;Auth: true&amp;quot;)
+@GET(&amp;quot;useheaderlogin&amp;quot;)
+fun login(): retrofit2.Call&amp;lt;Unit&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class Auth2Interceptor : Interceptor {
+  override fun intercept(chain: Interceptor.Chain): Response {
+    var request = chain.request()
+
+    if (request.header(&amp;quot;Auth&amp;quot;) != null) {
+      request = request
+        .newBuilder()
+        .addHeader(&amp;quot;Authorization&amp;quot;, &amp;quot;Basic BBBBB&amp;quot;).build()
+    }
+    return chain.proceed(request)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このコードでも動くのですが、カスタムアノテーションを定義するやり方のほうが意味が伝わりやすいと思うので、よりよいと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Retrofit 2.5.0でInvocationが追加されてカスタムアノテーションが使えるようになりました
+
+&lt;ul&gt;
+&lt;li&gt;さらにInvocationは引数を持っており、ログやアナリティクスなどにも使うことができます&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今回の検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RetrofitCustomAnnotationExample&#34;&gt;ここに&lt;/a&gt;あります😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1242,266 +1346,6 @@ public final class MainActivityKt {
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;code&gt;JvmSuppressWildcards&lt;/code&gt;はDagger(&lt;a href=&#34;https://github.com/google/dagger/issues/668&#34;&gt;参考リンク&lt;/a&gt;)やretrofit(&lt;a href=&#34;https://github.com/square/retrofit/issues/1805&#34;&gt;参考リンク&lt;/a&gt;)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Dagger-AndroidでUserScopeのようなカスタムのScopeを使い、特定のActivity間のみで同一インスタンスを使う方法</title>
-      <link>https://satoshun.github.io/2018/06/dagger-android-with_custom_scope/</link>
-      <pubDate>Tue, 26 Jun 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/06/dagger-android-with_custom_scope/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/google/dagger&#34;&gt;Dagger&lt;/a&gt;を使い、複数のインスタンス間で同一のインスタンスを使う時は、スコープを使うことで実現できます。
-Androidでは、すべてのActivityで共通のインスタンスを使うには &lt;code&gt;Singleton&lt;/code&gt;スコープとAppComponentを組み合わせて使う方法がよく知られています。
-しかし、&lt;strong&gt;特定&lt;/strong&gt;のActivity間でのみ共通のインスタンスを使いたい場合にはこの方法は使えません。Singletonだと&lt;strong&gt;すべて&lt;/strong&gt;のActivity間で共通のインスタンスが使えてしまいます。&lt;/p&gt;
-
-&lt;p&gt;この記事では、Dagger-Androidを使ったサンプルコードをベースに、「特定のActivity間のみで同一インスタンスを使う方法」を説明します。
-また、基本的なDaggerの使い方は知っている前提で説明していきます。&lt;/p&gt;
-
-&lt;p&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-example/DaggerScopeExample&#34;&gt;こちら&lt;/a&gt;になります。
-コードを見ると理解がより深まると思うので、ぜひご覧になってください😊&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;では説明していきます。今回のサンプルコードの目指すところは&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;UserScopeを定義し、MainActivity、UserScopedActivityで同一の&lt;code&gt;UserManager&lt;/code&gt;インスタンスを使用する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;とします。&lt;/p&gt;
-
-&lt;p&gt;まず最初にUserScopeを定義します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Scope
-@MustBeDocumented
-@Retention(AnnotationRetention.RUNTIME)
-annotation class UserScope
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次にUserSubcomponentを作ります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@UserScope
-@Subcomponent
-interface UserSubcomponent {
-  @Subcomponent.Builder
-  interface Builder {
-    fun build(): UserSubcomponent
-  }
-
-  val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ここでは、UserSubcomponentに&lt;code&gt;UserScope&lt;/code&gt;スコープを持たせています。
-このように書くことで、SubcomponentとScopeを結びつけることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;次にAppComponentを作ります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Singleton
-@Component(
-    modules = [
-      AndroidSupportInjectionModule::class
-    ]
-)
-interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; {
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(application: App): Builder
-
-    fun build(): AppComponent
-  }
-
-  override fun inject(app: App)
-
-  // AppComponentとUserSubcomponentを結びつける
-  val userComponentBuilder: UserSubcomponent.Builder
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ここでのポイントは&lt;code&gt;AppComponent&lt;/code&gt;に、&lt;code&gt;val userComponentBuilder: UserSubcomponent.Builder&lt;/code&gt;を定義することです。
-こうすることで、&lt;code&gt;AppComponent&lt;/code&gt;に&lt;code&gt;UserSubcomponent&lt;/code&gt;を結び付けることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;これで基本的な部分の定義は完了しました。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;次に、各ActivityをComponentに結びつけていきます。
-サンプルではMainActivity、UserScopedActivityとNoUserScopedActivityの3つのActivityを定義しており、
-それぞれのActivityは以下のように振る舞わせたいとします。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MainActivity、UserScopedActivityはUserScopeに従い、インスタンスを共通で使いたい&lt;/li&gt;
-&lt;li&gt;NoUserScopedActivityはUserScopeに従わない、コンパイルエラーにしたい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;mainactivity-userscopedactivityをusersubcomponentに従わせる&#34;&gt;MainActivity、UserScopedActivityをUserSubcomponentに従わせる&lt;/h2&gt;
-
-&lt;p&gt;MainActivity、UserScopedActivityを&lt;code&gt;UserSubcomponent&lt;/code&gt;に定義することで、MainActivity、UserScopedActivityを&lt;code&gt;UserScope&lt;/code&gt;に従わせることが出来ます。
-なぜなら、&lt;code&gt;UserSubcomponent&lt;/code&gt;は&lt;code&gt;UserScope&lt;/code&gt;に紐付いているためです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// UserSubcomponent.kt
-@UserScope
-@Subcomponent(modules = [
-  MainActivityModule::class,
-  UserScopedActivityModule::class
-])
-interface UserSubcomponent {
-  @Subcomponent.Builder
-  interface Builder {
-    fun build(): UserSubcomponent
-  }
-
-  val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
-}
-
-// MainActivityModule.kt
-@Module
-interface MainActivityModule {
-  @ContributesAndroidInjector
-  fun contributeMainActivity(): MainActivity
-}
-
-// UserScopedActivityModule.kt
-@Module
-interface UserScopedActivityModule {
-  @ContributesAndroidInjector
-  fun contributeUserScopedActivity(): UserScopedActivity
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;nouserscopedactivityはuserscopeに従わない&#34;&gt;NoUserScopedActivityはUserScopeに従わない&lt;/h2&gt;
-
-&lt;p&gt;NoUserScopedActivityを&lt;code&gt;AppComponent&lt;/code&gt;に定義することで、NoUserScopedActivityで&lt;code&gt;UserScope&lt;/code&gt;を使っていたらコンパイルエラーにすることが出来ます。
-&lt;code&gt;AppComponent&lt;/code&gt;は&lt;code&gt;UserScope&lt;/code&gt;に紐付いていないためです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// AppComponent.kt
-@Singleton
-@Component(
-    modules = [
-      AndroidSupportInjectionModule::class,
-      NoUserScopedActivityModule::class
-    ]
-)
-interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; {
-  @Component.Builder
-  interface Builder {
-    @BindsInstance
-    fun application(application: App): Builder
-
-    fun build(): AppComponent
-  }
-
-  override fun inject(app: App)
-
-  val userComponentBuilder: UserSubcomponent.Builder
-}
-
-// NoUserScopedActivityModule.kt
-@Module
-interface NoUserScopedActivityModule {
-  @ContributesAndroidInjector
-  fun contributeNoUserScopedActivity(): NoUserScopedActivity
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、定義は完了です。実際に正しく動くかを確認してみます。
-適当に&lt;code&gt;UserScope&lt;/code&gt;に従う&lt;code&gt;UserManager&lt;/code&gt;を定義します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// UserManager.kt
-@UserScope
-class UserManager @Inject constructor() {
-  var value = 100
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これは&lt;code&gt;UserScope&lt;/code&gt;に従うので、MainActivity、UserScopedActivityには期待通り同一インスタンスが&lt;code&gt;Inject&lt;/code&gt;できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// MainActivity.kt
-class MainActivity : AppCompatActivity() {
-
-  // ok
-  @Inject lateinit var userManager: UserManager
-
-  ...
-}
-// UserScopedActivity.kt
-class UserScopedActivity : AppCompatActivity() {
-
-  // ok: MainActivityと同じインスタンスが注入される
-  @Inject lateinit var userManager: UserManager
-
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;しかし、NoUserScopedActivityに&lt;code&gt;Inject&lt;/code&gt;しようとするとコンパイルエラーになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// NoUserScopedActivity.kt
-class NoUserScopedActivity : AppCompatActivity() {
-
-  //  下のコメントアウトを取るとコンパイルエラー
-  //  @Inject lateinit var userManager: UserManager
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;NoUserScopedActivityを&lt;code&gt;UserScope&lt;/code&gt;に従う形で定義してないためです。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MainActivity、UserScopedActivityはUserScopeに従い、インスタンスを共通で使いたい&lt;/li&gt;
-&lt;li&gt;NoUserScopedActivityはUserScopeに従わない、コンパイルエラーにしたい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;が達成できました。&lt;/p&gt;
-
-&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
-
-&lt;p&gt;そもそも、&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;定義時に、&lt;code&gt;UserScope&lt;/code&gt;スコープを付与してあげればいいんじゃないかと思うかもしれません。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// MainActivityModule.kt
-@Module
-interface MainActivityModule {
-  @UserScope
-  @ContributesAndroidInjector
-  fun contributeMainActivity(): MainActivity
-}
-
-// UserScopedActivityModule.kt
-@Module
-interface UserScopedActivityModule {
-  @UserScope
-  @ContributesAndroidInjector
-  fun contributeUserScopedActivity(): UserScopedActivity
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このやり方だと、今回のケースには不都合です。&lt;/p&gt;
-
-&lt;p&gt;MainActivity、UserScopedActivityは&lt;code&gt;UserScope&lt;/code&gt;に従うのでコンパイルは通ります。
-しかし、MainActivity、UserScopedActivityで同一インスタンスを使うことは出来ません。&lt;/p&gt;
-
-&lt;p&gt;何故かと言うと、&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;はSubcomponentを作るシンタックスシュガーのようなものですが、
-&lt;code&gt;MainActivityModule&lt;/code&gt;と&lt;code&gt;UserScopedActivityModule&lt;/code&gt;はそれぞれ独立したSubcomponentを作るので、独立したComponent間で同一インスタンスを使うことが出来ないためです。&lt;/p&gt;
-
-&lt;p&gt;今回のように、&lt;code&gt;UserSubcomponent&lt;/code&gt;を定義して、そのComponentをベースに所属させる必要があります。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;特定のActivityのみで共通のインスタンスを使いたいときは、結構めんどう
-
-&lt;ul&gt;
-&lt;li&gt;冗長な気がするので、もっといい方法があったら教えてください😋&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ContributesAndroidInjector&lt;/code&gt;がどういう動作をするのかを知っておくと、いざというときに便利&lt;/li&gt;
-&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-example/DaggerScopeExample&#34;&gt;こちら&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
