@@ -1,5 +1,6 @@
 +++
 date = "2018-11-23T00:00:00Z"
+lastmod = "2018-11-24T00:00:00Z"
 title = "Retrofitでカスタムアノテーションを使う"
 tags = ["android", "retrofit"]
 blogimport = true
