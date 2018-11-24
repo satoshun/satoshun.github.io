@@ -104,7 +104,7 @@ fun login(): retrofit2.Call&amp;lt;Unit&amp;gt;
 &lt;li&gt;Retrofit 2.5.0でInvocationが追加されてカスタムアノテーションが使えるようになりました
 
 &lt;ul&gt;
-&lt;li&gt;さらにInvocationは引数を持っており、ログやアナリティクスなどにも使うことができます&lt;/li&gt;
+&lt;li&gt;さらにInvocationはメソッドの引数リストを持っており、ログやアナリティクスなどに有効に使うことができます&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 

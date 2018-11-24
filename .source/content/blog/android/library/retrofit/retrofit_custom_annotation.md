@@ -96,6 +96,6 @@ class Auth2Interceptor : Interceptor {
 ## まとめ
 
 - Retrofit 2.5.0でInvocationが追加されてカスタムアノテーションが使えるようになりました
-  - さらにInvocationは引数を持っており、ログやアナリティクスなどにも使うことができます
+  - さらにInvocationはメソッドの引数リストを持っており、ログやアナリティクスなどに有効に使うことができます
 
 今回の検証に用いたサンプルコードは[ここに](https://github.com/satoshun-android-example/RetrofitCustomAnnotationExample)あります😃
