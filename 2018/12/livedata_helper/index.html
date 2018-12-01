@@ -26,7 +26,7 @@
   
   <meta property="twitter:description" content="
 
-LiveDataの値を更新したい時、MutableLiveDataを使って更新するのが一般的だと思います。
+LiveDataの値を更新したい時、MutableLiveDataを使うのが一般的だと思います。
 
 class MainViewModel { …">
   
@@ -86,18 +86,18 @@ class MainViewModel { …">
   <div class="post">
     <h1 class="post-title">MutableなLiveDataを特定のクラス外から更新できなくする</h1>
     
-    <span class="post-date">Created at Sat, Dec 1, 2018</span>
+    <span class="post-date">Updated at Sat, Dec 1, 2018</span>
     
     
 
-<p>LiveDataの値を更新したい時、<code>MutableLiveData</code>を使って更新するのが一般的だと思います。</p>
+<p>LiveDataの値を更新したい時、<code>MutableLiveData</code>を使うのが一般的だと思います。</p>
 
 <pre><code class="language-kotlin">class MainViewModel {
     val hoge = MutableLiveData&lt;Int&gt;()
 }
 </code></pre>
 
-<p>ただこれだと、外のクラスから値を更新することが出来ます。</p>
+<p>この書き方だと、外のクラスから値を更新することが可能です。</p>
 
 <pre><code class="language-kotlin">val viewModel = MainViewModel()
 
@@ -105,7 +105,7 @@ class MainViewModel { …">
 viewModel.postValue(10000)
 </code></pre>
 
-<p>外からは更新出来ないようにするために<code>LiveData</code>に型変換したいケースがあります。</p>
+<p>外のクラスからは更新出来ないようにするためには<code>LiveData</code>に型変換する必要があります。</p>
 
 <p>例えば次のように書きます。</p>
 
@@ -115,7 +115,7 @@ viewModel.postValue(10000)
 }
 </code></pre>
 
-<p>こうすることで、外のクラスからは<code>MutableLiveData</code>が直接見えなくなり、型変換などをしない限り、<code>LiveData</code>の値を更新できなくなります。</p>
+<p>こうすることで、外のクラスからは<code>MutableLiveData</code>が直接見えなくなり、明示的に型変換をしない限り<code>LiveData</code>の値を更新できなくなります。</p>
 
 <p>ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
 なので、それの解決策を以下で紹介します。</p>
@@ -174,8 +174,8 @@ fun main2() {
 <p><code>ViewModelLiveData2</code>と<code>ViewModel2</code>を作りました（名前は適当です）。</p>
 
 <p><code>ViewModelLiveData2</code>クラスで<code>postValue</code>メソッドと<code>setValue</code>メソッドをオーバーライドし、
-<code>ViewModel2</code>クラスと同じパッケージに入れることで、<code>ViewModel2</code>からそれらのメソッドをコールすることが出来るようになります。
-<code>ViewModel2</code>からそれらのメソッドをコールすることで、<code>ViewModel2</code>を継承したクラスからのみ<code>LiveData</code>の値を更新することができます。</p>
+<code>ViewModel2</code>クラスと同じパッケージに入れることで、<code>ViewModel2</code>からそれらのメソッドをコール出来るようになり、
+<code>ViewModel2</code>を継承したクラスからのみ<code>LiveData</code>の値を更新できます。</p>
 
 <p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールするとコンパイルエラーになります。</p>
 
@@ -220,9 +220,6 @@ fun main2() {
 
 fun main3() {
   val viewModel = MainViewModel3()
-  with(viewModel) {
-    viewModel.userName.postValue(&quot;10&quot;)
-  }
 
   // compile error
   // viewModel.userName.setValue(&quot;&quot;)
@@ -235,7 +232,7 @@ fun main3() {
 <p><code>ViewModelLiveData3</code>と<code>ViewModel3</code>を作りました（名前は適当です）。</p>
 
 <p><code>ViewModelLiveData3</code>クラスと<code>ViewModel3</code>クラスを適当なサブモジュール内で定義します。
-そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。</p>
+そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。</p>
 
 <p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールしようとするとコンパイルエラーになります。</p>
 
@@ -266,14 +263,13 @@ fun main() {
 }
 </code></pre>
 
-<p>applyやwithを使って<code>ViewModel2</code>がreceiverになると、<code>setValue</code>メソッドがコール出来るようになります。
-よって、外から<code>setValue</code>にアクセス出来なくするためには<code>protected</code>で定義しなければいけないため、<code>abstract class</code>を使う必要があります。</p>
+<p>applyやwithを使って<code>ViewModel2</code>がreceiverになると、<code>setValue</code>メソッドがコール出来るため、外から値を更新することが出来てしまいます。</p>
 
 <h2 id="まとめ">まとめ</h2>
 
 <ul>
-<li>おそらくLiveDataの値を更新する部分は、<code>ViewModel</code>や<code>Store</code>クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃</li>
-<li>もっと良い、楽できる書き方があればぜひ教えてください😊</li>
+<li>おそらくLiveDataの値を更新する部分は、<code>ViewModel</code>や<code>Store</code>クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。</li>
+<li>もっと良い、楽できる書き方があればぜひ教えてください!!</li>
 </ul>
 
 <p>今回の検証に用いた<a href="https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample">サンプルコードはここにあります</a>😃</p>

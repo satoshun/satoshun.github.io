@@ -18,14 +18,14 @@
       <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
       <description>
 
-&lt;p&gt;LiveDataの値を更新したい時、&lt;code&gt;MutableLiveData&lt;/code&gt;を使って更新するのが一般的だと思います。&lt;/p&gt;
+&lt;p&gt;LiveDataの値を更新したい時、&lt;code&gt;MutableLiveData&lt;/code&gt;を使うのが一般的だと思います。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel {
     val hoge = MutableLiveData&amp;lt;Int&amp;gt;()
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;ただこれだと、外のクラスから値を更新することが出来ます。&lt;/p&gt;
+&lt;p&gt;この書き方だと、外のクラスから値を更新することが可能です。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val viewModel = MainViewModel()
 
@@ -33,7 +33,7 @@
 viewModel.postValue(10000)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;外からは更新出来ないようにするために&lt;code&gt;LiveData&lt;/code&gt;に型変換したいケースがあります。&lt;/p&gt;
+&lt;p&gt;外のクラスからは更新出来ないようにするためには&lt;code&gt;LiveData&lt;/code&gt;に型変換する必要があります。&lt;/p&gt;
 
 &lt;p&gt;例えば次のように書きます。&lt;/p&gt;
 
@@ -43,7 +43,7 @@ viewModel.postValue(10000)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;こうすることで、外のクラスからは&lt;code&gt;MutableLiveData&lt;/code&gt;が直接見えなくなり、型変換などをしない限り、&lt;code&gt;LiveData&lt;/code&gt;の値を更新できなくなります。&lt;/p&gt;
+&lt;p&gt;こうすることで、外のクラスからは&lt;code&gt;MutableLiveData&lt;/code&gt;が直接見えなくなり、明示的に型変換をしない限り&lt;code&gt;LiveData&lt;/code&gt;の値を更新できなくなります。&lt;/p&gt;
 
 &lt;p&gt;ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
 なので、それの解決策を以下で紹介します。&lt;/p&gt;
@@ -102,8 +102,8 @@ fun main2() {
 &lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;と&lt;code&gt;ViewModel2&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;クラスで&lt;code&gt;postValue&lt;/code&gt;メソッドと&lt;code&gt;setValue&lt;/code&gt;メソッドをオーバーライドし、
-&lt;code&gt;ViewModel2&lt;/code&gt;クラスと同じパッケージに入れることで、&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコールすることが出来るようになります。
-&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコールすることで、&lt;code&gt;ViewModel2&lt;/code&gt;を継承したクラスからのみ&lt;code&gt;LiveData&lt;/code&gt;の値を更新することができます。&lt;/p&gt;
+&lt;code&gt;ViewModel2&lt;/code&gt;クラスと同じパッケージに入れることで、&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコール出来るようになり、
+&lt;code&gt;ViewModel2&lt;/code&gt;を継承したクラスからのみ&lt;code&gt;LiveData&lt;/code&gt;の値を更新できます。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールするとコンパイルエラーになります。&lt;/p&gt;
 
@@ -148,9 +148,6 @@ fun main2() {
 
 fun main3() {
   val viewModel = MainViewModel3()
-  with(viewModel) {
-    viewModel.userName.postValue(&amp;quot;10&amp;quot;)
-  }
 
   // compile error
   // viewModel.userName.setValue(&amp;quot;&amp;quot;)
@@ -163,7 +160,7 @@ fun main3() {
 &lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;と&lt;code&gt;ViewModel3&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;クラスと&lt;code&gt;ViewModel3&lt;/code&gt;クラスを適当なサブモジュール内で定義します。
-そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。&lt;/p&gt;
+そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールしようとするとコンパイルエラーになります。&lt;/p&gt;
 
@@ -194,14 +191,13 @@ fun main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;applyやwithを使って&lt;code&gt;ViewModel2&lt;/code&gt;がreceiverになると、&lt;code&gt;setValue&lt;/code&gt;メソッドがコール出来るようになります。
-よって、外から&lt;code&gt;setValue&lt;/code&gt;にアクセス出来なくするためには&lt;code&gt;protected&lt;/code&gt;で定義しなければいけないため、&lt;code&gt;abstract class&lt;/code&gt;を使う必要があります。&lt;/p&gt;
+&lt;p&gt;applyやwithを使って&lt;code&gt;ViewModel2&lt;/code&gt;がreceiverになると、&lt;code&gt;setValue&lt;/code&gt;メソッドがコール出来るため、外から値を更新することが出来てしまいます。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;おそらくLiveDataの値を更新する部分は、&lt;code&gt;ViewModel&lt;/code&gt;や&lt;code&gt;Store&lt;/code&gt;クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃&lt;/li&gt;
-&lt;li&gt;もっと良い、楽できる書き方があればぜひ教えてください😊&lt;/li&gt;
+&lt;li&gt;おそらくLiveDataの値を更新する部分は、&lt;code&gt;ViewModel&lt;/code&gt;や&lt;code&gt;Store&lt;/code&gt;クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。&lt;/li&gt;
+&lt;li&gt;もっと良い、楽できる書き方があればぜひ教えてください!!&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;今回の検証に用いた&lt;a href=&#34;https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
