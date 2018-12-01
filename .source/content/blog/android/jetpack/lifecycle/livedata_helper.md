@@ -1,10 +1,10 @@
 +++
-date = "2018-12-01T00:00:00Z"
-title = "MutableなLiveDataを特定のクラス以外から更新できなくする"
+date = "2018-12-01"
+title = "MutableなLiveDataを特定のクラス外から更新できなくする"
 tags = ["android", "jetpack", "livedata"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 LiveDataの値を更新したい時、`MutableLiveData`を使って更新するのが一般的だと思います。
@@ -12,31 +12,32 @@ LiveDataの値を更新したい時、`MutableLiveData`を使って更新する�
 ```kotlin
 class MainViewModel {
     val hoge = MutableLiveData<Int>()
-
-    fun updateValue() {
-        hoge.value = 10
-    }
 }
 ```
 
-ただこれだと、外のクラスから値を更新することが出来ます。それを防ぐために`LiveData`に型を変換したいケースがあります。
+ただこれだと、外のクラスから値を更新することが出来ます。
+
+```kotlin
+val viewModel = MainViewModel()
+
+// ok
+viewModel.postValue(10000)
+```
+
+外からは更新出来ないようにするために`LiveData`に型変換したいケースがあります。
 
 例えば次のように書きます。
 
 ```kotlin
 class MainViewModel {
     private val _hoge = MutableLiveData<Int>()
-    val hoge: LiveData<Int> = _hoge
-
-    fun updateValue() {
-        _hoge.value = 10
-    }
+    val hoge: LiveData<Int> = _hoge // ここでLiveDataに型変換
 }
 ```
 
-このようにすることで、外のクラスからは`MutableLiveData`が見えなくなり、型変換などをしない限り、値を更新することができなくなります。
+こうすることで、外のクラスからは`MutableLiveData`が直接見えなくなり、型変換などをしない限り、`LiveData`の値を更新できなくなります。
 
-ただこの書き方はフィールドの定義が増えるのでめんどくさいです。
+ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
 なので、それの解決策を以下で紹介します。
 
 ## その1
@@ -95,14 +96,15 @@ fun main2() {
 
 `ViewModelLiveData2`と`ViewModel2`を作りました（名前は適当です）。
 
-`ViewModelLiveData2`クラスで`postValue`メソッドと`setValue`メソッドをオーバーライドし、`ViewModel2`クラスと同じパッケージに入れることで、`ViewModel2`からそれらのメソッドをコールすることが出来るようになります。
-`ViewModel2`にそれらのメソッドをコールするメソッドを定義することで、`ViewModel2`を継承したクラスから値を更新することができます。
+`ViewModelLiveData2`クラスで`postValue`メソッドと`setValue`メソッドをオーバーライドし、
+`ViewModel2`クラスと同じパッケージに入れることで、`ViewModel2`からそれらのメソッドをコールすることが出来るようになります。
+`ViewModel2`からそれらのメソッドをコールすることで、`ViewModel2`を継承したクラスからのみ`LiveData`の値を更新することができます。
 
-`viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールしようとするとコンパイルエラーになります。
+`viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールするとコンパイルエラーになります。
 
 `protected`メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。
 
-##  その2
+## その2
 
 こちらもまずコードをのせます。
 
@@ -134,7 +136,7 @@ class ViewModelLiveData3<T> : LiveData<T>() {
 
 ```kotlin
 class MainViewModel3 : ViewModel3() {
-  val userName = viewModelLiveData3<String>()
+  val userName = ViewModelLiveData3<String>()
 
   fun update() {
     userName.setValue("test")
@@ -149,7 +151,7 @@ fun main3() {
   }
 
   // compile error
-//  viewModel.userName.setValue("")
+  // viewModel.userName.setValue("")
 
   viewModel.update()
   viewModel.userName.observeForever { }
@@ -158,15 +160,45 @@ fun main3() {
 
 `ViewModelLiveData3`と`ViewModel3`を作りました（名前は適当です）。
 
-今回はオーバーライドするのではなく、internalを修飾子をつけてその中で`setValue`と`postValue`をコールしています。
-この2つのメソッドは`protected`でLiveData内で定義されているので継承したクラスからは呼び出すことが可能です。
-そして`ViewModelLiveData3`クラスと`ViewModel3`クラスの定義を適当なサブモジュール内でします。
-そうすることで、モジュール外からは、直接`ViewModelLiveData3`の値を更新できなくなります。
+`ViewModelLiveData3`クラスと`ViewModel3`クラスを適当なサブモジュール内で定義します。
+そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。
 
 `viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールしようとするとコンパイルエラーになります。
 
+## 補足
+
+abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。
+
+```kotlin
+interface ViewModel2 {
+  fun <T> ViewModelLiveData1<T>.setValue(value: T) {
+    this.value = value
+  }
+
+  fun <T> ViewModelLiveData1<T>.postValue(value: T) {
+    postValue(value)
+  }
+}
+
+fun main() {
+  ...
+
+  // compile error
+  // viewModel.userName.setValue("")
+
+  // ok
+  with(viewModel) {
+    userName.setValue("")
+  }
+}
+```
+
+applyやwithを使って`ViewModel2`がreceiverになると、`setValue`メソッドがコール出来るようになります。
+よって、外から`setValue`にアクセス出来なくするためには`protected`で定義しなければいけないため、`abstract class`を使う必要があります。
+
 ## まとめ
 
-おそらくLiveDataの値を更新する部分は、`ViewModel`や`Store`クラスになると思うので、それのBaseクラスで上記のメソッドを定義することで楽できるようになると思います😃
+- おそらくLiveDataの値を更新する部分は、`ViewModel`や`Store`クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃
+- もっと良い、楽できる書き方があればぜひ教えてください😊
 
-今回の検証に用いた[サンプルコードはここにあります](test)😃
+今回の検証に用いた[サンプルコードはここにあります](https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample)😃
