@@ -7,7 +7,207 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 23 Nov 2018 00:00:00 UTC</updated>
+    <updated>Sat, 01 Dec 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>MutableなLiveDataを特定のクラス外から更新できなくする</title>
+      <link>https://satoshun.github.io/2018/12/livedata_helper/</link>
+      <pubDate>Sat, 01 Dec 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
+      <description>
+
+&lt;p&gt;LiveDataの値を更新したい時、&lt;code&gt;MutableLiveData&lt;/code&gt;を使って更新するのが一般的だと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel {
+    val hoge = MutableLiveData&amp;lt;Int&amp;gt;()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただこれだと、外のクラスから値を更新することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val viewModel = MainViewModel()
+
+// ok
+viewModel.postValue(10000)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;外からは更新出来ないようにするために&lt;code&gt;LiveData&lt;/code&gt;に型変換したいケースがあります。&lt;/p&gt;
+
+&lt;p&gt;例えば次のように書きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel {
+    private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;()
+    val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることで、外のクラスからは&lt;code&gt;MutableLiveData&lt;/code&gt;が直接見えなくなり、型変換などをしない限り、&lt;code&gt;LiveData&lt;/code&gt;の値を更新できなくなります。&lt;/p&gt;
+
+&lt;p&gt;ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
+なので、それの解決策を以下で紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;その1&#34;&gt;その1&lt;/h2&gt;
+
+&lt;p&gt;まずコードをのせます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ViewModel2 {
+  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) {
+    postValue(value)
+  }
+
+  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) {
+    setValue(value)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// ViewModel2と同じパッケージに定義
+public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; {
+  @Override
+  protected void postValue(T value) {
+    super.postValue(value);
+  }
+
+  @Override
+  protected void setValue(T value) {
+    super.setValue(value);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;が定義になります。次に使い方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel2 : ViewModel2() {
+  val userName = ViewModelLiveData2&amp;lt;String&amp;gt;()
+
+  fun update() {
+    userName.setValue(&amp;quot;test&amp;quot;)
+    userName.postValue(&amp;quot;test2&amp;quot;)
+  }
+}
+
+fun main2() {
+  val viewModel = MainViewModel2()
+
+  // compile error!!
+  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
+
+  viewModel.update()
+  viewModel.userName.observeForever { }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;と&lt;code&gt;ViewModel2&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;クラスで&lt;code&gt;postValue&lt;/code&gt;メソッドと&lt;code&gt;setValue&lt;/code&gt;メソッドをオーバーライドし、
+&lt;code&gt;ViewModel2&lt;/code&gt;クラスと同じパッケージに入れることで、&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコールすることが出来るようになります。
+&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコールすることで、&lt;code&gt;ViewModel2&lt;/code&gt;を継承したクラスからのみ&lt;code&gt;LiveData&lt;/code&gt;の値を更新することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールするとコンパイルエラーになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;protected&lt;/code&gt;メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;その2&#34;&gt;その2&lt;/h2&gt;
+
+&lt;p&gt;こちらもまずコードをのせます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ViewModel3 {
+  protected fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.postValue(value: T) {
+    internalPostValue(value)
+  }
+
+  fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.setValue(value: T) {
+    internalSetValue(value)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class ViewModelLiveData3&amp;lt;T&amp;gt; : LiveData&amp;lt;T&amp;gt;() {
+  internal fun internalPostValue(value: T) {
+    postValue(value)
+  }
+
+  internal fun internalSetValue(v: T) {
+    value = v
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;が定義になります。次に使い方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel3 : ViewModel3() {
+  val userName = ViewModelLiveData3&amp;lt;String&amp;gt;()
+
+  fun update() {
+    userName.setValue(&amp;quot;test&amp;quot;)
+    userName.postValue(&amp;quot;test2&amp;quot;)
+  }
+}
+
+fun main3() {
+  val viewModel = MainViewModel3()
+  with(viewModel) {
+    viewModel.userName.postValue(&amp;quot;10&amp;quot;)
+  }
+
+  // compile error
+  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
+
+  viewModel.update()
+  viewModel.userName.observeForever { }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;と&lt;code&gt;ViewModel3&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;クラスと&lt;code&gt;ViewModel3&lt;/code&gt;クラスを適当なサブモジュール内で定義します。
+そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールしようとするとコンパイルエラーになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface ViewModel2 {
+  fun &amp;lt;T&amp;gt; ViewModelLiveData1&amp;lt;T&amp;gt;.setValue(value: T) {
+    this.value = value
+  }
+
+  fun &amp;lt;T&amp;gt; ViewModelLiveData1&amp;lt;T&amp;gt;.postValue(value: T) {
+    postValue(value)
+  }
+}
+
+fun main() {
+  ...
+
+  // compile error
+  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
+
+  // ok
+  with(viewModel) {
+    userName.setValue(&amp;quot;&amp;quot;)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;applyやwithを使って&lt;code&gt;ViewModel2&lt;/code&gt;がreceiverになると、&lt;code&gt;setValue&lt;/code&gt;メソッドがコール出来るようになります。
+よって、外から&lt;code&gt;setValue&lt;/code&gt;にアクセス出来なくするためには&lt;code&gt;protected&lt;/code&gt;で定義しなければいけないため、&lt;code&gt;abstract class&lt;/code&gt;を使う必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;おそらくLiveDataの値を更新する部分は、&lt;code&gt;ViewModel&lt;/code&gt;や&lt;code&gt;Store&lt;/code&gt;クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃&lt;/li&gt;
+&lt;li&gt;もっと良い、楽できる書き方があればぜひ教えてください😊&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今回の検証に用いた&lt;a href=&#34;https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1321,31 +1521,6 @@ public final class MainActivityKt {
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;ConstraintLayoutではネイティブでネガティブマージンに対応していないため、&lt;code&gt;Space&lt;/code&gt;を使った、ややテクニカルな方法で実現するのが良いと思われます。&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: typealiasを使ってめんどうなアノテーションを省略する</title>
-      <link>https://satoshun.github.io/2018/07/typealias_omit_annotation/</link>
-      <pubDate>Thu, 12 Jul 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/07/typealias_omit_annotation/</guid>
-      <description>&lt;p&gt;Kotlinではtypealiasと呼ばれる、既存のタイプに対して別名をつける機能があります。
-&lt;a href=&#34;https://kotlinlang.org/docs/reference/type-aliases.html&#34;&gt;https://kotlinlang.org/docs/reference/type-aliases.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;典型的な使い方として、下のような複雑な型に名前をつけると可読性が高くなります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;typealias MyHandler = (Int, String, Any) -&amp;gt; Unit
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;さらにtypealiasは、アノテーションをつけることも出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;typealias NonWildcardList&amp;lt;T&amp;gt; = List&amp;lt;@JvmSuppressWildcards T&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;JvmSuppressWildcards&lt;/code&gt;はDagger(&lt;a href=&#34;https://github.com/google/dagger/issues/668&#34;&gt;参考リンク&lt;/a&gt;)やretrofit(&lt;a href=&#34;https://github.com/square/retrofit/issues/1805&#34;&gt;参考リンク&lt;/a&gt;)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。&lt;/p&gt;
 </description>
     </item>
     

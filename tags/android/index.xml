@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 23 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MutableなLiveDataを特定のクラス外から更新できなくする</title>
+      <link>https://satoshun.github.io/2018/12/livedata_helper/</link>
+      <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
+      <description>LiveDataの値を更新したい時、MutableLiveDataを使って更新するのが一般的だと思います。
+class MainViewModel { val hoge = MutableLiveData&amp;lt;Int&amp;gt;() }  ただこれだと、外のクラスから値を更新することが出来ます。
+val viewModel = MainViewModel() // ok viewModel.postValue(10000)  外からは更新出来ないようにするためにLiveDataに型変換したいケースがあります。
+例えば次のように書きます。
+class MainViewModel { private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;() val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換 }  こうすることで、外のクラスからはMutableLiveDataが直接見えなくなり、型変換などをしない限り、LiveDataの値を更新できなくなります。
+ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。 なので、それの解決策を以下で紹介します。
+その1 まずコードをのせます。
+abstract class ViewModel2 { protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) { postValue(value) } protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) { setValue(value) } }  // ViewModel2と同じパッケージに定義 public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; { @Override protected void postValue(T value) { super.</description>
+    </item>
     
     <item>
       <title>Retrofitでカスタムアノテーションを使う</title>

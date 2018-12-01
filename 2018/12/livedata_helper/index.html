@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="MutableなLiveDataを特定のクラス外から更新できなくする">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2018-12-01">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2018/12/livedata_helper/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="jetpack">
+  
+    <meta property="og:tags" content="livedata">
+  
+
+  <meta property="twitter:title" content="MutableなLiveDataを特定のクラス外から更新できなくする">
+
+  
+  <meta property="twitter:description" content="
+
+LiveDataの値を更新したい時、MutableLiveDataを使って更新するのが一般的だと思います。
+
+class MainViewModel { …">
+  
+
+  
+  <meta property="twitter:image" content="https://goo.gl/zMdhry">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> MutableなLiveDataを特定のクラス外から更新できなくする  &middot; stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">MutableなLiveDataを特定のクラス外から更新できなくする</h1>
+    
+    <span class="post-date">Created at Sat, Dec 1, 2018</span>
+    
+    
+
+<p>LiveDataの値を更新したい時、<code>MutableLiveData</code>を使って更新するのが一般的だと思います。</p>
+
+<pre><code class="language-kotlin">class MainViewModel {
+    val hoge = MutableLiveData&lt;Int&gt;()
+}
+</code></pre>
+
+<p>ただこれだと、外のクラスから値を更新することが出来ます。</p>
+
+<pre><code class="language-kotlin">val viewModel = MainViewModel()
+
+// ok
+viewModel.postValue(10000)
+</code></pre>
+
+<p>外からは更新出来ないようにするために<code>LiveData</code>に型変換したいケースがあります。</p>
+
+<p>例えば次のように書きます。</p>
+
+<pre><code class="language-kotlin">class MainViewModel {
+    private val _hoge = MutableLiveData&lt;Int&gt;()
+    val hoge: LiveData&lt;Int&gt; = _hoge // ここでLiveDataに型変換
+}
+</code></pre>
+
+<p>こうすることで、外のクラスからは<code>MutableLiveData</code>が直接見えなくなり、型変換などをしない限り、<code>LiveData</code>の値を更新できなくなります。</p>
+
+<p>ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
+なので、それの解決策を以下で紹介します。</p>
+
+<h2 id="その1">その1</h2>
+
+<p>まずコードをのせます。</p>
+
+<pre><code class="language-kotlin">abstract class ViewModel2 {
+  protected fun &lt;T&gt; ViewModelLiveData2&lt;T&gt;.postValue(value: T) {
+    postValue(value)
+  }
+
+  protected fun &lt;T&gt; ViewModelLiveData2&lt;T&gt;.setValue(value: T) {
+    setValue(value)
+  }
+}
+</code></pre>
+
+<pre><code class="language-java">// ViewModel2と同じパッケージに定義
+public class ViewModelLiveData2&lt;T&gt; extends LiveData&lt;T&gt; {
+  @Override
+  protected void postValue(T value) {
+    super.postValue(value);
+  }
+
+  @Override
+  protected void setValue(T value) {
+    super.setValue(value);
+  }
+}
+</code></pre>
+
+<p>が定義になります。次に使い方です。</p>
+
+<pre><code class="language-kotlin">class MainViewModel2 : ViewModel2() {
+  val userName = ViewModelLiveData2&lt;String&gt;()
+
+  fun update() {
+    userName.setValue(&quot;test&quot;)
+    userName.postValue(&quot;test2&quot;)
+  }
+}
+
+fun main2() {
+  val viewModel = MainViewModel2()
+
+  // compile error!!
+  // viewModel.userName.setValue(&quot;&quot;)
+
+  viewModel.update()
+  viewModel.userName.observeForever { }
+}
+</code></pre>
+
+<p><code>ViewModelLiveData2</code>と<code>ViewModel2</code>を作りました（名前は適当です）。</p>
+
+<p><code>ViewModelLiveData2</code>クラスで<code>postValue</code>メソッドと<code>setValue</code>メソッドをオーバーライドし、
+<code>ViewModel2</code>クラスと同じパッケージに入れることで、<code>ViewModel2</code>からそれらのメソッドをコールすることが出来るようになります。
+<code>ViewModel2</code>からそれらのメソッドをコールすることで、<code>ViewModel2</code>を継承したクラスからのみ<code>LiveData</code>の値を更新することができます。</p>
+
+<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールするとコンパイルエラーになります。</p>
+
+<p><code>protected</code>メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。</p>
+
+<h2 id="その2">その2</h2>
+
+<p>こちらもまずコードをのせます。</p>
+
+<pre><code class="language-kotlin">abstract class ViewModel3 {
+  protected fun &lt;T&gt; ViewModelLiveData3&lt;T&gt;.postValue(value: T) {
+    internalPostValue(value)
+  }
+
+  fun &lt;T&gt; ViewModelLiveData3&lt;T&gt;.setValue(value: T) {
+    internalSetValue(value)
+  }
+}
+</code></pre>
+
+<pre><code class="language-kotlin">class ViewModelLiveData3&lt;T&gt; : LiveData&lt;T&gt;() {
+  internal fun internalPostValue(value: T) {
+    postValue(value)
+  }
+
+  internal fun internalSetValue(v: T) {
+    value = v
+  }
+}
+</code></pre>
+
+<p>が定義になります。次に使い方です。</p>
+
+<pre><code class="language-kotlin">class MainViewModel3 : ViewModel3() {
+  val userName = ViewModelLiveData3&lt;String&gt;()
+
+  fun update() {
+    userName.setValue(&quot;test&quot;)
+    userName.postValue(&quot;test2&quot;)
+  }
+}
+
+fun main3() {
+  val viewModel = MainViewModel3()
+  with(viewModel) {
+    viewModel.userName.postValue(&quot;10&quot;)
+  }
+
+  // compile error
+  // viewModel.userName.setValue(&quot;&quot;)
+
+  viewModel.update()
+  viewModel.userName.observeForever { }
+}
+</code></pre>
+
+<p><code>ViewModelLiveData3</code>と<code>ViewModel3</code>を作りました（名前は適当です）。</p>
+
+<p><code>ViewModelLiveData3</code>クラスと<code>ViewModel3</code>クラスを適当なサブモジュール内で定義します。
+そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。</p>
+
+<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールしようとするとコンパイルエラーになります。</p>
+
+<h2 id="補足">補足</h2>
+
+<p>abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。</p>
+
+<pre><code class="language-kotlin">interface ViewModel2 {
+  fun &lt;T&gt; ViewModelLiveData1&lt;T&gt;.setValue(value: T) {
+    this.value = value
+  }
+
+  fun &lt;T&gt; ViewModelLiveData1&lt;T&gt;.postValue(value: T) {
+    postValue(value)
+  }
+}
+
+fun main() {
+  ...
+
+  // compile error
+  // viewModel.userName.setValue(&quot;&quot;)
+
+  // ok
+  with(viewModel) {
+    userName.setValue(&quot;&quot;)
+  }
+}
+</code></pre>
+
+<p>applyやwithを使って<code>ViewModel2</code>がreceiverになると、<code>setValue</code>メソッドがコール出来るようになります。
+よって、外から<code>setValue</code>にアクセス出来なくするためには<code>protected</code>で定義しなければいけないため、<code>abstract class</code>を使う必要があります。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<ul>
+<li>おそらくLiveDataの値を更新する部分は、<code>ViewModel</code>や<code>Store</code>クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃</li>
+<li>もっと良い、楽できる書き方があればぜひ教えてください😊</li>
+</ul>
+
+<p>今回の検証に用いた<a href="https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample">サンプルコードはここにあります</a>😃</p>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/jetpack">jetpack</a></li>
+        
+          <li><a href="/tags/livedata">livedata</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://goo.gl/zMdhry" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">Androidえんじにあー</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>
