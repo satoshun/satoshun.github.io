@@ -1,5 +1,6 @@
 +++
 date = "2018-12-01"
+lastmod = "2018-12-01T15:00:00Z"
 title = "MutableなLiveDataを特定のクラス外から更新できなくする"
 tags = ["android", "jetpack", "livedata"]
 blogimport = true
@@ -7,7 +8,7 @@ type = "post"
 draft = false
 +++
 
-LiveDataの値を更新したい時、`MutableLiveData`を使って更新するのが一般的だと思います。
+LiveDataの値を更新したい時、`MutableLiveData`を使うのが一般的だと思います。
 
 ```kotlin
 class MainViewModel {
@@ -15,7 +16,7 @@ class MainViewModel {
 }
 ```
 
-ただこれだと、外のクラスから値を更新することが出来ます。
+この書き方だと、外のクラスから値を更新することが可能です。
 
 ```kotlin
 val viewModel = MainViewModel()
@@ -24,7 +25,7 @@ val viewModel = MainViewModel()
 viewModel.postValue(10000)
 ```
 
-外からは更新出来ないようにするために`LiveData`に型変換したいケースがあります。
+外のクラスからは更新出来ないようにするためには`LiveData`に型変換する必要があります。
 
 例えば次のように書きます。
 
@@ -35,7 +36,7 @@ class MainViewModel {
 }
 ```
 
-こうすることで、外のクラスからは`MutableLiveData`が直接見えなくなり、型変換などをしない限り、`LiveData`の値を更新できなくなります。
+こうすることで、外のクラスからは`MutableLiveData`が直接見えなくなり、明示的に型変換をしない限り`LiveData`の値を更新できなくなります。
 
 ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
 なので、それの解決策を以下で紹介します。
@@ -97,8 +98,8 @@ fun main2() {
 `ViewModelLiveData2`と`ViewModel2`を作りました（名前は適当です）。
 
 `ViewModelLiveData2`クラスで`postValue`メソッドと`setValue`メソッドをオーバーライドし、
-`ViewModel2`クラスと同じパッケージに入れることで、`ViewModel2`からそれらのメソッドをコールすることが出来るようになります。
-`ViewModel2`からそれらのメソッドをコールすることで、`ViewModel2`を継承したクラスからのみ`LiveData`の値を更新することができます。
+`ViewModel2`クラスと同じパッケージに入れることで、`ViewModel2`からそれらのメソッドをコール出来るようになり、
+`ViewModel2`を継承したクラスからのみ`LiveData`の値を更新できます。
 
 `viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールするとコンパイルエラーになります。
 
@@ -146,9 +147,6 @@ class MainViewModel3 : ViewModel3() {
 
 fun main3() {
   val viewModel = MainViewModel3()
-  with(viewModel) {
-    viewModel.userName.postValue("10")
-  }
 
   // compile error
   // viewModel.userName.setValue("")
@@ -161,7 +159,7 @@ fun main3() {
 `ViewModelLiveData3`と`ViewModel3`を作りました（名前は適当です）。
 
 `ViewModelLiveData3`クラスと`ViewModel3`クラスを適当なサブモジュール内で定義します。
-そして、Kotlinのinternalを修飾子を使って定義することで外のモジュールからは直接値を更新することができなくなります。
+そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。
 
 `viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールしようとするとコンパイルエラーになります。
 
@@ -193,12 +191,11 @@ fun main() {
 }
 ```
 
-applyやwithを使って`ViewModel2`がreceiverになると、`setValue`メソッドがコール出来るようになります。
-よって、外から`setValue`にアクセス出来なくするためには`protected`で定義しなければいけないため、`abstract class`を使う必要があります。
+applyやwithを使って`ViewModel2`がreceiverになると、`setValue`メソッドがコール出来るため、外から値を更新することが出来てしまいます。
 
 ## まとめ
 
-- おそらくLiveDataの値を更新する部分は、`ViewModel`や`Store`クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います😃
-- もっと良い、楽できる書き方があればぜひ教えてください😊
+- おそらくLiveDataの値を更新する部分は、`ViewModel`や`Store`クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。
+- もっと良い、楽できる書き方があればぜひ教えてください!!
 
 今回の検証に用いた[サンプルコードはここにあります](https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample)😃
