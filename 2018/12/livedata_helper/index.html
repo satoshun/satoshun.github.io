@@ -86,7 +86,7 @@ class MainViewModel { …">
   <div class="post">
     <h1 class="post-title">MutableなLiveDataを特定のクラス外から更新できなくする</h1>
     
-    <span class="post-date">Updated at Sat, Dec 1, 2018</span>
+    <span class="post-date">Updated at Sun, Dec 2, 2018</span>
     
     
 
@@ -102,7 +102,7 @@ class MainViewModel { …">
 <pre><code class="language-kotlin">val viewModel = MainViewModel()
 
 // ok
-viewModel.postValue(10000)
+viewModel.hoge.postValue(10000)
 </code></pre>
 
 <p>外のクラスからは更新出来ないようにするためには<code>LiveData</code>に型変換する必要があります。</p>

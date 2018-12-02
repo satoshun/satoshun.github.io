@@ -30,7 +30,7 @@
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val viewModel = MainViewModel()
 
 // ok
-viewModel.postValue(10000)
+viewModel.hoge.postValue(10000)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;外のクラスからは更新出来ないようにするためには&lt;code&gt;LiveData&lt;/code&gt;に型変換する必要があります。&lt;/p&gt;

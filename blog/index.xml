@@ -20,7 +20,7 @@
       <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
       <description>LiveDataの値を更新したい時、MutableLiveDataを使うのが一般的だと思います。
 class MainViewModel { val hoge = MutableLiveData&amp;lt;Int&amp;gt;() }  この書き方だと、外のクラスから値を更新することが可能です。
-val viewModel = MainViewModel() // ok viewModel.postValue(10000)  外のクラスからは更新出来ないようにするためにはLiveDataに型変換する必要があります。
+val viewModel = MainViewModel() // ok viewModel.hoge.postValue(10000)  外のクラスからは更新出来ないようにするためにはLiveDataに型変換する必要があります。
 例えば次のように書きます。
 class MainViewModel { private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;() val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換 }  こうすることで、外のクラスからはMutableLiveDataが直接見えなくなり、明示的に型変換をしない限りLiveDataの値を更新できなくなります。
 ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。 なので、それの解決策を以下で紹介します。
