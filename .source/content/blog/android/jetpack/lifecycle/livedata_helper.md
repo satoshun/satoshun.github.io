@@ -1,6 +1,6 @@
 +++
 date = "2018-12-01"
-lastmod = "2018-12-01T15:00:00Z"
+lastmod = "2018-12-02T00:00:00Z"
 title = "MutableなLiveDataを特定のクラス外から更新できなくする"
 tags = ["android", "jetpack", "livedata"]
 blogimport = true
@@ -22,7 +22,7 @@ class MainViewModel {
 val viewModel = MainViewModel()
 
 // ok
-viewModel.postValue(10000)
+viewModel.hoge.postValue(10000)
 ```
 
 外のクラスからは更新出来ないようにするためには`LiveData`に型変換する必要があります。
