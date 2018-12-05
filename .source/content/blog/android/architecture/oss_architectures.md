@@ -35,6 +35,12 @@ actions
   .subscribe( state -> view.render(state) )
 ```
 
+## workflow
+
+[workflow](https://github.com/square/workflow)
+
+- ライブラリ依存: Coordinator
+
 ## mobius
 
 - プロダクションで使われている
