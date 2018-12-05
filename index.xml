@@ -205,13 +205,13 @@ fun main2() {
 
 &lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;と&lt;code&gt;ViewModel2&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;クラスで&lt;code&gt;postValue&lt;/code&gt;メソッドと&lt;code&gt;setValue&lt;/code&gt;メソッドをオーバーライドし、
-&lt;code&gt;ViewModel2&lt;/code&gt;クラスと同じパッケージに入れることで、&lt;code&gt;ViewModel2&lt;/code&gt;からそれらのメソッドをコール出来るようになり、
-&lt;code&gt;ViewModel2&lt;/code&gt;を継承したクラスからのみ&lt;code&gt;LiveData&lt;/code&gt;の値を更新できます。&lt;/p&gt;
+&lt;p&gt;ViewModelLiveData2クラスでpostValueメソッドとsetValueメソッドをオーバーライドし、
+ViewModel2クラスと同じパッケージに入れることで、ViewModel2からそれらのメソッドをコール出来るようになり、
+ViewModel2を継承したクラスからのみLiveDataの値を更新できます。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールするとコンパイルエラーになります。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外からsetValueメソッドをコールするとコンパイルエラーになります。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;protected&lt;/code&gt;メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。&lt;/p&gt;
+&lt;p&gt;protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。&lt;/p&gt;
 
 &lt;h2 id=&#34;その2&#34;&gt;その2&lt;/h2&gt;
 
@@ -222,7 +222,7 @@ fun main2() {
     internalPostValue(value)
   }
 
-  fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.setValue(value: T) {
+  protected fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.setValue(value: T) {
     internalSetValue(value)
   }
 }
@@ -263,10 +263,10 @@ fun main3() {
 
 &lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;と&lt;code&gt;ViewModel3&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;クラスと&lt;code&gt;ViewModel3&lt;/code&gt;クラスを適当なサブモジュール内で定義します。
+&lt;p&gt;ViewModelLiveData3クラスとViewModel3クラスを適当なサブモジュール内で定義します。
 そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外から&lt;code&gt;setValue&lt;/code&gt;メソッドをコールしようとするとコンパイルエラーになります。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。&lt;/p&gt;
 
 &lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
 
@@ -295,7 +295,7 @@ fun main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;applyやwithを使って&lt;code&gt;ViewModel2&lt;/code&gt;がreceiverになると、&lt;code&gt;setValue&lt;/code&gt;メソッドがコール出来るため、外から値を更新することが出来てしまいます。&lt;/p&gt;
+&lt;p&gt;applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 

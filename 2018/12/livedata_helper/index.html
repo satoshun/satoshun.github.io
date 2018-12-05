@@ -173,13 +173,13 @@ fun main2() {
 
 <p><code>ViewModelLiveData2</code>と<code>ViewModel2</code>を作りました（名前は適当です）。</p>
 
-<p><code>ViewModelLiveData2</code>クラスで<code>postValue</code>メソッドと<code>setValue</code>メソッドをオーバーライドし、
-<code>ViewModel2</code>クラスと同じパッケージに入れることで、<code>ViewModel2</code>からそれらのメソッドをコール出来るようになり、
-<code>ViewModel2</code>を継承したクラスからのみ<code>LiveData</code>の値を更新できます。</p>
+<p>ViewModelLiveData2クラスでpostValueメソッドとsetValueメソッドをオーバーライドし、
+ViewModel2クラスと同じパッケージに入れることで、ViewModel2からそれらのメソッドをコール出来るようになり、
+ViewModel2を継承したクラスからのみLiveDataの値を更新できます。</p>
 
-<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールするとコンパイルエラーになります。</p>
+<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外からsetValueメソッドをコールするとコンパイルエラーになります。</p>
 
-<p><code>protected</code>メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。</p>
+<p>protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。</p>
 
 <h2 id="その2">その2</h2>
 
@@ -190,7 +190,7 @@ fun main2() {
     internalPostValue(value)
   }
 
-  fun &lt;T&gt; ViewModelLiveData3&lt;T&gt;.setValue(value: T) {
+  protected fun &lt;T&gt; ViewModelLiveData3&lt;T&gt;.setValue(value: T) {
     internalSetValue(value)
   }
 }
@@ -231,10 +231,10 @@ fun main3() {
 
 <p><code>ViewModelLiveData3</code>と<code>ViewModel3</code>を作りました（名前は適当です）。</p>
 
-<p><code>ViewModelLiveData3</code>クラスと<code>ViewModel3</code>クラスを適当なサブモジュール内で定義します。
+<p>ViewModelLiveData3クラスとViewModel3クラスを適当なサブモジュール内で定義します。
 そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。</p>
 
-<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外から<code>setValue</code>メソッドをコールしようとするとコンパイルエラーになります。</p>
+<p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。</p>
 
 <h2 id="補足">補足</h2>
 
@@ -263,7 +263,7 @@ fun main() {
 }
 </code></pre>
 
-<p>applyやwithを使って<code>ViewModel2</code>がreceiverになると、<code>setValue</code>メソッドがコール出来るため、外から値を更新することが出来てしまいます。</p>
+<p>applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。</p>
 
 <h2 id="まとめ">まとめ</h2>
 
