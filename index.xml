@@ -7,7 +7,111 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 01 Dec 2018 00:00:00 UTC</updated>
+    <updated>Wed, 05 Dec 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin Coroutineを導入したらどれだけビルドタイムが増えそうか検証した</title>
+      <link>https://satoshun.github.io/2018/12/coroutine_build_perf/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/coroutine_build_perf/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 計測方法は実環境に全く即していないので意味がない可能性が高いです。&lt;/p&gt;
+
+&lt;h3 id=&#34;環境&#34;&gt;環境&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AGP3.4.0-alpha06&lt;/li&gt;
+&lt;li&gt;Kotlin 1.3.10&lt;/li&gt;
+&lt;li&gt;Kotlinx.coroutine 1.0.1&lt;/li&gt;
+&lt;li&gt;Gradle 5.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;比較対象&#34;&gt;比較対象&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;kotlinx.coroutineを使ったサンプル
+
+&lt;ul&gt;
+&lt;li&gt;クラス数 300&lt;/li&gt;
+&lt;li&gt;各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている&lt;/li&gt;
+&lt;li&gt;300 * 7の2100箇所がCoroutine関連のコードになります&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;kotlinx.coroutineを使わないサンプル
+
+&lt;ul&gt;
+&lt;li&gt;クラス数 300&lt;/li&gt;
+&lt;li&gt;各クラスは7つのメソッドを持ち、その中で適当なメソッド（&lt;code&gt;Handler().post {}&lt;/code&gt;）をコールしている&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/CoroutineBuildPerfExample&#34;&gt;サンプルコード&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;計測コマンド&#34;&gt;計測コマンド&lt;/h3&gt;
+
+&lt;p&gt;Build Scanを使って計測します。その際。build-cacheはoffにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-command&#34;&gt;./gradlew clean
+./gradlew build --no-build-cache --scan
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。
+また試行回数は10回程度で、最終結果のみを以下に掲載します。&lt;/p&gt;
+
+&lt;h2 id=&#34;kotlinx-coroutineを使う&#34;&gt;kotlinx.coroutineを使う&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;Time spent executing tasks 1m 16.034s
+    All tasks	207	2m 42.833s
+    Tasks avoided	12 (09.7%)	0.062s
+    From cache	0 (00.0%)	0.000s
+    Up-to-date	12 (09.7%)	0.062s
+    Tasks executed	112 (90.3%)	2m 42.739s
+    Cacheable	0 (00.0%)	0.000s
+    Not cacheable	112 (90.3%)	2m 42.739s
+    Lifecycle	45	0.023s
+    No source	38	0.009s
+    Skipped	0	0.000s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最終実行時間は&lt;code&gt;1m 16.034s&lt;/code&gt;になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;kotlinx-coroutineを使わない&#34;&gt;kotlinx.coroutineを使わない&lt;/h2&gt;
+
+&lt;p&gt;次に使わない例です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Time spent executing tasks 1m 1.520s
+    All tasks	207	1m 57.416s
+    Tasks avoided	12 (09.7%)	0.015s
+    From cache	0 (00.0%)	0.000s
+    Up-to-date	12 (09.7%)	0.015s
+    Tasks executed	112 (90.3%)	1m 57.356s
+    Cacheable	0 (00.0%)	0.000s
+    Not cacheable	112 (90.3%)	1m 57.356s
+    Lifecycle	45	0.021s
+    No source	38	0.024s
+    Skipped	0	0.000s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最終実行時間は&lt;code&gt;1m 1.520s&lt;/code&gt;になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上記のような結果になりました。しかし、繰り返しになりますが、この比較は実環境に即して無い、そもそもサンプルコードが同等でないため正当じゃないです
+
+&lt;ul&gt;
+&lt;li&gt;ただ、Coroutineを入れてある程度の規模まで行くと、フルビルド時のビルド時間の増加は顕著になるかもしれません&lt;/li&gt;
+&lt;li&gt;iMac Proを買ってもらいましょう💻s&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;もっとこういうふうに比較してほしいであったり、間違っている部分があればご指摘いただければ幸いです😃&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/CoroutineBuildPerfExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1455,68 +1559,6 @@ public final class MainActivityKt {
 &lt;li&gt;とはいえ、5.0(ART)からはruntimeからmultidexをサポートしているので、昔ほどメソッドカウントを意識する必要はないと思う&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: ContraintLayoutでネガティブマージンを実現する</title>
-      <link>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</link>
-      <pubDate>Wed, 25 Jul 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</guid>
-      <description>
-
-&lt;p&gt;ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
-この記事では&lt;a href=&#34;https://developer.android.com/reference/android/widget/Space&#34;&gt;Space&lt;/a&gt;を使ったネガティブマージンの実現について説明します。&lt;/p&gt;
-
-&lt;h2 id=&#34;例&#34;&gt;例&lt;/h2&gt;
-
-&lt;p&gt;ネガティブマージンと同等の大きさを持った&lt;code&gt;Space&lt;/code&gt;を定義して、そこにConstraintを設定するだけです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
-    xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
-    xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;
-    android:layout_width=&amp;quot;match_parent&amp;quot;
-    android:layout_height=&amp;quot;match_parent&amp;quot;
-    android:clipToPadding=&amp;quot;false&amp;quot;
-    android:padding=&amp;quot;80dp&amp;quot;&amp;gt;
-
-  &amp;lt;Space
-      android:id=&amp;quot;@+id/negative&amp;quot;
-      android:layout_width=&amp;quot;15dp&amp;quot;
-      android:layout_height=&amp;quot;15dp&amp;quot;
-      app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
-      app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
-
-  &amp;lt;ImageView
-      android:id=&amp;quot;@+id/icon&amp;quot;
-      android:layout_width=&amp;quot;30dp&amp;quot;
-      android:layout_height=&amp;quot;30dp&amp;quot;
-      android:contentDescription=&amp;quot;icon&amp;quot;
-      app:layout_constraintBottom_toBottomOf=&amp;quot;@id/negative&amp;quot;
-      app:layout_constraintEnd_toEndOf=&amp;quot;@id/negative&amp;quot;
-      tools:src=&amp;quot;@tools:sample/avatars&amp;quot; /&amp;gt;
-&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/LQrkHsAeTBvqlZWuw1Ccpm_dvrnCsdK7aH2rMB6HYakF_jv3q6Zf_-QBtfOo1eD0EjLBOjxy11nx2TAlZstr354XRiSXt7HUxENJXji8ZxWNxeJUTe8g9jIstSO1PRMsw7f8O5xuCakktrJLSUPLk01CI1N6OJ9MGMvsSbSDO6o4t7oeipkV9f7klqmzdxtoxESyDzoEI5SfeMOxynhmTGLwv6RnaASEOzVyL2xEW8eq63erAiu6ptdwl-_rQkxAnAIhYpSuPZjweCPBzf3GiMJi5gx_Ciz348GmoSaTIhuGM6grHd181fBGkZQkbvgg5ggrk5pLlja1N4eZA54n5rgzKs5gT36fA8K_ZFrAQI0H50cvAbesIeDVb05MZ2pP592Kwb8moTt6xp0TTFYrJf-c-MVljio-JvAKuUC0fPWPpdgMyxkJHW4AzK9l-Yo4f2-dUdfEf06J6ktMOsld0Yzsyu07Hki6MSGeBjU3bJ3R0vDi-W6SBUNmcDzJu5kC-2ItGmq4sN8fq06XJMSwVTmfDAyfHOluWHOTlL5LV3YVvYZxxgGJ6_ldqdD2HZ0ZW8wuNpfrHTxGLYCHR5EN5ouY5ILx-snrNAfQPQ9Z9Ph0U_4UeCMlODslXyRpueecgOSBJUhwc47xrQ04b-xOJz_01EWEA61x=w1452-h720-no&#34; alt=&#34;constraintlayout-image&#34; width=&#34;600px&#34;/&gt;&lt;/p&gt;
-
-&lt;p&gt;簡単に説明すると、&lt;code&gt;Space&lt;/code&gt;に15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。
-上記の例だと、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;android:layout_marginStart=&amp;quot;-15px&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;android:layout_marginTop=&amp;quot;-15px&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;と同等の振る舞いをしています。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;ConstraintLayoutではネイティブでネガティブマージンに対応していないため、&lt;code&gt;Space&lt;/code&gt;を使った、ややテクニカルな方法で実現するのが良いと思われます。&lt;/p&gt;
 </description>
     </item>
     
