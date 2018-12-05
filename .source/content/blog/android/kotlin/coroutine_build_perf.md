@@ -1,22 +1,23 @@
 +++
 date = "2018-12-05"
-title = "Kotlin Coroutineを導入したらどれだけビルドタイムが増えそうか適当に検証した"
+title = "Kotlin Coroutineを導入したらどれだけビルドタイムが増えそうか検証した"
 tags = ["android", "kotlin", "coroutine"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-*注意*
-- 計測方法は実環境に全く即していないので意味がない可能性が高いです。
+**注意**: 計測方法は実環境に全く即していないので意味がない可能性が高いです。
 
-環境
+### 環境
+
 - AGP3.4.0-alpha06
 - Kotlin 1.3.10
 - Kotlinx.coroutine 1.0.1
 - Gradle 5.0
 
-比較対象
+### 比較対象
+
 - kotlinx.coroutineを使ったサンプル
   - クラス数 300
   - 各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている
@@ -26,7 +27,7 @@ draft = true
   - 各クラスは7つのメソッドを持ち、その中で適当なメソッド（`Handler().post {}`）をコールしている
 - [サンプルコード](https://github.com/satoshun-android-example/CoroutineBuildPerfExample)
 
-計測コマンド
+### 計測コマンド
 
 Build Scanを使って計測します。その際。build-cacheはoffにします。
 
@@ -35,7 +36,7 @@ Build Scanを使って計測します。その際。build-cacheはoffにしま�
 ./gradlew build --no-build-cache --scan
 ```
 
-クラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。
+両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。
 また試行回数は10回程度で、最終結果のみを以下に掲載します。
 
 ## kotlinx.coroutineを使う
@@ -78,10 +79,9 @@ Time spent executing tasks 1m 1.520s
 
 ## まとめ
 
-- 上記のような結果になりました。しかし、繰り返しになりますが、この比較は実環境に即して無い、そもそも比較コードが同等でないため正当じゃないです
+- 上記のような結果になりました。しかし、繰り返しになりますが、この比較は実環境に即して無い、そもそもサンプルコードが同等でないため正当じゃないです
   - ただ、Coroutineを入れてある程度の規模まで行くと、フルビルド時のビルド時間の増加は顕著になるかもしれません
-    - iMac Proを買ってもらいましょう
-- （僕はCoroutineは積極的に使っていこうと思っている勢です）
+  - iMac Proを買ってもらいましょう💻s
 
 もっとこういうふうに比較してほしいであったり、間違っている部分があればご指摘いただければ幸いです😃
 
