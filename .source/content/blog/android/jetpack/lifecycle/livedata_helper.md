@@ -97,13 +97,13 @@ fun main2() {
 
 `ViewModelLiveData2`と`ViewModel2`を作りました（名前は適当です）。
 
-`ViewModelLiveData2`クラスで`postValue`メソッドと`setValue`メソッドをオーバーライドし、
-`ViewModel2`クラスと同じパッケージに入れることで、`ViewModel2`からそれらのメソッドをコール出来るようになり、
-`ViewModel2`を継承したクラスからのみ`LiveData`の値を更新できます。
+ViewModelLiveData2クラスでpostValueメソッドとsetValueメソッドをオーバーライドし、
+ViewModel2クラスと同じパッケージに入れることで、ViewModel2からそれらのメソッドをコール出来るようになり、
+ViewModel2を継承したクラスからのみLiveDataの値を更新できます。
 
-`viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールするとコンパイルエラーになります。
+`viewModel.userName.setValue("")`とクラス外からsetValueメソッドをコールするとコンパイルエラーになります。
 
-`protected`メソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。
+protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。
 
 ## その2
 
@@ -115,7 +115,7 @@ abstract class ViewModel3 {
     internalPostValue(value)
   }
 
-  fun <T> ViewModelLiveData3<T>.setValue(value: T) {
+  protected fun <T> ViewModelLiveData3<T>.setValue(value: T) {
     internalSetValue(value)
   }
 }
@@ -158,10 +158,10 @@ fun main3() {
 
 `ViewModelLiveData3`と`ViewModel3`を作りました（名前は適当です）。
 
-`ViewModelLiveData3`クラスと`ViewModel3`クラスを適当なサブモジュール内で定義します。
+ViewModelLiveData3クラスとViewModel3クラスを適当なサブモジュール内で定義します。
 そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。
 
-`viewModel.userName.setValue("")`とクラス外から`setValue`メソッドをコールしようとするとコンパイルエラーになります。
+`viewModel.userName.setValue("")`とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。
 
 ## 補足
 
@@ -191,7 +191,7 @@ fun main() {
 }
 ```
 
-applyやwithを使って`ViewModel2`がreceiverになると、`setValue`メソッドがコール出来るため、外から値を更新することが出来てしまいます。
+applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。
 
 ## まとめ
 
