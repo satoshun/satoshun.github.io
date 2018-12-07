@@ -1,6 +1,6 @@
 +++
 date = "2018-12-07T00:00:00Z"
-title = "DataBindingのエラーログが3.4.0-alpha07から見やすくなる"
+title = "Data Bindingのエラーログが3.4.0-alpha07から見やすくなる"
 tags = ["android", "jetpack", "databinding"]
 blogimport = true
 type = "post"
@@ -39,7 +39,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 ...
 ```
 
-DataBinding周りのエラーログが無限に出ます。悲しい😂
+Data Binding周りのエラーログが無限に出ます。悲しい😂
 
 次に3.4.0-alpha07です。
 
@@ -49,7 +49,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 @error.NonExistentClass()
 ```
 
-ちゃんと問題があるコード箇所のみでエラーログが出ました！！DataBinding周りのエラーは出ていません！！嬉しい😃
+ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃
 
 ## クライアント側の対応
 
@@ -98,7 +98,7 @@ kapt "androidx.databinding:databinding-compiler:3.4.0-alpha07"
 ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
 ```
 
-AGPとDataBindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。
+AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。
 
 ## まとめ
 
