@@ -13,7 +13,7 @@
     
     
     <item>
-      <title>DataBindingのエラーログが3.4.0-alpha07から見やすくなる</title>
+      <title>Data Bindingのエラーログが3.4.0-alpha07から見やすくなる</title>
       <link>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</link>
       <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
       
@@ -25,9 +25,9 @@
 サンプルコードはここにあります😃
 エラーログの変化 まずどのようなエラーログが出力されるかを見ていきます。 適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。
 まずはData Binding 3.2.1から。
-&amp;gt; Task :app:kaptGenerateStubsDebugKotlin e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root, ^ symbol: class DataBindingComponent location: class MainAct79Binding e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:31: error: cannot find symbol boolean attachToRoot, @Nullable DataBindingComponent component) { ^ ... ... ...  DataBinding周りのエラーログが無限に出ます。悲しい😂
+&amp;gt; Task :app:kaptGenerateStubsDebugKotlin e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root, ^ symbol: class DataBindingComponent location: class MainAct79Binding e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:31: error: cannot find symbol boolean attachToRoot, @Nullable DataBindingComponent component) { ^ ... ... ...  Data Binding周りのエラーログが無限に出ます。悲しい😂
 次に3.4.0-alpha07です。
-&amp;gt; Task :app:kaptGenerateStubsDebugKotlin e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation @error.NonExistentClass()  ちゃんと問題があるコード箇所のみでエラーログが出ました！！DataBinding周りのエラーは出ていません！！嬉しい😃</description>
+&amp;gt; Task :app:kaptGenerateStubsDebugKotlin e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation @error.NonExistentClass()  ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃</description>
     </item>
     
     <item>

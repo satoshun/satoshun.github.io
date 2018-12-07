@@ -11,7 +11,7 @@
     
     
     <item>
-      <title>DataBindingのエラーログが3.4.0-alpha07から見やすくなる</title>
+      <title>Data Bindingのエラーログが3.4.0-alpha07から見やすくなる</title>
       <link>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</link>
       <pubDate>Fri, 07 Dec 2018 00:00:00 UTC</pubDate>
       <author>Sato Shun</author>
@@ -49,7 +49,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;DataBinding周りのエラーログが無限に出ます。悲しい😂&lt;/p&gt;
+&lt;p&gt;Data Binding周りのエラーログが無限に出ます。悲しい😂&lt;/p&gt;
 
 &lt;p&gt;次に3.4.0-alpha07です。&lt;/p&gt;
 
@@ -58,7 +58,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 @error.NonExistentClass()
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;ちゃんと問題があるコード箇所のみでエラーログが出ました！！DataBinding周りのエラーは出ていません！！嬉しい😃&lt;/p&gt;
+&lt;p&gt;ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃&lt;/p&gt;
 
 &lt;h2 id=&#34;クライアント側の対応&#34;&gt;クライアント側の対応&lt;/h2&gt;
 
@@ -104,7 +104,7 @@ Data Bindingのバージョンだけをアップデートしようと思った�
 &lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;AGPとDataBindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。&lt;/p&gt;
+&lt;p&gt;AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
