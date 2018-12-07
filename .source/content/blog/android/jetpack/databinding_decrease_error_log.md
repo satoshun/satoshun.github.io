@@ -1,24 +1,30 @@
 +++
-date = "2018-12-05T00:00:00Z"
+date = "2018-12-07T00:00:00Z"
 title = "DataBindingのエラーログが3.4.0-alpha07から見やすくなる"
 tags = ["android", "jetpack", "databinding"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-Data Binding + Dagger2などのアノテーション系のライブラリを使うとエラーログが膨大になる問題があります。
+Data BindingとDagger2などのアノテーションプロセッサー系のライブラリを組わせて使うとエラーログが膨大になる問題があります。
+
 それが`3.4.0-alpha07`以降で改善される見込みです🎉
 
 詳細はここにあります。https://issuetracker.google.com/issues/116541301
 
+この記事ではサンプルコードをベースに、エラーログの変化がどのように変わったかを紹介し、実際にアプリ側のコードをどのように変更するかについて説明します。
+
+[サンプルコードはここ](https://github.com/satoshun-android-example/DataBindingApiDeprecateExample)にあります😃
+
 ## エラーログの変化
 
-どのようにエラーログが変更されるか、適当にDagger周りのコードでエラーを出して確認してみます。
+まずどのようなエラーログが出力されるかを見ていきます。
+適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。
 
-まずは3.2.1から。
+まずはData Binding 3.2.1から。
 
-```
+```txt
 > Task :app:kaptGenerateStubsDebugKotlin
 e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol
   protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,
@@ -29,9 +35,11 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
       boolean attachToRoot, @Nullable DataBindingComponent component) {
                                       ^
 ...
+...
+...
 ```
 
-DataBinding周りのエラーログが無限に出ます。かなしい😂
+DataBinding周りのエラーログが無限に出ます。悲しい😂
 
 次に3.4.0-alpha07です。
 
@@ -41,7 +49,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 @error.NonExistentClass()
 ```
 
-ちゃんと問題があるコード箇所でエラーログが出ました!!DataBinding周りのエラーは出ていません!!嬉しい😃
+ちゃんと問題があるコード箇所のみでエラーログが出ました！！DataBinding周りのエラーは出ていません！！嬉しい😃
 
 ## クライアント側の対応
 
@@ -75,7 +83,7 @@ public abstract class MainActBinding extends ViewDataBinding {
 }
 ```
 
-使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、消えたわけではないのですぐに置き換える必要はありません。
+使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。
 
 ## 補足
 
@@ -95,5 +103,6 @@ AGPとDataBindingのバージョンは紐付いているため、片方だけを
 ## まとめ
 
 - AGPのアップデートをすればData Bindingのツラミの1つであったエラーログから解放される（かも）
+- [サンプルコードはここ](https://github.com/satoshun-android-example/DataBindingApiDeprecateExample)にあります😃
 
 Happy Data Binding Life🎉🎉🎉
