@@ -7,7 +7,86 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 07 Dec 2018 00:00:00 UTC</updated>
+    <updated>Sat, 08 Dec 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Gradle: Dagger2でapiとimplementationどちらを使うか議論されている</title>
+      <link>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</link>
+      <pubDate>Sat, 08 Dec 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt; この記事はapiとimplementationの説明をする類の記事ではありません。&lt;/p&gt;
+
+&lt;p&gt;Gradleで&lt;code&gt;compile&lt;/code&gt;がDeprecatedになり、implementationまたはapiを使うことが推奨されています。
+それに合わせて多くのライブラリのREADMEのcompileがimplementationまたはapiに置き換わりました。&lt;/p&gt;
+
+&lt;p&gt;Dagger2でもcompileをimplementationに置き換えるPRが出されました。&lt;a href=&#34;https://github.com/google/dagger/pull/1130&#34;&gt;https://github.com/google/dagger/pull/1130&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;内容が興味深かったのでまとめてみようと思います。&lt;/p&gt;
+
+&lt;p&gt;まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Add Dagger dependencies
+dependencies {
+  - compile &#39;com.google.dagger:dagger:2.x&#39;
+  + implementation &#39;com.google.dagger:dagger:2.x&#39;
+  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
+}
+
+- compile &#39;com.google.dagger:dagger-android:2.x&#39;
+- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
++ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
++ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでjakeさんが&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;とコメントしました。「Daggerコンパイラの依存はすべてのモジュールで明示的に書くだろうから、多分implementationで問題ないけど、議論の余地はある。」と。&lt;/p&gt;
+
+&lt;p&gt;この議論を生んだ要因として、Daggerライブラリの性質があります。
+Daggerをライブラリで使ったときに、そのライブラリ内ではComponentやModuleを使うため、当然DaggerのAPIを使うことになります。
+しかし、クライアント側ではComponentとModuleなどのDaggerのAPIを使う必要は必ずしもありません。ただ、DaggerではLazy、ProviderなどのAPIも定義されており、これらのAPIはクライアント側で使うことが予想されます。
+なので、結局このライブラリを依存に持つようなモジュールはLazy、Providerを使うことになるので、最終的にDaggerに依存することが確定しているなら、implementationではなく、apiで指定したほうが良いのではという話です。ただし、プロジェクトのモジュール構成によってはimplementationのほうがふさわしい場合もあるので、その場合はimplementationに置き換えることが期待されています。&lt;/p&gt;
+
+&lt;p&gt;最終的なこの議論の着地として、implementationを使うかapiを使うかはプロジェクトに強く依存するのでどちらが正しいかはない。そのため、今回置き換えたいcompileはapiとほぼ同等の意味を持つので、置き換えるならapiのほうがふさわしいんじゃないか、今までと同じ動作をするので安全じゃないかという感じでまとまりました。&lt;/p&gt;
+
+&lt;p&gt;現状の差分は以下です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;-  compile &#39;com.google.dagger:dagger:2.x&#39;
++  api &#39;com.google.dagger:dagger:2.x&#39;
+  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
+}
+
++ For more information on api vs implementation please see https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration?utm_source=android-studio#new_configurations
+
+- compile &#39;com.google.dagger:dagger-android:2.x&#39;
+- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
++ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
++ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;dagger-androidがimplementationのままなのは、こちらにはLazyやProviderなどのクライアントライブラリが使うであろうAPIが含まれていないためだと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;READMEを更新するのにかなり熱い議論をしているのがすごい印象的でした
+
+&lt;ul&gt;
+&lt;li&gt;手を抜かないって大事なんだなって&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;より詳しい議論は、&lt;a href=&#34;https://github.com/google/dagger/pull/1130&#34;&gt;ISSUE&lt;/a&gt;を見て下さい😃&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1518,83 +1597,6 @@ main=129927ms, async=125824ms
     AndroidSchedulers.from(Looper.getMainLooper(), true)
 }
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: Dagger 2.17のfastInitを試してみた</title>
-      <link>https://satoshun.github.io/2018/08/android-dagger__fastinit_mode/</link>
-      <pubDate>Wed, 08 Aug 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/08/android-dagger__fastinit_mode/</guid>
-      <description>
-
-&lt;p&gt;Dagge 2.17でfastInitオプションが追加されました。
-&lt;a href=&#34;https://google.github.io/dagger/compiler-options&#34;&gt;https://google.github.io/dagger/compiler-options&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;これは、startup timeを改善するための機能です。どれくらい差があるかを担当アプリで実際に調べてみました。&lt;/p&gt;
-
-&lt;p&gt;確認に使用した端末はAndroid8系のGalaxyと、Android7系のXperiaの計2台になります。&lt;/p&gt;
-
-&lt;h2 id=&#34;確認に使用したシェルスクリプト&#34;&gt;確認に使用したシェルスクリプト&lt;/h2&gt;
-
-&lt;p&gt;adb shellコマンドから起動時間を調べるコマンドです。計11回startup timeを確認する事ができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;for i in {0..10}
-do
-    adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt
-    sleep 10
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;下記を参考にしました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://developer.android.com/topic/performance/vitals/launch-time&#34;&gt;https://developer.android.com/topic/performance/vitals/launch-time&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;fastinit有効の場合&#34;&gt;fastInit有効の場合&lt;/h2&gt;
-
-&lt;p&gt;下記をbuild.gradleに追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;kapt {
-    javacOptions {
-        option(&amp;quot;-Adagger.fastInit=enabled&amp;quot;)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;結果:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;平均: 1609ms
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;fastinit無効の場合&#34;&gt;fastInit無効の場合&lt;/h2&gt;
-
-&lt;p&gt;結果:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;平均: 1607ms
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;ほぼ変わらない数字が出てきてしまいました。悲しい。
-Dagger生成コードを見る限りだと、最初のComponentのcreateのタイミングでComponentが持っているフィールドの初期化が行われていなかったので、早くなりそうだなと思ったんですが、実際にはほぼ変わりませんでした。&lt;/p&gt;
-
-&lt;p&gt;芳しくない結果になった推測として&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;担当アプリのDaggerの書き方が正しくないからこの結果になった?
-
-&lt;ul&gt;
-&lt;li&gt;要調査、しかし一般的なAndroid-Daggerを使った書き方をしているので正しいはず&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;確認に使用したコマンドが良くないのかも?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;なにか分かったら追記します、もしくは間違っている点があればご指摘いただければ幸いです😊&lt;/p&gt;
 </description>
     </item>
     

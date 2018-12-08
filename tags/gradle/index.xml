@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gradle on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/gradle/</link>
+    <description>Recent content in Gradle on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sat, 08 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Gradle: Dagger2でapiとimplementationどちらを使うか議論されている</title>
+      <link>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</link>
+      <pubDate>Sat, 08 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</guid>
+      <description>注意 この記事はapiとimplementationの説明をする類の記事ではありません。
+GradleでcompileがDeprecatedになり、implementationまたはapiを使うことが推奨されています。 それに合わせて多くのライブラリのREADMEのcompileがimplementationまたはapiに置き換わりました。
+Dagger2でもcompileをimplementationに置き換えるPRが出されました。https://github.com/google/dagger/pull/1130
+内容が興味深かったのでまとめてみようと思います。
+まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。
+// Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries  ここでjakeさんが
+ I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.</description>
+    </item>
+    
+  </channel>
+</rss>
