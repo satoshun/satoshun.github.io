@@ -7,7 +7,99 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sat, 08 Dec 2018 00:00:00 UTC</updated>
+    <updated>Sun, 09 Dec 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Android: namespacedRClassフラグでRクラスを小さく保つ</title>
+      <link>https://satoshun.github.io/2018/12/namespacedrclass/</link>
+      <pubDate>Sun, 09 Dec 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/namespacedrclass/</guid>
+      <description>
+
+&lt;p&gt;正確な時期は知らないのですが、AGP3.3のどこかのタイミングで&lt;code&gt;namespacedRClass&lt;/code&gt;フラグが使えるようになったのでその紹介です。
+本記事では&lt;code&gt;3.4.0-alpha07&lt;/code&gt;で試しました。&lt;/p&gt;
+
+&lt;p&gt;Rクラスは依存関係にあるRクラスがどんどんマージされていくので、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。&lt;/p&gt;
+
+&lt;p&gt;それを解決するために&lt;code&gt;namespacedRClass&lt;/code&gt;が導入されました。使い方は簡単で、次の記述を&lt;code&gt;gradle.properties&lt;/code&gt;に追加するだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;android.namespacedRClass=true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例えば、appcompatなどに依存しているライブラリモジュールのRファイルが次のようになります。&lt;/p&gt;
+
+&lt;p&gt;まずは、&lt;code&gt;namespacedRClass=false&lt;/code&gt;の時。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
+    private R() {}
+
+    public static final class anim {
+        private anim() {}
+
+        public static final int abc_fade_in = 0x7f010000;
+        public static final int abc_fade_out = 0x7f010001;
+        public static final int abc_grow_fade_in_from_bottom = 0x7f010002;
+        public static final int abc_popup_enter = 0x7f010003;
+    ...
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このモジュールでは定義してない、依存関係にあるappcompatなどのRクラスの内容が含まれていることが分かります。&lt;/p&gt;
+
+&lt;p&gt;次に、&lt;code&gt;namespacedRClass=true&lt;/code&gt;の時です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
+    private R() {}
+
+    public static final class color {
+        private color() {}
+
+        public static final int red3 = 0x7f04004b;
+    }
+    public static final class id {
+        private id() {}
+
+        public static final int title = 0x7f0700b1;
+    }
+    public static final class layout {
+        private layout() {}
+
+        public static final int base3 = 0x7f09001d;
+    }
+    public static final class string {
+        private string() {}
+
+        public static final int base_string3 = 0x7f0b002a;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;trueのときは、そのモジュールで定義したリソースへの参照しか含まれていなことが分かります。appcompatのRクラスの内容は含まれていません。
+ライブラリモジュールのRクラスのサイズがかなり小さくなりました!!&lt;/p&gt;
+
+&lt;p&gt;このフラグをtrueにし、ライブラリモジュールからappcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import androidx.appcompat.R as AppCompatR
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今までだとライブラリモジュールのRからすべてのリソースにアクセスできたのですが、それができなくなります。
+今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;マルチモジュール時代に適した機能だと思う
+
+&lt;ul&gt;
+&lt;li&gt;ライブラリサブモジュールのRクラスのサイズ大きくなる問題を解決できる&lt;/li&gt;
+&lt;li&gt;デバッグ時のapkサイズをやや小さく出来る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1514,89 +1606,6 @@ interface AppComponent {
 &lt;/ol&gt;
 
 &lt;p&gt;サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/SimpleDaggerExample&#34;&gt;https://github.com/satoshun-android-example/SimpleDaggerExample&lt;/a&gt; にあります。よかったら見てください😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>RxAndroidのasyncパラメータを試してみた</title>
-      <link>https://satoshun.github.io/2018/08/rx-android-async-parameter/</link>
-      <pubDate>Tue, 21 Aug 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/08/rx-android-async-parameter/</guid>
-      <description>
-
-&lt;p&gt;RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これは&lt;code&gt;Message#setAsynchronous&lt;/code&gt;を使うことで、UIのパフォーマンス向上を狙った機能です。
-下のリンクに詳細な内容が書かれています。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://medium.com/@sweers/rxandroids-new-async-api-4ab5b3ad3e93&#34;&gt;RxAndroid’s New Async API&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;この記事では、asyncがfalseの場合とtrueの場合でどれくらいの差が出るかを検証してみました。&lt;/p&gt;
-
-&lt;p&gt;検証に使用したサンプルプロジェクトは以下になります。
-&lt;a href=&#34;https://github.com/satoshun-android-example/RxAndroidExample&#34;&gt;https://github.com/satoshun-android-example/RxAndroidExample&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;サンプルプロジェクトをかいつまんで説明します。&lt;/p&gt;
-
-&lt;p&gt;まず2つのスケジューラを作成し、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false)
-private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// asyncがfalseの場合
-Observable
-    .fromCallable { System.currentTimeMillis() }
-    .delay(index, TimeUnit.MILLISECONDS)
-    .observeOn(mainScheduler)
-    .subscribe(...)
-
-// asyncがtrueの場合
-Observable
-    .fromCallable { System.currentTimeMillis() }
-    .delay(index, TimeUnit.MILLISECONDS)
-    .observeOn(asyncMainScheduler)
-    .subscribe(...)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;フルコードは以下になります。
-&lt;a href=&#34;https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt&#34;&gt;https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;結果は、以下のようになりました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;// API27 エミュレータ
-main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和
-main=130857ms, async=126582ms
-main=131401ms, async=126909ms
-main=130763ms, async=126504ms
-main=132758ms, async=127972ms
-
-// API21 エミュレータ
-main=129869ms, async=125795ms
-main=130050ms, async=125888ms
-main=129935ms, async=125853ms
-main=129908ms, async=125838ms
-main=129927ms, async=125824ms
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。&lt;/p&gt;
-
-&lt;p&gt;ただ注意点として、この機能は副作用がある可能性があります(なのでデフォルトではasyncはfasle)。ただ、Uberで1年間、プロダクションで運用したところ、特に大きな問題は起きなかったらしいので  &lt;a href=&#34;https://github.com/ReactiveX/RxAndroid/pull/416&#34;&gt;https://github.com/ReactiveX/RxAndroid/pull/416&lt;/a&gt; 、ほぼ安全と考えて良さそうです。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう&lt;/li&gt;
-&lt;li&gt;導入は以下のコードを追加するだけなので、とても簡単&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;RxAndroidPlugins.setInitMainThreadSchedulerHandler {
-    AndroidSchedulers.from(Looper.getMainLooper(), true)
-}
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
