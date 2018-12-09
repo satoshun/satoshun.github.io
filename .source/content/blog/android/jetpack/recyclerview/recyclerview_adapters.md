@@ -18,7 +18,13 @@ draft = true
 
 ## Epoxy
 
-Epoxyは
+|||
+|-----|-----|
+| Data Binding | ⭕ |
+| Kotlin Android Extensions | ⭕ |
+| Paging | ⭕ |
+| DiffUtil | ⭕ |
 
-- lithoをサポートしている
-- pagingをサポートしている
+- changed payloadを自動的にやってくれる。
+- EpoxyModelにview情報を定義し、それに追従する形でViewがdisplayされる
+    - Modelがベース

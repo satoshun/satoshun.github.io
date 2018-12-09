@@ -1,27 +1,26 @@
 +++
-date = "2018-12-10T00:00:00Z"
-title = "Android: namespacedRClassフラグでRファイルをほげほげ"
+date = "2018-12-09T00:00:00Z"
+title = "Android: namespacedRClassフラグでRクラスを小さく保つ"
 tags = ["android", "agp"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 正確な時期は知らないのですが、AGP3.3のどこかのタイミングで`namespacedRClass`フラグが使えるようになったのでその紹介です。
 本記事では`3.4.0-alpha07`で試しました。
 
-Rファイルの1つの課題として、依存関係にあるRファイルがどんどんマージされていくため、ライブラリモジュールのRファイルがfatになる問題があります。
--> 本当にそれ問題だった?
+Rクラスは依存関係にあるRクラスがどんどんマージされていくので、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。
 
-それを解決するために`namespacedRClass`が導入されました。使い方は簡単で次の記述を`gradle.properties`に追加するだけです。
+それを解決するために`namespacedRClass`が導入されました。使い方は簡単で、次の記述を`gradle.properties`に追加するだけです。
 
 ```txt
 android.namespacedRClass=true
 ```
 
-例えばappcompatに依存しているライブラリモジュールのRファイルが次のようになります。
+例えば、appcompatなどに依存しているライブラリモジュールのRファイルが次のようになります。
 
-`namespacedRClass=false`のとき
+まずは、`namespacedRClass=false`の時。
 
 ```java
 public final class R {
@@ -38,10 +37,11 @@ public final class R {
     ...
 ```
 
-`namespacedRClass=true`のとき
+このモジュールでは定義してない、依存関係にあるappcompatなどのRクラスの内容が含まれていることが分かります。
+
+次に、`namespacedRClass=true`の時です。
 
 ```java
-// base3ライブラリモジュールのRファイル
 public final class R {
     private R() {}
 
@@ -68,9 +68,20 @@ public final class R {
 }
 ```
 
-falseのときは依存関係にあるRファイルの内容が含まれていることが分かります。
-trueのときは、そのモジュールで定義したリソースの参照しか含まれていません。
+trueのときは、そのモジュールで定義したリソースへの参照しか含まれていなことが分かります。appcompatのRクラスの内容は含まれていません。
+ライブラリモジュールのRクラスのサイズがかなり小さくなりました!!
+
+このフラグをtrueにし、ライブラリモジュールからappcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。
+
+```kotlin
+import androidx.appcompat.R as AppCompatR
+```
+
+今までだとライブラリモジュールのRからすべてのリソースにアクセスできたのですが、それができなくなります。
+今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）
 
 ## まとめ
 
-- todo
+- マルチモジュール時代に適した機能だと思う
+    - ライブラリサブモジュールのRクラスのサイズ大きくなる問題を解決できる
+    - デバッグ時のapkサイズをやや小さく出来る
