@@ -1,7 +1,7 @@
 +++
 date = "2018-12-11"
 title = "Kotlin: Resultの簡単なまとめ"
-tags = ["kotlin", "stdlib"]
+tags = ["kotlin", "ktstdlib"]
 blogimport = true
 type = "post"
 draft = false

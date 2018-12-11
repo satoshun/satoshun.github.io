@@ -7,7 +7,91 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 09 Dec 2018 00:00:00 UTC</updated>
+    <updated>Tue, 11 Dec 2018 00:00:00 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: Resultの簡単なまとめ</title>
+      <link>https://satoshun.github.io/2018/12/result/</link>
+      <pubDate>Tue, 11 Dec 2018 00:00:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/result/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md&#34;&gt;Result KEEP&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Result&lt;/code&gt;が1.3からstdlibに入ったので紹介をしたいと思います。&lt;/p&gt;
+
+&lt;p&gt;Resultは&lt;code&gt;Success T | Failure Throwable&lt;/code&gt;の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
+
+&lt;p&gt;使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val i: Result&amp;lt;Int&amp;gt; = Result.success(10)
+val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、&lt;code&gt;runCatching&lt;/code&gt;関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a = runCatching { doSomeThing() }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Resultに対する操作は以下のようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// successに対して操作
+val i = Result.success(10)
+i.getOrNull() // 10
+i.isSuccess // true
+i.exceptionOrNull() // null
+i.map { 10 * 10 }.getOrNull() // 100
+i.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) }
+i.recover { 1111 }.getOrNull() // 10
+
+// failureに対して操作
+val t = Result.failure(IOException())
+t.getOrNull() // null
+t.isFailure // true
+t.exceptionOrNull() // IOException
+t.map { 10 * 10 }.getOrNull() // null
+t.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) }
+t.recover { 1111 }.getOrNull() // 1111
+t.getOrThrow() // throw IOException
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;また、Resultを使うことで、functionalっぽく書くことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;try {
+    val data = doSomethingSync()
+    processData(data)
+} catch(e: Throwable) {
+    showErrorDialog(e)
+}
+
+--&amp;gt;
+
+runCatching { doSomethingSync() }
+    .onFailure { showErrorDialog(it) }
+    .onSuccess { processData(it) }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;h3 id=&#34;resultは戻り値として返せない&#34;&gt;Resultは戻り値として返せない&lt;/h3&gt;
+
+&lt;p&gt;これは、Resultのユースケースから外さないための制約です。なぜなら、Resultはその関数内で処理すべき例外であり、関数の呼び出し側で処理させるべきではないためです。
+例えば、ある関数の返り値が&lt;code&gt;Result&amp;lt;User&amp;gt;&lt;/code&gt;となっていたときに、失敗する可能性は呼び出し側に伝わりますが、どのような失敗が起こるか分かりません。どのようにエラーを処理するかはこの関数内で完結すべきなので、返り値としてResultを指定することは出来ません。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;簡単にまとめました。より詳細な内容は&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md&#34;&gt;Result KEEP&lt;/a&gt;を見てください😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1496,116 +1580,6 @@ data class Response(
 &lt;ul&gt;
 &lt;li&gt;Inline classesを使えば、カスタムのAdapterを作成することなくserialize/deserializeできるので非常に便利です☺&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Daggerでprivate valで依存関係を取得したかった</title>
-      <link>https://satoshun.github.io/2018/09/android-dagger-simple-example/</link>
-      <pubDate>Fri, 07 Sep 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/09/android-dagger-simple-example/</guid>
-      <description>
-
-&lt;p&gt;みなさんこんにちは&lt;/p&gt;
-
-&lt;p&gt;今回はDaggerの話をします。Dagger + Kotlinの1つ気になる点として&lt;code&gt;@Inject lateinit var&lt;/code&gt; になってしまうところがあると思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity {
-    @Inject lateinit var hoge: Hoge
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これをなんとか出来ないかなと思って考えてみました。&lt;/p&gt;
-
-&lt;p&gt;結論から言うと最終形はこのようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity {
-    private val hoge: Hoge by inject()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。&lt;/p&gt;
-
-&lt;p&gt;今回は&lt;code&gt;IntoMap&lt;/code&gt;を使って実装することにしました。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;IntoMap&lt;/code&gt;とはその名の通りMapにバインドするためのアノテーションです。
-詳しくは&lt;a href=&#34;https://google.github.io/dagger/multibindings.html&#34;&gt;ドキュメント&lt;/a&gt;を見てください。&lt;/p&gt;
-
-&lt;p&gt;サンプルコードで説明していきます。&lt;/p&gt;
-
-&lt;p&gt;まずはIntoMapを使い、MapへのバインドをModuleに定義していきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Module
-interface HogeModule {
-    @Binds @IntoMap @ClassKey(Hoge1::class) fun bindHoge1(hoge: Hoge1): Any
-    @Binds @IntoMap @ClassKey(Hoge2::class) fun bindHoge2(hoge: Hoge2): Any
-}
-
-class Hoge1 @Inject constructor()
-class Hoge2 @Inject constructor()
-
-@MustBeDocumented
-@Retention(AnnotationRetention.RUNTIME)
-@MapKey
-annotation class ClassKey(val value: KClass&amp;lt;out Any&amp;gt;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;作ったModuleをComponentに組み込みます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Component(modules = [HogeModule::class])
-interface AppComponent {
-    val values: Map&amp;lt;Class&amp;lt;out Any&amp;gt;, @JvmSuppressWildcards Provider&amp;lt;Any&amp;gt;&amp;gt;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そして、ApplicationでAppComponentを生成します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class App : Application() {
-    val values: Map&amp;lt;Class&amp;lt;out Any&amp;gt;, @JvmSuppressWildcards Provider&amp;lt;Any&amp;gt;&amp;gt; by lazy {
-    DaggerAppComponent.builder().build().values
-    }
-
-    inline fun &amp;lt;reified T&amp;gt; get(): T = values[T::class.java]!!.get() as T
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そして、Activity用に拡張関数を定義して、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;inline fun &amp;lt;reified T&amp;gt; Activity.inject() = lazy { get&amp;lt;T&amp;gt;() }
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;完成です!&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class HogeActivity : AppCompatActivity {
-    private val hoge: Hoge by inject()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;このアプローチの問題点は、というか問題点しかないんですけど、&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;ランタイムで落ちる可能性がある
-
-&lt;ul&gt;
-&lt;li&gt;Daggerの良さであるアノテーション時のチェックが消え去る&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ScopeとかSubcomponentとかの対応方法が良く分かんない
-
-&lt;ul&gt;
-&lt;li&gt;まあこれは考えていないだけなので、もしかしたらいい方法があるかもしれない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;いわゆるService Locatorパターンになってしまい微妙&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/SimpleDaggerExample&#34;&gt;https://github.com/satoshun-android-example/SimpleDaggerExample&lt;/a&gt; にあります。よかったら見てください😃&lt;/p&gt;
 </description>
     </item>
     

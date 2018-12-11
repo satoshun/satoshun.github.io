@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 09 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: Resultの簡単なまとめ</title>
+      <link>https://satoshun.github.io/2018/12/result/</link>
+      <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/result/</guid>
+      <description>Result KEEP
+Resultが1.3からstdlibに入ったので紹介をしたいと思います。
+ResultはSuccess T | Failure Throwableの2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。
+基本的な使い方 使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。
+val i: Result&amp;lt;Int&amp;gt; = Result.success(10) val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException())  また、runCatching関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。
+val a = runCatching { doSomeThing() }  Resultに対する操作は以下のようにします。
+// successに対して操作 val i = Result.success(10) i.getOrNull() // 10 i.isSuccess // true i.exceptionOrNull() // null i.map { 10 * 10 }.getOrNull() // 100 i.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) } i.recover { 1111 }.getOrNull() // 10 // failureに対して操作 val t = Result.</description>
+    </item>
     
     <item>
       <title>Android: namespacedRClassフラグでRクラスを小さく保つ</title>
