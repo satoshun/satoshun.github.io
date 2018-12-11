@@ -1,17 +1,17 @@
 +++
-date = "2018-12-01"
+date = "2018-12-11"
 title = "Kotlin: Resultの簡単なまとめ"
 tags = ["kotlin", "stdlib"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 [Result KEEP](https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md)
 
 `Result`が1.3からstdlibに入ったので紹介をしたいと思います。
 
-Resultは`Success T | Failure Throwable`の2状態のいずれかを表現出来ます。成功状態のときはSuccess Tを、失敗状態のときはFailure Throwableを内包します。
+Resultは`Success T | Failure Throwable`の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。
 
 ## 基本的な使い方
 
@@ -22,7 +22,7 @@ val i: Result<Int> = Result.success(10)
 val t: Result<Int> = Result.failure(IOException())
 ```
 
-また、`runCatching`関数を使うことで、failする可能性があるメソッドをResult型にまとめることも出来ます。
+また、`runCatching`関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。
 
 ```kotlin
 val a = runCatching { doSomeThing() }
@@ -33,25 +33,25 @@ Resultに対する操作は以下のようにします。
 ```kotlin
 // successに対して操作
 val i = Result.success(10)
-println(i.getOrNull()) // 10
-println(i.isSuccess)// true
-println(i.exceptionOrNull())// null
-println(i.map { 10 * 10 }.getOrNull()) // 100
+i.getOrNull() // 10
+i.isSuccess // true
+i.exceptionOrNull() // null
+i.map { 10 * 10 }.getOrNull() // 100
 i.onSuccess { println("success") }.onFailure { println("failure") }
-println(i.recover { 1111 }.getOrNull()) // 10
+i.recover { 1111 }.getOrNull() // 10
 
 // failureに対して操作
 val t = Result.failure(IOException())
-println(t.getOrNull()) // null
-println(t.isFailure) // true
-println(t.exceptionOrNull()) // IOException
-println(t.map { 10 * 10 }.getOrNull()) // null
+t.getOrNull() // null
+t.isFailure // true
+t.exceptionOrNull() // IOException
+t.map { 10 * 10 }.getOrNull() // null
 t.onSuccess { println("success") }.onFailure { println("failure") }
-println(t.recover { 1111 }.getOrNull()) // 1111
-println(t.getOrThrow()) // throw IOException
+t.recover { 1111 }.getOrNull() // 1111
+t.getOrThrow() // throw IOException
 ```
 
-値に対しての操作と、failureに対しての操作をすることが出来ます。
+値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。
 
 また、Resultを使うことで、functionalっぽく書くことが出来ます。
 
