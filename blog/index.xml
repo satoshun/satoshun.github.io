@@ -58,14 +58,13 @@ val a = runCatching { doSomeThing() }  Resultに対する操作は以下のよ�
       <pubDate>Sun, 09 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/12/namespacedrclass/</guid>
-      <description>正確な時期は知らないのですが、AGP3.3のどこかのタイミングでnamespacedRClassフラグが使えるようになったのでその紹介です。 本記事では3.4.0-alpha07で試しました。
-Rクラスは依存関係にあるRクラスがどんどんマージされていくので、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。
-それを解決するためにnamespacedRClassが導入されました。使い方は簡単で、次の記述をgradle.propertiesに追加するだけです。
-android.namespacedRClass=true  例えば、appcompatなどに依存しているライブラリモジュールのRファイルが次のようになります。
-まずは、namespacedRClass=falseの時。
-public final class R { private R() {} public static final class anim { private anim() {} public static final int abc_fade_in = 0x7f010000; public static final int abc_fade_out = 0x7f010001; public static final int abc_grow_fade_in_from_bottom = 0x7f010002; public static final int abc_popup_enter = 0x7f010003; ... ...  このモジュールでは定義してない、依存関係にあるappcompatなどのRクラスの内容が含まれていることが分かります。
-次に、namespacedRClass=trueの時です。
-public final class R { private R() {} public static final class color { private color() {} public static final int red3 = 0x7f04004b; } public static final class id { private id() {} public static final int title = 0x7f0700b1; } public static final class layout { private layout() {} public static final int base3 = 0x7f09001d; } public static final class string { private string() {} public static final int base_string3 = 0x7f0b002a; } }  trueのときは、そのモジュールで定義したリソースへの参照しか含まれていなことが分かります。appcompatのRクラスの内容は含まれていません。 ライブラリモジュールのRクラスのサイズがかなり小さくなりました!</description>
+      <description>Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングでnamespacedRClassフラグが新しく追加されたので紹介します。 本記事では3.4.0-alpha07で試しました。
+まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。 それを解決するためにnamespacedRClassが追加されました。使い方は簡単で、次の記述をgradle.propertiesに追加するだけです。
+android.namespacedRClass=true  では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。 例として、appcompatに依存しているライブラリモジュールを用意します。
+まずは、namespacedRClass=falseの時のRクラスです。
+public final class R { private R() {} public static final class anim { private anim() {} public static final int abc_fade_in = 0x7f010000; public static final int abc_fade_out = 0x7f010001; public static final int abc_grow_fade_in_from_bottom = 0x7f010002; public static final int abc_popup_enter = 0x7f010003; ... ...  依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。
+では次に、namespacedRClass=trueの時です。
+public final class R { private R() {} public static final class color { private color() {} public static final int red3 = 0x7f04004b; } public static final class id { private id() {} public static final int title = 0x7f0700b1; } public static final class layout { private layout() {} public static final int base3 = 0x7f09001d; } public static final class string { private string() {} public static final int base_string3 = 0x7f0b002a; } }  このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。 ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!</description>
     </item>
     
     <item>

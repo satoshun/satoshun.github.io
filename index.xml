@@ -216,19 +216,19 @@ runCatching { doSomethingSync() }
       <guid>https://satoshun.github.io/2018/12/namespacedrclass/</guid>
       <description>
 
-&lt;p&gt;正確な時期は知らないのですが、AGP3.3のどこかのタイミングで&lt;code&gt;namespacedRClass&lt;/code&gt;フラグが使えるようになったのでその紹介です。
+&lt;p&gt;Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで&lt;code&gt;namespacedRClass&lt;/code&gt;フラグが新しく追加されたので紹介します。
 本記事では&lt;code&gt;3.4.0-alpha07&lt;/code&gt;で試しました。&lt;/p&gt;
 
-&lt;p&gt;Rクラスは依存関係にあるRクラスがどんどんマージされていくので、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。&lt;/p&gt;
-
-&lt;p&gt;それを解決するために&lt;code&gt;namespacedRClass&lt;/code&gt;が導入されました。使い方は簡単で、次の記述を&lt;code&gt;gradle.properties&lt;/code&gt;に追加するだけです。&lt;/p&gt;
+&lt;p&gt;まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
+それを解決するために&lt;code&gt;namespacedRClass&lt;/code&gt;が追加されました。使い方は簡単で、次の記述を&lt;code&gt;gradle.properties&lt;/code&gt;に追加するだけです。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;android.namespacedRClass=true
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;例えば、appcompatなどに依存しているライブラリモジュールのRファイルが次のようになります。&lt;/p&gt;
+&lt;p&gt;では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
+例として、appcompatに依存しているライブラリモジュールを用意します。&lt;/p&gt;
 
-&lt;p&gt;まずは、&lt;code&gt;namespacedRClass=false&lt;/code&gt;の時。&lt;/p&gt;
+&lt;p&gt;まずは、&lt;code&gt;namespacedRClass=false&lt;/code&gt;の時のRクラスです。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
     private R() {}
@@ -244,9 +244,9 @@ runCatching { doSomethingSync() }
     ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;このモジュールでは定義してない、依存関係にあるappcompatなどのRクラスの内容が含まれていることが分かります。&lt;/p&gt;
+&lt;p&gt;依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。&lt;/p&gt;
 
-&lt;p&gt;次に、&lt;code&gt;namespacedRClass=true&lt;/code&gt;の時です。&lt;/p&gt;
+&lt;p&gt;では次に、&lt;code&gt;namespacedRClass=true&lt;/code&gt;の時です。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
     private R() {}
@@ -274,16 +274,19 @@ runCatching { doSomethingSync() }
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;trueのときは、そのモジュールで定義したリソースへの参照しか含まれていなことが分かります。appcompatのRクラスの内容は含まれていません。
-ライブラリモジュールのRクラスのサイズがかなり小さくなりました!!&lt;/p&gt;
+&lt;p&gt;このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。
+ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!!&lt;/p&gt;
 
-&lt;p&gt;このフラグをtrueにし、ライブラリモジュールからappcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。&lt;/p&gt;
+&lt;p&gt;今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）&lt;/p&gt;
+
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
+
+&lt;p&gt;ただし、注意点として、依存関係にあるライブラリのRクラスのマージが行われないため、appcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import androidx.appcompat.R as AppCompatR
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;今までだとライブラリモジュールのRからすべてのリソースにアクセスできたのですが、それができなくなります。
-今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）&lt;/p&gt;
+&lt;p&gt;今までだとライブラリモジュールのRクラスからすべてのリソースにアクセスできたのですが、それができなくなります。なので、このオプションをtrueしたときは、ライブラリモジュールでRクラスのimportパスを変更する必要があります。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
