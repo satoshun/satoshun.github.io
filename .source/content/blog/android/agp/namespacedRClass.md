@@ -1,5 +1,6 @@
 +++
 date = "2018-12-09T00:00:00Z"
+lastmod = "Wed Dec 12 13:56:04 UTC 2018"
 title = "Android: namespacedRClassフラグでRクラスを小さく保つ"
 tags = ["android", "agp"]
 blogimport = true
@@ -7,20 +8,20 @@ type = "post"
 draft = false
 +++
 
-正確な時期は知らないのですが、AGP3.3のどこかのタイミングで`namespacedRClass`フラグが使えるようになったのでその紹介です。
+Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで`namespacedRClass`フラグが新しく追加されたので紹介します。
 本記事では`3.4.0-alpha07`で試しました。
 
-Rクラスは依存関係にあるRクラスがどんどんマージされていくので、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。
-
-それを解決するために`namespacedRClass`が導入されました。使い方は簡単で、次の記述を`gradle.properties`に追加するだけです。
+まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
+それを解決するために`namespacedRClass`が追加されました。使い方は簡単で、次の記述を`gradle.properties`に追加するだけです。
 
 ```txt
 android.namespacedRClass=true
 ```
 
-例えば、appcompatなどに依存しているライブラリモジュールのRファイルが次のようになります。
+では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
+例として、appcompatに依存しているライブラリモジュールを用意します。
 
-まずは、`namespacedRClass=false`の時。
+まずは、`namespacedRClass=false`の時のRクラスです。
 
 ```java
 public final class R {
@@ -37,9 +38,9 @@ public final class R {
     ...
 ```
 
-このモジュールでは定義してない、依存関係にあるappcompatなどのRクラスの内容が含まれていることが分かります。
+依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。
 
-次に、`namespacedRClass=true`の時です。
+では次に、`namespacedRClass=true`の時です。
 
 ```java
 public final class R {
@@ -68,17 +69,20 @@ public final class R {
 }
 ```
 
-trueのときは、そのモジュールで定義したリソースへの参照しか含まれていなことが分かります。appcompatのRクラスの内容は含まれていません。
-ライブラリモジュールのRクラスのサイズがかなり小さくなりました!!
+このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。
+ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!!
 
-このフラグをtrueにし、ライブラリモジュールからappcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。
+今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）
+
+## 注意点
+
+ただし、注意点として、依存関係にあるライブラリのRクラスのマージが行われないため、appcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。
 
 ```kotlin
 import androidx.appcompat.R as AppCompatR
 ```
 
-今までだとライブラリモジュールのRからすべてのリソースにアクセスできたのですが、それができなくなります。
-今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）
+今までだとライブラリモジュールのRクラスからすべてのリソースにアクセスできたのですが、それができなくなります。なので、このオプションをtrueしたときは、ライブラリモジュールでRクラスのimportパスを変更する必要があります。
 
 ## まとめ
 
