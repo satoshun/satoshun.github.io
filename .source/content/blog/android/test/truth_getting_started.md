@@ -1,18 +1,18 @@
 +++
-date = "2018-12-17"
-title = "Truthほげほげ"
+date = "Wed Dec 12 00:21:12 UTC 2018"
+title = "Truthのメリット、特徴について"
 tags = ["android", "test", "truth"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 [Truth](http://google.github.io/truth/)はGoogleが開発をしているテストアサーションライブラリです。
 
-従来のアサーションに比べ、大きく2つの利点があります。
+従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。
 
 - readableにアサーションが書ける
-- 失敗メッセージがわかりやすい
+- デフォルトの失敗メッセージがわかりやすい
 
 それぞれについて説明していきます。
 
@@ -28,7 +28,7 @@ Optional<String> middleName = user.getMiddleName();
 assertFalse(middleName.isPresent());
 ```
 
-assertFalse、isPresentを使っており、否定のアサーションなので少し悩みます。（個人差はあります）
+assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）
 
 これがTruthを使うと次のようになります。
 
@@ -37,11 +37,10 @@ Optional<String> middleName = user.getMiddleName();
 assertThat(middleName).isAbsent();
 ```
 
-`middleName`がabsent、値が存在しないことをテストしたいんだなということが、より強く伝わります。
+assertThatはTruthに定義されているメソッドです。`middleName`がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。
 
-上記の`isAbsent`はOptionalのために用意されたアサーションです。
-当然、Optional以外にも、assertThatに渡した引数に適したアサーションを使うことが出来ます。
-例えばIterableなら、`containsAnyIn`や`isEmpty`などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。
+上記の`isAbsent`はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。
+例えばIterableには、`containsAnyIn`や`isEmpty`などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。
 
 ## 失敗メッセージがわかりやすい
 
@@ -53,8 +52,8 @@ assertThat(middleName).isAbsent();
 assertTrue(googleColors.contains(PINK));
 ```
 
-この場合、失敗メッセージは特にありません。「falseを表明してる部分にtrueが来た」程度のものしかなく、原因特定するのが大変です。
-失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに定義するのは骨が折れます。
+この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。
+失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。
 
 次にTruthスタイルです。
 
@@ -71,7 +70,7 @@ assertThat(googleColors).contains(PINK);
 ### Truth-Androidライブラリ
 
 JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。
-例えば、Intentの場合は以下のアサーションメソッドが定義されています。
+例えば、Intentには以下のアサーションメソッドを使うことが出来ます。
 
 ```
 hasComponent
@@ -87,12 +86,11 @@ categories
 hasFlags
 ```
 
-Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待されます。
+Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。
 
 ### AssertJとの比較
 
-これも公式ドキュメントにまとめてあります。
-http://google.github.io/truth/comparison
+これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison
 
 現状の主だった差分は次のようになっています。
 
