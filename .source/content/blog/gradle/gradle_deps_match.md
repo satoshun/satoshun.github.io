@@ -10,11 +10,11 @@ draft = false
 `JitPack`からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照してください。[A Confusing Dependency](https://blog.autsoft.hu/a-confusing-dependency/)
 
-従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に`Matching repositories to dependencies`が導入され、上記の問題を解決できます。
+従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に`Matching repositories to dependencies`が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）
 
 今回の検証にはGradle 5.1-rc-1を使いました。[サンプルコードはここにあります](https://github.com/satoshun-android-example/GradleDependencyMatchingExample)
 
-使い方は簡単です最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、`cloudflare`のSDKを依存関係に入れることを目指します。
+まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、`cloudflare`のSDKを依存関係に入れることを目指します。
 
 まずは従来の書き方です。
 
