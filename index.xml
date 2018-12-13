@@ -21,11 +21,11 @@
 &lt;p&gt;&lt;code&gt;JitPack&lt;/code&gt;からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照してください。&lt;a href=&#34;https://blog.autsoft.hu/a-confusing-dependency/&#34;&gt;A Confusing Dependency&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に&lt;code&gt;Matching repositories to dependencies&lt;/code&gt;が導入され、上記の問題を解決できます。&lt;/p&gt;
+&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に&lt;code&gt;Matching repositories to dependencies&lt;/code&gt;が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）&lt;/p&gt;
 
 &lt;p&gt;今回の検証にはGradle 5.1-rc-1を使いました。&lt;a href=&#34;https://github.com/satoshun-android-example/GradleDependencyMatchingExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;使い方は簡単です最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。&lt;/p&gt;
+&lt;p&gt;まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。&lt;/p&gt;
 
 &lt;p&gt;まずは従来の書き方です。&lt;/p&gt;
 

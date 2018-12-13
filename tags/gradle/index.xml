@@ -19,9 +19,9 @@
       
       <guid>https://satoshun.github.io/2018/12/gradle_deps_match/</guid>
       <description>JitPackからライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。 詳しくは次のリンクを参照してください。A Confusing Dependency
-従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1にMatching repositories to dependenciesが導入され、上記の問題を解決できます。
+従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1にMatching repositories to dependenciesが導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）
 今回の検証にはGradle 5.1-rc-1を使いました。サンプルコードはここにあります
-使い方は簡単です最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、cloudflareのSDKを依存関係に入れることを目指します。
+まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、cloudflareのSDKを依存関係に入れることを目指します。
 まずは従来の書き方です。
 // topのbuild.gradle allprojects { repositories { ... maven { url &amp;quot;https://storage.googleapis.com/cloudflare-maven/public/&amp;quot; } } } --- // projectのbuild.gradle dependencies { ... implementation &amp;quot;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;quot; }  これだと全てのライブラリに対して https://storage.googleapis.com/cloudflare-maven/public/のチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対しては制限をかけたいところです。
 次に新機能を使った書き方です。
