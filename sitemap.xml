@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/12/gradle_deps_match/</loc>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/truth_getting_started/</loc>
     <lastmod>2018-12-12T00:21:12+00:00</lastmod>
   </url>
@@ -327,7 +332,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-12-12T00:21:12+00:00</lastmod>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -351,7 +356,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-12-12T00:21:12+00:00</lastmod>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -422,6 +427,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/dependency/</loc>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/design_pattern/</loc>
     <lastmod>2015-06-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -459,7 +470,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2018-12-08T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -637,7 +648,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-12T00:21:12+00:00</lastmod>
+    <lastmod>2018-12-13T11:16:06+00:00</lastmod>
     <priority>0</priority>
   </url>
   

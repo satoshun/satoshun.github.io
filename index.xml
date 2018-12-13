@@ -7,7 +7,103 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Wed, 12 Dec 2018 00:21:12 UTC</updated>
+    <updated>Thu, 13 Dec 2018 11:16:06 UTC</updated>
+    
+    
+    <item>
+      <title>GradleのMatching repositories to dependenciesを使ってリポジトリにフィルターをかける</title>
+      <link>https://satoshun.github.io/2018/12/gradle_deps_match/</link>
+      <pubDate>Thu, 13 Dec 2018 11:16:06 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/gradle_deps_match/</guid>
+      <description>
+
+&lt;p&gt;&lt;code&gt;JitPack&lt;/code&gt;からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
+詳しくは次のリンクを参照してください。&lt;a href=&#34;https://blog.autsoft.hu/a-confusing-dependency/&#34;&gt;A Confusing Dependency&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に&lt;code&gt;Matching repositories to dependencies&lt;/code&gt;が導入され、上記の問題を解決できます。&lt;/p&gt;
+
+&lt;p&gt;今回の検証にはGradle 5.1-rc-1を使いました。&lt;a href=&#34;https://github.com/satoshun-android-example/GradleDependencyMatchingExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;使い方は簡単です最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。&lt;/p&gt;
+
+&lt;p&gt;まずは従来の書き方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;// topのbuild.gradle
+allprojects {
+    repositories {
+        ...
+
+        maven {
+            url &amp;quot;https://storage.googleapis.com/cloudflare-maven/public/&amp;quot;
+        }
+    }
+}
+
+---
+
+// projectのbuild.gradle
+dependencies {
+    ...
+
+    implementation &amp;quot;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これだと全てのライブラリに対して &lt;code&gt;https://storage.googleapis.com/cloudflare-maven/public/&lt;/code&gt;のチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対しては制限をかけたいところです。&lt;/p&gt;
+
+&lt;p&gt;次に新機能を使った書き方です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;// topのbuild.gradle
+allprojects {
+    repositories {
+        ...
+
+        maven {
+            url &amp;quot;https://storage.googleapis.com/cloudflare-maven/public/&amp;quot;
+            content {
+                // group idがcom.cloudflareのライブラリだけこのURLが有効になる
+                includeGroup &amp;quot;com.cloudflare&amp;quot;
+            }
+        }
+    }
+}
+
+---
+
+// projectのbuild.gradleは一緒
+dependencies {
+    ...
+
+    implementation &amp;quot;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新しくcontentブロックが追加されました。ここでgroup idを指定することが出来ます。今回のURLは&lt;code&gt;com.cloudflare:cloudflare-mobile-sdk&lt;/code&gt;でのみ有効になって欲しいので、&lt;code&gt;includeGroup &amp;quot;com.cloudflare&amp;quot;&lt;/code&gt;と指定することで達成できます。これでcloudflareのライブラリに対して制限をかけられます!!&lt;/p&gt;
+
+&lt;p&gt;また今回の事件の場合、jcenterに悪意のあるライブラリがアップロードされたのが問題なので、jcenterからダウンロードしたいライブラリのgroup idを&lt;code&gt;includeGroup&lt;/code&gt;に追記してあげれば良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;repositories {
+    ...
+    jcenter().mavenContent {
+        includeGroup &amp;quot;org.jetbrains.kotlin&amp;quot;
+        includeGroup &amp;quot;org.jetbrains.kotlinx&amp;quot;
+        includeGroup &amp;quot;com.google.dagger&amp;quot;
+        includeGroup &amp;quot;org.jetbrains&amp;quot;
+        includeGroup &amp;quot;javax.inject&amp;quot;
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、jcenterからダウンロードするライブラリに制限をかけられます😃&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;AndroidだとGradle5系を使えるのがAndroid Gradle Plugin3.4からになると思うので、まだ先は長い😂&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1544,73 +1640,6 @@ class User {
 
 &lt;ul&gt;
 &lt;li&gt;Kotlinの拡張関数、reified便利😊&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>UnitテストでViewModelのonClearedをテストする</title>
-      <link>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</link>
-      <pubDate>Sun, 14 Oct 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</guid>
-      <description>
-
-&lt;p&gt;ふとAACの&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModel&#34;&gt;ViewModel&lt;/a&gt;のonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。&lt;/p&gt;
-
-&lt;p&gt;環境は&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;quot;junit:junit:4.12&amp;quot;
-&amp;quot;androidx.test:rules:1.1.0-beta02&amp;quot;
-&amp;quot;androidx.test:runner:1.1.0-beta02&amp;quot;
-&amp;quot;androidx.test.ext:junit:1.0.0-beta02&amp;quot;
-&amp;quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;quot;
-&amp;quot;org.robolectric:robolectric:4.0-beta-1&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;になります。&lt;/p&gt;
-
-&lt;p&gt;また、サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt&#34;&gt;GitHub&lt;/a&gt;にあるので、参考してください😊&lt;/p&gt;
-
-&lt;h3 id=&#34;1-viewmodelstore-を使う&#34;&gt;1. &lt;code&gt;ViewModelStore&lt;/code&gt;を使う&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;ViewModelProviders.of(activity).get(class)&lt;/code&gt;からViewModelを取得したときに、取得したViewModelは&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModelStore&#34;&gt;ViewModelStore&lt;/a&gt;にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(AndroidJUnit4::class)
-class BaseViewModelTest {
-  @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java)
-
-  @Test
-  fun `dispose a coroutine when finished lifecycle of ViewModel`() {
-    activityRule.activity.viewModelStore.clear() // ViewModelが開放される
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このテストはコード的には簡単ですが、ViewModelStoreがViewModelのライフサイクルを管理しているということを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。&lt;/p&gt;
-
-&lt;p&gt;なので、素直にonDestroyをコールするテストも書いてみます。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-instrumentation-callactivityondestroy-を使う&#34;&gt;2. &lt;code&gt;Instrumentation.callActivityOnDestroy&lt;/code&gt;を使う&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;Instrumentation&lt;/code&gt;クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
-&lt;code&gt;Instrumentation&lt;/code&gt;は&lt;code&gt;InstrumentationRegistry&lt;/code&gt;クラスから取得することができ、次のように書くことで、&lt;code&gt;onDestroy&lt;/code&gt;をコールすることができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Test
-fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
-  // onDestroyがコールされViewModelが開放される
-  InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、Unitテストで&lt;code&gt;ViewModel.onCleared&lt;/code&gt;のテストをすることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;以上です。Happy Testing☆彡&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt&#34;&gt;サンプルコード&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
