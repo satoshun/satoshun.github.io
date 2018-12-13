@@ -11,7 +11,7 @@
     
     
     <item>
-      <title>GradleのMatching repositories to dependenciesを使ってリポジトリにフィルターをかける</title>
+      <title>GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する</title>
       <link>https://satoshun.github.io/2018/12/gradle_deps_match/</link>
       <pubDate>Thu, 13 Dec 2018 11:16:06 UTC</pubDate>
       <author>Sato Shun</author>

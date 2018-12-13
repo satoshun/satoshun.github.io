@@ -1,6 +1,6 @@
 +++
 date = "Thu Dec 13 11:16:06 UTC 2018"
-title = "GradleのMatching repositories to dependenciesを使ってリポジトリにフィルターをかける"
+title = "GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する"
 tags = ["gradle", "android", "dependency"]
 blogimport = true
 type = "post"
