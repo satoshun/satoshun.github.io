@@ -26,7 +26,7 @@
   
   <meta property="twitter:description" content="
 
-JitPackからライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
+JitPackからライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照 …">
   
 
@@ -85,18 +85,17 @@ JitPackからライブラリをインストールしたかったところ、jcen
   <div class="post">
     <h1 class="post-title">GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する</h1>
     
-    <span class="post-date">Created at Thu, Dec 13, 2018</span>
+    <span class="post-date">Updated at Fri, Dec 14, 2018</span>
     
     
 
-<p><code>JitPack</code>からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
+<p><code>JitPack</code>からライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照してください。<a href="https://blog.autsoft.hu/a-confusing-dependency/">A Confusing Dependency</a></p>
 
-<p>従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に<code>Matching repositories to dependencies</code>が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）</p>
+<p>従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に <a href="https://docs.gradle.org/5.1-rc-1/userguide/declaring_repositories.html#sec::matching_repositories_to_dependencies">Matching repositories to dependencies</a> が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）</p>
 
-<p>今回の検証にはGradle 5.1-rc-1を使いました。<a href="https://github.com/satoshun-android-example/GradleDependencyMatchingExample">サンプルコードはここにあります</a></p>
-
-<p>まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、<code>cloudflare</code>のSDKを依存関係に入れることを目指します。</p>
+<p>まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、<code>cloudflare</code>のSDKを依存関係に入れることを目指します。
+また、今回の検証にはGradle 5.1-rc-1を使いました。<a href="https://github.com/satoshun-android-example/GradleDependencyMatchingExample">サンプルコードはここにあります</a></p>
 
 <p>まずは従来の書き方です。</p>
 
@@ -121,7 +120,7 @@ dependencies {
 }
 </code></pre>
 
-<p>これだと全てのライブラリに対して <code>https://storage.googleapis.com/cloudflare-maven/public/</code>のチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対しては制限をかけたいところです。</p>
+<p>これだと全てのライブラリに対して、repositoriesで指定した<code>https://storage.googleapis.com/cloudflare-maven/public/</code>へチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対してはダウンロード制限をかけたいところです。</p>
 
 <p>次に新機能を使った書き方です。</p>
 
@@ -150,9 +149,9 @@ dependencies {
 }
 </code></pre>
 
-<p>新しくcontentブロックが追加されました。ここでgroup idを指定することが出来ます。今回のURLは<code>com.cloudflare:cloudflare-mobile-sdk</code>でのみ有効になって欲しいので、<code>includeGroup &quot;com.cloudflare&quot;</code>と指定することで達成できます。これでcloudflareのライブラリに対して制限をかけられます!!</p>
+<p>新しくcontentブロックが追加されました。ここで、このURLがどのライブラリで有効になって欲しいかを記述することが出来ます。今回のURLは<code>com.cloudflare:cloudflare-mobile-sdk</code>でのみ有効になって欲しいので、<code>includeGroup &quot;com.cloudflare&quot;</code>とgroup id指定することで達成できます。これでcloudflareのライブラリに対してダウンロード制限をかけられます!!</p>
 
-<p>また今回の事件の場合、jcenterに悪意のあるライブラリがアップロードされたのが問題なので、jcenterからダウンロードしたいライブラリのgroup idを<code>includeGroup</code>に追記してあげれば良いです。</p>
+<p>また今回の事件の場合、JCenterに悪意のあるライブラリがアップロードされたのが問題なので、JCenterからダウンロードしたいライブラリのgroup idを<code>includeGroup</code>で指定してあげれば良いです。</p>
 
 <pre><code class="language-groovy">repositories {
     ...
@@ -167,7 +166,7 @@ dependencies {
 }
 </code></pre>
 
-<p>これで、jcenterからダウンロードするライブラリに制限をかけられます😃</p>
+<p>これで、JCenterからダウンロードするライブラリに制限をかけられます😃</p>
 
 <h2 id="補足">補足</h2>
 

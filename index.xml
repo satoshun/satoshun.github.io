@@ -18,14 +18,13 @@
       <guid>https://satoshun.github.io/2018/12/gradle_deps_match/</guid>
       <description>
 
-&lt;p&gt;&lt;code&gt;JitPack&lt;/code&gt;からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
+&lt;p&gt;&lt;code&gt;JitPack&lt;/code&gt;からライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照してください。&lt;a href=&#34;https://blog.autsoft.hu/a-confusing-dependency/&#34;&gt;A Confusing Dependency&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に&lt;code&gt;Matching repositories to dependencies&lt;/code&gt;が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）&lt;/p&gt;
+&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に &lt;a href=&#34;https://docs.gradle.org/5.1-rc-1/userguide/declaring_repositories.html#sec::matching_repositories_to_dependencies&#34;&gt;Matching repositories to dependencies&lt;/a&gt; が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）&lt;/p&gt;
 
-&lt;p&gt;今回の検証にはGradle 5.1-rc-1を使いました。&lt;a href=&#34;https://github.com/satoshun-android-example/GradleDependencyMatchingExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。&lt;/p&gt;
+&lt;p&gt;まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。
+また、今回の検証にはGradle 5.1-rc-1を使いました。&lt;a href=&#34;https://github.com/satoshun-android-example/GradleDependencyMatchingExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;まずは従来の書き方です。&lt;/p&gt;
 
@@ -50,7 +49,7 @@ dependencies {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;これだと全てのライブラリに対して &lt;code&gt;https://storage.googleapis.com/cloudflare-maven/public/&lt;/code&gt;のチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対しては制限をかけたいところです。&lt;/p&gt;
+&lt;p&gt;これだと全てのライブラリに対して、repositoriesで指定した&lt;code&gt;https://storage.googleapis.com/cloudflare-maven/public/&lt;/code&gt;へチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対してはダウンロード制限をかけたいところです。&lt;/p&gt;
 
 &lt;p&gt;次に新機能を使った書き方です。&lt;/p&gt;
 
@@ -79,9 +78,9 @@ dependencies {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;新しくcontentブロックが追加されました。ここでgroup idを指定することが出来ます。今回のURLは&lt;code&gt;com.cloudflare:cloudflare-mobile-sdk&lt;/code&gt;でのみ有効になって欲しいので、&lt;code&gt;includeGroup &amp;quot;com.cloudflare&amp;quot;&lt;/code&gt;と指定することで達成できます。これでcloudflareのライブラリに対して制限をかけられます!!&lt;/p&gt;
+&lt;p&gt;新しくcontentブロックが追加されました。ここで、このURLがどのライブラリで有効になって欲しいかを記述することが出来ます。今回のURLは&lt;code&gt;com.cloudflare:cloudflare-mobile-sdk&lt;/code&gt;でのみ有効になって欲しいので、&lt;code&gt;includeGroup &amp;quot;com.cloudflare&amp;quot;&lt;/code&gt;とgroup id指定することで達成できます。これでcloudflareのライブラリに対してダウンロード制限をかけられます!!&lt;/p&gt;
 
-&lt;p&gt;また今回の事件の場合、jcenterに悪意のあるライブラリがアップロードされたのが問題なので、jcenterからダウンロードしたいライブラリのgroup idを&lt;code&gt;includeGroup&lt;/code&gt;に追記してあげれば良いです。&lt;/p&gt;
+&lt;p&gt;また今回の事件の場合、JCenterに悪意のあるライブラリがアップロードされたのが問題なので、JCenterからダウンロードしたいライブラリのgroup idを&lt;code&gt;includeGroup&lt;/code&gt;で指定してあげれば良いです。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;repositories {
     ...
@@ -96,7 +95,7 @@ dependencies {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;これで、jcenterからダウンロードするライブラリに制限をかけられます😃&lt;/p&gt;
+&lt;p&gt;これで、JCenterからダウンロードするライブラリに制限をかけられます😃&lt;/p&gt;
 
 &lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
 
