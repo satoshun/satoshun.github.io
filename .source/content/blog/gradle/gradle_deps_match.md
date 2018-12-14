@@ -1,5 +1,6 @@
 +++
 date = "Thu Dec 13 11:16:06 UTC 2018"
+lastmod = "Fri Dec 14 14:56:44 UTC 2018"
 title = "GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する"
 tags = ["gradle", "android", "dependency"]
 blogimport = true
@@ -7,7 +8,7 @@ type = "post"
 draft = false
 +++
 
-`JitPack`からライブラリをインストールしたかったところ、jcenterからライブラリをインストールしてしまう事件がありました。
+`JitPack`からライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。
 詳しくは次のリンクを参照してください。[A Confusing Dependency](https://blog.autsoft.hu/a-confusing-dependency/)
 
 従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に`Matching repositories to dependencies`が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）
@@ -72,7 +73,7 @@ dependencies {
 
 新しくcontentブロックが追加されました。ここでgroup idを指定することが出来ます。今回のURLは`com.cloudflare:cloudflare-mobile-sdk`でのみ有効になって欲しいので、`includeGroup "com.cloudflare"`と指定することで達成できます。これでcloudflareのライブラリに対して制限をかけられます!!
 
-また今回の事件の場合、jcenterに悪意のあるライブラリがアップロードされたのが問題なので、jcenterからダウンロードしたいライブラリのgroup idを`includeGroup`に追記してあげれば良いです。
+また今回の事件の場合、JCenterに悪意のあるライブラリがアップロードされたのが問題なので、JCenterからダウンロードしたいライブラリのgroup idを`includeGroup`で指定してあげれば良いです。
 
 ```groovy
 repositories {
@@ -88,7 +89,7 @@ repositories {
 }
 ```
 
-これで、jcenterからダウンロードするライブラリに制限をかけられます😃
+これで、JCenterからダウンロードするライブラリに制限をかけられます😃
 
 ## 補足
 
