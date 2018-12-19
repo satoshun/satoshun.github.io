@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 07 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Dec 2018 09:59:20 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger &#43; ViewModelの基本編 &#43; 実例編</title>
+      <link>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</link>
+      <pubDate>Wed, 19 Dec 2018 09:59:20 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</guid>
+      <description>この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃
+基本編 Dagger + ViewModelを同時に使うのは少しツラミがあります。それは、ViewModelのインスタンス生成はViewModelProviderを介して行う必要があるためです。
+例えば、次のコードは間違っています。
+class MainViewModel @Inject constructor(...): ViewModel() class MainActivity { @Inject lateinit var viewModel: MainViewModel ... }  この書き方だとMainViewModelのインスタンス生成はViewModelProviderを介して行われません。よって次のように書く必要があります。
+class MainViewModel(...): ViewModel() @Module class MainActivityModule { @Provides fun provideMainViewModel(...) : MainViewModel { // ViewModelProviderを介して行う return ViewModelProviders.of(...).get(MainViewModel::class.java) } } class MainActivity { @Inject lateinit var viewModel: MainViewModel ... }  @Providesを使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してインスタンス生成をすることが出来ます。
+また、ViewModelを直接注入せずに、ViewModelProvider.Factoryを注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。
+class MainViewModel(...): ViewModel() or class MainViewModel @Inject constructor(...): ViewModel() @Module class MainActivityModule { @Provides fun provideViewModelFactory(.</description>
+    </item>
     
     <item>
       <title>Data Bindingのエラーログが3.4.0-alpha07から見やすくなる</title>

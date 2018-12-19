@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</loc>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/gradle_deps_match/</loc>
     <lastmod>2018-12-14T14:56:44+00:00</lastmod>
   </url>
@@ -332,7 +337,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-12-14T14:56:44+00:00</lastmod>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -356,7 +361,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-12-14T14:56:44+00:00</lastmod>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -404,7 +409,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2018-12-08T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -500,7 +505,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2018-12-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -648,7 +653,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-14T14:56:44+00:00</lastmod>
+    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
     <priority>0</priority>
   </url>
   
