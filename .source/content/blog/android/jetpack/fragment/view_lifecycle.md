@@ -1,15 +1,12 @@
 +++
-date = "Thu Dec 20 23:53:05 UTC 2018"
-title = "todo"
-tags = ["android", "jetpack", "livedata", "lifecycle"]
+date = "Fri Dec 21 07:08:34 UTC 2018"
+title = "FragmentとgetViewLifecycleの話"
+tags = ["android", "jetpack", "fragment", "livedata", "lifecycle"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
-FragmentでLiveDataにObserveを登録するときは`Fragment#getViewLifecycle`を使うと良いという話です。
-
-この記事では、なぜ`getViewLifecycle`を使うと良いかを説明します。
+この記事ではFragmentでLiveDataにObserverを登録するときは`Fragment#getViewLifecycle`を使うと良いという話をします。
 
 まず、Fragmentのおおまかなライフサイクルは次のようになっています。
 
@@ -40,10 +37,10 @@ class MainFragment: Fragment() {
 
 なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。
-しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回`onCreateView`がコールされる可能性があるため、前のobserverが開放されずに残ってしまいます。
+しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
 
-前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するために、この問題が起こります。
-なので、FragmentにはView用のLifecycleが用意されています。それが、`Fragment#getViewLifecycle`です。
+前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。
+よって、FragmentにはView用のLifecycleが用意されています。それが、`Fragment#getViewLifecycle`です。
 
 前述のコードは次のように書くことが出来ます。
 
@@ -69,7 +66,7 @@ Observerが開放されるタイミングはonDestroyがコールされるタイ
 
 ## 補足2
 
-上記のケースはattach/detachを繰り返す場合におこります。
+Observerの重複登録問題はattach/detachを繰り返す場合におこります。
 サンプルコードは次のようになります。
 
 ```kotlin
