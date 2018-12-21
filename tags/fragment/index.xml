@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Livedata on stsnブログ</title>
-    <link>https://satoshun.github.io/tags/livedata/</link>
-    <description>Recent content in Livedata on stsnブログ</description>
+    <title>Fragment on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/fragment/</link>
+    <description>Recent content in Fragment on stsnブログ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
     <lastBuildDate>Fri, 21 Dec 2018 07:08:34 +0000</lastBuildDate>
     
-	<atom:link href="https://satoshun.github.io/tags/livedata/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://satoshun.github.io/tags/fragment/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -26,22 +26,6 @@ class MainFragment: Fragment() { ... override fun onViewCreated(view: View, save
 前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。 よって、FragmentにはView用のLifecycleが用意されています。それが、Fragment#getViewLifecycleです。
 前述のコードは次のように書くことが出来ます。
 class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) // ViewのLifecycleOwnerを渡す viewModel.data.observe(viewLifecycleOwner, Observer { ... }) } }  このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</description>
-    </item>
-    
-    <item>
-      <title>MutableなLiveDataを特定のクラス外から更新できなくする</title>
-      <link>https://satoshun.github.io/2018/12/livedata_helper/</link>
-      <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
-      <description>LiveDataの値を更新したい時、MutableLiveDataを使うのが一般的だと思います。
-class MainViewModel { val hoge = MutableLiveData&amp;lt;Int&amp;gt;() }  この書き方だと、外のクラスから値を更新することが可能です。
-val viewModel = MainViewModel() // ok viewModel.hoge.postValue(10000)  外のクラスからは更新出来ないようにするためにはLiveDataに型変換する必要があります。
-例えば次のように書きます。
-class MainViewModel { private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;() val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換 }  こうすることで、外のクラスからはMutableLiveDataが直接見えなくなり、明示的に型変換をしない限りLiveDataの値を更新できなくなります。
-ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。 なので、それの解決策を以下で紹介します。
-その1 まずコードをのせます。
-abstract class ViewModel2 { protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) { postValue(value) } protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) { setValue(value) } }  // ViewModel2と同じパッケージに定義 public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; { @Override protected void postValue(T value) { super.</description>
     </item>
     
   </channel>

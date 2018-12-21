@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/12/view_lifecycle/</loc>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</loc>
     <lastmod>2018-12-19T09:59:20+00:00</lastmod>
   </url>
@@ -337,7 +342,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -361,7 +366,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -450,6 +455,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/fragment/</loc>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/frontend/</loc>
     <lastmod>2015-03-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -505,7 +516,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -522,8 +533,14 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/lifecycle/</loc>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/livedata/</loc>
-    <lastmod>2018-12-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -653,7 +670,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
     <priority>0</priority>
   </url>
   

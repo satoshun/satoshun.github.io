@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Wed, 19 Dec 2018 09:59:20 +0000</pubDate>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -193,6 +193,15 @@
     </item>
     
     <item>
+      <title>Fragment</title>
+      <link>https://satoshun.github.io/tags/fragment/</link>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/fragment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Frontend</title>
       <link>https://satoshun.github.io/tags/frontend/</link>
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
@@ -276,7 +285,7 @@
     <item>
       <title>Jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Wed, 19 Dec 2018 09:59:20 +0000</pubDate>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
@@ -301,9 +310,18 @@
     </item>
     
     <item>
+      <title>Lifecycle</title>
+      <link>https://satoshun.github.io/tags/lifecycle/</link>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/lifecycle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Livedata</title>
       <link>https://satoshun.github.io/tags/livedata/</link>
-      <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/livedata/</guid>
       <description></description>

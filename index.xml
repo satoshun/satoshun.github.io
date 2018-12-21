@@ -7,7 +7,97 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Wed, 19 Dec 2018 09:59:20 UTC</updated>
+    <updated>Fri, 21 Dec 2018 07:08:34 UTC</updated>
+    
+    
+    <item>
+      <title>FragmentとgetViewLifecycleの話</title>
+      <link>https://satoshun.github.io/2018/12/view_lifecycle/</link>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/view_lifecycle/</guid>
+      <description>
+
+&lt;p&gt;この記事ではFragmentでLiveDataにObserverを登録するときは&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;を使うと良いという話をします。&lt;/p&gt;
+
+&lt;p&gt;まず、Fragmentのおおまかなライフサイクルは次のようになっています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;onAttach&lt;/li&gt;
+&lt;li&gt;onCreate
+
+&lt;ul&gt;
+&lt;li&gt;onCreateView&lt;/li&gt;
+&lt;li&gt;onViewCreated
+
+&lt;ul&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;onDestoryView&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;onDestroy&lt;/li&gt;
+&lt;li&gt;onDetach&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ここで重要なのは、&lt;code&gt;onDestroy&lt;/code&gt;が呼ばれることなく、複数回&lt;code&gt;onCreateView&lt;/code&gt;が呼ばれる可能性がある点です。&lt;/p&gt;
+
+&lt;p&gt;例えば、次のコードは間違っている可能性があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment: Fragment() {
+    ...
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.data.observe(this, Observer {
+            ...
+        })
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
+このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。
+しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。&lt;/p&gt;
+
+&lt;p&gt;前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。
+よって、FragmentにはView用のLifecycleが用意されています。それが、&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;です。&lt;/p&gt;
+
+&lt;p&gt;前述のコードは次のように書くことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment: Fragment() {
+    ...
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // ViewのLifecycleOwnerを渡す
+        viewModel.data.observe(viewLifecycleOwner, Observer {
+            ...
+        })
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！&lt;/p&gt;
+
+&lt;h2 id=&#34;補足1&#34;&gt;補足1&lt;/h2&gt;
+
+&lt;p&gt;Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。
+それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足2&#34;&gt;補足2&lt;/h2&gt;
+
+&lt;p&gt;Observerの重複登録問題はattach/detachを繰り返す場合におこります。
+サンプルコードは次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;while (true) {
+    delay(3000)
+    supportFragmentManager.commitNow {
+        if (fragment.isDetached) attach(fragment)
+        else detach(fragment)
+　  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1640,75 +1730,6 @@ INVOKESPECIAL kotlin/TypeCastException.&amp;lt;init&amp;gt; (Ljava/lang/String;)
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/nhaarman/mockito-kotlin&#34;&gt;https://github.com/nhaarman/mockito-kotlin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://youtrack.jetbrains.com/issue/KT-8135&#34;&gt;https://youtrack.jetbrains.com/issue/KT-8135&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>拡張関数 &#43; ジェネリック型でよりタイプセーフを得る</title>
-      <link>https://satoshun.github.io/2018/11/extension-typesafe/</link>
-      <pubDate>Sat, 03 Nov 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/11/extension-typesafe/</guid>
-      <description>
-
-&lt;p&gt;Kotlinの拡張関数の話です。&lt;/p&gt;
-
-&lt;p&gt;以下のクラスがあったとします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A&amp;lt;T&amp;gt;(val value: T) {
-  fun isNull(): Boolean {
-    return value != null
-  }
-}
-
-fun main() {
-  val a1: A&amp;lt;Int&amp;gt; = ...
-  a1.isNull()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このとき、&lt;code&gt;a1.isNull()&lt;/code&gt;の結果は自明です。なぜなら&lt;code&gt;A&amp;lt;Int&amp;gt;&lt;/code&gt;で宣言している時点でnonNullが確定しているためです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun main() {
-  val a2: A&amp;lt;Int?&amp;gt; = ...
-  a2.isNull()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このとき、&lt;code&gt;a2.isNull()&lt;/code&gt;の結果は自明ではありません。
-なぜなら&lt;code&gt;A&amp;lt;Int?&amp;gt;&lt;/code&gt;でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。&lt;/p&gt;
-
-&lt;p&gt;この2つの例から、&lt;code&gt;a1.isNull()&lt;/code&gt;はそもそもnonNullなので&lt;code&gt;isNull()&lt;/code&gt;メソッドをコールできないほうが良いのではないか？という考えが浮かびます。&lt;/p&gt;
-
-&lt;p&gt;Kotlinの拡張関数を使うことで達成できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A&amp;lt;T&amp;gt;(val value: T)
-
-// nullableのときにコールできるようにする
-fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull(): Boolean {
-  return value != null
-}
-
-fun main() {
-  val a1: A&amp;lt;Int&amp;gt; = ...
-  a1.isNull() // コンパイルエラー!!
-
-  val a2: A&amp;lt;Int?&amp;gt; = ...
-  a2.isNull()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull()&lt;/code&gt;と宣言することでnullable時のみコールできます。&lt;/p&gt;
-
-&lt;p&gt;ジェネリック型がnullable時のみコールしたい場合に有効なテクニックでした😃&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/&#34;&gt;http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
