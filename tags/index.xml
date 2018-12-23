@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
+      <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -114,7 +114,7 @@
     <item>
       <title>Coroutine</title>
       <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/coroutine/</guid>
       <description></description>
@@ -294,7 +294,7 @@
     <item>
       <title>Kotlin</title>
       <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
@@ -306,6 +306,15 @@
       <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/ktstdlib/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Library</title>
+      <link>https://satoshun.github.io/tags/library/</link>
+      <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/library/</guid>
       <description></description>
     </item>
     

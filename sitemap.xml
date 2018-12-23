@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/12/coroutine_autodispose/</loc>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/view_lifecycle/</loc>
     <lastmod>2018-12-21T07:08:34+00:00</lastmod>
   </url>
@@ -342,7 +347,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -366,7 +371,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -402,7 +407,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/coroutine/</loc>
-    <lastmod>2018-12-05T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -522,13 +527,19 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2018-12-11T00:00:00+00:00</lastmod>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/ktstdlib/</loc>
     <lastmod>2018-12-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/library/</loc>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -670,7 +681,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
+    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
     <priority>0</priority>
   </url>
   

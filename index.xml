@@ -7,7 +7,137 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 21 Dec 2018 07:08:34 UTC</updated>
+    <updated>Sun, 23 Dec 2018 09:14:43 UTC</updated>
+    
+    
+    <item>
+      <title>Coroutine &#43; AutoDisposeを作ってみた</title>
+      <link>https://satoshun.github.io/2018/12/coroutine_autodispose/</link>
+      <pubDate>Sun, 23 Dec 2018 09:14:43 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/coroutine_autodispose/</guid>
+      <description>
+
+&lt;p&gt;Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、&lt;code&gt;ContinuationInterceptor&lt;/code&gt;を使えば上手くいきそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;continuationinterceptorとは&#34;&gt;ContinuationInterceptorとは?&lt;/h2&gt;
+
+&lt;p&gt;ContinuationInterceptorは次のようなインターフェースです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;/**
+ * Marks coroutine context element that intercepts coroutine continuations.
+ * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
+ * intercepts all coroutine continuations with [interceptContinuation] invocations.
+ */
+@SinceKotlin(&amp;quot;1.3&amp;quot;)
+public interface ContinuationInterceptor : CoroutineContext.Element {
+  public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt;
+  public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;)
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;interceptContinuation&lt;/code&gt;からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class LifecycleContinuationInterceptor(
+  private val lifecycle: Lifecycle
+) : ContinuationInterceptor {
+  override val key: CoroutineContext.Key&amp;lt;*&amp;gt;
+    get() = ContinuationInterceptor
+
+  override fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; {
+    // ContinuationからJobを取得
+    val job = continuation.context[Job]
+    if (job != null) {
+      lifecycle.addJob(job)
+    }
+    return continuation
+  }
+}
+
+fun LifecycleOwner.addJob(job: Job) {
+  lifecycle.addJob(job)
+}
+
+fun Lifecycle.addJob(job: Job) {
+  val state = this.currentState
+  val event = when (state) {
+      ...
+  }
+  val observer = LifecycleJobObserver(job, event, this)
+  this.addObserver(observer)
+  job.invokeOnCompletion(observer)
+}
+
+private class LifecycleJobObserver(
+  private val job: Job,
+  private val event: Lifecycle.Event,
+  private val lifecycle: Lifecycle
+) : LifecycleObserver, CompletionHandler {
+  @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
+  fun onEvent(owner: LifecycleOwner, event: Lifecycle.Event) {
+    if (event == this.event) {
+      owner.lifecycle.removeObserver(this)
+      job.cancel()
+    }
+  }
+
+  override fun invoke(cause: Throwable?) {
+    lifecycle.removeObserver(this)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。&lt;/p&gt;
+
+&lt;p&gt;フルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt&#34;&gt;ここに&lt;/a&gt;あります。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;使い方は次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class BaseActivity : AppCompatActivity(),
+  CoroutineScope {
+
+  private val job = Job()
+  override val coroutineContext get() = job
+      + Dispatchers.Main
+      + LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
+}
+
+class MainActivity : BaseActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    // onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
+    launch {
+      ...
+    }
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+    // onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
+    launch {
+      ...
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;となります。&lt;a href=&#34;https://github.com/uber/AutoDispose&#34;&gt;Rx-AutoDispose&lt;/a&gt;のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/AutoDisposeExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1647,89 +1777,6 @@ kaptRelease &amp;quot;com.google.dagger:dagger-compiler:2.18&amp;quot;
 &lt;li&gt;&lt;a href=&#34;https://github.com/JakeWharton/SdkSearch&#34;&gt;https://github.com/JakeWharton/SdkSearch&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/square/moshi&#34;&gt;https://github.com/square/moshi&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://jakewharton.com/helping-dagger-help-you/&#34;&gt;https://jakewharton.com/helping-dagger-help-you/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>KotlinのNon-Null型にnullを代入する方法</title>
-      <link>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</link>
-      <pubDate>Wed, 07 Nov 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</guid>
-      <description>
-
-&lt;p&gt;Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
-KotlinのNon-Null型に対してnullを代入しようとすると、代入するタイミングで例外を吐きます。
-JavaとKotlinを一緒に使っていると、この例外に遭遇することがあると思います。&lt;/p&gt;
-
-&lt;p&gt;具体的には以下の挙動をします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Hoge {
-    // nullを返すメソッド
-    static String getName() {
-        return null;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val d: String = Hoge.getName() // ここで例外が投げられる
-println(d.length) // これは実行されない
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このコードは、&lt;code&gt;val d: String = Hoge.getName()&lt;/code&gt;で&lt;code&gt;IllegalStateException&lt;/code&gt;を投げます。
-Non-Null型にnullを代入しようとしているからです。&lt;/p&gt;
-
-&lt;p&gt;次に、代入するタイミングで例外を投げなくする方法を紹介します。&lt;/p&gt;
-
-&lt;p&gt;具体的には以下のコードで達成できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun &amp;lt;T&amp;gt; castNull(): T = null as T
-
-
-val d: String = castNull() // ここでは例外が投げられない
-println(d.length) // ここで例外が投げられる
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なぜこのような挙動になるのかを説明します。まず &lt;code&gt;castNull()&lt;/code&gt;メソッドに定義されたジェネリック型Tは&lt;code&gt;Any?&lt;/code&gt;をupperに持ちます。
-Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
-CHECKCAST java/lang/Object
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;CHECKCAST&lt;/code&gt;しかしておらず、nullかどうかのチェックをしていません。
-なので、&lt;code&gt;val d: String = castNull()&lt;/code&gt;ではnullチェックがされないため例外が投げられず、実際にメソッドをコールする&lt;code&gt;println(d.length)&lt;/code&gt;のタイミングで例外が投げられます。&lt;/p&gt;
-
-&lt;p&gt;Non-Null型である&lt;code&gt;String&lt;/code&gt;にnullを代入することが出来ました。&lt;/p&gt;
-
-&lt;p&gt;次に、&lt;code&gt;fun &amp;lt;T: Any&amp;gt; castNull(): T = null as T&lt;/code&gt;と、Non-Null型をupperにした場合のバイトコードは次になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
-DUP
-IFNONNULL L1
-NEW kotlin/TypeCastException
-DUP
-LDC &amp;quot;null cannot be cast to non-null type T&amp;quot;
-INVOKESPECIAL kotlin/TypeCastException.&amp;lt;init&amp;gt; (Ljava/lang/String;)V
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こちらのバイトコードには、nullチェックが入っていることが分かります。nullチェックをしているため、&lt;code&gt;val d: String = castNull()&lt;/code&gt;のタイミングで例外が投げられます。&lt;/p&gt;
-
-&lt;p&gt;Nullableな型をupperに持つ、持たないでnullチェックをするかどうかが決まる、という話でした。&lt;/p&gt;
-
-&lt;p&gt;この挙動は &lt;a href=&#34;https://youtrack.jetbrains.com/issue/KT-8135&#34;&gt;https://youtrack.jetbrains.com/issue/KT-8135&lt;/a&gt; ISSUEにバグとして報告されているので、今後異なるバイトコードが生成される可能性があります。
-もし、この挙動に依存するようなコードを書いている場合は注意が必要です。&lt;/p&gt;
-
-&lt;p&gt;実世界では、mockito-kotlinがこの挙動に依存しているので、より興味がある方はぜひ読んでください😃 &lt;a href=&#34;https://github.com/nhaarman/mockito-kotlin/blob/2.x/mockito-kotlin/src/main/kotlin/com/nhaarman/mockitokotlin2/internal/CreateInstance.kt#L46&#34;&gt;ここのあたりで使っています&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/nhaarman/mockito-kotlin&#34;&gt;https://github.com/nhaarman/mockito-kotlin&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://youtrack.jetbrains.com/issue/KT-8135&#34;&gt;https://youtrack.jetbrains.com/issue/KT-8135&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

@@ -1,7 +1,7 @@
 +++
 date = "Sun Dec 23 09:14:43 UTC 2018"
 title = "Coroutine + AutoDisposeを作ってみた"
-tags = ["android", "coroutine", "library"]
+tags = ["android", "kotlin", "coroutine", "library"]
 blogimport = true
 type = "post"
 +++
