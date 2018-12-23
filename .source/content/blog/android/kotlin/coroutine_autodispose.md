@@ -91,9 +91,9 @@ abstract class BaseActivity : AppCompatActivity(),
   CoroutineScope {
 
   private val job = Job()
-  override val coroutineContext get() = job
-      + Dispatchers.Main
-      + LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
+  override val coroutineContext get() = job +
+      Dispatchers.Main +
+      LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
 }
 
 class MainActivity : BaseActivity() {
