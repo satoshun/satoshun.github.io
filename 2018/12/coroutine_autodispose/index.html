@@ -67,6 +67,11 @@ Coroutine &#43; AutoDisposeの実装について考えてみました。結論�
     });
   </script>
 
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body>
@@ -172,9 +177,9 @@ private class LifecycleJobObserver(
   CoroutineScope {
 
   private val job = Job()
-  override val coroutineContext get() = job
-      + Dispatchers.Main
-      + LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
+  override val coroutineContext get() = job +
+      Dispatchers.Main +
+      LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
 }
 
 class MainActivity : BaseActivity() {
