@@ -123,4 +123,4 @@ class MainActivity : BaseActivity() {
 
 - もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊
 
-[サンプルコードはここにあります](https://github.com/satoshun-android-example/AutoDisposeExample)😃
+サンプルコードです😃[satoshun-android-example/AutoDisposeExample](https://github.com/satoshun-android-example/AutoDisposeExample)
