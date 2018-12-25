@@ -66,6 +66,7 @@ KotlinのNon-Null型に対し …">
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
@@ -125,7 +126,7 @@ println(d.length) // ここで例外が投げられる
 <p>なぜこのような挙動になるのかを説明します。まず <code>castNull()</code>メソッドに定義されたジェネリック型Tは<code>Any?</code>をupperに持ちます。
 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。</p>
 
-<pre><code class="language-text">GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+<pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 CHECKCAST java/lang/Object
 </code></pre>
 
@@ -136,7 +137,7 @@ CHECKCAST java/lang/Object
 
 <p>次に、<code>fun &lt;T: Any&gt; castNull(): T = null as T</code>と、Non-Null型をupperにした場合のバイトコードは次になります。</p>
 
-<pre><code class="language-text">GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+<pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 DUP
 IFNONNULL L1
 NEW kotlin/TypeCastException

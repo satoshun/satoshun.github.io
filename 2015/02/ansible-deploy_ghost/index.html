@@ -69,6 +69,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
@@ -116,7 +117,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
 
 <p>Playbookは以下になります.</p>
 
-<pre><code class="language-yml">---
+<pre><code>---
 - hosts: all
   user: &quot;{{ user }}&quot;
   tasks:
@@ -131,7 +132,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
 
 <p>Gitモジュールがあるので, それを使います.</p>
 
-<pre><code class="language-yml">- name: Update Git repository
+<pre><code>- name: Update Git repository
   git: repo=&lt;git url&gt; dest=&lt;path to project&gt;
 </code></pre>
 
@@ -139,7 +140,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
 
 <p>npmモジュールがあるので, それを使います.</p>
 
-<pre><code class="language-yml">- name: Update npm module
+<pre><code>- name: Update npm module
   npm: path=&lt;path to project&gt;
 </code></pre>
 
@@ -147,7 +148,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
 
 <p>commandモジュールを使います.</p>
 
-<pre><code class="language-yml">- name: Run grunt init
+<pre><code>- name: Run grunt init
   command: &quot;grunt init chdir=&lt;path to project&gt;&quot;
 
 - name: Run grunt prod
@@ -158,7 +159,7 @@ VPSにGhostを, Ansibleでデプロイしている話.
 
 <p>supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.</p>
 
-<pre><code class="language-yml">- name: Restart Ghost
+<pre><code>- name: Restart Ghost
   sudo: yes
   supervisorctl: name=ghost state=restarted
 </code></pre>

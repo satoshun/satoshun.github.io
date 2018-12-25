@@ -30,5 +30,20 @@
 &amp;gt; Task :app:kaptGenerateStubsDebugKotlin e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation @error.NonExistentClass()  ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃</description>
     </item>
     
+    <item>
+      <title>Android: Data Bindingを使っていると本当のエラーログが出ない話 &#43; 対処法</title>
+      <link>https://satoshun.github.io/2018/04/android_improve-error-log/</link>
+      <pubDate>Thu, 12 Apr 2018 07:10:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/04/android_improve-error-log/</guid>
+      <description>問題 Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。
+理由としては、Data Bindingの生成が失敗すると、MainActivityBindingみたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。 デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)
+解決法 全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです
+kapt { javacOptions { option(&amp;quot;-Xmaxerrs&amp;quot;, 5000) } }  これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。
+これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。
+before(一部ログ修正しています)
+... // 長いエラーログ ... ... symbol: class DataBindingComponent location: class ActivityMainBinding e: ActivityMainBinding.java:91: error: cannot find symbol @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) { ^ symbol: class DataBindingComponent location: class ActivityMainBinding e: ActivityMainBinding.java:102: error: cannot find symbol @Nullable DataBindingComponent component) { ^ symbol: class DataBindingComponent location: class ActivityMainBinding :app:kaptProductDebugKotlin FAILED  after</description>
+    </item>
+    
   </channel>
 </rss>

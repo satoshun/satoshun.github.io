@@ -69,6 +69,7 @@
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
@@ -140,7 +141,7 @@ build-amd64: get
 
 <p>build.yml</p>
 
-<pre><code class="language-yml">---
+<pre><code>---
 - name: build src
   command: make build-amd64 chdir={{ local_home }}
 </code></pre>
@@ -153,7 +154,7 @@ build-amd64: get
 
 <p>update_binary.yml</p>
 
-<pre><code class="language-yml">---
+<pre><code>---
 - name: update binary
   copy:
     src={{ local_home }}/{{ project_name }}
@@ -168,7 +169,7 @@ build-amd64: get
 
 <p>restart.yml</p>
 
-<pre><code class="language-yml">---
+<pre><code>---
 - name: restart binary
   sudo: yes
   supervisorctl: name={{ project_name }} state=restarted

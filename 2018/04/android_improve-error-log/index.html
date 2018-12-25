@@ -16,6 +16,8 @@
   
     <meta property="og:tags" content="android">
   
+    <meta property="og:tags" content="databinding">
+  
 
   <meta property="twitter:title" content="Android: Data Bindingを使っていると本当のエラーログが出ない話 &#43; 対処法">
 
@@ -67,6 +69,7 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
@@ -102,7 +105,7 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
 
 <p>全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです</p>
 
-<pre><code class="language-gradle">kapt {
+<pre><code class="language-groovy">kapt {
     javacOptions {
         option(&quot;-Xmaxerrs&quot;, 5000)
     }
@@ -115,7 +118,7 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
 
 <p>before(一部ログ修正しています)</p>
 
-<pre><code class="language-plaintext">...
+<pre><code>...
 // 長いエラーログ
 ...
 ...
@@ -136,7 +139,7 @@ e: ActivityMainBinding.java:102: error: cannot find symbol
 
 <p>after</p>
 
-<pre><code class="language-plaintext">...
+<pre><code>...
 // 長いエラーログ
 ...
 ...
@@ -169,6 +172,8 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
       <ul class="article-post-tags">
         
           <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/databinding">databinding</a></li>
         
       </ul>
     

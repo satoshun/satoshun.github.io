@@ -67,6 +67,7 @@ Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
@@ -97,7 +98,7 @@ Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで
 <p>まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
 それを解決するために<code>namespacedRClass</code>が追加されました。使い方は簡単で、次の記述を<code>gradle.properties</code>に追加するだけです。</p>
 
-<pre><code class="language-txt">android.namespacedRClass=true
+<pre><code>android.namespacedRClass=true
 </code></pre>
 
 <p>では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
