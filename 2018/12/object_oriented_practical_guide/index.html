@@ -4,31 +4,29 @@
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-  <meta property="og:title" content="Coroutine &#43; AutoDisposeを作ってみた">
+  <meta property="og:title" content="感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方">
   
     <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2018-12-23">
+    <meta property="article:published_time" content="2018-12-25">
   
   <meta property="og:description" content="">
-  <meta property="og:url" content="https://satoshun.github.io/2018/12/coroutine_autodispose/">
+  <meta property="og:url" content="https://satoshun.github.io/2018/12/object_oriented_practical_guide/">
   <meta property="og:site_name" content="stsnブログ">
   
   
-    <meta property="og:tags" content="android">
+    <meta property="og:tags" content="book">
   
-    <meta property="og:tags" content="kotlin">
+    <meta property="og:tags" content="oop">
   
-    <meta property="og:tags" content="coroutine">
-  
-    <meta property="og:tags" content="library">
+    <meta property="og:tags" content="architecture">
   
 
-  <meta property="twitter:title" content="Coroutine &#43; AutoDisposeを作ってみた">
+  <meta property="twitter:title" content="感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方">
 
   
-  <meta property="twitter:description" content="
+  <meta property="twitter:description" content="オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。
 
-Coroutine &#43; AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいき …">
+継承とコンポジションはトレードオ …">
   
 
   
@@ -38,7 +36,7 @@ Coroutine &#43; AutoDisposeの実装について考えてみました。結論�
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title> Coroutine &#43; AutoDisposeを作ってみた  - stsnブログ </title>
+  <title> 感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方  - stsnブログ </title>
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -89,141 +87,98 @@ Coroutine &#43; AutoDisposeの実装について考えてみました。結論�
 
 <div class="content container">
   <div class="post">
-    <h1 class="post-title">Coroutine &#43; AutoDisposeを作ってみた</h1>
+    <h1 class="post-title">感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方</h1>
     
-    <span class="post-date">Created at Sun, Dec 23, 2018</span>
+    <span class="post-date">Created at Tue, Dec 25, 2018</span>
     
-    
+    <p>オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。</p>
 
-<p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
-
-<h2 id="continuationinterceptorとは">ContinuationInterceptorとは?</h2>
-
-<p>ContinuationInterceptorは次のようなインターフェースです。</p>
-
-<pre><code class="language-kotlin">/**
- * Marks coroutine context element that intercepts coroutine continuations.
- * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
- * intercepts all coroutine continuations with [interceptContinuation] invocations.
- */
-@SinceKotlin(&quot;1.3&quot;)
-public interface ContinuationInterceptor : CoroutineContext.Element {
-  public fun &lt;T&gt; interceptContinuation(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt;
-  public fun releaseInterceptedContinuation(continuation: Continuation&lt;*&gt;)
-  ...
-}
-</code></pre>
-
-<p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
-
-<pre><code class="language-kotlin">class LifecycleContinuationInterceptor(
-  private val lifecycle: Lifecycle
-) : ContinuationInterceptor {
-  override val key: CoroutineContext.Key&lt;*&gt;
-    get() = ContinuationInterceptor
-
-  override fun &lt;T&gt; interceptContinuation(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; {
-    // ContinuationからJobを取得
-    val job = continuation.context[Job]
-    if (job != null) {
-      lifecycle.addJob(job)
-    }
-    return continuation
-  }
-}
-
-fun LifecycleOwner.addJob(job: Job) {
-  lifecycle.addJob(job)
-}
-
-fun Lifecycle.addJob(job: Job) {
-  val state = this.currentState
-  val event = when (state) {
-      ...
-  }
-  val observer = LifecycleJobObserver(job, event, this)
-  this.addObserver(observer)
-  job.invokeOnCompletion(observer)
-}
-
-private class LifecycleJobObserver(
-  private val job: Job,
-  private val event: Lifecycle.Event,
-  private val lifecycle: Lifecycle
-) : LifecycleObserver, CompletionHandler {
-  @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-  fun onEvent(owner: LifecycleOwner, event: Lifecycle.Event) {
-    if (event == this.event) {
-      owner.lifecycle.removeObserver(this)
-      job.cancel()
-    }
-  }
-
-  override fun invoke(cause: Throwable?) {
-    lifecycle.removeObserver(this)
-  }
-}
-</code></pre>
-
-<p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
-
-<p>フルコードは<a href="https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt">ここに</a>あります。</p>
-
-<h2 id="使い方">使い方</h2>
-
-<p>使い方は次のようになります。</p>
-
-<pre><code class="language-kotlin">abstract class BaseActivity : AppCompatActivity(),
-  CoroutineScope {
-
-  private val job = Job()
-  override val coroutineContext get() = job +
-      Dispatchers.Main +
-      LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
-}
-
-class MainActivity : BaseActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    // onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
-    launch {
-      ...
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-
-    // onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
-    launch {
-      ...
-    }
-  }
-}
-</code></pre>
-
-<p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
-
-<h2 id="まとめ">まとめ</h2>
+<p>継承とコンポジションはトレードオフ</p>
 
 <ul>
-<li>もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊</li>
+<li>継承は自動的にaメッセージを委譲する
+
+<ul>
+<li>便利だが依存関係は強い</li>
+<li>親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する</li>
+</ul></li>
+<li>継承は階層構造を生み出す
+
+<ul>
+<li>ポリモーフィズムを実現する</li>
+<li>これまた便利だが依存関係は強い</li>
+</ul></li>
+<li>コンポジションは自動的に委譲しない
+
+<ul>
+<li>必要に応じて集約クラスで操る必要がある</li>
+<li>依存は継承より少ない</li>
+</ul></li>
 </ul>
 
-<p>サンプルコードです😃<a href="https://github.com/satoshun-android-example/AutoDisposeExample">satoshun-android-example/AutoDisposeExample</a></p>
+<p>単一責任について</p>
+
+<ul>
+<li>あたりまえだけど守らないといけない
+
+<ul>
+<li>無駄な責務があると再利用できない</li>
+</ul></li>
+<li>達成することで再利用可能な素晴らしいクラスが出来る</li>
+<li>責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す</li>
+</ul>
+
+<p>ダックタイピング</p>
+
+<ul>
+<li>ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る</li>
+<li>ロールを満たすことにより要件を満たす</li>
+<li>実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂</li>
+</ul>
+
+<p>依存関係について</p>
+
+<ul>
+<li>依存関係の向きを考えるのは大切
+
+<ul>
+<li>例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い
+
+<ul>
+<li>さらに進めるとDI，コンストラクタの外から注入する</li>
+</ul></li>
+</ul></li>
+<li>依存関係逆転の法則
+
+<ul>
+<li>低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成
+
+<ul>
+<li>domain層などの他の層に依存したくない層で有効</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>柔軟なインターフェース</p>
+
+<ul>
+<li>オブジェクトを信じるようなインターフェース
+
+<ul>
+<li>どのようにするかではなく、何をするかをメソッド名にする。宣言的に</li>
+</ul></li>
+<li>安定していなければいけない</li>
+</ul>
 
     <div class="mt30"></div>
     
       <ul class="article-post-tags">
         
-          <li><a href="/tags/android">android</a></li>
+          <li><a href="/tags/book">book</a></li>
         
-          <li><a href="/tags/kotlin">kotlin</a></li>
+          <li><a href="/tags/oop">oop</a></li>
         
-          <li><a href="/tags/coroutine">coroutine</a></li>
-        
-          <li><a href="/tags/library">library</a></li>
+          <li><a href="/tags/architecture">architecture</a></li>
         
       </ul>
     

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</loc>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/coroutine_autodispose/</loc>
     <lastmod>2018-12-23T09:14:43+00:00</lastmod>
   </url>
@@ -365,7 +370,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/architecture/</loc>
-    <lastmod>2018-03-02T00:28:00+00:00</lastmod>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -377,13 +382,13 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/book/</loc>
-    <lastmod>2018-03-02T00:28:00+00:00</lastmod>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/book/</loc>
-    <lastmod>2018-03-02T00:28:00+00:00</lastmod>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -568,6 +573,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/oop/</loc>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/poem/</loc>
     <lastmod>2018-05-05T03:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -681,7 +692,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-23T09:14:43+00:00</lastmod>
+    <lastmod>2018-12-25T03:00:39+00:00</lastmod>
     <priority>0</priority>
   </url>
   

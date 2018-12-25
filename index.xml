@@ -7,7 +7,96 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Sun, 23 Dec 2018 09:14:43 UTC</updated>
+    <updated>Tue, 25 Dec 2018 03:00:39 UTC</updated>
+    
+    
+    <item>
+      <title>感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方</title>
+      <link>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</link>
+      <pubDate>Tue, 25 Dec 2018 03:00:39 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</guid>
+      <description>&lt;p&gt;オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。&lt;/p&gt;
+
+&lt;p&gt;継承とコンポジションはトレードオフ&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;継承は自動的にaメッセージを委譲する
+
+&lt;ul&gt;
+&lt;li&gt;便利だが依存関係は強い&lt;/li&gt;
+&lt;li&gt;親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;継承は階層構造を生み出す
+
+&lt;ul&gt;
+&lt;li&gt;ポリモーフィズムを実現する&lt;/li&gt;
+&lt;li&gt;これまた便利だが依存関係は強い&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;コンポジションは自動的に委譲しない
+
+&lt;ul&gt;
+&lt;li&gt;必要に応じて集約クラスで操る必要がある&lt;/li&gt;
+&lt;li&gt;依存は継承より少ない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;単一責任について&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;あたりまえだけど守らないといけない
+
+&lt;ul&gt;
+&lt;li&gt;無駄な責務があると再利用できない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;達成することで再利用可能な素晴らしいクラスが出来る&lt;/li&gt;
+&lt;li&gt;責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ダックタイピング&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る&lt;/li&gt;
+&lt;li&gt;ロールを満たすことにより要件を満たす&lt;/li&gt;
+&lt;li&gt;実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;依存関係について&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;依存関係の向きを考えるのは大切
+
+&lt;ul&gt;
+&lt;li&gt;例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い
+
+&lt;ul&gt;
+&lt;li&gt;さらに進めるとDI，コンストラクタの外から注入する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;依存関係逆転の法則
+
+&lt;ul&gt;
+&lt;li&gt;低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成
+
+&lt;ul&gt;
+&lt;li&gt;domain層などの他の層に依存したくない層で有効&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;柔軟なインターフェース&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;オブジェクトを信じるようなインターフェース
+
+&lt;ul&gt;
+&lt;li&gt;どのようにするかではなく、何をするかをメソッド名にする。宣言的に&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;安定していなければいけない&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -134,7 +223,7 @@ class MainActivity : BaseActivity() {
 &lt;li&gt;もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/AutoDisposeExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
+&lt;p&gt;サンプルコードです😃&lt;a href=&#34;https://github.com/satoshun-android-example/AutoDisposeExample&#34;&gt;satoshun-android-example/AutoDisposeExample&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1674,109 +1763,6 @@ println(activity)
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&#34;&gt;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: デバッグ時にMoshi、Daggerリフレクションライブラリを使いビルド時間を短縮する</title>
-      <link>https://satoshun.github.io/2018/11/debug_reflection/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/11/debug_reflection/</guid>
-      <description>
-
-&lt;p&gt;ビルド時間の短縮は開発効率を上げる大きな要素です。
-極力kapt（アノテーションプロセッサー）を使わなくすることで、ビルド時間を短縮出来ます。
-アノテーションプロセッサーを使ったライブラリは、アノテーションプロセッサーを使わない、
-リフレクションを用いたデバッグ用の機能を提供していることがあります。&lt;/p&gt;
-
-&lt;p&gt;今回は、MoshiとDaggerリフレクションライブラリの紹介をします。
-Daggerリフレクションは絶賛開発中 + 公式ではないので、機能がかなり制限されている、どういう未来が待っているかわからない点に注意してください。&lt;/p&gt;
-
-&lt;p&gt;検証に用いた&lt;a href=&#34;https://github.com/satoshun-android-example/DebugReflectExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります。&lt;/p&gt;
-
-&lt;h2 id=&#34;moshiリフレクション&#34;&gt;Moshiリフレクション&lt;/h2&gt;
-
-&lt;p&gt;Moshiにはmoshi-codegenと呼ばれる、アノテーションプロセッサーでコード生成してくれるライブラリがあります。
-これは実行時のパフォーマンスには優れているのですが、アノテーションプロセッサーを使っているため、ビルドに時間がかかってしまいます。&lt;/p&gt;
-
-&lt;p&gt;そこで、Moshiではmoshi-reflectionと呼ばれるライブラリを提供しており、これはアノテーションプロセッサーを使うことなく、
-moshi-codegenと同等の機能を提供してくれます。
-ただし、moshi-reflectionは内部でリフレクションを使っているため、実行時のパフォーマンスには優れていません。あくまでデバッグ用、という立ち位置だと思います。&lt;/p&gt;
-
-&lt;p&gt;デバッグ時にmoshi-reflectionを使い、リリース時にmoshi-codegenを使うことで、ビルド速度と実効速度の天秤を勝ち取ることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;具体的には、デバッグ時、リリース時に&lt;code&gt;build.gradle&lt;/code&gt;で指定するライブラリを、Moshiに登録するAdapterを変更します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;// bulid.gradle
-
-implementation &amp;quot;com.squareup.moshi:moshi:1.8.0&amp;quot;
-debugImplementation &amp;quot;com.squareup.moshi:moshi-kotlin:1.8.0&amp;quot;
-kaptRelease &amp;quot;com.squareup.moshi:moshi-kotlin-codegen:1.8.0&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// debug時
-fun createMoshiBuilder() = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory()) // KotlinJsonAdapterFactoryを指定する
-    .build()
-
-// release時
-fun createMoshiBuilder() = Moshi.Builder()
-    .build()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このように書くことで、リリース時のみkaptを実行するようになります。&lt;/p&gt;
-
-&lt;h2 id=&#34;daggerリフレクション&#34;&gt;Daggerリフレクション&lt;/h2&gt;
-
-&lt;p&gt;これはSdkSearch内で開発が行われているライブラリです。有名なAndroidエンジニアであるJake Whartonさんが開発をしています。&lt;/p&gt;
-
-&lt;p&gt;これもMoshiと同様に、リフレクションを使っています。
-Daggerリフレクションでは、必要最低限のクラスはアノテーションプロセッサーで作成するようになっています。
-アノテーションプロセッサーの完全除去というわけではありません。例えば、アノテーションプロセッサーで&lt;code&gt;DaggerAppComponent&lt;/code&gt;は作られます。
-しかし、かなりの数のクラスを作成しないようになっています。&lt;/p&gt;
-
-&lt;p&gt;具体的なコードは、以下のようになります。
-Mavenにアップデートされていないので、SdkSearchからソースコードをコピーして使います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;implementation &amp;quot;com.google.dagger:dagger:2.18&amp;quot;
-debugImplementation project(&#39;:dagger-reflect:reflect&#39;) // SdkSearchからコピー
-kaptDebug project(&#39;:dagger-reflect:reflect-compiler&#39;) // SdkSearchからコピー
-kaptRelease &amp;quot;com.google.dagger:dagger-compiler:2.18&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;デバッグ時にはDaggerリフレクションを使い、リリース時にはdagger-compilerを使っています。
-変更差分はbuild.gradleのみです。コードは全く修正する必要はありません。&lt;/p&gt;
-
-&lt;p&gt;最初にも書いたのですが、Daggerリフレクションは絶賛開発中で、Scope、セッターインジェクションなど、多くの機能が使えない状態です。
-ここが揃ってくればデバッグ時にはDaggerリフレクションを使うことで、プロダクションビルドと同等の動作で、ビルド時間の短縮が可能になってくると思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;デバッグ時にはkapt、アノテーションプロセッサーを抑制しビルド時間を短縮しよう😃
-
-&lt;ul&gt;
-&lt;li&gt;butterknifeもreflectionを使うことができる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Daggerリフレクションには期待しかない😄
-
-&lt;ul&gt;
-&lt;li&gt;何か進みがあったらまたまとめようと思います&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;今回の記事を検証するために作った&lt;a href=&#34;https://github.com/satoshun-android-example/DebugReflectExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/JakeWharton/SdkSearch&#34;&gt;https://github.com/JakeWharton/SdkSearch&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/square/moshi&#34;&gt;https://github.com/square/moshi&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://jakewharton.com/helping-dagger-help-you/&#34;&gt;https://jakewharton.com/helping-dagger-help-you/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

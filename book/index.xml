@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 02 Mar 2018 00:28:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Dec 2018 03:00:39 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/book/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方</title>
+      <link>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</link>
+      <pubDate>Tue, 25 Dec 2018 03:00:39 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</guid>
+      <description>オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。
+継承とコンポジションはトレードオフ
+ 継承は自動的にaメッセージを委譲する  便利だが依存関係は強い 親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する  継承は階層構造を生み出す  ポリモーフィズムを実現する これまた便利だが依存関係は強い  コンポジションは自動的に委譲しない  必要に応じて集約クラスで操る必要がある 依存は継承より少ない   単一責任について
+ あたりまえだけど守らないといけない  無駄な責務があると再利用できない  達成することで再利用可能な素晴らしいクラスが出来る 責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す  ダックタイピング
+ ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る ロールを満たすことにより要件を満たす 実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂  依存関係について
+ 依存関係の向きを考えるのは大切  例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い  さらに進めるとDI，コンストラクタの外から注入する   依存関係逆転の法則  低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成  domain層などの他の層に依存したくない層で有効    柔軟なインターフェース
+ オブジェクトを信じるようなインターフェース  どのようにするかではなく、何をするかをメソッド名にする。宣言的に  安定していなければいけない  </description>
+    </item>
     
     <item>
       <title>感想: Androidアプリ設計パターン入門</title>
