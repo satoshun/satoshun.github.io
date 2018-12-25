@@ -14,7 +14,7 @@ Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで
 まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
 それを解決するために`namespacedRClass`が追加されました。使い方は簡単で、次の記述を`gradle.properties`に追加するだけです。
 
-```txt
+```
 android.namespacedRClass=true
 ```
 

@@ -47,7 +47,7 @@ Daggerをライブラリで使ったときに、そのライブラリ内ではCo
 
 現状の差分は以下です。
 
-```text
+```
 -  compile 'com.google.dagger:dagger:2.x'
 +  api 'com.google.dagger:dagger:2.x'
   annotationProcessor 'com.google.dagger:dagger-compiler:2.x'

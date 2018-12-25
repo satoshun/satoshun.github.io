@@ -31,7 +31,7 @@ draft = false
 
 Build Scanを使って計測します。その際。build-cacheはoffにします。
 
-```command
+```
 ./gradlew clean
 ./gradlew build --no-build-cache --scan
 ```

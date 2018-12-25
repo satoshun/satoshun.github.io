@@ -1,7 +1,7 @@
 +++
 date = "2018-04-12T07:10:00Z"
 title = "Android: Data Bindingを使っていると本当のエラーログが出ない話 + 対処法"
-tags = ["android"]
+tags = ["android", "databinding"]
 blogimport = true
 type = "post"
 +++
@@ -17,7 +17,7 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
 
 全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです
 
-```gradle
+```groovy
 kapt {
     javacOptions {
         option("-Xmaxerrs", 5000)
@@ -31,7 +31,7 @@ kapt {
 
 before(一部ログ修正しています)
 
-```plaintext
+```
 ...
 // 長いエラーログ
 ...
@@ -53,7 +53,7 @@ e: ActivityMainBinding.java:102: error: cannot find symbol
 
 after
 
-```plaintext
+```
 ...
 // 長いエラーログ
 ...

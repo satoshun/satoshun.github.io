@@ -13,7 +13,7 @@ https://medium.com/@elizarov/coroutines-are-not-about-multi-threading-at-all-1b2
 
 作者のRoman Elizarovさんがコメントで以下のように返信しています。
 
-```text
+```
 The main benefit of coroutines is that you can write asynchronous code without callbacks.
 
 > Coroutineの最大の利点は非同期コードがコールバックなしで書ける点です。

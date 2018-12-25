@@ -24,7 +24,7 @@ Data BindingとDagger2などのアノテーションプロセッサー系のラ�
 
 まずはData Binding 3.2.1から。
 
-```txt
+```
 > Task :app:kaptGenerateStubsDebugKotlin
 e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol
   protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,
@@ -94,7 +94,7 @@ Data Bindingのバージョンだけをアップデートしようと思った�
 kapt "androidx.databinding:databinding-compiler:3.4.0-alpha07"
 ```
 
-```txt
+```
 ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
 ```
 

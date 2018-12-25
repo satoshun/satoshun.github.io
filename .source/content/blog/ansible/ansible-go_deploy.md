@@ -55,7 +55,7 @@ build-amd64: get
 
 build.yml
 
-```yml
+```
 ---
 - name: build src
   command: make build-amd64 chdir={{ local_home }}
@@ -70,7 +70,7 @@ local_homeは変数で, Makefileがあるディレクトリを定義していま
 
 update_binary.yml
 
-```yml
+```
 ---
 - name: update binary
   copy:
@@ -87,7 +87,7 @@ supervisorctlモジュールを使います.
 
 restart.yml
 
-```yml
+```
 ---
 - name: restart binary
   sudo: yes

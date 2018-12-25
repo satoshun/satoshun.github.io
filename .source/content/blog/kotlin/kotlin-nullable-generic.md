@@ -44,7 +44,7 @@ println(d.length) // ここで例外が投げられる
 なぜこのような挙動になるのかを説明します。まず `castNull()`メソッドに定義されたジェネリック型Tは`Any?`をupperに持ちます。
 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。
 
-```text
+```
 GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 CHECKCAST java/lang/Object
 ```
@@ -56,7 +56,7 @@ Non-Null型である`String`にnullを代入することが出来ました。
 
 次に、`fun <T: Any> castNull(): T = null as T`と、Non-Null型をupperにした場合のバイトコードは次になります。
 
-```text
+```
 GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 DUP
 IFNONNULL L1

@@ -30,7 +30,7 @@ CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデ�
 
 Playbookは以下になります.
 
-```yml
+```
 ---
 - hosts: all
   user: "{{ user }}"
@@ -47,7 +47,7 @@ Playbookは以下になります.
 
 Gitモジュールがあるので, それを使います.
 
-```yml
+```
 - name: Update Git repository
   git: repo=<git url> dest=<path to project>
 ```
@@ -56,7 +56,7 @@ Gitモジュールがあるので, それを使います.
 
 npmモジュールがあるので, それを使います.
 
-```yml
+```
 - name: Update npm module
   npm: path=<path to project>
 ```
@@ -65,7 +65,7 @@ npmモジュールがあるので, それを使います.
 
 commandモジュールを使います.
 
-```yml
+```
 - name: Run grunt init
   command: "grunt init chdir=<path to project>"
 
@@ -78,7 +78,7 @@ commandモジュールを使います.
 
 supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.
 
-```yml
+```
 - name: Restart Ghost
   sudo: yes
   supervisorctl: name=ghost state=restarted

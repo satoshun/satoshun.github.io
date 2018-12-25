@@ -48,7 +48,7 @@ https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src
 
 結果は、以下のようになりました。
 
-```text
+```
 // API27 エミュレータ
 main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和
 main=130857ms, async=126582ms
