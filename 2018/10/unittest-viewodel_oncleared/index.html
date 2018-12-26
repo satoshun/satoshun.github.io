@@ -26,7 +26,7 @@
   
   <meta property="twitter:description" content="
 
-ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。 …">
+ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。 …">
   
 
   
@@ -90,27 +90,27 @@
   <div class="post">
     <h1 class="post-title">UnitテストでViewModelのonClearedをテストする</h1>
     
-    <span class="post-date">Created at Sun, Oct 14, 2018</span>
+    <span class="post-date">Updated at Wed, Dec 26, 2018</span>
     
     
 
-<p>ふとAACの<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel">ViewModel</a>のonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。</p>
+<p>ふとAACの<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel">ViewModel</a>のonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。</p>
 
 <p>環境は</p>
 
 <pre><code>&quot;junit:junit:4.12&quot;
-&quot;androidx.test:rules:1.1.0-beta02&quot;
-&quot;androidx.test:runner:1.1.0-beta02&quot;
-&quot;androidx.test.ext:junit:1.0.0-beta02&quot;
+&quot;androidx.test:rules:1.1.1&quot;
+&quot;androidx.test:runner:1.1.1&quot;
+&quot;androidx.test.ext:junit:1.1.0&quot;
 &quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&quot;
-&quot;org.robolectric:robolectric:4.0-beta-1&quot;
+&quot;org.robolectric:robolectric:4.1&quot;
 </code></pre>
 
 <p>になります。</p>
 
-<p>また、サンプルコードは <a href="https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt">GitHub</a>にあるので、参考してください😊</p>
+<p>また、サンプルコードは <a href="https://github.com/satoshun-android-example/Tests">satoshun-android-example/Tests</a>にあるので、参考してください😊</p>
 
-<h3 id="1-viewmodelstore-を使う">1. <code>ViewModelStore</code>を使う</h3>
+<h3 id="1-viewmodelstoreを使う">1. ViewModelStoreを使う</h3>
 
 <p><code>ViewModelProviders.of(activity).get(class)</code>からViewModelを取得したときに、取得したViewModelは<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModelStore">ViewModelStore</a>にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。</p>
 
@@ -125,11 +125,11 @@ class BaseViewModelTest {
 }
 </code></pre>
 
-<p>このテストはコード的には簡単ですが、ViewModelStoreがViewModelのライフサイクルを管理しているということを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。</p>
+<p>このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。</p>
 
 <p>なので、素直にonDestroyをコールするテストも書いてみます。</p>
 
-<h3 id="2-instrumentation-callactivityondestroy-を使う">2. <code>Instrumentation.callActivityOnDestroy</code>を使う</h3>
+<h3 id="2-instrumentation-callactivityondestroyを使う">2. Instrumentation.callActivityOnDestroyを使う</h3>
 
 <p><code>Instrumentation</code>クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
 <code>Instrumentation</code>は<code>InstrumentationRegistry</code>クラスから取得することができ、次のように書くことで、<code>onDestroy</code>をコールすることができます。</p>
@@ -141,13 +141,36 @@ fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
 }
 </code></pre>
 
-<p>これで、Unitテストで<code>ViewModel.onCleared</code>のテストをすることが出来ます。</p>
+<p>ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！</p>
 
-<p>以上です。Happy Testing☆彡</p>
+<p><em>以下追記</em></p>
+
+<h3 id="3-activityscenarioを使う">3. ActivityScenarioを使う</h3>
+
+<p>新しく追加されたActivityScenarioを使うとよりすっきりと<code>onDestroy</code>を表現することが出来ます。</p>
+
+<pre><code class="language-kotlin">@Test
+fun `dispose a coroutine when finished lifecycle of ViewModel 3`() {
+  val scenario = ActivityScenario.launch(FragmentActivity::class.java)
+  ...
+  // onDestroy状態になり、ViewModelのonClearedがコールされる
+  scenario.moveToState(Lifecycle.State.DESTROYED)
+}
+</code></pre>
+
+<p>ActivityScenarioは<code>moveToState</code>を介して、Activityのライフサイクルを操作することが出来ます。
+今回はActivityをonDestroy状態にしたいので、scenario.moveToState(Lifecycle.State.DESTROYED)をコールします。</p>
+
+<p>これで、Unitテストで<code>ViewModel.onCleared</code>のテストをすることが出来ます！！</p>
+
+<h3 id="まとめ">まとめ</h3>
 
 <ul>
-<li><a href="https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt">サンプルコード</a></li>
+<li>新しく追加されたActivityScenarioを使えばかなりすっきりとライフサイクルが絡むテストが書ける！！</li>
+<li><a href="https://github.com/satoshun-android-example/Tests">サンプルコード satoshun-android-example/Tests</a></li>
 </ul>
+
+<p>以上になります。Happy Testing😊😊😊</p>
 
     <div class="mt30"></div>
     

@@ -302,17 +302,17 @@ fun &amp;lt;T&amp;gt; hoge(a: String, b: User, c: Class&amp;lt;T&amp;gt;) { prin
       <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</guid>
-      <description> ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。
+      <description>ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。
 環境は
-&amp;quot;junit:junit:4.12&amp;quot; &amp;quot;androidx.test:rules:1.1.0-beta02&amp;quot; &amp;quot;androidx.test:runner:1.1.0-beta02&amp;quot; &amp;quot;androidx.test.ext:junit:1.0.0-beta02&amp;quot; &amp;quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;quot; &amp;quot;org.robolectric:robolectric:4.0-beta-1&amp;quot;  になります。
-また、サンプルコードは GitHubにあるので、参考してください😊
+&amp;quot;junit:junit:4.12&amp;quot; &amp;quot;androidx.test:rules:1.1.1&amp;quot; &amp;quot;androidx.test:runner:1.1.1&amp;quot; &amp;quot;androidx.test.ext:junit:1.1.0&amp;quot; &amp;quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;quot; &amp;quot;org.robolectric:robolectric:4.1&amp;quot;  になります。
+また、サンプルコードは satoshun-android-example/Testsにあるので、参考してください😊
 1. ViewModelStoreを使う ViewModelProviders.of(activity).get(class)からViewModelを取得したときに、取得したViewModelはViewModelStoreにキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。
-@RunWith(AndroidJUnit4::class) class BaseViewModelTest { @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java) @Test fun `dispose a coroutine when finished lifecycle of ViewModel`() { activityRule.activity.viewModelStore.clear() // ViewModelが開放される } }  このテストはコード的には簡単ですが、ViewModelStoreがViewModelのライフサイクルを管理しているということを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。
+@RunWith(AndroidJUnit4::class) class BaseViewModelTest { @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java) @Test fun `dispose a coroutine when finished lifecycle of ViewModel`() { activityRule.activity.viewModelStore.clear() // ViewModelが開放される } }  このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。
 なので、素直にonDestroyをコールするテストも書いてみます。
 2. Instrumentation.callActivityOnDestroyを使う Instrumentationクラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。 InstrumentationはInstrumentationRegistryクラスから取得することができ、次のように書くことで、onDestroyをコールすることができます。
-@Test fun `dispose a coroutine when finished lifecycle of ViewModel 2`() { // onDestroyがコールされViewModelが開放される InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity) }  これで、UnitテストでViewModel.onClearedのテストをすることが出来ます。
-以上です。Happy Testing☆彡
- サンプルコード  </description>
+@Test fun `dispose a coroutine when finished lifecycle of ViewModel 2`() { // onDestroyがコールされViewModelが開放される InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity) }  ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！
+以下追記
+3. ActivityScenarioを使う 新しく追加されたActivityScenarioを使うとよりすっきりとonDestroyを表現することが出来ます。</description>
     </item>
     
     <item>
