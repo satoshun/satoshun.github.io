@@ -8,24 +8,24 @@ type = "post"
 draft = false
 +++
 
-ふとAACの[ViewModel](https://developer.android.com/reference/androidx/lifecycle/ViewModel)のonClearedメソッドをテストしたくなったので、 2つのやりかたを紹介します。
+ふとAACの[ViewModel](https://developer.android.com/reference/androidx/lifecycle/ViewModel)のonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。
 
 環境は
 
 ```
 "junit:junit:4.12"
-"androidx.test:rules:1.1.0-beta02"
-"androidx.test:runner:1.1.0-beta02"
-"androidx.test.ext:junit:1.0.0-beta02"
+"androidx.test:rules:1.1.1"
+"androidx.test:runner:1.1.1"
+"androidx.test.ext:junit:1.1.0"
 "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
-"org.robolectric:robolectric:4.0-beta-1"
+"org.robolectric:robolectric:4.1"
 ```
 
 になります。
 
-また、サンプルコードは [GitHub](https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt)にあるので、参考してください😊
+また、サンプルコードは [satoshun-android-example/Tests](https://github.com/satoshun-android-example/Tests)にあるので、参考してください😊
 
-### 1. `ViewModelStore`を使う
+### 1. ViewModelStoreを使う
 
 `ViewModelProviders.of(activity).get(class)`からViewModelを取得したときに、取得したViewModelは[ViewModelStore](https://developer.android.com/reference/androidx/lifecycle/ViewModelStore)にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。
 
@@ -41,11 +41,11 @@ class BaseViewModelTest {
 }
 ```
 
-このテストはコード的には簡単ですが、ViewModelStoreがViewModelのライフサイクルを管理しているということを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。
+このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。
 
 なので、素直にonDestroyをコールするテストも書いてみます。
 
-### 2. `Instrumentation.callActivityOnDestroy`を使う
+### 2. Instrumentation.callActivityOnDestroyを使う
 
 `Instrumentation`クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
 `Instrumentation`は`InstrumentationRegistry`クラスから取得することができ、次のように書くことで、`onDestroy`をコールすることができます。
@@ -57,6 +57,8 @@ fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
   InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
 }
 ```
+
+ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！
 
 *以下追記*
 
@@ -75,12 +77,13 @@ fun `dispose a coroutine when finished lifecycle of ViewModel 3`() {
 ```
 
 ActivityScenarioは`moveToState`を介して、Activityのライフサイクルを操作することが出来ます。
-今回はonDestroy状態にしたいので、scenario.moveToState(Lifecycle.State.DESTROYED)をコールします。
+今回はActivityをonDestroy状態にしたいので、scenario.moveToState(Lifecycle.State.DESTROYED)をコールします。
 
 これで、Unitテストで`ViewModel.onCleared`のテストをすることが出来ます！！
 
----
+### まとめ
 
-以上です。Happy Testing😊😊😊
+- 新しく追加されたActivityScenarioを使えばかなりすっきりとライフサイクルが絡むテストが書ける！！
+- [サンプルコード satoshun-android-example/Tests](https://github.com/satoshun-android-example/Tests)
 
-- [サンプルコード](https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/architectures/BaseViewModelTest.kt)
+以上になります。Happy Testing😊😊😊
