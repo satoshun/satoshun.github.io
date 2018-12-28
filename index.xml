@@ -7,7 +7,65 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Tue, 25 Dec 2018 03:00:39 UTC</updated>
+    <updated>Fri, 28 Dec 2018 05:27:13 UTC</updated>
+    
+    
+    <item>
+      <title>感想: コーディングを支える技術</title>
+      <link>https://satoshun.github.io/2018/12/coding_tech/</link>
+      <pubDate>Fri, 28 Dec 2018 05:27:13 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/coding_tech/</guid>
+      <description>&lt;p&gt;「コーディングを支える技術」を読んだのでざっくりと感想。&lt;/p&gt;
+
+&lt;p&gt;比較、歴史から学ぶ&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;その機能はなにかの問題を解決するために導入されている
+
+&lt;ul&gt;
+&lt;li&gt;歴史から紐解くことでなぜそれが必要かが理解できる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;言語によってどの問題を解決したいのかが違う
+
+&lt;ul&gt;
+&lt;li&gt;Python: 同じようなコードになるような言語&lt;/li&gt;
+&lt;li&gt;C++: 高速に動作することを目指している&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;エラー処理の進化
+- globalなエラーハンドリングはgotoと変わらない
+- try catch finallyのように構造化されたエラー処理が誕生した
+    - Javaでは検査型例外、必ずerrorを処理しなければいけない設計&lt;/p&gt;
+
+&lt;p&gt;アドレスを覚えるのは人間には大変&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;人間はメソッド、変数を介することでアドレスを忘れることが出来た
+
+&lt;ul&gt;
+&lt;li&gt;結果、メソッド名、変数名をいかにしてわかりやすくするかが重要になってきた&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;基本的には何をするかというよりかは、何をさせないかで進化している&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;クラスによるポリモーフィズム
+
+&lt;ul&gt;
+&lt;li&gt;関数ポインタを直接触らないように&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;gotoの禁止
+
+&lt;ul&gt;
+&lt;li&gt;構造化、モジュール化できなくなるので&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1646,124 +1704,6 @@ class MainAppComponentFactory : AppComponentFactory() {
 &lt;/ul&gt;
 
 &lt;p&gt;何か疑問点があれば、twitterやサンプルコードのISSUEなどで聞いてください😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: Contracts &#43; 拡張関数でより便利に</title>
-      <link>https://satoshun.github.io/2018/11/more_convenient_contracts/</link>
-      <pubDate>Sun, 11 Nov 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/11/more_convenient_contracts/</guid>
-      <description>
-
-&lt;p&gt;Kotlin 1.3.0からContractsが実装されました。
-Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。&lt;/p&gt;
-
-&lt;p&gt;例えば、&lt;code&gt;isNullOrEmpty&lt;/code&gt;メソッドがfalse返すなら、
-Contractsによりnullでないことが保証されます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a: String? = ...
-if (!a.isNullOrEmpty()) {
-    println(a.length) // !!が必要ない
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Contractsがない時代だと呼び出し元で&lt;code&gt;isNullOrEmpty&lt;/code&gt;がどんな振る舞いをするかを知るすべがなかったので、
-&lt;code&gt;!!&lt;/code&gt;をつける必要があったのですが、Contractsによりnullでないことが保証できるので、&lt;code&gt;!!&lt;/code&gt;を省略できます。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;isNullOrEmpty&lt;/code&gt;の実装は次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@kotlin.internal.InlineOnly
-public inline fun CharSequence?.isNullOrEmpty(): Boolean {
-    contract {
-        returns(false) implies (this@isNullOrEmpty != null)
-    }
-
-    return this == null || this.length == 0
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;contract&lt;/code&gt;はDSL（関数）として定義されています。
-これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;isNullOrEmpty&lt;/code&gt;の場合は&lt;code&gt;returns(false) implies (this@isNullOrEmpty != null)&lt;/code&gt;が契約として定義されています。&lt;/p&gt;
-
-&lt;p&gt;これは、&lt;code&gt;「returns(false)&lt;/code&gt;: falseを返すなら &lt;code&gt;(this@isNullOrEmpty != null)&lt;/code&gt;: 自分自身がnullじゃない」という意味になります。
-なので呼び出し元ではfalseが返ってきたら、nullではないことが保証されるので、smartcastにより&lt;code&gt;!!&lt;/code&gt;をつける必要がなくなるわけです。&lt;/p&gt;
-
-&lt;p&gt;なので、例えば&lt;code&gt;T.isEmpty(t: T?): Boolean&lt;/code&gt;のようなメソッドがあり、ついでにnullチェックもこの関数の中でやっているようなときは、
-contractを定義することでより使いやすい関数にすることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;他の例を見てみます。スコープ関数&lt;code&gt;apply&lt;/code&gt;の実装は次になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@kotlin.internal.InlineOnly
-public inline fun &amp;lt;T&amp;gt; T.apply(block: T.() -&amp;gt; Unit): T {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-    block()
-    return this
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;apply&lt;/code&gt;関数内では、&lt;code&gt;callsInPlace(block, InvocationKind.EXACTLY_ONCE)&lt;/code&gt;が契約として定義されています。
-これは、&lt;code&gt;block&lt;/code&gt;関数が必ず1度呼び出されることを意味します。
-これにより、以下のように書くことが可能になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a: String
-hoge.apply {
-    a = &amp;quot;hoge&amp;quot;
-}
-println(a)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;apply&lt;/code&gt;関数は1度しか呼び出されないので&lt;code&gt;val a: String&lt;/code&gt;の初期化が、&lt;code&gt;apply&lt;/code&gt;関数内で正しく行われることが保証されます。
-Kotlin 1.3.0以前のcontractが内時代では上記のコードはコンパイルエラーになっていたのですが、
-contractにより、実行することが可能になりました。&lt;/p&gt;
-
-&lt;p&gt;今まで見てきたのはKotlinのスタンダートライブラリに入っていた関数ですが、カスタムで定義することも可能です。
-今回は例として、&lt;code&gt;ActivityScenario.onActivity&lt;/code&gt;メソッドをcontract + 拡張関数を使ってより便利にしたいと思います。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/android/android-test/blob/f2f3589c9d6e2ff5740117192cb7e13bd8873a0f/core/java/androidx/test/core/app/ActivityScenario.java#L500&#34;&gt;ActivityScenario.onActivity&lt;/a&gt;メソッドは、callbackを登録すると、Activityの準備ができたタイミングでcallbackが叩かれます。そして、この&lt;code&gt;onActivity&lt;/code&gt;メソッドは一度しかコールされず、実行したスレッドをブロックします。なので、前述した&lt;code&gt;apply&lt;/code&gt;関数と同じcontractを書くことが可能です。&lt;/p&gt;
-
-&lt;p&gt;以下のように拡張関数を書きます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@UseExperimental(ExperimentalContracts::class)
-fun &amp;lt;T : Activity&amp;gt; ActivityScenario&amp;lt;T&amp;gt;.onActivity2(block: (T) -&amp;gt; Unit) {
-  contract {
-    callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-  }
-  onActivity {
-    block(it)
-  }
-}
-
-
-// コンパイルエラーにならない!!
-val activity: Activity
-scenario.onActivity2 {
-    activity = it
-}
-println(activity)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;@UseExperimental(ExperimentalContracts::class)&lt;/code&gt;をつけることで、ユーザ定義のcontractを定義することが出来ます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1度しかコールされないcallbackや、関数内でnullチェックをする場合はcontractを使うと超便利になるかも&lt;/li&gt;
-&lt;li&gt;拡張関数を新しく定義することで、既存のメソッドをよりkotlin-friendlyなメソッドにできるかも!?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&#34;&gt;https://github.com/Kotlin/KEEP/blob/master/proposals/kotlin-contracts.md&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
