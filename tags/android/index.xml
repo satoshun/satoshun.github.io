@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 23 Dec 2018 09:14:43 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 31 Dec 2018 06:19:39 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>マルチモジュールの遷移について考える Part1</title>
+      <link>https://satoshun.github.io/2018/12/multi-module_transition_part1/</link>
+      <pubDate>Mon, 31 Dec 2018 06:19:39 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/12/multi-module_transition_part1/</guid>
+      <description>Androidのトレンドの1つにマルチモジュール構成があります。 マルチモジュールによるメリットとして、
+ ビルド時間の短縮 依存関係を各モジュールに閉じ込めることでコードをクリーンに保つことが期待できる  などがあります。大規模なプロジェクトでは上記のメリットは大きいため、マルチモジュールに移行していくことになると思います。
+この記事は、マルチモジュールにした際のActivity間の遷移について考えたいと思います。目指すゴールとしては、
+ 型安全にしたい、もしくはコンパイル時にチェックする機構が欲しい コード量を減らしたい  Part1では、遷移専用のモジュールを作る方法を考えてみます。
+サンプルコード: satoshun-android-example/MultiActivityRouterExample
+遷移専用のモジュールを作る まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。
+例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。
+ メインではサブ画面が必要なのでサブモジュールに依存する サブではメイン画面が必要なのでメインモジュールに依存する  これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。 直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。
+そこで、
+ メイン画面に遷移するメインルーターモジュール サブ画面に遷移するサブルーターモジュール  の2つのモジュールを作ります。
+メインルーターモジュールでは次の遷移専用インターフェースを定義します。
+interface MainRouter { fun routeToMain(context: Context): Intent }  そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。
+internal class MainRouterImpl @Inject constructor() : MainRouter { override fun routeToMain(context: Context): Intent { return Intent(context, MainActivity::class.java) } } --- @Module internal interface MainActivityModule { @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter }  これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</description>
+    </item>
     
     <item>
       <title>Coroutine &#43; AutoDisposeを作ってみた</title>

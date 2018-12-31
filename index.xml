@@ -7,7 +7,160 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2018 Sato Shun</copyright>
-    <updated>Fri, 28 Dec 2018 05:27:13 UTC</updated>
+    <updated>Mon, 31 Dec 2018 06:19:39 UTC</updated>
+    
+    
+    <item>
+      <title>マルチモジュールの遷移について考える Part1</title>
+      <link>https://satoshun.github.io/2018/12/multi-module_transition_part1/</link>
+      <pubDate>Mon, 31 Dec 2018 06:19:39 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2018/12/multi-module_transition_part1/</guid>
+      <description>
+
+&lt;p&gt;Androidのトレンドの1つにマルチモジュール構成があります。
+マルチモジュールによるメリットとして、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ビルド時間の短縮&lt;/li&gt;
+&lt;li&gt;依存関係を各モジュールに閉じ込めることでコードをクリーンに保つことが期待できる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;などがあります。大規模なプロジェクトでは上記のメリットは大きいため、マルチモジュールに移行していくことになると思います。&lt;/p&gt;
+
+&lt;p&gt;この記事は、マルチモジュールにした際のActivity間の遷移について考えたいと思います。目指すゴールとしては、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;型安全にしたい、もしくはコンパイル時にチェックする機構が欲しい&lt;/li&gt;
+&lt;li&gt;コード量を減らしたい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Part1では、遷移専用のモジュールを作る方法を考えてみます。&lt;/p&gt;
+
+&lt;p&gt;サンプルコード: &lt;a href=&#34;https://github.com/satoshun-android-example/MultiActivityRouterExample&#34;&gt;satoshun-android-example/MultiActivityRouterExample&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;遷移専用のモジュールを作る&#34;&gt;遷移専用のモジュールを作る&lt;/h2&gt;
+
+&lt;p&gt;まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。&lt;/p&gt;
+
+&lt;p&gt;例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;メインではサブ画面が必要なのでサブモジュールに依存する&lt;/li&gt;
+&lt;li&gt;サブではメイン画面が必要なのでメインモジュールに依存する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwecY1CaGcBmH5nSNa5BGBSfCpoZHjOE8WGW5tPpKDAW85vT3QbuAq6K0&#34; width=300&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。
+直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。&lt;/p&gt;
+
+&lt;p&gt;そこで、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;メイン画面に遷移するメインルーターモジュール&lt;/li&gt;
+&lt;li&gt;サブ画面に遷移するサブルーターモジュール&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;の2つのモジュールを作ります。&lt;/p&gt;
+
+&lt;p&gt;メインルーターモジュールでは次の遷移専用インターフェースを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface MainRouter {
+  fun routeToMain(context: Context): Intent
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;internal class MainRouterImpl @Inject constructor() : MainRouter {
+  override fun routeToMain(context: Context): Intent {
+    return Intent(context, MainActivity::class.java)
+  }
+}
+
+---
+
+@Module
+internal interface MainActivityModule {
+  @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class SubActivity : AppCompatActivity() {
+  @Inject lateinit var router: MainRouter
+
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最終的な依存図は次のようになります。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwebLoUFcrO-RzpnksWyaOGgDKLGYMGTJO8If09iv9bnSN41AGRUqGBV63c8oZ6y7LG0o3Kc12K80ge7B8JKl1HWG0000&#34; width=300&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;いちいちルーターモジュールを作るのがめんどうなのであれば、共通のRouterインターフェースを作る方法もあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface Router&amp;lt;T&amp;gt; {
+  fun route(context: Context, params: T): Intent
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実装は次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;---実装
+
+internal class MainRouter2Impl @Inject constructor() : Router&amp;lt;Unit&amp;gt; {
+  override fun route(context: Context, params: Unit): Intent {
+    return Intent(context, MainActivity::class.java)
+  }
+}
+
+---Daggerの設定
+
+@Module
+internal interface MainActivityModule {
+  @Named(&amp;quot;main&amp;quot;)
+  @Binds fun bindMain2Router(impl: MainRouter2Impl): Router&amp;lt;Unit&amp;gt;
+}
+
+---使用側
+
+class SubActivity : AppCompatActivity() {
+  @field:[Inject Named(&amp;quot;main&amp;quot;)] lateinit var router: Router&amp;lt;Unit&amp;gt;
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;相互に行き来したい画面があったときに、遷移専用のモジュールを作ることで循環参照を防ぐことが出来る&lt;/li&gt;
+&lt;li&gt;基本的に画面を含んだモジュールは遷移したいときがほとんどだと思うので、遷移専用のモジュールを作ることで無駄な依存を作ることを防ぐことが出来る&lt;/li&gt;
+&lt;li&gt;遷移用のモジュールが増える😂😂😂&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Part2ではDeeplinkやnavigationを絡めた遷移の方法について考えてみたいと思います😃&lt;/p&gt;
+
+&lt;p&gt;サンプルコード: &lt;a href=&#34;https://github.com/satoshun-android-example/MultiActivityRouterExample&#34;&gt;satoshun-android-example/MultiActivityRouterExample&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1493,217 +1646,6 @@ fun login(): retrofit2.Call&amp;lt;Unit&amp;gt;
 &lt;/ul&gt;
 
 &lt;p&gt;今回の検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RetrofitCustomAnnotationExample&#34;&gt;ここに&lt;/a&gt;あります😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Activity、Fragment、Viewにコンストラクタインジェクションする</title>
-      <link>https://satoshun.github.io/2018/11/android_all_inject_ctor/</link>
-      <pubDate>Fri, 16 Nov 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/11/android_all_inject_ctor/</guid>
-      <description>
-
-&lt;p&gt;Daggerライブラリを使い、Androidフレームワークが提供するActivityなどのクラスにコンストラクタインジェクションしたい、
-そんな夢をみたAndroidエンジニアは数多くいると思います。&lt;/p&gt;
-
-&lt;p&gt;この記事ではそんな夢を叶える方法を紹介します。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ConstructorInjectionExample&#34;&gt;サンプルコードはここに&lt;/a&gt;あります。&lt;/p&gt;
-
-&lt;h2 id=&#34;fragmentfactory&#34;&gt;FragmentFactory&lt;/h2&gt;
-
-&lt;p&gt;Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment : Fragment() {
-  @Inject lateinit var userHandler: UserHandler
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これをコンストラクタインジェクションにしたい。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment @Inject constructor(
-  private val userHandler: UserHandler
-) : Fragment() {
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;androidx.fragment:fragment:1.1.0-alpha01&lt;/code&gt;から、FragmentFactoryが追加されました!!
-これを使うことでコンストラクタインジェクションが可能になります。&lt;/p&gt;
-
-&lt;p&gt;MainFragmentインスタンスを生成する&lt;code&gt;FragmentFactory&lt;/code&gt;を作成します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragmentFactory @Inject constructor(
-  private val fragment: Provider&amp;lt;MainFragment&amp;gt;
-) : FragmentFactory() {
-  override fun instantiate(
-    classLoader: ClassLoader,
-    className: String,
-    args: Bundle?
-  ): Fragment {
-    if (className == MainFragment::class.java.name) {
-      return fragment.get()
-    }
-    return super.instantiate(classLoader, className, args)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;FragmentFactory.instantiate&lt;/code&gt;をoverrideし、そこでMainFragmentのインスタンスを生成します。&lt;/p&gt;
-
-&lt;p&gt;最後に、作成した&lt;code&gt;MainFragmentFactory&lt;/code&gt;をActivityの&lt;code&gt;FragmentManager&lt;/code&gt;に登録します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity() {
-  @Inject lateinit var fragmentFactory: MainFragmentFactory
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    DaggerAppComponent.create().inject(this)
-    supportFragmentManager.fragmentFactory = fragmentFactory
-
-    super.onCreate(savedInstanceState)
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;SupportFragmentManager.fragmentFactory&lt;/code&gt;に登録します。
-これで、Fragmentが生成されるとき&lt;code&gt;MainFragmentFactory&lt;/code&gt;がフックされます。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;SupportFragmentManager.fragmentFactory&lt;/code&gt;にFactoryを登録するタイミングは&lt;code&gt;super.onCreate(savedInstanceState)&lt;/code&gt;の前が良いと思います。
-それは&lt;code&gt;super.onCreate&lt;/code&gt;のタイミングで以前のFragmentが復元されるためです。
-復元されるタイミングで適切なFactoryがないとクラッシュするので、復元する前で登録する必要があります。&lt;/p&gt;
-
-&lt;h2 id=&#34;layoutinflater-factory&#34;&gt;LayoutInflater.Factory&lt;/h2&gt;
-
-&lt;p&gt;次にViewです。&lt;code&gt;LayoutInflater.Factory&lt;/code&gt;が定義されています。
-これを使うことでカスタムのコンストラクタを持ったViewを定義することが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainTextView(
-  context: Context,
-  private val userHandler: UserHandler
-) : TextView(context) {
-  class Factory @Inject constructor(private val userHandler: UserHandler) {
-    fun create(context: Context): MainTextView {
-      return MainTextView(context, userHandler)
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
-&lt;code&gt;LayoutInflater.Factory&lt;/code&gt;を使うことで、インスタンスを生成できるようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainLayoutInflaterFactory @Inject constructor(
-  private val factory: MainTextView.Factory
-) : LayoutInflater.Factory {
-  override fun onCreateView(name: String, context: Context, attrs: AttributeSet?): View? {
-    if (name == MainTextView::class.java.name) {
-      return factory.create(context)
-    }
-    return null
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;LayoutInflater.Factory.onCreateView&lt;/code&gt;をoverrideし、&lt;code&gt;MainTextView&lt;/code&gt;インスタンスを生成します。&lt;/p&gt;
-
-&lt;p&gt;最後に、作成した&lt;code&gt;MainLayoutInflaterFactory&lt;/code&gt;をActivityの&lt;code&gt;layoutInflater.factory&lt;/code&gt;に登録します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity() {
-  private lateinit var layoutInflaterFactory: MainLayoutInflaterFactory
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    DaggerAppComponent.create().inject(this)
-    layoutInflater.factory = layoutInflaterFactory
-
-    super.onCreate(savedInstanceState)
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Activityの&lt;code&gt;LayoutInflater.factory&lt;/code&gt;に登録します。登録するタイミングはsetContentViewの前が良いと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;appcomponentfactory&#34;&gt;AppComponentFactory&lt;/h2&gt;
-
-&lt;p&gt;次にActivityです。
-Activityに依存関係を注入する時、普通にやると以下のコードになると思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : Activity() {
-  @Inject lateinit var presenter: UserPresenter
-  @Inject lateinit var analytics: Analytics
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これをコンストラクタインジェクションにしたい。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity @Inject constructor(
-  private val presenter: UserPresenter,
-  private val analytics: Analytics
-): Activity() {
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;しかし、この書き方はうまくいきません。なぜならActivityインスタンスはシステム側で自動的に生成されるためです。
-カスタム定義のコンストラクタだと、システム側でインスタンスを生成することが出来ません。&lt;/p&gt;
-
-&lt;p&gt;これを解決するべく、API28からAppComponentFactoryというクラスが追加されました!!&lt;/p&gt;
-
-&lt;p&gt;MainActivityインスタンスを生成する&lt;code&gt;AppComponentFactory&lt;/code&gt;を作成します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Suppress(&amp;quot;unused&amp;quot;)
-class MainAppComponentFactory : AppComponentFactory() {
-  private lateinit var application: App
-
-  override fun instantiateActivityCompat(
-    cl: ClassLoader,
-    className: String,
-    intent: Intent?
-  ): Activity {
-    if (className == MainActivity::class.java.name) {
-      return application.appComponent.mainActivity
-    }
-    return super.instantiateActivityCompat(cl, className, intent)
-  }
-
-  override fun instantiateApplicationCompat(cl: ClassLoader, className: String): Application {
-    application = super.instantiateApplicationCompat(cl, className) as App
-    return application
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次にAndroidマニフェストに&lt;code&gt;MainAppComponentFactory&lt;/code&gt;を登録します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;...
-  &amp;lt;application
-    android:allowBackup=&amp;quot;true&amp;quot;
-    android:name=&amp;quot;.App&amp;quot;
-    android:appComponentFactory=&amp;quot;com.github.satoshun.example.sample.MainAppComponentFactory&amp;quot;
-    android:icon=&amp;quot;@mipmap/ic_launcher&amp;quot;
-    android:label=&amp;quot;@string/app_name&amp;quot;
-    android:roundIcon=&amp;quot;@mipmap/ic_launcher_round&amp;quot;
-    android:supportsRtl=&amp;quot;true&amp;quot;
-    android:theme=&amp;quot;@style/AppTheme&amp;quot;
-    tools:replace=&amp;quot;android:appComponentFactory&amp;quot;&amp;gt;
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;AppComponentFactory.instantiateActivityCompat&lt;/code&gt;をoverrideし、&lt;code&gt;MainActivity&lt;/code&gt;インスタンスを生成します。&lt;/p&gt;
-
-&lt;p&gt;これで、カスタムのコンストラクタを持ったActivityインスタンスを生成することが出来ます!!&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fragment、Viewは今からでも使い始めることができる。Daggerなどのライブラリと組み合わせると最高☆&lt;/li&gt;
-&lt;li&gt;AppComponentFactoryはAPI28からなので&amp;hellip;5年後くらいでしょうか😢&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ConstructorInjectionExample&#34;&gt;サンプルコードはここです&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;何か疑問点があれば、twitterやサンプルコードのISSUEなどで聞いてください😃&lt;/p&gt;
 </description>
     </item>
     
