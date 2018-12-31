@@ -1,10 +1,9 @@
 +++
-date = "Sat Dec 29 08:17:17 UTC 2018"
-title = "todo"
-tags = ["android", "gradle", "multimodule"]
+date = "Mon Dec 31 06:19:39 UTC 2018"
+title = "マルチモジュールの遷移について考える Part1"
+tags = ["android", "multimodule", "gradle"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 Androidのトレンドの1つにマルチモジュール構成があります。
@@ -15,21 +14,32 @@ Androidのトレンドの1つにマルチモジュール構成があります。
 
 などがあります。大規模なプロジェクトでは上記のメリットは大きいため、マルチモジュールに移行していくことになると思います。
 
-この記事は、マルチモジュールにした際のActivity間の遷移について考えたいと思います。Part1では、遷移専用のモジュールを作る方法を考えてみます。
+この記事は、マルチモジュールにした際のActivity間の遷移について考えたいと思います。目指すゴールとしては、
+
+- 型安全にしたい、もしくはコンパイル時にチェックする機構が欲しい
+- コード量を減らしたい
+
+Part1では、遷移専用のモジュールを作る方法を考えてみます。
+
+サンプルコード: [satoshun-android-example/MultiActivityRouterExample](https://github.com/satoshun-android-example/MultiActivityRouterExample)
 
 ## 遷移専用のモジュールを作る
 
 まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。
 
-例えば、メイン画面とサブ画面の2画面があるとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出します。
+例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。
 
 - メインではサブ画面が必要なのでサブモジュールに依存する
 - サブではメイン画面が必要なのでメインモジュールに依存する
 
--- todo 図を書く --
+---
 
-これでは依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。
-直接Activityに参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。
+<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwecY1CaGcBmH5nSNa5BGBSfCpoZHjOE8WGW5tPpKDAW85vT3QbuAq6K0" width=300>
+
+---
+
+これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。
+直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。
 
 そこで、
 
@@ -40,7 +50,7 @@ Androidのトレンドの1つにマルチモジュール構成があります。
 
 メインルーターモジュールでは次の遷移専用インターフェースを定義します。
 
-```koltin
+```kotlin
 interface MainRouter {
   fun routeToMain(context: Context): Intent
 }
@@ -65,7 +75,7 @@ internal interface MainActivityModule {
 
 これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。
 
-```koltin
+```kotlin
 class SubActivity : AppCompatActivity() {
   @Inject lateinit var router: MainRouter
 
@@ -73,7 +83,15 @@ class SubActivity : AppCompatActivity() {
 }
 ```
 
-これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます！！
+最終的な依存図は次のようになります。
+
+---
+
+<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwebLoUFcrO-RzpnksWyaOGgDKLGYMGTJO8If09iv9bnSN41AGRUqGBV63c8oZ6y7LG0o3Kc12K80ge7B8JKl1HWG0000" width=300>
+
+---
+
+これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃
 
 ## 補足
 
@@ -118,6 +136,8 @@ DaggerのNamedアノテーションと組み合わせることでいい感じに
 
 - 相互に行き来したい画面があったときに、遷移専用のモジュールを作ることで循環参照を防ぐことが出来る
 - 基本的に画面を含んだモジュールは遷移したいときがほとんどだと思うので、遷移専用のモジュールを作ることで無駄な依存を作ることを防ぐことが出来る
-- モジュールがすごい増えるので微妙なアプローチかも😂😂😂
+- 遷移用のモジュールが増える😂😂😂
 
 Part2ではDeeplinkやnavigationを絡めた遷移の方法について考えてみたいと思います😃
+
+サンプルコード: [satoshun-android-example/MultiActivityRouterExample](https://github.com/satoshun-android-example/MultiActivityRouterExample)
