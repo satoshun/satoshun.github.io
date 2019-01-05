@@ -1,10 +1,9 @@
 +++
-date = "Fri Jan  4 04:41:33 UTC 2019"
-title = "todo"
+date = "Sat Jan  5 02:15:50 UTC 2019"
+title = "dexdumpメモ"
 tags = ["android", "dalvik", "dexdump"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 Android build-toolsにはdexdumpというdexファイルを逆アセンブルするツールがあります。
@@ -278,3 +277,6 @@ Class #0            -
 
   source_file_idx   : 10 (Test.java)
 ```
+
+- finalメソッドのdragがvirtualなのがなぜなのかわからない
+  - finalはdirectメソッドなのでは?
