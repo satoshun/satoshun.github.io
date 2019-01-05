@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="dexdumpメモ">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-01-05">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2019/01/reading_dexdump_result/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="dalvik">
+  
+    <meta property="og:tags" content="dexdump">
+  
+
+  <meta property="twitter:title" content="dexdumpメモ">
+
+  
+  <meta property="twitter:description" content="Android build-toolsにはdexdumpというdexファイルを逆アセンブルするツールがあります。
+逆アセンブルしたファイルを読みたかったのでそれ …">
+  
+
+  
+  <meta property="twitter:image" content="https://goo.gl/tVvkdT">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> dexdumpメモ  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">dexdumpメモ</h1>
+    
+    <span class="post-date">Created at Sat, Jan 5, 2019</span>
+    
+    <p>Android build-toolsにはdexdumpというdexファイルを逆アセンブルするツールがあります。
+逆アセンブルしたファイルを読みたかったのでそれのメモです。</p>
+
+<p>内容はまとまっていません。自分用のメモレベルの記事になります。</p>
+
+<p>dexファイルをコマンドから作るにはjavacとd8コマンドを使います。d8コマンドは <a href="https://r8.googlesource.com/r8">https://r8.googlesource.com/r8</a> の手順通りにビルドします。</p>
+
+<pre><code>javac *.java // or kotlinc *.kt
+java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/android.jar --release *.class
+</code></pre>
+
+<p>d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。</p>
+
+<pre><code>$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
+</code></pre>
+
+<p>例えば次のJavaコードを逆アセンブルしてみます。</p>
+
+<pre><code class="language-java">class Test {
+    public void main() {
+        show(1, 10.0);
+        String[] array = {&quot;&quot;};
+        toggle(array);
+        fade();
+        drag();
+        hide();
+        click();
+        hover();
+    }
+
+    public String show(int a, double d) {
+        System.out.println(a);
+        return &quot;showed&quot;;
+    }
+
+    void toggle(String[] args) {
+        System.out.println(&quot;toggle&quot;);
+    }
+
+    protected void fade() {
+        System.out.println(&quot;fade&quot;);
+    }
+
+    final protected void drag() {
+        System.out.println(&quot;drag&quot;);
+    }
+
+    private void hide() {
+        System.out.println(&quot;hide&quot;);
+    }
+
+    public static void click() {
+        System.out.println(&quot;click&quot;);
+    }
+
+    static void hover() {
+        System.out.println(&quot;hover&quot;);
+    }
+}
+</code></pre>
+
+<pre><code>Processing 'classes.dex'...
+Opened 'classes.dex', DEX version '035'
+Class #0            -
+  Class descriptor  : 'LTest;' // クラス名Test
+  Access flags      : 0x0000 () // パッケージプライベート
+  Superclass        : 'Ljava/lang/Object;' // スーパークラスがObject
+  Interfaces        - // インターフェースを持たない
+  Static fields     - // Staticフィールドを持たない
+  Instance fields   - // インスタンスフィールドを持たない
+  Direct methods    -
+    #0              : (in LTest;)
+      name          : '&lt;init&gt;' // コンストラクタを示す
+      type          : '()V' // 引数なし/戻り値なし
+      access        : 0x10000 (CONSTRUCTOR)
+      code          -
+      registers     : 1
+      ins           : 1
+      outs          : 1
+      insns size    : 4 16-bit code units
+0001e4:                                        |[0001e4] Test.&lt;init&gt;:()V
+0001f4: 7010 0b00 0000                         |0000: invoke-direct {v0}, Ljava/lang/Object;.&lt;init&gt;:()V // method@000b // Objectのsuper
+0001fa: 0e00                                   |0003: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=1
+      locals        :
+        0x0000 - 0x0004 reg=0 this LTest;
+
+    #1              : (in LTest;)
+      name          : 'click'
+      type          : '()V'
+      access        : 0x0009 (PUBLIC STATIC)
+      code          -
+      registers     : 2
+      ins           : 0
+      outs          : 2
+      insns size    : 8 16-bit code units
+0001fc:                                        |[0001fc] Test.click:()V
+00020c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000210: 1a01 0f00                              |0002: const-string v1, &quot;click&quot; // string@000f
+000214: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00021a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=35
+      locals        :
+
+    #2              : (in LTest;)
+      name          : 'hide'
+      type          : '()V'
+      access        : 0x0002 (PRIVATE)
+      code          -
+      registers     : 3
+      ins           : 1
+      outs          : 2
+      insns size    : 8 16-bit code units
+00025c:                                        |[00025c] Test.hide:()V
+00026c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000270: 1a01 1200                              |0002: const-string v1, &quot;hide&quot; // string@0012
+000274: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00027a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=31
+      locals        :
+        0x0000 - 0x0008 reg=2 this LTest;
+
+    #3              : (in LTest;)
+      name          : 'hover'
+      type          : '()V'
+      access        : 0x0008 (STATIC)
+      code          -
+      registers     : 2
+      ins           : 0
+      outs          : 2
+      insns size    : 8 16-bit code units
+00027c:                                        |[00027c] Test.hover:()V
+00028c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000290: 1a01 1300                              |0002: const-string v1, &quot;hover&quot; // string@0013
+000294: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00029a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=39
+      locals        :
+
+  Virtual methods   -
+    #0              : (in LTest;)
+      name          : 'drag'
+      type          : '()V'
+      access        : 0x0014 (PROTECTED FINAL)
+      code          -
+      registers     : 3
+      ins           : 1
+      outs          : 2
+      insns size    : 8 16-bit code units
+00021c:                                        |[00021c] Test.drag:()V
+00022c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000230: 1a01 1000                              |0002: const-string v1, &quot;drag&quot; // string@0010
+000234: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00023a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=27
+      locals        :
+        0x0000 - 0x0008 reg=2 this LTest;
+
+    #1              : (in LTest;)
+      name          : 'fade'
+      type          : '()V'
+      access        : 0x0004 (PROTECTED)
+      code          -
+      registers     : 3
+      ins           : 1
+      outs          : 2
+      insns size    : 8 16-bit code units
+00023c:                                        |[00023c] Test.fade:()V
+00024c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000250: 1a01 1100                              |0002: const-string v1, &quot;fade&quot; // string@0011
+000254: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00025a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=23
+      locals        :
+        0x0000 - 0x0008 reg=2 this LTest;
+
+    #2              : (in LTest;)
+      name          : 'main'
+      type          : '()V'
+      access        : 0x0001 (PUBLIC)
+      code          -
+      registers     : 4
+      ins           : 1
+      outs          : 4
+      insns size    : 32 16-bit code units
+00029c:                                        |[00029c] Test.main:()V
+0002ac: 1210                                   |0000: const/4 v0, #int 1 // #1
+0002ae: 1901 2440                              |0001: const-wide/high16 v1, #long 4621819117588971520 // #4024
+0002b2: 6e40 0700 0321                         |0003: invoke-virtual {v3, v0, v1, v2}, LTest;.show:(ID)Ljava/lang/String; // method@0007
+0002b8: 2300 0800                              |0006: new-array v0, v0, [Ljava/lang/String; // type@0008
+0002bc: 1201                                   |0008: const/4 v1, #int 0 // #0
+0002be: 1a02 0000                              |0009: const-string v2, &quot;&quot; // string@0000
+0002c2: 4d02 0001                              |000b: aput-object v2, v0, v1
+0002c6: 6e20 0800 0300                         |000d: invoke-virtual {v3, v0}, LTest;.toggle:([Ljava/lang/String;)V // method@0008
+0002cc: 6e10 0300 0300                         |0010: invoke-virtual {v3}, LTest;.fade:()V // method@0003
+0002d2: 6e10 0200 0300                         |0013: invoke-virtual {v3}, LTest;.drag:()V // method@0002
+0002d8: 7010 0400 0300                         |0016: invoke-direct {v3}, LTest;.hide:()V // method@0004
+0002de: 7100 0100 0000                         |0019: invoke-static {}, LTest;.click:()V // method@0001
+0002e4: 7100 0500 0000                         |001c: invoke-static {}, LTest;.hover:()V // method@0005
+0002ea: 0e00                                   |001f: return-void
+      catches       : (none)
+      positions     :
+        0x0003 line=3
+        0x0006 line=4
+        0x000d line=5
+        0x0010 line=6
+        0x0013 line=7
+        0x0016 line=8
+        0x0019 line=9
+        0x001c line=10
+      locals        :
+        0x0000 - 0x0020 reg=3 this LTest;
+
+    #3              : (in LTest;)
+      name          : 'show'
+      type          : '(ID)Ljava/lang/String;'
+      access        : 0x0001 (PUBLIC)
+      code          -
+      registers     : 4
+      ins           : 4
+      outs          : 2
+      insns size    : 8 16-bit code units
+0001c4:                                        |[0001c4] Test.show:(ID)Ljava/lang/String;
+0001d4: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+0001d8: 6e20 0900 1200                         |0002: invoke-virtual {v2, v1}, Ljava/io/PrintStream;.println:(I)V // method@0009
+0001de: 1a01 1800                              |0005: const-string v1, &quot;showed&quot; // string@0018
+0001e2: 1101                                   |0007: return-object v1
+      catches       : (none)
+      positions     :
+        0x0000 line=14
+      locals        :
+        0x0000 - 0x0008 reg=0 this LTest;
+
+    #4              : (in LTest;)
+      name          : 'toggle'
+      type          : '([Ljava/lang/String;)V'
+      access        : 0x0000 ()
+      code          -
+      registers     : 3
+      ins           : 2
+      outs          : 2
+      insns size    : 8 16-bit code units
+0002ec:                                        |[0002ec] Test.toggle:([Ljava/lang/String;)V
+0002fc: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
+000300: 1a00 1900                              |0002: const-string v0, &quot;toggle&quot; // string@0019
+000304: 6e20 0a00 0200                         |0004: invoke-virtual {v2, v0}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
+00030a: 0e00                                   |0007: return-void
+      catches       : (none)
+      positions     :
+        0x0000 line=19
+      locals        :
+        0x0000 - 0x0008 reg=1 this LTest;
+
+  source_file_idx   : 10 (Test.java)
+</code></pre>
+
+<ul>
+<li>finalメソッドのdragがvirtualなのがなぜなのかわからない
+
+<ul>
+<li>finalはdirectメソッドなのでは?</li>
+</ul></li>
+</ul>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/dalvik">dalvik</a></li>
+        
+          <li><a href="/tags/dexdump">dexdump</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://goo.gl/tVvkdT" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/01/reading_dexdump_result/</loc>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2018/12/multi-module_transition_part1/</loc>
     <lastmod>2018-12-31T06:19:39+00:00</lastmod>
   </url>
@@ -362,7 +367,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2018-12-31T06:19:39+00:00</lastmod>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -386,7 +391,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2018-12-31T06:19:39+00:00</lastmod>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -445,6 +450,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/dalvik/</loc>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/database/</loc>
     <lastmod>2015-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -471,6 +482,12 @@
   <url>
     <loc>https://satoshun.github.io/tags/design_pattern/</loc>
     <lastmod>2015-06-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/dexdump/</loc>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -714,7 +731,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2018-12-31T06:19:39+00:00</lastmod>
+    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
     <priority>0</priority>
   </url>
   
