@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</loc>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/01/reading_dexdump_result/</loc>
     <lastmod>2019-01-05T02:15:50+00:00</lastmod>
   </url>
@@ -367,7 +372,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -391,7 +396,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -445,7 +450,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2018-12-19T09:59:20+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -492,6 +497,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/dynamicmodule/</loc>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/factory/</loc>
     <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -529,7 +540,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2018-12-31T06:19:39+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -595,7 +606,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/multimodule/</loc>
-    <lastmod>2018-12-31T06:19:39+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -731,7 +742,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-01-05T02:15:50+00:00</lastmod>
+    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
     <priority>0</priority>
   </url>
   

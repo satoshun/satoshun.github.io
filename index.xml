@@ -7,7 +7,176 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sat, 05 Jan 2019 02:15:50 UTC</updated>
+    <updated>Wed, 16 Jan 2019 12:10:36 UTC</updated>
+    
+    
+    <item>
+      <title>Dynamic Feature ModuleとDagger Androidサポートについて</title>
+      <link>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</link>
+      <pubDate>Wed, 16 Jan 2019 12:10:36 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7&#34;&gt;Dependency injection in a multi module project&lt;/a&gt;を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。&lt;/p&gt;
+
+&lt;p&gt;結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。&lt;/p&gt;
+
+&lt;p&gt;また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。&lt;/p&gt;
+
+&lt;p&gt;検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;satoshun-android-example/DynamicFeatureDaggerExample&lt;/a&gt;にあります😊&lt;/p&gt;
+
+&lt;h2 id=&#34;前提知識&#34;&gt;前提知識&lt;/h2&gt;
+
+&lt;p&gt;通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
+ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00&#34; width=300&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40&#34; width=300&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。&lt;/p&gt;
+
+&lt;p&gt;ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;
+
+&lt;p&gt;Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
+実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。&lt;/p&gt;
+
+&lt;p&gt;では、実装を始めます。&lt;/p&gt;
+
+&lt;p&gt;最初に、SubActivityをDaggerApplicationのように振る舞わさせるために&lt;code&gt;ModuleRootActivity&lt;/code&gt;クラスを定義します。
+それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ModuleRootActivity : AppCompatActivity(),
+  HasModuleInjector {
+  @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;
+
+  private lateinit var injector: ModuleActivityInjector
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    injector = moduleComponent.moduleInjector
+    injector.activity.inject(this)
+    super.onCreate(savedInstanceState)
+  }
+
+  protected abstract val moduleComponent: ModuleActivityComponent
+
+  override fun supportFragmentInjector(): AndroidInjector&amp;lt;Fragment&amp;gt; =
+    fragmentInjector
+}
+
+class ModuleActivityInjector @Inject constructor(
+  internal val activity: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
+)
+
+interface ModuleActivityComponent {
+  val moduleInjector: ModuleActivityInjector
+}
+
+interface HasModuleInjector : HasSupportFragmentInjector
+
+abstract class ModuleChildFragment : Fragment() {
+  override fun onAttach(context: Context) {
+    AndroidSupportInjection.inject(this)
+    super.onAttach(context)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@ModuleScope
+@Component(
+  dependencies = [CoreComponent::class], // 共通で使うComponent
+  modules = [
+    AndroidSupportInjectionModule::class,
+    SubBuilder::class
+  ]
+)
+internal interface SubComponent : ModuleActivityComponent {
+  @Component.Builder
+  interface Builder {
+    fun appComponent(module: CoreComponent): Builder
+    fun build(): Sub1Component
+  }
+}
+
+@Module(
+  includes = [SubActivityModule::class]
+)
+interface SubBuilder
+
+@Module
+internal interface SubActivityModule {
+  @ContributesAndroidInjector(modules = [SubFragmentsModule::class])
+  fun contributeSubActivity(): SubActivity
+}
+
+@Module
+internal interface SubFragmentsModule {
+  @ContributesAndroidInjector
+  fun contributeSubFragment(): SubFragment
+}
+
+class SubActivity : ModuleRootActivity() {
+  @Inject lateinit var ...
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.sub_act)
+    ...
+  }
+
+  override val moduleComponent: ModuleActivityComponent
+    get() = DaggerSubComponent
+      .builder()
+      .appComponent(App.coreComponent())
+      .build()
+}
+
+class SubFragment : ModuleChildFragment() {
+  @Inject lateinit var ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;ModuleRootActivity&lt;/code&gt;で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。&lt;/p&gt;
+
+&lt;p&gt;これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃&lt;/p&gt;
+
+&lt;p&gt;細かい部分はサンプルを見ていただけたらと思います。&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;DynamicFeatureDaggerExample&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;メモ1-1つのfeature-module内で複数activityがある場合&#34;&gt;メモ1: 1つのFeature Module内で複数Activityがある場合&lt;/h2&gt;
+
+&lt;p&gt;このパターンは考慮出来ていないです😂
+おそらく、頑張ってApplicationクラス内でstaticで保持するか、もしくは、CoreComponentでScopedで管理するのが良いと思っています。&lt;/p&gt;
+
+&lt;h2 id=&#34;メモ2-configuration-change対応&#34;&gt;メモ2: Configuration Change対応&lt;/h2&gt;
+
+&lt;p&gt;Feature Root ComponentはActivityではなく、AACのViewModelで保持したほうが良いかも知れないです。&lt;/p&gt;
+
+&lt;h2 id=&#34;メモ3-そもそもdagger-androidを使う必要あるのか&#34;&gt;メモ3: そもそもDagger Androidを使う必要あるのか?&lt;/h2&gt;
+
+&lt;p&gt;Scopeをガンガン使いたい時、すでにDagger Androidを導入している場合は使ってもいいかも。
+ただPlaidのように、Dagger Androidを使わないほうがコードが複雑にならなそうなので、使わないほうが基本良いと思います。（今後心変わりする可能性は大いにあります）&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;では、Happy Dagger Life 😊😊😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1632,202 +1801,6 @@ Data Bindingのバージョンだけをアップデートしようと思った�
 &lt;p&gt;もっとこういうふうに比較してほしいであったり、間違っている部分があればご指摘いただければ幸いです😃&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/CoroutineBuildPerfExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>MutableなLiveDataを特定のクラス外から更新できなくする</title>
-      <link>https://satoshun.github.io/2018/12/livedata_helper/</link>
-      <pubDate>Sat, 01 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
-      <description>
-
-&lt;p&gt;LiveDataの値を更新したい時、&lt;code&gt;MutableLiveData&lt;/code&gt;を使うのが一般的だと思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel {
-    val hoge = MutableLiveData&amp;lt;Int&amp;gt;()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この書き方だと、外のクラスから値を更新することが可能です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val viewModel = MainViewModel()
-
-// ok
-viewModel.hoge.postValue(10000)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;外のクラスからは更新出来ないようにするためには&lt;code&gt;LiveData&lt;/code&gt;に型変換する必要があります。&lt;/p&gt;
-
-&lt;p&gt;例えば次のように書きます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel {
-    private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;()
-    val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;こうすることで、外のクラスからは&lt;code&gt;MutableLiveData&lt;/code&gt;が直接見えなくなり、明示的に型変換をしない限り&lt;code&gt;LiveData&lt;/code&gt;の値を更新できなくなります。&lt;/p&gt;
-
-&lt;p&gt;ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
-なので、それの解決策を以下で紹介します。&lt;/p&gt;
-
-&lt;h2 id=&#34;その1&#34;&gt;その1&lt;/h2&gt;
-
-&lt;p&gt;まずコードをのせます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ViewModel2 {
-  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) {
-    postValue(value)
-  }
-
-  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) {
-    setValue(value)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// ViewModel2と同じパッケージに定義
-public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; {
-  @Override
-  protected void postValue(T value) {
-    super.postValue(value);
-  }
-
-  @Override
-  protected void setValue(T value) {
-    super.setValue(value);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;が定義になります。次に使い方です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel2 : ViewModel2() {
-  val userName = ViewModelLiveData2&amp;lt;String&amp;gt;()
-
-  fun update() {
-    userName.setValue(&amp;quot;test&amp;quot;)
-    userName.postValue(&amp;quot;test2&amp;quot;)
-  }
-}
-
-fun main2() {
-  val viewModel = MainViewModel2()
-
-  // compile error!!
-  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
-
-  viewModel.update()
-  viewModel.userName.observeForever { }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ViewModelLiveData2&lt;/code&gt;と&lt;code&gt;ViewModel2&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
-
-&lt;p&gt;ViewModelLiveData2クラスでpostValueメソッドとsetValueメソッドをオーバーライドし、
-ViewModel2クラスと同じパッケージに入れることで、ViewModel2からそれらのメソッドをコール出来るようになり、
-ViewModel2を継承したクラスからのみLiveDataの値を更新できます。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外からsetValueメソッドをコールするとコンパイルエラーになります。&lt;/p&gt;
-
-&lt;p&gt;protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。&lt;/p&gt;
-
-&lt;h2 id=&#34;その2&#34;&gt;その2&lt;/h2&gt;
-
-&lt;p&gt;こちらもまずコードをのせます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ViewModel3 {
-  protected fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.postValue(value: T) {
-    internalPostValue(value)
-  }
-
-  protected fun &amp;lt;T&amp;gt; ViewModelLiveData3&amp;lt;T&amp;gt;.setValue(value: T) {
-    internalSetValue(value)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class ViewModelLiveData3&amp;lt;T&amp;gt; : LiveData&amp;lt;T&amp;gt;() {
-  internal fun internalPostValue(value: T) {
-    postValue(value)
-  }
-
-  internal fun internalSetValue(v: T) {
-    value = v
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;が定義になります。次に使い方です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel3 : ViewModel3() {
-  val userName = ViewModelLiveData3&amp;lt;String&amp;gt;()
-
-  fun update() {
-    userName.setValue(&amp;quot;test&amp;quot;)
-    userName.postValue(&amp;quot;test2&amp;quot;)
-  }
-}
-
-fun main3() {
-  val viewModel = MainViewModel3()
-
-  // compile error
-  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
-
-  viewModel.update()
-  viewModel.userName.observeForever { }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ViewModelLiveData3&lt;/code&gt;と&lt;code&gt;ViewModel3&lt;/code&gt;を作りました（名前は適当です）。&lt;/p&gt;
-
-&lt;p&gt;ViewModelLiveData3クラスとViewModel3クラスを適当なサブモジュール内で定義します。
-そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;viewModel.userName.setValue(&amp;quot;&amp;quot;)&lt;/code&gt;とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;p&gt;abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface ViewModel2 {
-  fun &amp;lt;T&amp;gt; ViewModelLiveData1&amp;lt;T&amp;gt;.setValue(value: T) {
-    this.value = value
-  }
-
-  fun &amp;lt;T&amp;gt; ViewModelLiveData1&amp;lt;T&amp;gt;.postValue(value: T) {
-    postValue(value)
-  }
-}
-
-fun main() {
-  ...
-
-  // compile error
-  // viewModel.userName.setValue(&amp;quot;&amp;quot;)
-
-  // ok
-  with(viewModel) {
-    userName.setValue(&amp;quot;&amp;quot;)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;おそらくLiveDataの値を更新する部分は、&lt;code&gt;ViewModel&lt;/code&gt;や&lt;code&gt;Store&lt;/code&gt;クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。&lt;/li&gt;
-&lt;li&gt;もっと良い、楽できる書き方があればぜひ教えてください!!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;今回の検証に用いた&lt;a href=&#34;https://github.com/satoshun-android-example/LiveDataRemoveUnderScoreExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
 </description>
     </item>
     
