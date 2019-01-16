@@ -1,6 +1,6 @@
 +++
 date = "Wed Jan 16 12:10:36 UTC 2019"
-title = "Dynamic Feature ModuleとDagger Androidサポートについて"
+title = "Dynamic Feature ModuleでDagger Androidを使う"
 tags = ["android", "multimodule", "gradle", "dynamicmodule", "dagger"]
 blogimport = true
 type = "post"
