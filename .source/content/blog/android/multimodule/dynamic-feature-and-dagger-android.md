@@ -1,35 +1,37 @@
 +++
-date = "Tue Jan 15 13:00:56 UTC 2019"
+date = "Wed Jan 16 00:41:13 UTC 2019"
 title = "Dynamic Feature ModuleとDagger Android"
 tags = ["android", "multimodule", "gradle", "dynamicmodule", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 [Dependency injection in a multi module project](https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7)を見て、Dynamic FeatureをAndroid Daggerで実現するにはどうするかを考えてみました。
 
-結論からいうと、いくつかのbaseクラスを使うことで対応できそうです。
+結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。
 
 また、この記事ではDynamic Feature Module、Android Daggerをある程度知っている前提で進めていきます。
+
 検証に用いたコードは[satoshun-android-example/DynamicFeatureDaggerExample](https://github.com/satoshun-android-example/DynamicFeatureDaggerExample)にあります😊
 
-## 制限/前提知識
+## 前提知識
 
 通常のAndroid DaggerはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
-ここでのポイントは、ApplicationでTopに位置するComponentを保持/作成するという点です。これはAppモジュールが全てのFeatureモジュールを知っていることを意味します。
+ここでのポイントは、Applicationでトップに位置するComponentを保持/作成するという点です。これはAppモジュールが全てのFeatureモジュールを知っていることを意味します。
 
-この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでTopに位置するComponentを保持/作成することが出来ません。なぜなら、Appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常の構成と違い、AppとFeature Module間の依存関係が逆転します。結果、ApplicationでTopに位置するComponentを保持/作成することが出来ません。
+この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、Appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、AppとFeature Module間の依存関係が逆転します。結果、ApplicationでTopに位置するComponentを保持/作成することが出来ません。
 
-そこでDynamic Featureでは、AppでTopのComponentを持つのはやめて、各Feature Module内でTopのComponentを保持するのが良いという結論になります。
+そこでDynamic Featureでは、AppモジュールでトップのComponentを持つのはやめて、各Feature Module内でそれぞれComponentを保持するのが良いという結論になります。
 
-ここまでが前提知識で、次に実現方法について説明します。
+ここまでが前提知識で、次にDynamic Feature + Android Daggerの実現方法について説明します。
 
 ## 実現方法
 
-Feature Subモジュールがあるとします。そして、このSubモジュールのTopがSubActivityであるとします。このSubActivityがDaggerApplicationのように振る舞うイメージです。
+Feature Subモジュールがあるとします。このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されています。
+方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることです。
 
-まずDaggerApplicationのように振る舞う`ModuleRootActivity`を定義します。
+まず、SubActivityをDaggerApplicationのように振る舞わさせるために`ModuleRootActivity`クラスを定義します。
 
 ```kotlin
 abstract class ModuleRootActivity : AppCompatActivity(),
@@ -68,7 +70,7 @@ abstract class ModuleChildFragment : Fragment() {
 }
 ```
 
-そして使う側のSubActivityで実装をします。
+そしてSubActivityで実装をします。
 
 ```kotlin
 @ModuleScope
@@ -125,7 +127,7 @@ class SubFragment : ModuleChildFragment() {
 }
 ```
 
-このようになります。`ModuleRootActivity`で、Featureモジュール内で使うComponentを保持し、各Fragmentが保持したComponentを参照します。
+このようになります。`ModuleRootActivity`で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照する。
 前述したとおり、ActivityをDaggerApplicationのように振る舞わせることでDagger Androidを実現しています。
 
 ## メモ1: 1つのFeature Module内で複数Activityがある場合

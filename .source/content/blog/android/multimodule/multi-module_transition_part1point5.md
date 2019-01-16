@@ -1,7 +1,7 @@
 +++
 date = "Mon Jan 14 01:20:35 UTC 2019"
 title = "マルチモジュールの遷移について考える Part1.5"
-tags = ["android", "multimodule", "gradle", "dynamicmodule]
+tags = ["android", "multimodule", "gradle", "dynamicmodule"]
 blogimport = true
 type = "post"
 draft = true
