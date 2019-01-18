@@ -997,7 +997,7 @@ class MainActivity : BaseActivity() {
 
 &lt;h2 id=&#34;基本編&#34;&gt;基本編&lt;/h2&gt;
 
-&lt;p&gt;Dagger + ViewModelを同時に使うのは少しツラミがあります。それは、ViewModelのインスタンス生成はViewModelProviderを介して行う必要があるためです。&lt;/p&gt;
+&lt;p&gt;一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は&lt;code&gt;ViewModelProvider&lt;/code&gt;を介して行う必要があるためです。&lt;/p&gt;
 
 &lt;p&gt;例えば、次のコードは間違っています。&lt;/p&gt;
 
@@ -1010,7 +1010,7 @@ class MainActivity {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;この書き方だとMainViewModelのインスタンス生成はViewModelProviderを介して行われません。よって次のように書く必要があります。&lt;/p&gt;
+&lt;p&gt;この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel(...): ViewModel()
 
@@ -1018,7 +1018,7 @@ class MainActivity {
 class MainActivityModule {
     @Provides
     fun provideMainViewModel(...) : MainViewModel {
-        // ViewModelProviderを介して行う
+        // ViewModelProviderを使ってインスタンスを生成する
         return ViewModelProviders.of(...).get(MainViewModel::class.java)
     }
 }
@@ -1030,9 +1030,9 @@ class MainActivity {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してインスタンス生成をすることが出来ます。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。&lt;/p&gt;
 
-&lt;p&gt;また、ViewModelを直接注入せずに、ViewModelProvider.Factoryを注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
+&lt;p&gt;また、ViewModelを直接注入せずに、&lt;code&gt;ViewModelProvider.Factory&lt;/code&gt;を注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel(...): ViewModel()
@@ -1043,16 +1043,18 @@ class MainViewModel @Inject constructor(...): ViewModel()
 class MainActivityModule {
     @Provides
     fun provideViewModelFactory(...) : ViewModelProvider.Factory {
+        // ここでMainViewModelを生成するFactoryを定義する
         return object: ViewModelProvider.Factory {
-            // ここでMainViewModelを生成する
             ...
         }
     }
 }
 
 class MainActivity : AppCompatActivity() {
-    // ViewModelではなく、Factoryを注入する
+    // ViewModelではなく、Factoryを注入するのがポイント
     @Inject lateinit var factory: ViewModelProvider.Factory
+
+    // MainViewModelインスタンスの生成はActivity側で行う
     // activity-ktxで定義されている拡張関数を使う
     private val viewModel: MainViewModel by viewModels { factory }
 
@@ -1060,54 +1062,74 @@ class MainActivity : AppCompatActivity() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;activity-ktxにある&lt;code&gt;viewModels&lt;/code&gt;拡張関数を使ってViewModelインスタンスを生成します。これでViewModelのライフサイクルを保つことができます！！&lt;/p&gt;
+&lt;p&gt;activity-ktxに定義されている&lt;code&gt;viewModels&lt;/code&gt;拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。&lt;/p&gt;
 
-&lt;p&gt;Dagger + ViewModelは、大きくこの2つのアプローチがあるかなと思います。&lt;/p&gt;
+&lt;p&gt;次に、この2パターンのどちらの書き方がいいかを考えていきます。&lt;/p&gt;
 
 &lt;h2 id=&#34;実例編&#34;&gt;実例編&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使うパターンと、Factoryを使うパターンのどっちの書き方がいいの？って話になると思うんですが、一長一短かなと思ってます。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。&lt;/p&gt;
 
-&lt;p&gt;両方アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。&lt;/p&gt;
+&lt;p&gt;両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/nickbutcher/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/dagger/DribbbleModule.kt#L43&#34;&gt;plaid&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;@Provides&lt;/code&gt; + ViewModelを直接Injectするパターン&lt;/li&gt;
-&lt;li&gt;各ViewModelごとにFactoryクラスを定義する必要があるので記述量は多い&lt;/li&gt;
-&lt;li&gt;ViewModelが提供されていなかったらコンパイルエラーになる
+&lt;li&gt;&lt;code&gt;@Provides&lt;/code&gt;を使い、ViewModelを直接注入するパターン&lt;/li&gt;
+&lt;li&gt;ViewModelごとにFactoryクラスをそれぞれ定義する必要があるので記述量が多い&lt;/li&gt;
+&lt;li&gt;ViewModelの依存関係が解決できなかったらコンパイルエラーになる
 
 &lt;ul&gt;
-&lt;li&gt;コンパイルチェックがうまく動く&lt;/li&gt;
+&lt;li&gt;Daggerのコンパイルチェックが上手く動く&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelを直接Inject出来るので使い側からすると間違った使い方は出来ない（はず）&lt;/li&gt;
+&lt;li&gt;ViewModelを直接注入出来るので使い側からすると間違った使い方は出来ない（はず）&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://medium.com/@marco_cattaneo/android-viewmodel-and-factoryprovider-good-way-to-manage-it-with-dagger-2-d9e20a07084c&#34;&gt;Android ViewModel and FactoryProvider: good way to manage it with Dagger Multibindings&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Daggerのmultibindings + ViewModel FactoryをInjectするパターン&lt;/li&gt;
+&lt;li&gt;Daggerのmultibindingsを使い、ViewModel Factoryを注入するパターン&lt;/li&gt;
 &lt;li&gt;最初に仕組みを入れてしまえば、のちのちの記述量は少ない&lt;/li&gt;
-&lt;li&gt;multibindingsを使っているのでランタイム時に落ちる可能性がある&lt;/li&gt;
-&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その書き方をするとViewModelProviderを介さないので正しくない。間違った書き方が出来る&lt;/li&gt;
+&lt;li&gt;multibindingsを使っているのでランタイム時に落ちる可能性がある
+
+&lt;ul&gt;
+&lt;li&gt;Daggerのコンパイルチェックが上手く動かない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
+
+&lt;ul&gt;
+&lt;li&gt;間違った書き方が出来る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ActivityKtxDaggerExample/tree/master/app/src/main/java/com/github/satoshun/example/sample&#34;&gt;Activity-Ktx + Dagger Example&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Factory用のカスタムクラス + ViewModel FactoryをInjectするパターン
+&lt;li&gt;Factory用のカスタムクラスを定義し、ViewModel Factoryを注入するパターン
 
 &lt;ul&gt;
-&lt;li&gt;僕のサンプルコードです😃&lt;/li&gt;
+&lt;li&gt;僕が作ったサンプルコードです😃　&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;最初に汎用クラスを入れてしまえば、のちのちの記述量は少ない&lt;/li&gt;
 &lt;li&gt;ViewModelが提供されていなかったらコンパイルエラーになる
 
 &lt;ul&gt;
-&lt;li&gt;コンパイルチェックがうまく動く&lt;/li&gt;
+&lt;li&gt;Daggerのコンパイルチェックが上手く動く&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その書き方をするとViewModelProviderを介さないので正しくない。間違った書き方が出来る&lt;/li&gt;
+&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
+
+&lt;ul&gt;
+&lt;li&gt;間違った書き方が出来る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。&lt;/p&gt;
 
@@ -1115,10 +1137,10 @@ class MainActivity : AppCompatActivity() {
 
 &lt;ul&gt;
 &lt;li&gt;一番プロジェクトに適したパターンを適用するのが良いと思います😃&lt;/li&gt;
-&lt;li&gt;DaggerでViewModelサポートの&lt;a href=&#34;https://github.com/google/dagger/issues/1271&#34;&gt;ISSUE&lt;/a&gt;が立っており、ViewModel + Daggerの計画があります
+&lt;li&gt;DaggerでViewModelサポートの&lt;a href=&#34;https://github.com/google/dagger/issues/1271&#34;&gt;Issue&lt;/a&gt;が立っており、DaggerがViewModelをサポートする計画があります
 
 &lt;ul&gt;
-&lt;li&gt;なので前述のパターンは過去のものとなる可能性が高いです😭&lt;/li&gt;
+&lt;li&gt;なので前述のパターンはいつか過去のものとなる可能性が高いです。&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>

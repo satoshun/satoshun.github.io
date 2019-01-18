@@ -30,7 +30,7 @@
 
 基本編
 
-Dagger &#43; ViewModelを同時 …">
+一緒にDagger &#43; ViewModel …">
   
 
   
@@ -94,7 +94,7 @@ Dagger &#43; ViewModelを同時 …">
   <div class="post">
     <h1 class="post-title">Dagger &#43; ViewModelの基本編 &#43; 実例編</h1>
     
-    <span class="post-date">Created at Wed, Dec 19, 2018</span>
+    <span class="post-date">Updated at Fri, Jan 18, 2019</span>
     
     
 
@@ -102,7 +102,7 @@ Dagger &#43; ViewModelを同時 …">
 
 <h2 id="基本編">基本編</h2>
 
-<p>Dagger + ViewModelを同時に使うのは少しツラミがあります。それは、ViewModelのインスタンス生成はViewModelProviderを介して行う必要があるためです。</p>
+<p>一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は<code>ViewModelProvider</code>を介して行う必要があるためです。</p>
 
 <p>例えば、次のコードは間違っています。</p>
 
@@ -115,7 +115,7 @@ class MainActivity {
 }
 </code></pre>
 
-<p>この書き方だとMainViewModelのインスタンス生成はViewModelProviderを介して行われません。よって次のように書く必要があります。</p>
+<p>この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。</p>
 
 <pre><code class="language-kotlin">class MainViewModel(...): ViewModel()
 
@@ -123,7 +123,7 @@ class MainActivity {
 class MainActivityModule {
     @Provides
     fun provideMainViewModel(...) : MainViewModel {
-        // ViewModelProviderを介して行う
+        // ViewModelProviderを使ってインスタンスを生成する
         return ViewModelProviders.of(...).get(MainViewModel::class.java)
     }
 }
@@ -135,9 +135,9 @@ class MainActivity {
 }
 </code></pre>
 
-<p><code>@Provides</code>を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してインスタンス生成をすることが出来ます。</p>
+<p><code>@Provides</code>を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。</p>
 
-<p>また、ViewModelを直接注入せずに、ViewModelProvider.Factoryを注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
+<p>また、ViewModelを直接注入せずに、<code>ViewModelProvider.Factory</code>を注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。</p>
 
 <pre><code class="language-kotlin">class MainViewModel(...): ViewModel()
@@ -148,16 +148,18 @@ class MainViewModel @Inject constructor(...): ViewModel()
 class MainActivityModule {
     @Provides
     fun provideViewModelFactory(...) : ViewModelProvider.Factory {
+        // ここでMainViewModelを生成するFactoryを定義する
         return object: ViewModelProvider.Factory {
-            // ここでMainViewModelを生成する
             ...
         }
     }
 }
 
 class MainActivity : AppCompatActivity() {
-    // ViewModelではなく、Factoryを注入する
+    // ViewModelではなく、Factoryを注入するのがポイント
     @Inject lateinit var factory: ViewModelProvider.Factory
+
+    // MainViewModelインスタンスの生成はActivity側で行う
     // activity-ktxで定義されている拡張関数を使う
     private val viewModel: MainViewModel by viewModels { factory }
 
@@ -165,54 +167,74 @@ class MainActivity : AppCompatActivity() {
 }
 </code></pre>
 
-<p>activity-ktxにある<code>viewModels</code>拡張関数を使ってViewModelインスタンスを生成します。これでViewModelのライフサイクルを保つことができます！！</p>
+<p>activity-ktxに定義されている<code>viewModels</code>拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。</p>
 
-<p>Dagger + ViewModelは、大きくこの2つのアプローチがあるかなと思います。</p>
+<p>次に、この2パターンのどちらの書き方がいいかを考えていきます。</p>
 
 <h2 id="実例編">実例編</h2>
 
-<p><code>@Provides</code>を使うパターンと、Factoryを使うパターンのどっちの書き方がいいの？って話になると思うんですが、一長一短かなと思ってます。</p>
+<p><code>@Provides</code>を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。</p>
 
-<p>両方アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。</p>
+<p>両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。</p>
+
+<hr />
 
 <p><a href="https://github.com/nickbutcher/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/dagger/DribbbleModule.kt#L43">plaid</a></p>
 
 <ul>
-<li><code>@Provides</code> + ViewModelを直接Injectするパターン</li>
-<li>各ViewModelごとにFactoryクラスを定義する必要があるので記述量は多い</li>
-<li>ViewModelが提供されていなかったらコンパイルエラーになる
+<li><code>@Provides</code>を使い、ViewModelを直接注入するパターン</li>
+<li>ViewModelごとにFactoryクラスをそれぞれ定義する必要があるので記述量が多い</li>
+<li>ViewModelの依存関係が解決できなかったらコンパイルエラーになる
 
 <ul>
-<li>コンパイルチェックがうまく動く</li>
+<li>Daggerのコンパイルチェックが上手く動く</li>
 </ul></li>
-<li>ViewModelを直接Inject出来るので使い側からすると間違った使い方は出来ない（はず）</li>
+<li>ViewModelを直接注入出来るので使い側からすると間違った使い方は出来ない（はず）</li>
 </ul>
+
+<hr />
 
 <p><a href="https://medium.com/@marco_cattaneo/android-viewmodel-and-factoryprovider-good-way-to-manage-it-with-dagger-2-d9e20a07084c">Android ViewModel and FactoryProvider: good way to manage it with Dagger Multibindings</a></p>
 
 <ul>
-<li>Daggerのmultibindings + ViewModel FactoryをInjectするパターン</li>
+<li>Daggerのmultibindingsを使い、ViewModel Factoryを注入するパターン</li>
 <li>最初に仕組みを入れてしまえば、のちのちの記述量は少ない</li>
-<li>multibindingsを使っているのでランタイム時に落ちる可能性がある</li>
-<li>ViewModelを直接注入する書き方が可能だが、その書き方をするとViewModelProviderを介さないので正しくない。間違った書き方が出来る</li>
+<li>multibindingsを使っているのでランタイム時に落ちる可能性がある
+
+<ul>
+<li>Daggerのコンパイルチェックが上手く動かない</li>
+</ul></li>
+<li>ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
+
+<ul>
+<li>間違った書き方が出来る</li>
+</ul></li>
 </ul>
+
+<hr />
 
 <p><a href="https://github.com/satoshun-android-example/ActivityKtxDaggerExample/tree/master/app/src/main/java/com/github/satoshun/example/sample">Activity-Ktx + Dagger Example</a></p>
 
 <ul>
-<li>Factory用のカスタムクラス + ViewModel FactoryをInjectするパターン
+<li>Factory用のカスタムクラスを定義し、ViewModel Factoryを注入するパターン
 
 <ul>
-<li>僕のサンプルコードです😃</li>
+<li>僕が作ったサンプルコードです😃　</li>
 </ul></li>
 <li>最初に汎用クラスを入れてしまえば、のちのちの記述量は少ない</li>
 <li>ViewModelが提供されていなかったらコンパイルエラーになる
 
 <ul>
-<li>コンパイルチェックがうまく動く</li>
+<li>Daggerのコンパイルチェックが上手く動く</li>
 </ul></li>
-<li>ViewModelを直接注入する書き方が可能だが、その書き方をするとViewModelProviderを介さないので正しくない。間違った書き方が出来る</li>
+<li>ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
+
+<ul>
+<li>間違った書き方が出来る</li>
+</ul></li>
 </ul>
+
+<hr />
 
 <p>個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。</p>
 
@@ -220,10 +242,10 @@ class MainActivity : AppCompatActivity() {
 
 <ul>
 <li>一番プロジェクトに適したパターンを適用するのが良いと思います😃</li>
-<li>DaggerでViewModelサポートの<a href="https://github.com/google/dagger/issues/1271">ISSUE</a>が立っており、ViewModel + Daggerの計画があります
+<li>DaggerでViewModelサポートの<a href="https://github.com/google/dagger/issues/1271">Issue</a>が立っており、DaggerがViewModelをサポートする計画があります
 
 <ul>
-<li>なので前述のパターンは過去のものとなる可能性が高いです😭</li>
+<li>なので前述のパターンはいつか過去のものとなる可能性が高いです。</li>
 </ul></li>
 </ul>
 
