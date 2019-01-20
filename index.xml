@@ -7,7 +7,123 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Wed, 16 Jan 2019 12:10:36 UTC</updated>
+    <updated>Sun, 20 Jan 2019 02:16:43 UTC</updated>
+    
+    
+    <item>
+      <title>R8/Proguard: Class Mergingについて</title>
+      <link>https://satoshun.github.io/2019/01/r8-merge-method/</link>
+      <pubDate>Sun, 20 Jan 2019 02:16:43 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/r8-merge-method/</guid>
+      <description>
+
+&lt;p&gt;コードの最適化の話です。この記事ではClass Mergingについて紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;class-merging&#34;&gt;Class Merging?&lt;/h2&gt;
+
+&lt;p&gt;その名の通り、Classをマージする最適化です。最終的なクラス数減らすことが期待出来ます。
+Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があります。&lt;/p&gt;
+
+&lt;p&gt;まずは縦方向のClass Mergingについて説明します。&lt;/p&gt;
+
+&lt;h3 id=&#34;縦方向&#34;&gt;縦方向?&lt;/h3&gt;
+
+&lt;p&gt;縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。&lt;/p&gt;
+
+&lt;p&gt;例えば、次の実装は最適化によって1つにまとめられます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface IVertical {
+    fun show(i: Int)
+}
+
+class Vertical(
+    private val a: Int
+) : IVertical {
+    override fun show(i: Int) {
+        println(&amp;quot;start called $i $a&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class Vertical {
+    ...
+
+    public final void show(int i) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;IVertical&lt;/code&gt;インターフェースが見事に消されていることが分かります。&lt;/p&gt;
+
+&lt;p&gt;また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/shaking/VerticalClassMerger.java&#34;&gt;R8: Vertical Merger&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/facebook/proguard/blob/master/src/proguard/optimize/peephole/VerticalClassMerger.java&#34;&gt;Proguard: Vertical Merger&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に横方向のマージを紹介します。&lt;/p&gt;
+
+&lt;h3 id=&#34;横方向&#34;&gt;横方向?&lt;/h3&gt;
+
+&lt;p&gt;Staticメソッドのみを持つクラスを1つにまとめるなどの最適化を行います。&lt;/p&gt;
+
+&lt;p&gt;例えばKotlinの複数のファイルで定義されたトップレベル関数を1つのクラスにまとめてくれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// ShowExt.kt
+fun Int.show1(i: Int) {
+    ...
+}
+
+// ShowExt2.kt
+fun Int.show2(i: Int) {
+    ...
+}
+
+--&amp;gt; Proguard/R8による最適化後 --&amp;gt;
+
+```java
+public class ShowExt2Kt {
+    public static final void show1(int i) {
+        ...
+    }
+}
+
+    public static final void show2(int i) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;1つのクラスにまとめられていることが分かります。&lt;/p&gt;
+
+&lt;p&gt;また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Fuga.kt
+fun Int.show1() {
+    ...
+}
+
+// mapping.txtの内容
+android.support.constraint.solver.widgets.Analyzer -&amp;gt; a.b.b.a.a.a:
+    ...
+    void com.github.satoshun.example.FugaKt.show1(int) -&amp;gt; d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜこのクラスに移動したかは分からないので、今後の宿題とします。申し訳ありません😫&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;横方向のマージについては内容に自信がないので、もし間違っていたり、補足があれば教えて頂けるととても嬉しいです🙏&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1719,110 +1835,6 @@ Data Bindingのバージョンだけをアップデートしようと思った�
 &lt;/ul&gt;
 
 &lt;p&gt;Happy Data Binding Life🎉🎉🎉&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin Coroutineを導入したらどれだけビルドタイムが増えそうか検証した</title>
-      <link>https://satoshun.github.io/2018/12/coroutine_build_perf/</link>
-      <pubDate>Wed, 05 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/coroutine_build_perf/</guid>
-      <description>
-
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;: 計測方法は実環境に全く即していないので意味がない可能性が高いです。&lt;/p&gt;
-
-&lt;h3 id=&#34;環境&#34;&gt;環境&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AGP3.4.0-alpha06&lt;/li&gt;
-&lt;li&gt;Kotlin 1.3.10&lt;/li&gt;
-&lt;li&gt;Kotlinx.coroutine 1.0.1&lt;/li&gt;
-&lt;li&gt;Gradle 5.0&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;比較対象&#34;&gt;比較対象&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;kotlinx.coroutineを使ったサンプル
-
-&lt;ul&gt;
-&lt;li&gt;クラス数 300&lt;/li&gt;
-&lt;li&gt;各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている&lt;/li&gt;
-&lt;li&gt;300 * 7の2100箇所がCoroutine関連のコードになります&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;kotlinx.coroutineを使わないサンプル
-
-&lt;ul&gt;
-&lt;li&gt;クラス数 300&lt;/li&gt;
-&lt;li&gt;各クラスは7つのメソッドを持ち、その中で適当なメソッド（&lt;code&gt;Handler().post {}&lt;/code&gt;）をコールしている&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/CoroutineBuildPerfExample&#34;&gt;サンプルコード&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;計測コマンド&#34;&gt;計測コマンド&lt;/h3&gt;
-
-&lt;p&gt;Build Scanを使って計測します。その際。build-cacheはoffにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;./gradlew clean
-./gradlew build --no-build-cache --scan
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。
-また試行回数は10回程度で、最終結果のみを以下に掲載します。&lt;/p&gt;
-
-&lt;h2 id=&#34;kotlinx-coroutineを使う&#34;&gt;kotlinx.coroutineを使う&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;Time spent executing tasks 1m 16.034s
-    All tasks	207	2m 42.833s
-    Tasks avoided	12 (09.7%)	0.062s
-    From cache	0 (00.0%)	0.000s
-    Up-to-date	12 (09.7%)	0.062s
-    Tasks executed	112 (90.3%)	2m 42.739s
-    Cacheable	0 (00.0%)	0.000s
-    Not cacheable	112 (90.3%)	2m 42.739s
-    Lifecycle	45	0.023s
-    No source	38	0.009s
-    Skipped	0	0.000s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最終実行時間は&lt;code&gt;1m 16.034s&lt;/code&gt;になります。&lt;/p&gt;
-
-&lt;h2 id=&#34;kotlinx-coroutineを使わない&#34;&gt;kotlinx.coroutineを使わない&lt;/h2&gt;
-
-&lt;p&gt;次に使わない例です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Time spent executing tasks 1m 1.520s
-    All tasks	207	1m 57.416s
-    Tasks avoided	12 (09.7%)	0.015s
-    From cache	0 (00.0%)	0.000s
-    Up-to-date	12 (09.7%)	0.015s
-    Tasks executed	112 (90.3%)	1m 57.356s
-    Cacheable	0 (00.0%)	0.000s
-    Not cacheable	112 (90.3%)	1m 57.356s
-    Lifecycle	45	0.021s
-    No source	38	0.024s
-    Skipped	0	0.000s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最終実行時間は&lt;code&gt;1m 1.520s&lt;/code&gt;になります。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;上記のような結果になりました。しかし、繰り返しになりますが、この比較は実環境に即して無い、そもそもサンプルコードが同等でないため正当じゃないです
-
-&lt;ul&gt;
-&lt;li&gt;ただ、Coroutineを入れてある程度の規模まで行くと、フルビルド時のビルド時間の増加は顕著になるかもしれません&lt;/li&gt;
-&lt;li&gt;iMac Proを買ってもらいましょう💻s&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;もっとこういうふうに比較してほしいであったり、間違っている部分があればご指摘いただければ幸いです😃&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/CoroutineBuildPerfExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;😃&lt;/p&gt;
 </description>
     </item>
     

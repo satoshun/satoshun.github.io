@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Proguard on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/proguard/</link>
+    <description>Recent content in Proguard on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 20 Jan 2019 02:16:43 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/proguard/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>R8/Proguard: Class Mergingについて</title>
+      <link>https://satoshun.github.io/2019/01/r8-merge-method/</link>
+      <pubDate>Sun, 20 Jan 2019 02:16:43 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/01/r8-merge-method/</guid>
+      <description>コードの最適化の話です。この記事ではClass Mergingについて紹介します。
+Class Merging? その名の通り、Classをマージする最適化です。最終的なクラス数減らすことが期待出来ます。 Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があります。
+まずは縦方向のClass Mergingについて説明します。
+縦方向? 縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。
+例えば、次の実装は最適化によって1つにまとめられます。
+interface IVertical { fun show(i: Int) } class Vertical( private val a: Int ) : IVertical { override fun show(i: Int) { println(&amp;quot;start called $i $a&amp;quot;) } }  &amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;
+public final class Vertical { ... public final void show(int i) { ... } }  IVerticalインターフェースが見事に消されていることが分かります。
+また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。
+ R8: Vertical Merger Proguard: Vertical Merger  次に横方向のマージを紹介します。</description>
+    </item>
+    
+  </channel>
+</rss>
