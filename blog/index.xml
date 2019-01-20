@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 02:16:43 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jan 2019 04:23:43 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R8/Proguard: KotlinのCompanion objectとobjectについて</title>
+      <link>https://satoshun.github.io/2019/01/r8-companion-object/</link>
+      <pubDate>Sun, 20 Jan 2019 04:23:43 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/01/r8-companion-object/</guid>
+      <description>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
+この記事は、R8 Optimization: Staticizationにとても影響を受けています。
+Companion object 例えば、次のコードがあるとします。
+class CompanionTest { companion object { fun show(i: Int) { ... } } }  これを最適化なしで変換すると次のようになります。
+public final class CompanionTest { public static final Companion Companion = new Companion(); public static final class Companion { private Companion() { } public final void show(int i) { ... } } }  Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。
+そこでR8による最適化を行うと次のようになります。
+public abstract class CompanionTest { public static final void show(int i) { .</description>
+    </item>
     
     <item>
       <title>R8/Proguard: Class Mergingについて</title>

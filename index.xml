@@ -7,7 +7,101 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 20 Jan 2019 02:16:43 UTC</updated>
+    <updated>Sun, 20 Jan 2019 04:23:43 UTC</updated>
+    
+    
+    <item>
+      <title>R8/Proguard: KotlinのCompanion objectとobjectについて</title>
+      <link>https://satoshun.github.io/2019/01/r8-companion-object/</link>
+      <pubDate>Sun, 20 Jan 2019 04:23:43 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/r8-companion-object/</guid>
+      <description>
+
+&lt;p&gt;コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。&lt;/p&gt;
+
+&lt;p&gt;この記事は、&lt;a href=&#34;https://jakewharton.com/r8-optimization-staticization/&#34;&gt;R8 Optimization: Staticization&lt;/a&gt;にとても影響を受けています。&lt;/p&gt;
+
+&lt;h2 id=&#34;companion-object&#34;&gt;Companion object&lt;/h2&gt;
+
+&lt;p&gt;例えば、次のコードがあるとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class CompanionTest {
+    companion object {
+        fun show(i: Int) {
+            ...
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを最適化なしで変換すると次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class CompanionTest {
+    public static final Companion Companion = new Companion();
+
+    public static final class Companion {
+        private Companion() {
+        }
+
+        public final void show(int i) {
+            ...
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。&lt;/p&gt;
+
+&lt;p&gt;そこでR8による最適化を行うと次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public abstract class CompanionTest {
+    public static final void show(int i) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;無駄な内部クラス（enclosing class）が消えて、staticメソッドに変換されているのが分かります。このshowメソッドはわざわざインスタンスメソッドにする必要がないため、このような最適化が行われます。&lt;/p&gt;
+
+&lt;h2 id=&#34;object&#34;&gt;object&lt;/h2&gt;
+
+&lt;p&gt;objectも同様です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;object ObjectTest {
+    fun show(i: Int) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最適化なしだと次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class ObjectTest {
+    public static final ObjectTest INSTANCE = new ObjectTest();
+
+    public final void show(int i) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;INSTANCEフィールドが生成されていることが分かります。&lt;/p&gt;
+
+&lt;p&gt;次にR8による最適化を行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public abstract class ObjectTest {
+    public static final void show(int i) {
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Companion objectと同様に冗長なインスタンス生成が消えています。
+Proguardの場合、インスタンス生成は消えないので、R8の一歩進んだ最適化といえます。（もしかしたらProguardの設定次第でインスタンス生成をしないように出来るかもしれないです。）&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1726,115 +1820,6 @@ Daggerをライブラリで使ったときに、そのライブラリ内ではCo
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;より詳しい議論は、&lt;a href=&#34;https://github.com/google/dagger/pull/1130&#34;&gt;ISSUE&lt;/a&gt;を見て下さい😃&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Data Bindingのエラーログが3.4.0-alpha07から見やすくなる</title>
-      <link>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</link>
-      <pubDate>Fri, 07 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</guid>
-      <description>
-
-&lt;p&gt;Data BindingとDagger2などのアノテーションプロセッサー系のライブラリを組わせて使うとエラーログが膨大になる問題があります。&lt;/p&gt;
-
-&lt;p&gt;それが&lt;code&gt;3.4.0-alpha07&lt;/code&gt;以降で改善される見込みです🎉&lt;/p&gt;
-
-&lt;p&gt;詳細はここにあります。&lt;a href=&#34;https://issuetracker.google.com/issues/116541301&#34;&gt;https://issuetracker.google.com/issues/116541301&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;この記事ではサンプルコードをベースに、エラーログの変化がどのように変わったかを紹介し、実際にアプリ側のコードをどのように変更するかについて説明します。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingApiDeprecateExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります😃&lt;/p&gt;
-
-&lt;h2 id=&#34;エラーログの変化&#34;&gt;エラーログの変化&lt;/h2&gt;
-
-&lt;p&gt;まずどのようなエラーログが出力されるかを見ていきます。
-適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。&lt;/p&gt;
-
-&lt;p&gt;まずはData Binding 3.2.1から。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin
-e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol
-  protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,
-                             ^
-  symbol:   class DataBindingComponent
-  location: class MainAct79Binding
-e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:31: error: cannot find symbol
-      boolean attachToRoot, @Nullable DataBindingComponent component) {
-                                      ^
-...
-...
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Data Binding周りのエラーログが無限に出ます。悲しい😂&lt;/p&gt;
-
-&lt;p&gt;次に3.4.0-alpha07です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin
-e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation
-@error.NonExistentClass()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃&lt;/p&gt;
-
-&lt;h2 id=&#34;クライアント側の対応&#34;&gt;クライアント側の対応&lt;/h2&gt;
-
-&lt;p&gt;これに伴い、一部APIがdeprecatedになります。例えば、&lt;code&gt;main_act.xml&lt;/code&gt;は次のようにAPIが変更されます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public abstract class MainActBinding extends ViewDataBinding {
-  @NonNull
-  public static MainActBinding inflate(@NonNull LayoutInflater inflater,
-      @Nullable ViewGroup root,
-      boolean attachToRoot
-  )
-
-  @NonNull
-  @Deprecated
-  public static MainActBinding inflate(@NonNull LayoutInflater inflater,
-      @Nullable ViewGroup root, boolean attachToRoot, @Nullable Object component
-  )
-
-  @NonNull
-  public static MainActBinding inflate(@NonNull LayoutInflater inflater)
-
-  @NonNull
-  @Deprecated
-  public static MainActBinding inflate(@NonNull LayoutInflater inflater, @Nullable Object component)
-
-  public static MainActBinding bind(@NonNull View view)
-
-  @Deprecated
-  public static MainActBinding bind(@NonNull View view, @Nullable Object component)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;p&gt;AGPのアップデートは気軽に出来ないので、
-Data Bindingのバージョンだけをアップデートしようと思ったんですが、エラーが出てしまい出来ませんでした。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;kapt &amp;quot;androidx.databinding:databinding-compiler:3.4.0-alpha07&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AGPのアップデートをすればData Bindingのツラミの1つであったエラーログから解放される（かも）&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingApiDeprecateExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります😃&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Happy Data Binding Life🎉🎉🎉&lt;/p&gt;
 </description>
     </item>
     
