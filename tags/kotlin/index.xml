@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 04:23:43 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jan 2019 06:56:16 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R8/Proguard: Kotlinのlambda最適化について</title>
+      <link>https://satoshun.github.io/2019/01/r8-kotlin-lambda/</link>
+      <pubDate>Sun, 20 Jan 2019 06:56:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/01/r8-kotlin-lambda/</guid>
+      <description>コードの最適化の話です。この記事ではKotlinのlambda式の最適化について紹介します。
+Kotlin lambda Kotlinでは関数型がファーストクラスです。とても便利なのですが、ラムダを使うたびに内部的にはクラスを1つ定義するため、クラス数、メソッド数がどんどん増えていきます。
+例えば、次のコードを最適化なしでコンパイルしてみます。
+fun main() { lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda2&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda3&amp;quot;) } ... } private fun lambdaTest1(body: () -&amp;gt; Unit) { ... body() ... }  // コンパイル後 public static final void main() { LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE); ... } final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; { public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1(); LambdaTestKt$main$1() { super(0); } public final void invoke() { System.</description>
+    </item>
     
     <item>
       <title>R8/Proguard: KotlinのCompanion objectとobjectについて</title>

@@ -7,7 +7,116 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 20 Jan 2019 04:23:43 UTC</updated>
+    <updated>Sun, 20 Jan 2019 06:56:16 UTC</updated>
+    
+    
+    <item>
+      <title>R8/Proguard: Kotlinのlambda最適化について</title>
+      <link>https://satoshun.github.io/2019/01/r8-kotlin-lambda/</link>
+      <pubDate>Sun, 20 Jan 2019 06:56:16 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/r8-kotlin-lambda/</guid>
+      <description>
+
+&lt;p&gt;コードの最適化の話です。この記事ではKotlinのlambda式の最適化について紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;kotlin-lambda&#34;&gt;Kotlin lambda&lt;/h2&gt;
+
+&lt;p&gt;Kotlinでは関数型がファーストクラスです。とても便利なのですが、ラムダを使うたびに内部的にはクラスを1つ定義するため、クラス数、メソッド数がどんどん増えていきます。&lt;/p&gt;
+
+&lt;p&gt;例えば、次のコードを最適化なしでコンパイルしてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun main() {
+    lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) }
+    lambdaTest1 { println(&amp;quot;Kotlin lambda2&amp;quot;) }
+    lambdaTest1 { println(&amp;quot;Kotlin lambda3&amp;quot;) }
+    ...
+}
+
+private fun lambdaTest1(body: () -&amp;gt; Unit) {
+    ...
+    body()
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// コンパイル後
+public static final void main() {
+    LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE);
+    LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE);
+    LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE);
+    ...
+}
+
+final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; {
+    public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1();
+
+    LambdaTestKt$main$1() {
+        super(0);
+    }
+
+    public final void invoke() {
+        System.out.println(&amp;quot;Kotlin lambda1&amp;quot;);
+    }
+}
+
+final class LambdaTestKt$main$2 extends Lambda implements Function0&amp;lt;Unit&amp;gt; {
+    ...
+}
+final class LambdaTestKt$main$3 extends Lambda implements Function0&amp;lt;Unit&amp;gt; {
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;LambdaTestKt$main$1&lt;/code&gt;、&lt;code&gt;$2&lt;/code&gt;、&lt;code&gt;$3&lt;/code&gt;が生成されていることが分かります。ラムダを使う箇所を増やすと$2、$3&amp;hellip;とクラスが増えていきます。&lt;/p&gt;
+
+&lt;p&gt;この問題に対し、R8ではLambdaGroupというテクニックを使い最適化をします。&lt;/p&gt;
+
+&lt;p&gt;R8を使って、上記のコードをコンパイルすると次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public static final void main() {
+    LambdaTestKt.lambdaTest1(-$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.INSTANCE$0);
+    LambdaTestKt.lambdaTest1(-$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.INSTANCE$1);
+    LambdaTestKt.lambdaTest1(-$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.INSTANCE$2);
+    ...
+}
+
+public final class -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI extends Lambda implements Function0 {
+    public static final -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$0 = new -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(0);
+    public static final -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$1 = new -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(1);
+    public static final -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$2 = new -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(2);
+    public final /* synthetic */ int $id$;
+
+    public -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(int i) {
+        this.$id$ = i;
+        super(0);
+    }
+
+    public final Object invoke() {
+        int i = this.$id$;
+        if (i == 0) {
+            System.out.println(&amp;quot;Kotlin lambda1&amp;quot;);
+            return Unit.INSTANCE;
+        } else if (i == 1) {
+            System.out.println(&amp;quot;Kotlin lambda2&amp;quot;);
+            return Unit.INSTANCE;
+        } else if (i == 2) {
+            System.out.println(&amp;quot;Kotlin lambda3&amp;quot;);
+            return Unit.INSTANCE;
+        } else {
+            throw null;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最適化しない場合では、それぞれのラムダに対して、専用のクラスが1つずつ定義されていました。最適化された後では1つのクラス、LambadGroupにまとまっていることが分かります。
+このクラスでは、それぞれのラムダインスタンスにidを持たせることで、どのラムダかを分類することが出来ます。&lt;/p&gt;
+
+&lt;p&gt;この最適化により、クラス数、メソッド数を抑えることが出来ます。&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1740,85 +1849,6 @@ runCatching { doSomethingSync() }
 &lt;li&gt;ライブラリサブモジュールのRクラスのサイズ大きくなる問題を解決できる&lt;/li&gt;
 &lt;li&gt;デバッグ時のapkサイズをやや小さく出来る&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Gradle: Dagger2でapiとimplementationどちらを使うか議論されている</title>
-      <link>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</link>
-      <pubDate>Sat, 08 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/gradle-api_vs_implementation/</guid>
-      <description>
-
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt; この記事はapiとimplementationの説明をする類の記事ではありません。&lt;/p&gt;
-
-&lt;p&gt;Gradleで&lt;code&gt;compile&lt;/code&gt;がDeprecatedになり、implementationまたはapiを使うことが推奨されています。
-それに合わせて多くのライブラリのREADMEのcompileがimplementationまたはapiに置き換わりました。&lt;/p&gt;
-
-&lt;p&gt;Dagger2でもcompileをimplementationに置き換えるPRが出されました。&lt;a href=&#34;https://github.com/google/dagger/pull/1130&#34;&gt;https://github.com/google/dagger/pull/1130&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;内容が興味深かったのでまとめてみようと思います。&lt;/p&gt;
-
-&lt;p&gt;まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Add Dagger dependencies
-dependencies {
-  - compile &#39;com.google.dagger:dagger:2.x&#39;
-  + implementation &#39;com.google.dagger:dagger:2.x&#39;
-  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
-}
-
-- compile &#39;com.google.dagger:dagger-android:2.x&#39;
-- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
-+ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
-+ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ここでjakeさんが&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;とコメントしました。「Daggerコンパイラの依存はすべてのモジュールで明示的に書くだろうから、多分implementationで問題ないけど、議論の余地はある。」と。&lt;/p&gt;
-
-&lt;p&gt;この議論を生んだ要因として、Daggerライブラリの性質があります。
-Daggerをライブラリで使ったときに、そのライブラリ内ではComponentやModuleを使うため、当然DaggerのAPIを使うことになります。
-しかし、クライアント側ではComponentとModuleなどのDaggerのAPIを使う必要は必ずしもありません。ただ、DaggerではLazy、ProviderなどのAPIも定義されており、これらのAPIはクライアント側で使うことが予想されます。
-なので、結局このライブラリを依存に持つようなモジュールはLazy、Providerを使うことになるので、最終的にDaggerに依存することが確定しているなら、implementationではなく、apiで指定したほうが良いのではという話です。ただし、プロジェクトのモジュール構成によってはimplementationのほうがふさわしい場合もあるので、その場合はimplementationに置き換えることが期待されています。&lt;/p&gt;
-
-&lt;p&gt;最終的なこの議論の着地として、implementationを使うかapiを使うかはプロジェクトに強く依存するのでどちらが正しいかはない。そのため、今回置き換えたいcompileはapiとほぼ同等の意味を持つので、置き換えるならapiのほうがふさわしいんじゃないか、今までと同じ動作をするので安全じゃないかという感じでまとまりました。&lt;/p&gt;
-
-&lt;p&gt;現状の差分は以下です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;-  compile &#39;com.google.dagger:dagger:2.x&#39;
-+  api &#39;com.google.dagger:dagger:2.x&#39;
-  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
-}
-
-+ For more information on api vs implementation please see https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration?utm_source=android-studio#new_configurations
-
-- compile &#39;com.google.dagger:dagger-android:2.x&#39;
-- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
-+ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
-+ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;dagger-androidがimplementationのままなのは、こちらにはLazyやProviderなどのクライアントライブラリが使うであろうAPIが含まれていないためだと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;READMEを更新するのにかなり熱い議論をしているのがすごい印象的でした
-
-&lt;ul&gt;
-&lt;li&gt;手を抜かないって大事なんだなって&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;より詳しい議論は、&lt;a href=&#34;https://github.com/google/dagger/pull/1130&#34;&gt;ISSUE&lt;/a&gt;を見て下さい😃&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
