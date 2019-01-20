@@ -1,10 +1,9 @@
 +++
-date = "Sat Jan 19 11:26:59 UTC 2019"
+date = "Sun Jan 20 02:16:43 UTC 2019"
 title = "R8/Proguard: Class Mergingについて"
 tags = ["android", "r8", "proguard"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 コードの最適化の話です。この記事ではClass Mergingについて紹介します。
@@ -12,7 +11,7 @@ draft = true
 ## Class Merging?
 
 その名の通り、Classをマージする最適化です。最終的なクラス数減らすことが期待出来ます。
-Class MergingにはVertical、縦方向のものと、Horizontal、横方向のものがあります。
+Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があります。
 
 まずは縦方向のClass Mergingについて説明します。
 
@@ -40,7 +39,7 @@ class Vertical(
 
 ```java
 public final class Vertical {
-    private final int a = 10;
+    ...
 
     public final void show(int i) {
         ...
@@ -48,7 +47,7 @@ public final class Vertical {
 }
 ```
 
-`IVertical`が見事に消されていることが分かります。
+`IVertical`インターフェースが見事に消されていることが分かります。
 
 また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。
 
