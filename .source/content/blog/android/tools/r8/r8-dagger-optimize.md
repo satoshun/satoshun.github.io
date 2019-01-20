@@ -1,10 +1,9 @@
 +++
-date = "Sun Jan 20 06:56:16 UTC 2019"
+date = "Sun Jan 20 13:55:46 UTC 2019"
 title = "R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る"
 tags = ["android", "r8", "proguard", "dagger"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-シンプルなAppComponentを定義して、そこにシンプルなAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。
+シンプルなAppComponentを定義して、そこにAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。
 
 これを最適化なしでdex変換して、デコンパイルしてみます。
 
@@ -112,14 +111,14 @@ public final class MainActivity extends m {
 }
 ```
 
-何ということでしょう。`DaggerAppComponent`が消えてしまいました！
+何ということでしょう。`DaggerAppComponent`が消えました！
 
 DaggerAppComponentの各メソッドがMainActivity側にインライン展開されることで、完全にDaggerAppComponentを消すことが出来ます。
-実際にapkの中身を見て、DaggerAppComponentが存在しないことを確認しました。R8すごい😃
+実際にapkの中身を見て、DaggerAppComponentクラスが存在しないことを確認しました。R8すごい😃
 
 ## 補足
 
-Proguardだと、デフォルトの使い方だと上記のサンプルから、`DaggerAppComponent`を消すことが出来ませんでした。
+Proguardだと、デフォルトのだと上記のサンプルから、`DaggerAppComponent`を消すことが出来ませんでした。
 
 ## まとめ
 
