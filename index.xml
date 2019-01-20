@@ -7,7 +7,136 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 20 Jan 2019 06:56:16 UTC</updated>
+    <updated>Sun, 20 Jan 2019 13:55:46 UTC</updated>
+    
+    
+    <item>
+      <title>R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る</title>
+      <link>https://satoshun.github.io/2019/01/r8-dagger-optimize/</link>
+      <pubDate>Sun, 20 Jan 2019 13:55:46 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/r8-dagger-optimize/</guid>
+      <description>
+
+&lt;p&gt;コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。&lt;/p&gt;
+
+&lt;p&gt;まずはサンプルコードです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Component(
+  modules = [
+    AppModule1::class,
+    AppModule2::class
+  ]
+)
+interface AppComponent {
+  @Component.Builder
+  interface Builder {
+    fun build(): AppComponent
+  }
+
+  fun inject(activity: MainActivity)
+}
+
+@Module
+class AppModule1 {
+  @Provides
+  fun provideService(): AppService {
+    val retrofit = Retrofit.Builder()
+      ...
+    return retrofit.create()
+  }
+}
+
+@Module
+object AppModule2 {
+  @JvmStatic
+  @Provides
+  fun provideService2(): AppService2 {
+    val retrofit = Retrofit.Builder()
+      ...
+    return retrofit.create()
+  }
+}
+
+---
+
+class MainActivity : AppCompatActivity() {
+  @Inject lateinit var appService: AppService
+  @Inject lateinit var appService2: AppService2
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    val appComponent = DaggerAppComponent.builder().build()
+    appComponent.inject(this)
+
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;シンプルなAppComponentを定義して、そこにシンプルなAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。&lt;/p&gt;
+
+&lt;p&gt;これを最適化なしでdex変換して、デコンパイルしてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class MainActivity extends AppCompatActivity {
+    @Inject
+    @NotNull
+    public AppService appService;
+    @Inject
+    @NotNull
+    public AppService2 appService2;
+
+    ...
+
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        DaggerAppComponent.builder().build().inject(this);
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;普通のコードです。KotlinをJava変換しただけなので、特におかしな部分もありません。&lt;/p&gt;
+
+&lt;p&gt;次にR8による最適化を実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class MainActivity extends m {
+    public AppService o;
+    public AppService2 p;
+    ...
+
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView((int) R.layout.activity_main);
+        Object a = new AppModule1().a();
+        a.a(a, &amp;quot;Cannot return null from a non-@Nullable @Provides method&amp;quot;);
+        this.o = a;
+        this.p = AppModule2_ProvideService2Factory.a();
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何ということでしょう。&lt;code&gt;DaggerAppComponent&lt;/code&gt;が消えてしまいました！&lt;/p&gt;
+
+&lt;p&gt;DaggerAppComponentの各メソッドがMainActivity側にインライン展開されることで、完全にDaggerAppComponentを消すことが出来ます。
+実際にapkの中身を見て、DaggerAppComponentクラスが存在しないことを確認しました。R8すごい😃&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;Proguardだと、デフォルトの使い方だと上記のサンプルから、&lt;code&gt;DaggerAppComponent&lt;/code&gt;を消すことが出来ませんでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;R8すごい😃😃😃&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1755,101 +1884,6 @@ runCatching { doSomethingSync() }
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;簡単にまとめました。より詳細な内容は&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md&#34;&gt;Result KEEP&lt;/a&gt;を見てください😊&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: namespacedRClassフラグでRクラスを小さく保つ</title>
-      <link>https://satoshun.github.io/2018/12/namespacedrclass/</link>
-      <pubDate>Sun, 09 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/namespacedrclass/</guid>
-      <description>
-
-&lt;p&gt;Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで&lt;code&gt;namespacedRClass&lt;/code&gt;フラグが新しく追加されたので紹介します。
-本記事では&lt;code&gt;3.4.0-alpha07&lt;/code&gt;で試しました。&lt;/p&gt;
-
-&lt;p&gt;まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
-それを解決するために&lt;code&gt;namespacedRClass&lt;/code&gt;が追加されました。使い方は簡単で、次の記述を&lt;code&gt;gradle.properties&lt;/code&gt;に追加するだけです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;android.namespacedRClass=true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
-例として、appcompatに依存しているライブラリモジュールを用意します。&lt;/p&gt;
-
-&lt;p&gt;まずは、&lt;code&gt;namespacedRClass=false&lt;/code&gt;の時のRクラスです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
-    private R() {}
-
-    public static final class anim {
-        private anim() {}
-
-        public static final int abc_fade_in = 0x7f010000;
-        public static final int abc_fade_out = 0x7f010001;
-        public static final int abc_grow_fade_in_from_bottom = 0x7f010002;
-        public static final int abc_popup_enter = 0x7f010003;
-    ...
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。&lt;/p&gt;
-
-&lt;p&gt;では次に、&lt;code&gt;namespacedRClass=true&lt;/code&gt;の時です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class R {
-    private R() {}
-
-    public static final class color {
-        private color() {}
-
-        public static final int red3 = 0x7f04004b;
-    }
-    public static final class id {
-        private id() {}
-
-        public static final int title = 0x7f0700b1;
-    }
-    public static final class layout {
-        private layout() {}
-
-        public static final int base3 = 0x7f09001d;
-    }
-    public static final class string {
-        private string() {}
-
-        public static final int base_string3 = 0x7f0b002a;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。
-ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!!&lt;/p&gt;
-
-&lt;p&gt;今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）&lt;/p&gt;
-
-&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
-
-&lt;p&gt;ただし、注意点として、依存関係にあるライブラリのRクラスのマージが行われないため、appcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import androidx.appcompat.R as AppCompatR
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;今までだとライブラリモジュールのRクラスからすべてのリソースにアクセスできたのですが、それができなくなります。なので、このオプションをtrueしたときは、ライブラリモジュールでRクラスのimportパスを変更する必要があります。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;マルチモジュール時代に適した機能だと思う
-
-&lt;ul&gt;
-&lt;li&gt;ライブラリサブモジュールのRクラスのサイズ大きくなる問題を解決できる&lt;/li&gt;
-&lt;li&gt;デバッグ時のapkサイズをやや小さく出来る&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

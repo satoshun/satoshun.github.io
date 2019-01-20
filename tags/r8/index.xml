@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 06:56:16 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jan 2019 13:55:46 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/r8/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る</title>
+      <link>https://satoshun.github.io/2019/01/r8-dagger-optimize/</link>
+      <pubDate>Sun, 20 Jan 2019 13:55:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/01/r8-dagger-optimize/</guid>
+      <description>コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。
+まずはサンプルコードです。
+@Component( modules = [ AppModule1::class, AppModule2::class ] ) interface AppComponent { @Component.Builder interface Builder { fun build(): AppComponent } fun inject(activity: MainActivity) } @Module class AppModule1 { @Provides fun provideService(): AppService { val retrofit = Retrofit.Builder() ... return retrofit.create() } } @Module object AppModule2 { @JvmStatic @Provides fun provideService2(): AppService2 { val retrofit = Retrofit.Builder() ... return retrofit.create() } } --- class MainActivity : AppCompatActivity() { @Inject lateinit var appService: AppService @Inject lateinit var appService2: AppService2 override fun onCreate(savedInstanceState: Bundle?</description>
+    </item>
     
     <item>
       <title>R8/Proguard: Kotlinのlambda最適化について</title>
