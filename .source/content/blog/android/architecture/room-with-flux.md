@@ -1,22 +1,22 @@
 +++
-date = "Wed Jan 23 23:50:56 UTC 2019"
+date = "Thu Jan 24 00:43:33 UTC 2019"
 title = "Room + Fluxは冗長なコードが多くなるので良くなさそう"
 tags = ["android", "flux", "room", "jetpack", "architecture"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
-FluxをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。
+FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。
 
-結論から申しますと、冗長なコードが多くなるので良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂
+結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂
+
 また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。
 
 ## Room in memory?
 
 Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。
 
-基本的な使い方は次のようになります。
+使い方は次のようになります。
 
 ```kotlin
 Room
@@ -31,9 +31,9 @@ in memoryを使う理由としては、
 
 になります。
 
-## 実際の実装に入っていく
+## 実装に入っていく
 
-では実装の説明をしていきます。
+では、実装の説明をしていきます。
 
 まずはActionをRoomのEntityとして定義します。
 
@@ -55,7 +55,7 @@ data class Author2(
 ) : AuthorAction()
 ```
 
-Primary keyは常に一定にして、アクションは0 or 1つしか取らないようにしておきます。仮にアクションの履歴が欲しいなら、`@PrimaryKey(autoGenerate = true)`を使っても良いと思います。
+Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、`@PrimaryKey(autoGenerate = true)`を使っても良いと思います。
 
 次にDaoを定義します。これはFluxでいうところのDispatcherになります。
 
@@ -84,18 +84,18 @@ interface AuthorDispatcher {
 
 となります。`@Insert`でアクションをdispatchメソッドを、`@Query`でsubscribeメソッドを実装しています。
 
-これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます。
+これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！
 
-## まとめ
+## まとめ/考察
 
 RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。
 
 - Storeに書いていたロジックをSQLに任せることが出来る
   - Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう
-- ほげほげDispactherがアプリ内に蔓延する
+- ほげほげDispactherクラスがアプリ内に蔓延する
 - コードが冗長😂
 
-FluxのDispatcherの変わりとしてはつらそうですが、他の用途、例えばRepositoryの実装などには使えるパターンだと思うので、
-そういったところで使っていただけたら幸いです😊
+FluxのDispatcherの代替としてはつらそうですが、他の用途、例えばRepositoryの実装などには使える可能性があると思うので、
+そういったところで思い出していただけたら幸いです😊
 
 検証に用いたサンプルコードは[RoomDispatcherExample](https://github.com/satoshun-android-example/RoomDispatcherExample)にあります。
