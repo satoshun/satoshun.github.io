@@ -7,7 +7,117 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 20 Jan 2019 13:55:46 UTC</updated>
+    <updated>Thu, 24 Jan 2019 00:43:33 UTC</updated>
+    
+    
+    <item>
+      <title>Room &#43; Fluxは冗長なコードが多くなるので良くなさそう</title>
+      <link>https://satoshun.github.io/2019/01/room-with-flux/</link>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/room-with-flux/</guid>
+      <description>
+
+&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;
+
+&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;
+
+&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;
+
+&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;
+
+&lt;p&gt;使い方は次のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;Room
+  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)
+  .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;
+&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;
+
+&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;
+
+&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;sealed class AuthorAction
+
+@Entity(tableName = &amp;quot;author1&amp;quot;)
+data class Author1(
+  @PrimaryKey val _id: Long = 0, // always 0
+  val name: String,
+  val age: Int
+) : AuthorAction()
+
+@Entity(tableName = &amp;quot;author2&amp;quot;)
+data class Author2(
+  @PrimaryKey val _id: Long = 0, // always 0
+  val name: String,
+  val age: Int
+) : AuthorAction()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;
+
+&lt;p&gt;次にDaoを定義します。これはFluxでいうところのDispatcherになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Dao
+interface AuthorDispatcher {
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)
+
+  // Storeに相当する
+  @Query(&amp;quot;select * FROM author1 WHERE _id = 0&amp;quot;)
+  fun author(): LiveData&amp;lt;Author1?&amp;gt;
+
+  // Storeに相当する
+  @Query(
+    &amp;quot;&amp;quot;&amp;quot;
+    select author1.name as name1, author2.name as name2
+    FROM author1
+     INNER JOIN author2
+    WHERE author1._id = 0 AND author2._id = 0
+    &amp;quot;&amp;quot;&amp;quot;
+  )
+  fun mappedAuthor(): LiveData&amp;lt;MappedAuthor?&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;となります。&lt;code&gt;@Insert&lt;/code&gt;でアクションをdispatchメソッドを、&lt;code&gt;@Query&lt;/code&gt;でsubscribeメソッドを実装しています。&lt;/p&gt;
+
+&lt;p&gt;これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ-考察&#34;&gt;まとめ/考察&lt;/h2&gt;
+
+&lt;p&gt;RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Storeに書いていたロジックをSQLに任せることが出来る
+
+&lt;ul&gt;
+&lt;li&gt;Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;ほげほげDispactherクラスがアプリ内に蔓延する&lt;/li&gt;
+&lt;li&gt;コードが冗長😂&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;FluxのDispatcherの代替としてはつらそうですが、他の用途、例えばRepositoryの実装などには使える可能性があると思うので、
+そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
+
+&lt;p&gt;検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RoomDispatcherExample&#34;&gt;RoomDispatcherExample&lt;/a&gt;にあります。&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -76,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;シンプルなAppComponentを定義して、そこにシンプルなAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。&lt;/p&gt;
+&lt;p&gt;シンプルなAppComponentを定義して、そこにAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。&lt;/p&gt;
 
 &lt;p&gt;これを最適化なしでdex変換して、デコンパイルしてみます。&lt;/p&gt;
 
@@ -120,14 +230,14 @@ class MainActivity : AppCompatActivity() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;何ということでしょう。&lt;code&gt;DaggerAppComponent&lt;/code&gt;が消えてしまいました！&lt;/p&gt;
+&lt;p&gt;何ということでしょう。&lt;code&gt;DaggerAppComponent&lt;/code&gt;が消えました！&lt;/p&gt;
 
 &lt;p&gt;DaggerAppComponentの各メソッドがMainActivity側にインライン展開されることで、完全にDaggerAppComponentを消すことが出来ます。
 実際にapkの中身を見て、DaggerAppComponentクラスが存在しないことを確認しました。R8すごい😃&lt;/p&gt;
 
 &lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
 
-&lt;p&gt;Proguardだと、デフォルトの使い方だと上記のサンプルから、&lt;code&gt;DaggerAppComponent&lt;/code&gt;を消すことが出来ませんでした。&lt;/p&gt;
+&lt;p&gt;Proguardだと、デフォルトのだと上記のサンプルから、&lt;code&gt;DaggerAppComponent&lt;/code&gt;を消すことが出来ませんでした。&lt;/p&gt;
 
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
@@ -1800,90 +1910,6 @@ hasFlags
 &lt;li&gt;Truthを使うと失敗メッセージがわかりやすくなる、便利!&lt;/li&gt;
 &lt;li&gt;AssertJを使っているなら乗り換えるメリットはないかも&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: Resultの簡単なまとめ</title>
-      <link>https://satoshun.github.io/2018/12/result/</link>
-      <pubDate>Tue, 11 Dec 2018 00:00:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/result/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md&#34;&gt;Result KEEP&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Result&lt;/code&gt;が1.3からstdlibに入ったので紹介をしたいと思います。&lt;/p&gt;
-
-&lt;p&gt;Resultは&lt;code&gt;Success T | Failure Throwable&lt;/code&gt;の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。&lt;/p&gt;
-
-&lt;h2 id=&#34;基本的な使い方&#34;&gt;基本的な使い方&lt;/h2&gt;
-
-&lt;p&gt;使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val i: Result&amp;lt;Int&amp;gt; = Result.success(10)
-val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException())
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;また、&lt;code&gt;runCatching&lt;/code&gt;関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val a = runCatching { doSomeThing() }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Resultに対する操作は以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// successに対して操作
-val i = Result.success(10)
-i.getOrNull() // 10
-i.isSuccess // true
-i.exceptionOrNull() // null
-i.map { 10 * 10 }.getOrNull() // 100
-i.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) }
-i.recover { 1111 }.getOrNull() // 10
-
-// failureに対して操作
-val t = Result.failure(IOException())
-t.getOrNull() // null
-t.isFailure // true
-t.exceptionOrNull() // IOException
-t.map { 10 * 10 }.getOrNull() // null
-t.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) }
-t.recover { 1111 }.getOrNull() // 1111
-t.getOrThrow() // throw IOException
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;また、Resultを使うことで、functionalっぽく書くことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;try {
-    val data = doSomethingSync()
-    processData(data)
-} catch(e: Throwable) {
-    showErrorDialog(e)
-}
-
---&amp;gt;
-
-runCatching { doSomethingSync() }
-    .onFailure { showErrorDialog(it) }
-    .onSuccess { processData(it) }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;h3 id=&#34;resultは戻り値として返せない&#34;&gt;Resultは戻り値として返せない&lt;/h3&gt;
-
-&lt;p&gt;これは、Resultのユースケースから外さないための制約です。なぜなら、Resultはその関数内で処理すべき例外であり、関数の呼び出し側で処理させるべきではないためです。
-例えば、ある関数の返り値が&lt;code&gt;Result&amp;lt;User&amp;gt;&lt;/code&gt;となっていたときに、失敗する可能性は呼び出し側に伝わりますが、どのような失敗が起こるか分かりません。どのようにエラーを処理するかはこの関数内で完結すべきなので、返り値としてResultを指定することは出来ません。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;簡単にまとめました。より詳細な内容は&lt;a href=&#34;https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md&#34;&gt;Result KEEP&lt;/a&gt;を見てください😊&lt;/p&gt;
 </description>
     </item>
     

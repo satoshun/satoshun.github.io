@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 20 Jan 2019 13:55:46 +0000</pubDate>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -69,7 +69,7 @@
     <item>
       <title>Architecture</title>
       <link>https://satoshun.github.io/tags/architecture/</link>
-      <pubDate>Tue, 25 Dec 2018 03:00:39 +0000</pubDate>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/architecture/</guid>
       <description></description>
@@ -229,6 +229,15 @@
     </item>
     
     <item>
+      <title>Flux</title>
+      <link>https://satoshun.github.io/tags/flux/</link>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/flux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Fragment</title>
       <link>https://satoshun.github.io/tags/fragment/</link>
       <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
@@ -321,7 +330,7 @@
     <item>
       <title>Jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
@@ -486,6 +495,15 @@
       <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/retrofit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Room</title>
+      <link>https://satoshun.github.io/tags/room/</link>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/room/</guid>
       <description></description>
     </item>
     
