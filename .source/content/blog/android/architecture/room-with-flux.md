@@ -95,7 +95,7 @@ RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプ�
 - ほげほげDispactherクラスがアプリ内に蔓延する
 - コードが冗長😂
 
-FluxのDispatcherの代替としてはつらそうですが、他の用途、例えばRepositoryの実装などには使える可能性があると思うので、
-そういったところで思い出していただけたら幸いです😊
+工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
+FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊
 
 検証に用いたサンプルコードは[RoomDispatcherExample](https://github.com/satoshun-android-example/RoomDispatcherExample)にあります。
