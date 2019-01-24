@@ -13,7 +13,7 @@
     
     
     <item>
-      <title>Room &#43; Fluxは冗長なコードが多くなるので良くなさそう</title>
+      <title>FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない</title>
       <link>https://satoshun.github.io/2019/01/room-with-flux/</link>
       <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
       
