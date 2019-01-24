@@ -111,8 +111,8 @@ interface AuthorDispatcher {
 &lt;li&gt;コードが冗長😂&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;FluxのDispatcherの代替としてはつらそうですが、他の用途、例えばRepositoryの実装などには使える可能性があると思うので、
-そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
+&lt;p&gt;工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
+FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
 
 &lt;p&gt;検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RoomDispatcherExample&#34;&gt;RoomDispatcherExample&lt;/a&gt;にあります。&lt;/p&gt;
 </description>
