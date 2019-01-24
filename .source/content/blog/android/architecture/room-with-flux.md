@@ -1,6 +1,6 @@
 +++
 date = "Thu Jan 24 00:43:33 UTC 2019"
-title = "Room + Fluxは冗長なコードが多くなるので良くなさそう"
+title = "FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない"
 tags = ["android", "flux", "room", "jetpack", "architecture"]
 blogimport = true
 type = "post"
