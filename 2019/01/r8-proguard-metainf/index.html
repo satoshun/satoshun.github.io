@@ -26,8 +26,7 @@
   
   <meta property="twitter:description" content="
 
-AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
-今まで、aar …">
+AGP3.3.0ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになり …">
   
 
   
@@ -91,11 +90,11 @@ AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込める�
   <div class="post">
     <h1 class="post-title">R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました</h1>
     
-    <span class="post-date">Created at Mon, Jan 28, 2019</span>
+    <span class="post-date">Updated at Mon, Jan 28, 2019</span>
     
     
 
-<p>AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
+<p><del>AGP3.3.0</del>ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
 今まで、aarでは<code>consumerProguardFiles</code>で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。</p>
 
 <h2 id="ライブラリ開発者側の設定">ライブラリ開発者側の設定</h2>
@@ -155,6 +154,12 @@ BUILD SUCCESSFUL in 21s
 <h2 id="補足">補足</h2>
 
 <p>この機能はR8/ProGuard、両方とも対応しているようです。</p>
+
+<h2 id="追記">追記</h2>
+
+<p>最初、冒頭でR8もAGP3.3.0からと書いたんですが、それは誤りで、AGP3.2.0のR8が導入されたタイミングでした。</p>
+
+<p><a href="https://twitter.com/kafumi__/status/1089816485386747905">@kafumi__</a>さんにご指摘いただきました！ありがとうございます😊</p>
 
 <h2 id="まとめ">まとめ</h2>
 

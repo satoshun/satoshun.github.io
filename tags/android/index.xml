@@ -18,7 +18,7 @@
       <pubDate>Mon, 28 Jan 2019 00:08:35 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2019/01/r8-proguard-metainf/</guid>
-      <description>AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。 今まで、aarではconsumerProguardFilesで、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
+      <description>AGP3.3.0ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。 今まで、aarではconsumerProguardFilesで、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
 ライブラリ開発者側の設定 RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。
 まず、resources/META-INF/prougardディレクトリの中にProGuardの設定ファイルを置きます。
 square/retrofit
