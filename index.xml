@@ -7,7 +7,91 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Thu, 24 Jan 2019 00:43:33 UTC</updated>
+    <updated>Mon, 28 Jan 2019 00:08:35 UTC</updated>
+    
+    
+    <item>
+      <title>R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました</title>
+      <link>https://satoshun.github.io/2019/01/r8-proguard-metainf/</link>
+      <pubDate>Mon, 28 Jan 2019 00:08:35 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/01/r8-proguard-metainf/</guid>
+      <description>
+
+&lt;p&gt;AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
+今まで、aarでは&lt;code&gt;consumerProguardFiles&lt;/code&gt;で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。&lt;/p&gt;
+
+&lt;h2 id=&#34;ライブラリ開発者側の設定&#34;&gt;ライブラリ開発者側の設定&lt;/h2&gt;
+
+&lt;p&gt;RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。&lt;/p&gt;
+
+&lt;p&gt;まず、&lt;code&gt;resources/META-INF/prougard&lt;/code&gt;ディレクトリの中にProGuardの設定ファイルを置きます。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/retrofit/tree/master/retrofit/src/main/resources/META-INF/proguard&#34;&gt;square/retrofit&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ライブラリ側の設定はこれで完了です。&lt;/p&gt;
+
+&lt;h2 id=&#34;使う側の設定&#34;&gt;使う側の設定&lt;/h2&gt;
+
+&lt;p&gt;AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot;
+
+&amp;gt; ./gradlew installRelease
+...
+Warning: there were 267 unresolved references to classes or interfaces.
+         You may need to add missing library jars or update their versions.
+         If your code works fine without the missing classes, you can suppress
+         the warnings with &#39;-dontwarn&#39; options.
+         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass)
+Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.
+Thread(Tasks limiter_2): destruction
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;失敗しました😂&lt;/p&gt;
+
+&lt;p&gt;次にMETA-INFが入った2.5.0でビルドをします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;implementation &amp;quot;com.squareup.retrofit2:retrofit:2.5.0&amp;quot;
+
+&amp;gt; ./gradlew installRelease
+...
+
+BUILD SUCCESSFUL in 21s
+38 actionable tasks: 18 executed, 20 from cache
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;成功しました😊&lt;/p&gt;
+
+&lt;p&gt;META-INFファイルをちゃんと読み込めているようです。ProGuardのconfigurationファイルを確認したところ、RetrofitのProGuard設定が入っていました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// configuration.txt
+...
+# Retain service method parameters when optimizing.
+-keepclassmembers,allowshrinking,allowobfuscation interface  * {
+    @retrofit2.http.*
+    &amp;lt;methods&amp;gt;;
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;この機能はR8/ProGuard、両方とも対応しているようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ライブラリがJarであったとしても、ライブラリ作者が対応してくれればProGuardの設定が楽になる!!!
+
+&lt;ul&gt;
+&lt;li&gt;現状、有名なライブラリでは、OkHttp、Retrofit、Coroutineなどが対応しています😊&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏🙏🙏&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1796,120 +1880,6 @@ dependencies {
 &lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
 
 &lt;p&gt;AndroidだとGradle5系を使えるのがAndroid Gradle Plugin3.4からになると思うので、まだ先は長い😂&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Truthのメリット、特徴について</title>
-      <link>https://satoshun.github.io/2018/12/truth_getting_started/</link>
-      <pubDate>Wed, 12 Dec 2018 00:21:12 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/truth_getting_started/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://google.github.io/truth/&#34;&gt;Truth&lt;/a&gt;はGoogleが開発をしているテストアサーションライブラリです。&lt;/p&gt;
-
-&lt;p&gt;従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;readableにアサーションが書ける&lt;/li&gt;
-&lt;li&gt;デフォルトの失敗メッセージがわかりやすい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;それぞれについて説明していきます。&lt;/p&gt;
-
-&lt;h2 id=&#34;readableにアサーションが書ける&#34;&gt;readableにアサーションが書ける&lt;/h2&gt;
-
-&lt;p&gt;ドキュメントのbenefitにあるサンプルを取り上げ説明します。
-&lt;a href=&#34;http://google.github.io/truth/benefits&#34;&gt;http://google.github.io/truth/benefits&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;まず従来のJUnitスタイルを使って書きます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName();
-assertFalse(middleName.isPresent());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）&lt;/p&gt;
-
-&lt;p&gt;これがTruthを使うと次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName();
-assertThat(middleName).isAbsent();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;assertThatはTruthに定義されているメソッドです。&lt;code&gt;middleName&lt;/code&gt;がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。&lt;/p&gt;
-
-&lt;p&gt;上記の&lt;code&gt;isAbsent&lt;/code&gt;はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。
-例えばIterableには、&lt;code&gt;containsAnyIn&lt;/code&gt;や&lt;code&gt;isEmpty&lt;/code&gt;などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。&lt;/p&gt;
-
-&lt;h2 id=&#34;失敗メッセージがわかりやすい&#34;&gt;失敗メッセージがわかりやすい&lt;/h2&gt;
-
-&lt;p&gt;こちらもbenefitにあるサンプルを取り上げます。&lt;/p&gt;
-
-&lt;p&gt;まずは従来にJUnitスタイルから。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertTrue(googleColors.contains(PINK));
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。
-失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。&lt;/p&gt;
-
-&lt;p&gt;次にTruthスタイルです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertThat(googleColors).contains(PINK);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&amp;gt; should have contained &amp;lt;PINK&amp;gt;&lt;/code&gt; のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。&lt;/p&gt;
-
-&lt;p&gt;以上がTruthのメリットになります。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;h3 id=&#34;truth-androidライブラリ&#34;&gt;Truth-Androidライブラリ&lt;/h3&gt;
-
-&lt;p&gt;JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。
-例えば、Intentには以下のアサーションメソッドを使うことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hasComponent
-hasComponentClass
-hasComponentPackage
-hasPackage
-hasAction
-hasNoAction
-hasData
-hasType
-extras
-categories
-hasFlags
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。&lt;/p&gt;
-
-&lt;h3 id=&#34;assertjとの比較&#34;&gt;AssertJとの比較&lt;/h3&gt;
-
-&lt;p&gt;これも公式ドキュメントにまとめてあります。&lt;a href=&#34;http://google.github.io/truth/comparison&#34;&gt;http://google.github.io/truth/comparison&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;現状の主だった差分は次のようになっています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある&lt;/li&gt;
-&lt;li&gt;TruthはChainスタイルで書くことを想定していない
-
-&lt;ul&gt;
-&lt;li&gt;これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Truthを使うと失敗メッセージがわかりやすくなる、便利!&lt;/li&gt;
-&lt;li&gt;AssertJを使っているなら乗り換えるメリットはないかも&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

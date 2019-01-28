@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 13:55:46 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Jan 2019 00:08:35 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/r8/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました</title>
+      <link>https://satoshun.github.io/2019/01/r8-proguard-metainf/</link>
+      <pubDate>Mon, 28 Jan 2019 00:08:35 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/01/r8-proguard-metainf/</guid>
+      <description>AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。 今まで、aarではconsumerProguardFilesで、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
+ライブラリ開発者側の設定 RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。
+まず、resources/META-INF/prougardディレクトリの中にProGuardの設定ファイルを置きます。
+square/retrofit
+ライブラリ側の設定はこれで完了です。
+使う側の設定 AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。
+implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot; &amp;gt; ./gradlew installRelease ... Warning: there were 267 unresolved references to classes or interfaces. You may need to add missing library jars or update their versions. If your code works fine without the missing classes, you can suppress the warnings with &#39;-dontwarn&#39; options. (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass) Warning: Exception while processing task java.io.IOException: Please correct the above warnings first. Thread(Tasks limiter_2): destruction  失敗しました😂</description>
+    </item>
     
     <item>
       <title>R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る</title>
