@@ -1,12 +1,13 @@
 +++
 date = "Mon Jan 28 00:08:35 UTC 2019"
+lastmod = "Mon Jan 28 22:58:03 UTC 2019"
 title = "R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました"
 tags = ["android", "r8", "proguard"]
 blogimport = true
 type = "post"
 +++
 
-AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
+~~AGP3.3.0~~ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
 今まで、aarでは`consumerProguardFiles`で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
 
 ## ライブラリ開発者側の設定
@@ -69,6 +70,12 @@ META-INFファイルをちゃんと読み込めているようです。ProGuard�
 ## 補足
 
 この機能はR8/ProGuard、両方とも対応しているようです。
+
+## 追記
+
+最初、冒頭でR8もAGP3.3.0からと書いたんですが、それは誤りで、AGP3.2.0のR8が導入されたタイミングでした。
+
+[@kafumi__](https://twitter.com/kafumi__/status/1089816485386747905)さんにご指摘いただきました！ありがとうございます😊
 
 ## まとめ
 
