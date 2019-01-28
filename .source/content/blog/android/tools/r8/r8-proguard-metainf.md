@@ -1,18 +1,17 @@
 +++
-date = "Sun Jan 27 23:44:46 UTC 2019"
-title = "R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになった"
+date = "Mon Jan 28 00:08:35 UTC 2019"
+title = "R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました"
 tags = ["android", "r8", "proguard"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
-AGP3.3.0から、JarファイルのMETA-INFにProGuardの設定ファイルを組み込めるようになりました。それの紹介をします。
-今ままで、aarでは`consumerProguardFiles`として、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
+AGP3.3.0から、JarファイルにProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
+今まで、aarでは`consumerProguardFiles`で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。
 
 ## ライブラリ開発者側の設定
 
-RetrofitなどのSquare社のライブラリでは、早くも対応しているので、それを例にして説明します。
+RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。
 
 まず、`resources/META-INF/prougard`ディレクトリの中にProGuardの設定ファイルを置きます。
 
@@ -22,7 +21,7 @@ RetrofitなどのSquare社のライブラリでは、早くも対応している
 
 ## 使う側の設定
 
-AGP3.3.0にアップデートするだけで使えます。META-INFはsRetrofitの2.5.0が入ったので、まずは何もMETA-INFが入っていない、2.4.0でビルドをしてみます。
+AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。
 
 ```
 implementation "com.squareup.retrofit2:retrofit:2.4.0"
@@ -38,7 +37,9 @@ Warning: Exception while processing task java.io.IOException: Please correct the
 Thread(Tasks limiter_2): destruction
 ```
 
-失敗しました。次にMETA-INFが入った2.5.0でビルドをします。
+失敗しました😂
+
+次にMETA-INFが入った2.5.0でビルドをします。
 
 ```
 implementation "com.squareup.retrofit2:retrofit:2.5.0"
@@ -52,7 +53,7 @@ BUILD SUCCESSFUL in 21s
 
 成功しました😊
 
-META-INFファイルをちゃんと読み込めているようです。configurationファイルを確認したところ、META-INFのProGuard設定が入っていました。
+META-INFファイルをちゃんと読み込めているようです。ProGuardのconfigurationファイルを確認したところ、RetrofitのProGuard設定が入っていました。
 
 ```
 // configuration.txt
@@ -73,4 +74,4 @@ META-INFファイルをちゃんと読み込めているようです。configura
 
 - ライブラリがJarであったとしても、ライブラリ作者が対応してくれればProGuardの設定が楽になる!!!
     - 現状、有名なライブラリでは、OkHttp、Retrofit、Coroutineなどが対応しています😊
-- この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏
+- この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏🙏🙏
