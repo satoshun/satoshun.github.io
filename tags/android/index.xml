@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 28 Jan 2019 00:08:35 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Feb 2019 13:19:13 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DroidKaigi2019で「R8/ProGuard 徹底比較」というテーマで発表しました</title>
+      <link>https://satoshun.github.io/2019/02/droidkaigi-2019/</link>
+      <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/02/droidkaigi-2019/</guid>
+      <description>DroidKaigi2019でセッションが採択されたので発表しました。
+ https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao
+最初に発表の反省点です。
+ 多く詰め込みすぎて、1つ1つの掘り下げが疎かになった  結果的に広く浅い発表になってしまったため、1つの1つがあまり丁寧に説明できていなかったように感じています。重要な部分はもう少し丁寧に発表すべきでした。  早口すぎ、俺は生き急いでるのか？  本当に申し訳ありませんでした。前日に最終確認したところ20分近くオーバーしてしまい、そこからある程度は間引いたんですが、早口でいくという戦略を取ってしまいました😂 他の方の発表のように聞きやすい発表を今後は意識していきます！   次に良かった点です。
+ 発表前の休憩時間に、司会の@neonankitiさんの助けで、アイスブレイク?のようなことができた  @neonankitiさんとは初対面だったんですが、謎の掛け合いができ、会場の雰囲気も良くなったように思います😊  なんだかんだとR8のコードを触れたのは良かった  R8コンパイラのコードに触れるかどうか悩んだのですが、printデバッグなどを駆使して、理解が間違っていないことが確認できたので、載せてみました。概要だけですが、個人的には良かったと思っています。  最後に話した実践編のウケが良くてよかった  R8の凄さが分かりやすく伝えられたのかなと思います😊   最後に、僕の発表を聞きに来てくれた人、運営のみなさんありがとうございました😊
+また来年もあれば登壇できるように頑張ります💪</description>
+    </item>
     
     <item>
       <title>R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました</title>
