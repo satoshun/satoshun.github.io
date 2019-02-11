@@ -1,5 +1,5 @@
 +++
-date = "Sun Feb 10 10:19:29 UTC 2019"
+date = "Mon Feb 11 01:40:29 UTC 2019"
 title = "でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる"
 tags = ["android", "multimodule", "gradle", "build"]
 blogimport = true

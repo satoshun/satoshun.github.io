@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/02/multi-module-speedup/</loc>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/02/droidkaigi-2019/</loc>
     <lastmod>2019-02-07T13:19:13+00:00</lastmod>
   </url>
@@ -407,7 +412,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-02-07T13:19:13+00:00</lastmod>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -431,7 +436,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-02-07T13:19:13+00:00</lastmod>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -444,6 +449,12 @@
   <url>
     <loc>https://satoshun.github.io/book/</loc>
     <lastmod>2018-12-28T05:27:13+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/build/</loc>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -581,7 +592,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -647,7 +658,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/multimodule/</loc>
-    <lastmod>2019-01-16T12:10:36+00:00</lastmod>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -801,7 +812,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-02-07T13:19:13+00:00</lastmod>
+    <lastmod>2019-02-11T01:40:29+00:00</lastmod>
     <priority>0</priority>
   </url>
   

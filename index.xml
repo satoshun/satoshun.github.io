@@ -7,7 +7,81 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Thu, 07 Feb 2019 13:19:13 UTC</updated>
+    <updated>Mon, 11 Feb 2019 01:40:29 UTC</updated>
+    
+    
+    <item>
+      <title>でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる</title>
+      <link>https://satoshun.github.io/2019/02/multi-module-speedup/</link>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/02/multi-module-speedup/</guid>
+      <description>
+
+&lt;p&gt;マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）&lt;/p&gt;
+
+&lt;p&gt;例えば、以下のモジュール構成を考えます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000&#34; width=400&gt;&lt;/p&gt;
+
+&lt;p&gt;頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。&lt;/p&gt;
+
+&lt;p&gt;そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00&#34; width=400&gt;&lt;/p&gt;
+
+&lt;p&gt;途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。&lt;/p&gt;
+
+&lt;p&gt;ただし、いくつか条件があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-中間モジュールで公開可能なものに限る&#34;&gt;1. 中間モジュールで公開可能なものに限る&lt;/h3&gt;
+
+&lt;p&gt;例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。
+これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。&lt;/p&gt;
+
+&lt;p&gt;中間モジュールのコードイメージとしては以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun createUserFragment(userName: String, age: Int): Fragment {
+  return UserFragment.createFragment(userName, age)
+}
+
+fun createUserIntent(context: Context): Intent {
+  return Intent(context, UserActivity::class.java)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;UserActivity、UserFragmentが公開されていないことが分かります。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-implementationで依存を定義する&#34;&gt;2. implementationで依存を定義する&lt;/h3&gt;
+
+&lt;p&gt;apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-dagger2使ってると多分無理&#34;&gt;3. Dagger2使ってると多分無理&lt;/h3&gt;
+
+&lt;p&gt;Dagger2では、解決する依存をAppComponentで知っている必要があるためです。上記の構成だと、appからsub1、sub2が見えてないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。&lt;/p&gt;
+
+&lt;p&gt;詳しくは&lt;a href=&#34;https://github.com/google/dagger/issues/970&#34;&gt;Dagger/#970&lt;/a&gt;にあります。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;やりすぎ感はある
+
+&lt;ul&gt;
+&lt;li&gt;ただでさえ複雑な、モジュール構成がさらに煩雑になりそう。ただし、最終的には消えるので、差分ビルドの恩恵を受けるためのステップだとすれば許せるかも?&lt;/li&gt;
+&lt;li&gt;Dagger2を使っていると推移的依存が必要になり、使えない、もしくは工夫が必要になる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプルは&lt;a href=&#34;https://github.com/satoshun-android-example/ApplicationModulesSpeedUpExample&#34;&gt;satoshun/ApplicationModulesSpeedUpExample&lt;/a&gt;にあります
+
+&lt;ul&gt;
+&lt;li&gt;サブモジュールを変更したときのビルドは爆速でした😊&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Daggerの部分のいい解決方法を知っている人がいたら、教えて頂けると幸いです😊😊😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1695,169 +1769,6 @@ class MainActivity : BaseActivity() {
 　  }
 }
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Dagger &#43; ViewModelの基本編 &#43; 実例編</title>
-      <link>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</link>
-      <pubDate>Wed, 19 Dec 2018 09:59:20 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/dagger_with_viewmodel/</guid>
-      <description>
-
-&lt;p&gt;この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃&lt;/p&gt;
-
-&lt;h2 id=&#34;基本編&#34;&gt;基本編&lt;/h2&gt;
-
-&lt;p&gt;一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は&lt;code&gt;ViewModelProvider&lt;/code&gt;を介して行う必要があるためです。&lt;/p&gt;
-
-&lt;p&gt;例えば、次のコードは間違っています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel @Inject constructor(...): ViewModel()
-
-class MainActivity {
-    @Inject lateinit var viewModel: MainViewModel
-
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel(...): ViewModel()
-
-@Module
-class MainActivityModule {
-    @Provides
-    fun provideMainViewModel(...) : MainViewModel {
-        // ViewModelProviderを使ってインスタンスを生成する
-        return ViewModelProviders.of(...).get(MainViewModel::class.java)
-    }
-}
-
-class MainActivity {
-    @Inject lateinit var viewModel: MainViewModel
-
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。&lt;/p&gt;
-
-&lt;p&gt;また、ViewModelを直接注入せずに、&lt;code&gt;ViewModelProvider.Factory&lt;/code&gt;を注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
-このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainViewModel(...): ViewModel()
-or
-class MainViewModel @Inject constructor(...): ViewModel()
-
-@Module
-class MainActivityModule {
-    @Provides
-    fun provideViewModelFactory(...) : ViewModelProvider.Factory {
-        // ここでMainViewModelを生成するFactoryを定義する
-        return object: ViewModelProvider.Factory {
-            ...
-        }
-    }
-}
-
-class MainActivity : AppCompatActivity() {
-    // ViewModelではなく、Factoryを注入するのがポイント
-    @Inject lateinit var factory: ViewModelProvider.Factory
-
-    // MainViewModelインスタンスの生成はActivity側で行う
-    // activity-ktxで定義されている拡張関数を使う
-    private val viewModel: MainViewModel by viewModels { factory }
-
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;activity-ktxに定義されている&lt;code&gt;viewModels&lt;/code&gt;拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。&lt;/p&gt;
-
-&lt;p&gt;次に、この2パターンのどちらの書き方がいいかを考えていきます。&lt;/p&gt;
-
-&lt;h2 id=&#34;実例編&#34;&gt;実例編&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;@Provides&lt;/code&gt;を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。&lt;/p&gt;
-
-&lt;p&gt;両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/nickbutcher/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/dagger/DribbbleModule.kt#L43&#34;&gt;plaid&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;@Provides&lt;/code&gt;を使い、ViewModelを直接注入するパターン&lt;/li&gt;
-&lt;li&gt;ViewModelごとにFactoryクラスをそれぞれ定義する必要があるので記述量が多い&lt;/li&gt;
-&lt;li&gt;ViewModelの依存関係が解決できなかったらコンパイルエラーになる
-
-&lt;ul&gt;
-&lt;li&gt;Daggerのコンパイルチェックが上手く動く&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelを直接注入出来るので使い側からすると間違った使い方は出来ない（はず）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://medium.com/@marco_cattaneo/android-viewmodel-and-factoryprovider-good-way-to-manage-it-with-dagger-2-d9e20a07084c&#34;&gt;Android ViewModel and FactoryProvider: good way to manage it with Dagger Multibindings&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Daggerのmultibindingsを使い、ViewModel Factoryを注入するパターン&lt;/li&gt;
-&lt;li&gt;最初に仕組みを入れてしまえば、のちのちの記述量は少ない&lt;/li&gt;
-&lt;li&gt;multibindingsを使っているのでランタイム時に落ちる可能性がある
-
-&lt;ul&gt;
-&lt;li&gt;Daggerのコンパイルチェックが上手く動かない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
-
-&lt;ul&gt;
-&lt;li&gt;間違った書き方が出来る&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/ActivityKtxDaggerExample/tree/master/app/src/main/java/com/github/satoshun/example/sample&#34;&gt;Activity-Ktx + Dagger Example&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Factory用のカスタムクラスを定義し、ViewModel Factoryを注入するパターン
-
-&lt;ul&gt;
-&lt;li&gt;僕が作ったサンプルコードです😃　&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;最初に汎用クラスを入れてしまえば、のちのちの記述量は少ない&lt;/li&gt;
-&lt;li&gt;ViewModelが提供されていなかったらコンパイルエラーになる
-
-&lt;ul&gt;
-&lt;li&gt;Daggerのコンパイルチェックが上手く動く&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
-
-&lt;ul&gt;
-&lt;li&gt;間違った書き方が出来る&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;一番プロジェクトに適したパターンを適用するのが良いと思います😃&lt;/li&gt;
-&lt;li&gt;DaggerでViewModelサポートの&lt;a href=&#34;https://github.com/google/dagger/issues/1271&#34;&gt;Issue&lt;/a&gt;が立っており、DaggerがViewModelをサポートする計画があります
-
-&lt;ul&gt;
-&lt;li&gt;なので前述のパターンはいつか過去のものとなる可能性が高いです。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -81,6 +81,15 @@
       <pubDate>Fri, 28 Dec 2018 05:27:13 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/book/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Build</title>
+      <link>https://satoshun.github.io/tags/build/</link>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/build/</guid>
       <description></description>
     </item>
     
@@ -285,7 +294,7 @@
     <item>
       <title>Gradle</title>
       <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Wed, 16 Jan 2019 12:10:36 +0000</pubDate>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
@@ -384,7 +393,7 @@
     <item>
       <title>Multimodule</title>
       <link>https://satoshun.github.io/tags/multimodule/</link>
-      <pubDate>Wed, 16 Jan 2019 12:10:36 +0000</pubDate>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/multimodule/</guid>
       <description></description>

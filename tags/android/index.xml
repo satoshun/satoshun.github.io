@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 07 Feb 2019 13:19:13 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Feb 2019 01:40:29 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる</title>
+      <link>https://satoshun.github.io/2019/02/multi-module-speedup/</link>
+      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/02/multi-module-speedup/</guid>
+      <description>マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）
+例えば、以下のモジュール構成を考えます。
+頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。
+そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。
+途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。
+ただし、いくつか条件があります。
+1. 中間モジュールで公開可能なものに限る 例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。
+中間モジュールのコードイメージとしては以下のようになります。
+fun createUserFragment(userName: String, age: Int): Fragment { return UserFragment.createFragment(userName, age) } fun createUserIntent(context: Context): Intent { return Intent(context, UserActivity::class.java) }  UserActivity、UserFragmentが公開されていないことが分かります。
+2. implementationで依存を定義する apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。
+3. Dagger2使ってると多分無理 Dagger2では、解決する依存をAppComponentで知っている必要があるためです。上記の構成だと、appからsub1、sub2が見えてないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。
+詳しくはDagger/#970にあります。
+まとめ  やりすぎ感はある  ただでさえ複雑な、モジュール構成がさらに煩雑になりそう。ただし、最終的には消えるので、差分ビルドの恩恵を受けるためのステップだとすれば許せるかも? Dagger2を使っていると推移的依存が必要になり、使えない、もしくは工夫が必要になる  サンプルはsatoshun/ApplicationModulesSpeedUpExampleにあります  サブモジュールを変更したときのビルドは爆速でした😊   Daggerの部分のいい解決方法を知っている人がいたら、教えて頂けると幸いです😊😊😊</description>
+    </item>
     
     <item>
       <title>DroidKaigi2019で「R8/ProGuard 徹底比較」というテーマで発表しました</title>
