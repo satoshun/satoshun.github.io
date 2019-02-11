@@ -4,7 +4,7 @@ title = "でかいappモジュールがあるときに、中間モジュール�
 tags = ["android", "multimodule", "gradle", "build"]
 blogimport = true
 type = "post"
-thumbnail = "https://bit.ly/2MWwKIu"
+thumbnail = "https://bit.ly/2DqyKVb"
 +++
 
 マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）
