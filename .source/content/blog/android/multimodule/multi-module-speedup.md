@@ -1,5 +1,6 @@
 +++
 date = "Mon Feb 11 01:40:29 UTC 2019"
+lastmod = "Mon Feb 11 02:09:16 UTC 2019"
 title = "でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる"
 tags = ["android", "multimodule", "gradle", "build"]
 blogimport = true
@@ -40,7 +41,7 @@ fun createUserIntent(context: Context): Intent {
 }
 ```
 
-UserActivity、UserFragmentが公開されていないことが分かります。
+UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。
 
 ### 2. implementationで依存を定義する
 
@@ -48,7 +49,7 @@ apiを使うと、依存が推移するため再ビルドが行われてしま�
 
 ### 3. Dagger2使ってると多分無理
 
-Dagger2では、解決する依存をAppComponentで知っている必要があるためです。上記の構成だと、appからsub1、sub2が見えてないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。
+Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。
 
 詳しくは[Dagger/#970](https://github.com/google/dagger/issues/970)にあります。
 

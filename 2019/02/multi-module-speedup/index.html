@@ -94,7 +94,7 @@
   <div class="post">
     <h1 class="post-title">でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる</h1>
     
-    <span class="post-date">Created at Mon, Feb 11, 2019</span>
+    <span class="post-date">Updated at Mon, Feb 11, 2019</span>
     
     
 
@@ -130,7 +130,7 @@ fun createUserIntent(context: Context): Intent {
 }
 </code></pre>
 
-<p>UserActivity、UserFragmentが公開されていないことが分かります。</p>
+<p>UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。</p>
 
 <h3 id="2-implementationで依存を定義する">2. implementationで依存を定義する</h3>
 
@@ -138,7 +138,7 @@ fun createUserIntent(context: Context): Intent {
 
 <h3 id="3-dagger2使ってると多分無理">3. Dagger2使ってると多分無理</h3>
 
-<p>Dagger2では、解決する依存をAppComponentで知っている必要があるためです。上記の構成だと、appからsub1、sub2が見えてないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。</p>
+<p>Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。</p>
 
 <p>詳しくは<a href="https://github.com/google/dagger/issues/970">Dagger/#970</a>にあります。</p>
 

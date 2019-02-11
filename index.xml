@@ -50,7 +50,7 @@ fun createUserIntent(context: Context): Intent {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;UserActivity、UserFragmentが公開されていないことが分かります。&lt;/p&gt;
+&lt;p&gt;UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。&lt;/p&gt;
 
 &lt;h3 id=&#34;2-implementationで依存を定義する&#34;&gt;2. implementationで依存を定義する&lt;/h3&gt;
 
@@ -58,7 +58,7 @@ fun createUserIntent(context: Context): Intent {
 
 &lt;h3 id=&#34;3-dagger2使ってると多分無理&#34;&gt;3. Dagger2使ってると多分無理&lt;/h3&gt;
 
-&lt;p&gt;Dagger2では、解決する依存をAppComponentで知っている必要があるためです。上記の構成だと、appからsub1、sub2が見えてないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。&lt;/p&gt;
+&lt;p&gt;Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。&lt;/p&gt;
 
 &lt;p&gt;詳しくは&lt;a href=&#34;https://github.com/google/dagger/issues/970&#34;&gt;Dagger/#970&lt;/a&gt;にあります。&lt;/p&gt;
 
