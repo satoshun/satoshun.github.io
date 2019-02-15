@@ -4,7 +4,7 @@ title = "マルチモジュールの遷移について考える Part2"
 tags = ["android", "multimodule", "gradle", "navigation"]
 blogimport = true
 type = "post"
-thumbnail = "https://bit.ly/2TPjiZz"
+thumbnail = "https://bit.ly/2Edzj6l"
 +++
 
 マルチモジュール遷移方法Part2です。[Part1](https://satoshun.github.io/2018/12/multi-module_transition_part1/)はここになります😌
