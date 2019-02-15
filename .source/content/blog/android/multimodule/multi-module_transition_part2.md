@@ -1,10 +1,10 @@
 +++
 date = "Fri Feb 15 00:14:56 UTC 2019"
 title = "マルチモジュールの遷移について考える Part2"
-tags = ["android", "multimodule", "gradle", "navigation]
+tags = ["android", "multimodule", "gradle", "navigation"]
 blogimport = true
 type = "post"
-draft = true
+thumbnail = "https://bit.ly/2TPjiZz"
 +++
 
 マルチモジュール遷移方法Part2です。[Part1](https://satoshun.github.io/2018/12/multi-module_transition_part1/)はここになります😌
@@ -15,31 +15,32 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 
 ## モジュール構成について
 
-細かい実装に入る前に、全体的なモジュール構成を説明します。
+細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。
 
-<img src="https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00" width=400>
+<img src="https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00" width=600>
 
-トップにappがあり、その下に各featureモジュールが紐付いています。featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeatureへ遷移を行い、遷移用インターフェースの実装はapp内のrouterモジュールで行います。
+各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。
 
-このモジュール構成のポイントは、各feature内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このような構成にすることで、各feature間で依存を持つことを防ぐことができます。
+このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。
 
-では、実装に入っていきます。今回はDaggerを使って実装をします。
+では、実装に入っていきます。今回はDagger2を使って実装をします。
 
 ## featureモジュール側の遷移用インターフェースの定義
 
-前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、そのfeatureモジュールが必要としているインターフェースを定義します。
+前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。
 
-mmain画面からsub1画面に移動したいときは、次のようにインターフェースを定義します。
+main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。
 
 ```kotlin
 interface MainModuleRouter {
+  // sub1画面へ移動する
   fun routeToSub1()
 }
 ```
 
-Mainモジュール用のインターフェースなので、`MainModuleRouter`という名前にしました。統一が取れていれば何でもいいと思います。
+Mainモジュール用のインターフェースなので、`MainModuleRouter`という名前にし、sub1画面へ遷移するためのメソッドを定義しています。
 
-そしてこれを、MainFragmentで使います。
+そしてこのインターフェースを、MainFragmentで使います。
 
 ```kotlin
 class MainFragment : Fragment() {
@@ -57,11 +58,13 @@ class MainFragment : Fragment() {
 }
 ```
 
-インタフェースの定義だけでは駄目なので、次はこのインターフェースの実装を作ります。
+これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
 
-## appモジュール側の遷移用インターフェースの実装
+次にこのインターフェースの実装をします。
 
-今回は遷移インタフェースの実装用のrouterモジュールで実装を行います。まずは、Navigation Componentを用いて、Graphを作ります。
+## routerモジュール側の遷移用インターフェースの実装
+
+今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。
 
 ```xml
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
@@ -95,7 +98,9 @@ class MainModuleRouterImpl @Inject constructor(
 }
 ```
 
-これで実装は完了です。あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。
+これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。
+
+あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。
 
 ## メモ
 
@@ -107,6 +112,8 @@ class MainModuleRouterImpl @Inject constructor(
 
 - Navigation Componentでモジュール間の遷移を宣言的にXMLで書けるのは見やすくて非常に良いと思いました。
     - またNavigation Componentはactivityの記述もできるので、既存アプリへの導入も比較的しやすいと思います
+- app/routerでは各featureモジュールへの依存を持つことができるので、クラスへの参照を持ちながら、navgationのgraphを作ることができる
+    - navigation graphはActivity/Fragmentへの参照を持たなくても作ることが可能だが、持ったほうがLintなどの兼ね合いで安全
 - サンプルコードは[satoshun/MultiModuleNavigationComponentExample](https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample)にあります。
 
 次は最終章になる予定です。DFMの遷移について書きます😃
