@@ -7,7 +7,134 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Mon, 11 Feb 2019 01:40:29 UTC</updated>
+    <updated>Fri, 15 Feb 2019 00:14:56 UTC</updated>
+    
+    
+    <item>
+      <title>マルチモジュールの遷移について考える Part2</title>
+      <link>https://satoshun.github.io/2019/02/multi-module_transition_part2/</link>
+      <pubDate>Fri, 15 Feb 2019 00:14:56 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/02/multi-module_transition_part2/</guid>
+      <description>
+
+&lt;p&gt;マルチモジュール遷移方法Part2です。&lt;a href=&#34;https://satoshun.github.io/2018/12/multi-module_transition_part1/&#34;&gt;Part1&lt;/a&gt;はここになります😌&lt;/p&gt;
+
+&lt;p&gt;Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。&lt;/p&gt;
+
+&lt;p&gt;また、今回の検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample&#34;&gt;satoshun/MultiModuleNavigationComponentExample&lt;/a&gt;にあります。&lt;/p&gt;
+
+&lt;h2 id=&#34;モジュール構成について&#34;&gt;モジュール構成について&lt;/h2&gt;
+
+&lt;p&gt;細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00&#34; width=600&gt;&lt;/p&gt;
+
+&lt;p&gt;各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。&lt;/p&gt;
+
+&lt;p&gt;このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。&lt;/p&gt;
+
+&lt;p&gt;では、実装に入っていきます。今回はDagger2を使って実装をします。&lt;/p&gt;
+
+&lt;h2 id=&#34;featureモジュール側の遷移用インターフェースの定義&#34;&gt;featureモジュール側の遷移用インターフェースの定義&lt;/h2&gt;
+
+&lt;p&gt;前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。&lt;/p&gt;
+
+&lt;p&gt;main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface MainModuleRouter {
+  // sub1画面へ移動する
+  fun routeToSub1()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Mainモジュール用のインターフェースなので、&lt;code&gt;MainModuleRouter&lt;/code&gt;という名前にし、sub1画面へ遷移するためのメソッドを定義しています。&lt;/p&gt;
+
+&lt;p&gt;そしてこのインターフェースを、MainFragmentで使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment : Fragment() {
+  @Inject lateinit var moduleRouter: MainModuleRouter
+
+  ...
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener {
+      moduleRouter.routeToSub1()
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでfeatureモジュールでの遷移用インターフェースの定義は完了です。&lt;/p&gt;
+
+&lt;p&gt;次にこのインターフェースの実装をします。&lt;/p&gt;
+
+&lt;h2 id=&#34;routerモジュール側の遷移用インターフェースの実装&#34;&gt;routerモジュール側の遷移用インターフェースの実装&lt;/h2&gt;
+
+&lt;p&gt;今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+  xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
+  android:id=&amp;quot;@+id/nav_graph&amp;quot;
+  app:startDestination=&amp;quot;@id/nav_main_frag&amp;quot;&amp;gt;
+
+  &amp;lt;fragment
+    android:id=&amp;quot;@+id/nav_main_frag&amp;quot;
+    android:name=&amp;quot;com.github.satoshun.example.feature.main.MainFragment&amp;quot;&amp;gt;
+
+    &amp;lt;action
+      android:id=&amp;quot;@+id/main_to_sub1&amp;quot;
+      app:destination=&amp;quot;@id/nav_sub1_frag&amp;quot; /&amp;gt;
+  &amp;lt;/fragment&amp;gt;
+
+  ...
+&amp;lt;/navigation&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして、これを用いて遷移用インターフェースを実装します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainModuleRouterImpl @Inject constructor(
+  private val controller: NavController
+) : MainModuleRouter {
+  override fun routeToSub1() {
+    // NavComponentで自動生成されるコードを用いて遷移
+    controller.navigate(MainFragmentDirections.mainToSub1())
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。&lt;/p&gt;
+
+&lt;p&gt;あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。&lt;/p&gt;
+
+&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
+
+&lt;h3 id=&#34;routerモジュールをわざわざ作る必要はないかも&#34;&gt;routerモジュールをわざわざ作る必要はないかも&lt;/h3&gt;
+
+&lt;p&gt;構成図を見てほしいのですが、実はrouterモジュールをわざわざ作る必要はなく、appモジュールに含めても良いです。routerモジュールを作るのがめんどう、もしくは意味がないと感じるなら、appモジュールで実装しても良いと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Navigation Componentでモジュール間の遷移を宣言的にXMLで書けるのは見やすくて非常に良いと思いました。
+
+&lt;ul&gt;
+&lt;li&gt;またNavigation Componentはactivityの記述もできるので、既存アプリへの導入も比較的しやすいと思います&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;app/routerでは各featureモジュールへの依存を持つことができるので、クラスへの参照を持ちながら、navgationのgraphを作ることができる
+
+&lt;ul&gt;
+&lt;li&gt;navigation graphはActivity/Fragmentへの参照を持たなくても作ることが可能だが、持ったほうがLintなどの兼ね合いで安全&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample&#34;&gt;satoshun/MultiModuleNavigationComponentExample&lt;/a&gt;にあります。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次は最終章になる予定です。DFMの遷移について書きます😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1679,96 +1806,6 @@ class MainActivity : BaseActivity() {
 &lt;/ul&gt;
 
 &lt;p&gt;サンプルコードです😃&lt;a href=&#34;https://github.com/satoshun-android-example/AutoDisposeExample&#34;&gt;satoshun-android-example/AutoDisposeExample&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>FragmentとgetViewLifecycleの話</title>
-      <link>https://satoshun.github.io/2018/12/view_lifecycle/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/view_lifecycle/</guid>
-      <description>
-
-&lt;p&gt;この記事ではFragmentでLiveDataにObserverを登録するときは&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;を使うと良いという話をします。&lt;/p&gt;
-
-&lt;p&gt;まず、Fragmentのおおまかなライフサイクルは次のようになっています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;onAttach&lt;/li&gt;
-&lt;li&gt;onCreate
-
-&lt;ul&gt;
-&lt;li&gt;onCreateView&lt;/li&gt;
-&lt;li&gt;onViewCreated
-
-&lt;ul&gt;
-&lt;li&gt;&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;onDestoryView&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;onDestroy&lt;/li&gt;
-&lt;li&gt;onDetach&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ここで重要なのは、&lt;code&gt;onDestroy&lt;/code&gt;が呼ばれることなく、複数回&lt;code&gt;onCreateView&lt;/code&gt;が呼ばれる可能性がある点です。&lt;/p&gt;
-
-&lt;p&gt;例えば、次のコードは間違っている可能性があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment: Fragment() {
-    ...
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.data.observe(this, Observer {
-            ...
-        })
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
-このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。
-しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。&lt;/p&gt;
-
-&lt;p&gt;前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。
-よって、FragmentにはView用のLifecycleが用意されています。それが、&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;です。&lt;/p&gt;
-
-&lt;p&gt;前述のコードは次のように書くことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment: Fragment() {
-    ...
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // ViewのLifecycleOwnerを渡す
-        viewModel.data.observe(viewLifecycleOwner, Observer {
-            ...
-        })
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！&lt;/p&gt;
-
-&lt;h2 id=&#34;補足1&#34;&gt;補足1&lt;/h2&gt;
-
-&lt;p&gt;Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。
-それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。&lt;/p&gt;
-
-&lt;h2 id=&#34;補足2&#34;&gt;補足2&lt;/h2&gt;
-
-&lt;p&gt;Observerの重複登録問題はattach/detachを繰り返す場合におこります。
-サンプルコードは次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;while (true) {
-    delay(3000)
-    supportFragmentManager.commitNow {
-        if (fragment.isDetached) attach(fragment)
-        else detach(fragment)
-　  }
-}
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
