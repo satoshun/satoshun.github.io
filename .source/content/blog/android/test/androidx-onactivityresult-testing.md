@@ -1,18 +1,17 @@
 +++
-date = "Fri Feb 22 13:37:11 UTC 2019"
-title = "todo"
-tags = ["android", "test", "androidx", "robolectric", "espresso"]
+date = "Sat Feb 23 02:47:59 UTC 2019"
+title = "Robolectric + JetpackでActivityのonActivityResultメソッドをテストする"
+tags = ["android", "test", "jetpack", "robolectric", "espresso"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
-Robolectric4.xからユニットテスト環境で、android test（実機）と同じテストコードを動かすことが可能になりました。
-まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、`AndroidJUnit4`ランナーが使えるなど、かなりの部分が対応しています。
+Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。
+まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、`AndroidJUnit4`ランナーが使えるなど、かなりの部分が共通化出来ます。
 
-この記事では、ユニットテストで`Activity.onActivityResult`のテストを書いてみます。
+この記事では、ユニットテストで`Activity.onActivityResult`のテストをどこまでandroid testのように書けるかを検証します。
 
-## テスト対象のアプリコードコード
+## テスト対象コード
 
 まず最初に、テスト対象コードは次のようになっています。
 
@@ -64,20 +63,13 @@ class Sub2Activity : AppCompatActivity() {
 }
 ```
 
-このサンプルコードが意味しているところは次になります。
+これはMainActivityで`startActivityForResult`がコールされ、Sub2Activityで`setResult`で値をセットし、MainActivityの`onActivityResult`で結果を受け取るサンプルコードになります。
 
-1. MainActivityのボタンをクリックする
-    2. `startActivityForResult`がコールされ、Sub2Activityが開始
-2. Sub2Activityのボタンをクリックする
-    3. `setResult`メソッドがコールされ、終了
-3. MainActivityの`onActivityResult`メソッドに結果が返ってくる
-    4. 結果がViewに反映される
-
-となっています。では、これらを満たすテストを書いていきます。
+では、テストを書いていきます。
 
 ## テストコード
 
-最初にテストコードをのせます。
+以下が、今回書いたテストコードになります。
 
 ```kotlin
 @RunWith(AndroidJUnit4::class)
@@ -88,17 +80,17 @@ internal class MainActivityTest {
   fun onActivityResultTest() {
     val expectCode = 10
 
-    // finish test
+    // assertion setResult
     val scenario = ActivityScenario.launch(Sub2Activity::class.java)
     scenario.onActivity {
       it.findViewById<View>(R.id.button).performClick()
     }
 
-    // resultCode test
+    // assertion resultCode
     val result = scenario.result
     assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
 
-    // intent params test
+    // assertion intent params
     val bundleSubject = IntentSubject.assertThat(result.resultData).extras()
     bundleSubject.integer("test").isEqualTo(expectCode)
 
@@ -119,7 +111,7 @@ internal class MainActivityTest {
     main.onActivity {
       it.findViewById<View>(R.id.button).performClick()
 
-      // check intent for startActivity(ForResult)
+      // assertion intent for startActivity(ForResult)
       val name = ComponentName(
         ApplicationProvider.getApplicationContext<Application>(),
         Sub2Activity::class.java
@@ -127,7 +119,7 @@ internal class MainActivityTest {
       Intents.intended(IntentMatchers.hasComponent(name))
       Intents.intended(IntentMatchers.hasExtra("fuga", "hoge"))
 
-      // check onActivityResult behaves
+      // assertion onActivityResult behaves
       Espresso
         .onView(ViewMatchers.withId(R.id.button))
         .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
@@ -136,13 +128,13 @@ internal class MainActivityTest {
 }
 ```
 
-ちょっと長いですが、やっていることは大したことないです。上から説明していきます。
+上から順番に重要な部分を説明していきます。
 
 ```kotlin
 @get:Rule val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 ```
 
-これは、Espresso-Intentsを使うときに設定するルールです。`Intents.intended`、`intending`が使えるようになります。
+これは、Espresso-Intentsを使うときに必要なルールです。`Intens.intended`、`intending`を使うために必要なルールになります。
 
 ```kotlin
 val scenario = ActivityScenario.launch(Sub2Activity::class.java)
@@ -151,7 +143,8 @@ scenario.onActivity {
 }
 ```
 
-ActivityScenarioはActivityを起動するためのクラスです。Sub2Activityを起動して、ボタンをクリックしています。
+ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
+ボタンがクリックされると、Sub2Activityで`setResult`が発火するようになっています。
 
 ```kotlin
 val result = scenario.result
@@ -161,7 +154,11 @@ val bundleSubject = IntentSubject.assertThat(result.resultData).extras()
 bundleSubject.integer("test").isEqualTo(expectCode)
 ```
 
-ActivityScenarioでは、ActivityResultを取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらをTruthを使い値をチェックしています。
+ActivityScenarioでは、ActivityResultクラスから結果を取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらの値をTruthを使いチェックします。この場合、`setResult`で、resultcodeに`Activity.RESULT_OK`が、resultdataにはキー名`test`、値10がセットされていることを確認してします。
+
+ここまでで、Sub2ActivityのsetResultで正しい値をセットしていることがテスト出来ます。
+
+では次に、MainActivityで上記の値を受け取れることをテストしていきます。
 
 ```kotlin
 Intents
@@ -177,14 +174,13 @@ Intents
 ```
 
 `Intents.intending`はマッチしたIntentが発行されたときに、onActivityResultに結果を返すAPIになります。
-先ほど取得したActivityResultを返すように設定します。
+MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。
 
 ```kotlin
 val main = ActivityScenario.launch(MainActivity::class.java)
 main.onActivity {
   it.findViewById<View>(R.id.button).performClick()
 
-  // check intent for startActivity(ForResult)
   val name = ComponentName(
     ApplicationProvider.getApplicationContext<Application>(),
     Sub2Activity::class.java
@@ -192,16 +188,16 @@ main.onActivity {
   Intents.intended(IntentMatchers.hasComponent(name))
   Intents.intended(IntentMatchers.hasExtra("fuga", "hoge"))
 
-  // check onActivityResult behaves
   Espresso
     .onView(ViewMatchers.withId(R.id.button))
     .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
 }
 ```
 
-`Intents.intended`でstartActivtyForResuotで渡したIntentの中身が正しいことを確認します。最後に、Espressoを使って、`onActivityResult`の結果が正しく反映されているかを確認しています。
+まずは、クリックイベントを発火し、`startActivityForResult`をコールします。渡したIntentを`Intents.intended`で正しいことを確認します。最後に、Espressoを使って、`onActivityResult`の結果を正しく反映されているかを確認します。
 
 これで、テスト完了です😃
+2つのActivityに関連するonActivityResultのテストが無事に出来ました！！
 
 ## 補足
 
@@ -214,8 +210,13 @@ Espresso
   .perform(ViewActions.click())
 ```
 
-調べたんですが、わかりませんでした😂分かり次第追記します。
+調べたんですが、原因がわかりませんでした😂分かり次第追記します。
 
 ## まとめ
 
 - 上記のテストくらいなら、ユニットテストで書ける。すごい😃
+  - onActivityResultみたいな、クラス間のつながりが弱い部分は意図せず壊れやすいので、テストを書いておくと安心かも😋
+
+今回の検証に用いたサンプルコードは[satoshun-android-example/Tests](https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/tests/lifecycle/MainActivityTest.kt)にあります。
+
+もっと良い書き方を知っているよと言う人は教えて頂けるととても嬉しいです😃😃😃
