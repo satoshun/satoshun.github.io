@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Fri, 15 Feb 2019 00:14:56 +0000</pubDate>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -229,6 +229,15 @@
     </item>
     
     <item>
+      <title>Espresso</title>
+      <link>https://satoshun.github.io/tags/espresso/</link>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/espresso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Factory</title>
       <link>https://satoshun.github.io/tags/factory/</link>
       <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
@@ -339,7 +348,7 @@
     <item>
       <title>Jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
@@ -508,6 +517,15 @@
     </item>
     
     <item>
+      <title>Robolectric</title>
+      <link>https://satoshun.github.io/tags/robolectric/</link>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/robolectric/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Room</title>
       <link>https://satoshun.github.io/tags/room/</link>
       <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
@@ -555,7 +573,7 @@
     <item>
       <title>Test</title>
       <link>https://satoshun.github.io/tags/test/</link>
-      <pubDate>Wed, 12 Dec 2018 00:21:12 +0000</pubDate>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/test/</guid>
       <description></description>

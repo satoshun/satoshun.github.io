@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</loc>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/02/multi-module_transition_part2/</loc>
     <lastmod>2019-02-15T00:14:56+00:00</lastmod>
   </url>
@@ -417,7 +422,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-02-15T00:14:56+00:00</lastmod>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -441,7 +446,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-02-15T00:14:56+00:00</lastmod>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -554,6 +559,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/espresso/</loc>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/factory/</loc>
     <lastmod>2018-11-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -627,7 +638,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2019-01-24T00:43:33+00:00</lastmod>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -740,6 +751,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/robolectric/</loc>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/room/</loc>
     <lastmod>2019-01-24T00:43:33+00:00</lastmod>
     <priority>0</priority>
@@ -787,7 +804,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/test/</loc>
-    <lastmod>2018-12-12T00:21:12+00:00</lastmod>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -817,7 +834,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-02-15T00:14:56+00:00</lastmod>
+    <lastmod>2019-02-23T02:47:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   

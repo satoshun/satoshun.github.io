@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 12 Dec 2018 00:21:12 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 23 Feb 2019 02:47:59 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Robolectric &#43; JetpackでActivityのonActivityResultメソッドをテストする</title>
+      <link>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</link>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</guid>
+      <description>Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。 まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、AndroidJUnit4ランナーが使えるなど、かなりの部分が共通化出来ます。
+この記事では、ユニットテストでActivity.onActivityResultのテストをどこまでandroid testのように書けるかを検証します。
+テスト対象コード まず最初に、テスト対象コードは次のようになっています。
+class MainActivity : AppCompatActivity() { ... override fun onCreate(savedInstanceState: Bundle?) { ... button.setOnClickListener { startActivityForResult( Intent(this, Sub2Activity::class.java).apply { putExtra(&amp;quot;fuga&amp;quot;, &amp;quot;hoge&amp;quot;) }, 1 ) } } override fun onActivityResult( requestCode: Int, resultCode: Int, data: Intent? ) { super.onActivityResult(requestCode, resultCode, data) if (requestCode == 1) { if (resultCode == Activity.RESULT_OK) { val value = data!!.getIntExtra(&amp;quot;test&amp;quot;, -1) button.text = value.toString() } } } }  class Sub2Activity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?</description>
+    </item>
     
     <item>
       <title>Truthのメリット、特徴について</title>
