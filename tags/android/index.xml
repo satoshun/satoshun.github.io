@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 23 Feb 2019 02:47:59 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Mar 2019 13:21:05 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RxAndroidにPull Requestを出した話</title>
+      <link>https://satoshun.github.io/2019/03/rx-android-pull-request/</link>
+      <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/rx-android-pull-request/</guid>
+      <description>RxAndroidにIssueを立てて、PRを出した話です。広く使われているOSSプロジェクトに対して、Issueを立てて、テストもセットでPRを出したことがなかったので、それの記念記事になります。
+Issueの内容 実際のIssueは HandlerScheduler.scheduleDirect supports async option? になります。
+Issueの概要は、RxAndroidは2.1.0でasync messageに対応しました。しかし、これはWorker.scheduleのスケジュールからのみのサポートでした。RxJavaではScheduler.scheduleDirectでもスケジュールされるので、こちらも対応したほうが良いのでは？と思いIssueを立てました。
+そもそもこの問題に気づいたきっかけ RxAndroidが2.1.0でasync messageに対応した時に、サンプルで効果を測定したところ、いくつかのオペレータではパフォーマンスの向上が見られないことに気づきました。このときは、サンプルが悪いのか、それとも環境がおかしいのか、またまたこれが意図した挙動なのかが分かりませんでした。とりあえず、自分のタスク管理をしているtodoistに「良く分からないけどパフォーマンスが向上しないパターンがある」みたいなタスクを作って、あとで調べることにしました。
+調べ方 クラッシュするわけでもないので、パフォーマンスが向上するパターンと、向上しないパターンでスケジュールのされかたに違いがないかをデバッガーを使い、地道にコードを追いかけました。
+結果、Observable.observeOnではWorker.scheduleメソッドでタスクのスケジューリングをし、Maybe.observeOnではScheduler.scheduleDirectメソッドでスケジューリングする違いがあることが分かりました。後は、それぞれのパスでのasync messageの挙動の違いを特定し、修正するだけです。
+その他・感想 JakeさんとZacさんにレビューをしてもらった 二人のコードは良く読んでいて、尊敬しているAndroidエンジニアなので、その2人にレビューをしてもらえたのは嬉しかったです😃</description>
+    </item>
     
     <item>
       <title>Robolectric &#43; JetpackでActivityのonActivityResultメソッドをテストする</title>

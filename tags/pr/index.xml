@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rxjava on stsnブログ</title>
-    <link>https://satoshun.github.io/tags/rxjava/</link>
-    <description>Recent content in Rxjava on stsnブログ</description>
+    <title>Pr on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/pr/</link>
+    <description>Recent content in Pr on stsnブログ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
     <lastBuildDate>Sat, 02 Mar 2019 13:21:05 +0000</lastBuildDate>
     
-	<atom:link href="https://satoshun.github.io/tags/rxjava/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://satoshun.github.io/tags/pr/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -25,24 +25,6 @@ Issueの概要は、RxAndroidは2.1.0でasync messageに対応しました。し
 調べ方 クラッシュするわけでもないので、パフォーマンスが向上するパターンと、向上しないパターンでスケジュールのされかたに違いがないかをデバッガーを使い、地道にコードを追いかけました。
 結果、Observable.observeOnではWorker.scheduleメソッドでタスクのスケジューリングをし、Maybe.observeOnではScheduler.scheduleDirectメソッドでスケジューリングする違いがあることが分かりました。後は、それぞれのパスでのasync messageの挙動の違いを特定し、修正するだけです。
 その他・感想 JakeさんとZacさんにレビューをしてもらった 二人のコードは良く読んでいて、尊敬しているAndroidエンジニアなので、その2人にレビューをしてもらえたのは嬉しかったです😃</description>
-    </item>
-    
-    <item>
-      <title>RxAndroidのasyncパラメータを試してみた</title>
-      <link>https://satoshun.github.io/2018/08/rx-android-async-parameter/</link>
-      <pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/2018/08/rx-android-async-parameter/</guid>
-      <description>RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これはMessage#setAsynchronousを使うことで、UIのパフォーマンス向上を狙った機能です。 下のリンクに詳細な内容が書かれています。
-RxAndroid’s New Async API
-この記事では、asyncがfalseの場合とtrueの場合でどれくらいの差が出るかを検証してみました。
-検証に使用したサンプルプロジェクトは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample
-サンプルプロジェクトをかいつまんで説明します。
-まず2つのスケジューラを作成し、
-private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false) private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)  作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。
-// asyncがfalseの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(mainScheduler) .subscribe(...) // asyncがtrueの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(asyncMainScheduler) .subscribe(...)  フルコードは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt
-結果は、以下のようになりました。
-// API27 エミュレータ main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和 main=130857ms, async=126582ms main=131401ms, async=126909ms main=130763ms, async=126504ms main=132758ms, async=127972ms // API21 エミュレータ main=129869ms, async=125795ms main=130050ms, async=125888ms main=129935ms, async=125853ms main=129908ms, async=125838ms main=129927ms, async=125824ms  asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</description>
     </item>
     
   </channel>
