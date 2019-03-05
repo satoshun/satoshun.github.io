@@ -7,7 +7,55 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sat, 02 Mar 2019 13:21:05 UTC</updated>
+    <updated>Tue, 05 Mar 2019 00:10:42 UTC</updated>
+    
+    
+    <item>
+      <title>Dagger2: ProvidesはKotlin extension methodと一緒に使うことが出来る</title>
+      <link>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</link>
+      <pubDate>Tue, 05 Mar 2019 00:10:42 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</guid>
+      <description>
+
+&lt;p&gt;Dagger2のちょっとしたtipsです。&lt;/p&gt;
+
+&lt;p&gt;次の2つのメソッドは同じ振る舞いをします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Module
+class MainActivityModule {
+  // 普通の書き方
+  @Provides fun provideMainContractView(activity: MainActivity): MainContract.View {
+    return activity
+  }
+
+  // 拡張関数を使った書き方
+  @Provides fun MainActivity.provideMainContractView(): MainContract.View {
+    return this
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;...
+   @Provides
+   @NotNull
+   public final MainContract.View provideMainContractView(@NotNull MainActivity $receiver) {
+      Intrinsics.checkParameterIsNotNull($receiver, &amp;quot;receiver$0&amp;quot;);
+      return (MainContract.View)$receiver;
+   }
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;拡張関数として定義したMainActivityは&lt;code&gt;$receiver&lt;/code&gt;となり、引数に入っていることが分かります。拡張関数は上記のように解釈されるため、&lt;code&gt;@Provides&lt;/code&gt;と組み合わせて使うことが出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;多分、使い所ないと思います😃😃😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1788,64 +1836,6 @@ class SubActivity : AppCompatActivity() {
 &lt;p&gt;Part2ではDeeplinkやnavigationを絡めた遷移の方法について考えてみたいと思います😃&lt;/p&gt;
 
 &lt;p&gt;サンプルコード: &lt;a href=&#34;https://github.com/satoshun-android-example/MultiActivityRouterExample&#34;&gt;satoshun-android-example/MultiActivityRouterExample&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>感想: コーディングを支える技術</title>
-      <link>https://satoshun.github.io/2018/12/coding_tech/</link>
-      <pubDate>Fri, 28 Dec 2018 05:27:13 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2018/12/coding_tech/</guid>
-      <description>&lt;p&gt;「コーディングを支える技術」を読んだのでざっくりと感想。&lt;/p&gt;
-
-&lt;p&gt;比較、歴史から学ぶ&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;その機能はなにかの問題を解決するために導入されている
-
-&lt;ul&gt;
-&lt;li&gt;歴史から紐解くことでなぜそれが必要かが理解できる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;言語によってどの問題を解決したいのかが違う
-
-&lt;ul&gt;
-&lt;li&gt;Python: 同じようなコードになるような言語&lt;/li&gt;
-&lt;li&gt;C++: 高速に動作することを目指している&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;エラー処理の進化
-- globalなエラーハンドリングはgotoと変わらない
-- try catch finallyのように構造化されたエラー処理が誕生した
-    - Javaでは検査型例外、必ずerrorを処理しなければいけない設計&lt;/p&gt;
-
-&lt;p&gt;アドレスを覚えるのは人間には大変&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;人間はメソッド、変数を介することでアドレスを忘れることが出来た
-
-&lt;ul&gt;
-&lt;li&gt;結果、メソッド名、変数名をいかにしてわかりやすくするかが重要になってきた&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;基本的には何をするかというよりかは、何をさせないかで進化している&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;クラスによるポリモーフィズム
-
-&lt;ul&gt;
-&lt;li&gt;関数ポインタを直接触らないように&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;gotoの禁止
-
-&lt;ul&gt;
-&lt;li&gt;構造化、モジュール化できなくなるので&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

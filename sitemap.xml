@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</loc>
+    <lastmod>2019-03-05T00:10:42+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/03/rx-android-pull-request/</loc>
     <lastmod>2019-03-02T13:21:05+00:00</lastmod>
   </url>
@@ -427,7 +432,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
+    <lastmod>2019-03-05T00:10:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -451,7 +456,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
+    <lastmod>2019-03-05T00:10:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -511,7 +516,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2019-01-20T13:55:46+00:00</lastmod>
+    <lastmod>2019-03-05T00:10:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -845,7 +850,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
+    <lastmod>2019-03-05T00:10:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   

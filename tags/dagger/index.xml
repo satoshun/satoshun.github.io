@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 13:55:46 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Mar 2019 00:10:42 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger2: ProvidesはKotlin extension methodと一緒に使うことが出来る</title>
+      <link>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</link>
+      <pubDate>Tue, 05 Mar 2019 00:10:42 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</guid>
+      <description>Dagger2のちょっとしたtipsです。
+次の2つのメソッドは同じ振る舞いをします。
+@Module class MainActivityModule { // 普通の書き方 @Provides fun provideMainContractView(activity: MainActivity): MainContract.View { return activity } // 拡張関数を使った書き方 @Provides fun MainActivity.provideMainContractView(): MainContract.View { return this } }  なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。
+... @Provides @NotNull public final MainContract.View provideMainContractView(@NotNull MainActivity $receiver) { Intrinsics.checkParameterIsNotNull($receiver, &amp;quot;receiver$0&amp;quot;); return (MainContract.View)$receiver; } ...  拡張関数として定義したMainActivityは$receiverとなり、引数に入っていることが分かります。拡張関数は上記のように解釈されるため、@Providesと組み合わせて使うことが出来ます。
+まとめ 多分、使い所ないと思います😃😃😃</description>
+    </item>
     
     <item>
       <title>R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る</title>
