@@ -1,15 +1,15 @@
 +++
-date = "Mon Mar  4 23:54:20 UTC 2019"
+date = "Tue Mar  5 00:10:42 UTC 2019"
 title = "Dagger2: ProvidesはKotlin extension methodと一緒に使うことが出来る"
 tags = ["dagger", "android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Dagger2のちょっとしたtipsです。
 
-次の2メソッドは同じ振る舞いをします。
+次の2つのメソッドは同じ振る舞いをします。
 
 ```kotlin
 @Module
