@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 05 Mar 2019 00:10:42 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Mar 2019 10:14:21 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: JetpackのCoroutine Support対応について</title>
+      <link>https://satoshun.github.io/2019/03/jetpack-coroutine-support/</link>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/jetpack-coroutine-support/</guid>
+      <description>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。
+以下、2019年3月10日の調査結果になります。 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。
+Lifecycle
+val Lifecycle.coroutineScope: CoroutineScope  LifecycleOwner
+val LifecycleOwner.lifecycleScope: CoroutineScope  ViewModel
+val ViewModel.viewModelScope: CoroutineScope  WorkManager
+abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { abstract suspend fun doWork(): Result }  Room
+// Daoでsuspendメソッドが定義出来る @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;quot;SELECT * FROM hoge WHERE id = :id&amp;quot;) suspend fun get(id: String): Hoge ... }  まとめ  Lifecycle、LifecycleOwner、ViewModelはそれらのライフサイクルに従う、CoroutineScopeの生成が出来る WorkManagerのdoWorkがsuspendメソッドになった  doWorkの中で、他のsuspendメソッドがコールできる  RoomなのDao内でsuspendメソッドが定義出来る  結構対応がされていた😃😃😃</description>
+    </item>
     
     <item>
       <title>Dagger2: ProvidesはKotlin extension methodと一緒に使うことが出来る</title>

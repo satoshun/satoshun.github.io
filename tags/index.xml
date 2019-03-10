@@ -42,7 +42,7 @@
     <item>
       <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 05 Mar 2019 00:10:42 +0000</pubDate>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -132,7 +132,7 @@
     <item>
       <title>Coroutine</title>
       <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/coroutine/</guid>
       <description></description>
@@ -348,7 +348,7 @@
     <item>
       <title>Jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
@@ -357,7 +357,7 @@
     <item>
       <title>Kotlin</title>
       <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Sun, 20 Jan 2019 06:56:16 +0000</pubDate>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
@@ -369,6 +369,15 @@
       <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/ktstdlib/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ktx</title>
+      <link>https://satoshun.github.io/tags/ktx/</link>
+      <pubDate>Sun, 10 Mar 2019 10:14:21 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/ktx/</guid>
       <description></description>
     </item>
     
