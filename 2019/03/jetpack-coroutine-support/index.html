@@ -95,29 +95,32 @@ Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポート
   <div class="post">
     <h1 class="post-title">Android: JetpackのCoroutine Supportについて</h1>
     
-    <span class="post-date">Created at Sun, Mar 10, 2019</span>
+    <span class="post-date">Updated at Sun, Mar 10, 2019</span>
     
     
 
 <p>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。</p>
 
-<p>以下、2019年3月10日の調査結果になります。
+<p>以下、<del>2019年3月10日</del> 2019年3月11日の調査結果になります。
 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。</p>
 
 <p>Lifecycle</p>
 
-<pre><code class="language-kotlin">val Lifecycle.coroutineScope: CoroutineScope
+<pre><code class="language-kotlin">// Lifecycleに従うCoroutineScopeの生成
+val Lifecycle.coroutineScope: CoroutineScope
 </code></pre>
 
 <p>LifecycleOwner</p>
 
-<pre><code class="language-kotlin">val LifecycleOwner.lifecycleScope: CoroutineScope
+<pre><code class="language-kotlin">// LifecycleOwnerに従うCoroutineScopeの生成
+val LifecycleOwner.lifecycleScope: CoroutineScope
 </code></pre>
 
 <p>ViewModel</p>
 
-<pre><code class="language-kotlin">val ViewModel.viewModelScope: CoroutineScope
+<pre><code class="language-kotlin">// ViewModelに従うCoroutineScopeの生成
+val ViewModel.viewModelScope: CoroutineScope
 </code></pre>
 
 <p>WorkManager</p>
@@ -126,13 +129,14 @@ Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポート
   appContext: Context,
   params: WorkerParameters
 ) : ListenableWorker(appContext, params) {
+  // suspendメソッドで定義された
   abstract suspend fun doWork(): Result
 }
 </code></pre>
 
 <p>Room</p>
 
-<pre><code class="language-kotlin">// Daoでsuspendメソッドが定義出来る
+<pre><code class="language-kotlin">// Dao内でsuspendメソッドが使える
 @Dao
 interface HogesDao {
   @Insert
@@ -154,10 +158,25 @@ interface HogesDao {
 <ul>
 <li>doWorkの中で、他のsuspendメソッドがコールできる</li>
 </ul></li>
-<li>RoomなのDao内でsuspendメソッドが定義出来る</li>
+<li>RoomのDao内でsuspendメソッドが定義出来る</li>
 </ul>
 
 <p>結構対応がされていた😃😃😃</p>
+
+<h2 id="補足">補足</h2>
+
+<ul>
+<li>LiveDataへのサポートも入るかも
+
+<ul>
+<li><a href="https://android-review.googlesource.com/c/platform/frameworks/support/+/890736">WIP corutine live data (Id0e47973) · Gerrit Code Review</a></li>
+</ul></li>
+<li>Lifecycleに特定のstateに入った時に実行される拡張関数群が入りそう
+
+<ul>
+<li><a href="https://android-review.googlesource.com/c/platform/frameworks/support/+/905134">Lifecycle Dispatcher (Ib1211c0f) · Gerrit Code Review</a></li>
+</ul></li>
+</ul>
 
     <div class="mt30"></div>
     
