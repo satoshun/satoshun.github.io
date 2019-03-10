@@ -1,6 +1,6 @@
 +++
 date = "Sun Mar 10 10:14:21 UTC 2019"
-title = "Android: JetpackのCoroutine Support対応について"
+title = "Android: JetpackのCoroutine Supportについて"
 tags = ["android", "jetpack", "coroutine", "ktx", "kotlin"]
 blogimport = true
 type = "post"
