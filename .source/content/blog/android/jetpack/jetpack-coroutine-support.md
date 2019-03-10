@@ -1,16 +1,17 @@
 +++
-date = "Sun Mar 10 09:57:47 UTC 2019"
+date = "Sun Mar 10 10:14:21 UTC 2019"
 title = "Android: JetpackのCoroutine Support対応について"
 tags = ["android", "jetpack", "coroutine", "ktx", "kotlin"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
-どのライブラリで対応が進んでいるか気になったので、軽くまとめます。（使い方については言及しません。）
+どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。
 
-2019年3月10日現在の調査結果になります。
+以下、2019年3月10日の調査結果になります。
+また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。
 
 Lifecycle
 
@@ -42,6 +43,7 @@ abstract class CoroutineWorker(
 
 Room
 ```kotlin
+// Daoでsuspendメソッドが定義出来る
 @Dao
 interface HogesDao {
   @Insert
@@ -53,3 +55,12 @@ interface HogesDao {
   ...
 }
 ```
+
+## まとめ
+
+- Lifecycle、LifecycleOwner、ViewModelはそれらのライフサイクルに従う、CoroutineScopeの生成が出来る
+- WorkManagerのdoWorkがsuspendメソッドになった
+  - doWorkの中で、他のsuspendメソッドがコールできる
+- RoomなのDao内でsuspendメソッドが定義出来る
+
+結構対応がされていた😃😃😃
