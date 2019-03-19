@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</loc>
+    <lastmod>2019-03-19T12:31:05+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</loc>
+    <lastmod>2019-03-17T05:17:23+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/03/jetpack-coroutine-support/</loc>
     <lastmod>2019-03-10T23:08:46+00:00</lastmod>
   </url>
@@ -461,7 +471,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-03-19T12:31:05+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -509,7 +519,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/coroutine/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-03-17T05:17:23+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -659,7 +669,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-03-19T12:31:05+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -797,7 +807,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/rxjava/</loc>
-    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
+    <lastmod>2019-03-17T05:17:23+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -861,7 +871,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-03-19T12:31:05+00:00</lastmod>
     <priority>0</priority>
   </url>
   

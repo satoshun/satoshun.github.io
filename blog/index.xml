@@ -7,10 +7,36 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 10 Mar 2019 10:14:21 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Mar 2019 12:31:05 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: コンストラクタ呼び出しっぽく関数やcompanion objectを使う</title>
+      <link>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</link>
+      <pubDate>Tue, 19 Mar 2019 12:31:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</guid>
+      <description> KotlinではJavaと異なり、コンストラクタ呼び出しの時にnewキーワードが必要ありません。
+class A ... val a = A()  よって、次のように関数をコンストラクタのように使うことが出来ます。
+// Coroutine Jobの定義 @Suppress(&amp;quot;FunctionName&amp;quot;) public fun Job(parent: Job? = null): Job = JobImpl(parent) ... val job = Job()  また、次のようにcompanion object + operator invokeを使うことも出来ます。
+// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() { companion object { @JvmStatic @JvmName(&amp;quot;create&amp;quot;) operator fun invoke() = CoroutineCallAdapterFactory() } } ... val factory = CoroutineCallAdapterFactory()  まとめ  JobImplのような実装クラスを隠したいときに便利  </description>
+    </item>
+    
+    <item>
+      <title>Kotlin: CoroutineでRxJavaのzipっぽいものを表現する</title>
+      <link>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</link>
+      <pubDate>Sun, 17 Mar 2019 05:17:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
+      <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;) }  asyncで包むことで、並列に処理をすることができます。
+次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
+launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;) }  runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+また、次のように書くことは出来ません。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
+    </item>
     
     <item>
       <title>Android: JetpackのCoroutine Supportについて</title>

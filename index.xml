@@ -7,7 +7,154 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 10 Mar 2019 10:14:21 UTC</updated>
+    <updated>Tue, 19 Mar 2019 12:31:05 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: コンストラクタ呼び出しっぽく関数やcompanion objectを使う</title>
+      <link>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</link>
+      <pubDate>Tue, 19 Mar 2019 12:31:05 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</guid>
+      <description>
+
+&lt;p&gt;KotlinではJavaと異なり、コンストラクタ呼び出しの時に&lt;code&gt;new&lt;/code&gt;キーワードが必要ありません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A
+...
+val a = A()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;よって、次のように関数をコンストラクタのように使うことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Coroutine Jobの定義
+@Suppress(&amp;quot;FunctionName&amp;quot;)
+public fun Job(parent: Job? = null): Job = JobImpl(parent)
+...
+val job = Job()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、次のようにcompanion object + operator invokeを使うことも出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter
+class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() {
+  companion object {
+    @JvmStatic @JvmName(&amp;quot;create&amp;quot;)
+    operator fun invoke() = CoroutineCallAdapterFactory()
+  }
+}
+...
+val factory = CoroutineCallAdapterFactory()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;JobImplのような実装クラスを隠したいときに便利&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>Kotlin: CoroutineでRxJavaのzipっぽいものを表現する</title>
+      <link>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</link>
+      <pubDate>Sun, 17 Mar 2019 05:17:23 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
+      <description>
+
+&lt;p&gt;Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
+  val task1 = async { MainService.task1() }
+  val task2 = async { MainService.task2() }
+
+  println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;asyncで包むことで、並列に処理をすることができます。&lt;/p&gt;
+
+&lt;p&gt;次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元で&lt;code&gt;runCatching&lt;/code&gt;を使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
+  val task1 = async { runCatching { MainService.task1() } }
+  val task2 = async { runCatching { MainService.task2() } }
+
+  val result1 = task1.await()
+  val result2 = task2.await()
+  println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;runCatching&lt;/code&gt;を使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;また、次のように書くことは出来ません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
+  val task1 = async { MainService.task1() }
+  val task2 = async { MainService.task2() }
+
+  // awaitのタイミングでrunCatchingを使う
+  val result1 = runCatching { task1.await() }
+  val result2 = runCatching { task2.await() }
+  println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;デフォルトの設定だと例外は伝搬し、子が倒れたら親も倒れます。&lt;/p&gt;
+
+&lt;p&gt;しかし、&lt;code&gt;supervisorScope&lt;/code&gt;を使うと、上記の振る舞いを防ぐことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
+  supervisorScope {
+    val task1 = async { MainService.task1() }
+    val task2 = async { MainService.task2() }
+
+    // supervisorScopeを使っているのでこのタイミングでもおｋ
+    val result1 = runCatching { task1.await() }
+    val result2 = runCatching { task2.await() }
+    println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;supervisorScope&lt;/code&gt;を使うと、&lt;code&gt;Deferred.await&lt;/code&gt;のタイミングで例外のハンドリングをすることが出来ます。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;最後にキャンセルについて考えてみます。&lt;/p&gt;
+
+&lt;p&gt;任意の子ジョブがキャンセルされても処理を続けたいとしたら、前述のsupervisorScopeを使う必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
+  supervisorScope {
+    val task1 = async { MainService.task1() }
+    val task2 = async { MainService.task2() }
+
+    val result1 = runCatching { task1.await() }
+    val result2 = runCatching { task2.await() }
+    println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このように書くことで、例えばtask1がキャンセルされたとしても、他の部分の処理を継続することが出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;エラー &amp;amp; キャンセル時にも処理を継続したいならsupervisorScope + runCatchingを使う&lt;/li&gt;
+&lt;li&gt;エラー時のみ処理を継続したいなら、runCatchingだけで対応できる&lt;/li&gt;
+&lt;li&gt;正常系のみなら、asyncで包んであげるだけで良い&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1318,461 +1465,6 @@ android.support.constraint.solver.widgets.Analyzer -&amp;gt; a.b.b.a.a.a:
 
 &lt;ul&gt;
 &lt;li&gt;横方向のマージについては内容に自信がないので、もし間違っていたり、補足があれば教えて頂けるととても嬉しいです🙏&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Dynamic Feature ModuleでDagger Androidを使う</title>
-      <link>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</link>
-      <pubDate>Wed, 16 Jan 2019 12:10:36 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7&#34;&gt;Dependency injection in a multi module project&lt;/a&gt;を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。&lt;/p&gt;
-
-&lt;p&gt;結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。&lt;/p&gt;
-
-&lt;p&gt;また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。&lt;/p&gt;
-
-&lt;p&gt;検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;satoshun-android-example/DynamicFeatureDaggerExample&lt;/a&gt;にあります😊&lt;/p&gt;
-
-&lt;h2 id=&#34;前提知識&#34;&gt;前提知識&lt;/h2&gt;
-
-&lt;p&gt;通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
-ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00&#34; width=300&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40&#34; width=300&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。&lt;/p&gt;
-
-&lt;p&gt;ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。&lt;/p&gt;
-
-&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;
-
-&lt;p&gt;Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
-実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。&lt;/p&gt;
-
-&lt;p&gt;では、実装を始めます。&lt;/p&gt;
-
-&lt;p&gt;最初に、SubActivityをDaggerApplicationのように振る舞わさせるために&lt;code&gt;ModuleRootActivity&lt;/code&gt;クラスを定義します。
-それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class ModuleRootActivity : AppCompatActivity(),
-  HasModuleInjector {
-  @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;
-
-  private lateinit var injector: ModuleActivityInjector
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    injector = moduleComponent.moduleInjector
-    injector.activity.inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
-  protected abstract val moduleComponent: ModuleActivityComponent
-
-  override fun supportFragmentInjector(): AndroidInjector&amp;lt;Fragment&amp;gt; =
-    fragmentInjector
-}
-
-class ModuleActivityInjector @Inject constructor(
-  internal val activity: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
-)
-
-interface ModuleActivityComponent {
-  val moduleInjector: ModuleActivityInjector
-}
-
-interface HasModuleInjector : HasSupportFragmentInjector
-
-abstract class ModuleChildFragment : Fragment() {
-  override fun onAttach(context: Context) {
-    AndroidSupportInjection.inject(this)
-    super.onAttach(context)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@ModuleScope
-@Component(
-  dependencies = [CoreComponent::class], // 共通で使うComponent
-  modules = [
-    AndroidSupportInjectionModule::class,
-    SubBuilder::class
-  ]
-)
-internal interface SubComponent : ModuleActivityComponent {
-  @Component.Builder
-  interface Builder {
-    fun appComponent(module: CoreComponent): Builder
-    fun build(): Sub1Component
-  }
-}
-
-@Module(
-  includes = [SubActivityModule::class]
-)
-interface SubBuilder
-
-@Module
-internal interface SubActivityModule {
-  @ContributesAndroidInjector(modules = [SubFragmentsModule::class])
-  fun contributeSubActivity(): SubActivity
-}
-
-@Module
-internal interface SubFragmentsModule {
-  @ContributesAndroidInjector
-  fun contributeSubFragment(): SubFragment
-}
-
-class SubActivity : ModuleRootActivity() {
-  @Inject lateinit var ...
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.sub_act)
-    ...
-  }
-
-  override val moduleComponent: ModuleActivityComponent
-    get() = DaggerSubComponent
-      .builder()
-      .appComponent(App.coreComponent())
-      .build()
-}
-
-class SubFragment : ModuleChildFragment() {
-  @Inject lateinit var ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;ModuleRootActivity&lt;/code&gt;で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。&lt;/p&gt;
-
-&lt;p&gt;これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃&lt;/p&gt;
-
-&lt;p&gt;細かい部分はサンプルを見ていただけたらと思います。&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;DynamicFeatureDaggerExample&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;メモ1-1つのfeature-module内で複数activityがある場合&#34;&gt;メモ1: 1つのFeature Module内で複数Activityがある場合&lt;/h2&gt;
-
-&lt;p&gt;このパターンは考慮出来ていないです😂
-おそらく、頑張ってApplicationクラス内でstaticで保持するか、もしくは、CoreComponentでScopedで管理するのが良いと思っています。&lt;/p&gt;
-
-&lt;h2 id=&#34;メモ2-configuration-change対応&#34;&gt;メモ2: Configuration Change対応&lt;/h2&gt;
-
-&lt;p&gt;Feature Root ComponentはActivityではなく、AACのViewModelで保持したほうが良いかも知れないです。&lt;/p&gt;
-
-&lt;h2 id=&#34;メモ3-そもそもdagger-androidを使う必要あるのか&#34;&gt;メモ3: そもそもDagger Androidを使う必要あるのか?&lt;/h2&gt;
-
-&lt;p&gt;Scopeをガンガン使いたい時、すでにDagger Androidを導入している場合は使ってもいいかも。
-ただPlaidのように、Dagger Androidを使わないほうがコードが複雑にならなそうなので、使わないほうが基本良いと思います。（今後心変わりする可能性は大いにあります）&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;では、Happy Dagger Life 😊😊😊&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>dexdumpメモ</title>
-      <link>https://satoshun.github.io/2019/01/reading_dexdump_result/</link>
-      <pubDate>Sat, 05 Jan 2019 02:15:50 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/reading_dexdump_result/</guid>
-      <description>&lt;p&gt;Android build-toolsにはdexdumpというdexファイルを逆アセンブルするツールがあります。
-逆アセンブルしたファイルを読みたかったのでそれのメモです。&lt;/p&gt;
-
-&lt;p&gt;内容はまとまっていません。自分用のメモレベルの記事になります。&lt;/p&gt;
-
-&lt;p&gt;dexファイルをコマンドから作るにはjavacとd8コマンドを使います。d8コマンドは &lt;a href=&#34;https://r8.googlesource.com/r8&#34;&gt;https://r8.googlesource.com/r8&lt;/a&gt; の手順通りにビルドします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;javac *.java // or kotlinc *.kt
-java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/android.jar --release *.class
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;例えば次のJavaコードを逆アセンブルしてみます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class Test {
-    public void main() {
-        show(1, 10.0);
-        String[] array = {&amp;quot;&amp;quot;};
-        toggle(array);
-        fade();
-        drag();
-        hide();
-        click();
-        hover();
-    }
-
-    public String show(int a, double d) {
-        System.out.println(a);
-        return &amp;quot;showed&amp;quot;;
-    }
-
-    void toggle(String[] args) {
-        System.out.println(&amp;quot;toggle&amp;quot;);
-    }
-
-    protected void fade() {
-        System.out.println(&amp;quot;fade&amp;quot;);
-    }
-
-    final protected void drag() {
-        System.out.println(&amp;quot;drag&amp;quot;);
-    }
-
-    private void hide() {
-        System.out.println(&amp;quot;hide&amp;quot;);
-    }
-
-    public static void click() {
-        System.out.println(&amp;quot;click&amp;quot;);
-    }
-
-    static void hover() {
-        System.out.println(&amp;quot;hover&amp;quot;);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;Processing &#39;classes.dex&#39;...
-Opened &#39;classes.dex&#39;, DEX version &#39;035&#39;
-Class #0            -
-  Class descriptor  : &#39;LTest;&#39; // クラス名Test
-  Access flags      : 0x0000 () // パッケージプライベート
-  Superclass        : &#39;Ljava/lang/Object;&#39; // スーパークラスがObject
-  Interfaces        - // インターフェースを持たない
-  Static fields     - // Staticフィールドを持たない
-  Instance fields   - // インスタンスフィールドを持たない
-  Direct methods    -
-    #0              : (in LTest;)
-      name          : &#39;&amp;lt;init&amp;gt;&#39; // コンストラクタを示す
-      type          : &#39;()V&#39; // 引数なし/戻り値なし
-      access        : 0x10000 (CONSTRUCTOR)
-      code          -
-      registers     : 1
-      ins           : 1
-      outs          : 1
-      insns size    : 4 16-bit code units
-0001e4:                                        |[0001e4] Test.&amp;lt;init&amp;gt;:()V
-0001f4: 7010 0b00 0000                         |0000: invoke-direct {v0}, Ljava/lang/Object;.&amp;lt;init&amp;gt;:()V // method@000b // Objectのsuper
-0001fa: 0e00                                   |0003: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=1
-      locals        :
-        0x0000 - 0x0004 reg=0 this LTest;
-
-    #1              : (in LTest;)
-      name          : &#39;click&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0009 (PUBLIC STATIC)
-      code          -
-      registers     : 2
-      ins           : 0
-      outs          : 2
-      insns size    : 8 16-bit code units
-0001fc:                                        |[0001fc] Test.click:()V
-00020c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000210: 1a01 0f00                              |0002: const-string v1, &amp;quot;click&amp;quot; // string@000f
-000214: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00021a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=35
-      locals        :
-
-    #2              : (in LTest;)
-      name          : &#39;hide&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0002 (PRIVATE)
-      code          -
-      registers     : 3
-      ins           : 1
-      outs          : 2
-      insns size    : 8 16-bit code units
-00025c:                                        |[00025c] Test.hide:()V
-00026c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000270: 1a01 1200                              |0002: const-string v1, &amp;quot;hide&amp;quot; // string@0012
-000274: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00027a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=31
-      locals        :
-        0x0000 - 0x0008 reg=2 this LTest;
-
-    #3              : (in LTest;)
-      name          : &#39;hover&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0008 (STATIC)
-      code          -
-      registers     : 2
-      ins           : 0
-      outs          : 2
-      insns size    : 8 16-bit code units
-00027c:                                        |[00027c] Test.hover:()V
-00028c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000290: 1a01 1300                              |0002: const-string v1, &amp;quot;hover&amp;quot; // string@0013
-000294: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00029a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=39
-      locals        :
-
-  Virtual methods   -
-    #0              : (in LTest;)
-      name          : &#39;drag&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0014 (PROTECTED FINAL)
-      code          -
-      registers     : 3
-      ins           : 1
-      outs          : 2
-      insns size    : 8 16-bit code units
-00021c:                                        |[00021c] Test.drag:()V
-00022c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000230: 1a01 1000                              |0002: const-string v1, &amp;quot;drag&amp;quot; // string@0010
-000234: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00023a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=27
-      locals        :
-        0x0000 - 0x0008 reg=2 this LTest;
-
-    #1              : (in LTest;)
-      name          : &#39;fade&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0004 (PROTECTED)
-      code          -
-      registers     : 3
-      ins           : 1
-      outs          : 2
-      insns size    : 8 16-bit code units
-00023c:                                        |[00023c] Test.fade:()V
-00024c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000250: 1a01 1100                              |0002: const-string v1, &amp;quot;fade&amp;quot; // string@0011
-000254: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00025a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=23
-      locals        :
-        0x0000 - 0x0008 reg=2 this LTest;
-
-    #2              : (in LTest;)
-      name          : &#39;main&#39;
-      type          : &#39;()V&#39;
-      access        : 0x0001 (PUBLIC)
-      code          -
-      registers     : 4
-      ins           : 1
-      outs          : 4
-      insns size    : 32 16-bit code units
-00029c:                                        |[00029c] Test.main:()V
-0002ac: 1210                                   |0000: const/4 v0, #int 1 // #1
-0002ae: 1901 2440                              |0001: const-wide/high16 v1, #long 4621819117588971520 // #4024
-0002b2: 6e40 0700 0321                         |0003: invoke-virtual {v3, v0, v1, v2}, LTest;.show:(ID)Ljava/lang/String; // method@0007
-0002b8: 2300 0800                              |0006: new-array v0, v0, [Ljava/lang/String; // type@0008
-0002bc: 1201                                   |0008: const/4 v1, #int 0 // #0
-0002be: 1a02 0000                              |0009: const-string v2, &amp;quot;&amp;quot; // string@0000
-0002c2: 4d02 0001                              |000b: aput-object v2, v0, v1
-0002c6: 6e20 0800 0300                         |000d: invoke-virtual {v3, v0}, LTest;.toggle:([Ljava/lang/String;)V // method@0008
-0002cc: 6e10 0300 0300                         |0010: invoke-virtual {v3}, LTest;.fade:()V // method@0003
-0002d2: 6e10 0200 0300                         |0013: invoke-virtual {v3}, LTest;.drag:()V // method@0002
-0002d8: 7010 0400 0300                         |0016: invoke-direct {v3}, LTest;.hide:()V // method@0004
-0002de: 7100 0100 0000                         |0019: invoke-static {}, LTest;.click:()V // method@0001
-0002e4: 7100 0500 0000                         |001c: invoke-static {}, LTest;.hover:()V // method@0005
-0002ea: 0e00                                   |001f: return-void
-      catches       : (none)
-      positions     :
-        0x0003 line=3
-        0x0006 line=4
-        0x000d line=5
-        0x0010 line=6
-        0x0013 line=7
-        0x0016 line=8
-        0x0019 line=9
-        0x001c line=10
-      locals        :
-        0x0000 - 0x0020 reg=3 this LTest;
-
-    #3              : (in LTest;)
-      name          : &#39;show&#39;
-      type          : &#39;(ID)Ljava/lang/String;&#39;
-      access        : 0x0001 (PUBLIC)
-      code          -
-      registers     : 4
-      ins           : 4
-      outs          : 2
-      insns size    : 8 16-bit code units
-0001c4:                                        |[0001c4] Test.show:(ID)Ljava/lang/String;
-0001d4: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-0001d8: 6e20 0900 1200                         |0002: invoke-virtual {v2, v1}, Ljava/io/PrintStream;.println:(I)V // method@0009
-0001de: 1a01 1800                              |0005: const-string v1, &amp;quot;showed&amp;quot; // string@0018
-0001e2: 1101                                   |0007: return-object v1
-      catches       : (none)
-      positions     :
-        0x0000 line=14
-      locals        :
-        0x0000 - 0x0008 reg=0 this LTest;
-
-    #4              : (in LTest;)
-      name          : &#39;toggle&#39;
-      type          : &#39;([Ljava/lang/String;)V&#39;
-      access        : 0x0000 ()
-      code          -
-      registers     : 3
-      ins           : 2
-      outs          : 2
-      insns size    : 8 16-bit code units
-0002ec:                                        |[0002ec] Test.toggle:([Ljava/lang/String;)V
-0002fc: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000300: 1a00 1900                              |0002: const-string v0, &amp;quot;toggle&amp;quot; // string@0019
-000304: 6e20 0a00 0200                         |0004: invoke-virtual {v2, v0}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
-00030a: 0e00                                   |0007: return-void
-      catches       : (none)
-      positions     :
-        0x0000 line=19
-      locals        :
-        0x0000 - 0x0008 reg=1 this LTest;
-
-  source_file_idx   : 10 (Test.java)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;finalメソッドのdragがvirtualなのがなぜなのかわからない
-
-&lt;ul&gt;
-&lt;li&gt;finalはdirectメソッドなのでは?&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

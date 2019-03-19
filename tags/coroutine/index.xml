@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 10 Mar 2019 10:14:21 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 17 Mar 2019 05:17:23 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/coroutine/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: CoroutineでRxJavaのzipっぽいものを表現する</title>
+      <link>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</link>
+      <pubDate>Sun, 17 Mar 2019 05:17:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
+      <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;) }  asyncで包むことで、並列に処理をすることができます。
+次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
+launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;) }  runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+また、次のように書くことは出来ません。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
+    </item>
     
     <item>
       <title>Android: JetpackのCoroutine Supportについて</title>
