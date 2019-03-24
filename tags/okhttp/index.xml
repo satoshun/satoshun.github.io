@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Okhttp on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/okhttp/</link>
+    <description>Recent content in Okhttp on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 24 Mar 2019 02:36:27 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/okhttp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OkHttp: Java to KotlinのPRを見て勉強する</title>
+      <link>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</link>
+      <pubDate>Sun, 24 Mar 2019 02:36:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</guid>
+      <description>OkHttpがKotlin化をするというISSUEが立てられました。 Upgrade OkHttp 3 to Kotlin and call it OkHttp 4
+これの是非についてはさておき。現状、いくつかのJavaコードがKotlinへと置き換わっているので、それらのレビューで気になったこと、知らなかったこと、忘れがちなことを勉強がてらまとめたいと思います。
+checkNotNullを使うかどうか could also be code no preference myself
+Kotlinの標準ライブラリに、checkNotNullがあります。 これは、値がnullならIllegalStateException例外を投げるものです。
+以下のコードは同じ意味を持ちます。
+val state = someState ?: throw IllegalStateException(&amp;quot;State must be set beforehand&amp;quot;) val state = checkNotNull(someState) { &amp;quot;State must be set beforehand&amp;quot; }  ただ、no preference myselfと言っている通り、使うかどうかはプロジェクトで分かれそうです。 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。
+命名はto***が慣用的 idiomatic naming would be toUrl on the Kotlin side
+OkHttpでは、HttpUrlをURLに変換するためのメソッドとしてfun url(): URLが定義されています。しかし、fun toUrl(): URLのほうがKotlinっぽいよと指摘がありました。
+確かに、言われてみるとAtoBクラス変換のメソッド名は、to***が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。
+constを使う discussion link</description>
+    </item>
+    
+  </channel>
+</rss>

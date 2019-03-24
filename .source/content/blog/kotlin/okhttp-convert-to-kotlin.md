@@ -69,12 +69,12 @@ fun size(): Int = encodedNames.size
 val size get(): Int = encodedNames.size
 ```
 
-# まとめ
+## まとめ
 
 - valをうまく使うことが、Kotlinっぽさを出すのに大切なんだなって
 - `checkNotNull`は、スコープ関数と一緒で、ある程度使い方の認識を合わせないとコードの一貫性が無くなりそう
 
-# 今回の記事を書くために調べたコミット
+## 今回の記事を書くために調べたコミット
 
 - [Convert some basic types to Kotlin #4741](https://github.com/square/okhttp/pull/4741)
 - [HttpUrl in Kotlin #4745](https://github.com/square/okhttp/pull/4745)

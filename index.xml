@@ -7,7 +7,95 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Tue, 19 Mar 2019 12:31:05 UTC</updated>
+    <updated>Sun, 24 Mar 2019 02:36:27 UTC</updated>
+    
+    
+    <item>
+      <title>OkHttp: Java to KotlinのPRを見て勉強する</title>
+      <link>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</link>
+      <pubDate>Sun, 24 Mar 2019 02:36:27 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</guid>
+      <description>
+
+&lt;p&gt;OkHttpがKotlin化をするというISSUEが立てられました。
+&lt;a href=&#34;https://github.com/square/okhttp/issues/4723&#34;&gt;Upgrade OkHttp 3 to Kotlin and call it OkHttp 4&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;これの是非についてはさておき。現状、いくつかのJavaコードがKotlinへと置き換わっているので、それらのレビューで気になったこと、知らなかったこと、忘れがちなことを勉強がてらまとめたいと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;checknotnullを使うかどうか&#34;&gt;checkNotNullを使うかどうか&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266693078&#34;&gt;could also be &lt;em&gt;code&lt;/em&gt; no preference myself&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Kotlinの標準ライブラリに、&lt;a href=&#34;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/check-not-null.html&#34;&gt;checkNotNull&lt;/a&gt;があります。
+これは、値がnullなら&lt;code&gt;IllegalStateException&lt;/code&gt;例外を投げるものです。&lt;/p&gt;
+
+&lt;p&gt;以下のコードは同じ意味を持ちます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val state = someState ?: throw IllegalStateException(&amp;quot;State must be set beforehand&amp;quot;)
+
+val state = checkNotNull(someState) { &amp;quot;State must be set beforehand&amp;quot; }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ、&lt;code&gt;no preference myself&lt;/code&gt;と言っている通り、使うかどうかはプロジェクトで分かれそうです。
+事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。&lt;/p&gt;
+
+&lt;h2 id=&#34;命名はto-が慣用的&#34;&gt;命名はto***が慣用的&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266693257&#34;&gt;idiomatic naming would be toUrl on the Kotlin side&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;OkHttpでは、HttpUrlをURLに変換するためのメソッドとして&lt;code&gt;fun url(): URL&lt;/code&gt;が定義されています。しかし、&lt;code&gt;fun toUrl(): URL&lt;/code&gt;のほうがKotlinっぽいよと指摘がありました。&lt;/p&gt;
+
+&lt;p&gt;確かに、言われてみるとAtoBクラス変換のメソッド名は、&lt;code&gt;to***&lt;/code&gt;が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;constを使う&#34;&gt;constを使う&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266695491&#34;&gt;discussion link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;constを使うと、Compile Time Constantsとなり、付けない場合に比べ効率的に動作します。ただし、プリミティブか、String型のみに有効です。&lt;/p&gt;
+
+&lt;p&gt;より詳しくは&lt;a href=&#34;https://kotlinlang.org/docs/reference/properties.html#compile-time-constants&#34;&gt;公式ドキュメント&lt;/a&gt;で。&lt;/p&gt;
+
+&lt;p&gt;constを付けたほうが良いことは知っていたのですが、公式ドキュメントを読んだことがなかったので勉強になりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;事前計算済みプロパティにのみ依存している場合は-事前計算済みプロパティにを使う&#34;&gt;事前計算済みプロパティにのみ依存している場合は、事前計算済みプロパティにを使う&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266702974&#34;&gt;scheme is a val, so this can just be a precomputed property without the get()&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;isHttpsプロパティは最初、get()で定義していたんですが、isHttpsで使っているschemeプロパティがvalなので、get()が取り除かれました。&lt;/p&gt;
+
+&lt;p&gt;事前計算出来るプロパティは事前に計算しておく方針のようです。そのほうが、無駄なメソッドが定義されないので、良いという判断なのでしょうか？&lt;/p&gt;
+
+&lt;h2 id=&#34;プロパティ-get-jvmnameはより慣用的&#34;&gt;プロパティ + get:JvmNameはより慣用的&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266697339&#34;&gt;property + @getJvmName(&amp;ldquo;size&amp;rdquo;) seems more idiomatic&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;単純かつ副作用がない関数はプロパティのほうがKotlinっぽいです。さらに、&lt;code&gt;@get:JvmName&lt;/code&gt;を使うことで、Javaからスムーズに使うことが出来ます、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun size(): Int = encodedNames.size
+
+@get:JvmName(&amp;quot;size&amp;quot;)
+val size get(): Int = encodedNames.size
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;valをうまく使うことが、Kotlinっぽさを出すのに大切なんだなって&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;checkNotNull&lt;/code&gt;は、スコープ関数と一緒で、ある程度使い方の認識を合わせないとコードの一貫性が無くなりそう&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;今回の記事を書くために調べたコミット&#34;&gt;今回の記事を書くために調べたコミット&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4741&#34;&gt;Convert some basic types to Kotlin #4741&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745&#34;&gt;HttpUrl in Kotlin #4745&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4749&#34;&gt;Kotlin Platform refactor #4749&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4751&#34;&gt;Refactor exceptions and static classes to Kotlin #4751&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1350,122 +1438,6 @@ public final class -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI extends Lambda 
 
 &lt;p&gt;Companion objectと同様に冗長なインスタンス生成が消えています。
 Proguardの場合、インスタンス生成は消えないので、R8の一歩進んだ最適化といえます。（もしかしたらProguardの設定次第でインスタンス生成をしないように出来るかもしれないです。）&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>R8/Proguard: Class Mergingについて</title>
-      <link>https://satoshun.github.io/2019/01/r8-merge-method/</link>
-      <pubDate>Sun, 20 Jan 2019 02:16:43 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/r8-merge-method/</guid>
-      <description>
-
-&lt;p&gt;コードの最適化の話です。この記事ではClass Mergingについて紹介します。&lt;/p&gt;
-
-&lt;h2 id=&#34;class-merging&#34;&gt;Class Merging?&lt;/h2&gt;
-
-&lt;p&gt;その名の通り、Classをマージする最適化です。最終的なクラス数減らすことが期待出来ます。
-Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があります。&lt;/p&gt;
-
-&lt;p&gt;まずは縦方向のClass Mergingについて説明します。&lt;/p&gt;
-
-&lt;h3 id=&#34;縦方向&#34;&gt;縦方向?&lt;/h3&gt;
-
-&lt;p&gt;縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。&lt;/p&gt;
-
-&lt;p&gt;例えば、次の実装は最適化によって1つにまとめられます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface IVertical {
-    fun show(i: Int)
-}
-
-class Vertical(
-    private val a: Int
-) : IVertical {
-    override fun show(i: Int) {
-        println(&amp;quot;start called $i $a&amp;quot;)
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class Vertical {
-    ...
-
-    public final void show(int i) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;IVertical&lt;/code&gt;インターフェースが見事に消されていることが分かります。&lt;/p&gt;
-
-&lt;p&gt;また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/shaking/VerticalClassMerger.java&#34;&gt;R8: Vertical Merger&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/facebook/proguard/blob/master/src/proguard/optimize/peephole/VerticalClassMerger.java&#34;&gt;Proguard: Vertical Merger&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;次に横方向のマージを紹介します。&lt;/p&gt;
-
-&lt;h3 id=&#34;横方向&#34;&gt;横方向?&lt;/h3&gt;
-
-&lt;p&gt;Staticメソッドのみを持つクラスを1つにまとめるなどの最適化を行います。&lt;/p&gt;
-
-&lt;p&gt;例えばKotlinの複数のファイルで定義されたトップレベル関数を1つのクラスにまとめてくれます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// ShowExt.kt
-fun Int.show1(i: Int) {
-    ...
-}
-
-// ShowExt2.kt
-fun Int.show2(i: Int) {
-    ...
-}
-
---&amp;gt; Proguard/R8による最適化後 --&amp;gt;
-
-```java
-public class ShowExt2Kt {
-    public static final void show1(int i) {
-        ...
-    }
-}
-
-    public static final void show2(int i) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;1つのクラスにまとめられていることが分かります。&lt;/p&gt;
-
-&lt;p&gt;また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Fuga.kt
-fun Int.show1() {
-    ...
-}
-
-// mapping.txtの内容
-android.support.constraint.solver.widgets.Analyzer -&amp;gt; a.b.b.a.a.a:
-    ...
-    void com.github.satoshun.example.FugaKt.show1(int) -&amp;gt; d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なぜこのクラスに移動したかは分からないので、今後の宿題とします。申し訳ありません😫&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;横方向のマージについては内容に自信がないので、もし間違っていたり、補足があれば教えて頂けるととても嬉しいです🙏&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
