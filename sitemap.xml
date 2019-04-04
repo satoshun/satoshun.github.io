@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</loc>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</loc>
     <lastmod>2019-03-24T02:36:27+00:00</lastmod>
   </url>
@@ -452,7 +457,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-03-24T02:36:27+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -476,7 +481,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-03-24T02:36:27+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -554,7 +559,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/databinding/</loc>
-    <lastmod>2018-12-07T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -668,7 +673,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -686,7 +691,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/ktx/</loc>
-    <lastmod>2019-03-10T23:08:46+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -882,7 +887,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-03-24T02:36:27+00:00</lastmod>
+    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -7,7 +7,110 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 24 Mar 2019 02:36:27 UTC</updated>
+    <updated>Thu, 04 Apr 2019 00:46:00 UTC</updated>
+    
+    
+    <item>
+      <title>DataBindingとActivityのコンストラクタ Layout Id指定を一緒に使う</title>
+      <link>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</link>
+      <pubDate>Thu, 04 Apr 2019 00:46:00 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</guid>
+      <description>
+
+&lt;p&gt;JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/activity#1.0.0-alpha06&#34;&gt;Activity Version 1.0.0-alpha06&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/fragment#1.1.0-alpha06&#34;&gt;Fragment Version 1.1.0-alpha06&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これは、次のように使うことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity(R.layout.main_act)
+
+class MainFragment : Fragment(R.layout.main_frag)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。&lt;/p&gt;
+
+&lt;p&gt;ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;activityの場合&#34;&gt;Activityの場合&lt;/h3&gt;
+
+&lt;p&gt;まずはActvityの例です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 拡張関数を定義しておく
+fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T =
+  DataBindingUtil.bind(getContentView())!!
+
+private fun Activity.getContentView(): View =
+  findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0]
+
+
+// MainActivity.kt
+class MainActivity : AppCompatActivity(R.layout.main_act) {
+  private lateinit var binding: MainActBinding
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = bindView()
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、Activityの場合に限り、by lazyと組み合わせることも可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity(R.layout.main_act) {
+  private val binding by lazy { bindView&amp;lt;MainActBinding&amp;gt;() }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;fragmentの場合&#34;&gt;Fragmentの場合&lt;/h3&gt;
+
+&lt;p&gt;次にFragmentの例になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 拡張関数を定義しておく
+fun &amp;lt;T : ViewDataBinding&amp;gt; Fragment.bindView(): T = DataBindingUtil.bind(view!!)!!
+
+
+// MainFragment.kt
+class MainFragment : Fragment(R.layout.main_frag) {
+  private lateinit var binding: MainFragBinding
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    binding = bindView()
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Kotlinの拡張関数でやるなら、こんな感じになると思ってます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;コンストラクタにLayoud Idが指定できるようになり、それを使いたいなら、DataBindingの取得の仕方が少し変わりそう
+
+&lt;ul&gt;
+&lt;li&gt;Layout Id指定は必須ではないので、必ずしも使う必要はないと思います&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;KotlinのDelegationを使えば、もっといい感じに書けるかもしれない&lt;/li&gt;
+&lt;li&gt;サンプルは&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingContentLayoutIdExample&#34;&gt;satoshun/DataBindingContentLayoutIdExample&lt;/a&gt;にあります😃&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1344,100 +1447,6 @@ public final class -$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI extends Lambda 
 このクラスでは、それぞれのラムダインスタンスにidを持たせることで、どのラムダかを分類することが出来ます。&lt;/p&gt;
 
 &lt;p&gt;この最適化により、クラス数、メソッド数を抑えることが出来ます。&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>R8/Proguard: KotlinのCompanion objectとobjectについて</title>
-      <link>https://satoshun.github.io/2019/01/r8-companion-object/</link>
-      <pubDate>Sun, 20 Jan 2019 04:23:43 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/r8-companion-object/</guid>
-      <description>
-
-&lt;p&gt;コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。&lt;/p&gt;
-
-&lt;p&gt;この記事は、&lt;a href=&#34;https://jakewharton.com/r8-optimization-staticization/&#34;&gt;R8 Optimization: Staticization&lt;/a&gt;にとても影響を受けています。&lt;/p&gt;
-
-&lt;h2 id=&#34;companion-object&#34;&gt;Companion object&lt;/h2&gt;
-
-&lt;p&gt;例えば、次のコードがあるとします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class CompanionTest {
-    companion object {
-        fun show(i: Int) {
-            ...
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを最適化なしで変換すると次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class CompanionTest {
-    public static final Companion Companion = new Companion();
-
-    public static final class Companion {
-        private Companion() {
-        }
-
-        public final void show(int i) {
-            ...
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。&lt;/p&gt;
-
-&lt;p&gt;そこでR8による最適化を行うと次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public abstract class CompanionTest {
-    public static final void show(int i) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;無駄な内部クラス（enclosing class）が消えて、staticメソッドに変換されているのが分かります。このshowメソッドはわざわざインスタンスメソッドにする必要がないため、このような最適化が行われます。&lt;/p&gt;
-
-&lt;h2 id=&#34;object&#34;&gt;object&lt;/h2&gt;
-
-&lt;p&gt;objectも同様です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;object ObjectTest {
-    fun show(i: Int) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最適化なしだと次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public final class ObjectTest {
-    public static final ObjectTest INSTANCE = new ObjectTest();
-
-    public final void show(int i) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;INSTANCEフィールドが生成されていることが分かります。&lt;/p&gt;
-
-&lt;p&gt;次にR8による最適化を行います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public abstract class ObjectTest {
-    public static final void show(int i) {
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Companion objectと同様に冗長なインスタンス生成が消えています。
-Proguardの場合、インスタンス生成は消えないので、R8の一歩進んだ最適化といえます。（もしかしたらProguardの設定次第でインスタンス生成をしないように出来るかもしれないです。）&lt;/p&gt;
 </description>
     </item>
     
