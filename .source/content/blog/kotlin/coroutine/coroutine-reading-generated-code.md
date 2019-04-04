@@ -56,7 +56,7 @@ suspend fun simple2(user: User): Int {
 }
 ```
 
-delayはsuspend関数です。このメソッドは次のようなコードを生成します。
+delayはsuspend関数です。このメソッドは次のようなコードを生成します。`Simple2Kt$simple2$1`クラスの生成がうまくいかなかったので、少し修正しました。
 
 ```kotlin
 public final class Simple2Kt {
@@ -64,15 +64,15 @@ public final class Simple2Kt {
    public static final Object simple2(@NotNull User user, @NotNull Continuation var1) {
       Object $continuation;
       label28: {
-         if (var1 instanceof <undefinedtype>) {
-            $continuation = (<undefinedtype>)var1;
-            if ((((<undefinedtype>)$continuation).label & Integer.MIN_VALUE) != 0) {
-               ((<undefinedtype>)$continuation).label -= Integer.MIN_VALUE;
+         if (var1 instanceof Simple2Kt$simple2$1) {
+            $continuation = (Simple2Kt$simple2$1)var1;
+            if ((((Simple2Kt$simple2$1)$continuation).label & Integer.MIN_VALUE) != 0) {
+               ((Simple2Kt$simple2$1)$continuation).label -= Integer.MIN_VALUE;
                break label28;
             }
          }
 
-         $continuation = new ContinuationImpl(var1) {
+         $continuation = new Simple2Kt$simple2$1(var1) {
             // $FF: synthetic field
             Object result;
             int label;
@@ -87,22 +87,22 @@ public final class Simple2Kt {
          };
       }
 
-      Object var3 = ((<undefinedtype>)$continuation).result;
+      Object var3 = ((Simple2Kt$simple2$1)$continuation).result;
       Object var5 = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-      switch(((<undefinedtype>)$continuation).label) {
+      switch(((Simple2Kt$simple2$1)$continuation).label) {
       case 0:
          if (var3 instanceof Failure) {
             throw ((Failure)var3).exception;
          }
 
-         ((<undefinedtype>)$continuation).L$0 = user;
-         ((<undefinedtype>)$continuation).label = 1;
+         ((Simple2Kt$simple2$1)$continuation).L$0 = user;
+         ((Simple2Kt$simple2$1)$continuation).label = 1;
          if (DelayKt.delay(1000L, (Continuation)$continuation) == var5) {
             return var5;
          }
          break;
       case 1:
-         user = (User)((<undefinedtype>)$continuation).L$0;
+         user = (User)((Simple2Kt$simple2$1)$continuation).L$0;
          if (var3 instanceof Failure) {
             throw ((Failure)var3).exception;
          }
@@ -114,6 +114,22 @@ public final class Simple2Kt {
       String var2 = "hello";
       System.out.println(var2);
       return Boxing.boxInt(100);
+   }
+}
+
+final class Simple2Kt$simple2$1 extends ContinuationImpl {
+   ...
+
+   // $FF: synthetic field
+   Object result;
+   int label;
+   Object L$0;
+
+   @Nullable
+   public final Object invokeSuspend(@NotNull Object result) {
+      this.result = result;
+      this.label |= Integer.MIN_VALUE;
+      return Simple2Kt.simple2((User)null, this);
    }
 }
 ```
