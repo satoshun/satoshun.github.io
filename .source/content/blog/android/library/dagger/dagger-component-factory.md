@@ -56,9 +56,19 @@ val presenter = component.presenter
 このコードは、AppComponentにIntの値をBindsしています。コードは違いますが、やっていることは変わりません。
 コード以外の違いとしては、statelessかどうかという点です。
 Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドの引数に必要な値を渡します。
-TODO
 
 ## ユースケース
+
+Factoryのユースケースを考えます。この機能はそもそも[Feature request: factory method in components for assisted injection](https://github.com/google/dagger/issues/935)で話されていたのものです。次のコードを解決したいモチベーションがあります。
+
+```java
+class ArticlePresenter {
+	...
+	ArticlePresenter(long articleId, ArticleService articleService) {
+		...
+	}
+}
+```
 
 ```kotlin
 fun AppComponent.Factory.createPresenter(
