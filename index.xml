@@ -124,6 +124,7 @@ val component = DaggerAppComponent
 &lt;ul&gt;
 &lt;li&gt;ただし、AutoFactoryやAssistedInjectのほうが多機能&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DaggerFactoryExample&#34;&gt;satoshun/DaggerFactoryExample&lt;/a&gt;にあります😃&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;hr /&gt;
