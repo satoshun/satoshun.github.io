@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 04 Apr 2019 00:46:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Apr 2019 06:04:22 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger 2.22にFactoryクラスが導入されました</title>
+      <link>https://satoshun.github.io/2019/04/dagger-component-factory/</link>
+      <pubDate>Sun, 07 Apr 2019 06:04:22 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/04/dagger-component-factory/</guid>
+      <description>Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。
+Component.Factoryとは? 実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。
+例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。
+// Factoryを使う場合 @Component interface AppComponent { val presenter: ArticlePresenter @Component.Factory interface Factory { fun create( @BindsInstance id: Long ): AppComponent } } val component = DaggerAppComponent .factory() .create(50) val presenter = component.presentere --- // Builderを使う場合 @Component interface AppComponent { val presenter: ArticlePresenter @Component.Builder interface Builder { @BindsInstance fun bindId(id: Long): Builder fun build(): AppComponent } } val component = DaggerAppComponent .builder() .bindId(50) .build() val presenter = component.</description>
+    </item>
     
     <item>
       <title>DataBindingとActivityのコンストラクタ Layout Id指定を一緒に使う</title>
