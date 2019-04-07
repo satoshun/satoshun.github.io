@@ -11,12 +11,11 @@ Dagger 2.22からComponent.Factoryクラスが導入されました。この記�
 
 ## Component.Factoryとは?
 
-基本的にはやれることはComponent.Builderクラスと変わりません。
+Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。
 
-例えば、以下の2つは本質的にはやっていることは変わりません。
+例えば、以下のArticlePresenterインスタンスを生成する、2つのコードは本質的にやっていることは同じです。
 
 ```kotlin
-
 @Component
 interface AppComponent {
   val presenter: ArticlePresenter
@@ -24,7 +23,7 @@ interface AppComponent {
   @Component.Factory
   interface Factory {
     fun create(
-      @BindsInstance age: Int
+      @BindsInstance id: L
     ): AppComponent
   }
 }
@@ -32,7 +31,8 @@ interface AppComponent {
 val component = DaggerAppComponent
   .factory()
   .create(50)
-val presenter = component.presenter
+val presenter = component.presentere
+
 ---
 
 @Component
@@ -41,25 +41,28 @@ interface AppComponent {
 
   @Component.Builder
   interface Builder {
-    @BindsInstance fun bindInt(age: Int): Builder
+    @BindsInstance fun bindId(id: Long): Builder
     fun build(): AppComponent
   }
 }
 
 val component = DaggerAppComponent
   .builder()
-  .bindInt(50)
+  .bindId(50)
   .build()
 val presenter = component.presenter
 ```
 
-このコードは、AppComponentにIntの値をBindsしています。コードは違いますが、やっていることは変わりません。
-コード以外の違いとしては、statelessかどうかという点です。
-Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドの引数に必要な値を渡します。
+この2つのコードは、AppComponentにIntのインスタンスをBindsしています。渡し方は違えど、やっていることは変わりません。
+
+書き方以外の違いは、statelessかどうかというところです。
+Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドから必要な値を渡します。
 
 ## ユースケース
 
-Factoryのユースケースを考えます。この機能はそもそも[Feature request: factory method in components for assisted injection](https://github.com/google/dagger/issues/935)で話されていたのものです。次のコードを解決したいモチベーションがあります。
+Factoryのユースケースを考えます。この機能はそもそも[Feature request: factory method in components for assisted injection](https://github.com/google/dagger/issues/935)を解決したいモチベーションがあります。
+
+例えば、次のコードを解決したい。
 
 ```java
 class ArticlePresenter {
@@ -70,16 +73,42 @@ class ArticlePresenter {
 }
 ```
 
+ここで、longの値を後から決めたいときに、今までだと
+
+- AssistedInject
+- AutoFactory
+
+のどちらかを使っていました。これに、dagger.Factoryが加わりました。
+ただ、現状のdagger.Factoryだと多くのボイラープレートコードが必要です。
+
 ```kotlin
-fun AppComponent.Factory.createPresenter(
-  name: String,
-  age: Int
-): ArticlePresenter {
-  return create(AppModule(name), age).presenter
+// 定義側
+@Component
+interface AppComponent {
+  val presenter: ArticlePresenter
+
+  @Component.Factory
+  interface Factory {
+    fun create(
+      @BindsInstance id: Long
+    ): AppComponent
+  }
 }
+
+// 呼び出し側
+val component = DaggerAppComponent
+  .factory()
+  .create(50)
 ```
 
-##
+AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレートコードを緩和することが出来ます。
+なので、このようなパターンのコードがよく出てくるようなプロジェクトは、AssistedInject or AutoFactoryの導入を検討しても良いと思います。
 
-- AutoFactory
-- AssistedInject
+## まとめ
+
+- dagger.Factoryが導入された
+  - ただし、AutoFactoryやAssistedInjectのほうが多機能
+
+---
+
+内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあれば[Twitter](https://twitter.com/stsn_jp)などから教えてもらえればとても嬉しいです😊
