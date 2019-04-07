@@ -110,6 +110,7 @@ AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレ�
 
 - dagger.Factoryが導入された
   - ただし、AutoFactoryやAssistedInjectのほうが多機能
+- サンプルコードは[satoshun/DaggerFactoryExample](https://github.com/satoshun-android-example/DaggerFactoryExample)にあります😃
 
 ---
 
