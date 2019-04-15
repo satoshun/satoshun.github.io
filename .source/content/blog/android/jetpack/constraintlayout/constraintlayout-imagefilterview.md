@@ -80,9 +80,24 @@ ConstraintLayout 2.0.0-alphaから`ImageFilterView`クラスが追加されま�
 
 <img src="https://lh3.googleusercontent.com/a0aHhdG12uZoHpvFU8nCsxDwlnJt-ICgmdl2QhQi8GgeEifaDtLzM-xmwI8DmyB-Vqnii-ZQ4QEAvnUxqwef5P--45HBrSIFbRTT98XcfntFmaZYeduDAdNoWCMDTVXdz97uUfYewOF4p0fnKAvUbHoqjXFTdKU0lVLyTHUyyuNma6vx1qw9LE_Kri7xqevLstb6f5gvbCWsVmNuo_J-FlW133j7PK89zd-JbwYHf4B9L1tvo80Lo2eMKLjLvNyU26xFA0f88BBJeeT-Wh6IWm1_gTnEqBQlE9xrJvGTI93VjVE8SBYXSnmUN7Q9Qm5ZpY-dZLRr9H1Bvqju8O7nNcWPWdtLBLxyirDJ1fZlOJWqqXvzw1l4vncpPBNM-WfyCaY7TIxxTOD2Czvl8G9fNFs9ZQCehmvildHx088tpkB9IgMFanB9j1IZjzoP_c0ipaw_ayBR69dNNSUWVmWp5xlPCEjNXA7xi_JfruaHxhvMmocOkNKhQVxJ39BQv3KVWFIYHmZdDxnf7ZKj6iZ56V8eyb9E3R25V0_rljkAHLEC7cEEFjs9H7h7GDFAh71zbybA7bqauWB0VjRBuHDQ2eSpwKRSJh3wqLpArzKbjOkjiP9RNwGeI-CWcyQl7HCileL11hSbLem3GINlUkTLPiVoeSnMl0yG=w1080-h510-no" width=400 />
 
+---
+
+```xml
+<androidx.constraintlayout.utils.widget.ImageFilterView
+  android:id="@+id/image"
+  android:layout_width="100dp"
+  android:layout_height="100dp"
+  app:layout_constraintStart_toStartOf="parent"
+  app:layout_constraintTop_toTopOf="parent"
+  app:round="0.5dp"
+  app:warmth="0.5" />
+```
+
+<img src="https://lh3.googleusercontent.com/Gac2-_7RbmYctobF_eztsBTlTGVNMNHor3tJYk-awVNB0Bz9rAiTfb_jkwLMd3JuKPJZd1B8tz4UDfITyw_2rUBAM2ji0bt5FYPvm9kebLZ0I1Wujn4-Ovv51XPdQ_61BNNfnPbdIztP408lWkPpkTJlbKe7JZcrjG-Ia2RZgnUo0z77LbPO56VXFlQSR9JvN8KEzzs4n2VaE0xmA_LBQ2elyirTzYWDlWiUs__MuD0e5JoqjXxfn6HM-ORGPb--PZeCFaUKUyizAxI7Vd_C27vGwTBEFwE3ITF-bT5e1HQW2J1QwrwygWnDMUnZBaoaHGjMDmKAs-nPRmqFGCrNSKYWJs6yKEQN4CEkj_Kk4E5ldCioCZiQIK4RtsjtEuQT1_-WOE_AGSh0eSUzbIFkDG5rofk-9c_e06-S8Nba-t8r8U7h0dVNOGMmmqmU5P3gcomoZUDJVZ6HJi_Q2mVUVsMQlZA6DKSwMRlivlvTHI1KbpyGxIBPPQrfnFp7TzLdh3f3MmPWXT3e3a47UQlnOxLPH6h1ZcMPoHXf8LTQ8y2duu9xzQ1gyxvYS8_o8Rit512VGxqCdcyt1J5y5i3Suq4fq7eezfg2tdjwR64GUjZbWEbWn57KNSiZIPmrQ2GC9p1m_GYAYg38KAjRHUDNvhLrJS4lT7sA=w1080-h513-no" width=400 />
+
 ## クロスフェード
 
-`crossfade`属性から設定することが出来ます。ただ、この属性はMotionLayoutと一緒に使うものなので、単体では使わないと思います。
+`crossfade`属性から設定することが出来ます。ただ、この属性はMotionLayoutと一緒に使うもので、単体では使わないと思います。
 
 ## まとめ
 
