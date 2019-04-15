@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 07 Apr 2019 06:04:22 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Apr 2019 13:17:53 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ConstraintLayoutのImageFilterViewって単体でも使えるんやなって</title>
+      <link>https://satoshun.github.io/2019/04/constraintlayout-imagefilterview/</link>
+      <pubDate>Mon, 15 Apr 2019 13:17:53 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/04/constraintlayout-imagefilterview/</guid>
+      <description> ConstraintLayout 2.0.0-alphaからImageFilterViewクラスが追加されました。今まで、MotionLayoutと一緒に使うものだから、使い所限られそうだなぁ〜と思っていたのですが、単体でも使えそうだったので、その報告記事になります。
+この記事ではConstraintLayout 2.0.0-alpha4を使っています。
+角丸にする round属性から指定する事ができます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;quot;@+id/image&amp;quot; android:layout_width=&amp;quot;100dp&amp;quot; android:layout_height=&amp;quot;100dp&amp;quot; app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot; app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; app:round=&amp;quot;0.5dp&amp;quot; /&amp;gt;  彩度 saturation属性から設定することが出来ます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;quot;@+id/image&amp;quot; android:layout_width=&amp;quot;100dp&amp;quot; android:layout_height=&amp;quot;100dp&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; app:round=&amp;quot;0.5dp&amp;quot; app:saturation=&amp;quot;0.1&amp;quot; /&amp;gt;  コントラスト contrast属性から設定することが出来ます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;quot;@+id/image&amp;quot; android:layout_width=&amp;quot;100dp&amp;quot; android:layout_height=&amp;quot;100dp&amp;quot; app:contrast=&amp;quot;0.5&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; app:round=&amp;quot;0.5dp&amp;quot; /&amp;gt;  暖色、寒色 warmth属性から、暖色、寒色？を設定することできます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;quot;@+id/image&amp;quot; android:layout_width=&amp;quot;100dp&amp;quot; android:layout_height=&amp;quot;100dp&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; app:round=&amp;quot;0.5dp&amp;quot; app:warmth=&amp;quot;2&amp;quot; /&amp;gt;  &amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;quot;@+id/image&amp;quot; android:layout_width=&amp;quot;100dp&amp;quot; android:layout_height=&amp;quot;100dp&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; app:round=&amp;quot;0.5dp&amp;quot; app:warmth=&amp;quot;0.5&amp;quot; /&amp;gt;  クロスフェード crossfade属性から設定することが出来ます。ただ、この属性はMotionLayoutと一緒に使うもので、単体では使わないと思います。
+まとめ  ImageFilterView、単体でも結構使いどころあるかも😃  </description>
+    </item>
     
     <item>
       <title>Dagger 2.22にFactoryクラスが導入されました</title>
