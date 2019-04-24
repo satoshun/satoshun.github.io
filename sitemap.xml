@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</loc>
+    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/04/constraintlayout-imagefilterview/</loc>
     <lastmod>2019-04-15T13:17:53+00:00</lastmod>
   </url>
@@ -467,7 +472,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-04-15T13:17:53+00:00</lastmod>
+    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -491,7 +496,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-04-15T13:17:53+00:00</lastmod>
+    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -695,7 +700,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2019-03-24T02:36:27+00:00</lastmod>
+    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -903,7 +908,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-04-15T13:17:53+00:00</lastmod>
+    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
     <priority>0</priority>
   </url>
   

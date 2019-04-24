@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 24 Mar 2019 02:36:27 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 24 Apr 2019 02:21:47 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: プロパティの変更を検知する</title>
+      <link>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</link>
+      <pubDate>Wed, 24 Apr 2019 02:21:47 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</guid>
+      <description>オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。
+次が、この記事で紹介したいコードです。
+// 1つのプロパティの変更を検知したい fun &amp;lt;S, A1&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(prop1: KProperty1&amp;lt;S, A1&amp;gt;): LiveData&amp;lt;A1&amp;gt; = this .map { prop1.get(it) } .distinctUntilChanged() // 2つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt; ): LiveData&amp;lt;Pair&amp;lt;A1, A2&amp;gt;&amp;gt; = this .map { prop1.get(it) to prop2.get(it) } .distinctUntilChanged() // 3つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2, A3&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt;, prop3: KProperty1&amp;lt;S, A3&amp;gt; ): LiveData&amp;lt;Triple&amp;lt;A1, A2, A3&amp;gt;&amp;gt; = this .map { Triple(prop1.get(it), prop2.</description>
+    </item>
     
     <item>
       <title>OkHttp: Java to KotlinのPRを見て勉強する</title>

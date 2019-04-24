@@ -7,7 +7,98 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Mon, 15 Apr 2019 13:17:53 UTC</updated>
+    <updated>Wed, 24 Apr 2019 02:21:47 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: プロパティの変更を検知する</title>
+      <link>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</link>
+      <pubDate>Wed, 24 Apr 2019 02:21:47 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</guid>
+      <description>
+
+&lt;p&gt;オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。&lt;/p&gt;
+
+&lt;p&gt;次が、この記事で紹介したいコードです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 1つのプロパティの変更を検知したい
+fun &amp;lt;S, A1&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(prop1: KProperty1&amp;lt;S, A1&amp;gt;): LiveData&amp;lt;A1&amp;gt; =
+  this
+    .map { prop1.get(it) }
+    .distinctUntilChanged()
+
+// 2つのプロパティの変更を検知したい
+fun &amp;lt;S, A1, A2&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(
+  prop1: KProperty1&amp;lt;S, A1&amp;gt;,
+  prop2: KProperty1&amp;lt;S, A2&amp;gt;
+): LiveData&amp;lt;Pair&amp;lt;A1, A2&amp;gt;&amp;gt; =
+  this
+    .map { prop1.get(it) to prop2.get(it) }
+    .distinctUntilChanged()
+
+// 3つのプロパティの変更を検知したい
+fun &amp;lt;S, A1, A2, A3&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(
+  prop1: KProperty1&amp;lt;S, A1&amp;gt;,
+  prop2: KProperty1&amp;lt;S, A2&amp;gt;,
+  prop3: KProperty1&amp;lt;S, A3&amp;gt;
+): LiveData&amp;lt;Triple&amp;lt;A1, A2, A3&amp;gt;&amp;gt; =
+  this
+    .map { Triple(prop1.get(it), prop2.get(it), prop3.get(it)) }
+    .distinctUntilChanged()
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;KProperty1はKotlinが提供しているインターフェースで、プロパティの値を取得することが出来ます。
+それと、LiveData ktxに追加された&lt;code&gt;distinctUntilChanged&lt;/code&gt;を組み合わせることで、汎用的に特定のプロパティの変更を検知することが可能です。&lt;/p&gt;
+
+&lt;p&gt;この記事ではLiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;次にサンプルコードです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class Presenter(initializeUser: User = User(name = &amp;quot;init&amp;quot;, age = 0)) {
+  val user = MutableLiveData&amp;lt;User&amp;gt;(initializeUser)
+
+  // nameの変更を検知する
+  val watchUserName = user.watch(User::name)
+  // ageの変更を検知する
+  val watchUserAge = user.watch(User::age)
+}
+
+--- 以下main ---
+
+val presenter = Presenter()
+
+// 監視
+presenter.watchUserName.observe(this) {
+  Log.d(&amp;quot;watchUserName&amp;quot;, it)
+}
+presenter.watchUserAge.observe(this) {
+  Log.d(&amp;quot;watchUserAge&amp;quot;, it.toString())
+}
+
+// 適当にUserを更新
+presenter.user.postValue(User(name = &amp;quot;posted1&amp;quot;, age = 0))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この場合、Userのnameプロパティだけが変更されているので、&lt;code&gt;presenter.watchUserName&lt;/code&gt;に登録したObserverのみが発火します。
+変更が加わったプロパティだけを無事検知することができました😃&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;多くのデータを持ったオブジェクトの一部の変更のみ検知したい時に使うと便利かもしれない😋&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1329,116 +1420,6 @@ BUILD SUCCESSFUL in 21s
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏🙏🙏&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない</title>
-      <link>https://satoshun.github.io/2019/01/room-with-flux/</link>
-      <pubDate>Thu, 24 Jan 2019 00:43:33 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/room-with-flux/</guid>
-      <description>
-
-&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;
-
-&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;
-
-&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;
-
-&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;
-
-&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;
-
-&lt;p&gt;使い方は次のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;Room
-  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)
-  .build()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;
-&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;になります。&lt;/p&gt;
-
-&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;
-
-&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;
-
-&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;sealed class AuthorAction
-
-@Entity(tableName = &amp;quot;author1&amp;quot;)
-data class Author1(
-  @PrimaryKey val _id: Long = 0, // always 0
-  val name: String,
-  val age: Int
-) : AuthorAction()
-
-@Entity(tableName = &amp;quot;author2&amp;quot;)
-data class Author2(
-  @PrimaryKey val _id: Long = 0, // always 0
-  val name: String,
-  val age: Int
-) : AuthorAction()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;
-
-&lt;p&gt;次にDaoを定義します。これはFluxでいうところのDispatcherになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;@Dao
-interface AuthorDispatcher {
-  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
-  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)
-
-  // Storeに相当する
-  @Query(&amp;quot;select * FROM author1 WHERE _id = 0&amp;quot;)
-  fun author(): LiveData&amp;lt;Author1?&amp;gt;
-
-  // Storeに相当する
-  @Query(
-    &amp;quot;&amp;quot;&amp;quot;
-    select author1.name as name1, author2.name as name2
-    FROM author1
-     INNER JOIN author2
-    WHERE author1._id = 0 AND author2._id = 0
-    &amp;quot;&amp;quot;&amp;quot;
-  )
-  fun mappedAuthor(): LiveData&amp;lt;MappedAuthor?&amp;gt;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;となります。&lt;code&gt;@Insert&lt;/code&gt;でアクションをdispatchメソッドを、&lt;code&gt;@Query&lt;/code&gt;でsubscribeメソッドを実装しています。&lt;/p&gt;
-
-&lt;p&gt;これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ-考察&#34;&gt;まとめ/考察&lt;/h2&gt;
-
-&lt;p&gt;RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Storeに書いていたロジックをSQLに任せることが出来る
-
-&lt;ul&gt;
-&lt;li&gt;Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ほげほげDispactherクラスがアプリ内に蔓延する&lt;/li&gt;
-&lt;li&gt;コードが冗長😂&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
-FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
-
-&lt;p&gt;検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RoomDispatcherExample&#34;&gt;RoomDispatcherExample&lt;/a&gt;にあります。&lt;/p&gt;
 </description>
     </item>
     
