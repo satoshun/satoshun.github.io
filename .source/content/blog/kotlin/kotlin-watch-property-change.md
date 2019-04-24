@@ -1,22 +1,23 @@
 +++
-date = "Wed Apr 24 00:36:14 UTC 2019"
+date = "Wed Apr 24 02:21:47 UTC 2019"
 title = "Kotlin: プロパティの変更を検知する"
 tags = ["kotlin", "android"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。
 
-今回紹介したいコードを次になります。
+次が、この記事で紹介したいコードです。
 
 ```kotlin
+// 1つのプロパティの変更を検知したい
 fun <S, A1> LiveData<S>.watch(prop1: KProperty1<S, A1>): LiveData<A1> =
   this
     .map { prop1.get(it) }
     .distinctUntilChanged()
 
+// 2つのプロパティの変更を検知したい
 fun <S, A1, A2> LiveData<S>.watch(
   prop1: KProperty1<S, A1>,
   prop2: KProperty1<S, A2>
@@ -25,6 +26,7 @@ fun <S, A1, A2> LiveData<S>.watch(
     .map { prop1.get(it) to prop2.get(it) }
     .distinctUntilChanged()
 
+// 3つのプロパティの変更を検知したい
 fun <S, A1, A2, A3> LiveData<S>.watch(
   prop1: KProperty1<S, A1>,
   prop2: KProperty1<S, A2>,
@@ -37,9 +39,10 @@ fun <S, A1, A2, A3> LiveData<S>.watch(
 ...
 ```
 
-KProperty1はプロパティの値を取得するためのインターフェースになります。
-`distinctUntilChanged`はLiveData ktxに追加された便利拡張関数です。
-LiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。
+KProperty1はKotlinが提供しているインターフェースで、プロパティの値を取得することが出来ます。
+それと、LiveData ktxに追加された`distinctUntilChanged`を組み合わせることで、汎用的に特定のプロパティの変更を検知することが可能です。
+
+この記事ではLiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。
 
 ---
 
@@ -48,11 +51,15 @@ LiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで
 ```kotlin
 class Presenter(initializeUser: User = User(name = "init", age = 0)) {
   val user = MutableLiveData<User>(initializeUser)
+
+  // nameの変更を検知する
   val watchUserName = user.watch(User::name)
+  // ageの変更を検知する
   val watchUserAge = user.watch(User::age)
 }
 
-// 以下main
+--- 以下main ---
+
 val presenter = Presenter()
 
 // 監視
