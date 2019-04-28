@@ -4,6 +4,7 @@ title = "ConstraintLayout Flowの紹介"
 tags = ["android", "constraintlayout", "flow"]
 blogimport = true
 type = "post"
+thumbnail = "https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no"
 draft = false
 +++
 
