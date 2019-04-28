@@ -1,28 +1,28 @@
 +++
-date = "Sun Apr 28 09:23:02 UTC 2019"
-title = "TODO"
+date = "Sun Apr 28 11:13:20 UTC 2019"
+title = "ConstraintLayout Flowの紹介"
 tags = ["android", "constraintlayout", "flow"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
-Flowは対象のViewを様々な方法で並べることができます。
+Flowを使うことで、対象のViewを様々なルールで並べることができます。
 
-次がメリットとしてあります。
+メリットとしては、次のようなものがあります。
 
 - Viewの階層をフラットに保つことが出来る
 - Flowは普通のViewのように扱う事ができる
 - MotionLayoutと相性が良い
 
-どのように書くのかを見ていきます。
+では、どのように書くのかを見ていきます。
 
 ---
 
-1. 方向を決める
+### 1. 配置する方向を決める
 
-`android:orientation`から、horizontal or verticalを選択できます。
+`android:orientation`から、horizontal or verticalを指定できます。
 
 ```xml
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,11 +43,9 @@ Flowは対象のViewを様々な方法で並べることができます。
   ...
 ```
 
-このFlowはorientationにhorizontalを持ち、通常のViewのようにconstraintsを指定し配置することができます。
+これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。
 
-(Flowは普通のViewのように扱うことができます。)
-
-2. wrapModeを決める
+### 2. wrapModeを決める
 
 `flow_wrapMode`で指定することができます。
 
@@ -74,7 +72,9 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
     app:layout_constraintTop_toTopOf="parent" />
 ```
 
-3. 対象のViewを指定する
+これはchainで対象のViewを配置します。
+
+### 3. 対象のViewを指定する
 
 `constraint_referenced_ids`から指定します。
 
@@ -123,9 +123,9 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
   ...
 ```
 
-この場合、「title1、title2、title3」がhorizontalに、chain指定なので順番に配置されます。
+この場合、「title1、title2、title3」が対象のViewになります。また、これらのViewはhorizontalの方向に、chainで順々に配置されます。
 
-4. 細かい調整
+### 4. その他、細かい調整
 
 対象のView間のマージンや、行（列）の最大数、Viewの配置場所などの細かい部分の指定ができます。
 
@@ -138,6 +138,8 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
 - app:flow_horizontalAlign = "start|end|center" (default center)
 - app:flow_verticalAlign = "top|bottom|center|baseline” (default center)
 - app:flow_maxElementsWrap = "integer" (default : 0, not applied)
+
+次にMotionLayoutとFlowの使いかたについて見ていきます。
 
 ## MotionLayout
 
@@ -187,6 +189,7 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
 ## まとめ
 
 - ConstraintLayout alpha5になってFlowが入った。かなり便利に使えそう
+    - いろいろ指定できるので、実際に触って動かしてみるのが良いと思います。
 - betaはGoogle I/O前後に来るらしいので、正式版までもう少し😃
 
 ## 参考
