@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 24 Apr 2019 02:21:47 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Apr 2019 11:13:20 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ConstraintLayout Flowの紹介</title>
+      <link>https://satoshun.github.io/2019/04/constraintlayout-flow/</link>
+      <pubDate>Sun, 28 Apr 2019 11:13:20 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/04/constraintlayout-flow/</guid>
+      <description>ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉 Flowを使うことで、対象のViewを様々なルールで並べることができます。
+メリットとしては、次のようなものがあります。
+ Viewの階層をフラットに保つことが出来る Flowは普通のViewのように扱う事ができる MotionLayoutと相性が良い  では、どのように書くのかを見ていきます。
+1. 配置する方向を決める android:orientationから、horizontal or verticalを指定できます。
+&amp;lt;androidx.constraintlayout.widget.ConstraintLayout android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot;&amp;gt; &amp;lt;androidx.constraintlayout.helper.widget.Flow android:id=&amp;quot;@+id/flow&amp;quot; android:layout_width=&amp;quot;0dp&amp;quot; android:layout_height=&amp;quot;0dp&amp;quot; android:orientation=&amp;quot;horizontal&amp;quot; android:background=&amp;quot;@android:color/white&amp;quot; app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot; app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt; ...  これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。
+2. wrapModeを決める flow_wrapModeで指定することができます。
+wrapModeでは、どのようにViewを並べるかを指定でき、3種類のmodeがあります。
+ none  単純にsingle lineに並べる  chain  単純に順番に配置していく。その行（列）に収まらない場合は次の行（列）に配置する  aligned  各要素を整列するように配置していく。テーブルのようなイメージ   &amp;lt;androidx.constraintlayout.helper.widget.Flow android:id=&amp;quot;@+id/flow&amp;quot; android:layout_width=&amp;quot;0dp&amp;quot; android:layout_height=&amp;quot;0dp&amp;quot; android:orientation=&amp;quot;horizontal&amp;quot; android:background=&amp;quot;@android:color/white&amp;quot; app:flow_wrapMode=&amp;quot;chain&amp;quot; app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot; app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;  これはchainで対象のViewを配置します。
+3. 対象のViewを指定する constraint_referenced_idsから指定します。</description>
+    </item>
     
     <item>
       <title>Kotlin: プロパティの変更を検知する</title>

@@ -7,7 +7,227 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Wed, 24 Apr 2019 02:21:47 UTC</updated>
+    <updated>Sun, 28 Apr 2019 11:13:20 UTC</updated>
+    
+    
+    <item>
+      <title>ConstraintLayout Flowの紹介</title>
+      <link>https://satoshun.github.io/2019/04/constraintlayout-flow/</link>
+      <pubDate>Sun, 28 Apr 2019 11:13:20 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/04/constraintlayout-flow/</guid>
+      <description>
+
+&lt;p&gt;ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
+Flowを使うことで、対象のViewを様々なルールで並べることができます。&lt;/p&gt;
+
+&lt;p&gt;メリットとしては、次のようなものがあります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Viewの階層をフラットに保つことが出来る&lt;/li&gt;
+&lt;li&gt;Flowは普通のViewのように扱う事ができる&lt;/li&gt;
+&lt;li&gt;MotionLayoutと相性が良い&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;では、どのように書くのかを見ていきます。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-配置する方向を決める&#34;&gt;1. 配置する方向を決める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;android:orientation&lt;/code&gt;から、horizontal or verticalを指定できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout
+  android:layout_width=&amp;quot;match_parent&amp;quot;
+  android:layout_height=&amp;quot;match_parent&amp;quot;&amp;gt;
+
+  &amp;lt;androidx.constraintlayout.helper.widget.Flow
+    android:id=&amp;quot;@+id/flow&amp;quot;
+    android:layout_width=&amp;quot;0dp&amp;quot;
+    android:layout_height=&amp;quot;0dp&amp;quot;
+    android:orientation=&amp;quot;horizontal&amp;quot;
+    android:background=&amp;quot;@android:color/white&amp;quot;
+    app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+
+  ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-wrapmodeを決める&#34;&gt;2. wrapModeを決める&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;flow_wrapMode&lt;/code&gt;で指定することができます。&lt;/p&gt;
+
+&lt;p&gt;wrapModeでは、どのようにViewを並べるかを指定でき、3種類のmodeがあります。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;none
+
+&lt;ul&gt;
+&lt;li&gt;単純にsingle lineに並べる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;chain
+
+&lt;ul&gt;
+&lt;li&gt;単純に順番に配置していく。その行（列）に収まらない場合は次の行（列）に配置する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;aligned
+
+&lt;ul&gt;
+&lt;li&gt;各要素を整列するように配置していく。テーブルのようなイメージ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;  &amp;lt;androidx.constraintlayout.helper.widget.Flow
+    android:id=&amp;quot;@+id/flow&amp;quot;
+    android:layout_width=&amp;quot;0dp&amp;quot;
+    android:layout_height=&amp;quot;0dp&amp;quot;
+    android:orientation=&amp;quot;horizontal&amp;quot;
+    android:background=&amp;quot;@android:color/white&amp;quot;
+    app:flow_wrapMode=&amp;quot;chain&amp;quot;
+    app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これはchainで対象のViewを配置します。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-対象のviewを指定する&#34;&gt;3. 対象のViewを指定する&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;constraint_referenced_ids&lt;/code&gt;から指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout
+  android:layout_width=&amp;quot;match_parent&amp;quot;
+  android:layout_height=&amp;quot;match_parent&amp;quot;&amp;gt;
+
+  &amp;lt;androidx.constraintlayout.helper.widget.Flow
+    android:id=&amp;quot;@+id/flow&amp;quot;
+    android:layout_width=&amp;quot;0dp&amp;quot;
+    android:layout_height=&amp;quot;0dp&amp;quot;
+    android:orientation=&amp;quot;horizontal&amp;quot;
+    app:flow_wrapMode=&amp;quot;chain&amp;quot;
+    android:background=&amp;quot;@android:color/white&amp;quot;
+    app:constraint_referenced_ids=&amp;quot;title1,title2,title3&amp;quot;
+    app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+
+  &amp;lt;TextView
+    android:id=&amp;quot;@+id/title1&amp;quot;
+    android:layout_width=&amp;quot;wrap_content&amp;quot;
+    android:layout_height=&amp;quot;wrap_content&amp;quot;
+    android:text=&amp;quot;chain1&amp;quot;
+    android:textColor=&amp;quot;@android:color/black&amp;quot;
+    android:textSize=&amp;quot;20sp&amp;quot; /&amp;gt;
+
+  &amp;lt;TextView
+    android:id=&amp;quot;@+id/title2&amp;quot;
+    android:layout_width=&amp;quot;wrap_content&amp;quot;
+    android:layout_height=&amp;quot;wrap_content&amp;quot;
+    android:text=&amp;quot;chain2&amp;quot;
+    android:textColor=&amp;quot;@android:color/black&amp;quot;
+    android:textSize=&amp;quot;20sp&amp;quot; /&amp;gt;
+
+  &amp;lt;TextView
+    android:id=&amp;quot;@+id/title3&amp;quot;
+    android:layout_width=&amp;quot;wrap_content&amp;quot;
+    android:layout_height=&amp;quot;wrap_content&amp;quot;
+    android:text=&amp;quot;chain3&amp;quot;
+    android:textColor=&amp;quot;@android:color/black&amp;quot;
+    android:textSize=&amp;quot;50sp&amp;quot; /&amp;gt;
+
+  ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この場合、「title1、title2、title3」が対象のViewになります。また、これらのViewはhorizontalの方向に、chainで順々に配置されます。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-その他-細かい調整&#34;&gt;4. その他、細かい調整&lt;/h3&gt;
+
+&lt;p&gt;対象のView間のマージンや、行（列）の最大数、Viewの配置場所などの細かい部分の指定ができます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;app:flow_horizontalStyle = &amp;ldquo;spread|spread_inside|packed&amp;rdquo; (default spread)&lt;/li&gt;
+&lt;li&gt;app:flow_verticalStyle = &amp;ldquo;spread|spread_inside|packed&amp;rdquo; (default spread)&lt;/li&gt;
+&lt;li&gt;app:flow_horizontalBias = &amp;ldquo;float&amp;rdquo; (default 0.5)&lt;/li&gt;
+&lt;li&gt;app:flow_verticalBias = &amp;ldquo;float&amp;rdquo; (default 0.5)&lt;/li&gt;
+&lt;li&gt;app:flow_horizontalGap = &amp;ldquo;dimension&amp;rdquo; (default 0)&lt;/li&gt;
+&lt;li&gt;app:flow_verticalGap = &amp;ldquo;dimension&amp;rdquo; (default 0)&lt;/li&gt;
+&lt;li&gt;app:flow_horizontalAlign = &amp;ldquo;start|end|center&amp;rdquo; (default center)&lt;/li&gt;
+&lt;li&gt;app:flow_verticalAlign = &amp;ldquo;top|bottom|center|baseline” (default center)&lt;/li&gt;
+&lt;li&gt;app:flow_maxElementsWrap = &amp;ldquo;integer&amp;rdquo; (default : 0, not applied)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次にMotionLayoutとFlowの使いかたについて見ていきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;motionlayout&#34;&gt;MotionLayout&lt;/h2&gt;
+
+&lt;p&gt;これは通常のMotionLayoutの使い方と一緒です。Flowの値を変更してあげればよいです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;MotionScene xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+  xmlns:motion=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;&amp;gt;
+
+  &amp;lt;Transition
+    android:id=&amp;quot;@+id/transition&amp;quot;
+    motion:constraintSetEnd=&amp;quot;@+id/end&amp;quot;
+    motion:constraintSetStart=&amp;quot;@+id/start&amp;quot;
+    motion:duration=&amp;quot;1000&amp;quot; /&amp;gt;
+
+  &amp;lt;ConstraintSet android:id=&amp;quot;@+id/start&amp;quot;&amp;gt;
+    &amp;lt;Constraint
+      android:id=&amp;quot;@id/flow&amp;quot;
+      android:layout_width=&amp;quot;0dp&amp;quot;
+      android:layout_height=&amp;quot;0dp&amp;quot;
+      android:orientation=&amp;quot;horizontal&amp;quot;
+      motion:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+  &amp;lt;/ConstraintSet&amp;gt;
+
+  &amp;lt;ConstraintSet android:id=&amp;quot;@+id/end&amp;quot;&amp;gt;
+    &amp;lt;Constraint
+      android:id=&amp;quot;@id/flow&amp;quot;
+      android:layout_width=&amp;quot;200dp&amp;quot;
+      android:layout_height=&amp;quot;0dp&amp;quot;
+      android:orientation=&amp;quot;vertical&amp;quot;
+      motion:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+      motion:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+  &amp;lt;/ConstraintSet&amp;gt;
+&amp;lt;/MotionScene&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな感じのアニメーションになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no&#34; width=400&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ConstraintLayout alpha5になってFlowが入った。かなり便利に使えそう
+
+&lt;ul&gt;
+&lt;li&gt;いろいろ指定できるので、実際に触って動かしてみるのが良いと思います。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;betaはGoogle I/O前後に来るらしいので、正式版までもう少し😃&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/camaelon/constraintlayout-2-dot-0&#34;&gt;ConstraintLayout 2.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://androidstudio.googleblog.com/2019/04/constraintlayout-200-alpha-5.html&#34;&gt;ConstraintLayout 2.0.0 alpha 5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1330,96 +1550,6 @@ fun createUserIntent(context: Context): Intent {
 &lt;p&gt;&lt;img src=&#34;https://bit.ly/2UQggVj&#34; alt=&#34;DroidKaigi2019&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました</title>
-      <link>https://satoshun.github.io/2019/01/r8-proguard-metainf/</link>
-      <pubDate>Mon, 28 Jan 2019 00:08:35 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/01/r8-proguard-metainf/</guid>
-      <description>
-
-&lt;p&gt;&lt;del&gt;AGP3.3.0&lt;/del&gt;ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
-今まで、aarでは&lt;code&gt;consumerProguardFiles&lt;/code&gt;で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。&lt;/p&gt;
-
-&lt;h2 id=&#34;ライブラリ開発者側の設定&#34;&gt;ライブラリ開発者側の設定&lt;/h2&gt;
-
-&lt;p&gt;RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。&lt;/p&gt;
-
-&lt;p&gt;まず、&lt;code&gt;resources/META-INF/prougard&lt;/code&gt;ディレクトリの中にProGuardの設定ファイルを置きます。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/retrofit/tree/master/retrofit/src/main/resources/META-INF/proguard&#34;&gt;square/retrofit&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;ライブラリ側の設定はこれで完了です。&lt;/p&gt;
-
-&lt;h2 id=&#34;使う側の設定&#34;&gt;使う側の設定&lt;/h2&gt;
-
-&lt;p&gt;AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot;
-
-&amp;gt; ./gradlew installRelease
-...
-Warning: there were 267 unresolved references to classes or interfaces.
-         You may need to add missing library jars or update their versions.
-         If your code works fine without the missing classes, you can suppress
-         the warnings with &#39;-dontwarn&#39; options.
-         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass)
-Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.
-Thread(Tasks limiter_2): destruction
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;失敗しました😂&lt;/p&gt;
-
-&lt;p&gt;次にMETA-INFが入った2.5.0でビルドをします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;implementation &amp;quot;com.squareup.retrofit2:retrofit:2.5.0&amp;quot;
-
-&amp;gt; ./gradlew installRelease
-...
-
-BUILD SUCCESSFUL in 21s
-38 actionable tasks: 18 executed, 20 from cache
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;成功しました😊&lt;/p&gt;
-
-&lt;p&gt;META-INFファイルをちゃんと読み込めているようです。ProGuardのconfigurationファイルを確認したところ、RetrofitのProGuard設定が入っていました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// configuration.txt
-...
-# Retain service method parameters when optimizing.
--keepclassmembers,allowshrinking,allowobfuscation interface  * {
-    @retrofit2.http.*
-    &amp;lt;methods&amp;gt;;
-}
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;p&gt;この機能はR8/ProGuard、両方とも対応しているようです。&lt;/p&gt;
-
-&lt;h2 id=&#34;追記&#34;&gt;追記&lt;/h2&gt;
-
-&lt;p&gt;最初、冒頭でR8もAGP3.3.0からと書いたんですが、それは誤りで、AGP3.2.0のR8が導入されたタイミングでした。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://twitter.com/kafumi__/status/1089816485386747905&#34;&gt;@kafumi__&lt;/a&gt;さんにご指摘いただきました！ありがとうございます😊&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;ライブラリがJarであったとしても、ライブラリ作者が対応してくれればProGuardの設定が楽になる!!!
-
-&lt;ul&gt;
-&lt;li&gt;現状、有名なライブラリでは、OkHttp、Retrofit、Coroutineなどが対応しています😊&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏🙏🙏&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     
