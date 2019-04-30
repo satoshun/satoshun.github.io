@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/04/fab-motion-spec/</loc>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/04/constraintlayout-flow/</loc>
     <lastmod>2019-04-28T11:13:20+00:00</lastmod>
   </url>
@@ -477,7 +482,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-04-28T11:13:20+00:00</lastmod>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -501,7 +506,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-04-28T11:13:20+00:00</lastmod>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -746,6 +751,18 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/materialcomponents/</loc>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/motion/</loc>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/multimodule/</loc>
     <lastmod>2019-02-15T00:14:56+00:00</lastmod>
     <priority>0</priority>
@@ -919,7 +936,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-04-28T11:13:20+00:00</lastmod>
+    <lastmod>2019-04-30T05:59:41+00:00</lastmod>
     <priority>0</priority>
   </url>
   

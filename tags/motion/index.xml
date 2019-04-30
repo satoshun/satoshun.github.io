@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Motion on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/motion/</link>
+    <description>Recent content in Motion on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Tue, 30 Apr 2019 05:59:41 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/motion/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Material Components: MotionSpecを使ってアニメーションをカスタマイズする</title>
+      <link>https://satoshun.github.io/2019/04/fab-motion-spec/</link>
+      <pubDate>Tue, 30 Apr 2019 05:59:41 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/04/fab-motion-spec/</guid>
+      <description>MotionSpecはAndroid material componentsに定義されている1クラスになります。 MotionSpecを使うことで、次のアニメーション属性をカスタマイズすることができます。
+ startOffset duration interpolator repeatCount repeatMode  例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。
+FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。
+最初にMotionSpec用のanimator XMLを定義する デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。
+FloatingActionButton用のXMLはソースコードを読んでいくと、design_fab_show_motion_spec.xmlとdesign_fab_hide_motion_spec.xmlで定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。
+まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されているdesign_fab_show_motion_spec.xmlの中身になります。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;!-- Copyright 2017 The Android Open Source Project Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,7 +7,137 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 28 Apr 2019 11:13:20 UTC</updated>
+    <updated>Tue, 30 Apr 2019 05:59:41 UTC</updated>
+    
+    
+    <item>
+      <title>Material Components: MotionSpecを使ってアニメーションをカスタマイズする</title>
+      <link>https://satoshun.github.io/2019/04/fab-motion-spec/</link>
+      <pubDate>Tue, 30 Apr 2019 05:59:41 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/04/fab-motion-spec/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://developer.android.com/reference/com/google/android/material/animation/MotionSpec&#34;&gt;MotionSpec&lt;/a&gt;はAndroid material componentsに定義されている1クラスになります。
+MotionSpecを使うことで、次のアニメーション属性をカスタマイズすることができます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;startOffset&lt;/li&gt;
+&lt;li&gt;duration&lt;/li&gt;
+&lt;li&gt;interpolator&lt;/li&gt;
+&lt;li&gt;repeatCount&lt;/li&gt;
+&lt;li&gt;repeatMode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。&lt;/p&gt;
+
+&lt;p&gt;FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。&lt;/p&gt;
+
+&lt;h2 id=&#34;最初にmotionspec用のanimator-xmlを定義する&#34;&gt;最初にMotionSpec用のanimator XMLを定義する&lt;/h2&gt;
+
+&lt;p&gt;デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。&lt;/p&gt;
+
+&lt;p&gt;FloatingActionButton用のXMLはソースコードを読んでいくと、&lt;code&gt;design_fab_show_motion_spec.xml&lt;/code&gt;と&lt;code&gt;design_fab_hide_motion_spec.xml&lt;/code&gt;で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。&lt;/p&gt;
+
+&lt;p&gt;まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている&lt;code&gt;design_fab_show_motion_spec.xml&lt;/code&gt;の中身になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;!--
+    Copyright 2017 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;);
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+--&amp;gt;
+
+&amp;lt;set xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+  &amp;lt;objectAnimator
+      android:propertyName=&amp;quot;opacity&amp;quot;
+      android:startOffset=&amp;quot;0&amp;quot;
+      android:duration=&amp;quot;200&amp;quot;
+      android:interpolator=&amp;quot;@interpolator/mtrl_linear_out_slow_in&amp;quot;/&amp;gt;
+  &amp;lt;objectAnimator
+      android:propertyName=&amp;quot;scale&amp;quot;
+      android:startOffset=&amp;quot;0&amp;quot;
+      android:duration=&amp;quot;200&amp;quot;
+      android:interpolator=&amp;quot;@interpolator/mtrl_linear_out_slow_in&amp;quot;/&amp;gt;
+  &amp;lt;objectAnimator
+      android:propertyName=&amp;quot;iconScale&amp;quot;
+      android:startOffset=&amp;quot;0&amp;quot;
+      android:duration=&amp;quot;0&amp;quot;
+      android:interpolator=&amp;quot;@interpolator/mtrl_fast_out_slow_in&amp;quot;/&amp;gt;
+&amp;lt;/set&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回は、アニメーションを長くして、アイコンをバウンドしたいとします。
+それは、durationを長くして、interpolatorに&lt;code&gt;@android:anim/bounce_interpolator&lt;/code&gt;を指定すれば良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;set xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+  &amp;lt;objectAnimator
+    android:duration=&amp;quot;1000&amp;quot;
+    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
+    android:propertyName=&amp;quot;opacity&amp;quot;
+    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
+
+  &amp;lt;objectAnimator
+    android:duration=&amp;quot;1000&amp;quot;
+    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
+    android:propertyName=&amp;quot;scale&amp;quot;
+    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
+
+  &amp;lt;objectAnimator
+    android:duration=&amp;quot;1000&amp;quot;
+    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
+    android:propertyName=&amp;quot;iconScale&amp;quot;
+    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
+&amp;lt;/set&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。&lt;/p&gt;
+
+&lt;p&gt;次に、これをViewにセットします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fab.showMotionSpec = MotionSpec.createFromResource(
+    this,
+    R.animator.fab_show_motion_spec
+)
+fab.hideMotionSpec = MotionSpec.createFromResource(
+    this,
+    R.animator.fab_hide_motion_spec
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最終的な、アニメーションはこんな感じになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no&#34; width=400 /&gt;&lt;/p&gt;
+
+&lt;p&gt;アニメーション時間が長くなり、ボヨンボヨンしていることが分かると思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;MotionSpecを使えば、アニメーションの長さやinterpolatorをカスタマイズすることが出来る
+
+&lt;ul&gt;
+&lt;li&gt;まだ、MotionSpecに対応しているViewは少ないが、今後Chipなども対応予定😃&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1483,73 +1613,6 @@ fun createUserIntent(context: Context): Intent {
 &lt;/ul&gt;
 
 &lt;p&gt;Daggerの部分のいい解決方法を知っている人がいたら、教えて頂けると幸いです😊😊😊&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>DroidKaigi2019で「R8/ProGuard 徹底比較」というテーマで発表しました</title>
-      <link>https://satoshun.github.io/2019/02/droidkaigi-2019/</link>
-      <pubDate>Thu, 07 Feb 2019 13:19:13 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/02/droidkaigi-2019/</guid>
-      <description>&lt;p&gt;DroidKaigi2019でセッションが採択されたので発表しました。&lt;/p&gt;
-
-&lt;script async class=&#34;speakerdeck-embed&#34; data-id=&#34;b801b49e61ef4c478e6020941393b9ed&#34; data-ratio=&#34;1.77777777777778&#34; src=&#34;//speakerdeck.com/assets/embed.js&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao&#34;&gt;https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;最初に発表の反省点です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;多く詰め込みすぎて、1つ1つの掘り下げが疎かになった
-
-&lt;ul&gt;
-&lt;li&gt;結果的に広く浅い発表になってしまったため、1つの1つがあまり丁寧に説明できていなかったように感じています。重要な部分はもう少し丁寧に発表すべきでした。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;早口すぎ、俺は生き急いでるのか？
-
-&lt;ul&gt;
-&lt;li&gt;本当に申し訳ありませんでした。前日に最終確認したところ20分近くオーバーしてしまい、そこからある程度は間引いたんですが、早口でいくという戦略を取ってしまいました😂 他の方の発表のように聞きやすい発表を今後は意識していきます！&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;次に良かった点です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;発表前の休憩時間に、司会の@neonankitiさんの助けで、アイスブレイク?のようなことができた
-
-&lt;ul&gt;
-&lt;li&gt;@neonankitiさんとは初対面だったんですが、謎の掛け合いができ、会場の雰囲気も良くなったように思います😊&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;なんだかんだとR8のコードを触れたのは良かった
-
-&lt;ul&gt;
-&lt;li&gt;R8コンパイラのコードに触れるかどうか悩んだのですが、printデバッグなどを駆使して、理解が間違っていないことが確認できたので、載せてみました。概要だけですが、個人的には良かったと思っています。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;最後に話した実践編のウケが良くてよかった
-
-&lt;ul&gt;
-&lt;li&gt;R8の凄さが分かりやすく伝えられたのかなと思います😊&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;最後に、僕の発表を聞きに来てくれた人、運営のみなさんありがとうございました😊&lt;/p&gt;
-
-&lt;p&gt;また来年もあれば登壇できるように頑張ります💪&lt;/p&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://bit.ly/2UQggVj&#34; alt=&#34;DroidKaigi2019&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;
 </description>
     </item>
     
