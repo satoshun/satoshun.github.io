@@ -1,15 +1,15 @@
 +++
-date = "Tue Apr 30 05:22:51 UTC 2019"
-title = "Material Components: MotionSpecを使って"
+date = "Tue Apr 30 05:59:41 UTC 2019"
+title = "Material Components: MotionSpecを使ってアニメーションをカスタマイズする"
 tags = ["android", "materialcomponents", "motion"]
 thumbnail = "https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no"
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-MotionSpecはAndroid material componentsに定義されているクラスになります。
-このクラスを使うことで、以下の属性をカスタマイズすることができます。
+[MotionSpec](https://developer.android.com/reference/com/google/android/material/animation/MotionSpec)はAndroid material componentsに定義されている1クラスになります。
+MotionSpecを使うことで、次のアニメーション属性をカスタマイズすることができます。
 
 - startOffset
 - duration
@@ -17,15 +17,17 @@ MotionSpecはAndroid material componentsに定義されているクラスにな�
 - repeatCount
 - repeatMode
 
-例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くすれば良いです。
+例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。
 
-FloatingActionButtonを例にMotionSpecの値をいじってみます。
+FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。
 
 ## 最初にMotionSpec用のanimator XMLを定義する
 
-デフォルトのXMLをコピペしてきて、それをカスタマイズするのが良いと思います。
+デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。
 
-FloatingActionButtonのためのXMLはソースコードを読んでいくと、`design_fab_show_motion_spec.xml`と`design_fab_hide_motion_spec.xml`で定義されていることが分かります。
+FloatingActionButton用のXMLはソースコードを読んでいくと、`design_fab_show_motion_spec.xml`と`design_fab_hide_motion_spec.xml`で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。
+
+まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている`design_fab_show_motion_spec.xml`の中身になります。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -90,9 +92,9 @@ FloatingActionButtonのためのXMLはソースコードを読んでいくと、
 </set>
 ```
 
-上記のはshow用のMotionSpecですが、hideでも同じような感じでXMLを定義してあげます。
+これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。
 
-最後に、これをViewにセットしたら完了です。
+次に、これをViewにセットします。
 
 ```kotlin
 fab.showMotionSpec = MotionSpec.createFromResource(
@@ -105,7 +107,7 @@ fab.hideMotionSpec = MotionSpec.createFromResource(
 )
 ```
 
-アニメーションはこんな感じになります。
+最終的な、アニメーションはこんな感じになります。
 
 <img src="https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no" width=400 />
 
@@ -115,3 +117,7 @@ fab.hideMotionSpec = MotionSpec.createFromResource(
 
 - MotionSpecを使えば、アニメーションの長さやinterpolatorをカスタマイズすることが出来る
   - まだ、MotionSpecに対応しているViewは少ないが、今後Chipなども対応予定😃
+
+---
+
+内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊
