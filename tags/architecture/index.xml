@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 24 Jan 2019 00:43:33 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 May 2019 05:05:09 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MvRxの雑な感想</title>
+      <link>https://satoshun.github.io/2019/05/mvrx-architecture/</link>
+      <pubDate>Sun, 05 May 2019 05:05:09 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
+      <description> 雑多なことを書いただけのブログになります。内容はあまりないよう〜。
+MvRxはAirbnbが開発をしているOSSフレームワークです。
+特徴としては
+ Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている  AACをRxJavaであったり、便利関数、クラス群で補佐している感じ  多くの部分でReactのAPIを参考にしてる  State、renderなど  Epoxyと相性が良い  一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る  ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う  副作用がない（減らしたい）   ボイラープレートなコードを減らすことが期待できます😃
+個人的に気になった部分、好きなとこ StateでView状態を管理するところ Stateを定義することのメリットは以下かなと思ってます。
+ Stateを見れば、Viewの構成要素が分かる  MVPアーキテクチャのViewインターフェースのような役割を果たす  状態の管理が楽  Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い  MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる   Viewからロジックを取ることが出来る  もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる   Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
+ Uninitialized Loading Success Fail  の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
+プロジェクトに、Asyncだけ取り入れるのもアリだと思います。
+Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う
+ invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも  やっぱりSingle Eventの取り扱いって大変なんやなって とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない   参考  Tivi  プロジェクトも大きく、Coroutineなども使っている これ見れば、なんとなく肌感は分かると思います   </description>
+    </item>
     
     <item>
       <title>FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない</title>
