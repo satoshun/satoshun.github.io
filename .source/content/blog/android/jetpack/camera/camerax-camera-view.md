@@ -1,21 +1,21 @@
 +++
-date = "Mon May  6 04:53:13 UTC 2019"
+date = "Mon May  6 05:47:14 UTC 2019"
 title = "CameraX: CameraView触ってみた"
 tags = ["android", "jetpack", "camerax"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。
 
-内部の実装であったり、細かい部分はpsideさんの[CameraXのコードがきたので気合い入れて読んでみた](https://p-side.net/posts/2019-05-05-camerax/)が詳しいです。
+内部の実装であったり、細かい部分はpsideさんの「[CameraXのコードがきたので気合い入れて読んでみた](https://p-side.net/posts/2019-05-05-camerax/)」が詳しいです。
 
 ## 環境構築
 
 CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。
 
-```gradle
+```
  androidx {
      name = "Jetpack Camera View Library"
 -    publish = false
@@ -37,34 +37,35 @@ CameraViewは普通のViewのように使うことができます。
   <androidx.camera.view.CameraView
     android:layout_width="0dp"
     android:layout_height="0dp"
-    app:layout_constraintBottom_toTopOf="@id/capture"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-そのあと、次のコードで初期化します。
+次に初期化をします。
 
 ```kotlin
 cameraView.bindToLifecycle(this) // thisはLifecycleOwner
 ```
 
 LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。
+CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。
 
-これでカメラ機能が使えるようになります！
+これだけでカメラ機能が使えるようになります！とても簡単！!
 
-以下でCameraViewで現状使えるAPIについて紹介します。
+以下、CameraViewで現状使えるAPIについて紹介します。
 
-## CameraViewで使えるAPI
+## CameraViewで使えるAPI達
 
-### Image/Video/Mixedモード
+### モードの変更
 
 CameraViewでは次の3つのモードがあります。
 
 - Image: 写真を取る
 - Video: ビデオを取る
-- Mixed: 両方。ただし、動かない端末がある
+- Mixed: 両方。ただし、動かない端末もあるらしい
 
 次のように使います。
 
@@ -105,12 +106,16 @@ cameraView.setCameraByLensFacing(CameraX.LensFacing.BACK)
 
 ### Flashモードの設定
 
+撮影時にフラッシュを有効にすることができます。
+
 ```kotlin
 cameraView.flash = FlashMode.ON
 cameraView.flash = FlashMode.OFF
 ```
 
 ### torchの有効/無効
+
+背面ライトを有効にすることができます。
 
 ```kotlin
 cameraView.enableTorch(true)
@@ -119,12 +124,14 @@ cameraView.enableTorch(false)
 
 ### zoomの設定
 
+コードから変えることができます。
+
 ```kotlin
 cameraView.zoomLevel = 3f
 cameraView.zoomLevel = 10f
 ```
 
-またCameraViewはpinch-in-outでのzoomの変更にも対応しています。
+また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。
 
 ### focus
 
@@ -141,4 +148,4 @@ cameraView.focus(...)
 
 最後に、CameraViewを実装した結果になります。
 
-<img src="https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no" width=400 />
+<img src="https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no" width=300 />
