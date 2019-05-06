@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Camerax on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/camerax/</link>
+    <description>Recent content in Camerax on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Mon, 06 May 2019 05:47:14 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/camerax/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CameraX: CameraView触ってみた</title>
+      <link>https://satoshun.github.io/2019/05/camerax-camera-view/</link>
+      <pubDate>Mon, 06 May 2019 05:47:14 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/05/camerax-camera-view/</guid>
+      <description>CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。
+内部の実装であったり、細かい部分はpsideさんの「CameraXのコードがきたので気合い入れて読んでみた」が詳しいです。
+環境構築 CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。
+ androidx { name = &amp;quot;Jetpack Camera View Library&amp;quot; - publish = false + publish = true mavenVersion = LibraryVersions.CAMERA mavenGroup = LibraryGroups.CAMERA inceptionYear = &amp;quot;2019&amp;quot; }  使い方 CameraViewは普通のViewのように使うことができます。
+&amp;lt;androidx.constraintlayout.widget.ConstraintLayout ...&amp;gt; &amp;lt;androidx.camera.view.CameraView android:layout_width=&amp;quot;0dp&amp;quot; android:layout_height=&amp;quot;0dp&amp;quot; app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot; app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot; app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot; app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;  次に初期化をします。
+cameraView.bindToLifecycle(this) // thisはLifecycleOwner  LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。 CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。
+これだけでカメラ機能が使えるようになります！とても簡単！!
+以下、CameraViewで現状使えるAPIについて紹介します。
+CameraViewで使えるAPI達 モードの変更 CameraViewでは次の3つのモードがあります。
+ Image: 写真を取る Video: ビデオを取る Mixed: 両方。ただし、動かない端末もあるらしい  次のように使います。
+// Image cameraView.</description>
+    </item>
+    
+  </channel>
+</rss>

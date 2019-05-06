@@ -7,7 +7,161 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 05 May 2019 05:05:09 UTC</updated>
+    <updated>Mon, 06 May 2019 05:47:14 UTC</updated>
+    
+    
+    <item>
+      <title>CameraX: CameraView触ってみた</title>
+      <link>https://satoshun.github.io/2019/05/camerax-camera-view/</link>
+      <pubDate>Mon, 06 May 2019 05:47:14 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/05/camerax-camera-view/</guid>
+      <description>
+
+&lt;p&gt;CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。&lt;/p&gt;
+
+&lt;p&gt;内部の実装であったり、細かい部分はpsideさんの「&lt;a href=&#34;https://p-side.net/posts/2019-05-05-camerax/&#34;&gt;CameraXのコードがきたので気合い入れて読んでみた&lt;/a&gt;」が詳しいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
+
+&lt;p&gt;CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; androidx {
+     name = &amp;quot;Jetpack Camera View Library&amp;quot;
+-    publish = false
++    publish = true
+     mavenVersion = LibraryVersions.CAMERA
+     mavenGroup = LibraryGroups.CAMERA
+     inceptionYear = &amp;quot;2019&amp;quot;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;CameraViewは普通のViewのように使うことができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout
+  ...&amp;gt;
+
+  &amp;lt;androidx.camera.view.CameraView
+    android:layout_width=&amp;quot;0dp&amp;quot;
+    android:layout_height=&amp;quot;0dp&amp;quot;
+    app:layout_constraintBottom_toBottomOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintEnd_toEndOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintStart_toStartOf=&amp;quot;parent&amp;quot;
+    app:layout_constraintTop_toTopOf=&amp;quot;parent&amp;quot; /&amp;gt;
+&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に初期化をします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.bindToLifecycle(this) // thisはLifecycleOwner
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。
+CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。&lt;/p&gt;
+
+&lt;p&gt;これだけでカメラ機能が使えるようになります！とても簡単！!&lt;/p&gt;
+
+&lt;p&gt;以下、CameraViewで現状使えるAPIについて紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;cameraviewで使えるapi達&#34;&gt;CameraViewで使えるAPI達&lt;/h2&gt;
+
+&lt;h3 id=&#34;モードの変更&#34;&gt;モードの変更&lt;/h3&gt;
+
+&lt;p&gt;CameraViewでは次の3つのモードがあります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Image: 写真を取る&lt;/li&gt;
+&lt;li&gt;Video: ビデオを取る&lt;/li&gt;
+&lt;li&gt;Mixed: 両方。ただし、動かない端末もあるらしい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次のように使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Image
+cameraView.captureMode = CameraView.CaptureMode.IMAGE
+cameraView.takePicture(...)
+
+// Video
+cameraView.captureMode = CameraView.CaptureMode.VIDEO
+cameraView.startRecording(...)
+cameraView.stopRecording()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;scaletypeの設定&#34;&gt;ScaleTypeの設定&lt;/h3&gt;
+
+&lt;p&gt;Scaleを設定することができます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CENTER_CROP&lt;/li&gt;
+&lt;li&gt;CENTER_INSIDE&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次のように使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.scaleType = CameraView.ScaleType.CENTER_INSIDE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;lensfacingの切り替え&#34;&gt;LensFacingの切り替え&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.toggleCamera()
+
+// or
+
+cameraView.setCameraByLensFacing(CameraX.LensFacing.FRONT)
+cameraView.setCameraByLensFacing(CameraX.LensFacing.BACK)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;flashモードの設定&#34;&gt;Flashモードの設定&lt;/h3&gt;
+
+&lt;p&gt;撮影時にフラッシュを有効にすることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.flash = FlashMode.ON
+cameraView.flash = FlashMode.OFF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;torchの有効-無効&#34;&gt;torchの有効/無効&lt;/h3&gt;
+
+&lt;p&gt;背面ライトを有効にすることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.enableTorch(true)
+cameraView.enableTorch(false)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;zoomの設定&#34;&gt;zoomの設定&lt;/h3&gt;
+
+&lt;p&gt;コードから変えることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.zoomLevel = 3f
+cameraView.zoomLevel = 10f
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。&lt;/p&gt;
+
+&lt;h3 id=&#34;focus&#34;&gt;focus&lt;/h3&gt;
+
+&lt;p&gt;指定した部分にfocusを合わせることができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;cameraView.focus(...)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;CameraViewは柔軟性がない代わりに、簡単にカメラの機能を使うことが出来る
+
+&lt;ul&gt;
+&lt;li&gt;とはいえ、基本的な機能は揃っていそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最後に、CameraViewを実装した結果になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no&#34; width=300 /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1527,133 +1681,6 @@ Espresso
 &lt;p&gt;今回の検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/tests/lifecycle/MainActivityTest.kt&#34;&gt;satoshun-android-example/Tests&lt;/a&gt;にあります。&lt;/p&gt;
 
 &lt;p&gt;もっと良い書き方を知っているよと言う人は教えて頂けるととても嬉しいです😃😃😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>マルチモジュールの遷移について考える Part2</title>
-      <link>https://satoshun.github.io/2019/02/multi-module_transition_part2/</link>
-      <pubDate>Fri, 15 Feb 2019 00:14:56 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/02/multi-module_transition_part2/</guid>
-      <description>
-
-&lt;p&gt;マルチモジュール遷移方法Part2です。&lt;a href=&#34;https://satoshun.github.io/2018/12/multi-module_transition_part1/&#34;&gt;Part1&lt;/a&gt;はここになります😌&lt;/p&gt;
-
-&lt;p&gt;Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。&lt;/p&gt;
-
-&lt;p&gt;また、今回の検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample&#34;&gt;satoshun/MultiModuleNavigationComponentExample&lt;/a&gt;にあります。&lt;/p&gt;
-
-&lt;h2 id=&#34;モジュール構成について&#34;&gt;モジュール構成について&lt;/h2&gt;
-
-&lt;p&gt;細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00&#34; width=600&gt;&lt;/p&gt;
-
-&lt;p&gt;各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。&lt;/p&gt;
-
-&lt;p&gt;このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。&lt;/p&gt;
-
-&lt;p&gt;では、実装に入っていきます。今回はDagger2を使って実装をします。&lt;/p&gt;
-
-&lt;h2 id=&#34;featureモジュール側の遷移用インターフェースの定義&#34;&gt;featureモジュール側の遷移用インターフェースの定義&lt;/h2&gt;
-
-&lt;p&gt;前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。&lt;/p&gt;
-
-&lt;p&gt;main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface MainModuleRouter {
-  // sub1画面へ移動する
-  fun routeToSub1()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Mainモジュール用のインターフェースなので、&lt;code&gt;MainModuleRouter&lt;/code&gt;という名前にし、sub1画面へ遷移するためのメソッドを定義しています。&lt;/p&gt;
-
-&lt;p&gt;そしてこのインターフェースを、MainFragmentで使います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainFragment : Fragment() {
-  @Inject lateinit var moduleRouter: MainModuleRouter
-
-  ...
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener {
-      moduleRouter.routeToSub1()
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでfeatureモジュールでの遷移用インターフェースの定義は完了です。&lt;/p&gt;
-
-&lt;p&gt;次にこのインターフェースの実装をします。&lt;/p&gt;
-
-&lt;h2 id=&#34;routerモジュール側の遷移用インターフェースの実装&#34;&gt;routerモジュール側の遷移用インターフェースの実装&lt;/h2&gt;
-
-&lt;p&gt;今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;navigation xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
-  xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
-  android:id=&amp;quot;@+id/nav_graph&amp;quot;
-  app:startDestination=&amp;quot;@id/nav_main_frag&amp;quot;&amp;gt;
-
-  &amp;lt;fragment
-    android:id=&amp;quot;@+id/nav_main_frag&amp;quot;
-    android:name=&amp;quot;com.github.satoshun.example.feature.main.MainFragment&amp;quot;&amp;gt;
-
-    &amp;lt;action
-      android:id=&amp;quot;@+id/main_to_sub1&amp;quot;
-      app:destination=&amp;quot;@id/nav_sub1_frag&amp;quot; /&amp;gt;
-  &amp;lt;/fragment&amp;gt;
-
-  ...
-&amp;lt;/navigation&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そして、これを用いて遷移用インターフェースを実装します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainModuleRouterImpl @Inject constructor(
-  private val controller: NavController
-) : MainModuleRouter {
-  override fun routeToSub1() {
-    // NavComponentで自動生成されるコードを用いて遷移
-    controller.navigate(MainFragmentDirections.mainToSub1())
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。&lt;/p&gt;
-
-&lt;p&gt;あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。&lt;/p&gt;
-
-&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
-
-&lt;h3 id=&#34;routerモジュールをわざわざ作る必要はないかも&#34;&gt;routerモジュールをわざわざ作る必要はないかも&lt;/h3&gt;
-
-&lt;p&gt;構成図を見てほしいのですが、実はrouterモジュールをわざわざ作る必要はなく、appモジュールに含めても良いです。routerモジュールを作るのがめんどう、もしくは意味がないと感じるなら、appモジュールで実装しても良いと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Navigation Componentでモジュール間の遷移を宣言的にXMLで書けるのは見やすくて非常に良いと思いました。
-
-&lt;ul&gt;
-&lt;li&gt;またNavigation Componentはactivityの記述もできるので、既存アプリへの導入も比較的しやすいと思います&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;app/routerでは各featureモジュールへの依存を持つことができるので、クラスへの参照を持ちながら、navgationのgraphを作ることができる
-
-&lt;ul&gt;
-&lt;li&gt;navigation graphはActivity/Fragmentへの参照を持たなくても作ることが可能だが、持ったほうがLintなどの兼ね合いで安全&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample&#34;&gt;satoshun/MultiModuleNavigationComponentExample&lt;/a&gt;にあります。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;次は最終章になる予定です。DFMの遷移について書きます😃&lt;/p&gt;
 </description>
     </item>
     

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/05/camerax-camera-view/</loc>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/05/mvrx-architecture/</loc>
     <lastmod>2019-05-05T05:05:09+00:00</lastmod>
   </url>
@@ -487,7 +492,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-05-05T05:05:09+00:00</lastmod>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -517,7 +522,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-05-05T05:05:09+00:00</lastmod>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -536,6 +541,12 @@
   <url>
     <loc>https://satoshun.github.io/tags/build/</loc>
     <lastmod>2019-02-11T02:09:16+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/camerax/</loc>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -721,7 +732,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2019-04-04T00:46:00+00:00</lastmod>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -953,7 +964,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-05-05T05:05:09+00:00</lastmod>
+    <lastmod>2019-05-06T05:47:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
