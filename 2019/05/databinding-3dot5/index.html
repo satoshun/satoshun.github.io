@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Data Binding 3.5と3.6のまとめ/感想">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-05-16">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2019/05/databinding-3dot5/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="databinding">
+  
+    <meta property="og:tags" content="jetpack">
+  
+    <meta property="og:tags" content="io19">
+  
+
+  <meta property="twitter:title" content="Data Binding 3.5と3.6のまとめ/感想">
+
+  
+  <meta property="twitter:description" content="
+
+Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。
+動画だとここらへんになります。
+
+改善系
+
+ビルドの高速 …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Data Binding 3.5と3.6のまとめ/感想  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Data Binding 3.5と3.6のまとめ/感想</h1>
+    
+    <span class="post-date">Created at Thu, May 16, 2019</span>
+    
+    
+
+<p>Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。
+動画だと<a href="https://youtu.be/Qxj2eBmXLHg?t=243">ここらへん</a>になります。</p>
+
+<h2 id="改善系">改善系</h2>
+
+<h3 id="ビルドの高速化">ビルドの高速化!</h3>
+
+<ul>
+<li>20%くらいビルドが早くなった</li>
+<li>distributed build cache対応</li>
+<li>Incremental annotation processing対応
+
+<ul>
+<li><code>android.databinding.incremental=true</code> を設定にすると使えます</li>
+</ul></li>
+</ul>
+
+<h3 id="android-studioとの連携強化">Android Studioとの連携強化!!</h3>
+
+<ul>
+<li>Live Class Generation
+
+<ul>
+<li>XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る</li>
+</ul></li>
+<li>リファクタリング系
+
+<ul>
+<li>フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される</li>
+</ul></li>
+</ul>
+
+<h3 id="errorメッセージの改善">Errorメッセージの改善!!!</h3>
+
+<ul>
+<li>DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった</li>
+</ul>
+
+<p><img src="https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no" style="max-width: 600px" /></p>
+
+<h2 id="新規系">新規系</h2>
+
+<h3 id="view-binding">View Binding</h3>
+
+<p>簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。</p>
+
+<p><img src="https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no" style="max-width: 600px" /></p>
+
+<p>Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）</p>
+
+<h4 id="メリット">メリット</h4>
+
+<ul>
+<li>コンパイルが早くなる
+
+<ul>
+<li>Data Bindingより機能が少なくなるのでそれはそう</li>
+</ul></li>
+<li><code>&lt;layout&gt;</code>で囲う必要がなくなった
+
+<ul>
+<li>これ個人的には好きでなかったので嬉しい。ネストが減る</li>
+</ul></li>
+</ul>
+
+<h4 id="デメリット">デメリット</h4>
+
+<ul>
+<li><code>&lt;data&gt;</code>セクションがなくなる
+
+<ul>
+<li>モデルの値とViewのマッピングはコード側ですることになりそう</li>
+</ul></li>
+<li>多分BindingAdapterは使えない
+
+<ul>
+<li>これもコード側ですることになりそう</li>
+</ul></li>
+<li>双方向バインディングとか使えない</li>
+</ul>
+
+<p>おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。</p>
+
+<h2 id="まとめ-感想">まとめ/感想</h2>
+
+<ul>
+<li>今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃
+
+<ul>
+<li>Live Class Generation便利すぎワロリン</li>
+</ul></li>
+<li>View Bindingはとても良さそう
+
+<ul>
+<li>Kotlin syntheticの代わりに使ってもよさそう</li>
+</ul></li>
+</ul>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/databinding">databinding</a></li>
+        
+          <li><a href="/tags/jetpack">jetpack</a></li>
+        
+          <li><a href="/tags/io19">io19</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

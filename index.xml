@@ -7,7 +7,117 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Mon, 06 May 2019 05:47:14 UTC</updated>
+    <updated>Thu, 16 May 2019 00:33:48 UTC</updated>
+    
+    
+    <item>
+      <title>Data Binding 3.5と3.6のまとめ/感想</title>
+      <link>https://satoshun.github.io/2019/05/databinding-3dot5/</link>
+      <pubDate>Thu, 16 May 2019 00:33:48 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
+      <description>
+
+&lt;p&gt;Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。
+動画だと&lt;a href=&#34;https://youtu.be/Qxj2eBmXLHg?t=243&#34;&gt;ここらへん&lt;/a&gt;になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;改善系&#34;&gt;改善系&lt;/h2&gt;
+
+&lt;h3 id=&#34;ビルドの高速化&#34;&gt;ビルドの高速化!&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;20%くらいビルドが早くなった&lt;/li&gt;
+&lt;li&gt;distributed build cache対応&lt;/li&gt;
+&lt;li&gt;Incremental annotation processing対応
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;android.databinding.incremental=true&lt;/code&gt; を設定にすると使えます&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;android-studioとの連携強化&#34;&gt;Android Studioとの連携強化!!&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation
+
+&lt;ul&gt;
+&lt;li&gt;XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;リファクタリング系
+
+&lt;ul&gt;
+&lt;li&gt;フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;errorメッセージの改善&#34;&gt;Errorメッセージの改善!!!&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no&#34; style=&#34;max-width: 600px&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;新規系&#34;&gt;新規系&lt;/h2&gt;
+
+&lt;h3 id=&#34;view-binding&#34;&gt;View Binding&lt;/h3&gt;
+
+&lt;p&gt;簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no&#34; style=&#34;max-width: 600px&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）&lt;/p&gt;
+
+&lt;h4 id=&#34;メリット&#34;&gt;メリット&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;コンパイルが早くなる
+
+&lt;ul&gt;
+&lt;li&gt;Data Bindingより機能が少なくなるのでそれはそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt;で囲う必要がなくなった
+
+&lt;ul&gt;
+&lt;li&gt;これ個人的には好きでなかったので嬉しい。ネストが減る&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;デメリット&#34;&gt;デメリット&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;セクションがなくなる
+
+&lt;ul&gt;
+&lt;li&gt;モデルの値とViewのマッピングはコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;多分BindingAdapterは使えない
+
+&lt;ul&gt;
+&lt;li&gt;これもコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;双方向バインディングとか使えない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ-感想&#34;&gt;まとめ/感想&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃
+
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation便利すぎワロリン&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;View Bindingはとても良さそう
+
+&lt;ul&gt;
+&lt;li&gt;Kotlin syntheticの代わりに使ってもよさそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1458,229 +1568,6 @@ class MainActivityModule {
 &lt;h3 id=&#34;jakeさんとzacさんにレビューをしてもらった&#34;&gt;JakeさんとZacさんにレビューをしてもらった&lt;/h3&gt;
 
 &lt;p&gt;二人のコードは良く読んでいて、尊敬しているAndroidエンジニアなので、その2人にレビューをしてもらえたのは嬉しかったです😃&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Robolectric &#43; JetpackでActivityのonActivityResultメソッドをテストする</title>
-      <link>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</link>
-      <pubDate>Sat, 23 Feb 2019 02:47:59 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</guid>
-      <description>
-
-&lt;p&gt;Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。
-まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、&lt;code&gt;AndroidJUnit4&lt;/code&gt;ランナーが使えるなど、かなりの部分が共通化出来ます。&lt;/p&gt;
-
-&lt;p&gt;この記事では、ユニットテストで&lt;code&gt;Activity.onActivityResult&lt;/code&gt;のテストをどこまでandroid testのように書けるかを検証します。&lt;/p&gt;
-
-&lt;h2 id=&#34;テスト対象コード&#34;&gt;テスト対象コード&lt;/h2&gt;
-
-&lt;p&gt;まず最初に、テスト対象コードは次のようになっています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity() {
-  ...
-  override fun onCreate(savedInstanceState: Bundle?) {
-    ...
-
-    button.setOnClickListener {
-      startActivityForResult(
-        Intent(this, Sub2Activity::class.java).apply {
-          putExtra(&amp;quot;fuga&amp;quot;, &amp;quot;hoge&amp;quot;)
-        },
-        1
-      )
-    }
-  }
-
-  override fun onActivityResult(
-    requestCode: Int,
-    resultCode: Int,
-    data: Intent?
-  ) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == 1) {
-      if (resultCode == Activity.RESULT_OK) {
-        val value = data!!.getIntExtra(&amp;quot;test&amp;quot;, -1)
-        button.text = value.toString()
-      }
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class Sub2Activity : AppCompatActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.sub_act)
-
-    button.setOnClickListener {
-      val intent = Intent()
-      intent.putExtra(&amp;quot;test&amp;quot;, 10)
-      setResult(Activity.RESULT_OK, intent)
-      finish()
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これはMainActivityで&lt;code&gt;startActivityForResult&lt;/code&gt;がコールされ、Sub2Activityで&lt;code&gt;setResult&lt;/code&gt;で値をセットし、MainActivityの&lt;code&gt;onActivityResult&lt;/code&gt;で結果を受け取るサンプルコードになります。&lt;/p&gt;
-
-&lt;p&gt;では、テストを書いていきます。&lt;/p&gt;
-
-&lt;h2 id=&#34;テストコード&#34;&gt;テストコード&lt;/h2&gt;
-
-&lt;p&gt;以下が、今回書いたテストコードになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(AndroidJUnit4::class)
-internal class MainActivityTest {
-  @get:Rule val intentsTestRule = IntentsTestRule(MainActivity::class.java)
-
-  @Test
-  fun onActivityResultTest() {
-    val expectCode = 10
-
-    // assertion setResult
-    val scenario = ActivityScenario.launch(Sub2Activity::class.java)
-    scenario.onActivity {
-      it.findViewById&amp;lt;View&amp;gt;(R.id.button).performClick()
-    }
-
-    // assertion resultCode
-    val result = scenario.result
-    assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
-
-    // assertion intent params
-    val bundleSubject = IntentSubject.assertThat(result.resultData).extras()
-    bundleSubject.integer(&amp;quot;test&amp;quot;).isEqualTo(expectCode)
-
-    scenario.close()
-
-    Intents
-      .intending(
-        IntentMatchers.hasComponent(
-          ComponentName(
-            ApplicationProvider.getApplicationContext&amp;lt;Application&amp;gt;(),
-            Sub2Activity::class.java
-          )
-        )
-      )
-      .respondWith(result)
-
-    val main = ActivityScenario.launch(MainActivity::class.java)
-    main.onActivity {
-      it.findViewById&amp;lt;View&amp;gt;(R.id.button).performClick()
-
-      // assertion intent for startActivity(ForResult)
-      val name = ComponentName(
-        ApplicationProvider.getApplicationContext&amp;lt;Application&amp;gt;(),
-        Sub2Activity::class.java
-      )
-      Intents.intended(IntentMatchers.hasComponent(name))
-      Intents.intended(IntentMatchers.hasExtra(&amp;quot;fuga&amp;quot;, &amp;quot;hoge&amp;quot;))
-
-      // assertion onActivityResult behaves
-      Espresso
-        .onView(ViewMatchers.withId(R.id.button))
-        .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;上から順番に重要な部分を説明していきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@get:Rule val intentsTestRule = IntentsTestRule(MainActivity::class.java)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これは、Espresso-Intentsを使うときに必要なルールです。&lt;code&gt;Intens.intended&lt;/code&gt;、&lt;code&gt;intending&lt;/code&gt;を使うために必要なルールになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val scenario = ActivityScenario.launch(Sub2Activity::class.java)
-scenario.onActivity {
-    it.findViewById&amp;lt;View&amp;gt;(R.id.button).performClick()
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
-ボタンがクリックされると、Sub2Activityで&lt;code&gt;setResult&lt;/code&gt;が発火するようになっています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val result = scenario.result
-assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
-
-val bundleSubject = IntentSubject.assertThat(result.resultData).extras()
-bundleSubject.integer(&amp;quot;test&amp;quot;).isEqualTo(expectCode)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ActivityScenarioでは、ActivityResultクラスから結果を取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらの値をTruthを使いチェックします。この場合、&lt;code&gt;setResult&lt;/code&gt;で、resultcodeに&lt;code&gt;Activity.RESULT_OK&lt;/code&gt;が、resultdataにはキー名&lt;code&gt;test&lt;/code&gt;、値10がセットされていることを確認してします。&lt;/p&gt;
-
-&lt;p&gt;ここまでで、Sub2ActivityのsetResultで正しい値をセットしていることがテスト出来ます。&lt;/p&gt;
-
-&lt;p&gt;では次に、MainActivityで上記の値を受け取れることをテストしていきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;Intents
-  .intending(
-    IntentMatchers.hasComponent(
-      ComponentName(
-        ApplicationProvider.getApplicationContext&amp;lt;Application&amp;gt;(),
-        Sub2Activity::class.java
-      )
-    )
-  )
-  .respondWith(result)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;Intents.intending&lt;/code&gt;はマッチしたIntentが発行されたときに、onActivityResultに結果を返すAPIになります。
-MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val main = ActivityScenario.launch(MainActivity::class.java)
-main.onActivity {
-  it.findViewById&amp;lt;View&amp;gt;(R.id.button).performClick()
-
-  val name = ComponentName(
-    ApplicationProvider.getApplicationContext&amp;lt;Application&amp;gt;(),
-    Sub2Activity::class.java
-  )
-  Intents.intended(IntentMatchers.hasComponent(name))
-  Intents.intended(IntentMatchers.hasExtra(&amp;quot;fuga&amp;quot;, &amp;quot;hoge&amp;quot;))
-
-  Espresso
-    .onView(ViewMatchers.withId(R.id.button))
-    .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;まずは、クリックイベントを発火し、&lt;code&gt;startActivityForResult&lt;/code&gt;をコールします。渡したIntentを&lt;code&gt;Intents.intended&lt;/code&gt;で正しいことを確認します。最後に、Espressoを使って、&lt;code&gt;onActivityResult&lt;/code&gt;の結果を正しく反映されているかを確認します。&lt;/p&gt;
-
-&lt;p&gt;これで、テスト完了です😃
-2つのActivityに関連するonActivityResultのテストが無事に出来ました！！&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;p&gt;Espressoにはご存知、clickをするためのAPIがあるのですが、うまく動きませんでした。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// not working!!
-Espresso
-  .onView(ViewMatchers.withId(R.id.button))
-  .perform(ViewActions.click())
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;調べたんですが、原因がわかりませんでした😂分かり次第追記します。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;上記のテストくらいなら、ユニットテストで書ける。すごい😃
-
-&lt;ul&gt;
-&lt;li&gt;onActivityResultみたいな、クラス間のつながりが弱い部分は意図せず壊れやすいので、テストを書いておくと安心かも😋&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;今回の検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/tests/lifecycle/MainActivityTest.kt&#34;&gt;satoshun-android-example/Tests&lt;/a&gt;にあります。&lt;/p&gt;
-
-&lt;p&gt;もっと良い書き方を知っているよと言う人は教えて頂けるととても嬉しいです😃😃😃&lt;/p&gt;
 </description>
     </item>
     
