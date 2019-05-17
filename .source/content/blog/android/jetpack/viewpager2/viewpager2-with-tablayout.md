@@ -1,13 +1,13 @@
 +++
-date = "Fri May 17 00:36:16 UTC 2019"
+date = "Fri May 17 04:08:42 UTC 2019"
 title = "ViewPager2 with TabLayout"
 tags = ["android", "viewpager2", "jetpack"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-Material ComponentsでViewPager2 + TabLayoutのコードが入ったのでそれの紹介。まだalphaへのリリースもされていないので、APIは大きく変わるかもしれません。
+Material ComponentsでViewPager2 + TabLayoutのコードが入ったのでそれの紹介。まだalphaへのリリースもされていないので、APIは大きく変わるかもしれません。おそらく`1.1.0-alpha07`に入ってくると思います。
 
 TabLayoutはViewPagerでサポートされていましたが、それがViewPager2にも来たって感じです。
 
@@ -26,8 +26,8 @@ val mediator = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, pos
 ```
 
 コンストラクタには、TabLayout、ViewPager2、OnConfigureTabCallbackを渡します。
-`OnConfigureTabCallback`は、tabとpositionを受け取り、tabに対して、タイトルをセットしてあげます。
-ViewPagerのPageAdapterのようにAdapterからはタイトルを取得できないので、このような変更になったと思われます。
+`OnConfigureTabCallback`は、tabとpositionを受け取り、tabに対して、タイトルをセットします。
+ViewPagerのPageAdapterとは違い、RecyclerViewのAdapterからはタイトルを取得できないので、このような変更になったと思われます。
 
 最後に`attach`関数を呼び出します。
 
@@ -35,7 +35,7 @@ ViewPagerのPageAdapterのようにAdapterからはタイトルを取得でき�
 mediator.attach()
 ```
 
-これで、ViewPager2 + TabLayoutを実現できます!!
+これで、ViewPager2 + TabLayoutを実現できます。とても簡単！！
 
 ## まとめ
 
