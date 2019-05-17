@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/05/viewpager2-with-tablayout/</loc>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/05/databinding-3dot5/</loc>
     <lastmod>2019-05-16T00:33:48+00:00</lastmod>
   </url>
@@ -497,7 +502,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-05-16T00:33:48+00:00</lastmod>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -527,7 +532,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-05-16T00:33:48+00:00</lastmod>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -743,7 +748,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2019-05-16T00:33:48+00:00</lastmod>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -968,6 +973,12 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/viewpager2/</loc>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/web/</loc>
     <lastmod>2015-03-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -975,7 +986,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-05-16T00:33:48+00:00</lastmod>
+    <lastmod>2019-05-17T04:08:42+00:00</lastmod>
     <priority>0</priority>
   </url>
   
