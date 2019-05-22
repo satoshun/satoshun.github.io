@@ -1,5 +1,5 @@
 +++
-date = "Mon May 20 22:57:56 UTC 2019"
+date = "Tue May 21 23:59:53 UTC 2019"
 title = "雑メモ: ViewModel SavedStateのコードリーディング"
 tags = ["android", "jetpack", "viewmodel", "savedstate"]
 blogimport = true
