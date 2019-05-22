@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 17 May 2019 04:08:42 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 May 2019 23:59:53 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>雑メモ: ViewModel SavedStateのコードリーディング</title>
+      <link>https://satoshun.github.io/2019/05/viewmodel-savedstate/</link>
+      <pubDate>Tue, 21 May 2019 23:59:53 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate/</guid>
+      <description>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。
+この記事のソースコードは全て、下記のライセンスに従います。
+/* * Copyright 2019 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
     
     <item>
       <title>ViewPager2 with TabLayout</title>
