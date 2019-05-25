@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 21 May 2019 23:59:53 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 May 2019 10:38:15 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ViewModel SavedState &#43; Dagger</title>
+      <link>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</link>
+      <pubDate>Sat, 25 May 2019 10:38:15 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</guid>
+      <description>ViewModel + SavedStateでDaggerを使う方法を考えてみました。
+前提知識・課題 SavedStateを使う場合、ViewModelにSavedStateHandleインスタンスを渡さなければいけません。
+class MyViewModel( private val state: SavedStateHandle ) : ViewModel() { ... }  SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
+生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。
+// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this)) .get(MyViewModel::class.java)  コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
+class TestViewModel( private val state: SavedStateHandle, private val name: String ) : ViewModel() class TestViewModelFactory( owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) { override fun &amp;lt;T : ViewModel&amp;gt; create( key: String, modelClass: Class&amp;lt;T&amp;gt;, handle: SavedStateHandle ): T { return TestViewModel(handle, &amp;quot;test&amp;quot;) as T } } // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this)) .</description>
+    </item>
     
     <item>
       <title>雑メモ: ViewModel SavedStateのコードリーディング</title>

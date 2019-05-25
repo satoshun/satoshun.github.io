@@ -7,7 +7,305 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Tue, 21 May 2019 23:59:53 UTC</updated>
+    <updated>Sat, 25 May 2019 10:38:15 UTC</updated>
+    
+    
+    <item>
+      <title>ViewModel SavedState &#43; Dagger</title>
+      <link>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</link>
+      <pubDate>Sat, 25 May 2019 10:38:15 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</guid>
+      <description>
+
+&lt;p&gt;ViewModel + SavedStateでDaggerを使う方法を考えてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;前提知識-課題&#34;&gt;前提知識・課題&lt;/h2&gt;
+
+&lt;p&gt;SavedStateを使う場合、ViewModelに&lt;code&gt;SavedStateHandle&lt;/code&gt;インスタンスを渡さなければいけません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MyViewModel(
+  private val state: SavedStateHandle
+) : ViewModel() {
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SavedStateHandleインスタンスを作るために、&lt;code&gt;SavedStateVMFactory&lt;/code&gt;もしくは、&lt;code&gt;AbstractSavedStateVMFactory&lt;/code&gt;を使う必要があります。&lt;/p&gt;
+
+&lt;p&gt;生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// thisはFragmentActivity
+ViewModelProvider(this, MyViewModel(this))
+  .get(MyViewModel::class.java)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンストラクタの引数がSavedStateHandle以外にもあるなら、&lt;code&gt;AbstractSavedStateVMFactory&lt;/code&gt;を拡張します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class TestViewModel(
+  private val state: SavedStateHandle,
+  private val name: String
+) : ViewModel()
+
+class TestViewModelFactory(
+  owner: SavedStateRegistryOwner,
+  defaultArgs: Bundle? = null
+) : AbstractSavedStateVMFactory(owner, defaultArgs) {
+  override fun &amp;lt;T : ViewModel&amp;gt; create(
+    key: String, modelClass: Class&amp;lt;T&amp;gt;,
+    handle: SavedStateHandle
+  ): T {
+    return TestViewModel(handle, &amp;quot;test&amp;quot;) as T
+  }
+}
+
+// 以下、生成コード
+ViewModelProvider(this, TestViewModelFactory(this))
+  .get(TestViewModel::class.java)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな感じになります。&lt;/p&gt;
+
+&lt;p&gt;今までとは違い、AbstractSavedStateVMFactoryに&lt;code&gt;SavedStateRegistryOwner&lt;/code&gt;インターフェース（実質、FragmentActivity or Fragment）を渡さなければいけません。
+また、初期値が欲しい場合は、defaultArgs(Bundle)も渡す必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;daggerでどのように使うか&#34;&gt;Daggerでどのように使うか?&lt;/h2&gt;
+
+&lt;p&gt;以下いろいろと書いていきます。クラス名は適当です。また、このサンプルはFragmentActivity + 初期値がintent.extras固定となります。Fragmentの場合はFragmentに置き換える必要があります&lt;/p&gt;
+
+&lt;h3 id=&#34;1-abstractsavedstatevmfactoryを生成するクラスを定義する&#34;&gt;1. AbstractSavedStateVMFactoryを生成するクラスを定義する&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class SavedStateViewModel2(
+  private val dummy: Dummy,
+  private val state: SavedStateHandle
+) : ViewModel() {
+  class Factory @Inject constructor(private val dummy: Dummy) {
+    fun create(owner: FragmentActivity): AbstractSavedStateVMFactory {
+      return object : AbstractSavedStateVMFactory(owner, owner.intent.extras) {
+        override fun &amp;lt;T : ViewModel&amp;gt; create(
+          key: String,
+          modelClass: Class&amp;lt;T&amp;gt;,
+          handle: SavedStateHandle
+        ): T {
+          return SavedStateViewModel2(dummy, handle) as T
+        }
+      }
+    }
+  }
+}
+
+// 以下、生成コード
+class MainActivity : AppCompatActivity() {
+  @Inject lateinit var factory: SavedStateViewModel2.Factory
+  private val viewModel by viewModels&amp;lt;SavedStateViewModel2&amp;gt; { // viewModelsはktxの拡張関数
+    factory.create(this)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一番シンプルな方法だと思います。&lt;code&gt;AbstractSavedStateVMFactory&lt;/code&gt;を作るためのFactory（FactoryのFactory）を作り、それに&lt;code&gt;@Inject&lt;/code&gt;をつけます。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-1の方法に加え-fragmentactivityをbinds-or-providesする&#34;&gt;2. 1の方法に加え、FragmentActivityをBinds or Providesする&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Binds
+fun fragmentActivity(activity: MainActivity): FragmentActivity
+
+or
+
+@Provides
+fun fragmentActivity(activity: MainActivity): FragmentActivity = fragmentActivity
+
+--
+
+class SavedStateViewModel5(
+  private val dummy: Dummy,
+  private val state: SavedStateHandle
+) : ViewModel() {
+  class Factory @Inject constructor(
+    owner: FragmentActivity,
+    private val dummy: Dummy
+  ) : AbstractSavedStateVMFactory(owner, owner.intent.extras) {
+    override fun &amp;lt;T : ViewModel&amp;gt; create(
+      key: String,
+      modelClass: Class&amp;lt;T&amp;gt;,
+      handle: SavedStateHandle
+    ): T {
+      return SavedStateViewModel5(dummy, handle) as T
+    }
+  }
+}
+
+// 以下、生成コード
+class MainActivity : AppCompatActivity() {
+  @Inject lateinit var factory: SavedStateViewModel5.Factory
+  private val viewModel by viewModels&amp;lt;SavedStateViewModel5&amp;gt; {
+    factory
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;FragmentActivityがInject可能になったので直接AbstractSavedStateVMFactoryが生成可能になりました😃&lt;/p&gt;
+
+&lt;h3 id=&#34;3-assistedinjectを使う&#34;&gt;3. AssistedInjectを使う&lt;/h3&gt;
+
+&lt;p&gt;SavedStateHandleがDaggerで解決しにくい値なので、&lt;a href=&#34;https://github.com/square/AssistedInject&#34;&gt;square/AssistedInject&lt;/a&gt;を使うことで解決を試みます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class SavedStateViewModel3 @AssistedInject constructor(
+  @Assisted private val state: SavedStateHandle,
+  private val dummy: Dummy
+) : ViewModel() {
+
+  @AssistedInject.Factory
+  interface Factory {
+    fun create(state: SavedStateHandle): SavedStateViewModel3
+  }
+}
+
+---
+
+@AssistedModule
+@Module(includes = [AssistedInject_SavedStateViewModelModule::class])
+interface SavedStateViewModelModule
+
+---
+
+// 以下、生成コード
+class MainActivity : AppCompatActivity() {
+  @Inject lateinit var factory3: SavedStateViewModel3.Factory
+  private val viewModel3 by viewModels&amp;lt;SavedStateViewModel3&amp;gt; {
+    viewModelWrapper(this) { factory3.create(it) }
+  }
+}
+
+---
+
+// ただの便利関数
+fun &amp;lt;T : ViewModel&amp;gt; viewModelWrapper(
+  owner: FragmentActivity,
+  body: (state: SavedStateHandle) -&amp;gt; T
+): AbstractSavedStateVMFactory {
+  return object : AbstractSavedStateVMFactory(owner, owner.intent.extras) {
+    override fun &amp;lt;T : ViewModel&amp;gt; create(
+      key: String,
+      modelClass: Class&amp;lt;T&amp;gt;,
+      handle: SavedStateHandle
+    ): T {
+      @Suppress(&amp;quot;UNCHECKED_CAST&amp;quot;)
+      return body(handle) as T
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな感じになります。FragmentActivityをInject可能にすれば、もう少しいい感じに書けると思います。最終的なコード量は1、2のパターンに比べかなり減ると思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-assistedinject-multibindsを使う&#34;&gt;4. AssistedInject + multibindsを使う&lt;/h3&gt;
+
+&lt;p&gt;DaggerでViewModelのインスタンスを生成するときに、multibindsを使うパターンがよく使われているので、SavedStateの場合も考えてみました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@MustBeDocumented
+@Target(
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.PROPERTY_GETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey annotation class ViewModelKey(
+  val value: KClass&amp;lt;out ViewModel&amp;gt;
+)
+
+---
+
+class ViewModelFactory @Inject constructor(
+  owner: FragmentActivity,
+  private val creators: Map&amp;lt;Class&amp;lt;out ViewModel&amp;gt;, @JvmSuppressWildcards Provider&amp;lt;SavedStateViewModelFactory&amp;gt;&amp;gt;
+) : AbstractSavedStateVMFactory(owner, owner.intent.extras) {
+  override fun &amp;lt;T : ViewModel&amp;gt; create(
+    key: String,
+    modelClass: Class&amp;lt;T&amp;gt;,
+    handle: SavedStateHandle
+  ): T {
+    var creator: Provider&amp;lt;out SavedStateViewModelFactory&amp;gt;? = creators[modelClass]
+    if (creator == null) {
+      for ((key, value) in creators) {
+        if (modelClass.isAssignableFrom(key)) {
+          creator = value
+          break
+        }
+      }
+    }
+    if (creator == null) {
+      throw IllegalArgumentException(&amp;quot;unknown model class $modelClass&amp;quot;)
+    }
+    try {
+      @Suppress(&amp;quot;UNCHECKED_CAST&amp;quot;)
+      return creator.get().create(handle) as T
+    } catch (e: Exception) {
+      throw RuntimeException(e)
+    }
+  }
+}
+
+---
+
+interface SavedStateViewModelFactory {
+  fun create(
+    state: SavedStateHandle
+  ): ViewModel
+}
+
+---
+
+class SavedStateViewModel4 @AssistedInject constructor(
+  @Assisted private val state: SavedStateHandle,
+  private val dummy: Dummy
+) : ViewModel() {
+
+  @AssistedInject.Factory
+  interface Factory : SavedStateViewModelFactory {
+    override fun create(state: SavedStateHandle): SavedStateViewModel4
+  }
+}
+
+---
+
+@Binds
+fun bindFragmentActivity(activity: MainActivity): FragmentActivity
+
+@ViewModelKey(SavedStateViewModel4::class)
+@IntoMap @Binds
+fun bind(
+  factory: SavedStateViewModel4.Factory
+): SavedStateViewModelFactory
+
+---
+
+@Inject lateinit var viewModelFactory: ViewModelFactory
+private val viewModel4 by viewModels&amp;lt;SavedStateViewModel4&amp;gt; {
+  viewModelFactory
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SavedStateViewModelFactoryインターフェースを作るところがポイントです。他の部分は従来のViewModel + multibindsと大体一緒です。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SavedStateHandleはDaggerで解決しにくい・できない？
+
+&lt;ul&gt;
+&lt;li&gt;自分で頑張ってFactoryを書く、Assisted Injectを使うなどの方法をしなければ行けない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;multibindsを使う方法はさらに複雑になった
+
+&lt;ul&gt;
+&lt;li&gt;出来るとは思うけど、個人的には推奨しない。複雑になりそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今回の検証に使ったコードは&lt;a href=&#34;https://github.com/satoshun-android-example/ViewModelSavedState&#34;&gt;satoshun-android-example/ViewModelSavedState&lt;/a&gt;にあります😃&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1687,97 +1985,6 @@ val factory = CoroutineCallAdapterFactory()
 &lt;li&gt;エラー &amp;amp; キャンセル時にも処理を継続したいならsupervisorScope + runCatchingを使う&lt;/li&gt;
 &lt;li&gt;エラー時のみ処理を継続したいなら、runCatchingだけで対応できる&lt;/li&gt;
 &lt;li&gt;正常系のみなら、asyncで包んであげるだけで良い&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Android: JetpackのCoroutine Supportについて</title>
-      <link>https://satoshun.github.io/2019/03/jetpack-coroutine-support/</link>
-      <pubDate>Sun, 10 Mar 2019 10:14:21 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/03/jetpack-coroutine-support/</guid>
-      <description>
-
-&lt;p&gt;Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
-どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。&lt;/p&gt;
-
-&lt;p&gt;以下、&lt;del&gt;2019年3月10日&lt;/del&gt; 2019年3月11日の調査結果になります。
-また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。&lt;/p&gt;
-
-&lt;p&gt;Lifecycle&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Lifecycleに従うCoroutineScopeの生成
-val Lifecycle.coroutineScope: CoroutineScope
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;LifecycleOwner&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// LifecycleOwnerに従うCoroutineScopeの生成
-val LifecycleOwner.lifecycleScope: CoroutineScope
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ViewModel&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// ViewModelに従うCoroutineScopeの生成
-val ViewModel.viewModelScope: CoroutineScope
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;WorkManager&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;abstract class CoroutineWorker(
-  appContext: Context,
-  params: WorkerParameters
-) : ListenableWorker(appContext, params) {
-  // suspendメソッドで定義された
-  abstract suspend fun doWork(): Result
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Room&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Dao内でsuspendメソッドが使える
-@Dao
-interface HogesDao {
-  @Insert
-  suspend fun add(hoge: Hoge)
-
-  @Query(&amp;quot;SELECT * FROM hoge WHERE id = :id&amp;quot;)
-  suspend fun get(id: String): Hoge
-
-  ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Lifecycle、LifecycleOwner、ViewModelはそれらのライフサイクルに従う、CoroutineScopeの生成が出来る&lt;/li&gt;
-&lt;li&gt;WorkManagerのdoWorkがsuspendメソッドになった
-
-&lt;ul&gt;
-&lt;li&gt;doWorkの中で、他のsuspendメソッドがコールできる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;RoomのDao内でsuspendメソッドが定義出来る&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;結構対応がされていた😃😃😃&lt;/p&gt;
-
-&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;LiveDataへのサポートも入るかも
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://android-review.googlesource.com/c/platform/frameworks/support/+/890736&#34;&gt;WIP corutine live data (Id0e47973) · Gerrit Code Review&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Lifecycleに特定のstateに入った時に実行される拡張関数群が入りそう
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://android-review.googlesource.com/c/platform/frameworks/support/+/905134&#34;&gt;Lifecycle Dispatcher (Ib1211c0f) · Gerrit Code Review&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
