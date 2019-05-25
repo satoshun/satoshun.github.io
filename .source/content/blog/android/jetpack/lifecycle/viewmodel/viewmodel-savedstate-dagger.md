@@ -4,7 +4,7 @@ title = "ViewModel SavedState + Dagger"
 tags = ["android", "jetpack", "viewmodel", "savedstate", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 ViewModel + SavedStateでDaggerを使う方法を考えてみました。
@@ -23,7 +23,7 @@ class MyViewModel(
 
 SavedStateHandleインスタンスを作るために、`SavedStateVMFactory`もしくは、`AbstractSavedStateVMFactory`を使う必要があります。
 
-生成したいViewModelのコンストラクタの引数が、SavedStateHandleのみならSavedStateVMFactoryを使います。
+生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。
 
 ```kotlin
 // thisはFragmentActivity
@@ -63,7 +63,7 @@ ViewModelProvider(this, TestViewModelFactory(this))
 
 ## Daggerでどのように使うか?
 
-以下いろいろと書いていきます。クラス名は適当です。
+以下いろいろと書いていきます。クラス名は適当です。また、このサンプルはFragmentActivity + 初期値がintent.extras固定となります。Fragmentの場合はFragmentに置き換える必要があります
 
 ### 1. AbstractSavedStateVMFactoryを生成するクラスを定義する
 
@@ -96,9 +96,9 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-一番シンプルな方法だと思います。`AbstractSavedStateVMFactory`を作るためのFactoryを作る感じです。
+一番シンプルな方法だと思います。`AbstractSavedStateVMFactory`を作るためのFactory（FactoryのFactory）を作り、それに`@Inject`をつけます。
 
-### 2. 1の方法 + FragmentActivityをBinds or Providesする
+### 2. 1の方法に加え、FragmentActivityをBinds or Providesする
 
 ```kotlin
 @Binds
@@ -108,6 +108,8 @@ or
 
 @Provides
 fun fragmentActivity(activity: MainActivity): FragmentActivity = fragmentActivity
+
+--
 
 class SavedStateViewModel5(
   private val dummy: Dummy,
@@ -140,7 +142,7 @@ FragmentActivityがInject可能になったので直接AbstractSavedStateVMFacto
 
 ### 3. AssistedInjectを使う
 
-SavedStateHandleがDaggerで解決しにくい値なので、[square/AssistedInject](https://github.com/square/AssistedInject)を使ってみます。
+SavedStateHandleがDaggerで解決しにくい値なので、[square/AssistedInject](https://github.com/square/AssistedInject)を使うことで解決を試みます。
 
 ```kotlin
 class SavedStateViewModel3 @AssistedInject constructor(
@@ -154,9 +156,13 @@ class SavedStateViewModel3 @AssistedInject constructor(
   }
 }
 
+---
+
 @AssistedModule
-@Module(includes = [AssistedInject_SavedStateViewModel3Module::class])
-interface SavedStateViewModel3Module
+@Module(includes = [AssistedInject_SavedStateViewModelModule::class])
+interface SavedStateViewModelModule
+
+---
 
 // 以下、生成コード
 class MainActivity : AppCompatActivity() {
@@ -165,6 +171,8 @@ class MainActivity : AppCompatActivity() {
     viewModelWrapper(this) { factory3.create(it) }
   }
 }
+
+---
 
 // ただの便利関数
 fun <T : ViewModel> viewModelWrapper(
@@ -184,7 +192,7 @@ fun <T : ViewModel> viewModelWrapper(
 }
 ```
 
-こんな感じになります。FragmentActivityをInject可能にすれば、もう少しいい感じに書けると思います。
+こんな感じになります。FragmentActivityをInject可能にすれば、もう少しいい感じに書けると思います。最終的なコード量は1、2のパターンに比べかなり減ると思います。
 
 ### 4. AssistedInject + multibindsを使う
 
