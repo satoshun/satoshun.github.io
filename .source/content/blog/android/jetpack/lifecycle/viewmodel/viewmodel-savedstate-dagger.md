@@ -1,5 +1,5 @@
 +++
-date = "Thu May 23 23:43:39 UTC 2019"
+date = "Sat May 25 10:38:15 UTC 2019"
 title = "ViewModel SavedState + Dagger"
 tags = ["android", "jetpack", "viewmodel", "savedstate", "dagger"]
 blogimport = true
@@ -9,7 +9,9 @@ draft = true
 
 ViewModel + SavedStateでDaggerを使う方法を考えてみました。
 
-SavedStateを使う場合、コンストラクタに`SavedStateHandle`を渡さなければいけません。
+## 前提知識・課題
+
+SavedStateを使う場合、ViewModelに`SavedStateHandle`インスタンスを渡さなければいけません。
 
 ```kotlin
 class MyViewModel(
@@ -102,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 @Binds
 fun fragmentActivity(activity: MainActivity): FragmentActivity
 
-or 
+or
 
 @Provides
 fun fragmentActivity(activity: MainActivity): FragmentActivity = fragmentActivity
@@ -184,6 +186,100 @@ fun <T : ViewModel> viewModelWrapper(
 
 こんな感じになります。FragmentActivityをInject可能にすれば、もう少しいい感じに書けると思います。
 
+### 4. AssistedInject + multibindsを使う
+
+DaggerでViewModelのインスタンスを生成するときに、multibindsを使うパターンがよく使われているので、SavedStateの場合も考えてみました。
+
+```kotlin
+@MustBeDocumented
+@Target(
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.PROPERTY_GETTER
+)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey annotation class ViewModelKey(
+  val value: KClass<out ViewModel>
+)
+
+---
+
+class ViewModelFactory @Inject constructor(
+  owner: FragmentActivity,
+  private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<SavedStateViewModelFactory>>
+) : AbstractSavedStateVMFactory(owner, owner.intent.extras) {
+  override fun <T : ViewModel> create(
+    key: String,
+    modelClass: Class<T>,
+    handle: SavedStateHandle
+  ): T {
+    var creator: Provider<out SavedStateViewModelFactory>? = creators[modelClass]
+    if (creator == null) {
+      for ((key, value) in creators) {
+        if (modelClass.isAssignableFrom(key)) {
+          creator = value
+          break
+        }
+      }
+    }
+    if (creator == null) {
+      throw IllegalArgumentException("unknown model class $modelClass")
+    }
+    try {
+      @Suppress("UNCHECKED_CAST")
+      return creator.get().create(handle) as T
+    } catch (e: Exception) {
+      throw RuntimeException(e)
+    }
+  }
+}
+
+---
+
+interface SavedStateViewModelFactory {
+  fun create(
+    state: SavedStateHandle
+  ): ViewModel
+}
+
+---
+
+class SavedStateViewModel4 @AssistedInject constructor(
+  @Assisted private val state: SavedStateHandle,
+  private val dummy: Dummy
+) : ViewModel() {
+
+  @AssistedInject.Factory
+  interface Factory : SavedStateViewModelFactory {
+    override fun create(state: SavedStateHandle): SavedStateViewModel4
+  }
+}
+
+---
+
+@Binds
+fun bindFragmentActivity(activity: MainActivity): FragmentActivity
+
+@ViewModelKey(SavedStateViewModel4::class)
+@IntoMap @Binds
+fun bind(
+  factory: SavedStateViewModel4.Factory
+): SavedStateViewModelFactory
+
+---
+
+@Inject lateinit var viewModelFactory: ViewModelFactory
+private val viewModel4 by viewModels<SavedStateViewModel4> {
+  viewModelFactory
+}
+```
+
+SavedStateViewModelFactoryインターフェースを作るところがポイントです。他の部分は従来のViewModel + multibindsと大体一緒です。
+
 ## まとめ
 
-TODO
+- SavedStateHandleはDaggerで解決しにくい・できない？
+  - 自分で頑張ってFactoryを書く、Assisted Injectを使うなどの方法をしなければ行けない
+- multibindsを使う方法はさらに複雑になった
+  - 出来るとは思うけど、個人的には推奨しない。複雑になりそう
+
+今回の検証に使ったコードは[satoshun-android-example/ViewModelSavedState](https://github.com/satoshun-android-example/ViewModelSavedState)にあります😃
