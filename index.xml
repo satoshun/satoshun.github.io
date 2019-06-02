@@ -44,7 +44,7 @@ interface AppComponent ...
 
 &lt;h3 id=&#34;application&#34;&gt;Application&lt;/h3&gt;
 
-&lt;p&gt;Applicationで実装している、HasActivityInjector、 HasServiceInjectorを&lt;code&gt;HasAndroidInjector&lt;/code&gt;に置き換えます。&lt;/p&gt;
+&lt;p&gt;Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを&lt;code&gt;HasAndroidInjector&lt;/code&gt;に置き換えます。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class App : Application(),
   // HasAndroidInjectorのみでおｋ
@@ -61,7 +61,7 @@ interface AppComponent ...
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;今まではActivtity用、Fragment用、Service用とそれぞれに&lt;code&gt;DispatchingAndroidInjector&lt;/code&gt;がありましたが、それが1つの&lt;code&gt;DispatchingAndroidInjector&amp;lt;Any&amp;gt;&lt;/code&gt;まとまりました。&lt;/p&gt;
+&lt;p&gt;今まではActivity用、Fragment用、Service用などのクラスごとに&lt;code&gt;DispatchingAndroidInjector&lt;/code&gt;がありましたが、それが1つの&lt;code&gt;DispatchingAndroidInjector&amp;lt;Any&amp;gt;&lt;/code&gt;まとまりました。&lt;/p&gt;
 
 &lt;h2 id=&#34;activity-fragment&#34;&gt;Activity, Fragment&lt;/h2&gt;
 

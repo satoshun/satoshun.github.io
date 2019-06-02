@@ -89,7 +89,7 @@ Dagger 2.23に新しく、HasAndroidInjectorインターフェースが入りま
   <div class="post">
     <h1 class="post-title">Dagger2: 2.23に入ったHasAndroidInjectorについて</h1>
     
-    <span class="post-date">Created at Sun, Jun 2, 2019</span>
+    <span class="post-date">Updated at Sun, Jun 2, 2019</span>
     
     
 
@@ -119,7 +119,7 @@ interface AppComponent ...
 
 <h3 id="application">Application</h3>
 
-<p>Applicationで実装している、HasActivityInjector、 HasServiceInjectorを<code>HasAndroidInjector</code>に置き換えます。</p>
+<p>Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを<code>HasAndroidInjector</code>に置き換えます。</p>
 
 <pre><code class="language-kotlin">class App : Application(),
   // HasAndroidInjectorのみでおｋ
@@ -136,7 +136,7 @@ interface AppComponent ...
 }
 </code></pre>
 
-<p>今まではActivtity用、Fragment用、Service用とそれぞれに<code>DispatchingAndroidInjector</code>がありましたが、それが1つの<code>DispatchingAndroidInjector&lt;Any&gt;</code>まとまりました。</p>
+<p>今まではActivity用、Fragment用、Service用などのクラスごとに<code>DispatchingAndroidInjector</code>がありましたが、それが1つの<code>DispatchingAndroidInjector&lt;Any&gt;</code>まとまりました。</p>
 
 <h2 id="activity-fragment">Activity, Fragment</h2>
 

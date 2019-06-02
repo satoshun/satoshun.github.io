@@ -22,8 +22,8 @@
 この記事では、どのように置き換えるかを説明していきたいと思います。
 また、DaggerApplicationやDaggerActivityなどの基底クラスは使っていないものとします。
 置き換えていく AppComponent AndroidSupportInjectionModuleを使っているなら、AndroidInjectionModuleに置き換えます。 今後は、AndroidSupportInjectionModuleを使う必要はありません。
-@Singleton @dagger.Component( modules = [ AndroidInjectionModule::class, // AndroidInjectionModuleを使う ... ] ) interface AppComponent ...  Application Applicationで実装している、HasActivityInjector、 HasServiceInjectorをHasAndroidInjectorに置き換えます。
-class App : Application(), // HasAndroidInjectorのみでおｋ HasAndroidInjector { // 型変数がAnyになる @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; // 返り値の型変数がAnyになる override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { DaggerAppComponent.factory().create(this).inject(this) return androidInjector } }  今まではActivtity用、Fragment用、Service用とそれぞれにDispatchingAndroidInjectorがありましたが、それが1つのDispatchingAndroidInjector&amp;lt;Any&amp;gt;まとまりました。
+@Singleton @dagger.Component( modules = [ AndroidInjectionModule::class, // AndroidInjectionModuleを使う ... ] ) interface AppComponent ...  Application Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorをHasAndroidInjectorに置き換えます。
+class App : Application(), // HasAndroidInjectorのみでおｋ HasAndroidInjector { // 型変数がAnyになる @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; // 返り値の型変数がAnyになる override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { DaggerAppComponent.factory().create(this).inject(this) return androidInjector } }  今まではActivity用、Fragment用、Service用などのクラスごとにDispatchingAndroidInjectorがありましたが、それが1つのDispatchingAndroidInjector&amp;lt;Any&amp;gt;まとまりました。
 Activity, Fragment HasSupportFragmentInjectorなどのInjectorは、HasAndroidInjectorに置き換えます。
 class MainActivity : AppCompatActivity(), // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う HasAndroidInjector { @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
