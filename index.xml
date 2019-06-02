@@ -7,7 +7,117 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sat, 25 May 2019 10:38:15 UTC</updated>
+    <updated>Sun, 02 Jun 2019 09:08:57 UTC</updated>
+    
+    
+    <item>
+      <title>Dagger2: 2.23に入ったHasAndroidInjectorについて</title>
+      <link>https://satoshun.github.io/2019/06/dagger-android-injector/</link>
+      <pubDate>Sun, 02 Jun 2019 09:08:57 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/06/dagger-android-injector/</guid>
+      <description>
+
+&lt;p&gt;Dagger 2.23に新しく、&lt;code&gt;HasAndroidInjector&lt;/code&gt;インターフェースが入りました。
+これは、従来の&lt;code&gt;HasActivityInjector&lt;/code&gt;や&lt;code&gt;HasFragmentInjector&lt;/code&gt;などを置き換えるために作られました。&lt;/p&gt;
+
+&lt;p&gt;この記事では、どのように置き換えるかを説明していきたいと思います。&lt;/p&gt;
+
+&lt;p&gt;また、&lt;code&gt;DaggerApplication&lt;/code&gt;や&lt;code&gt;DaggerActivity&lt;/code&gt;などの基底クラスは使っていないものとします。&lt;/p&gt;
+
+&lt;h2 id=&#34;置き換えていく&#34;&gt;置き換えていく&lt;/h2&gt;
+
+&lt;h3 id=&#34;appcomponent&#34;&gt;AppComponent&lt;/h3&gt;
+
+&lt;p&gt;AndroidSupportInjectionModuleを使っているなら、&lt;code&gt;AndroidInjectionModule&lt;/code&gt;に置き換えます。
+今後は、&lt;code&gt;AndroidSupportInjectionModule&lt;/code&gt;を使う必要はありません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Singleton
+@dagger.Component(
+  modules = [
+    AndroidInjectionModule::class, // AndroidInjectionModuleを使う
+    ...
+  ]
+)
+interface AppComponent ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;application&#34;&gt;Application&lt;/h3&gt;
+
+&lt;p&gt;Applicationで実装している、HasActivityInjector、 HasServiceInjectorを&lt;code&gt;HasAndroidInjector&lt;/code&gt;に置き換えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class App : Application(),
+  // HasAndroidInjectorのみでおｋ
+  HasAndroidInjector {
+
+  // 型変数がAnyになる
+  @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt;
+
+  // 返り値の型変数がAnyになる
+  override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; {
+    DaggerAppComponent.factory().create(this).inject(this)
+    return androidInjector
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今まではActivtity用、Fragment用、Service用とそれぞれに&lt;code&gt;DispatchingAndroidInjector&lt;/code&gt;がありましたが、それが1つの&lt;code&gt;DispatchingAndroidInjector&amp;lt;Any&amp;gt;&lt;/code&gt;まとまりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;activity-fragment&#34;&gt;Activity, Fragment&lt;/h2&gt;
+
+&lt;p&gt;HasSupportFragmentInjectorなどのInjectorは、&lt;code&gt;HasAndroidInjector&lt;/code&gt;に置き換えます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity(),
+  // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う
+  HasAndroidInjector {
+
+  @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt;
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    AndroidInjection.inject(this) // ここは一緒
+    ...
+  }
+
+  override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; {
+    return androidInjector
+  }
+}
+
+---以下、Fragment---
+
+class MainFragment : Fragment() {
+  override fun onAttach(context: Context) {
+    AndroidSupportInjection.inject(this) // ここは一緒
+    ...
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;となります。従来の***Injectorが汎用的な&lt;code&gt;HasAndroidInjector&lt;/code&gt;まとまりました😃&lt;/p&gt;
+
+&lt;p&gt;大きなコードの修正は必要なさそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;なぜこの変更が入ったか&#34;&gt;なぜこの変更が入ったか?&lt;/h2&gt;
+
+&lt;p&gt;ronshapiroさんが以下のツイートをしていました。&lt;/p&gt;
+
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Dagger 2.23 turns off formatting by default so your build is faster, but has a flag to turn it back on if you&amp;#39;d like.&lt;br&gt;&lt;br&gt;It also brings bug fixes and a more flexible &lt;a href=&#34;https://t.co/d0MeQYkvAV&#34;&gt;https://t.co/d0MeQYkvAV&lt;/a&gt; API that will allow for more androidx support&lt;a href=&#34;https://t.co/vtW7gebmu2&#34;&gt;https://t.co/vtW7gebmu2&lt;/a&gt;&lt;/p&gt;&amp;mdash; Ron Shapiro (@rdshapiro) &lt;a href=&#34;https://twitter.com/rdshapiro/status/1133493726561619968?ref_src=twsrc%5Etfw&#34;&gt;May 28, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;HasAndroidInjectorという1つの汎用インターフェースが爆誕した&lt;/li&gt;
+&lt;li&gt;androidxのサポート増やしてくれそう。嬉しい😃
+
+&lt;ul&gt;
+&lt;li&gt;（ViewModel対応してほしい&amp;hellip;）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1885,106 +1995,6 @@ val factory = CoroutineCallAdapterFactory()
 
 &lt;ul&gt;
 &lt;li&gt;JobImplのような実装クラスを隠したいときに便利&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: CoroutineでRxJavaのzipっぽいものを表現する</title>
-      <link>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</link>
-      <pubDate>Sun, 17 Mar 2019 05:17:23 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
-      <description>
-
-&lt;p&gt;Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
-  val task1 = async { MainService.task1() }
-  val task2 = async { MainService.task2() }
-
-  println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;asyncで包むことで、並列に処理をすることができます。&lt;/p&gt;
-
-&lt;p&gt;次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元で&lt;code&gt;runCatching&lt;/code&gt;を使います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
-  val task1 = async { runCatching { MainService.task1() } }
-  val task2 = async { runCatching { MainService.task2() } }
-
-  val result1 = task1.await()
-  val result2 = task2.await()
-  println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;runCatching&lt;/code&gt;を使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;また、次のように書くことは出来ません。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
-  val task1 = async { MainService.task1() }
-  val task2 = async { MainService.task2() }
-
-  // awaitのタイミングでrunCatchingを使う
-  val result1 = runCatching { task1.await() }
-  val result2 = runCatching { task2.await() }
-  println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;デフォルトの設定だと例外は伝搬し、子が倒れたら親も倒れます。&lt;/p&gt;
-
-&lt;p&gt;しかし、&lt;code&gt;supervisorScope&lt;/code&gt;を使うと、上記の振る舞いを防ぐことができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
-  supervisorScope {
-    val task1 = async { MainService.task1() }
-    val task2 = async { MainService.task2() }
-
-    // supervisorScopeを使っているのでこのタイミングでもおｋ
-    val result1 = runCatching { task1.await() }
-    val result2 = runCatching { task2.await() }
-    println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;supervisorScope&lt;/code&gt;を使うと、&lt;code&gt;Deferred.await&lt;/code&gt;のタイミングで例外のハンドリングをすることが出来ます。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;最後にキャンセルについて考えてみます。&lt;/p&gt;
-
-&lt;p&gt;任意の子ジョブがキャンセルされても処理を続けたいとしたら、前述のsupervisorScopeを使う必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;launch {
-  supervisorScope {
-    val task1 = async { MainService.task1() }
-    val task2 = async { MainService.task2() }
-
-    val result1 = runCatching { task1.await() }
-    val result2 = runCatching { task2.await() }
-    println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;)
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このように書くことで、例えばtask1がキャンセルされたとしても、他の部分の処理を継続することが出来ます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;エラー &amp;amp; キャンセル時にも処理を継続したいならsupervisorScope + runCatchingを使う&lt;/li&gt;
-&lt;li&gt;エラー時のみ処理を継続したいなら、runCatchingだけで対応できる&lt;/li&gt;
-&lt;li&gt;正常系のみなら、asyncで包んであげるだけで良い&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

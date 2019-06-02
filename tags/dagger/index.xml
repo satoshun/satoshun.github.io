@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 25 May 2019 10:38:15 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 09:08:57 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger2: 2.23に入ったHasAndroidInjectorについて</title>
+      <link>https://satoshun.github.io/2019/06/dagger-android-injector/</link>
+      <pubDate>Sun, 02 Jun 2019 09:08:57 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/06/dagger-android-injector/</guid>
+      <description>Dagger 2.23に新しく、HasAndroidInjectorインターフェースが入りました。 これは、従来のHasActivityInjectorやHasFragmentInjectorなどを置き換えるために作られました。
+この記事では、どのように置き換えるかを説明していきたいと思います。
+また、DaggerApplicationやDaggerActivityなどの基底クラスは使っていないものとします。
+置き換えていく AppComponent AndroidSupportInjectionModuleを使っているなら、AndroidInjectionModuleに置き換えます。 今後は、AndroidSupportInjectionModuleを使う必要はありません。
+@Singleton @dagger.Component( modules = [ AndroidInjectionModule::class, // AndroidInjectionModuleを使う ... ] ) interface AppComponent ...  Application Applicationで実装している、HasActivityInjector、 HasServiceInjectorをHasAndroidInjectorに置き換えます。
+class App : Application(), // HasAndroidInjectorのみでおｋ HasAndroidInjector { // 型変数がAnyになる @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; // 返り値の型変数がAnyになる override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { DaggerAppComponent.factory().create(this).inject(this) return androidInjector } }  今まではActivtity用、Fragment用、Service用とそれぞれにDispatchingAndroidInjectorがありましたが、それが1つのDispatchingAndroidInjector&amp;lt;Any&amp;gt;まとまりました。
+Activity, Fragment HasSupportFragmentInjectorなどのInjectorは、HasAndroidInjectorに置き換えます。
+class MainActivity : AppCompatActivity(), // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う HasAndroidInjector { @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; override fun onCreate(savedInstanceState: Bundle?</description>
+    </item>
     
     <item>
       <title>ViewModel SavedState &#43; Dagger</title>
