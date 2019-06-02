@@ -5,6 +5,7 @@ tags = ["dagger", "android"]
 blogimport = true
 type = "post"
 draft = false
+lastmod = "Sun Jun  2 11:15:31 UTC 2019"
 +++
 
 Dagger 2.23に新しく、`HasAndroidInjector`インターフェースが入りました。
@@ -34,7 +35,7 @@ interface AppComponent ...
 
 ### Application
 
-Applicationで実装している、HasActivityInjector、 HasServiceInjectorを`HasAndroidInjector`に置き換えます。
+Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを`HasAndroidInjector`に置き換えます。
 
 ```kotlin
 class App : Application(),
@@ -52,7 +53,7 @@ class App : Application(),
 }
 ```
 
-今まではActivtity用、Fragment用、Service用とそれぞれに`DispatchingAndroidInjector`がありましたが、それが1つの`DispatchingAndroidInjector<Any>`まとまりました。
+今まではActivity用、Fragment用、Service用などのクラスごとに`DispatchingAndroidInjector`がありましたが、それが1つの`DispatchingAndroidInjector<Any>`まとまりました。
 
 ## Activity, Fragment
 
