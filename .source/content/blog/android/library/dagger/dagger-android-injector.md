@@ -98,6 +98,20 @@ ronshapiroさんが以下のツイートをしていました。
 
 今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。
 
+## DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合
+
+2.23では、これらの基底クラスで`HasAndroidInjector`を使っているので特に対応は必要ありません。
+
+```java
+// HasAndroidInjectorを使う実装に置き換わっている
+@Beta
+public abstract class DaggerApplication extends Application implements HasAndroidInjector {
+  ...
+}
+```
+
+唯一、AppComponentでは`AndroidSupportInjectionModule`を使っていると思うのでそこの置き換えは必要です。
+
 ## まとめ
 
 - HasAndroidInjectorという1つの汎用インターフェースが爆誕した
