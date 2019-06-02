@@ -105,6 +105,19 @@ class MainFragment : Fragment() {
 
 &lt;p&gt;今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。&lt;/p&gt;
 
+&lt;h2 id=&#34;daggerapplicationや-daggerappcompatactivity-daggersupportfragmentなどを使っている場合&#34;&gt;DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合&lt;/h2&gt;
+
+&lt;p&gt;2.23では、これらの基底クラスで&lt;code&gt;HasAndroidInjector&lt;/code&gt;を使っているので特に対応は必要ありません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// HasAndroidInjectorを使う実装に置き換わっている
+@Beta
+public abstract class DaggerApplication extends Application implements HasAndroidInjector {
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;唯一、AppComponentでは&lt;code&gt;AndroidSupportInjectionModule&lt;/code&gt;を使っていると思うのでそこの置き換えは必要です。&lt;/p&gt;
+
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;ul&gt;
