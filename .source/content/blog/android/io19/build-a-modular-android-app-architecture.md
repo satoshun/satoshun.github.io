@@ -78,3 +78,69 @@ App Bundle、Dynamic Deliveryの恩恵を受けられる
 
 - モックよりも優れた方法
     - fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる
+
+- Featureモジュール
+    - カプセル化
+    - オンデマンド配信
+- 層
+    - サードパーティライブラリの依存を独立
+    - 構造をもたらす
+
+- Dynamic Deliveryの課題
+    - Navigation
+        - appから、Dynamic Featureモジュールへの依存を持てない
+            - 文字列、リフレクションでstartActivityするしかない
+            - Fragmentも同様
+            - Navigationライブラリで自然に書けるようになる
+
+## database
+
+### one database
+
+- pros
+    - 管理が楽
+    - テーブルのシェアが簡単
+- cons
+    - モジュール間に依存が生まれる
+
+### モジュールごとにone database
+
+- pros
+    - モジュール間が疎になる
+- cons
+    - databaseのコネクション管理がめんどい
+
+### hybridアプローチ
+
+特にルールを決めずに、databaseモジュールを作っていく
+
+- pros
+    - Flexible!!
+- cons
+    - Fiexible!!
+        - どこに置けば良いのかの判断を常に迫られる
+
+<img src="https://lh3.googleusercontent.com/gTSq0TPmgz2B2iyb_qidLaq-G8VSSnmSOI_VDez7Mu0UBASB5h7PIRDKWMJPrH40XGxFCw3QDenkSgiD6f4D2U5EhBAK_OEayUdIVtH5hX53vvUQM7Q-4AiJHx0NDt-4iRjCjaTeIlJs16YyeZpEt6iIvgp9HrAD_cr7vE5myFyRzeJnaHSU_vzZULGICVIWBmgxKFAcHUKDdiHRHUMuncyewUxZGc_O5t3xlQvXUanCQxVh6NXvBQZXxhFpqYRMwPiSTTNmIGz8BFFnX5JqHZAdKULHDZDV8FjeT6KtQXFjPQMMrEm6c_Sdka9aHgH5c4U76VbhF9lJd1xnn0i_jeVhbBXZ4Ylhwuem8trNGg0L2-JSphGwz2dlud0oS39CwN3spcRFEXkyQ3F6AjaW0omnmWYh1S3r2p_W9Wd3Yxyy3H7egkYyHdYmdqU76m5s0y9pCL3VWaiGvLZFr61Z0NVABPVW9O_dDS5jroA8OV4yJn_q6kMEQ_QgYz5uCatq_a86gXcWFRBipdZfhqMCZCMvJ8apGzKzrIyDuiM-3GMk_IZLR4ybtgdpFoxIEdXhCPHpUnWiCPQ6xsH3Od2P485MLbKLdZWDp76NB36DZRhlPAs33Z5h-ItZfm1mKok05rXrzibepyocRNr2rUKnOoyaHtsaxKek=w2160-h1202-no" width=500 />
+
+マルチモジュール対応Room絶賛開発中😃
+
+## Android free modules
+
+multi platform
+- Kotlin nativeみたいなやつ
+    - ちゃんとユースケースを持っているならええんちゃう？
+
+faster tests
+- testのためだけにAndroid freeにするのは冗長
+    - Robolectricで十分やで
+
+## 最後に
+
+- 最小限の依存関係を
+- 関心事の分離
+    - ビジネスロジックがUIに依存しないとかね
+- 抽象化
+    - 複雑になりがちなので、抽象化により得れる利点を常に考える
+- これらのやりかたは、あくまでオプション
+    - ユーザはマルチモジュールなコードだからって5つ星はくれない
+    - あくまでユーザが一番大事
