@@ -1,7 +1,7 @@
 +++
 date = "Sun Jun  9 12:04:27 UTC 2019"
 title = "Google I/O'19: Build a Modular Android App Architectureのまとめ/感想"
-tags = ["android", "arch", "io19"]
+tags = ["android", "architecture", "io19", "android-architecture"]
 blogimport = true
 type = "post"
 draft = false

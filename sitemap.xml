@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</loc>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/06/dagger-android-injector/</loc>
     <lastmod>2019-06-02T11:15:31+00:00</lastmod>
   </url>
@@ -517,13 +522,13 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-06-02T11:15:31+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/android-architecture/</loc>
-    <lastmod>2019-05-05T05:05:09+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -541,13 +546,13 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/architecture/</loc>
-    <lastmod>2019-05-05T05:05:09+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-06-02T11:15:31+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -745,7 +750,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/io19/</loc>
-    <lastmod>2019-05-16T00:33:48+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1013,7 +1018,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-06-02T11:15:31+00:00</lastmod>
+    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   

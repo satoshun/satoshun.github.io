@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 05 May 2019 05:05:09 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Jun 2019 12:04:27 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android-architecture/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ/感想</title>
+      <link>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</link>
+      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
+      <description>以下の動画のまとめです。
+Build a Modular Android App Architecture (Google I/O&amp;rsquo;19)
+なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
+ 人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
+ 何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
+CIの高速化 再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる
+ androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい）  APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
+モジュール どのようにモジュール分けをするか?
+1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
+ ライブラリモジュール  com.android.libraryを指定する  Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い    Plaidでは以下のようなモジュール構成にした。
+dribbleと、designernewsがDynamic Featureモジュールになっている。
+2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
+ Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ  Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入    こうすることで、UIがDAOの知識を知らずに済む</description>
+    </item>
     
     <item>
       <title>MvRxの雑な感想</title>

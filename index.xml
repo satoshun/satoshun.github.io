@@ -7,7 +7,269 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 02 Jun 2019 09:08:57 UTC</updated>
+    <updated>Sun, 09 Jun 2019 12:04:27 UTC</updated>
+    
+    
+    <item>
+      <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ/感想</title>
+      <link>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</link>
+      <pubDate>Sun, 09 Jun 2019 12:04:27 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
+      <description>
+
+&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&amp;rsquo;19)&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;
+
+&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;
+
+&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;
+
+&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;
+&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;
+
+&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;
+
+&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;
+
+&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;
+
+&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;
+
+&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;
+
+&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;
+
+&lt;h3 id=&#34;1-feature-機能-ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;
+
+&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ライブラリモジュール
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Dynamic Featureモジュール
+
+&lt;ul&gt;
+&lt;li&gt;onDemand trueとfalseがある
+
+&lt;ul&gt;
+&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;
+&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;p&gt;dribbleと、designernewsがDynamic Featureモジュールになっている。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-layer-層-階層-ごとに分ける&#34;&gt;2. Layer（層、階層）ごとに分ける&lt;/h3&gt;
+
+&lt;p&gt;Plaidでは以下のように分けた。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Web Servicesの知識はUIはいらないので、implementationを指定する
+
+&lt;ul&gt;
+&lt;li&gt;そうすることで、UIがDTOやRetrofitの知識を知らないですむ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Entitiesの知識はUIが必要なので、apiを指定する
+
+&lt;ul&gt;
+&lt;li&gt;ただし、この場合、DAOsの知識までUIが知ってしまうので微妙
+
+&lt;ul&gt;
+&lt;li&gt;そこでCommon Value Objectsの導入&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;p&gt;こうすることで、UIがDAOの知識を知らずに済む&lt;/p&gt;
+
+&lt;h3 id=&#34;fakes-for-tests&#34;&gt;Fakes for tests&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;モックよりも優れた方法
+
+&lt;ul&gt;
+&lt;li&gt;fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる
+
+&lt;ul&gt;
+&lt;li&gt;（モックはその場、その場で作られがちという意味？）&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;featureモジュールの利点&#34;&gt;Featureモジュールの利点&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;カプセル化&lt;/li&gt;
+&lt;li&gt;Dynamic Delivery&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;layerごとに分ける利点&#34;&gt;Layerごとに分ける利点&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;サードパーティライブラリの依存を独立&lt;/li&gt;
+&lt;li&gt;構造をもたらす&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;dynamic-deliveryの課題&#34;&gt;Dynamic Deliveryの課題&lt;/h3&gt;
+
+&lt;p&gt;Featureモジュール間のNavigationをどうするか?&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;appから、Dynamic Featureモジュールへの依存を持てない
+
+&lt;ul&gt;
+&lt;li&gt;（これはDynamic Deliveryの制約のため）&lt;/li&gt;
+&lt;li&gt;文字列、リフレクションでstartActivityするしかない&lt;/li&gt;
+&lt;li&gt;Fragmentも同様&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今後、Navigationライブラリで自然に書けるようになるらしい😃&lt;/p&gt;
+
+&lt;h2 id=&#34;データベース&#34;&gt;データベース&lt;/h2&gt;
+
+&lt;h3 id=&#34;1つのデータベースのみ持つ&#34;&gt;1つのデータベースのみ持つ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pros
+
+&lt;ul&gt;
+&lt;li&gt;コネクションの管理が楽&lt;/li&gt;
+&lt;li&gt;テーブルのシェアが簡単&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;cons
+
+&lt;ul&gt;
+&lt;li&gt;モジュール間に依存が生まれる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;モジュールごとに1つのデータベースを持つ&#34;&gt;モジュールごとに1つのデータベースを持つ&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pros
+
+&lt;ul&gt;
+&lt;li&gt;モジュール間の依存が疎になる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;cons
+
+&lt;ul&gt;
+&lt;li&gt;データベースのコネクション管理がめんどい&lt;/li&gt;
+&lt;li&gt;繰り返しのコードが生まれやすい&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;hybridアプローチ&#34;&gt;hybridアプローチ&lt;/h3&gt;
+
+&lt;p&gt;特にルールを決めずに、データベースモジュールを作っていく&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pros
+
+&lt;ul&gt;
+&lt;li&gt;Flexible&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;cons
+
+&lt;ul&gt;
+&lt;li&gt;Fiexible
+
+&lt;ul&gt;
+&lt;li&gt;どこに、どのDAO、Entityを置けば良いのかの判断を常に迫られる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/gTSq0TPmgz2B2iyb_qidLaq-G8VSSnmSOI_VDez7Mu0UBASB5h7PIRDKWMJPrH40XGxFCw3QDenkSgiD6f4D2U5EhBAK_OEayUdIVtH5hX53vvUQM7Q-4AiJHx0NDt-4iRjCjaTeIlJs16YyeZpEt6iIvgp9HrAD_cr7vE5myFyRzeJnaHSU_vzZULGICVIWBmgxKFAcHUKDdiHRHUMuncyewUxZGc_O5t3xlQvXUanCQxVh6NXvBQZXxhFpqYRMwPiSTTNmIGz8BFFnX5JqHZAdKULHDZDV8FjeT6KtQXFjPQMMrEm6c_Sdka9aHgH5c4U76VbhF9lJd1xnn0i_jeVhbBXZ4Ylhwuem8trNGg0L2-JSphGwz2dlud0oS39CwN3spcRFEXkyQ3F6AjaW0omnmWYh1S3r2p_W9Wd3Yxyy3H7egkYyHdYmdqU76m5s0y9pCL3VWaiGvLZFr61Z0NVABPVW9O_dDS5jroA8OV4yJn_q6kMEQ_QgYz5uCatq_a86gXcWFRBipdZfhqMCZCMvJ8apGzKzrIyDuiM-3GMk_IZLR4ybtgdpFoxIEdXhCPHpUnWiCPQ6xsH3Od2P485MLbKLdZWDp76NB36DZRhlPAs33Z5h-ItZfm1mKok05rXrzibepyocRNr2rUKnOoyaHtsaxKek=w2160-h1202-no&#34; width=500 /&gt;&lt;/p&gt;
+
+&lt;p&gt;マルチモジュール対応Room絶賛開発中らしい😃&lt;/p&gt;
+
+&lt;h2 id=&#34;android-free-modules&#34;&gt;Android free modules&lt;/h2&gt;
+
+&lt;p&gt;multi platformにする場合&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Kotlin nativeとか
+
+&lt;ul&gt;
+&lt;li&gt;ちゃんとユースケースを持っているなら、multi platformは良い選択&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;テストの高速化&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;確かにテストは早くなるが、テストのためだけにAndroid freeにするのは冗長
+
+&lt;ul&gt;
+&lt;li&gt;Robolectricで十分&lt;/li&gt;
+&lt;li&gt;Android Frameworkの再開発は無駄e&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;最小限の依存関係でモジュールを構成する&lt;/li&gt;
+&lt;li&gt;関心事の分離
+
+&lt;ul&gt;
+&lt;li&gt;ビジネスロジックがUIに依存しない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;抽象化
+
+&lt;ul&gt;
+&lt;li&gt;抽象化は非常に便利だが、複雑になりがちなので、抽象化により得れる利点を常に考える&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;これらのモジュール化のやりかたは、あくまでオプション
+
+&lt;ul&gt;
+&lt;li&gt;ユーザはマルチモジュールなコードだからって5つ星はくれない&lt;/li&gt;
+&lt;li&gt;あくまでユーザが一番大事&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1961,53 +2223,6 @@ val size get(): Int = encodedNames.size
 &lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745&#34;&gt;HttpUrl in Kotlin #4745&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4749&#34;&gt;Kotlin Platform refactor #4749&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4751&#34;&gt;Refactor exceptions and static classes to Kotlin #4751&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: コンストラクタ呼び出しっぽく関数やcompanion objectを使う</title>
-      <link>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</link>
-      <pubDate>Tue, 19 Mar 2019 12:31:05 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</guid>
-      <description>
-
-&lt;p&gt;KotlinではJavaと異なり、コンストラクタ呼び出しの時に&lt;code&gt;new&lt;/code&gt;キーワードが必要ありません。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class A
-...
-val a = A()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;よって、次のように関数をコンストラクタのように使うことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Coroutine Jobの定義
-@Suppress(&amp;quot;FunctionName&amp;quot;)
-public fun Job(parent: Job? = null): Job = JobImpl(parent)
-...
-val job = Job()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;また、次のようにcompanion object + operator invokeを使うことも出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter
-class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() {
-  companion object {
-    @JvmStatic @JvmName(&amp;quot;create&amp;quot;)
-    operator fun invoke() = CoroutineCallAdapterFactory()
-  }
-}
-...
-val factory = CoroutineCallAdapterFactory()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;JobImplのような実装クラスを隠したいときに便利&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
