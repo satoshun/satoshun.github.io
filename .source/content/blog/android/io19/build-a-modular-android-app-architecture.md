@@ -1,6 +1,6 @@
 +++
 date = "Sun Jun  9 12:04:27 UTC 2019"
-title = "Google I/O'19: Build a Modular Android App Architectureのまとめ/感想"
+title = "Google I/O'19: Build a Modular Android App Architectureのまとめ・感想"
 tags = ["android", "architecture", "io19", "android-architecture"]
 blogimport = true
 type = "post"
@@ -141,7 +141,7 @@ Featureモジュール間のNavigationをどうするか?
 
 マルチモジュール対応Room絶賛開発中らしい😃
 
-## Android free modules
+### Android free modules
 
 multi platformにする場合
 
@@ -164,3 +164,14 @@ multi platformにする場合
 - これらのモジュール化のやりかたは、あくまでオプション
     - ユーザはマルチモジュールなコードだからって5つ星はくれない
     - あくまでユーザが一番大事
+
+## まとめ・感想
+
+- Dynamic DeliveryはNavigationに対応が入ってきたあたりで導入検討したいなって思った
+    - まだノウハウが少ない印象なので
+- Fakeのためのモジュールはいいアイデアだなって思った
+    - テストで、モックはあまり使わない流れなのかもしれない
+        - 確かにモックをカジュアルに使いすぎると何をテストしているか分からなくなるときがある
+- やっぱ関心ごとの分離って大事なんやなって
+    - 層、モジュールでうまく強制、表現したい
+    - サードパーティライブラリへの依存が、特定のモジュールに押し込めるのは良さ
