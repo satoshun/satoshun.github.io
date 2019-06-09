@@ -1,5 +1,5 @@
 +++
-date = "Sun Jun  9 10:41:24 UTC 2019"
+date = "Sun Jun  9 12:04:27 UTC 2019"
 title = "Google I/O'19: Build a Modular Android App Architectureのまとめ/感想"
 tags = ["android", "arch", "io19"]
 blogimport = true
@@ -7,7 +7,7 @@ type = "post"
 draft = false
 +++
 
-以下の動画のまとめ（のつもり）です。
+以下の動画のまとめです。
 
 [Build a Modular Android App Architecture (Google I/O'19)](https://www.youtube.com/watch?v=PZBg5DIzNww)
 
@@ -36,7 +36,7 @@ draft = false
 
 - [androidx/dependencyTracker](https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/)を使うといい感じにテストが出来る（らしい）
 
-### Smaller APKs
+### APKサイズの縮小
 
 App Bundle、Dynamic Deliveryの恩恵を受けられる
 
@@ -71,7 +71,7 @@ Plaidでは以下のように分けた。
 <img src="https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no" width=500 />
 
 - Web Servicesの知識はUIはいらないので、implementationを指定する
-    - そうすることで、DTOやRetrofitの知識をUIが知らないですむ
+    - そうすることで、UIがDTOやRetrofitの知識を知らないですむ
 - Entitiesの知識はUIが必要なので、apiを指定する
     - ただし、この場合、DAOsの知識までUIが知ってしまうので微妙
         - そこでCommon Value Objectsの導入
@@ -143,24 +143,24 @@ Featureモジュール間のNavigationをどうするか?
 
 ## Android free modules
 
-multi platformにするかどうかで決める
+multi platformにする場合
 
 - Kotlin nativeとか
-    - ちゃんとユースケースを持っているなら良い選択
+    - ちゃんとユースケースを持っているなら、multi platformは良い選択
 
 テストの高速化
 
-- 確かにテストは早くなるが、testのためだけにAndroid freeにするのは冗長
+- 確かにテストは早くなるが、テストのためだけにAndroid freeにするのは冗長
     - Robolectricで十分
     - Android Frameworkの再開発は無駄e
 
 ## 最後に
 
-- 最小限の依存関係を
+- 最小限の依存関係でモジュールを構成する
 - 関心事の分離
-    - ビジネスロジックがUIに依存しないとかね
+    - ビジネスロジックがUIに依存しない
 - 抽象化
-    - 複雑になりがちなので、抽象化により得れる利点を常に考える
-- これらのやりかたは、あくまでオプション
+    - 抽象化は非常に便利だが、複雑になりがちなので、抽象化により得れる利点を常に考える
+- これらのモジュール化のやりかたは、あくまでオプション
     - ユーザはマルチモジュールなコードだからって5つ星はくれない
     - あくまでユーザが一番大事
