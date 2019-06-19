@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 09 Jun 2019 12:04:27 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Jun 2019 00:48:27 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlinのwildcard importと拡張関数</title>
+      <link>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</link>
+      <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</guid>
+      <description> Kotlinの公式?ではwildcard importを多様しているなって思っていました。
+Roman Elizarovさんが、Extension-oriented design中でちらっとメリットについて話していました。
+ You might notice that our Kotlin code usually uses wildcard imports like import com.example.*. It is handy in Kotlin, because importing just a class in Kotlin is rarely enough. All the useful, convenient, utility functions are typically defined in the same package but outside of the class as extension functions.
+ まとめると、Javaとは違い、Kotlinでは拡張関数があります。拡張関数の多くは、クラスと同じパッケージに定義されますが、拡張関数なのでクラスの外側に配置されます。wildcard importでは外側に配置された、拡張関数もまとめてimportすることが出来るため便利です。
+という理由らしいです。
+雑談: wildcard importのデメリット  名前衝突が起きやすい どのような依存があるのかが分かりにくい  レビューのしずらさ  無駄なクラスへの依存が生まれる  </description>
+    </item>
     
     <item>
       <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ・感想</title>

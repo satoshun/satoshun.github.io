@@ -7,7 +7,43 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sun, 09 Jun 2019 12:04:27 UTC</updated>
+    <updated>Wed, 19 Jun 2019 00:48:27 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlinのwildcard importと拡張関数</title>
+      <link>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</link>
+      <pubDate>Wed, 19 Jun 2019 00:48:27 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</guid>
+      <description>
+
+&lt;p&gt;Kotlinの公式?ではwildcard importを多様しているなって思っていました。&lt;/p&gt;
+
+&lt;p&gt;Roman Elizarovさんが、&lt;a href=&#34;https://medium.com/@elizarov/extension-oriented-design-13f4f27deaee&#34;&gt;Extension-oriented design&lt;/a&gt;中でちらっとメリットについて話していました。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;You might notice that our Kotlin code usually uses wildcard imports like import com.example.*. It is handy in Kotlin, because importing just a class in Kotlin is rarely enough. All the useful, convenient, utility functions are typically defined in the same package but outside of the class as extension functions.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;まとめると、Javaとは違い、Kotlinでは拡張関数があります。拡張関数の多くは、クラスと同じパッケージに定義されますが、拡張関数なのでクラスの外側に配置されます。wildcard importでは外側に配置された、拡張関数もまとめてimportすることが出来るため便利です。&lt;/p&gt;
+
+&lt;p&gt;という理由らしいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;雑談-wildcard-importのデメリット&#34;&gt;雑談: wildcard importのデメリット&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;名前衝突が起きやすい&lt;/li&gt;
+&lt;li&gt;どのような依存があるのかが分かりにくい
+
+&lt;ul&gt;
+&lt;li&gt;レビューのしずらさ&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;無駄なクラスへの依存が生まれる&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2161,94 +2197,6 @@ class MainFragment : Fragment(R.layout.main_frag) {
 &lt;hr /&gt;
 
 &lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>OkHttp: Java to KotlinのPRを見て勉強する</title>
-      <link>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</link>
-      <pubDate>Sun, 24 Mar 2019 02:36:27 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/03/okhttp-convert-to-kotlin/</guid>
-      <description>
-
-&lt;p&gt;OkHttpがKotlin化をするというISSUEが立てられました。
-&lt;a href=&#34;https://github.com/square/okhttp/issues/4723&#34;&gt;Upgrade OkHttp 3 to Kotlin and call it OkHttp 4&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;これの是非についてはさておき。現状、いくつかのJavaコードがKotlinへと置き換わっているので、それらのレビューで気になったこと、知らなかったこと、忘れがちなことを勉強がてらまとめたいと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;checknotnullを使うかどうか&#34;&gt;checkNotNullを使うかどうか&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266693078&#34;&gt;could also be &lt;em&gt;code&lt;/em&gt; no preference myself&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Kotlinの標準ライブラリに、&lt;a href=&#34;https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/check-not-null.html&#34;&gt;checkNotNull&lt;/a&gt;があります。
-これは、値がnullなら&lt;code&gt;IllegalStateException&lt;/code&gt;例外を投げるものです。&lt;/p&gt;
-
-&lt;p&gt;以下のコードは同じ意味を持ちます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;val state = someState ?: throw IllegalStateException(&amp;quot;State must be set beforehand&amp;quot;)
-
-val state = checkNotNull(someState) { &amp;quot;State must be set beforehand&amp;quot; }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ただ、&lt;code&gt;no preference myself&lt;/code&gt;と言っている通り、使うかどうかはプロジェクトで分かれそうです。
-事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。&lt;/p&gt;
-
-&lt;h2 id=&#34;命名はto-が慣用的&#34;&gt;命名はto***が慣用的&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266693257&#34;&gt;idiomatic naming would be toUrl on the Kotlin side&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;OkHttpでは、HttpUrlをURLに変換するためのメソッドとして&lt;code&gt;fun url(): URL&lt;/code&gt;が定義されています。しかし、&lt;code&gt;fun toUrl(): URL&lt;/code&gt;のほうがKotlinっぽいよと指摘がありました。&lt;/p&gt;
-
-&lt;p&gt;確かに、言われてみるとAtoBクラス変換のメソッド名は、&lt;code&gt;to***&lt;/code&gt;が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。&lt;/p&gt;
-
-&lt;h2 id=&#34;constを使う&#34;&gt;constを使う&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266695491&#34;&gt;discussion link&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;constを使うと、Compile Time Constantsとなり、付けない場合に比べ効率的に動作します。ただし、プリミティブか、String型のみに有効です。&lt;/p&gt;
-
-&lt;p&gt;より詳しくは&lt;a href=&#34;https://kotlinlang.org/docs/reference/properties.html#compile-time-constants&#34;&gt;公式ドキュメント&lt;/a&gt;で。&lt;/p&gt;
-
-&lt;p&gt;constを付けたほうが良いことは知っていたのですが、公式ドキュメントを読んだことがなかったので勉強になりました。&lt;/p&gt;
-
-&lt;h2 id=&#34;事前計算済みプロパティにのみ依存している場合は-事前計算済みプロパティにを使う&#34;&gt;事前計算済みプロパティにのみ依存している場合は、事前計算済みプロパティにを使う&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266702974&#34;&gt;scheme is a val, so this can just be a precomputed property without the get()&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;isHttpsプロパティは最初、get()で定義していたんですが、isHttpsで使っているschemeプロパティがvalなので、get()が取り除かれました。&lt;/p&gt;
-
-&lt;p&gt;事前計算出来るプロパティは事前に計算しておく方針のようです。そのほうが、無駄なメソッドが定義されないので、良いという判断なのでしょうか？&lt;/p&gt;
-
-&lt;h2 id=&#34;プロパティ-get-jvmnameはより慣用的&#34;&gt;プロパティ + get:JvmNameはより慣用的&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745#discussion_r266697339&#34;&gt;property + @getJvmName(&amp;ldquo;size&amp;rdquo;) seems more idiomatic&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;単純かつ副作用がない関数はプロパティのほうがKotlinっぽいです。さらに、&lt;code&gt;@get:JvmName&lt;/code&gt;を使うことで、Javaからスムーズに使うことが出来ます、&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fun size(): Int = encodedNames.size
-
-@get:JvmName(&amp;quot;size&amp;quot;)
-val size get(): Int = encodedNames.size
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;valをうまく使うことが、Kotlinっぽさを出すのに大切なんだなって&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;checkNotNull&lt;/code&gt;は、スコープ関数と一緒で、ある程度使い方の認識を合わせないとコードの一貫性が無くなりそう&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;今回の記事を書くために調べたコミット&#34;&gt;今回の記事を書くために調べたコミット&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4741&#34;&gt;Convert some basic types to Kotlin #4741&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4745&#34;&gt;HttpUrl in Kotlin #4745&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4749&#34;&gt;Kotlin Platform refactor #4749&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/square/okhttp/pull/4751&#34;&gt;Refactor exceptions and static classes to Kotlin #4751&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

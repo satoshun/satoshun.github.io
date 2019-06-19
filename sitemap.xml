@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</loc>
+    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</loc>
     <lastmod>2019-06-09T12:04:27+00:00</lastmod>
   </url>
@@ -552,7 +557,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
+    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -583,6 +588,12 @@
   <url>
     <loc>https://satoshun.github.io/tags/code/</loc>
     <lastmod>2015-02-22T04:53:36+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/codestyle/</loc>
+    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -774,7 +785,7 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2019-04-24T02:21:47+00:00</lastmod>
+    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1018,7 +1029,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
+    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
