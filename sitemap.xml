@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/2019/06/rxjava3-preview/</loc>
+    <lastmod>2019-06-24T13:52:14+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</loc>
     <lastmod>2019-06-19T00:48:27+00:00</lastmod>
   </url>
@@ -557,7 +562,7 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
+    <lastmod>2019-06-24T13:52:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -947,7 +952,13 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/rxjava/</loc>
-    <lastmod>2019-03-17T05:17:23+00:00</lastmod>
+    <lastmod>2019-06-24T13:52:14+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/rxjava3/</loc>
+    <lastmod>2019-06-24T13:52:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1029,7 +1040,7 @@
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
+    <lastmod>2019-06-24T13:52:14+00:00</lastmod>
     <priority>0</priority>
   </url>
   

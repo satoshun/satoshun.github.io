@@ -7,7 +7,107 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Wed, 19 Jun 2019 00:48:27 UTC</updated>
+    <updated>Mon, 24 Jun 2019 13:52:14 UTC</updated>
+    
+    
+    <item>
+      <title>RxJava 3.xの開発が本格的に始まりました</title>
+      <link>https://satoshun.github.io/2019/06/rxjava3-preview/</link>
+      <pubDate>Mon, 24 Jun 2019 13:52:14 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/06/rxjava3-preview/</guid>
+      <description>
+
+&lt;p&gt;現状での差異をまとめておきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;rxjava2との差異&#34;&gt;RxJava2との差異&lt;/h2&gt;
+
+&lt;h3 id=&#34;readmeから&#34;&gt;READMEから&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ReactiveX/RxJava/blob/3.x/README.md&#34;&gt;README.md&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;fixed API mistakes and many limits of RxJava 2
+
+&lt;ul&gt;
+&lt;li&gt;RxJava2のいくつかのAPIのミス、制限を直している&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;intended to be a replacement for RxJava 2 with relatively few binary incompatible changes
+
+&lt;ul&gt;
+&lt;li&gt;RxJava2から、多少の変更がある&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;test and diagnostic support via test schedulers, test consumers and plugin hooks
+
+&lt;ul&gt;
+&lt;li&gt;テストのサポートの充実&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;3-x-different-docsから&#34;&gt;3.x different docsから&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/ReactiveX/RxJava/blob/3.x/docs/What&#39;s-different-in-3.0.md&#34;&gt;3.x different docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;asメソッドとtoメソッド&#34;&gt;asメソッドとtoメソッド&lt;/h4&gt;
+
+&lt;p&gt;toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。&lt;/p&gt;
+
+&lt;p&gt;→ そこで、asメソッドが誕生&lt;/p&gt;
+
+&lt;p&gt;asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型になったので、1つのクラスに実装できるようになった&lt;/p&gt;
+
+&lt;p&gt;→ autodisposeみたいな、ライブラリを作るときに便利&lt;/p&gt;
+
+&lt;p&gt;従来のtoメソッドは消えて、RxJava 3ではasに統合された。&lt;/p&gt;
+
+&lt;h4 id=&#34;functional-typesがthrowableをthrowするようになった&#34;&gt;Functional typesがThrowableをthrowするようになった&lt;/h4&gt;
+
+&lt;p&gt;今まではCallableを使っていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@FunctionalInterface
+public interface Callable&amp;lt;V&amp;gt; {
+    /**
+      * Computes a result, or throws an exception if unable to do so.
+      *
+      * @return computed result
+      * @throws Exception if unable to compute a result
+      */
+    V call() throws Exception;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これからはSupplierを使う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public interface Supplier&amp;lt;T&amp;gt; {
+
+    /**
+     * Produces a value or throws an exception.
+     * @return the value produced
+     * @throws Throwable if the implementation wishes to throw any type of exception
+     */
+    T get() throws Throwable;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;throwする例外がException -&amp;gt; Throwableに広がった。&lt;/p&gt;
+
+&lt;h4 id=&#34;startwithメソッド&#34;&gt;startWithメソッド&lt;/h4&gt;
+
+&lt;p&gt;startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがあったが、startWithItem、startWithIterableにそれぞれリネームされた。&lt;/p&gt;
+
+&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;continued support for Java 6+ &amp;amp; Android 2.3+
+
+&lt;ul&gt;
+&lt;li&gt;RxJava 2.xとサポートの範囲は変わらないっぽい🎉&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;12月に正式版のリリースっぽい&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2094,109 +2194,6 @@ val component = DaggerAppComponent
 &lt;hr /&gt;
 
 &lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあれば&lt;a href=&#34;https://twitter.com/stsn_jp&#34;&gt;Twitter&lt;/a&gt;などから教えてもらえればとても嬉しいです😊&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>DataBindingとActivityのコンストラクタ Layout Id指定を一緒に使う</title>
-      <link>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</link>
-      <pubDate>Thu, 04 Apr 2019 00:46:00 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</guid>
-      <description>
-
-&lt;p&gt;JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/activity#1.0.0-alpha06&#34;&gt;Activity Version 1.0.0-alpha06&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/fragment#1.1.0-alpha06&#34;&gt;Fragment Version 1.1.0-alpha06&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これは、次のように使うことが出来ます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity(R.layout.main_act)
-
-class MainFragment : Fragment(R.layout.main_frag)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。&lt;/p&gt;
-
-&lt;p&gt;ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。&lt;/p&gt;
-
-&lt;h3 id=&#34;activityの場合&#34;&gt;Activityの場合&lt;/h3&gt;
-
-&lt;p&gt;まずはActvityの例です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 拡張関数を定義しておく
-fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T =
-  DataBindingUtil.bind(getContentView())!!
-
-private fun Activity.getContentView(): View =
-  findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0]
-
-
-// MainActivity.kt
-class MainActivity : AppCompatActivity(R.layout.main_act) {
-  private lateinit var binding: MainActBinding
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = bindView()
-    ...
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;また、Activityの場合に限り、by lazyと組み合わせることも可能です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivity : AppCompatActivity(R.layout.main_act) {
-  private val binding by lazy { bindView&amp;lt;MainActBinding&amp;gt;() }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    ...
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;fragmentの場合&#34;&gt;Fragmentの場合&lt;/h3&gt;
-
-&lt;p&gt;次にFragmentの例になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 拡張関数を定義しておく
-fun &amp;lt;T : ViewDataBinding&amp;gt; Fragment.bindView(): T = DataBindingUtil.bind(view!!)!!
-
-
-// MainFragment.kt
-class MainFragment : Fragment(R.layout.main_frag) {
-  private lateinit var binding: MainFragBinding
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    binding = bindView()
-    ...
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Kotlinの拡張関数でやるなら、こんな感じになると思ってます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;コンストラクタにLayoud Idが指定できるようになり、それを使いたいなら、DataBindingの取得の仕方が少し変わりそう
-
-&lt;ul&gt;
-&lt;li&gt;Layout Id指定は必須ではないので、必ずしも使う必要はないと思います&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;KotlinのDelegationを使えば、もっといい感じに書けるかもしれない&lt;/li&gt;
-&lt;li&gt;サンプルは&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingContentLayoutIdExample&#34;&gt;satoshun/DataBindingContentLayoutIdExample&lt;/a&gt;にあります😃&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
 </description>
     </item>
     

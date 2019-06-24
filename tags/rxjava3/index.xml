@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rxjava3 on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/rxjava3/</link>
+    <description>Recent content in Rxjava3 on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Mon, 24 Jun 2019 13:52:14 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/rxjava3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RxJava 3.xの開発が本格的に始まりました</title>
+      <link>https://satoshun.github.io/2019/06/rxjava3-preview/</link>
+      <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/06/rxjava3-preview/</guid>
+      <description>現状での差異をまとめておきます。
+RxJava2との差異 READMEから README.md
+ fixed API mistakes and many limits of RxJava 2  RxJava2のいくつかのAPIのミス、制限を直している  intended to be a replacement for RxJava 2 with relatively few binary incompatible changes  RxJava2から、多少の変更がある  test and diagnostic support via test schedulers, test consumers and plugin hooks  テストのサポートの充実   3.x different docsから 3.x different docs
+asメソッドとtoメソッド toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。
+→ そこで、asメソッドが誕生
+asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型になったので、1つのクラスに実装できるようになった
+→ autodisposeみたいな、ライブラリを作るときに便利
+従来のtoメソッドは消えて、RxJava 3ではasに統合された。
+Functional typesがThrowableをthrowするようになった 今まではCallableを使っていた。
+@FunctionalInterface public interface Callable&amp;lt;V&amp;gt; { /** * Computes a result, or throws an exception if unable to do so.</description>
+    </item>
+    
+  </channel>
+</rss>
