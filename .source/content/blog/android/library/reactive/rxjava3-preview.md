@@ -3,6 +3,7 @@ date = "Mon Jun 24 13:52:14 UTC 2019"
 title = "RxJava 3.xの開発が本格的に始まりました"
 tags = ["rxjava", "rxjava3"]
 blogimport = true
+lastmod = "Tue Jun 25 12:10:59 UTC 2019"
 type = "post"
 draft = false
 +++
@@ -36,7 +37,7 @@ asメソッドでは、CompletableConverter、ObservableConverterなど、専用
 
 → autodisposeみたいな、ライブラリを作るときに便利
 
-従来のtoメソッドは消えて、RxJava 3ではasに統合された。
+従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はto)
 
 #### Functional typesがThrowableをthrowするようになった
 
