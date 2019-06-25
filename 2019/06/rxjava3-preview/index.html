@@ -32,8 +32,7 @@ READMEから
 
 README.md
 
-
-fixed API mistakes and …">
+RxJava2 との差分は以下のようになっています。 …">
   
 
   
@@ -109,6 +108,8 @@ fixed API mistakes and …">
 
 <p><a href="https://github.com/ReactiveX/RxJava/blob/3.x/README.md">README.md</a></p>
 
+<p>RxJava2 との差分は以下のようになっています。</p>
+
 <ul>
 <li>fixed API mistakes and many limits of RxJava 2
 
@@ -118,7 +119,7 @@ fixed API mistakes and …">
 <li>intended to be a replacement for RxJava 2 with relatively few binary incompatible changes
 
 <ul>
-<li>RxJava2から、多少の変更がある</li>
+<li>APIに多少の変更があり、バイナリ互換がない</li>
 </ul></li>
 <li>test and diagnostic support via test schedulers, test consumers and plugin hooks
 
@@ -135,17 +136,33 @@ fixed API mistakes and …">
 
 <p>toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。</p>
 
+<pre><code class="language-java">// Obsevable.java
+public final &lt;R&gt; R to(Function&lt;? super Observable&lt;T&gt;, R&gt; converter)
+
+// Single.java
+public final &lt;R&gt; R to(Function&lt;? super Single&lt;T&gt;, R&gt; convert
+</code></pre>
+
+<p>同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。</p>
+
 <p>→ そこで、asメソッドが誕生</p>
 
-<p>asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型になったので、1つのクラスに実装できるようになった</p>
+<p>asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型が定義され、1つのクラスに実装できるようになりました。</p>
+
+<pre><code class="language-java">// Observable.java
+public final &lt;R&gt; R to(@NonNull ObservableConverter&lt;T, ? extends R&gt; converter)
+
+// Single.java
+public final &lt;R&gt; R to(@NonNull SingleConverter&lt;T, ? extends R&gt; converter) {
+</code></pre>
 
 <p>→ autodisposeみたいな、ライブラリを作るときに便利</p>
 
-<p>従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はto)</p>
+<p>従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はtoです)</p>
 
 <h4 id="functional-typesがthrowableをthrowするようになった">Functional typesがThrowableをthrowするようになった</h4>
 
-<p>今まではCallableを使っていた。</p>
+<p>今まではFunctional typesとして、Callableインターフェースを使っていました。</p>
 
 <pre><code class="language-java">@FunctionalInterface
 public interface Callable&lt;V&gt; {
@@ -159,7 +176,7 @@ public interface Callable&lt;V&gt; {
 }
 </code></pre>
 
-<p>これからはSupplierを使う。</p>
+<p>これからは、Supplierインターフェースを使うようになります。</p>
 
 <pre><code class="language-java">public interface Supplier&lt;T&gt; {
 
@@ -172,21 +189,42 @@ public interface Callable&lt;V&gt; {
 }
 </code></pre>
 
-<p>throwする例外がException -&gt; Throwableに広がった。</p>
+<p>throwする例外がException -&gt; Throwableに広がりました。</p>
+
+<p>ちなみに、lambda式を使っている場合は変更するコードを必要がないかもしれません。</p>
+
+<pre><code class="language-java">// before
+source.to(flowable -&gt; flowable.blockingFirst());
+
+// after
+source.to(flowable -&gt; flowable.blockingFirst());
+</code></pre>
 
 <h4 id="startwithメソッド">startWithメソッド</h4>
 
-<p>startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがあったが、startWithItem、startWithIterableにそれぞれリネームされた。</p>
+<p>startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがありましたが、
+startWithItem、startWithIterableにそれぞれリネームされました。</p>
 
-<h2 id="メモ">メモ</h2>
+<h2 id="メモ-その他">メモ・その他</h2>
 
 <ul>
 <li>continued support for Java 6+ &amp; Android 2.3+
 
 <ul>
-<li>RxJava 2.xとサポートの範囲は変わらないっぽい🎉</li>
+<li>RxJava 2.xとサポートバージョンは変わらないっぽい🎉</li>
 </ul></li>
-<li>12月に正式版のリリースっぽい</li>
+<li>RxJava 2からの、大きな変更はなさそう。APIの整理がメイン？</li>
+<li>12月に正式版のリリースのようです <a href="https://twitter.com/RxJava/status/1141324394595266562">twitter/Rxjava</a></li>
+</ul>
+
+<h2 id="追記">追記</h2>
+
+<ul>
+<li>3.0.0-RC0が出ました
+
+<ul>
+<li><a href="https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar">https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar</a></li>
+</ul></li>
 </ul>
 
     <div class="mt30"></div>

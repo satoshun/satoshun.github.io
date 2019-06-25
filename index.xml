@@ -26,6 +26,8 @@
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/ReactiveX/RxJava/blob/3.x/README.md&#34;&gt;README.md&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;RxJava2 との差分は以下のようになっています。&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;fixed API mistakes and many limits of RxJava 2
 
@@ -35,7 +37,7 @@
 &lt;li&gt;intended to be a replacement for RxJava 2 with relatively few binary incompatible changes
 
 &lt;ul&gt;
-&lt;li&gt;RxJava2から、多少の変更がある&lt;/li&gt;
+&lt;li&gt;APIに多少の変更があり、バイナリ互換がない&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;test and diagnostic support via test schedulers, test consumers and plugin hooks
 
@@ -52,17 +54,33 @@
 
 &lt;p&gt;toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。&lt;/p&gt;
 
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// Obsevable.java
+public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter)
+
+// Single.java
+public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Single&amp;lt;T&amp;gt;, R&amp;gt; convert
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。&lt;/p&gt;
+
 &lt;p&gt;→ そこで、asメソッドが誕生&lt;/p&gt;
 
-&lt;p&gt;asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型になったので、1つのクラスに実装できるようになった&lt;/p&gt;
+&lt;p&gt;asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型が定義され、1つのクラスに実装できるようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// Observable.java
+public final &amp;lt;R&amp;gt; R to(@NonNull ObservableConverter&amp;lt;T, ? extends R&amp;gt; converter)
+
+// Single.java
+public final &amp;lt;R&amp;gt; R to(@NonNull SingleConverter&amp;lt;T, ? extends R&amp;gt; converter) {
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;→ autodisposeみたいな、ライブラリを作るときに便利&lt;/p&gt;
 
-&lt;p&gt;従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はto)&lt;/p&gt;
+&lt;p&gt;従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はtoです)&lt;/p&gt;
 
 &lt;h4 id=&#34;functional-typesがthrowableをthrowするようになった&#34;&gt;Functional typesがThrowableをthrowするようになった&lt;/h4&gt;
 
-&lt;p&gt;今まではCallableを使っていた。&lt;/p&gt;
+&lt;p&gt;今まではFunctional typesとして、Callableインターフェースを使っていました。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@FunctionalInterface
 public interface Callable&amp;lt;V&amp;gt; {
@@ -76,7 +94,7 @@ public interface Callable&amp;lt;V&amp;gt; {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;これからはSupplierを使う。&lt;/p&gt;
+&lt;p&gt;これからは、Supplierインターフェースを使うようになります。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public interface Supplier&amp;lt;T&amp;gt; {
 
@@ -89,21 +107,42 @@ public interface Callable&amp;lt;V&amp;gt; {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;throwする例外がException -&amp;gt; Throwableに広がった。&lt;/p&gt;
+&lt;p&gt;throwする例外がException -&amp;gt; Throwableに広がりました。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、lambda式を使っている場合は変更するコードを必要がないかもしれません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// before
+source.to(flowable -&amp;gt; flowable.blockingFirst());
+
+// after
+source.to(flowable -&amp;gt; flowable.blockingFirst());
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h4 id=&#34;startwithメソッド&#34;&gt;startWithメソッド&lt;/h4&gt;
 
-&lt;p&gt;startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがあったが、startWithItem、startWithIterableにそれぞれリネームされた。&lt;/p&gt;
+&lt;p&gt;startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがありましたが、
+startWithItem、startWithIterableにそれぞれリネームされました。&lt;/p&gt;
 
-&lt;h2 id=&#34;メモ&#34;&gt;メモ&lt;/h2&gt;
+&lt;h2 id=&#34;メモ-その他&#34;&gt;メモ・その他&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;continued support for Java 6+ &amp;amp; Android 2.3+
 
 &lt;ul&gt;
-&lt;li&gt;RxJava 2.xとサポートの範囲は変わらないっぽい🎉&lt;/li&gt;
+&lt;li&gt;RxJava 2.xとサポートバージョンは変わらないっぽい🎉&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;12月に正式版のリリースっぽい&lt;/li&gt;
+&lt;li&gt;RxJava 2からの、大きな変更はなさそう。APIの整理がメイン？&lt;/li&gt;
+&lt;li&gt;12月に正式版のリリースのようです &lt;a href=&#34;https://twitter.com/RxJava/status/1141324394595266562&#34;&gt;twitter/Rxjava&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;追記&#34;&gt;追記&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;3.0.0-RC0が出ました
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar&#34;&gt;https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
