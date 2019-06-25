@@ -58,7 +58,7 @@
 
 &lt;p&gt;→ autodisposeみたいな、ライブラリを作るときに便利&lt;/p&gt;
 
-&lt;p&gt;従来のtoメソッドは消えて、RxJava 3ではasに統合された。&lt;/p&gt;
+&lt;p&gt;従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はto)&lt;/p&gt;
 
 &lt;h4 id=&#34;functional-typesがthrowableをthrowするようになった&#34;&gt;Functional typesがThrowableをthrowするようになった&lt;/h4&gt;
 
