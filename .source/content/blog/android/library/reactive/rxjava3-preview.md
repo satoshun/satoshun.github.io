@@ -3,7 +3,7 @@ date = "Mon Jun 24 13:52:14 UTC 2019"
 title = "RxJava 3.xの開発が本格的に始まりました"
 tags = ["rxjava", "rxjava3"]
 blogimport = true
-lastmod = "Tue Jun 25 12:10:59 UTC 2019"
+lastmod = "Tue Jun 25 12:38:16 UTC 2019"
 type = "post"
 draft = false
 +++
@@ -16,10 +16,12 @@ draft = false
 
 [README.md](https://github.com/ReactiveX/RxJava/blob/3.x/README.md)
 
+RxJava2 との差分は以下のようになっています。
+
 - fixed API mistakes and many limits of RxJava 2
     - RxJava2のいくつかのAPIのミス、制限を直している
 - intended to be a replacement for RxJava 2 with relatively few binary incompatible changes
-    - RxJava2から、多少の変更がある
+    - APIに多少の変更があり、バイナリ互換がない
 - test and diagnostic support via test schedulers, test consumers and plugin hooks
     - テストのサポートの充実
 
@@ -31,17 +33,35 @@ draft = false
 
 toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。
 
+```java
+// Obsevable.java
+public final <R> R to(Function<? super Observable<T>, R> converter)
+
+// Single.java
+public final <R> R to(Function<? super Single<T>, R> convert
+```
+
+同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。
+
 → そこで、asメソッドが誕生
 
-asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型になったので、1つのクラスに実装できるようになった
+asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型が定義され、1つのクラスに実装できるようになりました。
+
+```java
+// Observable.java
+public final <R> R to(@NonNull ObservableConverter<T, ? extends R> converter)
+
+// Single.java
+public final <R> R to(@NonNull SingleConverter<T, ? extends R> converter) {
+```
 
 → autodisposeみたいな、ライブラリを作るときに便利
 
-従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はto)
+従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はtoです)
 
 #### Functional typesがThrowableをthrowするようになった
 
-今まではCallableを使っていた。
+今まではFunctional typesとして、Callableインターフェースを使っていました。
 
 ```java
 @FunctionalInterface
@@ -55,7 +75,7 @@ public interface Callable<V> {
     V call() throws Exception;
 }
 ```
-これからはSupplierを使う。
+これからは、Supplierインターフェースを使うようになります。
 
 ```java
 public interface Supplier<T> {
@@ -69,14 +89,31 @@ public interface Supplier<T> {
 }
 ```
 
-throwする例外がException -> Throwableに広がった。
+throwする例外がException -> Throwableに広がりました。
+
+ちなみに、lambda式を使っている場合は変更するコードを必要がないかもしれません。
+
+```java
+// before
+source.to(flowable -> flowable.blockingFirst());
+
+// after
+source.to(flowable -> flowable.blockingFirst());
+```
 
 #### startWithメソッド
 
-startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがあったが、startWithItem、startWithIterableにそれぞれリネームされた。
+startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがありましたが、
+startWithItem、startWithIterableにそれぞれリネームされました。
 
-## メモ
+## メモ・その他
 
 - continued support for Java 6+ & Android 2.3+
-    - RxJava 2.xとサポートの範囲は変わらないっぽい🎉
-- 12月に正式版のリリースっぽい
+    - RxJava 2.xとサポートバージョンは変わらないっぽい🎉
+- RxJava 2からの、大きな変更はなさそう。APIの整理がメイン？
+- 12月に正式版のリリースのようです [twitter/Rxjava](https://twitter.com/RxJava/status/1141324394595266562)
+
+## 追記
+
+- 3.0.0-RC0が出ました
+  - https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar
