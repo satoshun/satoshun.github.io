@@ -7,7 +7,79 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Mon, 24 Jun 2019 13:52:14 UTC</updated>
+    <updated>Tue, 02 Jul 2019 13:46:54 UTC</updated>
+    
+    
+    <item>
+      <title>Retrofit: Coroutineを使うときの、Response&lt;T&gt;と生のTの使い分け</title>
+      <link>https://satoshun.github.io/2019/07/retrofit-coroutine-return-type/</link>
+      <pubDate>Tue, 02 Jul 2019 13:46:54 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/07/retrofit-coroutine-return-type/</guid>
+      <description>
+
+&lt;p&gt;psideさんの、&lt;a href=&#34;https://qiita.com/pside/items/e546f0f12989e8dcd729&#34;&gt;Retrofit2でRxJavaを使う時の Result&lt;T&gt;, Response&lt;T&gt;, そのままT の使い分け所感&lt;/a&gt;のCoroutineバージョンの記事となります。&lt;/p&gt;
+
+&lt;p&gt;上記の記事に書いてある、Rxとは違い、Result型は用意されていないので、Response型で包むか、生で値ｗ受け取るかのどちらかが基本となります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;interface HogeService {
+    suspend fun getHoge(): Hoge
+    or
+    suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Retrofitの2.6.0で、挙動の違いを確認しました。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;生&lt;/th&gt;
+&lt;th&gt;Response&lt;T&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;成功&lt;/td&gt;
+&lt;td&gt;成功&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;404&lt;/td&gt;
+&lt;td&gt;例外&lt;/td&gt;
+&lt;td&gt;成功&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ネットワークに繋がっていない&lt;/td&gt;
+&lt;td&gt;例外&lt;/td&gt;
+&lt;td&gt;例外&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;シリアライズが出来ない（型がおかしい）&lt;/td&gt;
+&lt;td&gt;例外&lt;/td&gt;
+&lt;td&gt;例外&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+&lt;li&gt;生の場合、HTTPのstatus Code的に失敗とされるものは例外になる&lt;/li&gt;
+&lt;li&gt;Response型で包めば、HTTPのstatus Code的に失敗だとしても例外が発生しない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;っていう感じの挙動になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;どっちを使えばいいの&#34;&gt;どっちを使えばいいの?&lt;/h2&gt;
+
+&lt;p&gt;サーバがエラーコードを返してきた時に、特別な振る舞いをしたいエンドポイントってあると思うので、そういうときはResponseで包んであげて、それ以外は生でいいんじゃない？って思ってます（小並感&lt;/p&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2108,131 +2180,6 @@ presenter.user.postValue(User(name = &amp;quot;posted1&amp;quot;, age = 0))
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;ImageFilterView&lt;/code&gt;、単体でも結構使いどころあるかも😃&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Dagger 2.22にFactoryクラスが導入されました</title>
-      <link>https://satoshun.github.io/2019/04/dagger-component-factory/</link>
-      <pubDate>Sun, 07 Apr 2019 06:04:22 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/04/dagger-component-factory/</guid>
-      <description>
-
-&lt;p&gt;Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;component-factoryとは&#34;&gt;Component.Factoryとは?&lt;/h2&gt;
-
-&lt;p&gt;実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。&lt;/p&gt;
-
-&lt;p&gt;例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// Factoryを使う場合
-@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
-
-  @Component.Factory
-  interface Factory {
-    fun create(
-      @BindsInstance id: Long
-    ): AppComponent
-  }
-}
-
-val component = DaggerAppComponent
-  .factory()
-  .create(50)
-val presenter = component.presentere
-
----
-
-// Builderを使う場合
-@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
-
-  @Component.Builder
-  interface Builder {
-    @BindsInstance fun bindId(id: Long): Builder
-    fun build(): AppComponent
-  }
-}
-
-val component = DaggerAppComponent
-  .builder()
-  .bindId(50)
-  .build()
-val presenter = component.presenter
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この2つのコードは、AppComponentにIntをBindsしています。渡し方、定義の仕方は違いますが、やっていることは変わりません。&lt;/p&gt;
-
-&lt;p&gt;ただし、Factoryを使うパターンはstatelessです。
-Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドから必要な値を渡します。&lt;/p&gt;
-
-&lt;h2 id=&#34;ユースケース&#34;&gt;ユースケース&lt;/h2&gt;
-
-&lt;p&gt;次に、Factoryのユースケースを考えます。そもそもこの機能は &lt;a href=&#34;https://github.com/google/dagger/issues/935&#34;&gt;Feature request: factory method in components for assisted injection&lt;/a&gt; を解決したいモチベーションがあります。&lt;/p&gt;
-
-&lt;p&gt;例えば、次のコードをDaggerで解決したい。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;class ArticlePresenter {
-	...
-	ArticlePresenter(long articleId, ArticleService articleService) {
-		...
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;longの値を後から決めたいときには、今までだと&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;AssistedInject&lt;/li&gt;
-&lt;li&gt;AutoFactory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;のどちらかを使っていました。これに、今回のdagger.Factoryが加わりました。
-dagger.Factoryを使うと、このコードを解決することが出来ます！&lt;/p&gt;
-
-&lt;p&gt;ただし、現状のdagger.Factoryだと多くのボイラープレートコードが必要です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
-
-  @Component.Factory
-  interface Factory {
-    fun create(
-      @BindsInstance id: Long
-    ): AppComponent
-  }
-}
-
-val component = DaggerAppComponent
-  .factory()
-  .create(50)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレートコードを緩和することが出来ます。
-なので、このようなパターンのコードがよく出てくるようなプロジェクトは、AssistedInject or AutoFactoryの導入を検討しても良いと思います。pure Daggerで運用したい、もしくはそこまでこのパターンが出てこないなら、dagger.Factoryを使うのが良いかと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;dagger.Factoryが導入された
-
-&lt;ul&gt;
-&lt;li&gt;ただし、AutoFactoryやAssistedInjectのほうが多機能&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;サンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DaggerFactoryExample&#34;&gt;satoshun/DaggerFactoryExample&lt;/a&gt;にあります😃&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあれば&lt;a href=&#34;https://twitter.com/stsn_jp&#34;&gt;Twitter&lt;/a&gt;などから教えてもらえればとても嬉しいです😊&lt;/p&gt;
 </description>
     </item>
     
