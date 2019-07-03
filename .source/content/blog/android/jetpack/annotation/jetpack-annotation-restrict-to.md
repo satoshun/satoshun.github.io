@@ -1,6 +1,6 @@
 +++
 date = "Wed Jul  3 12:30:11 UTC 2019"
-title = "Android: RestrictToアノテーションのIDE上の振る舞いについて"
+title = "Android: RestrictToアノテーションのIDE上での振る舞い"
 tags = ["android", "jetpack", "annotation"]
 blogimport = true
 type = "post"
