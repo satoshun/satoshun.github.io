@@ -50,6 +50,8 @@
  */
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;今回の検証に用いたコードは &lt;a href=&#34;https://github.com/satoshun-android-example/RestrictTo&#34;&gt;satoshun/RestrictTo&lt;/a&gt; にあります。&lt;/p&gt;
+
 &lt;h2 id=&#34;scopeの一覧&#34;&gt;Scopeの一覧&lt;/h2&gt;
 
 &lt;p&gt;RestrictToの定義は以下のようになっています。（コメント等は削除してます。）&lt;/p&gt;
@@ -251,6 +253,7 @@ DrawableWrapper(...) // OK
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;LIBRARY_GROUP_PREFIXは、おそらくマルチモジュール環境で有効に使うことが可能だと思うので、今後に期待&lt;/li&gt;
 &lt;li&gt;なぜこのような挙動になるか、などの細かい部分は実際のRestrictToクラスのコメントを見ていただけると幸いでございます&lt;/li&gt;
+&lt;li&gt;今回の検証に用いたコードは &lt;a href=&#34;https://github.com/satoshun-android-example/RestrictTo&#34;&gt;satoshun/RestrictTo&lt;/a&gt; にあります。&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

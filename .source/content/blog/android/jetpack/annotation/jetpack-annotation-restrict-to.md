@@ -1,5 +1,6 @@
 +++
 date = "Wed Jul  3 12:30:11 UTC 2019"
+lastmod = "Wed Jul  3 13:23:44 UTC 2019"
 title = "Android: RestrictToアノテーションのIDE上での振る舞い"
 tags = ["android", "jetpack", "annotation"]
 blogimport = true
@@ -37,6 +38,8 @@ draft = false
  * limitations under the License.
  */
 ```
+
+今回の検証に用いたコードは [satoshun/RestrictTo](https://github.com/satoshun-android-example/RestrictTo) にあります。
 
 ## Scopeの一覧
 
@@ -245,3 +248,4 @@ LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスする
   - アプリケーション開発時は、TESTS、SUBCLASSESを必要に応じてつける感じで
 - LIBRARY_GROUP_PREFIXは、おそらくマルチモジュール環境で有効に使うことが可能だと思うので、今後に期待
 - なぜこのような挙動になるか、などの細かい部分は実際のRestrictToクラスのコメントを見ていただけると幸いでございます
+- 今回の検証に用いたコードは [satoshun/RestrictTo](https://github.com/satoshun-android-example/RestrictTo) にあります。
