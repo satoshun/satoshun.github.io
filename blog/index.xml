@@ -7,10 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 02 Jul 2019 13:46:54 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jul 2019 12:30:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: RestrictToアノテーションのIDE上の振る舞いについて</title>
+      <link>https://satoshun.github.io/2019/07/jetpack-annotation-restrict-to/</link>
+      <pubDate>Wed, 03 Jul 2019 12:30:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/07/jetpack-annotation-restrict-to/</guid>
+      <description>androidx.annotation:annotationには、RestrictToアノテーションクラスが定義されています。 このアノテーションは次の用途を持ちます。
+ Denotes that the annotated element should only be accessed from within a specific scope (as defined by Scope).
+ 指定したScope以外からのアクセスを制限するアノテーションです。
+この記事では、このRestrictToアノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。
+また、Android Studio 3.5.0-beta05で検証しました。
+この記事内に出てくるRestrictTo関連のコードは以下のライセンスに従います。
+/* * Copyright (C) 2016 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.</description>
+    </item>
     
     <item>
       <title>Retrofit: Coroutineを使うときの、Response&lt;T&gt;と生のTの使い分け</title>
