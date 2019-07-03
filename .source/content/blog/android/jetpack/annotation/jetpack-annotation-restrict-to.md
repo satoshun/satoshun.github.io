@@ -1,18 +1,18 @@
 +++
-date = "Wed Jul  3 00:17:15 UTC 2019"
+date = "Wed Jul  3 12:30:11 UTC 2019"
 title = "Android: RestrictToアノテーションのIDE上の振る舞いについて"
 tags = ["android", "jetpack", "annotation"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 `androidx.annotation:annotation`には、`RestrictTo`アノテーションクラスが定義されています。
-これは、次の用途を持ちます。
+このアノテーションは次の用途を持ちます。
 
 > Denotes that the annotated element should only be accessed from within a specific scope (as defined by Scope).
 
-指定したScope内のみからのアクセスを許可するアノテーションになっています。
+指定したScope以外からのアクセスを制限するアノテーションです。
 
 この記事では、この`RestrictTo`アノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。
 
@@ -40,7 +40,7 @@ draft = true
 
 ## Scopeの一覧
 
-RestrictToの定義は以下のようになっています。（コメントやらなんやらは削除してます。）
+RestrictToの定義は以下のようになっています。（コメント等は削除してます。）
 
 ```java
 public @interface RestrictTo {
@@ -105,6 +105,10 @@ TESTS,
 SUBCLASSES,
 ```
 
+名前から何となく想起できると思います。LIBRARY系のスコープはやや複雑に感じました。
+
+次から、実際の挙動を見ていきます。
+
 ## 同一モジュール内
 
 最初に、呼び出される側の定義です。
@@ -128,9 +132,11 @@ object Hoge {
 }
 ```
 
+適当にスコープをつけたメソッドを定義しただけです。
+
 次に呼び出し側です。
 
-アプリケーションコードから呼び出してみます。
+まずは、アプリケーションコードから呼び出してみます。
 
 ```kotlin
 Hoge.library() // OK
@@ -140,9 +146,9 @@ Hoge.subclasses() // NG
 Hoge.tests() // NG
 ```
 
-SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いためです。
+SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いので、納得出来ます。
 
-次に、テストコードから呼び出してみます。
+次に、テストコードから呼び出しになります。
 
 ```kotlin
 Hoge.library() // OK
@@ -156,7 +162,7 @@ SUBCLASSESスコープのときはNGだと思ったんですけど、全部OKで
 
 ## 同一プロジェクト内、ライブラリモジュール
 
-lib1という名前でライブラリモジュールを作って、appモジュールからアクセスした時に、どういう挙動になるか試してみました。
+次に、lib1という名前でライブラリモジュールを作り、そこで定義したクラスに、appモジュールからアクセスしてみます。
 
 settings.gradleは次のようになります。
 
@@ -196,11 +202,11 @@ Hoge2.subclasses() // NG
 Hoge2.tests() // NG
 ```
 
-LIBRARY、LIBRARY_GROUP、LIBRARY_GROUP_PREFIXでOKになりました。現状だと同一プロジェクト内に各モジュールが定義されている場合、これらのスコープは特に考慮されなそうでした（多分）
+LIBRARY、LIBRARY_GROUP、LIBRARY_GROUP_PREFIXでOKになりました。現状だと同一プロジェクト内に各モジュールが定義されている場合、これらのスコープは特に考慮されなそうでした。
 
 ## サードパーティライブラリの場合
 
-androidx内にあるスコープが付いたクラスをappモジュールからアクセスしてみます。
+androidx内で定義されているスコープが付いたクラスに、appモジュールからアクセスしてみます。
 
 まずは、ライブラリモジュール内の定義から。
 
@@ -218,7 +224,7 @@ public class MediaItem {
 ---
 
 @RestrictTo(LIBRARY_GROUP_PREFIX)
-public class DrawableWrapper extends Drawable implements Drawable.Callback 
+public class DrawableWrapper extends Drawable implements Drawable.Callback
 ```
 
 次に、appから呼び出してみます。
@@ -229,7 +235,13 @@ MediaItem.Builder().build() // NG
 DrawableWrapper(...) // OK
 ```
 
-LIBRARY、LIBRARY_GROUPスコープがついたクラスに、外からアクセスするとIDEに怒られました。LIBRARY_GROUP_PREFIXは特に怒られませんでした。これは間違った挙動だと思うのでいつか直ると思います。
+LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
+しかし、LIBRARY_GROUP_PREFIXは怒られませんでした。これは多分間違った挙動だと思うのでいつか直ると思います。
 
 ## まとめ
 
+- ざっくりと挙動を見ていきました。
+  - ライブラリ開発をしているときはLIBRARY**系のスコープを意識すると良さそう
+  - アプリケーション開発時は、TESTS、SUBCLASSESを必要に応じてつける感じで
+- LIBRARY_GROUP_PREFIXは、おそらくマルチモジュール環境で有効に使うことが可能だと思うので、今後に期待
+- なぜこのような挙動になるか、などの細かい部分は実際のRestrictToクラスのコメントを見ていただけると幸いでございます
