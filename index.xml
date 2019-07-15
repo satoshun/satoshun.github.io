@@ -7,7 +7,52 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Wed, 03 Jul 2019 12:30:11 UTC</updated>
+    <updated>Mon, 15 Jul 2019 03:09:15 UTC</updated>
+    
+    
+    <item>
+      <title>Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました</title>
+      <link>https://satoshun.github.io/2019/07/material-textview/</link>
+      <pubDate>Mon, 15 Jul 2019 03:09:15 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/07/material-textview/</guid>
+      <description>
+
+&lt;p&gt;従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。&lt;/p&gt;
+
+&lt;p&gt;それが、&lt;a href=&#34;https://github.com/material-components/material-components-android/releases/tag/1.1.0-alpha08&#34;&gt;material-component 1.1.0-alpha08&lt;/a&gt;にMaterialTextViewが爆誕し、lineHeightがTextAppearanceから指定出来るようになりました🎉&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;まずはstyleを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;style name=&amp;quot;TextAppearance.LineHeight&amp;quot;&amp;gt;
+  &amp;lt;item name=&amp;quot;lineHeight&amp;quot;&amp;gt;20sp&amp;lt;/item&amp;gt;
+&amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、TextViewから指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;TextView
+  android:layout_width=&amp;quot;wrap_content&amp;quot;
+  android:layout_height=&amp;quot;wrap_content&amp;quot;
+  android:text=&amp;quot;テスト&amp;quot;
+  android:textAppearance=&amp;quot;@style/TextAppearance.LineHeight&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで完了です😃&lt;/p&gt;
+
+&lt;p&gt;MaterialTextViewをXMLから直接指定してもいいのですが、AppCompatActivityを使っていれば、自動的にMaterialTextViewがinflateされるようになっています。
+詳しくは&lt;a href=&#34;https://github.com/material-components/material-components-android/commit/d7a92485f818a63d110536d70e7040b1eadfb3aa#diff-b6219f955dbe45d238cdd3b1b43f46b8R103&#34;&gt;MaterialComponentsViewInflater.java&lt;/a&gt;をご覧下さい。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;material-component 1.1.0-alpha08にアップデートすると、自動的にMaterialTextViewが使われ、TextAppearanceからlineHeightが指定できる😃&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2234,97 +2279,6 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
 &lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/camaelon/constraintlayout-2-dot-0&#34;&gt;ConstraintLayout 2.0&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://androidstudio.googleblog.com/2019/04/constraintlayout-200-alpha-5.html&#34;&gt;ConstraintLayout 2.0.0 alpha 5&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Kotlin: プロパティの変更を検知する</title>
-      <link>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</link>
-      <pubDate>Wed, 24 Apr 2019 02:21:47 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</guid>
-      <description>
-
-&lt;p&gt;オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。&lt;/p&gt;
-
-&lt;p&gt;次が、この記事で紹介したいコードです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// 1つのプロパティの変更を検知したい
-fun &amp;lt;S, A1&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(prop1: KProperty1&amp;lt;S, A1&amp;gt;): LiveData&amp;lt;A1&amp;gt; =
-  this
-    .map { prop1.get(it) }
-    .distinctUntilChanged()
-
-// 2つのプロパティの変更を検知したい
-fun &amp;lt;S, A1, A2&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(
-  prop1: KProperty1&amp;lt;S, A1&amp;gt;,
-  prop2: KProperty1&amp;lt;S, A2&amp;gt;
-): LiveData&amp;lt;Pair&amp;lt;A1, A2&amp;gt;&amp;gt; =
-  this
-    .map { prop1.get(it) to prop2.get(it) }
-    .distinctUntilChanged()
-
-// 3つのプロパティの変更を検知したい
-fun &amp;lt;S, A1, A2, A3&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(
-  prop1: KProperty1&amp;lt;S, A1&amp;gt;,
-  prop2: KProperty1&amp;lt;S, A2&amp;gt;,
-  prop3: KProperty1&amp;lt;S, A3&amp;gt;
-): LiveData&amp;lt;Triple&amp;lt;A1, A2, A3&amp;gt;&amp;gt; =
-  this
-    .map { Triple(prop1.get(it), prop2.get(it), prop3.get(it)) }
-    .distinctUntilChanged()
-
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;KProperty1はKotlinが提供しているインターフェースで、プロパティの値を取得することが出来ます。
-それと、LiveData ktxに追加された&lt;code&gt;distinctUntilChanged&lt;/code&gt;を組み合わせることで、汎用的に特定のプロパティの変更を検知することが可能です。&lt;/p&gt;
-
-&lt;p&gt;この記事ではLiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;次にサンプルコードです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class Presenter(initializeUser: User = User(name = &amp;quot;init&amp;quot;, age = 0)) {
-  val user = MutableLiveData&amp;lt;User&amp;gt;(initializeUser)
-
-  // nameの変更を検知する
-  val watchUserName = user.watch(User::name)
-  // ageの変更を検知する
-  val watchUserAge = user.watch(User::age)
-}
-
---- 以下main ---
-
-val presenter = Presenter()
-
-// 監視
-presenter.watchUserName.observe(this) {
-  Log.d(&amp;quot;watchUserName&amp;quot;, it)
-}
-presenter.watchUserAge.observe(this) {
-  Log.d(&amp;quot;watchUserAge&amp;quot;, it.toString())
-}
-
-// 適当にUserを更新
-presenter.user.postValue(User(name = &amp;quot;posted1&amp;quot;, age = 0))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合、Userのnameプロパティだけが変更されているので、&lt;code&gt;presenter.watchUserName&lt;/code&gt;に登録したObserverのみが発火します。
-変更が加わったプロパティだけを無事検知することができました😃&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;多くのデータを持ったオブジェクトの一部の変更のみ検知したい時に使うと便利かもしれない😋&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
 </description>
     </item>
     
