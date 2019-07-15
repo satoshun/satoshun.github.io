@@ -1,7 +1,7 @@
 +++
-date = "Mon Jul 15 02:41:42 UTC 2019"
+date = "Mon Jul 15 03:09:15 UTC 2019"
 title = "Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました"
-tags = ["android", "materialcomponents", "textview"]
+tags = ["android", "materialcomponents", "text"]
 blogimport = true
 type = "post"
 draft = false
