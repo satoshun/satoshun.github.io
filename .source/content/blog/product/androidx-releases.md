@@ -1,6 +1,6 @@
 +++
 date = "Sat Jul 20 02:57:15 UTC 2019"
-title = "GitHubのNotifcationsを使って、androidxライブラリのリリースを検知するリポジトリを作りました"
+title = "GitHubのNotificationsで、androidxライブラリのリリースの通知を受け取れるリポジトリを作りました"
 tags = ["product", "android"]
 blogimport = true
 type = "post"

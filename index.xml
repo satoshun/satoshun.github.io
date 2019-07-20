@@ -10,7 +10,7 @@
     
     
     <item>
-      <title>GitHubのNotifcationsを使って、androidxライブラリのリリースを検知するリポジトリを作りました</title>
+      <title>GitHubのNotificationsで、androidxライブラリのリリースの通知を受け取れるリポジトリを作りました</title>
       <link>https://satoshun.github.io/2019/07/androidx-releases/</link>
       <pubDate>Sat, 20 Jul 2019 02:57:15 UTC</pubDate>
       <author>Sato Shun</author>
