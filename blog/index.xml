@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 15 Jul 2019 03:09:15 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jul 2019 02:57:15 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GitHubのNotifcationsを使って、androidxライブラリのリリースを検知するリポジトリを作りました</title>
+      <link>https://satoshun.github.io/2019/07/androidx-releases/</link>
+      <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/07/androidx-releases/</guid>
+      <description> androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。 androidx-releasesにそれぞれのリポジトリがあります。
+例えば、Appcompatのリリースを検知したかったら、次の画像のように、androidx-releases/appcompatのNotificationsのReleases Onlyをチェックします。
+
+
+この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
+
+
+まとめ  作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃  </description>
+    </item>
     
     <item>
       <title>Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました</title>

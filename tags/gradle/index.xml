@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Gradle on stsnブログ</title>
+    <title>gradle on stsnブログ</title>
     <link>https://satoshun.github.io/tags/gradle/</link>
-    <description>Recent content in Gradle on stsnブログ</description>
+    <description>Recent content in gradle on stsnブログ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
