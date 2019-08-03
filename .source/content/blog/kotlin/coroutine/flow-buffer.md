@@ -18,8 +18,11 @@ CoroutineのFlowにはBufferを指定することができます。このBuffer�
 - CONFLATED
 - BUFFERED
 - 100など、具体的なBufferの値
+  - 実質BUFFEREDと同じ挙動をする
 
 の5種類の指定方法があります。
+
+以下で、それぞれの挙動について検証していきます。この検証はCoroutine 1.3.0-RCで行っております。
 
 ## 検証コード
 
@@ -63,6 +66,9 @@ f
 
 Bufferのサイズが無制限なので、Consumer側で処理が終わってなくても値を送ろうとしていきます。ただ、それはflowの内部で一旦保管されて、Consumerの現在のタスクが終わったら、内部で保存したデータが1つずつ流れてきます。
 
+- ProducerはConsumerの状態に関わらず、値を流してくる
+- Consumerはすべての値を、順番に受け取ることが出来る
+
 ### RENDEZVOUS
 
 ```kotlin
@@ -75,3 +81,46 @@ f
 ```
 
 RENDEZVOUSは協調的に動かすためのBufferです。Consumer側が処理出来るタイミングで、値を送ってきます。
+
+- Producerは、Consumerが空いていることを確認して値を流してくる。
+- Consumerはすべての値を、順番に受け取ることが出来る
+
+### CONFLATED
+
+```kotlin
+f
+  .buffer(Channel.CONFLATED) // or conflate()
+  .collect {
+    delay(100)
+    Log.d("t4", "$it")
+  }
+```
+
+CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。最新の値は取得できますが、古い値は削除されてしまいます。
+
+- ProducerはConsumerの状態に関わらず、値を流してくる。古い値をガンガン上書きしてくる。
+- Consumerが遅い場合、途中の値を失う可能性がある
+
+### BUFFERED
+
+```kotlin
+f
+  .buffer(Channel.BUFFERED) // or 100などの具体的な値
+  .collect {
+    delay(100)
+    Log.d("t4", "$it")
+  }
+```
+
+BUFFEREDは最大16個までキャッシュすることができます。バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。
+
+- Producerは、Bufferの限界に達したら一時停止する
+- Consumerは、すべての値を順番通りに受け取ることが出来る
+
+## まとめ
+
+- UNLIMITED、BUFFERED、RENDEZVOUSはすべての値をConsumerが受け取ることが出来る
+  - Producerが無限に値を作り出す場合、UNLIMITEDはメモリを枯渇させる可能性がありそう
+- CONFLATEDはすべての値を受け取ることができない可能性がある
+  - Consumerの処理が重くて、最新の値のみにしか興味ない場合は有効
+- BUFFERED、RENDEZVOUSはConsumerの状態に応じてProducerが待つ
