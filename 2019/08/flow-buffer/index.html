@@ -92,7 +92,7 @@ CoroutineのFlowにはBufferを指定することができます。Bufferの指�
   <div class="post">
     <h1 class="post-title">Kotlin: FlowのBufferの指定について</h1>
     
-    <span class="post-date">Created at Sat, Aug 3, 2019</span>
+    <span class="post-date">Updated at Sun, Aug 4, 2019</span>
     
     
 
@@ -129,7 +129,7 @@ val f = flow {
 // observeする
 lifecycleScope.launch {
   f
-//  .buffer(...) ここでBufferを指定する
+    .buffer(...) ここでBufferを指定する
     .collect {
       delay(100)
       Log.d(&quot;t4&quot;, &quot;$it&quot;)
@@ -137,11 +137,11 @@ lifecycleScope.launch {
 }
 </code></pre>
 
-<p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、約1ms処理に時間がかかります。</p>
+<p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
 
-<p>次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では<code>delay(100)</code>しているので、処理に約100msかかります。</p>
+<p>次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerでは<code>delay(100)</code>しているので、処理に約100msかかります。</p>
 
-<p>これは、次の関係を擬似的に作り出しています</p>
+<p>これは、次の関係を作り出しています</p>
 
 <ul>
 <li>Consumerの処理時間 &gt; Producerの処理時間</li>

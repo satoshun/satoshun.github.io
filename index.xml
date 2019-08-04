@@ -50,7 +50,7 @@ val f = flow {
 // observeする
 lifecycleScope.launch {
   f
-//  .buffer(...) ここでBufferを指定する
+    .buffer(...) ここでBufferを指定する
     .collect {
       delay(100)
       Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
@@ -58,11 +58,11 @@ lifecycleScope.launch {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約&lt;code&gt;delay(1)&lt;/code&gt;かかります。なので、約1ms処理に時間がかかります。&lt;/p&gt;
+&lt;p&gt;このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約&lt;code&gt;delay(1)&lt;/code&gt;かかります。なので、処理に約1msかかります。&lt;/p&gt;
 
-&lt;p&gt;次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では&lt;code&gt;delay(100)&lt;/code&gt;しているので、処理に約100msかかります。&lt;/p&gt;
+&lt;p&gt;次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerでは&lt;code&gt;delay(100)&lt;/code&gt;しているので、処理に約100msかかります。&lt;/p&gt;
 
-&lt;p&gt;これは、次の関係を擬似的に作り出しています&lt;/p&gt;
+&lt;p&gt;これは、次の関係を作り出しています&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Consumerの処理時間 &amp;gt; Producerの処理時間&lt;/li&gt;
