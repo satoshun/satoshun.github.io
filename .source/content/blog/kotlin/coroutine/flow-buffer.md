@@ -1,28 +1,26 @@
 +++
-date = "Sat Aug  3 05:39:22 UTC 2019"
+date = "Sat Aug  3 23:37:02 UTC 2019"
 title = "Kotlin: FlowのBufferの指定について"
 tags = ["kotlin", "coroutine", "flow"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-CoroutineのFlowにはBufferを指定することができます。このBufferがどのように動くかを実際に動かしながら試してみました。
+CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
 
-この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。
+この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。
 
 ## Bufferの種類
+
+Bufferの種類は5つあります。
 
 - UNLIMITED
 - RENDEZVOUS
 - CONFLATED
 - BUFFERED
-- 100など、具体的なBufferの値
-  - 実質BUFFEREDと同じ挙動をする
-
-の5種類の指定方法があります。
-
-以下で、それぞれの挙動について検証していきます。この検証はCoroutine 1.3.0-RCで行っております。
+- 50、100などの、具体的な値
+  - 実質、BUFFEREDと同じ挙動をする
 
 ## 検証コード
 
@@ -46,12 +44,15 @@ lifecycleScope.launch {
 }
 ```
 
-まず、flowメソッドを使って、Flowストリームを作ります。このFlowは1つの値を送るのに`delay(1)`かかります。なので、約1ms処理に時間がかかります。
-次に、作ったflowをobserveします。observe側では`delay(100)`しています。
+このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約`delay(1)`かかります。なので、約1ms処理に時間がかかります。
+
+次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では`delay(100)`しているので、処理に約100msかかります。
+
+これは、次の関係を擬似的に作り出しています
 
 - Consumerの処理時間 > Producerの処理時間
 
-を擬似的に作り出しています。この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
+この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
 
 ### UNLIMITED
 
@@ -64,10 +65,12 @@ f
   }
 ```
 
-Bufferのサイズが無制限なので、Consumer側で処理が終わってなくても値を送ろうとしていきます。ただ、それはflowの内部で一旦保管されて、Consumerの現在のタスクが終わったら、内部で保存したデータが1つずつ流れてきます。
+UNLIMITEDはBufferのサイズを無制限にします。
 
-- ProducerはConsumerの状態に関わらず、値を流してくる
-- Consumerはすべての値を、順番に受け取ることが出来る
+Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。
+
+- Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく
+- Consumer: すべての値を順番通りに受け取ることが出来る
 
 ### RENDEZVOUS
 
@@ -80,10 +83,12 @@ f
   }
 ```
 
-RENDEZVOUSは協調的に動かすためのBufferです。Consumer側が処理出来るタイミングで、値を送ってきます。
+RENDEZVOUSは協調的に動かすためのBufferです。
 
-- Producerは、Consumerが空いていることを確認して値を流してくる。
-- Consumerはすべての値を、順番に受け取ることが出来る
+Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。
+
+- Producer: Consumerが空いていることを確認して値を流してくる
+- Consumer: すべての値を順番通りに受け取ることが出来る
 
 ### CONFLATED
 
@@ -96,10 +101,12 @@ f
   }
 ```
 
-CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。最新の値は取得できますが、古い値は削除されてしまいます。
+CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。
 
-- ProducerはConsumerの状態に関わらず、値を流してくる。古い値をガンガン上書きしてくる。
-- Consumerが遅い場合、途中の値を失う可能性がある
+最新の値は取得できますが、古い値は削除されてしまいます。
+
+- Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュを上書きする
+- Consumer: 処理に時間がかかる場合は途中の値を失う。
 
 ### BUFFERED
 
@@ -112,10 +119,12 @@ f
   }
 ```
 
-BUFFEREDは最大16個までキャッシュすることができます。バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。
+BUFFEREDは最大16個までキャッシュすることが出来るBufferです。
 
-- Producerは、Bufferの限界に達したら一時停止する
-- Consumerは、すべての値を順番通りに受け取ることが出来る
+バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。
+
+- Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける
+- Consumer: すべての値を順番通りに受け取ることが出来る
 
 ## まとめ
 
