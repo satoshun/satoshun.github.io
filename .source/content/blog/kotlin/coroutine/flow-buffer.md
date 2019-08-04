@@ -5,6 +5,7 @@ tags = ["kotlin", "coroutine", "flow"]
 blogimport = true
 type = "post"
 draft = false
+lastmod = "Sun Aug  4 03:16:20 UTC 2019"
 +++
 
 CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
@@ -36,7 +37,7 @@ val f = flow {
 // observeする
 lifecycleScope.launch {
   f
-//  .buffer(...) ここでBufferを指定する
+    .buffer(...) ここでBufferを指定する
     .collect {
       delay(100)
       Log.d("t4", "$it")
@@ -44,11 +45,11 @@ lifecycleScope.launch {
 }
 ```
 
-このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約`delay(1)`かかります。なので、約1ms処理に時間がかかります。
+このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約`delay(1)`かかります。なので、処理に約1msかかります。
 
-次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では`delay(100)`しているので、処理に約100msかかります。
+次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerでは`delay(100)`しているので、処理に約100msかかります。
 
-これは、次の関係を擬似的に作り出しています
+これは、次の関係を作り出しています
 
 - Consumerの処理時間 > Producerの処理時間
 
