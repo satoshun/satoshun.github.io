@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 20 Jul 2019 02:57:15 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 23:37:02 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>coroutine</title>
+      <link>https://satoshun.github.io/tags/coroutine/</link>
+      <pubDate>Sat, 03 Aug 2019 23:37:02 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/coroutine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flow</title>
+      <link>https://satoshun.github.io/tags/flow/</link>
+      <pubDate>Sat, 03 Aug 2019 23:37:02 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/flow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kotlin</title>
+      <link>https://satoshun.github.io/tags/kotlin/</link>
+      <pubDate>Sat, 03 Aug 2019 23:37:02 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>android</title>
@@ -67,15 +94,6 @@
     </item>
     
     <item>
-      <title>coroutine</title>
-      <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Tue, 02 Jul 2019 13:46:54 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/coroutine/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>retrofit</title>
       <link>https://satoshun.github.io/tags/retrofit/</link>
       <pubDate>Tue, 02 Jul 2019 13:46:54 +0000</pubDate>
@@ -108,15 +126,6 @@
       <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/codestyle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin</title>
-      <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
     </item>
     
@@ -225,15 +234,6 @@
       <pubDate>Sun, 28 Apr 2019 11:13:20 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/constraintlayout/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flow</title>
-      <link>https://satoshun.github.io/tags/flow/</link>
-      <pubDate>Sun, 28 Apr 2019 11:13:20 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/flow/</guid>
       <description></description>
     </item>
     

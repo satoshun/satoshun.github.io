@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 02 Jul 2019 13:46:54 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 23:37:02 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/coroutine/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: FlowのBufferの指定について</title>
+      <link>https://satoshun.github.io/2019/08/flow-buffer/</link>
+      <pubDate>Sat, 03 Aug 2019 23:37:02 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/08/flow-buffer/</guid>
+      <description>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
+この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。
+Bufferの種類 Bufferの種類は5つあります。
+ UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする   検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;quot;$it&amp;quot;) } } // observeする lifecycleScope.launch { f // .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) } }  このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、約1ms処理に時間がかかります。
+次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側ではdelay(100)しているので、処理に約100msかかります。
+これは、次の関係を擬似的に作り出しています
+ Consumerの処理時間 &amp;gt; Producerの処理時間  この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
+UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) }  UNLIMITEDはBufferのサイズを無制限にします。
+Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。
+ Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく Consumer: すべての値を順番通りに受け取ることが出来る  RENDEZVOUS f .</description>
+    </item>
     
     <item>
       <title>Retrofit: Coroutineを使うときの、Response&lt;T&gt;と生のTの使い分け</title>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Kotlin: FlowのBufferの指定について">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-08-03">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2019/08/flow-buffer/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="kotlin">
+  
+    <meta property="og:tags" content="coroutine">
+  
+    <meta property="og:tags" content="flow">
+  
+
+  <meta property="twitter:title" content="Kotlin: FlowのBufferの指定について">
+
+  
+  <meta property="twitter:description" content="
+
+CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
+
+この記事は、少 …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Kotlin: FlowのBufferの指定について  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Kotlin: FlowのBufferの指定について</h1>
+    
+    <span class="post-date">Created at Sat, Aug 3, 2019</span>
+    
+    
+
+<p>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。</p>
+
+<p>この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。</p>
+
+<h2 id="bufferの種類">Bufferの種類</h2>
+
+<p>Bufferの種類は5つあります。</p>
+
+<ul>
+<li>UNLIMITED</li>
+<li>RENDEZVOUS</li>
+<li>CONFLATED</li>
+<li>BUFFERED</li>
+<li>50、100などの、具体的な値
+
+<ul>
+<li>実質、BUFFEREDと同じ挙動をする</li>
+</ul></li>
+</ul>
+
+<h2 id="検証コード">検証コード</h2>
+
+<pre><code class="language-kotlin">// flowストリームの作成
+val f = flow {
+  repeat(100) {
+    delay(1)
+    emit(&quot;$it&quot;)
+  }
+}
+
+// observeする
+lifecycleScope.launch {
+  f
+//  .buffer(...) ここでBufferを指定する
+    .collect {
+      delay(100)
+      Log.d(&quot;t4&quot;, &quot;$it&quot;)
+    }
+}
+</code></pre>
+
+<p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、約1ms処理に時間がかかります。</p>
+
+<p>次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では<code>delay(100)</code>しているので、処理に約100msかかります。</p>
+
+<p>これは、次の関係を擬似的に作り出しています</p>
+
+<ul>
+<li>Consumerの処理時間 &gt; Producerの処理時間</li>
+</ul>
+
+<p>この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。</p>
+
+<h3 id="unlimited">UNLIMITED</h3>
+
+<pre><code class="language-kotlin">f
+  .buffer(Channel.UNLIMITED)
+  .collect {
+    delay(100)
+    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+  }
+</code></pre>
+
+<p>UNLIMITEDはBufferのサイズを無制限にします。</p>
+
+<p>Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。</p>
+
+<ul>
+<li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく</li>
+<li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
+</ul>
+
+<h3 id="rendezvous">RENDEZVOUS</h3>
+
+<pre><code class="language-kotlin">f
+  .buffer(Channel.RENDEZVOUS)
+  .collect {
+    delay(100)
+    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+  }
+</code></pre>
+
+<p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
+
+<p>Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。</p>
+
+<ul>
+<li>Producer: Consumerが空いていることを確認して値を流してくる</li>
+<li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
+</ul>
+
+<h3 id="conflated">CONFLATED</h3>
+
+<pre><code class="language-kotlin">f
+  .buffer(Channel.CONFLATED) // or conflate()
+  .collect {
+    delay(100)
+    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+  }
+</code></pre>
+
+<p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
+
+<p>最新の値は取得できますが、古い値は削除されてしまいます。</p>
+
+<ul>
+<li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュを上書きする</li>
+<li>Consumer: 処理に時間がかかる場合は途中の値を失う。</li>
+</ul>
+
+<h3 id="buffered">BUFFERED</h3>
+
+<pre><code class="language-kotlin">f
+  .buffer(Channel.BUFFERED) // or 100などの具体的な値
+  .collect {
+    delay(100)
+    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+  }
+</code></pre>
+
+<p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
+
+<p>バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。</p>
+
+<ul>
+<li>Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける</li>
+<li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
+</ul>
+
+<h2 id="まとめ">まとめ</h2>
+
+<ul>
+<li>UNLIMITED、BUFFERED、RENDEZVOUSはすべての値をConsumerが受け取ることが出来る
+
+<ul>
+<li>Producerが無限に値を作り出す場合、UNLIMITEDはメモリを枯渇させる可能性がありそう</li>
+</ul></li>
+<li>CONFLATEDはすべての値を受け取ることができない可能性がある
+
+<ul>
+<li>Consumerの処理が重くて、最新の値のみにしか興味ない場合は有効</li>
+</ul></li>
+<li>BUFFERED、RENDEZVOUSはConsumerの状態に応じてProducerが待つ</li>
+</ul>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/kotlin">kotlin</a></li>
+        
+          <li><a href="/tags/coroutine">coroutine</a></li>
+        
+          <li><a href="/tags/flow">flow</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

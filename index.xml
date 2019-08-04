@@ -6,7 +6,164 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sat, 20 Jul 2019 02:57:15 UTC</updated>
+    <updated>Sat, 03 Aug 2019 23:37:02 UTC</updated>
+    
+    
+    <item>
+      <title>Kotlin: FlowのBufferの指定について</title>
+      <link>https://satoshun.github.io/2019/08/flow-buffer/</link>
+      <pubDate>Sat, 03 Aug 2019 23:37:02 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/08/flow-buffer/</guid>
+      <description>
+
+&lt;p&gt;CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。&lt;/p&gt;
+
+&lt;p&gt;この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。&lt;/p&gt;
+
+&lt;h2 id=&#34;bufferの種類&#34;&gt;Bufferの種類&lt;/h2&gt;
+
+&lt;p&gt;Bufferの種類は5つあります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;UNLIMITED&lt;/li&gt;
+&lt;li&gt;RENDEZVOUS&lt;/li&gt;
+&lt;li&gt;CONFLATED&lt;/li&gt;
+&lt;li&gt;BUFFERED&lt;/li&gt;
+&lt;li&gt;50、100などの、具体的な値
+
+&lt;ul&gt;
+&lt;li&gt;実質、BUFFEREDと同じ挙動をする&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;検証コード&#34;&gt;検証コード&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;// flowストリームの作成
+val f = flow {
+  repeat(100) {
+    delay(1)
+    emit(&amp;quot;$it&amp;quot;)
+  }
+}
+
+// observeする
+lifecycleScope.launch {
+  f
+//  .buffer(...) ここでBufferを指定する
+    .collect {
+      delay(100)
+      Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約&lt;code&gt;delay(1)&lt;/code&gt;かかります。なので、約1ms処理に時間がかかります。&lt;/p&gt;
+
+&lt;p&gt;次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。observe側では&lt;code&gt;delay(100)&lt;/code&gt;しているので、処理に約100msかかります。&lt;/p&gt;
+
+&lt;p&gt;これは、次の関係を擬似的に作り出しています&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Consumerの処理時間 &amp;gt; Producerの処理時間&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。&lt;/p&gt;
+
+&lt;h3 id=&#34;unlimited&#34;&gt;UNLIMITED&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;f
+  .buffer(Channel.UNLIMITED)
+  .collect {
+    delay(100)
+    Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;UNLIMITEDはBufferのサイズを無制限にします。&lt;/p&gt;
+
+&lt;p&gt;Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく&lt;/li&gt;
+&lt;li&gt;Consumer: すべての値を順番通りに受け取ることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;rendezvous&#34;&gt;RENDEZVOUS&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;f
+  .buffer(Channel.RENDEZVOUS)
+  .collect {
+    delay(100)
+    Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;RENDEZVOUSは協調的に動かすためのBufferです。&lt;/p&gt;
+
+&lt;p&gt;Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Producer: Consumerが空いていることを確認して値を流してくる&lt;/li&gt;
+&lt;li&gt;Consumer: すべての値を順番通りに受け取ることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;conflated&#34;&gt;CONFLATED&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;f
+  .buffer(Channel.CONFLATED) // or conflate()
+  .collect {
+    delay(100)
+    Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。&lt;/p&gt;
+
+&lt;p&gt;最新の値は取得できますが、古い値は削除されてしまいます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュを上書きする&lt;/li&gt;
+&lt;li&gt;Consumer: 処理に時間がかかる場合は途中の値を失う。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;buffered&#34;&gt;BUFFERED&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;f
+  .buffer(Channel.BUFFERED) // or 100などの具体的な値
+  .collect {
+    delay(100)
+    Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;)
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;BUFFEREDは最大16個までキャッシュすることが出来るBufferです。&lt;/p&gt;
+
+&lt;p&gt;バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける&lt;/li&gt;
+&lt;li&gt;Consumer: すべての値を順番通りに受け取ることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;UNLIMITED、BUFFERED、RENDEZVOUSはすべての値をConsumerが受け取ることが出来る
+
+&lt;ul&gt;
+&lt;li&gt;Producerが無限に値を作り出す場合、UNLIMITEDはメモリを枯渇させる可能性がありそう&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;CONFLATEDはすべての値を受け取ることができない可能性がある
+
+&lt;ul&gt;
+&lt;li&gt;Consumerの処理が重くて、最新の値のみにしか興味ない場合は有効&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;BUFFERED、RENDEZVOUSはConsumerの状態に応じてProducerが待つ&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -1967,136 +2124,6 @@ cameraView.zoomLevel = 10f
 &lt;li&gt;これ見れば、なんとなく肌感は分かると思います&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>Material Components: MotionSpecを使ってアニメーションをカスタマイズする</title>
-      <link>https://satoshun.github.io/2019/04/fab-motion-spec/</link>
-      <pubDate>Tue, 30 Apr 2019 05:59:41 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/04/fab-motion-spec/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://developer.android.com/reference/com/google/android/material/animation/MotionSpec&#34;&gt;MotionSpec&lt;/a&gt;はAndroid material componentsに定義されている1クラスになります。
-MotionSpecを使うことで、次のアニメーション属性をカスタマイズすることができます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;startOffset&lt;/li&gt;
-&lt;li&gt;duration&lt;/li&gt;
-&lt;li&gt;interpolator&lt;/li&gt;
-&lt;li&gt;repeatCount&lt;/li&gt;
-&lt;li&gt;repeatMode&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。&lt;/p&gt;
-
-&lt;p&gt;FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。&lt;/p&gt;
-
-&lt;h2 id=&#34;最初にmotionspec用のanimator-xmlを定義する&#34;&gt;最初にMotionSpec用のanimator XMLを定義する&lt;/h2&gt;
-
-&lt;p&gt;デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。&lt;/p&gt;
-
-&lt;p&gt;FloatingActionButton用のXMLはソースコードを読んでいくと、&lt;code&gt;design_fab_show_motion_spec.xml&lt;/code&gt;と&lt;code&gt;design_fab_hide_motion_spec.xml&lt;/code&gt;で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。&lt;/p&gt;
-
-&lt;p&gt;まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている&lt;code&gt;design_fab_show_motion_spec.xml&lt;/code&gt;の中身になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
-&amp;lt;!--
-    Copyright 2017 The Android Open Source Project
-
-    Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;);
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
---&amp;gt;
-
-&amp;lt;set xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-  &amp;lt;objectAnimator
-      android:propertyName=&amp;quot;opacity&amp;quot;
-      android:startOffset=&amp;quot;0&amp;quot;
-      android:duration=&amp;quot;200&amp;quot;
-      android:interpolator=&amp;quot;@interpolator/mtrl_linear_out_slow_in&amp;quot;/&amp;gt;
-  &amp;lt;objectAnimator
-      android:propertyName=&amp;quot;scale&amp;quot;
-      android:startOffset=&amp;quot;0&amp;quot;
-      android:duration=&amp;quot;200&amp;quot;
-      android:interpolator=&amp;quot;@interpolator/mtrl_linear_out_slow_in&amp;quot;/&amp;gt;
-  &amp;lt;objectAnimator
-      android:propertyName=&amp;quot;iconScale&amp;quot;
-      android:startOffset=&amp;quot;0&amp;quot;
-      android:duration=&amp;quot;0&amp;quot;
-      android:interpolator=&amp;quot;@interpolator/mtrl_fast_out_slow_in&amp;quot;/&amp;gt;
-&amp;lt;/set&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;今回は、アニメーションを長くして、アイコンをバウンドしたいとします。
-それは、durationを長くして、interpolatorに&lt;code&gt;@android:anim/bounce_interpolator&lt;/code&gt;を指定すれば良いです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
-&amp;lt;set xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-  &amp;lt;objectAnimator
-    android:duration=&amp;quot;1000&amp;quot;
-    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
-    android:propertyName=&amp;quot;opacity&amp;quot;
-    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
-
-  &amp;lt;objectAnimator
-    android:duration=&amp;quot;1000&amp;quot;
-    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
-    android:propertyName=&amp;quot;scale&amp;quot;
-    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
-
-  &amp;lt;objectAnimator
-    android:duration=&amp;quot;1000&amp;quot;
-    android:interpolator=&amp;quot;@android:anim/bounce_interpolator&amp;quot;
-    android:propertyName=&amp;quot;iconScale&amp;quot;
-    android:startOffset=&amp;quot;0&amp;quot; /&amp;gt;
-&amp;lt;/set&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。&lt;/p&gt;
-
-&lt;p&gt;次に、これをViewにセットします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;fab.showMotionSpec = MotionSpec.createFromResource(
-    this,
-    R.animator.fab_show_motion_spec
-)
-fab.hideMotionSpec = MotionSpec.createFromResource(
-    this,
-    R.animator.fab_hide_motion_spec
-)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最終的な、アニメーションはこんな感じになります。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no&#34; width=400 /&gt;&lt;/p&gt;
-
-&lt;p&gt;アニメーション時間が長くなり、ボヨンボヨンしていることが分かると思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;MotionSpecを使えば、アニメーションの長さやinterpolatorをカスタマイズすることが出来る
-
-&lt;ul&gt;
-&lt;li&gt;まだ、MotionSpecに対応しているViewは少ないが、今後Chipなども対応予定😃&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
 </description>
     </item>
     
