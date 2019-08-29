@@ -1,5 +1,5 @@
 +++
-date = "Thu Aug 29 13:18:00 UTC 2019"
+date = "Thu Aug 29 13:29:06 UTC 2019"
 title = "ViewPager2でカルーセルっぽいものを実装する"
 tags = ["android", "viewpager2", "jetpack"]
 blogimport = true
@@ -15,7 +15,7 @@ draft = false
 
 では、コードを説明していきます。
 
-## 1. 横のアイテムをチラ見せするだけ
+## 1. 横のアイテムをチラ見せする
 
 まず、ViewPager2をLayout内に定義します。
 
@@ -30,11 +30,15 @@ draft = false
 
 次に、横のアイテムをどれだけチラ見せるかを定義します。
 
-- `<dimen name="offset">32dp</dimen>`
+```xml
+<dimen name="offset">32dp</dimen>
+```
 
 次に、各アイテム間にどれだけのマージンをつけるかを定義します。
 
-- `<dimen name="page_margin">16dp</dimen>`
+```xml
+<dimen name="page_margin">16dp</dimen>
+```
 
 次に、ViewPager2内で使うレイアウトのトップレベルのViewにmarginLeft、Rightをセットします。
 
@@ -64,9 +68,9 @@ viewpager.setPageTransformer { page, position ->
 ```
 
 PageTransformerはスクロールに応じてコールバックされる関数になります。
-この中で、`translationX`をpositionの値に応じて動かしてあげることで、左右のアイテムのチラ見せを実現出来ます。
+この中で、`translationX`をpositionの値に応じて動かすことで、左右のアイテムのチラ見せを実現出来ます。
 
-## 2. 横のアイテムをチラ見せして、さらにScaleも変更する
+## 2. さらにScaleも変更する
 
 前述したチラ見せPageTransformerに加え、Scale用のPageTransformerも作ります。
 
@@ -87,9 +91,15 @@ viewpager.setPageTransformer(CompositePageTransformer().apply {
 ```
 
 `CompositePageTransformer`を使うことで、複数のPageTransformerをセットすることが出来ます。
-新しいPageTransformer内で、`scale`の値をpositionに応じて動かしてあげることで、Scaleアニメーションを実現出来ます。
+前で作ったチラ見せPageTransformerに加え、新しくScale用のPageTransformerを定義します。
+
+Scale用のPageTransformer内では、`scale`の値をpositionの値に応じて動かすことで、Scaleアニメーションを実現出来ます。
 
 ## まとめ
 
 - ViewPager2便利だし、もうbetaなので積極的に使っていっても良いのでは😃
 - 実際のコードは [satoshun-android/ViewPager2](https://github.com/satoshun-android-example/ViewPager2)にあります。
+
+## 参考
+
+- [Look Deep Into ViewPager2](https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419)
