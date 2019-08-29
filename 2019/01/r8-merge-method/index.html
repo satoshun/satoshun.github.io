@@ -166,33 +166,39 @@ fun Int.show2(i: Int) {
 
 --&gt; Proguard/R8による最適化後 --&gt;
 
-```java
+</code></pre>
+
+<p>java
 public class ShowExt2Kt {
     public static final void show1(int i) {
-        ...
+        &hellip;
     }
-}
+}</p>
 
-    public static final void show2(int i) {
-        ...
-    }
+<pre><code>public static final void show2(int i) {
+    ...
 }
 </code></pre>
 
-<p>1つのクラスにまとめられていることが分かります。</p>
+<p>}</p>
 
-<p>また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。</p>
+<pre><code>
+1つのクラスにまとめられていることが分かります。
 
-<pre><code>// Fuga.kt
+また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。
+
+</code></pre>
+
+<p>// Fuga.kt
 fun Int.show1() {
-    ...
-}
+    &hellip;
+}</p>
 
-// mapping.txtの内容
+<p>// mapping.txtの内容
 android.support.constraint.solver.widgets.Analyzer -&gt; a.b.b.a.a.a:
-    ...
+    &hellip;
     void com.github.satoshun.example.FugaKt.show1(int) -&gt; d
-</code></pre>
+```</p>
 
 <p>なぜこのクラスに移動したかは分からないので、今後の宿題とします。申し訳ありません😫</p>
 

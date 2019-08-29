@@ -157,13 +157,14 @@ main=129927ms, async=125824ms
 
 <ul>
 <li>サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう</li>
-<li>導入は以下のコードを追加するだけなので、とても簡単</li>
-</ul>
+
+<li><p>導入は以下のコードを追加するだけなので、とても簡単</p>
 
 <pre><code class="language-kotlin">RxAndroidPlugins.setInitMainThreadSchedulerHandler {
-    AndroidSchedulers.from(Looper.getMainLooper(), true)
+AndroidSchedulers.from(Looper.getMainLooper(), true)
 }
-</code></pre>
+</code></pre></li>
+</ul>
 
     <div class="mt30"></div>
     

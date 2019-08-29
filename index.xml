@@ -6,7 +6,114 @@
     <language>ja</language>
     <author>Sato Shun</author>
     <copyright>2019 Sato Shun</copyright>
-    <updated>Sat, 03 Aug 2019 23:37:02 UTC</updated>
+    <updated>Thu, 29 Aug 2019 13:29:06 UTC</updated>
+    
+    
+    <item>
+      <title>ViewPager2でカルーセルっぽいものを実装する</title>
+      <link>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</link>
+      <pubDate>Thu, 29 Aug 2019 13:29:06 UTC</pubDate>
+      <author>Sato Shun</author>
+      <guid>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</guid>
+      <description>
+
+&lt;p&gt;横のアイテムをチラ見せする画面をViewPager2で書けるよって話です。&lt;/p&gt;
+
+&lt;p&gt;最終的にこんなのが作れます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/viewpager2/viewpager2-carousel.gif&#34; style=&#34;max-width:280px&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;では、コードを説明していきます。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-横のアイテムをチラ見せする&#34;&gt;1. 横のアイテムをチラ見せする&lt;/h2&gt;
+
+&lt;p&gt;まず、ViewPager2をLayout内に定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;androidx.viewpager2.widget.ViewPager2
+  android:id=&amp;quot;@+id/viewpager&amp;quot;
+  android:layout_width=&amp;quot;match_parent&amp;quot;
+  android:layout_height=&amp;quot;200dp&amp;quot;
+  android:orientation=&amp;quot;horizontal&amp;quot;
+  /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、横のアイテムをどれだけチラ見せるかを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dimen name=&amp;quot;offset&amp;quot;&amp;gt;32dp&amp;lt;/dimen&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、各アイテム間にどれだけのマージンをつけるかを定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dimen name=&amp;quot;page_margin&amp;quot;&amp;gt;16dp&amp;lt;/dimen&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に、ViewPager2内で使うレイアウトのトップレベルのViewにmarginLeft、Rightをセットします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;com.google.android.material.card.MaterialCardView
+  android:layout_width=&amp;quot;match_parent&amp;quot;
+  android:layout_height=&amp;quot;match_parent&amp;quot;
+  android:layout_marginLeft=&amp;quot;48dp&amp;quot; // これは、offset + page_marginの値
+  android:layout_marginRight=&amp;quot;48dp&amp;quot;
+  app:cardCornerRadius=&amp;quot;16dp&amp;quot;&amp;gt;
+  ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;marginには前で定義したoffset、page_marginを足し合わせたものを指定します。&lt;/p&gt;
+
+&lt;p&gt;そして、最後に&lt;code&gt;PageTransformer&lt;/code&gt;を設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;viewpager.offscreenPageLimit = 2 // これは左右のアイテムを描画するために必要
+
+val pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin)
+val offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset)
+viewpager.setPageTransformer { page, position -&amp;gt;
+  val offset = position * (2 * offsetPx + pageMarginPx)
+  page.translationX = -offset
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PageTransformerはスクロールに応じてコールバックされる関数になります。
+この中で、&lt;code&gt;translationX&lt;/code&gt;をpositionの値に応じて動かすことで、左右のアイテムのチラ見せを実現出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-さらにscaleも変更する&#34;&gt;2. さらにScaleも変更する&lt;/h2&gt;
+
+&lt;p&gt;前述したチラ見せPageTransformerに加え、Scale用のPageTransformerも作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;viewpager.setPageTransformer(CompositePageTransformer().apply {
+  addTransformer { page, position -&amp;gt;
+    val offset = position * (2 * offsetPx + pageMarginPx)
+    page.translationX = -offset
+  }
+
+  addTransformer { page, position -&amp;gt;
+    // 6は適当な値です
+    val scale = 1 - (abs(position) / 6)
+    page.scaleX = scale
+    page.scaleY = scale
+  }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;CompositePageTransformer&lt;/code&gt;を使うことで、複数のPageTransformerをセットすることが出来ます。
+前で作ったチラ見せPageTransformerに加え、新しくScale用のPageTransformerを定義します。&lt;/p&gt;
+
+&lt;p&gt;Scale用のPageTransformer内では、&lt;code&gt;scale&lt;/code&gt;の値をpositionの値に応じて動かすことで、Scaleアニメーションを実現出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ViewPager2便利だし、もうbetaなので積極的に使っていっても良いのでは😃&lt;/li&gt;
+&lt;li&gt;実際のコードは &lt;a href=&#34;https://github.com/satoshun-android-example/ViewPager2&#34;&gt;satoshun-android/ViewPager2&lt;/a&gt;にあります。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419&#34;&gt;Look Deep Into ViewPager2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
     
     
     <item>
@@ -2009,121 +2116,6 @@ cameraView.zoomLevel = 10f
 &lt;p&gt;最後に、CameraViewを実装した結果になります。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no&#34; width=300 /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    
-    
-    <item>
-      <title>MvRxの雑な感想</title>
-      <link>https://satoshun.github.io/2019/05/mvrx-architecture/</link>
-      <pubDate>Sun, 05 May 2019 05:05:09 UTC</pubDate>
-      <author>Sato Shun</author>
-      <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
-      <description>
-
-&lt;p&gt;雑多なことを書いただけのブログになります。内容はあまりないよう〜。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/airbnb/MvRx&#34;&gt;MvRx&lt;/a&gt;はAirbnbが開発をしているOSSフレームワークです。&lt;/p&gt;
-
-&lt;p&gt;特徴としては&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Kotlinファースト&lt;/li&gt;
-&lt;li&gt;RxJavaを使っている&lt;/li&gt;
-&lt;li&gt;AAC（Android Architecture Components）をベースにしている
-
-&lt;ul&gt;
-&lt;li&gt;AACをRxJavaであったり、便利関数、クラス群で補佐している感じ&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;多くの部分でReactのAPIを参考にしてる
-
-&lt;ul&gt;
-&lt;li&gt;State、renderなど&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/airbnb/epoxy&#34;&gt;Epoxy&lt;/a&gt;と相性が良い
-
-&lt;ul&gt;
-&lt;li&gt;一緒に使うことを推奨している&lt;/li&gt;
-&lt;li&gt;ReactのComponentのように振る舞わうことが出来る&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う
-
-&lt;ul&gt;
-&lt;li&gt;副作用がない（減らしたい）&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ボイラープレートなコードを減らすことが期待できます😃&lt;/p&gt;
-
-&lt;h2 id=&#34;個人的に気になった部分-好きなとこ&#34;&gt;個人的に気になった部分、好きなとこ&lt;/h2&gt;
-
-&lt;h3 id=&#34;stateでview状態を管理するところ&#34;&gt;StateでView状態を管理するところ&lt;/h3&gt;
-
-&lt;p&gt;Stateを定義することのメリットは以下かなと思ってます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Stateを見れば、Viewの構成要素が分かる
-
-&lt;ul&gt;
-&lt;li&gt;MVPアーキテクチャのViewインターフェースのような役割を果たす&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;状態の管理が楽
-
-&lt;ul&gt;
-&lt;li&gt;Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い
-
-&lt;ul&gt;
-&lt;li&gt;MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Viewからロジックを取ることが出来る
-
-&lt;ul&gt;
-&lt;li&gt;もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;asyncがすごい良い&#34;&gt;Asyncがすごい良い&lt;/h3&gt;
-
-&lt;p&gt;MvRxではAsyncというsealed classが定義されていて、&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Uninitialized&lt;/li&gt;
-&lt;li&gt;Loading&lt;/li&gt;
-&lt;li&gt;Success&lt;/li&gt;
-&lt;li&gt;Fail&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。&lt;/p&gt;
-
-&lt;p&gt;プロジェクトに、Asyncだけ取り入れるのもアリだと思います。&lt;/p&gt;
-
-&lt;h3 id=&#34;single-eventの処理をどうするのか&#34;&gt;Single Eventの処理をどうするのか&lt;/h3&gt;
-
-&lt;p&gt;State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも
-
-&lt;ul&gt;
-&lt;li&gt;やっぱりSingle Eventの取り扱いって大変なんやなって&lt;/li&gt;
-&lt;li&gt;とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/chrisbanes/tivi&#34;&gt;Tivi&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;プロジェクトも大きく、Coroutineなども使っている&lt;/li&gt;
-&lt;li&gt;これ見れば、なんとなく肌感は分かると思います&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

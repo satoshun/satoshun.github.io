@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 17 May 2019 04:08:42 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Aug 2019 13:29:06 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/viewpager2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ViewPager2でカルーセルっぽいものを実装する</title>
+      <link>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</link>
+      <pubDate>Thu, 29 Aug 2019 13:29:06 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</guid>
+      <description>横のアイテムをチラ見せする画面をViewPager2で書けるよって話です。
+最終的にこんなのが作れます。
+では、コードを説明していきます。
+1. 横のアイテムをチラ見せする まず、ViewPager2をLayout内に定義します。
+&amp;lt;androidx.viewpager2.widget.ViewPager2 android:id=&amp;quot;@+id/viewpager&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;200dp&amp;quot; android:orientation=&amp;quot;horizontal&amp;quot; /&amp;gt;  次に、横のアイテムをどれだけチラ見せるかを定義します。
+&amp;lt;dimen name=&amp;quot;offset&amp;quot;&amp;gt;32dp&amp;lt;/dimen&amp;gt;  次に、各アイテム間にどれだけのマージンをつけるかを定義します。
+&amp;lt;dimen name=&amp;quot;page_margin&amp;quot;&amp;gt;16dp&amp;lt;/dimen&amp;gt;  次に、ViewPager2内で使うレイアウトのトップレベルのViewにmarginLeft、Rightをセットします。
+&amp;lt;com.google.android.material.card.MaterialCardView android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; android:layout_marginLeft=&amp;quot;48dp&amp;quot; // これは、offset + page_marginの値 android:layout_marginRight=&amp;quot;48dp&amp;quot; app:cardCornerRadius=&amp;quot;16dp&amp;quot;&amp;gt; ...  marginには前で定義したoffset、page_marginを足し合わせたものを指定します。
+そして、最後にPageTransformerを設定します。
+viewpager.offscreenPageLimit = 2 // これは左右のアイテムを描画するために必要 val pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin) val offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset) viewpager.setPageTransformer { page, position -&amp;gt; val offset = position * (2 * offsetPx + pageMarginPx) page.translationX = -offset }  PageTransformerはスクロールに応じてコールバックされる関数になります。 この中で、translationXをpositionの値に応じて動かすことで、左右のアイテムのチラ見せを実現出来ます。</description>
+    </item>
     
     <item>
       <title>ViewPager2 with TabLayout</title>
