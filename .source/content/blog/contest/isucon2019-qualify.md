@@ -8,7 +8,7 @@ draft = false
 thumbnail = "https://satoshun.github.io/blog/contest/isucon.png"
 +++
 
-ISUCON9にチームSsstohで参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
+ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
 
 僕がやったことをつらつらと反省とともに、ログに残して置こうと想います。
 
