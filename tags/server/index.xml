@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>server on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/server/</link>
+    <description>Recent content in server on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Wed, 11 Sep 2019 02:14:03 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/server/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ISUCON9 予選ログ</title>
+      <link>https://satoshun.github.io/2019/09/isucon2019-qualify/</link>
+      <pubDate>Wed, 11 Sep 2019 02:14:03 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/09/isucon2019-qualify/</guid>
+      <description> ISUCON9にチームSsstohで参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
+僕がやったことをつらつらと反省とともに、ログに残して置こうと想います。
+僕がやったこと  朝  寝坊しました   ISUCON起床失敗
+&amp;mdash; Sato Shun🧁 (@stsn_jp) September 7, 2019 
+ 12:00くらいまで  アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた  スコアほぼ変わらず。それはそう   12:00から  /users/transactions.jsonが遅そうだったので、そこを潰す  USERの取得などがN+1クエリだったので、それを IN句に置き換え 道中、外部APIを叩いてるところがボトルネックっぽいことに気づく  ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）  16:30くらい  /new_items/:root_category_id.json、/new_items.jsonのN+1クエリログを倒す  ここらへんで確か8000~9000くらい   17:30くらい  他の人のPRみたり、静的ファイルをNginxから返すようにしてた  ここらへんで10000~くらい   最後らへん  ログを出力しないようにしたり修正  ここらへんで最終スコアの11,860くらい    こんな感じ
+反省点  3台構成に出来なかった  練習不足で時間が足りなかったんやなって  キャンペーンモードを忘れていた  READMEはちゃんと読もうな  ログインにボトルネックがあることに気づかなかった  pprofしていこうな  SQLの書き方が記憶から失われていた  頑張っていこうな  寝坊しない  それは無理かもしれない   まとめ  本線頑張るぞ〜😃  </description>
+    </item>
+    
+  </channel>
+</rss>
