@@ -5,7 +5,7 @@ tags = ["isucon", "server"]
 blogimport = true
 type = "post"
 draft = false
-thumbnail = "/blog/contest/isucon.png"
+thumbnail = "https://satoshun.github.io/blog/contest/isucon.png"
 +++
 
 ISUCON9にチームSsstohで参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
