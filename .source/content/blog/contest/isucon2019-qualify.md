@@ -5,17 +5,17 @@ tags = ["isucon", "server"]
 blogimport = true
 type = "post"
 draft = false
-thumbnail = ""
+thumbnail = "/blog/contest/isucon.png"
 +++
 
-ISUCON9にチームSsstohで参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました。
+ISUCON9にチームSsstohで参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
 
 僕がやったことをつらつらと反省とともに、ログに残して置こうと想います。
 
 ## 僕がやったこと
 
 - 朝
- - 寝坊しました
+    - 寝坊しました
 
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ISUCON起床失敗</p>&mdash; Sato Shun🧁 (@stsn_jp) <a href="https://twitter.com/stsn_jp/status/1170138234036207616?ref_src=twsrc%5Etfw">September 7, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
