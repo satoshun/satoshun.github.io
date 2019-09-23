@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 11 Sep 2019 02:14:03 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Sep 2019 12:07:59 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android マルチモジュール: ライブラリのバージョン管理について</title>
+      <link>https://satoshun.github.io/2019/09/multi-module-dependency-management/</link>
+      <pubDate>Mon, 23 Sep 2019 12:07:59 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/09/multi-module-dependency-management/</guid>
+      <description>マルチモジュールなアプリを作ることをテーマにいくつかの記事を書いていきたいと思っています。
+まだ正確には決まっていないのですが、以下のような内容をまとめていこうと思っております。
+ ライブラリのバージョン管理について マルチモジュール構築に役立つGradleの設定 モノリシックなアプリからマルチモジュールへ 外部ライブラリとして切り出すタイミングを考える DFM、モジュール間の遷移方法 モジュールの階層について ビルドの高速化について  今回は、ライブラリのバージョン管理について書いてきます。
+ライブラリのバージョン管理？ Android開発では、Gradleで外部ライブラリの依存を定義するのが一般的です。マルチモジュールプロジェクトの場合、外部ライブラリのバージョンを合わせるため、変数のような形で定義しておくと便利です。
+変数の定義方法には、直接記述する方法を除くと、大きく2つの方法があります。
+1. Gradleのextraプロパティを使う Androidの公式ドキュメント: Configure project-wide propertiesで紹介されている方法です。 extにバージョンを定義します。
+例えば、OkHttpでは、次のように定義しています。
+buildscript { ext.versions = [ &#39;animalSniffer&#39;: &#39;1.17&#39;, &#39;assertj&#39;: &#39;3.11.0&#39;, &#39;bouncycastle&#39;: &#39;1.62&#39;, &#39;brotli&#39;: &#39;0.1.2&#39;, ... ext.deps = [ &#39;picocli&#39;: &amp;quot;info.picocli:picocli:${versions.picocli}&amp;quot;, &#39;android&#39;: &amp;quot;org.robolectric:android-all:9-robolectric-4913185-2&amp;quot;, &#39;animalSniffer&#39;: &amp;quot;org.codehaus.mojo:animal-sniffer-annotations:${versions.animalSniffer}&amp;quot;, &#39;assertj&#39;: &amp;quot;org.assertj:assertj-core:${versions.assertj}&amp;quot;, &#39;bouncycastle&#39;: &amp;quot;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&amp;quot;, &#39;brotli&#39;: &amp;quot;org.brotli:dec:${versions.brotli}&amp;quot;, ...  extプロパティにライブラリのバージョンをセットします。
+そして、次のように使います。
+dependencies { api deps.okio api deps.kotlinStdlib compileOnly deps.android compileOnly deps.conscrypt ...  メリット、デメリットをまとめると次になります。</description>
+    </item>
     
     <item>
       <title>ISUCON9 予選ログ</title>
