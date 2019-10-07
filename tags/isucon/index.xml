@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 11 Sep 2019 02:14:03 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Oct 2019 22:51:53 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/isucon/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ISUCON9 決勝参加ログ</title>
+      <link>https://satoshun.github.io/2019/10/isucon2019-final/</link>
+      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/10/isucon2019-final/</guid>
+      <description> ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D
+やったことと、反省点を簡単にまとめておきます。選択言語はGoです。
+やったこと  最初の1時間くらい  適当にブラウザから、サイトを触ってみる アプリコード読む  何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい   /api/train/searchのN+1の削除、クエリ最適化  /api/train/searchでベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った  ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない   /api/train/seatsのN+1の削除、クエリ最適化  計測の結果、次の2番目のボトルネックだった  こっちは割とスムーズに出来た   seat_masterなどのインメモリ化  insertがないテーブルをインメモリにすればいいんちゃうと思ってやった  いろいろINDEX貼ったりとか  反省点  ほんまに練習不足  Docker分かんなすぎてハゲそうだった N+1とかもっとスムーズに解決しないとね  全体的な流れを把握しようとしなかったので、もう駄目  局所的に攻めても、なかなかスコア上がんないんだよね   来年  優勝します💁  </description>
+    </item>
     
     <item>
       <title>ISUCON9 予選ログ</title>
