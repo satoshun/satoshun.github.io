@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 29 Aug 2019 13:29:06 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 13 Oct 2019 05:23:44 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/viewpager2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ViewPager2で要素をループさせる</title>
+      <link>https://satoshun.github.io/2019/10/viewpager2-loop/</link>
+      <pubDate>Sun, 13 Oct 2019 05:23:44 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/10/viewpager2-loop/</guid>
+      <description>ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。
+ViewPager2ではRecyclerViewを使うことが出来るので、RecyclerViewと同じような実装で実現することが出来ます。
+最終的にこんなのが作れます。（a、b、cの要素でループしている）
+今回の検証に用いたコードは、satoshun/ViewPager2にあります😃
+では、コードを説明していきます。今回は、1つのViewTypeを扱います。
+実際のコード まず、RecyclerView.Adapterのサイズを決めるgetItemCountメソッドの実装です。 限りなく大きい値、Int.MAX_VALUEを返します。
+override fun getItemCount(): Int = Int.MAX_VALUE  次に、onBindViewHolderメソッドを次のように実装します。
+private val itemData: List&amp;lt;Data&amp;gt; override fun onBindViewHolder(holder: InfiniteViewHolder, position: Int) { val data = itemData[position % itemData.size] ... }  itemDataにはViewの生成に必要な実際のデータが入っています。position % itemData.sizeとindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。
+最終的な、RecyclerView.Adapterは次のようになります。（onCreateViewHolderメソッドは重要でないので、省略しています）
+class InfiniteAdapter( private val itemData: List&amp;lt;Data&amp;gt; ) : RecyclerView.Adapter&amp;lt;InfiniteViewHolder&amp;gt;() { override fun getItemCount(): Int = Int.MAX_VALUE override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ... override fun onBindViewHolder(holder: InfiniteViewHolder, position: Int) { val data = itemData[position % itemData.</description>
+    </item>
     
     <item>
       <title>ViewPager2でカルーセルっぽいものを実装する</title>
