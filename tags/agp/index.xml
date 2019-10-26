@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>agp on stsnブログ</title>
@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 09 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Oct 2019 02:21:55 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/agp/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android Gradle Plugin 4.0でjava.timeがバックポートされるようになりました</title>
+      <link>https://satoshun.github.io/2019/10/desugar-java-time/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/10/desugar-java-time/</guid>
+      <description>Java 8 library desugaring in D8 and R8で、desugarがA subset of java.timeに対応したとのことで、ThreeTenABPが置き換えられるのでは？と思い、ウキウキで試してみました。
+環境は com.android.tools.build:gradle:4.0.0-alpha01になります。
+セットアップ build.gradleに、coreLibraryDesugaringEnabledを追加します。
+compileOptions { sourceCompatibility JavaVersion.VERSION_1_8 targetCompatibility JavaVersion.VERSION_1_8 coreLibraryDesugaringEnabled true }  これで完了です。
+java.timeのAPIを呼び出してみる 29, 21のエミュレーターで次のコードを試したところ、クラッシュすることなく、無事に実行することが出来ました！
+// Instant API val date = Date() val instant = date.toInstant() binding.instant.text = instant.epochSecond.toString() // ZoneId API val zoneId = ZoneId.systemDefault() binding.zoneId.text = zoneId.id println(instant.atZone(zoneId).dayOfMonth) println(instant.atZone(zoneId).month) // LocalDate API val now = LocalDate.now() binding.localDate.text = now.dayOfMonth.toString() println(now.dayOfMonth) // ZoneOffset API val zoneOffset = ZoneOffset.</description>
+    </item>
     
     <item>
       <title>Android: namespacedRClassフラグでRクラスを小さく保つ</title>

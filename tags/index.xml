@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on stsnブログ</title>
@@ -7,17 +7,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 13 Oct 2019 05:23:44 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Oct 2019 02:21:55 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>agp</title>
+      <link>https://satoshun.github.io/tags/agp/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/agp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 13 Oct 2019 05:23:44 +0000</pubDate>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>desugar</title>
+      <link>https://satoshun.github.io/tags/desugar/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/desugar/</guid>
       <description></description>
     </item>
     
@@ -540,15 +558,6 @@
       <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/ktstdlib/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>agp</title>
-      <link>https://satoshun.github.io/tags/agp/</link>
-      <pubDate>Sun, 09 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/agp/</guid>
       <description></description>
     </item>
     
