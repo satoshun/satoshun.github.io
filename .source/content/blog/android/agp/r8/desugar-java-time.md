@@ -1,6 +1,6 @@
 +++
 date = "Sat Oct 26 02:21:55 UTC 2019"
-title = "Android Gradle Plugin 4.0でjava.util.timeがバックポートされるようになりました"
+title = "Android Gradle Plugin 4.0でjava.timeがバックポートされるようになりました"
 tags = ["android", "desugar", "agp"]
 blogimport = true
 type = "post"
@@ -26,9 +26,9 @@ compileOptions {
 
 これで完了です。
 
-## java.util.timeのAPIを呼び出してみる
+## java.timeのAPIを呼び出してみる
 
-29, 21のエミュレーターで次のコードを実行したところ、クラッシュすることなく、無事に実行することが出来ました！
+29, 21のエミュレーターで次のコードを試したところ、クラッシュすることなく、無事に実行することが出来ました！
 
 ```kotlin
 // Instant API
@@ -54,15 +54,15 @@ println(zoneOffset)
 
 ## どのようにして実現しているか？
 
-apkの中身を見たところ、`java.time`パッケージ用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。
+apkの中身を見たところ、`java.time`用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。
 
 以下、apkの中身になります。
 
 <img src="/blog/android/agp/r8/desugar-time-apk.png" width="100%" />
 
-`java.util.time` は `j$.time`に変換されていました。
+`java.time` は `j$.time`に変換されていました。
 
-また、`Date#toInstant`など、既存クラスに新しく追加された`date.util.time`のAPIも使えます。R8のコードを読んだところ、おそらく次のAPIが対応しています。
+また、`Date#toInstant`など、既存クラスに新しく追加された`date.time`のAPIも使えます。R8のコードを読んだところ、おそらく次のAPIが対応しています。
 
 ```
 "retarget_lib_member": {
@@ -74,18 +74,18 @@ apkの中身を見たところ、`java.time`パッケージ用のバックポー
 },
 ```
 
-ここらへんのAPIが使えるのは便利そうです。
+このあたりのAPIが使えるのは便利そうです。
 
 ## ThreeTenABPへの置き換え
 
-バックポートされた`j$.time`のクラスと、`ThreeTenABP`のクラスを比較したところ、ほとんどの同じクラスが含まれていたので、問題なく置き換えが出来ると思います。
+バックポートされた`j$.time`のクラスと、`ThreeTenABP`のクラスを比較したところ、ほとんどのクラスが同じだったので、パッケージパスを変えるだけで、問題なく置き換えが出来ると思います。
 ただもちろん、パフォーマンス、バグなどの問題はある可能性があります。
 
 ## まとめ
 
-- 新しく追加されたdesugarを使うと、低いminversionでも`java.util.time`が使えるようになります😃
+- 新しく追加されたdesugarを使うと、低いminversionでも`java.time`が使えるようになります😃
 - 簡単に使える!!
 - ThreeTenABPの置き換えも簡単に出来そう
 - ただ、正式4.0のリリースはまだ先...
 
-今回の検証に用いたサンプルコードは[DesugarTimeFragment.kt](https://github.com/satoshun-android-example/AndroidStudioFeature/blob/master/app/src/main/java/com/github/satoshun/example/desugartime/DesugarTimeFragment.kt)にあります:D
+今回の検証に用いたサンプルコードは [DesugarTimeFragment.kt](https://github.com/satoshun-android-example/AndroidStudioFeature/blob/master/app/src/main/java/com/github/satoshun/example/desugartime/DesugarTimeFragment.kt) にあります:D
