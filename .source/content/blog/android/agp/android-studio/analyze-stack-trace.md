@@ -7,8 +7,11 @@ type = "post"
 draft = false
 +++
 
-テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようにする方法です。
-Firebaseのクラッシュログを例にして説明してきます。
+[Android Studio: Debugging Tips n' Tricks (Android Dev Summit '19)](https://youtu.be/rjlhSDhFwzM?t=1043)で、便利な機能があったので、それの紹介です。
+
+---
+
+テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
 
 まず、 Firebaseからクラッシュログをコピーします。
 
