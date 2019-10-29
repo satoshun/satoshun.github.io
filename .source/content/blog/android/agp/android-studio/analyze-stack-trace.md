@@ -1,6 +1,6 @@
 +++
 date = "Tue Oct 29 01:32:36 UTC 2019"
-title = "Android Studio: Firebaseなどのクラッシュログをダンプして関数ジャンプできるようにする"
+title = "Android Studio: Firebaseなどのクラッシュログから関数ジャンプできるようにする"
 tags = ["android", "androidstudio", "agp"]
 blogimport = true
 type = "post"
