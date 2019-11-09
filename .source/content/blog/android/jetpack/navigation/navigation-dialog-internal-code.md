@@ -1,18 +1,18 @@
 +++
 date = "Sat Nov  9 06:23:13 UTC 2019"
-title = "Android: Navigationのdialogタグ周りのコードちょっと読んでみた]
+title = "Android: Navigationのdialogタグ周りのコードちょっと読んでみた"
 tags = ["android", "jetpack", "navigation"]
 blogimport = true
 type = "post"
 draft = false
 +++
 
-Navigation Component 2.1.0からdialogタグが使えるようなりました。
+Navigation Component 2.1.0からdialogタグが使えるようになりました。
 どんな感じで処理をしているのか気になったので、ざっくりとメモ書き。
 
 ## 1. abstract Navigatorクラス
 
-このクラスは最終的にどのようにして、対象クラスをnavigateするかを決めるためのクラスです。
+このクラスは最終的にどのように、対象クラスをnavigateされるかを決めるクラスです。
 Activityなら、ActivityNavigator。FragmentならFragmentNavigatorが使われます。
 dialogの場合は、DialogFragmentNavigator経由でdialogが発火するようになっています。
 
@@ -71,6 +71,8 @@ public NavDestination navigate(@NonNull final Destination destination, @Nullable
 2. argumentsのセット
 3. ダイアログが終了したかどうかをハンドリングするために、ライフサイクルに登録
 4. DialogFragment#showをコールして、ダイアログを出す
+
+これでDialogFragmentを起動しています。
 
 ## まとめ
 
