@@ -7,34 +7,12 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-<<<<<<< HEAD
-    <lastBuildDate>Tue, 29 Oct 2019 01:32:36 +0000</lastBuildDate>
-||||||| merged common ancestors
-    <lastBuildDate>Sat, 26 Oct 2019 02:21:55 +0000</lastBuildDate>
-=======
     <lastBuildDate>Sat, 09 Nov 2019 06:23:13 +0000</lastBuildDate>
->>>>>>> publish
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-<<<<<<< HEAD
-      <title>Android Studio: Firebaseなどのクラッシュログから関数ジャンプできるようにする</title>
-      <link>https://satoshun.github.io/2019/10/analyze-stack-trace/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
-      <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
-テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
-まず、 Firebaseからクラッシュログをコピーします。
-次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
-そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
-    </item>
-    
-    <item>
-||||||| merged common ancestors
-=======
       <title>Android: Navigationのdialogタグ周りのコードちょっと読んでみた</title>
       <link>https://satoshun.github.io/2019/11/navigation-dialog-internal-code/</link>
       <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
@@ -48,7 +26,19 @@
     </item>
     
     <item>
->>>>>>> publish
+      <title>Android Studio: Firebaseなどのクラッシュログから関数ジャンプできるようにする</title>
+      <link>https://satoshun.github.io/2019/10/analyze-stack-trace/</link>
+      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
+      <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
+テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
+まず、 Firebaseからクラッシュログをコピーします。
+次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
+そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
+    </item>
+    
+    <item>
       <title>Android Gradle Plugin 4.0でjava.timeがバックポートされるようになりました</title>
       <link>https://satoshun.github.io/2019/10/desugar-java-time/</link>
       <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>

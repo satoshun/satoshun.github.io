@@ -7,72 +7,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-<<<<<<< HEAD
-    <lastBuildDate>Tue, 29 Oct 2019 01:32:36 +0000</lastBuildDate>
-||||||| merged common ancestors
-    <lastBuildDate>Sat, 26 Oct 2019 02:21:55 +0000</lastBuildDate>
-=======
     <lastBuildDate>Sat, 09 Nov 2019 06:23:13 +0000</lastBuildDate>
->>>>>>> publish
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-<<<<<<< HEAD
-      <title>agp</title>
-      <link>https://satoshun.github.io/tags/agp/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-||||||| merged common ancestors
-      <title>agp</title>
-      <link>https://satoshun.github.io/tags/agp/</link>
-      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
-=======
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
       <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
->>>>>>> publish
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
-<<<<<<< HEAD
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-||||||| merged common ancestors
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
-=======
       <title>jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
       <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
->>>>>>> publish
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
     </item>
     
     <item>
-<<<<<<< HEAD
-      <title>androidstudio</title>
-      <link>https://satoshun.github.io/tags/androidstudio/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/androidstudio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>desugar</title>
-      <link>https://satoshun.github.io/tags/desugar/</link>
-||||||| merged common ancestors
-      <title>desugar</title>
-      <link>https://satoshun.github.io/tags/desugar/</link>
-=======
       <title>navigation</title>
       <link>https://satoshun.github.io/tags/navigation/</link>
       <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
@@ -84,10 +42,18 @@
     <item>
       <title>agp</title>
       <link>https://satoshun.github.io/tags/agp/</link>
->>>>>>> publish
-      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/agp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>androidstudio</title>
+      <link>https://satoshun.github.io/tags/androidstudio/</link>
+      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/androidstudio/</guid>
       <description></description>
     </item>
     
