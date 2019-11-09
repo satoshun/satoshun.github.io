@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 13 Oct 2019 05:23:44 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Nov 2019 06:23:13 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: Navigationのdialogタグ周りのコードちょっと読んでみた</title>
+      <link>https://satoshun.github.io/2019/11/navigation-dialog-internal-code/</link>
+      <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/11/navigation-dialog-internal-code/</guid>
+      <description>Navigation Component 2.1.0からdialogタグが使えるようになりました。 どんな感じで処理をしているのか気になったので、ざっくりとメモ書き。
+1. abstract Navigatorクラス このクラスは最終的にどのように、対象クラスをnavigateされるかを決めるクラスです。 Activityなら、ActivityNavigator。FragmentならFragmentNavigatorが使われます。 dialogの場合は、DialogFragmentNavigator経由でdialogが発火するようになっています。
+2. NavInlaterでdialogタグの場合、DialogFragmentNavigatorを使うようにしている NavInflaterは単純なXMLパーサーになっています。を発見したら、DialogFragmentNavigatorからNavDestinationを作成するようになっています。 このNavDestinationは実際にコールされるときに、DialogFragmentNavigatorを呼び出すような仕組みなっています。
+3. DialogFragmentNavigatorの中身 一部分を抜粋します。
+/* * Copyright 2019 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
     
     <item>
       <title>ViewPager2で要素をループさせる</title>

@@ -7,30 +7,57 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
+<<<<<<< HEAD
     <lastBuildDate>Tue, 29 Oct 2019 01:32:36 +0000</lastBuildDate>
+||||||| merged common ancestors
+    <lastBuildDate>Sat, 26 Oct 2019 02:21:55 +0000</lastBuildDate>
+=======
+    <lastBuildDate>Sat, 09 Nov 2019 06:23:13 +0000</lastBuildDate>
+>>>>>>> publish
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+<<<<<<< HEAD
       <title>agp</title>
       <link>https://satoshun.github.io/tags/agp/</link>
       <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/agp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
+||||||| merged common ancestors
+      <title>agp</title>
+      <link>https://satoshun.github.io/tags/agp/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+=======
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
+      <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
+>>>>>>> publish
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
+<<<<<<< HEAD
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
+||||||| merged common ancestors
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+=======
+      <title>jetpack</title>
+      <link>https://satoshun.github.io/tags/jetpack/</link>
+      <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
+>>>>>>> publish
+      
+      <guid>https://satoshun.github.io/tags/jetpack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+<<<<<<< HEAD
       <title>androidstudio</title>
       <link>https://satoshun.github.io/tags/androidstudio/</link>
       <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
@@ -42,18 +69,34 @@
     <item>
       <title>desugar</title>
       <link>https://satoshun.github.io/tags/desugar/</link>
-      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+||||||| merged common ancestors
+      <title>desugar</title>
+      <link>https://satoshun.github.io/tags/desugar/</link>
+=======
+      <title>navigation</title>
+      <link>https://satoshun.github.io/tags/navigation/</link>
+      <pubDate>Sat, 09 Nov 2019 06:23:13 +0000</pubDate>
       
-      <guid>https://satoshun.github.io/tags/desugar/</guid>
+      <guid>https://satoshun.github.io/tags/navigation/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>jetpack</title>
-      <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sun, 13 Oct 2019 05:23:44 +0000</pubDate>
+      <title>agp</title>
+      <link>https://satoshun.github.io/tags/agp/</link>
+>>>>>>> publish
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
       
-      <guid>https://satoshun.github.io/tags/jetpack/</guid>
+      <guid>https://satoshun.github.io/tags/agp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>desugar</title>
+      <link>https://satoshun.github.io/tags/desugar/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/desugar/</guid>
       <description></description>
     </item>
     
@@ -387,15 +430,6 @@
       <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>navigation</title>
-      <link>https://satoshun.github.io/tags/navigation/</link>
-      <pubDate>Fri, 15 Feb 2019 00:14:56 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/navigation/</guid>
       <description></description>
     </item>
     
