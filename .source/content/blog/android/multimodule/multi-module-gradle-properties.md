@@ -7,29 +7,46 @@ type = "post"
 draft = true
 +++
 
-マルチモジュールなアプリを作ることをテーマにいくつかの記事を書いていきたいと思っています。
+マルチモジュールなアプリを作ることをテーマにブログを書いていこうの、2本目です。
 
-マルチモジュール環境における便利なGradleプロパティについて紹介します。
+1本目はこちらになります。
 
-## resourcePrefix
+- [Android マルチモジュール: ライブラリのバージョン管理について](https://satoshun.github.io/2019/09/multi-module-dependency-management/)
 
-[resourcePrefix](https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.LibraryExtension.html#com.android.build.gradle.LibraryExtension:resourcePrefix)は、リソースファイルのプレフィックスに制限を掛けるプロパティです。
+今回は、マルチモジュール環境における便利なGradleの設定について、以下の4つを紹介します。
 
-例えば、次のように書くと、このモジュール内のリソースファイル（Layout、Drawableなど）は`home_`から始まる必要があります。
+- モジュール内のリソース名にルールを持たせる
+- BuildConfigを作らない
+-
+
+## モジュール内のリソース名にルールを持たせる
+
+[resourcePrefix](https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.LibraryExtension.html#com.android.build.gradle.LibraryExtension:resourcePrefix)は、リソース名のプレフィックスにルールを設けるプロパティです。
+
+例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）は`home_`から始まる必要があります。
 
 ```groovy
+// build.gradle
 android {
+  ...
   resourcePrefix 'home_'
 }
+
+// strings.xml
+<resource>
+  <string name="hoge_app_name">Hoge</string>
+</resource>
 ```
 
-これを定義することで、リソースファイルがどのモジュールで定義されているかを、名前から予想することが可能になります。
+これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
 
-## generateBuildConfigProvider
+
+## BuildConfigを作らない
 
 モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、[uber/AudoDispose](https://github.com/uber/AutoDispose/blob/1.4.0/build.gradle#L229)では、次のように設定しています。
 
 ```groovy
+// build.gradle
 project.android {
   libraryVariants.all {
     it.generateBuildConfigProvider.configure {
@@ -39,5 +56,52 @@ project.android {
 }
 ```
 
-僕の経験的に、BuildConfigが必要なモジュールは多くないので、不要なモジュールに対してつけておくと良いと思います。
+モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 
+
+## モジュール内でProGuard/R8の設定をする
+
+[consumerProguardFiles](https://developer.android.com/studio/projects/android-library#Considerations)を使います。
+
+例えば、次のように使うことが出来ます。
+
+```groovy
+// build.gradle
+android {
+  defaultConfig {
+    consumerProguardFiles 'consumer-rules.pro'
+  }
+}
+
+// consumer-rules.pro
+-keep class * implements com.google.gson.TypeAdapterFactory
+```
+
+このように書くことで、ProGuardを有効にしてビルドした時に、`consumer-rules.pro`の設定も考慮して、実行をしてくれます。
+
+
+## Rファイルを小さく保つ
+
+R.javaは依存関係にあるモジュールのR.javaを、マージしていくような動作をするため、マルチモジュール環境だと各モジュール内で生成されるR.javaのサイズが馬鹿にならないことがあります。そこで、gradle.propertiesに次の設定をすることで、モジュールのR.javaのサイズを抑えることが出来ます。
+
+```text
+// gradle.properties
+android.namespacedRClass=true
+```
+
+[Jake Wharton/Twitter](https://twitter.com/JakeWharton/status/1032396431787794432)がここで書いてるんですが、debugビルドで約20%のフィールドを削減することが出来たようです。
+
+注意としては、各モジュールで、マージされた大きなR.javaが生成されなくなるため、次のようにimport文を書き直さなければいけない点です。
+
+```kotlin
+import com.jakewharton.sdksearch.roboto.R as RobotoR
+```
+[SdkSearchのコード](https://github.com/JakeWharton/SdkSearch/blob/abb9ee2845382fd8448fe4831d1911a01c1976b2/search/ui-android/src/main/java/com/jakewharton/sdksearch/search/ui/SearchUiBinder.kt#L21)
+
+また、experimentalなフラグなので、今後挙動が変わる可能性があります。
+
+
+## まとめ
+
+- ざっと4つの設定を紹介しました😃
+- 他に何かあれば教えていただけると幸いでございます:D
