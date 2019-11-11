@@ -23,7 +23,7 @@
  Android マルチモジュール: ライブラリのバージョン管理について  今回は、マルチモジュール環境における、Gradle周りの便利であろう設定について、次の4つを紹介します。
  モジュール内のリソース名にルールを持たせる BuildConfigを作らない モジュール内でProGuard/R8の設定をする Rファイルを小さく保つ  モジュール内のリソース名にルールを持たせる resourcePrefixは、リソース名のプレフィックスにルールを設けるプロパティです。
 例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）はhome_から始まる必要があります。
-// build.gradle android { ... resourcePrefix &#39;home_&#39; } // strings.xml &amp;lt;resource&amp;gt; // home_から始まる必要がある &amp;lt;string name=&amp;quot;hoge_app_name&amp;quot;&amp;gt;Hoge&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt;  これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
+// build.gradle android { ... resourcePrefix &#39;home_&#39; } // strings.xml &amp;lt;resource&amp;gt; // home_から始まる必要がある &amp;lt;string name=&amp;quot;home_app_name&amp;quot;&amp;gt;適当な文字列&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt;  これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
 BuildConfigを作らない モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、uber/AudoDisposeでは、次のように設定しています。
 // build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } }  モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。

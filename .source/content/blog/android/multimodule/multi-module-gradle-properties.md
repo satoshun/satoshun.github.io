@@ -36,7 +36,7 @@ android {
 // strings.xml
 <resource>
   // home_から始まる必要がある
-  <string name="hoge_app_name">Hoge</string>
+  <string name="home_app_name">適当な文字列</string>
 </resource>
 ```
 
