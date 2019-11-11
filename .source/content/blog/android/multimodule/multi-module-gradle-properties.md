@@ -1,6 +1,6 @@
 +++
 date = "Mon Nov 11 00:50:18 UTC 2019"
-title = "Android マルチモジュール: Gradle周りの便利な設定"
+title = "Android マルチモジュール: Gradle周りで便利だと思う設定"
 tags = ["android", "multimodule", "gradle"]
 blogimport = true
 type = "post"
