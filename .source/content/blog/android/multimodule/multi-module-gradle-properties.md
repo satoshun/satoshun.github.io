@@ -1,10 +1,10 @@
 +++
-date = "Mon Sep 23 12:07:59 UTC 2019"
-title = "Android マルチモジュール: Gradleプロパティについて"
+date = "Mon Nov 11 00:50:18 UTC 2019"
+title = "Android マルチモジュール: Gradle周りの便利な設定"
 tags = ["android", "multimodule", "gradle"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 マルチモジュールなアプリを作ることをテーマにブログを書いていこうの、2本目です。
@@ -13,11 +13,12 @@ draft = true
 
 - [Android マルチモジュール: ライブラリのバージョン管理について](https://satoshun.github.io/2019/09/multi-module-dependency-management/)
 
-今回は、マルチモジュール環境における便利なGradleの設定について、以下の4つを紹介します。
+今回は、マルチモジュール環境における、Gradle周りの便利であろう設定について、次の4つを紹介します。
 
 - モジュール内のリソース名にルールを持たせる
 - BuildConfigを作らない
--
+- モジュール内でProGuard/R8の設定をする
+- Rファイルを小さく保つ
 
 ## モジュール内のリソース名にルールを持たせる
 
@@ -34,6 +35,7 @@ android {
 
 // strings.xml
 <resource>
+  // home_から始まる必要がある
   <string name="hoge_app_name">Hoge</string>
 </resource>
 ```
@@ -61,9 +63,9 @@ project.android {
 
 ## モジュール内でProGuard/R8の設定をする
 
-[consumerProguardFiles](https://developer.android.com/studio/projects/android-library#Considerations)を使います。
+[consumerProguardFiles](https://developer.android.com/studio/projects/android-library#Considerations)を使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
 
-例えば、次のように使うことが出来ます。
+例えば、次のように使います。
 
 ```groovy
 // build.gradle
@@ -77,7 +79,7 @@ android {
 -keep class * implements com.google.gson.TypeAdapterFactory
 ```
 
-このように書くことで、ProGuardを有効にしてビルドした時に、`consumer-rules.pro`の設定も考慮して、実行をしてくれます。
+このように書くことで、ProGuardを有効にしてビルドした時に、`consumer-rules.pro`の設定も考慮して、コード最適化を行ってくれます。
 
 
 ## Rファイルを小さく保つ
@@ -89,16 +91,16 @@ R.javaは依存関係にあるモジュールのR.javaを、マージしてい�
 android.namespacedRClass=true
 ```
 
-[Jake Wharton/Twitter](https://twitter.com/JakeWharton/status/1032396431787794432)がここで書いてるんですが、debugビルドで約20%のフィールドを削減することが出来たようです。
+[Jake Wharton/Twitter](https://twitter.com/JakeWharton/status/1032396431787794432)に書いてあるのですが、debugビルドで約20%のフィールドを削減することが出来たようです。
 
 注意としては、各モジュールで、マージされた大きなR.javaが生成されなくなるため、次のようにimport文を書き直さなければいけない点です。
 
 ```kotlin
 import com.jakewharton.sdksearch.roboto.R as RobotoR
 ```
-[SdkSearchのコード](https://github.com/JakeWharton/SdkSearch/blob/abb9ee2845382fd8448fe4831d1911a01c1976b2/search/ui-android/src/main/java/com/jakewharton/sdksearch/search/ui/SearchUiBinder.kt#L21)
+[SdkSearch/SearchUiBinder](https://github.com/JakeWharton/SdkSearch/blob/abb9ee2845382fd8448fe4831d1911a01c1976b2/search/ui-android/src/main/java/com/jakewharton/sdksearch/search/ui/SearchUiBinder.kt#L21)
 
-また、experimentalなフラグなので、今後挙動が変わる可能性があります。
+また、この設定は、experimentalなフラグなので、今後挙動が変わる可能性があります。
 
 
 ## まとめ
