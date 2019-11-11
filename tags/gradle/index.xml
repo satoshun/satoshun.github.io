@@ -7,10 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 23 Sep 2019 12:07:59 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Nov 2019 00:50:18 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android マルチモジュール: Gradle周りの便利な設定</title>
+      <link>https://satoshun.github.io/2019/11/multi-module-gradle-properties/</link>
+      <pubDate>Mon, 11 Nov 2019 00:50:18 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/11/multi-module-gradle-properties/</guid>
+      <description>マルチモジュールなアプリを作ることをテーマにブログを書いていこうの、2本目です。
+1本目はこちらになります。
+ Android マルチモジュール: ライブラリのバージョン管理について  今回は、マルチモジュール環境における、Gradle周りの便利であろう設定について、次の4つを紹介します。
+ モジュール内のリソース名にルールを持たせる BuildConfigを作らない モジュール内でProGuard/R8の設定をする Rファイルを小さく保つ  モジュール内のリソース名にルールを持たせる resourcePrefixは、リソース名のプレフィックスにルールを設けるプロパティです。
+例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）はhome_から始まる必要があります。
+// build.gradle android { ... resourcePrefix &#39;home_&#39; } // strings.xml &amp;lt;resource&amp;gt; // home_から始まる必要がある &amp;lt;string name=&amp;quot;hoge_app_name&amp;quot;&amp;gt;Hoge&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt;  これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
+BuildConfigを作らない モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、uber/AudoDisposeでは、次のように設定しています。
+// build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } }  モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
+モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
+例えば、次のように使います。
+// build.gradle android { defaultConfig { consumerProguardFiles &#39;consumer-rules.pro&#39; } } // consumer-rules.pro -keep class * implements com.</description>
+    </item>
     
     <item>
       <title>Android マルチモジュール: ライブラリのバージョン管理について</title>
