@@ -86,7 +86,7 @@ android {
 
 R.javaは依存関係にあるモジュールのR.javaを、マージしていくような動作をするため、マルチモジュール環境だと各モジュール内で生成されるR.javaのサイズが馬鹿にならないことがあります。そこで、gradle.propertiesに次の設定をすることで、モジュールのR.javaのサイズを抑えることが出来ます。
 
-```text
+```groovy
 // gradle.properties
 android.namespacedRClass=true
 ```
