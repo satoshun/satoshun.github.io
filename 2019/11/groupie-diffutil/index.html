@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Android: Groupieの内部でやっている差分更新周りの話">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2019-11-21">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2019/11/groupie-diffutil/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="recyclerview">
+  
+    <meta property="og:tags" content="groupie">
+  
+
+  <meta property="twitter:title" content="Android: Groupieの内部でやっている差分更新周りの話">
+
+  
+  <meta property="twitter:description" content="
+
+GroupieにはGroupAdapter#updateメソッドという便利なメソッドがあります。
+
+この記事ではupdateメソッドをコールした時に、どのよ …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Android: Groupieの内部でやっている差分更新周りの話  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Android: Groupieの内部でやっている差分更新周りの話</h1>
+    
+    <span class="post-date">Created at Thu, Nov 21, 2019</span>
+    
+    
+
+<p>Groupieには<code>GroupAdapter#update</code>メソッドという便利なメソッドがあります。</p>
+
+<p>この記事では<code>update</code>メソッドをコールした時に、どのように差分更新されるかを、簡単な説明と実際に動かしてみて見ていきます。</p>
+
+<h2 id="そもそもrecyclerviewの差分更新って何よ">そもそもRecyclerViewの差分更新って何よ</h2>
+
+<p>RecyclerViewでは、DiffUtil.Callbackクラスを実装することで、前のAdapterの状態と、新しいAdapterの状態の差分を計算することが出来ます。その計算結果をもとに、RecyclerViewでは効率的にViewを更新してくれます。またいい感じにアニメーションを実行してくれます。</p>
+
+<p>Groupieでは、内部で<code>DiffUtil.Callback</code>を実装した<code>DiffCallback</code>クラスがあり、そのクラスをもとに差分更新が行われます。</p>
+
+<h2 id="diffcallbackクラスの実装を見ていく">DiffCallbackクラスの実装を見ていく</h2>
+
+<p>まずは<code>areItemsTheSame</code>メソッドから。<code>areItemsTheSame</code>メソッドは、Itemが同一かどうかを判定します。</p>
+
+<pre><code class="language-java">@Override
+public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+    return newItem.isSameAs(oldItem);
+}
+</code></pre>
+
+<p>まず、1つ前のItemと新しいItemを取ってきて、<code>newItem.isSameAs(oldItem);</code>をコールしています。</p>
+
+<p><code>isSameAs</code>メソッドは次の定義になっています。</p>
+
+<pre><code class="language-java">public boolean isSameAs(Item other) {
+    if (getViewType() != other.getViewType()) {
+        return false;
+    }
+    return getId() == other.getId();
+}
+</code></pre>
+
+<p>ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。</p>
+
+<p>Idは、Itemクラスのコンストラクタから与えることが出来ます。</p>
+
+<pre><code class="language-java">protected Item(long id) {
+    this.id = id;
+}
+</code></pre>
+
+<p>なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。
+例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。</p>
+
+<hr />
+
+<p>次に、<code>areContentsTheSame</code>メソッド。<code>areContentsTheSame</code>メソッドは、このItemの内容が同じかどうかを判定します。</p>
+
+<pre><code class="language-java">@Override
+public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+    return newItem.hasSameContentAs(oldItem);
+}
+</code></pre>
+
+<p>1つ前のItemと新しいItemを取ってきて、<code>newItem.hasSameContentAs(oldItem);</code>をコールしています。</p>
+
+<pre><code class="language-java">public boolean hasSameContentAs(Item other) {
+    return this.equals(other);
+}
+</code></pre>
+
+<p>デフォルトでは、<code>Object#equals</code>メソッドをコールしているので、同一のインスタンスかどうかで、Itemの内容が同じかどうかを判定しています。
+Itemのインスタンスが変わったらfalseを返し、Itemの内容が変わっても、同一インスタンスならtrueを返します。</p>
+
+<p>なので、基本的には<code>hasSameContentAs</code>ないし、<code>equals</code>メソッドをoverrideしたほうが良いです。</p>
+
+<p>Kotlinなら、data classで定義するのも手です。equalsを自動で実装してくれるからです。</p>
+
+<pre><code class="language-kotlin">data class HogeItem(model, id) : Item&lt;...&gt;(id) ...
+</code></pre>
+
+<hr />
+
+<p>最後に、<code>getChangePayload</code>メソッド。<code>getChangePayload</code>メソッドは、Itemの差分を計算して、payloadを求めます。</p>
+
+<pre><code class="language-java">public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
+    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
+    return oldItem.getChangePayload(newItem);
+}
+</code></pre>
+
+<p>1つ前のItemと新しいItemを取ってきて、<code>newItem.getChangePayload(oldItem);</code>をコールしています。</p>
+
+<pre><code class="language-java">public Object getChangePayload(Item newItem) {
+    return null;
+}
+</code></pre>
+
+<p>デフォルトでは、nullを返しており、payloadの計算は行われません。ここでいい感じにpayloadを計算してあげると、効率よく差分更新が出来ます。</p>
+
+<h2 id="ケースごとに動作を見てみる">ケースごとに動作を見てみる</h2>
+
+<p>今までのを踏まえて、いろいろなケースでどのように動作するかを見ていきます。</p>
+
+<h3 id="違うid-インスタンスを毎回生成する">違うid &amp;&amp; インスタンスを毎回生成する</h3>
+
+<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  fun update() {
+    update(listOf(BasicItem())) // 毎回新しく生成する &amp;&amp; idは毎回違う
+  }
+}
+
+class BasicItem : Item&lt;GroupieViewHolder&gt;()
+</code></pre>
+
+<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
+
+<p>Itemが点滅しているのが分かります。これは、Idが毎回異なるので、<code>areItemsTheSame</code>がfalseを返すためです。この場合、Viewは再利用されません。</p>
+
+<h3 id="同じid-インスタンスを毎回生成する-equalsなどを実装しない">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsなどを実装しない</h3>
+
+<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  fun update() {
+    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
+  }
+}
+
+class BasicItem(id: Long) : Item&lt;GroupieViewHolder&gt;(id)
+</code></pre>
+
+<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
+
+<p>この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、<code>areContentsTheSame</code>がfalseを返すためです。
+<code>areContentsTheSame</code>がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。</p>
+
+<h3 id="同じid-インスタンスを毎回生成する-equalsを実装して-trueを返す">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
+
+<pre><code>class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  fun update() {
+    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
+  }
+}
+
+// dataクラスなのでequalsが実装される
+data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
+</code></pre>
+
+<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
+
+<p>この場合は、Itemが点滅していないのが分かります。これは、<code>areItemsTheSame</code>と<code>areContentsTheSame</code>がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、<code>areContentsTheSame</code>がtrueなので、Viewの中身を更新する必要がないためです。</p>
+
+<p>多くの処理をスキップ、再利用することが出来ます。</p>
+
+<h3 id="同じidを渡す-インスタンスを毎回生成する-getchangepayloadを実装する">同じidを渡す &amp;&amp; インスタンスを毎回生成する &amp;&amp; getChangePayloadを実装する</h3>
+
+<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  fun update() {
+    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
+  }
+}
+
+class BasicItem(id: Long) : Item&lt;GroupieViewHolder&gt;(id) {
+  ...
+  override fun getChangePayload(newItem: Item&lt;*&gt;): Any? {
+    return newItem.id // 今回はサンプルなので適当な実装
+  }
+}
+</code></pre>
+
+<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
+
+<p>この場合も、Itemが点滅していないのが分かります。これは、<code>areContentsTheSame</code>はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、<code>areContentsTheSame</code>がfalseなので、Viewの中身を更新する必要があるためです。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<ul>
+<li>Groupie（RecyclerView）で効率的に差分更新をしたいなら、以下の3点を考慮する必要があります
+
+<ul>
+<li><code>areItemsTheSame</code>メソッド: Itemのidに一意な値を渡す</li>
+<li><code>areContentsTheSame</code>メソッド: data classにする または equalsメソッドの実装 または <code>hasSameContentAs</code>メソッドを実装する</li>
+<li><code>getChangePayload</code>メソッド: 古いItemと新しいItemのどこが差分なのかを計算して、適切なpayloadを返す</li>
+</ul></li>
+<li>本文中では触れてないんですが、RecyclerViewがデフォルトで使う、DefaultItemAnimatorの設定を変えることで、ここらへんの挙動を変えることが出来ます
+
+<ul>
+<li>例えば、supportsChangeAnimationsをfalseすると、<code>getChangePayload</code>を実装していなくても、Viewが再利用されるようになります</li>
+</ul></li>
+</ul>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/recyclerview">recyclerview</a></li>
+        
+          <li><a href="/tags/groupie">groupie</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>
