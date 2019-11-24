@@ -56,17 +56,6 @@ pre {
  * out above content in mobile and later moves to the side with wider viewports.
  */
 
-.sidebar {
-  padding: 6px 0;
-  position: relative;
-  color: rgba(255,255,255,.95);
-  background-color: #000;
-}
-
-.sidebar-footer {
-  text-align: center;
-}
-
 .center {
   margin: 0 auto;
 }
@@ -84,73 +73,6 @@ pre {
   text-align: center;
 }
 
-/* Sidebar links */
-.sidebar a {
-  color: #fff;
-}
-
-/* About section */
-.sidebar-unit {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.sidebar-about h1 {
-  color: #fff;
-  margin-top: 0;
-  font-weight:300;
-}
-
-/* Sidebar nav */
-.sidebar-nav {
-  list-style: none;
-  text-align: center;
-}
-.sidebar-sub {
-  background-color: rgb(34,34,34);
-}
-
-.sidebar-nav li {
-  display: inline-block;
-  padding: 0 1.5em;
-}
-
-@media (min-width: 550px) {
-  .sidebar-nav {
-    margin: auto;
-    padding: .5em 1.0em;
-  }
-
-  .presentation-slide {
-    width: 100%;
-    height: 600px;
-  }
-}
-
-@media (max-width: 550px) {
-  .presentation-slide {
-    width: 100%;
-    height: 400px;
-  }
-
-  .sidebar-nav {
-    padding: 0;
-    margin: 0;
-  }
-
-  .sidebar-nav li {
-    padding: 0 .6em;
-  }
-
-  .sidebar-sticky {
-    text-align: center;
-  }
-}
-
-.sidebar-nav {
-  padding-left: 0;
-}
-
 .clearfix:after {
   content: "";
   display: table;
@@ -160,33 +82,6 @@ pre {
 .subnav {
   list-style: none;
   padding-left: 0;
-}
-
-.sidebar-nav-item {
-  display: block;
-}
-a.sidebar-nav-item:hover,
-a.sidebar-nav-item:focus {
-  text-decoration: underline;
-}
-.sidebar-nav-item.active {
-  font-weight: bold;
-}
-
-/* Sticky sidebar
- *
- * Add the `sidebar-sticky` class to the sidebar's container to affix it the
- * contents to the bottom of the sidebar in tablets and up.
- */
-
-@media (min-width: 48rem) {
-  .sidebar-sticky {
-    font-size: 1.2rem;
-  }
-}
-
-.sidebar-sticky {
-  position: relative;
 }
 
 /* Container
@@ -257,89 +152,6 @@ a.sidebar-nav-item:focus {
     margin-left: 4rem;
     margin-right: 22rem;
   }
-}
-
-
-
-/*
- * Themes
- *
- * As of v1.1, Hyde includes optional themes to color the sidebar and links
- * within blog posts. To use, add the class of your choosing to the `body`.
- */
-
-/* Base16 (http://chriskempson.github.io/base16/#default) */
-
-/* Red */
-.theme-base-08 .sidebar {
-  background-color: #ac4142;
-}
-.theme-base-08 .content a,
-.theme-base-08 .related-posts li a:hover {
-  color: #ac4142;
-}
-
-/* Orange */
-.theme-base-09 .sidebar {
-  background-color: #d28445;
-}
-.theme-base-09 .content a,
-.theme-base-09 .related-posts li a:hover {
-  color: #d28445;
-}
-
-/* Yellow */
-.theme-base-0a .sidebar {
-  background-color: #f4bf75;
-}
-.theme-base-0a .content a,
-.theme-base-0a .related-posts li a:hover {
-  color: #f4bf75;
-}
-
-/* Green */
-.theme-base-0b .sidebar {
-  background-color: #90a959;
-}
-.theme-base-0b .content a,
-.theme-base-0b .related-posts li a:hover {
-  color: #90a959;
-}
-
-/* Cyan */
-.theme-base-0c .sidebar {
-  background-color: #75b5aa;
-}
-.theme-base-0c .content a,
-.theme-base-0c .related-posts li a:hover {
-  color: #75b5aa;
-}
-
-/* Blue */
-.theme-base-0d .sidebar {
-  background-color: #6a9fb5;
-}
-.theme-base-0d .content a,
-.theme-base-0d .related-posts li a:hover {
-  color: #6a9fb5;
-}
-
-/* Magenta */
-.theme-base-0e .sidebar {
-  background-color: #aa759f;
-}
-.theme-base-0e .content a,
-.theme-base-0e .related-posts li a:hover {
-  color: #aa759f;
-}
-
-/* Brown */
-.theme-base-0f .sidebar {
-  background-color: #8f5536;
-}
-.theme-base-0f .content a,
-.theme-base-0f .related-posts li a:hover {
-  color: #8f5536;
 }
 
 .mb15 {

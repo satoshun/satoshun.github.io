@@ -12,8 +12,7 @@ publishDir = "../"
 [Permalinks]
 	blog = "/:year/:month/:filename/"
 	book = "/:year/:month/:filename/"
-	hobby = "/:year/:month/:filename/"
-	gallery = "/:year/:month/:filename/"
+	presentation = "/:year/:month/:filename/"
 
 [Taxonomies]
 	tag = "tags"
