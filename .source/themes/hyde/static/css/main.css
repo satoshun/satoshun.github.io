@@ -4,11 +4,6 @@
 /* Text colors */
 /* IMPORT CSS FILES */
 
-/* color theme */
-html {
-  background-color: #000;
-}
-
 article,
 aside,
 details,
@@ -2233,7 +2228,6 @@ a {
     background: none; }
 
 .site-nav {
-  background: #fff;
   height: 80px;
   position: relative;
   left: 0;
@@ -2266,7 +2260,6 @@ a {
       .site-nav #navigation a:hover {
         color: #2077b2; }
     .site-nav #navigation > a, .site-nav #navigation .dropdown-toggle {
-      color: #444;
       border: 0;
       font-weight: 600;
       font-size: 15px;
@@ -2849,7 +2842,6 @@ article {
 }
 .article-post-tags li a {
   font-size: 0.9em;
-  color: rgba(0,0,0,.68);
   text-decoration: none;
 }
 

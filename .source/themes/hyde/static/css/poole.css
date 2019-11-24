@@ -28,6 +28,75 @@
  * Themes
  */
 
+ .theme-dark {
+  background-color: #1f1f1f;
+  border-color: #1f1f1f;
+ }
+
+ .theme-dark pre {
+  background-color: #111111;
+ }
+
+ .theme-dark .page-title,
+ .theme-dark .post-title,
+ .theme-dark .post-title a {
+  color: rgba(255,255,255,0.82);
+}
+
+.theme-dark .site-nav {
+  background-color: #111111;
+  color: rgba(255,255,255,0.82);
+}
+
+.theme-dark a {
+  color: rgba(255,255,255,0.82);
+}
+
+.theme-dark .post-tags a,
+.theme-dark time {
+  color: rgba(255,255,255,0.57);
+}
+
+.theme-dark .blog-cover a {
+  color: rgba(255,255,255,0.87);
+}
+
+.theme-dark .blog-cover h1,
+.theme-dark .blog-cover h3,
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark h4,
+.theme-dark h5,
+.theme-dark li,
+.theme-dark p {
+  color: rgba(255,255,255,0.80);
+}
+
+.theme-dark code {
+  color: #ffffff;
+  background: #111111;
+  border-radius: 3px;
+  padding: .25em .3em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+.theme-dark .post h2 {
+  border-bottom: 1px #3b3f36 solid;
+}
+
+.theme-dark hr {
+  border: 1px #3b3f36 solid;
+}
+
+.theme-dark pre {
+  border: none;
+}
+
+.theme-dark .article-post-tags li {
+  background: rgba(0,0,0,0.25);
+}
 
 /*
  * Body resets
@@ -60,8 +129,6 @@ html {
 }
 
 body {
-  color: #515151;
-  background-color: #fff;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
@@ -105,10 +172,6 @@ h4, h5, h6 {
 p {
   margin-top: 0;
   margin-bottom: 1rem;
-}
-
-strong {
-  color: #303030;
 }
 
 
@@ -323,11 +386,6 @@ tbody tr:nth-child(odd) th {
 }
 
 /* Blog post or page title */
-.page-title,
-.post-title,
-.post-title a {
-  color: #303030;
-}
 .page-title,
 .post-title {
   margin-top: 0;
