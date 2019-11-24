@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Presentations on stsnブログ</title>
+    <link>https://satoshun.github.io/presentation/</link>
+    <description>Recent content in Presentations on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Thu, 07 Feb 2019 13:19:13 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/presentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DroidKaigi2019で「R8/ProGuard 徹底比較」というテーマで発表しました</title>
+      <link>https://satoshun.github.io/2019/02/droidkaigi-2019/</link>
+      <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/02/droidkaigi-2019/</guid>
+      <description>DroidKaigi2019でセッションが採択されたので発表しました。
+ https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao
+最初に発表の反省点です。
+ 多く詰め込みすぎて、1つ1つの掘り下げが疎かになった  結果的に広く浅い発表になってしまったため、1つの1つがあまり丁寧に説明できていなかったように感じています。重要な部分はもう少し丁寧に発表すべきでした。  早口すぎ、俺は生き急いでるのか？  本当に申し訳ありませんでした。前日に最終確認したところ20分近くオーバーしてしまい、そこからある程度は間引いたんですが、早口でいくという戦略を取ってしまいました😂 他の方の発表のように聞きやすい発表を今後は意識していきます！   次に良かった点です。
+ 発表前の休憩時間に、司会の@neonankitiさんの助けで、アイスブレイク?のようなことができた  @neonankitiさんとは初対面だったんですが、謎の掛け合いができ、会場の雰囲気も良くなったように思います😊  なんだかんだとR8のコードを触れたのは良かった  R8コンパイラのコードに触れるかどうか悩んだのですが、printデバッグなどを駆使して、理解が間違っていないことが確認できたので、載せてみました。概要だけですが、個人的には良かったと思っています。  最後に話した実践編のウケが良くてよかった  R8の凄さが分かりやすく伝えられたのかなと思います😊   最後に、僕の発表を聞きに来てくれた人、運営のみなさんありがとうございました😊
+また来年もあれば登壇できるように頑張ります💪</description>
+    </item>
+    
+    <item>
+      <title>DroidKaigi2018で「なんとなく動いているProguardから脱出するために」というテーマで発表しました</title>
+      <link>https://satoshun.github.io/2018/02/droidkaigi-2018/</link>
+      <pubDate>Fri, 09 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2018/02/droidkaigi-2018/</guid>
+      <description>DroidKaigi2018でセッションが採択されたので発表しました。
+ https://goo.gl/S95MJs
+正直、Proguardは目新しいトピックでないのでそんなに聞きに来てくれないだろうなと思っていました。 しかし、Room3という広い部屋が割り当てられて、さらに当日はかなりの人が聞きに来てくれました。本当に聞きに来てくれた人ありがとうございます😊😊😊
+Twitterの反応を見る限りだと、分かりやすいと言っている人が多くいたので嬉しかったです。 Proguardは苦手意識を持っている人が多いと思っていて、なのでstep by stepで順序良く聞けるような発表を心掛けたのでその効果が少しは出たのかなと思っています。
+反省点としては、自分が想定したより時間に余裕があったので何か面白いことを喋ろうとしたら何も思いつかないでフガフガしてしまったところです。 今後はフガフガせずに、アドリブ力みたいなものを身につけていきたいと思います!
+あと、もう一つ反省点としてすべるのが怖くて積極的にネタみたいなものをスライドに入れられなかったことです。一応考えていたものは
+ 「Self-Styled Proguardエバンジェリストです」と自己紹介しようとした。 僕の発表資料はProguardに失敗してやや冗長になってしまいましたけど、みなさんのAPKサイズはProguardに成功して小さくなることを期待しています。みたいなことを言おうとした。  みたいなことを言って笑いを取りたかったなと後悔しています(笑いを取れるとは言っていない)。
+来年もDroidKaigiあるとしたらCfP出してまた登壇できるように頑張ります。 そして運営の皆さん本当にありがとうございました。凄い楽しかったです(•ө•)♡</description>
+    </item>
+    
+  </channel>
+</rss>

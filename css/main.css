@@ -3,6 +3,7 @@
 /* Font for headings */
 /* Text colors */
 /* IMPORT CSS FILES */
+
 article,
 aside,
 details,
@@ -185,7 +186,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff; }
+ }
 
 input,
 button,
@@ -2227,7 +2228,6 @@ a {
     background: none; }
 
 .site-nav {
-  background: #fff;
   height: 80px;
   position: relative;
   left: 0;
@@ -2258,9 +2258,8 @@ a {
       margin: 0 1.8em 0 0em;
       display: inline-block; }
       .site-nav #navigation a:hover {
-        color: #2077b2; }
+        color: #3eb0ef; }
     .site-nav #navigation > a, .site-nav #navigation .dropdown-toggle {
-      color: #444;
       border: 0;
       font-weight: 600;
       font-size: 15px;
@@ -2843,7 +2842,6 @@ article {
 }
 .article-post-tags li a {
   font-size: 0.9em;
-  color: rgba(0,0,0,.68);
   text-decoration: none;
 }
 

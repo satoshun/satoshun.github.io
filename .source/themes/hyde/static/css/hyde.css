@@ -177,8 +177,8 @@ pre {
 }
 
 .address__post {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #3b3f36;
+  border-bottom: 1px solid #3b3f36;
   padding: 15px 0 10px 0;
   margin: 70px 0 20px 0;
 }
