@@ -3,6 +3,12 @@
 /* Font for headings */
 /* Text colors */
 /* IMPORT CSS FILES */
+
+/* color theme */
+html {
+  background-color: #000;
+}
+
 article,
 aside,
 details,
@@ -185,7 +191,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff; }
+ }
 
 input,
 button,
