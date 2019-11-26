@@ -7,10 +7,33 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 15 Jul 2019 03:09:15 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 Nov 2019 00:30:46 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/materialcomponents/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Material Components: ShapeとBottmSheetDialogとMaterialButton</title>
+      <link>https://satoshun.github.io/2019/11/material-shape/</link>
+      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/11/material-shape/</guid>
+      <description>Shapeがmaterial androidの1.1.0-alpha01から実装されました。
+Shapeとは、こんなやつです。
+参照: About shape
+この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。
+より詳しい説明は公式ドキュメント/Shape.mdを参照してください。
+まずはテーマを設定する Theme.MaterialComponentsを使う必要があります。
+ Theme.MaterialComponents.Light Theme.MaterialComponents.DayNight  などをテーマに指定します。
+&amp;lt;style name=&amp;quot;AppTheme&amp;quot; parent=&amp;quot;Theme.MaterialComponents.DayNight&amp;quot;&amp;gt; ...  こんな感じです。
+準備は終わったので、BottomSheetDialogにShapeを適用してみます。
+BottomSheetDialogにShapeを指定していく （多分）大きく3つの指定方法があります。
+ shapeAppearanceLargeComponentを指定する bottomSheetDialogThemeを指定する 独自でテーマを作り、BottomSheetDialogの引数などから与える  shapeAppearanceLargeComponentを指定する デフォルトだとBottomSheetDialogのスタイルとして、@style/Widget.MaterialComponents.BottomSheet.Modalを使うようになっています。
+このスタイルの定義は、次のようになっています。
+&amp;lt;style name=&amp;quot;Widget.MaterialComponents.BottomSheet.Modal&amp;quot; parent=&amp;quot;Widget.MaterialComponents.BottomSheet&amp;quot;&amp;gt; ... &amp;lt;style name=&amp;quot;Widget.MaterialComponents.BottomSheet&amp;quot; parent=&amp;quot;Widget.Design.BottomSheet.Modal&amp;quot;&amp;gt; ... &amp;lt;item name=&amp;quot;shapeAppearance&amp;quot;&amp;gt;?attr/shapeAppearanceLargeComponent&amp;lt;/item&amp;gt; ... &amp;lt;/style&amp;gt;  shapeAppearanceに、?attr/shapeAppearanceLargeComponentが使われています。shapeAppearanceは、Shapeの設定を流し込む部分です。 なので、これを変えればBottomSheetDialogのShapeを変える事ができます。
+たとえば、次のように設定してみます。
+&amp;lt;style name=&amp;quot;AppTheme&amp;quot; parent=&amp;quot;Theme.MaterialComponents.DayNight&amp;quot;&amp;gt; &amp;lt;!-- ?attr/shapeAppearanceLargeComponentの設定 --&amp;gt; &amp;lt;item name=&amp;quot;shapeAppearanceLargeComponent&amp;quot;&amp;gt;@style/ShapeAppearance.Sample.LargeComponent&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;style name=&amp;quot;ShapeAppearance.Sample.LargeComponent&amp;quot; parent=&amp;quot;&amp;quot;&amp;gt; &amp;lt;item name=&amp;quot;cornerFamily&amp;quot;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;!-- 各corner(top right, top left, bottom left, bottom right)のサイズを指定 --&amp;gt; &amp;lt;item name=&amp;quot;cornerSize&amp;quot;&amp;gt;36dp&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt;  こんな感じになります。</description>
+    </item>
     
     <item>
       <title>Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました</title>

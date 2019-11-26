@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 21 Nov 2019 12:35:25 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 Nov 2019 00:30:46 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,27 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
+      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>materialcomponents</title>
+      <link>https://satoshun.github.io/tags/materialcomponents/</link>
+      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shape</title>
+      <link>https://satoshun.github.io/tags/shape/</link>
+      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/shape/</guid>
       <description></description>
     </item>
     
@@ -162,15 +180,6 @@
       <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/product/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>materialcomponents</title>
-      <link>https://satoshun.github.io/tags/materialcomponents/</link>
-      <pubDate>Mon, 15 Jul 2019 03:09:15 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
       <description></description>
     </item>
     
