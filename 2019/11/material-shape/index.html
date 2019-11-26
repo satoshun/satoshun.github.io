@@ -99,7 +99,7 @@ Shapeとは、こんなやつです。
   <div class="post">
     <h1 class="post-title">Material Components: ShapeとBottomSheetDialogとMaterialButton</h1>
     
-    <span class="post-date">Created at Tue, Nov 26, 2019</span>
+    <span class="post-date">Updated at Tue, Nov 26, 2019</span>
     
     
 
@@ -208,13 +208,12 @@ Shapeとは、こんなやつです。
   &lt;item name=&quot;bottomSheetStyle&quot;&gt;@style/Widget.Sample.BottomSheetDialog&lt;/item&gt;
 &lt;/style&gt;
 
-&lt;style name=&quot;Widget.Sample.BottomSheetDialog&quot; parent=&quot;Widget.Design.BottomSheet.Modal&quot;&gt;
-  &lt;item name=&quot;shapeAppearance&quot;&gt;@style/Widget.Shape.Basic&lt;/item&gt;
+&lt;style name=&quot;Widget.Sample.BottomSheetDialog&quot; parent=&quot;Widget.MaterialComponents.BottomSheet.Modal&quot;&gt;
+  &lt;!-- コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う --&gt;
+  &lt;item name=&quot;shapeAppearanceOverlay&quot;&gt;@style/ShapeAppearanceOverlay.Sample.Basic&lt;/item&gt;
 &lt;/style&gt;
 
-&lt;style name=&quot;ShapeAppearance.Sample.Basic&quot; parent=&quot;&quot;&gt;
-  &lt;item name=&quot;cornerFamily&quot;&gt;rounded&lt;/item&gt;
-
+&lt;style name=&quot;ShapeAppearanceOverlay.Sample.Basic&quot; parent=&quot;&quot;&gt;
   &lt;!-- cornerは、個別に指定することも可能 --&gt;
   &lt;item name=&quot;cornerSizeTopRight&quot;&gt;12dp&lt;/item&gt;
   &lt;item name=&quot;cornerSizeTopLeft&quot;&gt;12dp&lt;/item&gt;
@@ -269,9 +268,9 @@ Shapeとは、こんなやつです。
 
 <h3 id="xmlから直接指定する">XMLから直接指定する</h3>
 
-<p>次のように、直接XMLから指定することも出来ます。</p>
+<p>次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、<code>shapeAppearanceOverlay</code>から指定します。</p>
 
-<pre><code class="language-xml">&lt;style name=&quot;ShapeAppearance.Sample.MediumComponent&quot; parent=&quot;&quot;&gt;
+<pre><code class="language-xml">&lt;style name=&quot;shapeAppearanceOverlay.Sample.MediumComponent&quot; parent=&quot;&quot;&gt;
   &lt;item name=&quot;cornerFamily&quot;&gt;cut&lt;/item&gt;
 
   &lt;item name=&quot;cornerSize&quot;&gt;16dp&lt;/item&gt;
@@ -281,7 +280,7 @@ Shapeとは、こんなやつです。
   android:layout_width=&quot;wrap_content&quot;
   android:layout_height=&quot;wrap_content&quot;
   android:text=&quot;Show Dialog&quot;
-  app:shapeAppearance=&quot;@style/ShapeAppearance.Sample.MediumComponent&quot; /&gt;
+  app:shapeAppearanceOverlay=&quot;@style/shapeAppearanceOverlay.Sample.MediumComponent&quot; /&gt;
 </code></pre>
 
 <p>こんな感じになります。</p>
@@ -291,7 +290,11 @@ Shapeとは、こんなやつです。
 <h2 id="まとめ">まとめ</h2>
 
 <ul>
-<li>テーマから指定するやり方と、XMLなどから直接指定するやり方がある</li>
+<li>テーマから指定するやり方と、XMLなどから直接指定するやり方がある
+
+<ul>
+<li>個別にやる場合は、<code>shapeAppearanceOverlay</code>から変更する</li>
+</ul></li>
 <li>テーマから指定すると全部一気に変えられるので便利😃
 
 <ul>
@@ -302,6 +305,15 @@ Shapeとは、こんなやつです。
 </ul></li>
 </ul></li>
 </ul>
+
+<hr />
+
+<h2 id="修正">修正</h2>
+
+<p>瀬戸さんから、<a href="https://twitter.com/seto_hi/status/1199132546954432512">Twitter</a>で、ご指摘を頂いたんですが、
+個別にコンポーネントに対して、Shapeの指定をするときは、<a href="https://material.io/develop/android/theming/shape/">Shape Theming</a>にもある通り、<code>shapeAppearanceOverlay</code>から指定するのが正しいです。</p>
+
+<p>ご指摘ありがとうございます😊</p>
 
     <div class="mt30"></div>
     
