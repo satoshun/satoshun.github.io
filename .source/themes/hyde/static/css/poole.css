@@ -82,8 +82,13 @@
   margin-right: 0.2em;
 }
 
-.theme-dark .post h2 {
+.theme-dark .post h2,
+.theme-dark .post h3 {
   border-bottom: 1px #3b3f36 solid;
+}
+
+.theme-dark .post h3 {
+  margin-bottom: 20px;
 }
 
 .theme-dark hr {
