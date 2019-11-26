@@ -117,6 +117,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 </style>
 
 <style name="Widget.Sample.BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <!-- コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う -->
   <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Sample.Basic</item>
 </style>
 
@@ -179,7 +180,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、`shapeAppearanceOverlay`から指定します。
 
 ```xml
-<style name="ShapeAppearance.Sample.MediumComponent" parent="">
+<style name="shapeAppearanceOverlay.Sample.MediumComponent" parent="">
   <item name="cornerFamily">cut</item>
 
   <item name="cornerSize">16dp</item>
@@ -189,7 +190,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:text="Show Dialog"
-  app:shapeAppearanceOverlay="@style/ShapeAppearance.Sample.MediumComponent" />
+  app:shapeAppearanceOverlay="@style/shapeAppearanceOverlay.Sample.MediumComponent" />
 ```
 
 こんな感じになります。
@@ -200,6 +201,17 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 ## まとめ
 
 - テーマから指定するやり方と、XMLなどから直接指定するやり方がある
+    - 個別にやる場合は、`shapeAppearanceOverlay`から変更する
 - テーマから指定すると全部一気に変えられるので便利😃
     - ただし、`?attr/shapeAppearanceSmallComponent`を上書きする方法だと、他のコンポーネントにも影響が出るので、慎重に
         - 例えば、Chipはデフォルトだと`shapeAppearanceSmallComponent`で定義されています
+
+
+---
+
+## 修正
+
+瀬戸さんから、[Twitter](https://twitter.com/seto_hi/status/1199132546954432512)で、ご指摘を頂いたんですが、
+個別にコンポーネントに対して、Shapeの指定をするときは、[Shape Theming](https://material.io/develop/android/theming/shape/)にもある通り、`shapeAppearanceOverlay`から指定するのが正しいです。
+
+ご指摘ありがとうございます😊
