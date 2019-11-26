@@ -6,6 +6,7 @@ blogimport = true
 type = "post"
 draft = false
 thumbnail = "/blog/android/material-components/material-shape.png"
+lastmod = "Tue Nov 26 11:12:59 UTC 2019"
 +++
 
 Shapeがmaterial androidの1.1.0-alpha01から実装されました。
@@ -115,13 +116,11 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
   <item name="bottomSheetStyle">@style/Widget.Sample.BottomSheetDialog</item>
 </style>
 
-<style name="Widget.Sample.BottomSheetDialog" parent="Widget.Design.BottomSheet.Modal">
-  <item name="shapeAppearance">@style/Widget.Shape.Basic</item>
+<style name="Widget.Sample.BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Sample.Basic</item>
 </style>
 
-<style name="ShapeAppearance.Sample.Basic" parent="">
-  <item name="cornerFamily">rounded</item>
-
+<style name="ShapeAppearanceOverlay.Sample.Basic" parent="">
   <!-- cornerは、個別に指定することも可能 -->
   <item name="cornerSizeTopRight">12dp</item>
   <item name="cornerSizeTopLeft">12dp</item>
@@ -177,7 +176,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 
 ### XMLから直接指定する
 
-次のように、直接XMLから指定することも出来ます。
+次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、`shapeAppearanceOverlay`から指定します。
 
 ```xml
 <style name="ShapeAppearance.Sample.MediumComponent" parent="">
@@ -190,7 +189,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:text="Show Dialog"
-  app:shapeAppearance="@style/ShapeAppearance.Sample.MediumComponent" />
+  app:shapeAppearanceOverlay="@style/ShapeAppearance.Sample.MediumComponent" />
 ```
 
 こんな感じになります。
