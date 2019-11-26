@@ -1,6 +1,6 @@
 +++
 date = "Tue Nov 26 00:30:46 UTC 2019"
-title = "Material Components: ShapeとBottmSheetDialogとMaterialButton"
+title = "Material Components: ShapeとBottomSheetDialogとMaterialButton"
 tags = ["android", "materialcomponents", "shape"]
 blogimport = true
 type = "post"
@@ -103,7 +103,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 
 ### bottomSheetDialogThemeを指定する
 
-`bottomSheetDialogTheme`から、BottmSheetDialogのShapeの設定を変えることも出来ます。
+`bottomSheetDialogTheme`から、BottomSheetDialogのShapeの設定を変えることも出来ます。
 
 ```xml
 <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
