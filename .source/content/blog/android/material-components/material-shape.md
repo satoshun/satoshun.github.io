@@ -1,10 +1,11 @@
 +++
-date = "Mon Nov 25 13:57:43 UTC 2019"
+date = "Tue Nov 26 00:30:46 UTC 2019"
 title = "Material Components: ShapeとBottmSheetDialogとMaterialButton"
 tags = ["android", "materialcomponents", "shape"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
+thumbnail = "/blog/android/material-components/material-shape.png"
 +++
 
 Shapeがmaterial androidの1.1.0-alpha01から実装されました。
@@ -13,9 +14,11 @@ Shapeとは、こんなやつです。
 
 <img src="/blog/android/material-components/material-shape.png" />
 
-[About shape](https://material.io/design/shape/about-shape.html)
+参照: [About shape](https://material.io/design/shape/about-shape.html)
 
-BottomSheetDialogとMaterialButtonを参考に、どのように実装出来るかについて説明します。
+この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。
+
+より詳しい説明は[公式ドキュメント/Shape.md](https://github.com/material-components/material-components-android/blob/master/docs/theming/Shape.md)を参照してください。
 
 ## まずはテーマを設定する
 
@@ -24,8 +27,17 @@ BottomSheetDialogとMaterialButtonを参考に、どのように実装出来る�
 - Theme.MaterialComponents.Light
 - Theme.MaterialComponents.DayNight
 
-などをテーマに指定する必要があります。
+などをテーマに指定します。
 
+
+```xml
+<style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+...
+```
+
+こんな感じです。
+
+準備は終わったので、BottomSheetDialogにShapeを適用してみます。
 
 ## BottomSheetDialogにShapeを指定していく
 
@@ -39,7 +51,7 @@ BottomSheetDialogとMaterialButtonを参考に、どのように実装出来る�
 
 デフォルトだとBottomSheetDialogのスタイルとして、`@style/Widget.MaterialComponents.BottomSheet.Modal`を使うようになっています。
 
-このスタイルの定義は次のようになっています。
+このスタイルの定義は、次のようになっています。
 
 ```xml
 <style name="Widget.MaterialComponents.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet">
@@ -52,27 +64,30 @@ BottomSheetDialogとMaterialButtonを参考に、どのように実装出来る�
 </style>
 ```
 
-shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われています。なので、これを変えればBottomSheetDialogのShapeを変える事ができます。
+shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われています。`shapeAppearance`は、Shapeの設定を流し込む部分です。
+なので、これを変えればBottomSheetDialogのShapeを変える事ができます。
 
 たとえば、次のように設定してみます。
 
 ```xml
 <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+  <!-- ?attr/shapeAppearanceLargeComponentの設定 -->
   <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Sample.LargeComponent</item>
 </style>
 
 <style name="ShapeAppearance.Sample.LargeComponent" parent="">
   <item name="cornerFamily">cut</item>
 
+  <!-- 各corner(top right, top left, bottom left, bottom right)のサイズを指定 -->
   <item name="cornerSize">36dp</item>
 </style>
 ```
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-cut.png" />
+<img src="/blog/android/material-components/bottom-sheet-cut.png" width="300" />
 
-`cornerFamily`にはcutまたは、roundedを取ることが出来ます。roundedを指定すると次のようになります。
+`cornerFamily`にはcut以外にも、roundedを取ることが出来ます。roundedを指定すると次のようになります。
 
 ```xml
 <style name="ShapeAppearance.Sample.LargeComponent" parent="">
@@ -82,12 +97,13 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 </style>
 ```
 
-<img src="/blog/android/material-components/bottom-sheet-rounded.png" />
+<img src="/blog/android/material-components/bottom-sheet-rounded.png" width="300" />
 
+`shapeAppearanceLargeComponent`を指定することは、BottomSheetDialog以外の、他のコンポーネントにも影響が出るので、注意してください。
 
 ### bottomSheetDialogThemeを指定する
 
-`bottomSheetDialogTheme`にごりごりと設定をしていきます。
+`bottomSheetDialogTheme`から、BottmSheetDialogのShapeの設定を変えることも出来ます。
 
 ```xml
 <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
@@ -106,6 +122,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 <style name="ShapeAppearance.Sample.Basic" parent="">
   <item name="cornerFamily">rounded</item>
 
+  <!-- cornerは、個別に指定することも可能 -->
   <item name="cornerSizeTopRight">12dp</item>
   <item name="cornerSizeTopLeft">12dp</item>
 </style>
@@ -113,9 +130,9 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-bottomstyle-rounded.png" />
+<img src="/blog/android/material-components/bottom-sheet-bottomstyle-rounded.png" width="300" />
 
-BottomSheetDialogはこんな感じで、Shapeを指定してあげます。
+BottomSheetDialogはこんな感じで、StyleからShapeを指定することが出来ます。
 
 
 ## MaterialButtonにShapeを指定していく
@@ -123,13 +140,13 @@ BottomSheetDialogはこんな感じで、Shapeを指定してあげます。
 （多分）大きく2つの指定方法があります。
 
 - `shapeAppearanceSmallComponent`を指定する
-- 独自でテーマを作り、MaterialButtonの引数、XMLの定義などから与える
+- Shape用のスタイルを作り、MaterialButtonの引数、XMLの定義などから与える
 
 ### shapeAppearanceSmallComponentを指定する
 
 `MaterialButton`は、デフォルトでは`Widget.MaterialComponents.Button`スタイルを使うようになっています。
 
-これは次のように定義されています。
+これは、次のように定義されています。
 
 ```xml
 <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
@@ -138,7 +155,7 @@ BottomSheetDialogはこんな感じで、Shapeを指定してあげます。
 </style>
 ```
 
-shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われています。
+shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われています。先程と同様に、これを指定することで、Shapeの振る舞いを変えることが出来ます。
 
 次のように設定してみます。
 
@@ -156,9 +173,11 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" />
+<img src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" width="300" />
 
-また、直接XMLから指定することも出来ます。
+### XMLから直接指定する
+
+次のように、直接XMLから指定することも出来ます。
 
 ```xml
 <style name="ShapeAppearance.Sample.MediumComponent" parent="">
@@ -176,11 +195,12 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" />
+<img src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" width="300" />
 
 
 ## まとめ
 
 - テーマから指定するやり方と、XMLなどから直接指定するやり方がある
-    - テーマから指定すると全部一気に変えられるので便利〜
-
+- テーマから指定すると全部一気に変えられるので便利😃
+    - ただし、`?attr/shapeAppearanceSmallComponent`を上書きする方法だと、他のコンポーネントにも影響が出るので、慎重に
+        - 例えば、Chipはデフォルトだと`shapeAppearanceSmallComponent`で定義されています
