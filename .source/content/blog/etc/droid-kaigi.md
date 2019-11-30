@@ -1,14 +1,12 @@
 +++
 date = "2015-04-25T00:00:00Z"
-title = "Android: AndroidKaigiまとめ"
+title = "Android: DroidKaigiまとめ"
 tags = ["android", "java"]
 blogimport = true
 type = "post"
 +++
 
-
-AndroidKaigiの記事まとめです.
-
+DroidKaigiの記事まとめです.
 
 ## DroidKaigi - Welcome talk
 
