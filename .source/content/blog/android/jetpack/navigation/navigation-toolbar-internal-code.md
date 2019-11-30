@@ -1,17 +1,17 @@
 +++
-date = "Sat Nov 30 03:21:46 UTC 2019"
-title = "Android メモ: Navigation Component + Toolbar(ActionBar)周りのコードを読んで見る"
+date = "Sat Nov 30 06:14:19 UTC 2019"
+title = "メモ Android: Navigation Component + Toolbar(ActionBar)周りのコードを読んで見る"
 tags = ["android", "jetpack", "navigation"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Navigation Component + Toolbarのデフォルトの挙動をカスタマイズしたかったので、その周辺のコードを読んでみたメモブログになります。
 
 この記事のコードは、次のライセンスに従います。
 
-```
+```text
 /*
  * Copyright 2018 The Android Open Source Project
  *
@@ -32,7 +32,7 @@ Navigation Component + Toolbarのデフォルトの挙動をカスタマイズ�
 ## 2行で
 
 - OnDestinationChangedListenerから、Toolbar(ActionBar)をいじっている
-- OnDestinationChangedListenerをカスタマイズすれば、挙動をいじれる
+- ということは、OnDestinationChangedListenerをカスタマイズすれば、挙動をいじれる
 
 ## 前提/基本
 
@@ -44,13 +44,13 @@ val configuration = AppBarConfiguration(navController.graph)
 setupActionBarWithNavController(navController, configuration)
 ```
 
-どんな感じで、このコードが処理されているかを見ていきます。
+これが、どんな感じで、処理されていくかを見ていきます。
 
 
 ## AppBarConfigurationクラス
 
 naivgation graphなどの情報から、AppBarがどのように振る舞うかを決めるクラスです。
-navigate upが失敗した時のハンドリング、DrawerLayoutを設定できます。
+ここでは、navigate upが失敗した時のハンドリング、DrawerLayoutを設定できます。
 
 ```kotlin
 AppBarConfiguration.Builder
@@ -59,7 +59,9 @@ AppBarConfiguration.Builder
     build
 ```
 
-`FallbackOnNavigateUpListener`が、どの部分で発火するかを、コードを読んで確認します。
+登録した`FallbackOnNavigateUpListener`が、どこで発火するかを、コードを読んで確認します。
+
+FallbackOnNavigateUpListenerのドキュメントを読むと、navigateUpに失敗した時と書いてあるので、navigateUpメソッドを見に行きます。
 
 ```java
 public static boolean navigateUp(@NonNull NavController navController,
@@ -84,13 +86,13 @@ public static boolean navigateUp(@NonNull NavController navController,
 }
 ```
 
-navController.navigateUpがfalseを返すときに、発火することが分かります。
+navController.navigateUpがfalseを返すときに、`configuration.getFallbackOnNavigateUpListener().onNavigateUp()`が実行され、登録しておいたコールバックが発火します。
 
 ## setupActionBarWithNavControllerメソッド
 
-次に、setupActionBarWithNavControllerを見ていきます。
+次に、setupActionBarWithNavControllerメソッドを見ていきます。
 
-このコードを少しほっていくと、次のメソッドをコールしています。
+このメソッドの中身は、次のようになっています。
 
 ```java
 fun AppCompatActivity.setupActionBarWithNavController(
@@ -109,11 +111,11 @@ public static void setupActionBarWithNavController(@NonNull AppCompatActivity ac
 ```
 
 `addOnDestinationChangedListener`から、`ActionBarOnDestinationChangedListener`を設定しています。
+`addOnDestinationChangedListener`は、destinationが変わった時に発火するコールバックなので、ページが切り替わったタイミングなどで`ActionBarOnDestinationChangedListener`が発火することが分かります。
 
-`addOnDestinationChangedListener`は、destinationが変わった時に発火するコールバックです。
-なので、ページが切り替わったタイミングなどで`ActionBarOnDestinationChangedListener`が発火します。
+---
 
-`ActionBarOnDestinationChangedListener`の中身は次のようになっています。
+次に、`ActionBarOnDestinationChangedListener`の中身は、以下のようになっています。
 
 ```java
 class ActionBarOnDestinationChangedListener extends
@@ -149,10 +151,12 @@ class ActionBarOnDestinationChangedListener extends
 
 AbstractAppBarOnDestinationChangedListenerクラスを継承しており、setTitle、setNavigationメソッドがそれぞれ実装されています。
 
-setTitleメソッドでは、actionBarにタイトルをセットしています。
+まず、setTitleメソッドで、actionBarにタイトルをセットしています。
 
-setNavigationIconメソッドでは、引数のiconがnullなら、`setDisplayHomeAsUpEnabled`がfalseになり、
-iconがあるなら、`setDisplayHomeAsUpEnabled`がtrueになり、upボタンが表示されます。
+次に、setNavigationIconメソッドでは、引数のiconがnullなら、`setDisplayHomeAsUpEnabled`がfalseになり、
+iconがあるなら`setDisplayHomeAsUpEnabled`がtrueになり、upボタンが表示されます。
+
+---
 
 次に、基底クラスの`AbstractAppBarOnDestinationChangedListener`を見ていきます。
 
@@ -224,10 +228,9 @@ abstract class AbstractAppBarOnDestinationChangedListener
 
 1. destinationが変わったら、onDestinationChangedメソッドからコールバックされる
 2. 設定したlabelから、Actionbarのタイトルを変更する
-  - fragmentタグから、labelをセットすることが出来るので、その値がセットされます
-
+    - fragmentタグから、labelをセットすることが出来るので、その値がセットされます
 3. トップのdestinationの場合、iconがnullになる。そうでない場合は、DrawerArrowDrawableを表示する
-  - トップの場合、toolbar上に戻るボタンが表示されないという意味です
+    - トップの場合、Toolbar上に戻るボタンが表示されません
 
 という感じになってます。また、DrawerLayoutがある場合、挙動が変わることが分かります。
 
