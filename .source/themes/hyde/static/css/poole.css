@@ -125,6 +125,10 @@
   box-shadow: none;
 }
 
+.theme-dark .highlight pre {
+  background-color: #111111 !important;
+}
+
 /*
  * Body resets
  *
