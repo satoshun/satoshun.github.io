@@ -26,15 +26,10 @@
   <meta property="twitter:title" content="Material Components: ShapeとBottomSheetDialogとMaterialButton">
 
   
-  <meta property="twitter:description" content="
-
-Shapeがmaterial androidの1.1.0-alpha01から実装されました。
-
+  <meta property="twitter:description" content="Shapeがmaterial androidの1.1.0-alpha01から実装されました。
 Shapeとは、こんなやつです。
 
-
-
-参照: About …">
+参照: About shape …">
   
 
   
@@ -101,218 +96,151 @@ Shapeとは、こんなやつです。
     
     <span class="post-date">Updated at Tue, Nov 26, 2019</span>
     
-    
-
-<p>Shapeがmaterial androidの1.1.0-alpha01から実装されました。</p>
-
+    <p>Shapeがmaterial androidの1.1.0-alpha01から実装されました。</p>
 <p>Shapeとは、こんなやつです。</p>
-
-<p><img src="/blog/android/material-components/material-shape.png" /></p>
-
+<p><!-- raw HTML omitted --></p>
 <p>参照: <a href="https://material.io/design/shape/about-shape.html">About shape</a></p>
-
 <p>この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。</p>
-
 <p>より詳しい説明は<a href="https://github.com/material-components/material-components-android/blob/master/docs/theming/Shape.md">公式ドキュメント/Shape.md</a>を参照してください。</p>
-
-<h2 id="まずはテーマを設定する">まずはテーマを設定する</h2>
-
+<h2 id="heading">まずはテーマを設定する</h2>
 <p><code>Theme.MaterialComponents</code>を使う必要があります。</p>
-
 <ul>
 <li>Theme.MaterialComponents.Light</li>
 <li>Theme.MaterialComponents.DayNight</li>
 </ul>
-
 <p>などをテーマに指定します。</p>
-
-<pre><code class="language-xml">&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.MaterialComponents.DayNight&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
 ...
-</code></pre>
-
-<p>こんな感じです。</p>
-
+</code></pre></div><p>こんな感じです。</p>
 <p>準備は終わったので、BottomSheetDialogにShapeを適用してみます。</p>
-
-<h2 id="bottomsheetdialogにshapeを指定していく">BottomSheetDialogにShapeを指定していく</h2>
-
+<h2 id="bottomsheetdialogshape">BottomSheetDialogにShapeを指定していく</h2>
 <p>（多分）大きく3つの指定方法があります。</p>
-
 <ul>
 <li><code>shapeAppearanceLargeComponent</code>を指定する</li>
 <li><code>bottomSheetDialogTheme</code>を指定する</li>
 <li>独自でテーマを作り、BottomSheetDialogの引数などから与える</li>
 </ul>
-
-<h3 id="shapeappearancelargecomponentを指定する">shapeAppearanceLargeComponentを指定する</h3>
-
+<h3 id="shapeappearancelargecomponent">shapeAppearanceLargeComponentを指定する</h3>
 <p>デフォルトだとBottomSheetDialogのスタイルとして、<code>@style/Widget.MaterialComponents.BottomSheet.Modal</code>を使うようになっています。</p>
-
 <p>このスタイルの定義は、次のようになっています。</p>
-
-<pre><code class="language-xml">&lt;style name=&quot;Widget.MaterialComponents.BottomSheet.Modal&quot; parent=&quot;Widget.MaterialComponents.BottomSheet&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span><span style="color:#f92672">&gt;</span>
 ...
 
-&lt;style name=&quot;Widget.MaterialComponents.BottomSheet&quot; parent=&quot;Widget.Design.BottomSheet.Modal&quot;&gt;
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.Design.BottomSheet.Modal&#34;</span><span style="color:#f92672">&gt;</span>
   ...
-  &lt;item name=&quot;shapeAppearance&quot;&gt;?attr/shapeAppearanceLargeComponent&lt;/item&gt;
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearance&#34;</span><span style="color:#f92672">&gt;</span>?attr/shapeAppearanceLargeComponent<span style="color:#f92672">&lt;/item&gt;</span>
   ...
-&lt;/style&gt;
-</code></pre>
-
-<p>shapeAppearanceに、<code>?attr/shapeAppearanceLargeComponent</code>が使われています。<code>shapeAppearance</code>は、Shapeの設定を流し込む部分です。
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>shapeAppearanceに、<code>?attr/shapeAppearanceLargeComponent</code>が使われています。<code>shapeAppearance</code>は、Shapeの設定を流し込む部分です。
 なので、これを変えればBottomSheetDialogのShapeを変える事ができます。</p>
-
 <p>たとえば、次のように設定してみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> ?attr/shapeAppearanceLargeComponentの設定 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceLargeComponent&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearance.Sample.LargeComponent<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-<pre><code class="language-xml">&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.MaterialComponents.DayNight&quot;&gt;
-  &lt;!-- ?attr/shapeAppearanceLargeComponentの設定 --&gt;
-  &lt;item name=&quot;shapeAppearanceLargeComponent&quot;&gt;@style/ShapeAppearance.Sample.LargeComponent&lt;/item&gt;
-&lt;/style&gt;
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.LargeComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
 
-&lt;style name=&quot;ShapeAppearance.Sample.LargeComponent&quot; parent=&quot;&quot;&gt;
-  &lt;item name=&quot;cornerFamily&quot;&gt;cut&lt;/item&gt;
-
-  &lt;!-- 各corner(top right, top left, bottom left, bottom right)のサイズを指定 --&gt;
-  &lt;item name=&quot;cornerSize&quot;&gt;36dp&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p>こんな感じになります。</p>
-
-<p><img src="/blog/android/material-components/bottom-sheet-cut.png" width="300" /></p>
-
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 各corner(top right, top left, bottom left, bottom right)のサイズを指定 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>36dp<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>こんな感じになります。</p>
+<p><!-- raw HTML omitted --></p>
 <p><code>cornerFamily</code>にはcut以外にも、roundedを取ることが出来ます。roundedを指定すると次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.LargeComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
 
-<pre><code class="language-xml">&lt;style name=&quot;ShapeAppearance.Sample.LargeComponent&quot; parent=&quot;&quot;&gt;
-  &lt;item name=&quot;cornerFamily&quot;&gt;rounded&lt;/item&gt;
-
-  &lt;item name=&quot;cornerSize&quot;&gt;36dp&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p><img src="/blog/android/material-components/bottom-sheet-rounded.png" width="300" /></p>
-
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>36dp<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p><!-- raw HTML omitted --></p>
 <p><code>shapeAppearanceLargeComponent</code>を指定することは、BottomSheetDialog以外の、他のコンポーネントにも影響が出るので、注意してください。</p>
-
-<h3 id="bottomsheetdialogthemeを指定する">bottomSheetDialogThemeを指定する</h3>
-
+<h3 id="bottomsheetdialogtheme">bottomSheetDialogThemeを指定する</h3>
 <p><code>bottomSheetDialogTheme</code>から、BottomSheetDialogのShapeの設定を変えることも出来ます。</p>
-
-<pre><code class="language-xml">&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.MaterialComponents.DayNight&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
   ...
-  &lt;item name=&quot;bottomSheetDialogTheme&quot;&gt;@style/ShapeCustomBottomSheetDialog&lt;/item&gt;
-&lt;/style&gt;
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;bottomSheetDialogTheme&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeCustomBottomSheetDialog<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-&lt;style name=&quot;ShapeCustomBottomSheetDialog&quot; parent=&quot;ThemeOverlay.MaterialComponents.BottomSheetDialog&quot;&gt;
-  &lt;item name=&quot;bottomSheetStyle&quot;&gt;@style/Widget.Sample.BottomSheetDialog&lt;/item&gt;
-&lt;/style&gt;
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeCustomBottomSheetDialog&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;ThemeOverlay.MaterialComponents.BottomSheetDialog&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;bottomSheetStyle&#34;</span><span style="color:#f92672">&gt;</span>@style/Widget.Sample.BottomSheetDialog<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-&lt;style name=&quot;Widget.Sample.BottomSheetDialog&quot; parent=&quot;Widget.MaterialComponents.BottomSheet.Modal&quot;&gt;
-  &lt;!-- コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う --&gt;
-  &lt;item name=&quot;shapeAppearanceOverlay&quot;&gt;@style/ShapeAppearanceOverlay.Sample.Basic&lt;/item&gt;
-&lt;/style&gt;
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.Sample.BottomSheetDialog&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearanceOverlay.Sample.Basic<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-&lt;style name=&quot;ShapeAppearanceOverlay.Sample.Basic&quot; parent=&quot;&quot;&gt;
-  &lt;!-- cornerは、個別に指定することも可能 --&gt;
-  &lt;item name=&quot;cornerSizeTopRight&quot;&gt;12dp&lt;/item&gt;
-  &lt;item name=&quot;cornerSizeTopLeft&quot;&gt;12dp&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p>こんな感じになります。</p>
-
-<p><img src="/blog/android/material-components/bottom-sheet-bottomstyle-rounded.png" width="300" /></p>
-
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearanceOverlay.Sample.Basic&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> cornerは、個別に指定することも可能 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopRight&#34;</span><span style="color:#f92672">&gt;</span>12dp<span style="color:#f92672">&lt;/item&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopLeft&#34;</span><span style="color:#f92672">&gt;</span>12dp<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>こんな感じになります。</p>
+<p><!-- raw HTML omitted --></p>
 <p>BottomSheetDialogはこんな感じで、StyleからShapeを指定することが出来ます。</p>
-
-<h2 id="materialbuttonにshapeを指定していく">MaterialButtonにShapeを指定していく</h2>
-
+<h2 id="materialbuttonshape">MaterialButtonにShapeを指定していく</h2>
 <p>（多分）大きく2つの指定方法があります。</p>
-
 <ul>
 <li><code>shapeAppearanceSmallComponent</code>を指定する</li>
 <li>Shape用のスタイルを作り、MaterialButtonの引数、XMLの定義などから与える</li>
 </ul>
-
-<h3 id="shapeappearancesmallcomponentを指定する">shapeAppearanceSmallComponentを指定する</h3>
-
+<h3 id="shapeappearancesmallcomponent">shapeAppearanceSmallComponentを指定する</h3>
 <p><code>MaterialButton</code>は、デフォルトでは<code>Widget.MaterialComponents.Button</code>スタイルを使うようになっています。</p>
-
 <p>これは、次のように定義されています。</p>
-
-<pre><code class="language-xml">&lt;style name=&quot;Widget.MaterialComponents.Button&quot; parent=&quot;Widget.AppCompat.Button&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.Button&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.AppCompat.Button&#34;</span><span style="color:#f92672">&gt;</span>
   ...
-  &lt;item name=&quot;shapeAppearance&quot;&gt;?attr/shapeAppearanceSmallComponent&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p>shapeAppearanceに、<code>?attr/shapeAppearanceSmallComponent</code>が使われています。先程と同様に、これを指定することで、Shapeの振る舞いを変えることが出来ます。</p>
-
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearance&#34;</span><span style="color:#f92672">&gt;</span>?attr/shapeAppearanceSmallComponent<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>shapeAppearanceに、<code>?attr/shapeAppearanceSmallComponent</code>が使われています。先程と同様に、これを指定することで、Shapeの振る舞いを変えることが出来ます。</p>
 <p>次のように設定してみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceSmallComponent&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearance.Sample.SmallComponent<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-<pre><code class="language-xml">&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.MaterialComponents.DayNight&quot;&gt;
-  &lt;item name=&quot;shapeAppearanceSmallComponent&quot;&gt;@style/ShapeAppearance.Sample.SmallComponent&lt;/item&gt;
-&lt;/style&gt;
+<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.SmallComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
 
-&lt;style name=&quot;ShapeAppearance.Sample.SmallComponent&quot; parent=&quot;&quot;&gt;
-  &lt;item name=&quot;cornerFamily&quot;&gt;rounded&lt;/item&gt;
-
-  &lt;item name=&quot;cornerSize&quot;&gt;50%&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p>こんな感じになります。</p>
-
-<p><img src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" width="300" /></p>
-
-<h3 id="xmlから直接指定する">XMLから直接指定する</h3>
-
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>こんな感じになります。</p>
+<p><!-- raw HTML omitted --></p>
+<h3 id="xml">XMLから直接指定する</h3>
 <p>次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、<code>shapeAppearanceOverlay</code>から指定します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay.Sample.MediumComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
 
-<pre><code class="language-xml">&lt;style name=&quot;shapeAppearanceOverlay.Sample.MediumComponent&quot; parent=&quot;&quot;&gt;
-  &lt;item name=&quot;cornerFamily&quot;&gt;cut&lt;/item&gt;
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>16dp<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
 
-  &lt;item name=&quot;cornerSize&quot;&gt;16dp&lt;/item&gt;
-&lt;/style&gt;
-
-&lt;com.google.android.material.button.MaterialButton
-  android:layout_width=&quot;wrap_content&quot;
-  android:layout_height=&quot;wrap_content&quot;
-  android:text=&quot;Show Dialog&quot;
-  app:shapeAppearanceOverlay=&quot;@style/shapeAppearanceOverlay.Sample.MediumComponent&quot; /&gt;
-</code></pre>
-
-<p>こんな感じになります。</p>
-
-<p><img src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" width="300" /></p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<span style="color:#f92672">&lt;com.google.android.material.button.MaterialButton</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+  <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;Show Dialog&#34;</span>
+  <span style="color:#a6e22e">app:shapeAppearanceOverlay=</span><span style="color:#e6db74">&#34;@style/shapeAppearanceOverlay.Sample.MediumComponent&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>こんな感じになります。</p>
+<p><!-- raw HTML omitted --></p>
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>テーマから指定するやり方と、XMLなどから直接指定するやり方がある
-
 <ul>
 <li>個別にやる場合は、<code>shapeAppearanceOverlay</code>から変更する</li>
-</ul></li>
+</ul>
+</li>
 <li>テーマから指定すると全部一気に変えられるので便利😃
-
 <ul>
 <li>ただし、<code>?attr/shapeAppearanceSmallComponent</code>を上書きする方法だと、他のコンポーネントにも影響が出るので、慎重に
-
 <ul>
 <li>例えば、Chipはデフォルトだと<code>shapeAppearanceSmallComponent</code>で定義されています</li>
-</ul></li>
-</ul></li>
 </ul>
-
-<hr />
-
-<h2 id="修正">修正</h2>
-
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="heading2">修正</h2>
 <p>瀬戸さんから、<a href="https://twitter.com/seto_hi/status/1199132546954432512">Twitter</a>で、ご指摘を頂いたんですが、
 個別にコンポーネントに対して、Shapeの指定をするときは、<a href="https://material.io/develop/android/theming/shape/">Shape Theming</a>にもある通り、<code>shapeAppearanceOverlay</code>から指定するのが正しいです。</p>
-
 <p>ご指摘ありがとうございます😊</p>
 
     <div class="mt30"></div>

@@ -21,11 +21,11 @@
       <description>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
 この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。
 Bufferの種類 Bufferの種類は5つあります。
- UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする   検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;quot;$it&amp;quot;) } } // observeする lifecycleScope.launch { f .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) } }  このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
+ UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする    検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;#34;$it&amp;#34;) } } // observeする lifecycleScope.launch { f .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } } このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
 次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerではdelay(100)しているので、処理に約100msかかります。
 これは、次の関係を作り出しています
  Consumerの処理時間 &amp;gt; Producerの処理時間  この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
-UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) }  UNLIMITEDはBufferのサイズを無制限にします。
+UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } UNLIMITEDはBufferのサイズを無制限にします。
 Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。
  Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく Consumer: すべての値を順番通りに受け取ることが出来る  RENDEZVOUS f .</description>
     </item>
@@ -38,7 +38,7 @@ Consumer側で処理が終わってなくても値を送ります。その値は
       <guid>https://satoshun.github.io/2019/07/retrofit-coroutine-return-type/</guid>
       <description>psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのままT の使い分け所感のCoroutineバージョンの記事となります。
 上記の記事に書いてある、Rxとは違い、Result型は用意されていないので、Response型で包むか、生で値ｗ受け取るかのどちらかが基本となります。
-interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; }  Retrofitの2.6.0で、挙動の違いを確認しました。
+interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; } Retrofitの2.6.0で、挙動の違いを確認しました。
     生 Response     200 成功 成功   404 例外 成功   ネットワークに繋がっていない 例外 例外   シリアライズが出来ない（型がおかしい） 例外 例外     生の場合、HTTPのstatus Code的に失敗とされるものは例外になる Response型で包めば、HTTPのstatus Code的に失敗だとしても例外が発生しない  っていう感じの挙動になります。
 どっちを使えばいいの? サーバがエラーコードを返してきた時に、特別な振る舞いをしたいエンドポイントってあると思うので、そういうときはResponseで包んであげて、それ以外は生でいいんじゃない？って思ってます（小並感</description>
     </item>
@@ -50,10 +50,10 @@ interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Re
       
       <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
       <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
-launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;) }  asyncで包むことで、並列に処理をすることができます。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;#34;${task1.await()}\n${task2.await()}&amp;#34;) } asyncで包むことで、並列に処理をすることができます。
 次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
-launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;) }  runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
-また、次のように書くことは出来ません。
+launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;#34;$result1\n&amp;#34; + &amp;#34;$result2\n&amp;#34;) } runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+ また、次のように書くことは出来ません。
 launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
     </item>
     
@@ -66,11 +66,11 @@ launch { val task1 = async { MainService.task1() } val task2 = async { MainServi
       <description>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。
 以下、2019年3月10日 2019年3月11日の調査結果になります。 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。
 Lifecycle
-// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope  LifecycleOwner
-// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope  ViewModel
-// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope  WorkManager
-abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された abstract suspend fun doWork(): Result }  Room
-// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;quot;SELECT * FROM hoge WHERE id = :id&amp;quot;) suspend fun get(id: String): Hoge .</description>
+// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope LifecycleOwner
+// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope ViewModel
+// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope WorkManager
+abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された  abstract suspend fun doWork(): Result } Room
+// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;#34;SELECT * FROM hoge WHERE id = :id&amp;#34;) suspend fun get(id: String): Hoge .</description>
     </item>
     
     <item>
@@ -81,8 +81,8 @@ abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) 
       <guid>https://satoshun.github.io/2018/12/coroutine_autodispose/</guid>
       <description>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいきそうです。
 ContinuationInterceptorとは? ContinuationInterceptorは次のようなインターフェースです。
-/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;quot;1.3&amp;quot;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... }  interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
-class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.</description>
+/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;#34;1.3&amp;#34;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... } interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
+class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.Key&amp;lt;*&amp;gt; get() = ContinuationInterceptor override fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; { // ContinuationからJobを取得  val job = continuation.</description>
     </item>
     
     <item>
@@ -92,9 +92,9 @@ class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : Con
       
       <guid>https://satoshun.github.io/2018/12/coroutine_build_perf/</guid>
       <description>注意: 計測方法は実環境に全く即していないので意味がない可能性が高いです。
-環境  AGP3.4.0-alpha06 Kotlin 1.3.10 Kotlinx.coroutine 1.0.1 Gradle 5.0  比較対象  kotlinx.coroutineを使ったサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている 300 * 7の2100箇所がCoroutine関連のコードになります  kotlinx.coroutineを使わないサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中で適当なメソッド（Handler().post {}）をコールしている  サンプルコード  計測コマンド Build Scanを使って計測します。その際。build-cacheはoffにします。
-./gradlew clean ./gradlew build --no-build-cache --scan  両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。 また試行回数は10回程度で、最終結果のみを以下に掲載します。
-kotlinx.coroutineを使う Time spent executing tasks 1m 16.034s All tasks	207	2m 42.833s Tasks avoided	12 (09.7%)	0.062s From cache	0 (00.0%)	0.000s Up-to-date	12 (09.</description>
+環境  AGP3.4.0-alpha06 Kotlin 1.3.10 Kotlinx.coroutine 1.0.1 Gradle 5.0  比較対象  kotlinx.coroutineを使ったサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている  300 * 7の2100箇所がCoroutine関連のコードになります     kotlinx.coroutineを使わないサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中で適当なメソッド（Handler().post {}）をコールしている   サンプルコード  計測コマンド Build Scanを使って計測します。その際。build-cacheはoffにします。
+./gradlew clean ./gradlew build --no-build-cache --scan 両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。 また試行回数は10回程度で、最終結果のみを以下に掲載します。
+kotlinx.coroutineを使う Time spent executing tasks 1m 16.034s All tasks	207	2m 42.833s Tasks avoided	12 (09.7%)	0.062s From cache	0 (00.0%)	0.</description>
     </item>
     
   </channel>

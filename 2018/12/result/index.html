@@ -22,12 +22,8 @@
   <meta property="twitter:title" content="Kotlin: Resultの簡単なまとめ">
 
   
-  <meta property="twitter:description" content="
-
-Result KEEP
-
+  <meta property="twitter:description" content="Result KEEP
 Resultが1.3からstdlibに入ったので紹介をしたいと思います。
-
 ResultはSuccess T | Failure …">
   
 
@@ -95,57 +91,40 @@ ResultはSuccess T | Failure …">
     
     <span class="post-date">Created at Tue, Dec 11, 2018</span>
     
-    
-
-<p><a href="https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md">Result KEEP</a></p>
-
+    <p><a href="https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md">Result KEEP</a></p>
 <p><code>Result</code>が1.3からstdlibに入ったので紹介をしたいと思います。</p>
-
 <p>Resultは<code>Success T | Failure Throwable</code>の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。</p>
-
-<h2 id="基本的な使い方">基本的な使い方</h2>
-
+<h2 id="heading">基本的な使い方</h2>
 <p>使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。</p>
-
-<pre><code class="language-kotlin">val i: Result&lt;Int&gt; = Result.success(10)
-val t: Result&lt;Int&gt; = Result.failure(IOException())
-</code></pre>
-
-<p>また、<code>runCatching</code>関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。</p>
-
-<pre><code class="language-kotlin">val a = runCatching { doSomeThing() }
-</code></pre>
-
-<p>Resultに対する操作は以下のようにします。</p>
-
-<pre><code class="language-kotlin">// successに対して操作
-val i = Result.success(10)
-i.getOrNull() // 10
-i.isSuccess // true
-i.exceptionOrNull() // null
-i.map { 10 * 10 }.getOrNull() // 100
-i.onSuccess { println(&quot;success&quot;) }.onFailure { println(&quot;failure&quot;) }
-i.recover { 1111 }.getOrNull() // 10
-
-// failureに対して操作
-val t = Result.failure(IOException())
-t.getOrNull() // null
-t.isFailure // true
-t.exceptionOrNull() // IOException
-t.map { 10 * 10 }.getOrNull() // null
-t.onSuccess { println(&quot;success&quot;) }.onFailure { println(&quot;failure&quot;) }
-t.recover { 1111 }.getOrNull() // 1111
-t.getOrThrow() // throw IOException
-</code></pre>
-
-<p>値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> i: Result&lt;Int&gt; = Result.success(<span style="color:#ae81ff">10</span>)
+<span style="color:#66d9ef">val</span> t: Result&lt;Int&gt; = Result.failure(IOException())
+</code></pre></div><p>また、<code>runCatching</code>関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> a = runCatching { doSomeThing() }
+</code></pre></div><p>Resultに対する操作は以下のようにします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// successに対して操作
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> i = Result.success(<span style="color:#ae81ff">10</span>)
+i.getOrNull() <span style="color:#75715e">// 10
+</span><span style="color:#75715e"></span>i.isSuccess <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span>i.exceptionOrNull() <span style="color:#75715e">// null
+</span><span style="color:#75715e"></span>i.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// 100
+</span><span style="color:#75715e"></span>i.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
+i.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 10
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// failureに対して操作
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> t = Result.failure(IOException())
+t.getOrNull() <span style="color:#75715e">// null
+</span><span style="color:#75715e"></span>t.isFailure <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span>t.exceptionOrNull() <span style="color:#75715e">// IOException
+</span><span style="color:#75715e"></span>t.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// null
+</span><span style="color:#75715e"></span>t.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
+t.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 1111
+</span><span style="color:#75715e"></span>t.getOrThrow() <span style="color:#75715e">// throw IOException
+</span></code></pre></div><p>値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。</p>
 <p>また、Resultを使うことで、functionalっぽく書くことが出来ます。</p>
-
-<pre><code class="language-kotlin">try {
-    val data = doSomethingSync()
-    processData(data)
-} catch(e: Throwable) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">try</span> {
+    <span style="color:#66d9ef">val</span> data = doSomethingSync()
+    processData(<span style="color:#66d9ef">data</span>)
+} <span style="color:#66d9ef">catch</span>(e: Throwable) {
     showErrorDialog(e)
 }
 
@@ -154,19 +133,12 @@ t.getOrThrow() // throw IOException
 runCatching { doSomethingSync() }
     .onFailure { showErrorDialog(it) }
     .onSuccess { processData(it) }
-</code></pre>
-
-<p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
-
-<h2 id="補足">補足</h2>
-
-<h3 id="resultは戻り値として返せない">Resultは戻り値として返せない</h3>
-
+</code></pre></div><p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
+<h2 id="heading1">補足</h2>
+<h3 id="result">Resultは戻り値として返せない</h3>
 <p>これは、Resultのユースケースから外さないための制約です。なぜなら、Resultはその関数内で処理すべき例外であり、関数の呼び出し側で処理させるべきではないためです。
 例えば、ある関数の返り値が<code>Result&lt;User&gt;</code>となっていたときに、失敗する可能性は呼び出し側に伝わりますが、どのような失敗が起こるか分かりません。どのようにエラーを処理するかはこの関数内で完結すべきなので、返り値としてResultを指定することは出来ません。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <p>簡単にまとめました。より詳細な内容は<a href="https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md">Result KEEP</a>を見てください😊</p>
 
     <div class="mt30"></div>

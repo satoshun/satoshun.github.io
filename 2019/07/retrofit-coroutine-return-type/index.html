@@ -24,9 +24,7 @@
   <meta property="twitter:title" content="Retrofit: Coroutineを使うときの、Response&lt;T&gt;と生のTの使い分け">
 
   
-  <meta property="twitter:description" content="
-
-psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのままT の使い分け所感のCoroutineバージョンの …">
+  <meta property="twitter:description" content="psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのままT の使い分け所感のCoroutineバージョンの記事 …">
   
 
   
@@ -93,49 +91,38 @@ psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのま�
     
     <span class="post-date">Created at Tue, Jul 2, 2019</span>
     
-    
-
-<p>psideさんの、<a href="https://qiita.com/pside/items/e546f0f12989e8dcd729">Retrofit2でRxJavaを使う時の Result<T>, Response<T>, そのままT の使い分け所感</a>のCoroutineバージョンの記事となります。</p>
-
+    <p>psideさんの、<a href="https://qiita.com/pside/items/e546f0f12989e8dcd729">Retrofit2でRxJavaを使う時の Result<!-- raw HTML omitted -->, Response<!-- raw HTML omitted -->, そのままT の使い分け所感</a>のCoroutineバージョンの記事となります。</p>
 <p>上記の記事に書いてある、Rxとは違い、Result型は用意されていないので、Response型で包むか、生で値ｗ受け取るかのどちらかが基本となります。</p>
-
-<pre><code class="language-kotlin">interface HogeService {
-    suspend fun getHoge(): Hoge
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HogeService</span> {
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getHoge</span>(): Hoge
     or
-    suspend fun getHoge(): Response&lt;Hoge&gt;
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getHoge</span>(): Response&lt;Hoge&gt;
 }
-</code></pre>
-
-<p>Retrofitの2.6.0で、挙動の違いを確認しました。</p>
-
+</code></pre></div><p>Retrofitの2.6.0で、挙動の違いを確認しました。</p>
 <table>
 <thead>
 <tr>
 <th></th>
 <th>生</th>
-<th>Response<T></th>
+<th>Response<!-- raw HTML omitted --></th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>200</td>
 <td>成功</td>
 <td>成功</td>
 </tr>
-
 <tr>
 <td>404</td>
 <td>例外</td>
 <td>成功</td>
 </tr>
-
 <tr>
 <td>ネットワークに繋がっていない</td>
 <td>例外</td>
 <td>例外</td>
 </tr>
-
 <tr>
 <td>シリアライズが出来ない（型がおかしい）</td>
 <td>例外</td>
@@ -143,16 +130,12 @@ psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのま�
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>生の場合、HTTPのstatus Code的に失敗とされるものは例外になる</li>
 <li>Response型で包めば、HTTPのstatus Code的に失敗だとしても例外が発生しない</li>
 </ul>
-
 <p>っていう感じの挙動になります。</p>
-
-<h2 id="どっちを使えばいいの">どっちを使えばいいの?</h2>
-
+<h2 id="heading">どっちを使えばいいの?</h2>
 <p>サーバがエラーコードを返してきた時に、特別な振る舞いをしたいエンドポイントってあると思うので、そういうときはResponseで包んであげて、それ以外は生でいいんじゃない？って思ってます（小並感</p>
 
     <div class="mt30"></div>

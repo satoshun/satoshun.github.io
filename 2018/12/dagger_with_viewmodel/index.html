@@ -24,13 +24,9 @@
   <meta property="twitter:title" content="Dagger &#43; ViewModelの基本編 &#43; 実例編">
 
   
-  <meta property="twitter:description" content="
-
-この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃
-
+  <meta property="twitter:description" content="この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃
 基本編
-
-一緒にDagger &#43; ViewModel …">
+一緒にDagger &#43; ViewModelを使うの …">
   
 
   
@@ -97,157 +93,125 @@
     
     <span class="post-date">Updated at Fri, Jan 18, 2019</span>
     
-    
-
-<p>この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃</p>
-
-<h2 id="基本編">基本編</h2>
-
+    <p>この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃</p>
+<h2 id="heading">基本編</h2>
 <p>一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は<code>ViewModelProvider</code>を介して行う必要があるためです。</p>
-
 <p>例えば、次のコードは間違っています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> @Inject <span style="color:#66d9ef">constructor</span>(...): ViewModel()
 
-<pre><code class="language-kotlin">class MainViewModel @Inject constructor(...): ViewModel()
-
-class MainActivity {
-    @Inject lateinit var viewModel: MainViewModel
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> {
+    @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> viewModel: MainViewModel
 
     ...
 }
-</code></pre>
-
-<p>この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。</p>
-
-<pre><code class="language-kotlin">class MainViewModel(...): ViewModel()
+</code></pre></div><p>この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(...): ViewModel()
 
 @Module
-class MainActivityModule {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
     @Provides
-    fun provideMainViewModel(...) : MainViewModel {
-        // ViewModelProviderを使ってインスタンスを生成する
-        return ViewModelProviders.of(...).get(MainViewModel::class.java)
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainViewModel</span>(...) : MainViewModel {
+        <span style="color:#75715e">// ViewModelProviderを使ってインスタンスを生成する
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> ViewModelProviders.of(...).<span style="color:#66d9ef">get</span>(MainViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     }
 }
 
-class MainActivity {
-    @Inject lateinit var viewModel: MainViewModel
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> {
+    @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> viewModel: MainViewModel
 
     ...
 }
-</code></pre>
-
-<p><code>@Provides</code>を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。</p>
-
+</code></pre></div><p><code>@Provides</code>を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。</p>
 <p>また、ViewModelを直接注入せずに、<code>ViewModelProvider.Factory</code>を注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。</p>
-
-<pre><code class="language-kotlin">class MainViewModel(...): ViewModel()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(...): ViewModel()
 or
-class MainViewModel @Inject constructor(...): ViewModel()
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> @Inject <span style="color:#66d9ef">constructor</span>(...): ViewModel()
 
 @Module
-class MainActivityModule {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
     @Provides
-    fun provideViewModelFactory(...) : ViewModelProvider.Factory {
-        // ここでMainViewModelを生成するFactoryを定義する
-        return object: ViewModelProvider.Factory {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideViewModelFactory</span>(...) : ViewModelProvider.Factory {
+        <span style="color:#75715e">// ここでMainViewModelを生成するFactoryを定義する
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span>: ViewModelProvider.Factory {
             ...
         }
     }
 }
 
-class MainActivity : AppCompatActivity() {
-    // ViewModelではなく、Factoryを注入するのがポイント
-    @Inject lateinit var factory: ViewModelProvider.Factory
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+    <span style="color:#75715e">// ViewModelではなく、Factoryを注入するのがポイント
+</span><span style="color:#75715e"></span>    @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> factory: ViewModelProvider.Factory
 
-    // MainViewModelインスタンスの生成はActivity側で行う
-    // activity-ktxで定義されている拡張関数を使う
-    private val viewModel: MainViewModel by viewModels { factory }
+    <span style="color:#75715e">// MainViewModelインスタンスの生成はActivity側で行う
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// activity-ktxで定義されている拡張関数を使う
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> viewModel: MainViewModel <span style="color:#66d9ef">by</span> viewModels { factory }
 
     ...
 }
-</code></pre>
-
-<p>activity-ktxに定義されている<code>viewModels</code>拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。</p>
-
+</code></pre></div><p>activity-ktxに定義されている<code>viewModels</code>拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。</p>
 <p>次に、この2パターンのどちらの書き方がいいかを考えていきます。</p>
-
-<h2 id="実例編">実例編</h2>
-
+<h2 id="heading1">実例編</h2>
 <p><code>@Provides</code>を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。</p>
-
 <p>両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。</p>
-
-<hr />
-
+<hr>
 <p><a href="https://github.com/nickbutcher/plaid/blob/master/dribbble/src/main/java/io/plaidapp/dribbble/dagger/DribbbleModule.kt#L43">plaid</a></p>
-
 <ul>
 <li><code>@Provides</code>を使い、ViewModelを直接注入するパターン</li>
 <li>ViewModelごとにFactoryクラスをそれぞれ定義する必要があるので記述量が多い</li>
 <li>ViewModelの依存関係が解決できなかったらコンパイルエラーになる
-
 <ul>
 <li>Daggerのコンパイルチェックが上手く動く</li>
-</ul></li>
+</ul>
+</li>
 <li>ViewModelを直接注入出来るので使い側からすると間違った使い方は出来ない（はず）</li>
 </ul>
-
-<hr />
-
+<hr>
 <p><a href="https://medium.com/@marco_cattaneo/android-viewmodel-and-factoryprovider-good-way-to-manage-it-with-dagger-2-d9e20a07084c">Android ViewModel and FactoryProvider: good way to manage it with Dagger Multibindings</a></p>
-
 <ul>
 <li>Daggerのmultibindingsを使い、ViewModel Factoryを注入するパターン</li>
 <li>最初に仕組みを入れてしまえば、のちのちの記述量は少ない</li>
 <li>multibindingsを使っているのでランタイム時に落ちる可能性がある
-
 <ul>
 <li>Daggerのコンパイルチェックが上手く動かない</li>
-</ul></li>
+</ul>
+</li>
 <li>ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
-
 <ul>
 <li>間違った書き方が出来る</li>
-</ul></li>
 </ul>
-
-<hr />
-
+</li>
+</ul>
+<hr>
 <p><a href="https://github.com/satoshun-android-example/ActivityKtxDaggerExample/tree/master/app/src/main/java/com/github/satoshun/example/sample">Activity-Ktx + Dagger Example</a></p>
-
 <ul>
 <li>Factory用のカスタムクラスを定義し、ViewModel Factoryを注入するパターン
-
 <ul>
 <li>僕が作ったサンプルコードです😃　</li>
-</ul></li>
+</ul>
+</li>
 <li>最初に汎用クラスを入れてしまえば、のちのちの記述量は少ない</li>
 <li>ViewModelが提供されていなかったらコンパイルエラーになる
-
 <ul>
 <li>Daggerのコンパイルチェックが上手く動く</li>
-</ul></li>
+</ul>
+</li>
 <li>ViewModelを直接注入する書き方が可能だが、その場合ViewModelProviderを介さずインスタンス生成するので正しくない
-
 <ul>
 <li>間違った書き方が出来る</li>
-</ul></li>
 </ul>
-
-<hr />
-
+</li>
+</ul>
+<hr>
 <p>個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>一番プロジェクトに適したパターンを適用するのが良いと思います😃</li>
 <li>DaggerでViewModelサポートの<a href="https://github.com/google/dagger/issues/1271">Issue</a>が立っており、DaggerがViewModelをサポートする計画があります
-
 <ul>
 <li>なので前述のパターンはいつか過去のものとなる可能性が高いです。</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

@@ -24,13 +24,9 @@
   <meta property="twitter:title" content="R8/Proguard: Class Mergingについて">
 
   
-  <meta property="twitter:description" content="
-
-コードの最適化の話です。この記事ではClass Mergingについて紹介します。
-
+  <meta property="twitter:description" content="コードの最適化の話です。この記事ではClass Mergingについて紹介します。
 Class Merging?
-
-その名の通り、Classをマージする最 …">
+その名の通り、Classをマージする最適化で …">
   
 
   
@@ -97,114 +93,79 @@ Class Merging?
     
     <span class="post-date">Created at Sun, Jan 20, 2019</span>
     
-    
-
-<p>コードの最適化の話です。この記事ではClass Mergingについて紹介します。</p>
-
+    <p>コードの最適化の話です。この記事ではClass Mergingについて紹介します。</p>
 <h2 id="class-merging">Class Merging?</h2>
-
 <p>その名の通り、Classをマージする最適化です。最終的なクラス数減らすことが期待出来ます。
 Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があります。</p>
-
 <p>まずは縦方向のClass Mergingについて説明します。</p>
-
-<h3 id="縦方向">縦方向?</h3>
-
+<h3 id="heading">縦方向?</h3>
 <p>縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。</p>
-
 <p>例えば、次の実装は最適化によって1つにまとめられます。</p>
-
-<pre><code class="language-kotlin">interface IVertical {
-    fun show(i: Int)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IVertical</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int)
 }
 
-class Vertical(
-    private val a: Int
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vertical</span>(
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> a: Int
 ) : IVertical {
-    override fun show(i: Int) {
-        println(&quot;start called $i $a&quot;)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
+        println(<span style="color:#e6db74">&#34;start called $i $a&#34;</span>)
     }
 }
-</code></pre>
+</code></pre></div><p>&ndash;&gt; Proguard/R8による最適化後 &ndash;&gt;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Vertical</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<p>&ndash;&gt; Proguard/R8による最適化後 &ndash;&gt;</p>
-
-<pre><code class="language-java">public final class Vertical {
-    ...
-
-    public final void show(int i) {
-        ...
-    }
-}
-</code></pre>
-
-<p><code>IVertical</code>インターフェースが見事に消されていることが分かります。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>IVertical</code>インターフェースが見事に消されていることが分かります。</p>
 <p>また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。</p>
-
 <ul>
 <li><a href="https://r8.googlesource.com/r8/+/master/src/main/java/com/android/tools/r8/shaking/VerticalClassMerger.java">R8: Vertical Merger</a></li>
 <li><a href="https://github.com/facebook/proguard/blob/master/src/proguard/optimize/peephole/VerticalClassMerger.java">Proguard: Vertical Merger</a></li>
 </ul>
-
 <p>次に横方向のマージを紹介します。</p>
-
-<h3 id="横方向">横方向?</h3>
-
+<h3 id="heading1">横方向?</h3>
 <p>Staticメソッドのみを持つクラスを1つにまとめるなどの最適化を行います。</p>
-
 <p>例えばKotlinの複数のファイルで定義されたトップレベル関数を1つのクラスにまとめてくれます。</p>
-
-<pre><code class="language-kotlin">// ShowExt.kt
-fun Int.show1(i: Int) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ShowExt.kt
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.show1(i: Int) {
     ...
 }
 
-// ShowExt2.kt
-fun Int.show2(i: Int) {
+<span style="color:#75715e">// ShowExt2.kt
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.show2(i: Int) {
     ...
 }
 
---&gt; Proguard/R8による最適化後 --&gt;
+--&gt; Proguard/R8<span style="color:#960050;background-color:#1e0010">に</span><span style="color:#960050;background-color:#1e0010">よ</span><span style="color:#960050;background-color:#1e0010">る</span><span style="color:#960050;background-color:#1e0010">最</span><span style="color:#960050;background-color:#1e0010">適</span><span style="color:#960050;background-color:#1e0010">化</span><span style="color:#960050;background-color:#1e0010">後</span> --&gt;
 
-</code></pre>
-
-<p>java
-public class ShowExt2Kt {
-    public static final void show1(int i) {
-        &hellip;
+<span style="color:#960050;background-color:#1e0010">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#960050;background-color:#1e0010">`</span>java
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShowExt2Kt</span> {
+    <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void show1(int i) {
+        ...
     }
-}</p>
+}
 
-<pre><code>public static final void show2(int i) {
+    <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void show2(int i) {
+        ...
+    }
+}
+</code></pre></div><p>1つのクラスにまとめられていることが分かります。</p>
+<p>また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。</p>
+<pre><code>// Fuga.kt
+fun Int.show1() {
     ...
 }
-</code></pre>
 
-<p>}</p>
-
-<pre><code>
-1つのクラスにまとめられていることが分かります。
-
-また、実際のAndroidプロジェクトで確認したところ、確かに拡張関数が他のクラスにマージされていました。
-
-</code></pre>
-
-<p>// Fuga.kt
-fun Int.show1() {
-    &hellip;
-}</p>
-
-<p>// mapping.txtの内容
+// mapping.txtの内容
 android.support.constraint.solver.widgets.Analyzer -&gt; a.b.b.a.a.a:
-    &hellip;
+    ...
     void com.github.satoshun.example.FugaKt.show1(int) -&gt; d
-```</p>
-
-<p>なぜこのクラスに移動したかは分からないので、今後の宿題とします。申し訳ありません😫</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre><p>なぜこのクラスに移動したかは分からないので、今後の宿題とします。申し訳ありません😫</p>
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>横方向のマージについては内容に自信がないので、もし間違っていたり、補足があれば教えて頂けるととても嬉しいです🙏</li>
 </ul>

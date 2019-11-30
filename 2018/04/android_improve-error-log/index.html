@@ -22,11 +22,8 @@
   <meta property="twitter:title" content="Android: Data Bindingを使っていると本当のエラーログが出ない話 &#43; 対処法">
 
   
-  <meta property="twitter:description" content="
-
-問題
-
-Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見 …">
+  <meta property="twitter:description" content="問題
+Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラー …">
   
 
   
@@ -93,32 +90,20 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
     
     <span class="post-date">Created at Thu, Apr 12, 2018</span>
     
-    
-
-<h2 id="問題">問題</h2>
-
+    <h2 id="heading">問題</h2>
 <p>Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。</p>
-
 <p>理由としては、Data Bindingの生成が失敗すると、<code>MainActivityBinding</code>みたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。
 デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)</p>
-
-<h2 id="解決法">解決法</h2>
-
+<h2 id="heading1">解決法</h2>
 <p>全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです</p>
-
-<pre><code class="language-groovy">kapt {
-    javacOptions {
-        option(&quot;-Xmaxerrs&quot;, 5000)
-    }
-}
-</code></pre>
-
-<p>これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">kapt <span style="color:#f92672">{</span>
+    javacOptions <span style="color:#f92672">{</span>
+        option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-Xmaxerrs&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">5000</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。</p>
 <p>これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。</p>
-
 <p>before(一部ログ修正しています)</p>
-
 <pre><code>...
 // 長いエラーログ
 ...
@@ -136,10 +121,7 @@ e: ActivityMainBinding.java:102: error: cannot find symbol
   symbol:   class DataBindingComponent
   location: class ActivityMainBinding
 :app:kaptProductDebugKotlin FAILED
-</code></pre>
-
-<p>after</p>
-
+</code></pre><p>after</p>
 <pre><code>...
 // 長いエラーログ
 ...
@@ -157,13 +139,9 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
     @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
                                                                    ^
 :app:kaptProductDebugKotlin FAILED
-</code></pre>
-
-<p>beforeではDataBindingの参照エラーしか出ていないんですが、afterではIntDefでのエラーログが出ていることが分かります。
+</code></pre><p>beforeではDataBindingの参照エラーしか出ていないんですが、afterではIntDefでのエラーログが出ていることが分かります。
 これが本当に欲しかったエラーログで、これを修正することで無事解決することが出来ました。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>Data Binding便利だけどやっぱつれぇわ</li>
 </ul>

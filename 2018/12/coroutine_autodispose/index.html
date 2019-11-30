@@ -26,9 +26,7 @@
   <meta property="twitter:title" content="Coroutine &#43; AutoDisposeを作ってみた">
 
   
-  <meta property="twitter:description" content="
-
-Coroutine &#43; AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいき …">
+  <meta property="twitter:description" content="Coroutine &#43; AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいきそう …">
   
 
   
@@ -95,124 +93,105 @@ Coroutine &#43; AutoDisposeの実装について考えてみました。結論�
     
     <span class="post-date">Created at Sun, Dec 23, 2018</span>
     
-    
-
-<p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
-
-<h2 id="continuationinterceptorとは">ContinuationInterceptorとは?</h2>
-
+    <p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
+<h2 id="continuationinterceptor">ContinuationInterceptorとは?</h2>
 <p>ContinuationInterceptorは次のようなインターフェースです。</p>
-
-<pre><code class="language-kotlin">/**
- * Marks coroutine context element that intercepts coroutine continuations.
- * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
- * intercepts all coroutine continuations with [interceptContinuation] invocations.
- */
-@SinceKotlin(&quot;1.3&quot;)
-public interface ContinuationInterceptor : CoroutineContext.Element {
-  public fun &lt;T&gt; interceptContinuation(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt;
-  public fun releaseInterceptedContinuation(continuation: Continuation&lt;*&gt;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Marks coroutine context element that intercepts coroutine continuations.
+</span><span style="color:#75715e"> * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
+</span><span style="color:#75715e"> * intercepts all coroutine continuations with [interceptContinuation] invocations.
+</span><span style="color:#75715e"> */</span>
+@SinceKotlin(<span style="color:#e6db74">&#34;1.3&#34;</span>)
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ContinuationInterceptor</span> : CoroutineContext.Element {
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt;
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">releaseInterceptedContinuation</span>(continuation: Continuation&lt;*&gt;)
   ...
 }
-</code></pre>
-
-<p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
-
-<pre><code class="language-kotlin">class LifecycleContinuationInterceptor(
-  private val lifecycle: Lifecycle
+</code></pre></div><p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleContinuationInterceptor</span>(
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
 ) : ContinuationInterceptor {
-  override val key: CoroutineContext.Key&lt;*&gt;
-    get() = ContinuationInterceptor
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> key: CoroutineContext.Key&lt;*&gt;
+    <span style="color:#66d9ef">get</span>() = ContinuationInterceptor
 
-  override fun &lt;T&gt; interceptContinuation(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; {
-    // ContinuationからJobを取得
-    val job = continuation.context[Job]
-    if (job != null) {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; {
+    <span style="color:#75715e">// ContinuationからJobを取得
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> job = continuation.context[Job]
+    <span style="color:#66d9ef">if</span> (job != <span style="color:#66d9ef">null</span>) {
       lifecycle.addJob(job)
     }
-    return continuation
+    <span style="color:#66d9ef">return</span> continuation
   }
 }
 
-fun LifecycleOwner.addJob(job: Job) {
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">LifecycleOwner</span>.addJob(job: Job) {
   lifecycle.addJob(job)
 }
 
-fun Lifecycle.addJob(job: Job) {
-  val state = this.currentState
-  val event = when (state) {
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Lifecycle</span>.addJob(job: Job) {
+  <span style="color:#66d9ef">val</span> state = <span style="color:#66d9ef">this</span>.currentState
+  <span style="color:#66d9ef">val</span> event = <span style="color:#66d9ef">when</span> (state) {
       ...
   }
-  val observer = LifecycleJobObserver(job, event, this)
-  this.addObserver(observer)
+  <span style="color:#66d9ef">val</span> observer = LifecycleJobObserver(job, event, <span style="color:#66d9ef">this</span>)
+  <span style="color:#66d9ef">this</span>.addObserver(observer)
   job.invokeOnCompletion(observer)
 }
 
-private class LifecycleJobObserver(
-  private val job: Job,
-  private val event: Lifecycle.Event,
-  private val lifecycle: Lifecycle
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleJobObserver</span>(
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job,
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> event: Lifecycle.Event,
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
 ) : LifecycleObserver, CompletionHandler {
   @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-  fun onEvent(owner: LifecycleOwner, event: Lifecycle.Event) {
-    if (event == this.event) {
-      owner.lifecycle.removeObserver(this)
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onEvent</span>(owner: LifecycleOwner, event: Lifecycle.Event) {
+    <span style="color:#66d9ef">if</span> (event == <span style="color:#66d9ef">this</span>.event) {
+      owner.lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
       job.cancel()
     }
   }
 
-  override fun invoke(cause: Throwable?) {
-    lifecycle.removeObserver(this)
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">invoke</span>(cause: Throwable?) {
+    lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
   }
 }
-</code></pre>
-
-<p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
-
+</code></pre></div><p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
 <p>フルコードは<a href="https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt">ここに</a>あります。</p>
-
-<h2 id="使い方">使い方</h2>
-
+<h2 id="heading">使い方</h2>
 <p>使い方は次のようになります。</p>
-
-<pre><code class="language-kotlin">abstract class BaseActivity : AppCompatActivity(),
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
   CoroutineScope {
 
-  private val job = Job()
-  override val coroutineContext get() = job +
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job = Job()
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> coroutineContext <span style="color:#66d9ef">get</span>() = job +
       Dispatchers.Main +
-      LifecycleContinuationInterceptor(this) // ここでInterceptorを登録
-}
+      LifecycleContinuationInterceptor(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここでInterceptorを登録
+</span><span style="color:#75715e"></span>}
 
-class MainActivity : BaseActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : BaseActivity() {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
 
-    // onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
-    launch {
+    <span style="color:#75715e">// onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
+</span><span style="color:#75715e"></span>    launch {
       ...
     }
   }
 
-  override fun onResume() {
-    super.onResume()
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onResume</span>() {
+    <span style="color:#66d9ef">super</span>.onResume()
 
-    // onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
-    launch {
+    <span style="color:#75715e">// onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
+</span><span style="color:#75715e"></span>    launch {
       ...
     }
   }
 }
-</code></pre>
-
-<p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre></div><p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊</li>
 </ul>
-
 <p>サンプルコードです😃<a href="https://github.com/satoshun-android-example/AutoDisposeExample">satoshun-android-example/AutoDisposeExample</a></p>
 
     <div class="mt30"></div>

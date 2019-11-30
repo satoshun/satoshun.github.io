@@ -19,7 +19,7 @@
       
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
       <description>以下の動画のまとめです。
-Build a Modular Android App Architecture (Google I/O&amp;rsquo;19)
+Build a Modular Android App Architecture (Google I/O&#39;19)
 なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
  人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
  何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
@@ -27,10 +27,10 @@ CIの高速化 再ビルドが必要なモジュールのみテストをすれ�
  androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい）  APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
 モジュール どのようにモジュール分けをするか?
 1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
- ライブラリモジュール  com.android.libraryを指定する  Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い    Plaidでは以下のようなモジュール構成にした。
+ ライブラリモジュール  com.android.libraryを指定する   Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い      Plaidでは以下のようなモジュール構成にした。
 dribbleと、designernewsがDynamic Featureモジュールになっている。
 2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
- Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ  Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入    こうすることで、UIがDAOの知識を知らずに済む</description>
+ Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入      こうすることで、UIがDAOの知識を知らずに済む</description>
     </item>
     
     <item>
@@ -40,9 +40,9 @@ dribbleと、designernewsがDynamic Featureモジュールになっている。
       
       <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
       <description>Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。 動画だとここらへんになります。
-改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます   Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る  リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される   Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった  新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
+改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます    Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る   リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される    Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった  新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
 Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）
-メリット  コンパイルが早くなる  Data Bindingより機能が少なくなるのでそれはそう  &amp;lt;layout&amp;gt;で囲う必要がなくなった  これ個人的には好きでなかったので嬉しい。ネストが減る   デメリット  &amp;lt;data&amp;gt;セクションがなくなる  モデルの値とViewのマッピングはコード側ですることになりそう  多分BindingAdapterは使えない  これもコード側ですることになりそう  双方向バインディングとか使えない  おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。</description>
+メリット  コンパイルが早くなる  Data Bindingより機能が少なくなるのでそれはそう   &amp;lt;layout&amp;gt;で囲う必要がなくなった  これ個人的には好きでなかったので嬉しい。ネストが減る    デメリット  &amp;lt;data&amp;gt;セクションがなくなる  モデルの値とViewのマッピングはコード側ですることになりそう   多分BindingAdapterは使えない  これもコード側ですることになりそう   双方向バインディングとか使えない  おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。</description>
     </item>
     
   </channel>

@@ -24,10 +24,7 @@
   <meta property="twitter:title" content="Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました">
 
   
-  <meta property="twitter:description" content="
-
-従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。
-
+  <meta property="twitter:description" content="従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。
 それが、 …">
   
 
@@ -95,37 +92,23 @@
     
     <span class="post-date">Created at Mon, Jul 15, 2019</span>
     
-    
-
-<p>従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。</p>
-
+    <p>従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。</p>
 <p>それが、<a href="https://github.com/material-components/material-components-android/releases/tag/1.1.0-alpha08">material-component 1.1.0-alpha08</a>にMaterialTextViewが爆誕し、lineHeightがTextAppearanceから指定出来るようになりました🎉</p>
-
-<h2 id="使い方">使い方</h2>
-
+<h2 id="heading">使い方</h2>
 <p>まずはstyleを定義します。</p>
-
-<pre><code class="language-xml">&lt;style name=&quot;TextAppearance.LineHeight&quot;&gt;
-  &lt;item name=&quot;lineHeight&quot;&gt;20sp&lt;/item&gt;
-&lt;/style&gt;
-</code></pre>
-
-<p>次に、TextViewから指定します。</p>
-
-<pre><code class="language-xml">&lt;TextView
-  android:layout_width=&quot;wrap_content&quot;
-  android:layout_height=&quot;wrap_content&quot;
-  android:text=&quot;テスト&quot;
-  android:textAppearance=&quot;@style/TextAppearance.LineHeight&quot; /&gt;
-</code></pre>
-
-<p>これで完了です😃</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;TextAppearance.LineHeight&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;lineHeight&#34;</span><span style="color:#f92672">&gt;</span>20sp<span style="color:#f92672">&lt;/item&gt;</span>
+<span style="color:#f92672">&lt;/style&gt;</span>
+</code></pre></div><p>次に、TextViewから指定します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+  <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;テスト&#34;</span>
+  <span style="color:#a6e22e">android:textAppearance=</span><span style="color:#e6db74">&#34;@style/TextAppearance.LineHeight&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>これで完了です😃</p>
 <p>MaterialTextViewをXMLから直接指定してもいいのですが、AppCompatActivityを使っていれば、自動的にMaterialTextViewがinflateされるようになっています。
 詳しくは<a href="https://github.com/material-components/material-components-android/commit/d7a92485f818a63d110536d70e7040b1eadfb3aa#diff-b6219f955dbe45d238cdd3b1b43f46b8R103">MaterialComponentsViewInflater.java</a>をご覧下さい。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>material-component 1.1.0-alpha08にアップデートすると、自動的にMaterialTextViewが使われ、TextAppearanceからlineHeightが指定できる😃</li>
 </ul>

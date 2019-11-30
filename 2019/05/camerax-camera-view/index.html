@@ -24,9 +24,7 @@
   <meta property="twitter:title" content="CameraX: CameraView触ってみた">
 
   
-  <meta property="twitter:description" content="
-
-CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があ …">
+  <meta property="twitter:description" content="CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性がありま …">
   
 
   
@@ -93,16 +91,10 @@ CameraXのコードが公開されていたので、その中にあったCameraV
     
     <span class="post-date">Created at Mon, May 6, 2019</span>
     
-    
-
-<p>CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。</p>
-
+    <p>CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。</p>
 <p>内部の実装であったり、細かい部分はpsideさんの「<a href="https://p-side.net/posts/2019-05-05-camerax/">CameraXのコードがきたので気合い入れて読んでみた</a>」が詳しいです。</p>
-
-<h2 id="環境構築">環境構築</h2>
-
+<h2 id="heading">環境構築</h2>
 <p>CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。</p>
-
 <pre><code> androidx {
      name = &quot;Jetpack Camera View Library&quot;
 -    publish = false
@@ -111,131 +103,83 @@ CameraXのコードが公開されていたので、その中にあったCameraV
      mavenGroup = LibraryGroups.CAMERA
      inceptionYear = &quot;2019&quot;
  }
-</code></pre>
-
-<h2 id="使い方">使い方</h2>
-
+</code></pre><h2 id="heading1">使い方</h2>
 <p>CameraViewは普通のViewのように使うことができます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+  <span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;androidx.constraintlayout.widget.ConstraintLayout
-  ...&gt;
-
-  &lt;androidx.camera.view.CameraView
-    android:layout_width=&quot;0dp&quot;
-    android:layout_height=&quot;0dp&quot;
-    app:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-    app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-    app:layout_constraintStart_toStartOf=&quot;parent&quot;
-    app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
-&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
-</code></pre>
-
-<p>次に初期化をします。</p>
-
-<pre><code class="language-kotlin">cameraView.bindToLifecycle(this) // thisはLifecycleOwner
-</code></pre>
-
-<p>LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。
+  <span style="color:#f92672">&lt;androidx.camera.view.CameraView</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+</code></pre></div><p>次に初期化をします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.bindToLifecycle(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// thisはLifecycleOwner
+</span></code></pre></div><p>LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。
 CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。</p>
-
 <p>これだけでカメラ機能が使えるようになります！とても簡単！!</p>
-
 <p>以下、CameraViewで現状使えるAPIについて紹介します。</p>
-
-<h2 id="cameraviewで使えるapi達">CameraViewで使えるAPI達</h2>
-
-<h3 id="モードの変更">モードの変更</h3>
-
+<h2 id="cameraviewapi">CameraViewで使えるAPI達</h2>
+<h3 id="heading2">モードの変更</h3>
 <p>CameraViewでは次の3つのモードがあります。</p>
-
 <ul>
 <li>Image: 写真を取る</li>
 <li>Video: ビデオを取る</li>
 <li>Mixed: 両方。ただし、動かない端末もあるらしい</li>
 </ul>
-
 <p>次のように使います。</p>
-
-<pre><code class="language-kotlin">// Image
-cameraView.captureMode = CameraView.CaptureMode.IMAGE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Image
+</span><span style="color:#75715e"></span>cameraView.captureMode = CameraView.CaptureMode.IMAGE
 cameraView.takePicture(...)
 
-// Video
-cameraView.captureMode = CameraView.CaptureMode.VIDEO
+<span style="color:#75715e">// Video
+</span><span style="color:#75715e"></span>cameraView.captureMode = CameraView.CaptureMode.VIDEO
 cameraView.startRecording(...)
 cameraView.stopRecording()
-</code></pre>
-
-<h3 id="scaletypeの設定">ScaleTypeの設定</h3>
-
+</code></pre></div><h3 id="scaletype">ScaleTypeの設定</h3>
 <p>Scaleを設定することができます。</p>
-
 <ul>
 <li>CENTER_CROP</li>
 <li>CENTER_INSIDE</li>
 </ul>
-
 <p>次のように使います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.scaleType = CameraView.ScaleType.CENTER_INSIDE
+</code></pre></div><h3 id="lensfacing">LensFacingの切り替え</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.toggleCamera()
 
-<pre><code class="language-kotlin">cameraView.scaleType = CameraView.ScaleType.CENTER_INSIDE
-</code></pre>
-
-<h3 id="lensfacingの切り替え">LensFacingの切り替え</h3>
-
-<pre><code class="language-kotlin">cameraView.toggleCamera()
-
-// or
-
+<span style="color:#75715e">// or
+</span><span style="color:#75715e"></span>
 cameraView.setCameraByLensFacing(CameraX.LensFacing.FRONT)
 cameraView.setCameraByLensFacing(CameraX.LensFacing.BACK)
-</code></pre>
-
-<h3 id="flashモードの設定">Flashモードの設定</h3>
-
+</code></pre></div><h3 id="flash">Flashモードの設定</h3>
 <p>撮影時にフラッシュを有効にすることができます。</p>
-
-<pre><code class="language-kotlin">cameraView.flash = FlashMode.ON
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.flash = FlashMode.ON
 cameraView.flash = FlashMode.OFF
-</code></pre>
-
-<h3 id="torchの有効-無効">torchの有効/無効</h3>
-
+</code></pre></div><h3 id="torch">torchの有効/無効</h3>
 <p>背面ライトを有効にすることができます。</p>
-
-<pre><code class="language-kotlin">cameraView.enableTorch(true)
-cameraView.enableTorch(false)
-</code></pre>
-
-<h3 id="zoomの設定">zoomの設定</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.enableTorch(<span style="color:#66d9ef">true</span>)
+cameraView.enableTorch(<span style="color:#66d9ef">false</span>)
+</code></pre></div><h3 id="zoom">zoomの設定</h3>
 <p>コードから変えることができます。</p>
-
-<pre><code class="language-kotlin">cameraView.zoomLevel = 3f
-cameraView.zoomLevel = 10f
-</code></pre>
-
-<p>また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.zoomLevel = <span style="color:#ae81ff">3f</span>
+cameraView.zoomLevel = <span style="color:#ae81ff">10f</span>
+</code></pre></div><p>また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。</p>
 <h3 id="focus">focus</h3>
-
 <p>指定した部分にfocusを合わせることができます。</p>
-
-<pre><code class="language-kotlin">cameraView.focus(...)
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.focus(...)
+</code></pre></div><h2 id="heading3">まとめ</h2>
 <ul>
 <li>CameraViewは柔軟性がない代わりに、簡単にカメラの機能を使うことが出来る
-
 <ul>
 <li>とはいえ、基本的な機能は揃っていそう</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>最後に、CameraViewを実装した結果になります。</p>
-
-<p><img src="https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no" width=300 /></p>
+<p><!-- raw HTML omitted --></p>
 
     <div class="mt30"></div>
     

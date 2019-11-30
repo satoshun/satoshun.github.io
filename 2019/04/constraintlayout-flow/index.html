@@ -26,10 +26,8 @@
   <meta property="twitter:title" content="ConstraintLayout Flowの紹介">
 
   
-  <meta property="twitter:description" content="
-
-ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
-Flowを使うことで、対象のView …">
+  <meta property="twitter:description" content="ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
+Flowを使うことで、対象のViewを様 …">
   
 
   
@@ -96,141 +94,114 @@ Flowを使うことで、対象のView …">
     
     <span class="post-date">Created at Sun, Apr 28, 2019</span>
     
-    
-
-<p>ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
+    <p>ConstraintLayoutの2.0.0 alpha 5にFlow Virtual Layoutが導入されました🎉
 Flowを使うことで、対象のViewを様々なルールで並べることができます。</p>
-
 <p>メリットとしては、次のようなものがあります。</p>
-
 <ul>
 <li>Viewの階層をフラットに保つことが出来る</li>
 <li>Flowは普通のViewのように扱う事ができる</li>
 <li>MotionLayoutと相性が良い</li>
 </ul>
-
 <p>では、どのように書くのかを見ていきます。</p>
-
-<hr />
-
-<h3 id="1-配置する方向を決める">1. 配置する方向を決める</h3>
-
+<hr>
+<h3 id="1-">1. 配置する方向を決める</h3>
 <p><code>android:orientation</code>から、horizontal or verticalを指定できます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;androidx.constraintlayout.widget.ConstraintLayout
-  android:layout_width=&quot;match_parent&quot;
-  android:layout_height=&quot;match_parent&quot;&gt;
-
-  &lt;androidx.constraintlayout.helper.widget.Flow
-    android:id=&quot;@+id/flow&quot;
-    android:layout_width=&quot;0dp&quot;
-    android:layout_height=&quot;0dp&quot;
-    android:orientation=&quot;horizontal&quot;
-    android:background=&quot;@android:color/white&quot;
-    app:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-    app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-    app:layout_constraintStart_toStartOf=&quot;parent&quot;
-    app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
+  <span style="color:#f92672">&lt;androidx.constraintlayout.helper.widget.Flow</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/flow&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
+    <span style="color:#a6e22e">android:background=</span><span style="color:#e6db74">&#34;@android:color/white&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 
   ...
-</code></pre>
-
-<p>これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。</p>
-
-<h3 id="2-wrapmodeを決める">2. wrapModeを決める</h3>
-
+</code></pre></div><p>これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。</p>
+<h3 id="2-wrapmode">2. wrapModeを決める</h3>
 <p><code>flow_wrapMode</code>で指定することができます。</p>
-
 <p>wrapModeでは、どのようにViewを並べるかを指定でき、3種類のmodeがあります。</p>
-
 <ol>
 <li>none
-
 <ul>
 <li>単純にsingle lineに並べる</li>
-</ul></li>
+</ul>
+</li>
 <li>chain
-
 <ul>
 <li>単純に順番に配置していく。その行（列）に収まらない場合は次の行（列）に配置する</li>
-</ul></li>
-
-<li><p>aligned</p>
-
+</ul>
+</li>
+<li>aligned
 <ul>
-<li><p>各要素を整列するように配置していく。テーブルのようなイメージ</p>
-
-<pre><code class="language-xml">&lt;androidx.constraintlayout.helper.widget.Flow
-android:id=&quot;@+id/flow&quot;
-android:layout_width=&quot;0dp&quot;
-android:layout_height=&quot;0dp&quot;
-android:orientation=&quot;horizontal&quot;
-android:background=&quot;@android:color/white&quot;
-app:flow_wrapMode=&quot;chain&quot;
-app:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-app:layout_constraintStart_toStartOf=&quot;parent&quot;
-app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
-</code></pre></li>
-</ul></li>
+<li>各要素を整列するように配置していく。テーブルのようなイメージ</li>
+</ul>
+</li>
 </ol>
-
-<p>これはchainで対象のViewを配置します。</p>
-
-<h3 id="3-対象のviewを指定する">3. 対象のViewを指定する</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#f92672">&lt;androidx.constraintlayout.helper.widget.Flow</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/flow&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
+    <span style="color:#a6e22e">android:background=</span><span style="color:#e6db74">&#34;@android:color/white&#34;</span>
+    <span style="color:#a6e22e">app:flow_wrapMode=</span><span style="color:#e6db74">&#34;chain&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>これはchainで対象のViewを配置します。</p>
+<h3 id="3-view">3. 対象のViewを指定する</h3>
 <p><code>constraint_referenced_ids</code>から指定します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;androidx.constraintlayout.widget.ConstraintLayout
-  android:layout_width=&quot;match_parent&quot;
-  android:layout_height=&quot;match_parent&quot;&gt;
+  <span style="color:#f92672">&lt;androidx.constraintlayout.helper.widget.Flow</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/flow&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+    <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
+    <span style="color:#a6e22e">app:flow_wrapMode=</span><span style="color:#e6db74">&#34;chain&#34;</span>
+    <span style="color:#a6e22e">android:background=</span><span style="color:#e6db74">&#34;@android:color/white&#34;</span>
+    <span style="color:#a6e22e">app:constraint_referenced_ids=</span><span style="color:#e6db74">&#34;title1,title2,title3&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+    <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-  &lt;androidx.constraintlayout.helper.widget.Flow
-    android:id=&quot;@+id/flow&quot;
-    android:layout_width=&quot;0dp&quot;
-    android:layout_height=&quot;0dp&quot;
-    android:orientation=&quot;horizontal&quot;
-    app:flow_wrapMode=&quot;chain&quot;
-    android:background=&quot;@android:color/white&quot;
-    app:constraint_referenced_ids=&quot;title1,title2,title3&quot;
-    app:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-    app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-    app:layout_constraintStart_toStartOf=&quot;parent&quot;
-    app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
+  <span style="color:#f92672">&lt;TextView</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/title1&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;chain1&#34;</span>
+    <span style="color:#a6e22e">android:textColor=</span><span style="color:#e6db74">&#34;@android:color/black&#34;</span>
+    <span style="color:#a6e22e">android:textSize=</span><span style="color:#e6db74">&#34;20sp&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-  &lt;TextView
-    android:id=&quot;@+id/title1&quot;
-    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;
-    android:text=&quot;chain1&quot;
-    android:textColor=&quot;@android:color/black&quot;
-    android:textSize=&quot;20sp&quot; /&gt;
+  <span style="color:#f92672">&lt;TextView</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/title2&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;chain2&#34;</span>
+    <span style="color:#a6e22e">android:textColor=</span><span style="color:#e6db74">&#34;@android:color/black&#34;</span>
+    <span style="color:#a6e22e">android:textSize=</span><span style="color:#e6db74">&#34;20sp&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-  &lt;TextView
-    android:id=&quot;@+id/title2&quot;
-    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;
-    android:text=&quot;chain2&quot;
-    android:textColor=&quot;@android:color/black&quot;
-    android:textSize=&quot;20sp&quot; /&gt;
-
-  &lt;TextView
-    android:id=&quot;@+id/title3&quot;
-    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;
-    android:text=&quot;chain3&quot;
-    android:textColor=&quot;@android:color/black&quot;
-    android:textSize=&quot;50sp&quot; /&gt;
+  <span style="color:#f92672">&lt;TextView</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/title3&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+    <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;chain3&#34;</span>
+    <span style="color:#a6e22e">android:textColor=</span><span style="color:#e6db74">&#34;@android:color/black&#34;</span>
+    <span style="color:#a6e22e">android:textSize=</span><span style="color:#e6db74">&#34;50sp&#34;</span> <span style="color:#f92672">/&gt;</span>
 
   ...
-</code></pre>
-
-<p>この場合、「title1、title2、title3」が対象のViewになります。また、これらのViewはhorizontalの方向に、chainで順々に配置されます。</p>
-
-<h3 id="4-その他-細かい調整">4. その他、細かい調整</h3>
-
+</code></pre></div><p>この場合、「title1、title2、title3」が対象のViewになります。また、これらのViewはhorizontalの方向に、chainで順々に配置されます。</p>
+<h3 id="4-">4. その他、細かい調整</h3>
 <p>対象のView間のマージンや、行（列）の最大数、Viewの配置場所などの細かい部分の指定ができます。</p>
-
 <ul>
 <li>app:flow_horizontalStyle = &ldquo;spread|spread_inside|packed&rdquo; (default spread)</li>
 <li>app:flow_verticalStyle = &ldquo;spread|spread_inside|packed&rdquo; (default spread)</li>
@@ -242,66 +213,55 @@ app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
 <li>app:flow_verticalAlign = &ldquo;top|bottom|center|baseline” (default center)</li>
 <li>app:flow_maxElementsWrap = &ldquo;integer&rdquo; (default : 0, not applied)</li>
 </ul>
-
 <p>次にMotionLayoutとFlowの使いかたについて見ていきます。</p>
-
 <h2 id="motionlayout">MotionLayout</h2>
-
 <p>これは通常のMotionLayoutの使い方と一緒です。Flowの値を変更してあげればよいです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;MotionScene</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+  <span style="color:#a6e22e">xmlns:motion=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;MotionScene xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-  xmlns:motion=&quot;http://schemas.android.com/apk/res-auto&quot;&gt;
+  <span style="color:#f92672">&lt;Transition</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/transition&#34;</span>
+    <span style="color:#a6e22e">motion:constraintSetEnd=</span><span style="color:#e6db74">&#34;@+id/end&#34;</span>
+    <span style="color:#a6e22e">motion:constraintSetStart=</span><span style="color:#e6db74">&#34;@+id/start&#34;</span>
+    <span style="color:#a6e22e">motion:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-  &lt;Transition
-    android:id=&quot;@+id/transition&quot;
-    motion:constraintSetEnd=&quot;@+id/end&quot;
-    motion:constraintSetStart=&quot;@+id/start&quot;
-    motion:duration=&quot;1000&quot; /&gt;
+  <span style="color:#f92672">&lt;ConstraintSet</span> <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/start&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Constraint</span>
+      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@id/flow&#34;</span>
+      <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+      <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+      <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/ConstraintSet&gt;</span>
 
-  &lt;ConstraintSet android:id=&quot;@+id/start&quot;&gt;
-    &lt;Constraint
-      android:id=&quot;@id/flow&quot;
-      android:layout_width=&quot;0dp&quot;
-      android:layout_height=&quot;0dp&quot;
-      android:orientation=&quot;horizontal&quot;
-      motion:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-      motion:layout_constraintEnd_toEndOf=&quot;parent&quot;
-      motion:layout_constraintStart_toStartOf=&quot;parent&quot;
-      motion:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
-  &lt;/ConstraintSet&gt;
-
-  &lt;ConstraintSet android:id=&quot;@+id/end&quot;&gt;
-    &lt;Constraint
-      android:id=&quot;@id/flow&quot;
-      android:layout_width=&quot;200dp&quot;
-      android:layout_height=&quot;0dp&quot;
-      android:orientation=&quot;vertical&quot;
-      motion:layout_constraintBottom_toBottomOf=&quot;parent&quot;
-      motion:layout_constraintEnd_toEndOf=&quot;parent&quot;
-      motion:layout_constraintStart_toStartOf=&quot;parent&quot;
-      motion:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
-  &lt;/ConstraintSet&gt;
-&lt;/MotionScene&gt;
-</code></pre>
-
-<p>こんな感じのアニメーションになります。</p>
-
-<p><img src="https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no" width=400></p>
-
-<h2 id="まとめ">まとめ</h2>
-
+  <span style="color:#f92672">&lt;ConstraintSet</span> <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/end&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Constraint</span>
+      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@id/flow&#34;</span>
+      <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+      <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;0dp&#34;</span>
+      <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;vertical&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">motion:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/ConstraintSet&gt;</span>
+<span style="color:#f92672">&lt;/MotionScene&gt;</span>
+</code></pre></div><p>こんな感じのアニメーションになります。</p>
+<!-- raw HTML omitted -->
+<h2 id="heading">まとめ</h2>
 <ul>
 <li>ConstraintLayout alpha5になってFlowが入った。かなり便利に使えそう
-
 <ul>
 <li>いろいろ指定できるので、実際に触って動かしてみるのが良いと思います。</li>
-</ul></li>
+</ul>
+</li>
 <li>betaはGoogle I/O前後に来るらしいので、正式版までもう少し😃</li>
 </ul>
-
-<h2 id="参考">参考</h2>
-
+<h2 id="heading1">参考</h2>
 <ul>
 <li><a href="https://speakerdeck.com/camaelon/constraintlayout-2-dot-0">ConstraintLayout 2.0</a></li>
 <li><a href="https://androidstudio.googleblog.com/2019/04/constraintlayout-200-alpha-5.html">ConstraintLayout 2.0.0 alpha 5</a></li>

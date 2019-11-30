@@ -24,10 +24,8 @@
   <meta property="twitter:title" content="Android: RestrictToアノテーションのIDE上での振る舞い">
 
   
-  <meta property="twitter:description" content="
-
-androidx.annotation:annotationには、RestrictToアノテーションクラスが定義されています。
-このアノテーションは次の用途 …">
+  <meta property="twitter:description" content="androidx.annotation:annotationには、RestrictToアノテーションクラスが定義されています。
+このアノテーションは次の用途を持 …">
   
 
   
@@ -94,241 +92,183 @@ androidx.annotation:annotationには、RestrictToアノテーションクラス�
     
     <span class="post-date">Updated at Wed, Jul 3, 2019</span>
     
-    
-
-<p><code>androidx.annotation:annotation</code>には、<code>RestrictTo</code>アノテーションクラスが定義されています。
+    <p><code>androidx.annotation:annotation</code>には、<code>RestrictTo</code>アノテーションクラスが定義されています。
 このアノテーションは次の用途を持ちます。</p>
-
 <blockquote>
 <p>Denotes that the annotated element should only be accessed from within a specific scope (as defined by Scope).</p>
 </blockquote>
-
 <p>指定したScope以外からのアクセスを制限するアノテーションです。</p>
-
 <p>この記事では、この<code>RestrictTo</code>アノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。</p>
-
 <p>また、Android Studio 3.5.0-beta05で検証しました。</p>
-
 <p>この記事内に出てくるRestrictTo関連のコードは以下のライセンスに従います。</p>
-
-<pre><code class="language-java">/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-</code></pre>
-
-<p>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</p>
-
-<h2 id="scopeの一覧">Scopeの一覧</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * Copyright (C) 2016 The Android Open Source Project
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+</span><span style="color:#75715e"> * you may not use this file except in compliance with the License.
+</span><span style="color:#75715e"> * You may obtain a copy of the License at
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> *      http://www.apache.org/licenses/LICENSE-2.0
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * Unless required by applicable law or agreed to in writing, software
+</span><span style="color:#75715e"> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+</span><span style="color:#75715e"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span><span style="color:#75715e"> * See the License for the specific language governing permissions and
+</span><span style="color:#75715e"> * limitations under the License.
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</p>
+<h2 id="scope">Scopeの一覧</h2>
 <p>RestrictToの定義は以下のようになっています。（コメント等は削除してます。）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
+    Scope<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<pre><code class="language-java">public @interface RestrictTo {
-    Scope[] value();
-
-    enum Scope {
-        LIBRARY,
-        LIBRARY_GROUP,
-        LIBRARY_GROUP_PREFIX,
-        @Deprecated
-        GROUP_ID,
-        TESTS,
-        SUBCLASSES,
-    }
-}
-</code></pre>
-
-<p>GROUP_IDはdeprecatedとのことなので、それ以外のLIBRARY、 LIBRARY_GROUP、 LIBRARY_GROUP_PREFIX、 TESTS、 SUBCLASSESの挙動について見ていきます。</p>
-
-<h2 id="各スコープについて">各スコープについて</h2>
-
+    <span style="color:#66d9ef">enum</span> Scope <span style="color:#f92672">{</span>
+        LIBRARY<span style="color:#f92672">,</span>
+        LIBRARY_GROUP<span style="color:#f92672">,</span>
+        LIBRARY_GROUP_PREFIX<span style="color:#f92672">,</span>
+        <span style="color:#a6e22e">@Deprecated</span>
+        GROUP_ID<span style="color:#f92672">,</span>
+        TESTS<span style="color:#f92672">,</span>
+        SUBCLASSES<span style="color:#f92672">,</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>GROUP_IDはdeprecatedとのことなので、それ以外のLIBRARY、 LIBRARY_GROUP、 LIBRARY_GROUP_PREFIX、 TESTS、 SUBCLASSESの挙動について見ていきます。</p>
+<h2 id="heading">各スコープについて</h2>
 <p>次のように説明があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Restrict usage to code within the same library (e.g. the same
+</span><span style="color:#75715e">  * gradle group ID and artifact ID).
+</span><span style="color:#75715e">  */</span>
+LIBRARY<span style="color:#f92672">,</span>
 
-<pre><code class="language-java">/**
-  * Restrict usage to code within the same library (e.g. the same
-  * gradle group ID and artifact ID).
-  */
-LIBRARY,
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Restrict usage to code within the same group of libraries.
+</span><span style="color:#75715e">  * This corresponds to the gradle group ID.
+</span><span style="color:#75715e">  */</span>
+LIBRARY_GROUP<span style="color:#f92672">,</span>
 
-/**
-  * Restrict usage to code within the same group of libraries.
-  * This corresponds to the gradle group ID.
-  */
-LIBRARY_GROUP,
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Restrict usage to code within packages whose groups share
+</span><span style="color:#75715e">  * the same library group prefix up to the last &#34;.&#34;, so for
+</span><span style="color:#75715e">  * example libraries foo.bar:lib1 amd foo.baz:lib2 share
+</span><span style="color:#75715e">  * the prefix &#34;foo.&#34; and so they can use each other&#39;s
+</span><span style="color:#75715e">  * apis that are restricted to this scope. Similarly for
+</span><span style="color:#75715e">  * com.foo.bar:lib1 and com.foo.baz:lib2 where they share
+</span><span style="color:#75715e">  * &#34;com.foo.&#34;. Library com.bar.qux:lib3 however will not
+</span><span style="color:#75715e">  * be able to use the restricted api because it only
+</span><span style="color:#75715e">  * shares the prefix &#34;com.&#34; and not all the way until the
+</span><span style="color:#75715e">  * last &#34;.&#34;.
+</span><span style="color:#75715e">  */</span>
+LIBRARY_GROUP_PREFIX<span style="color:#f92672">,</span>
 
-/**
-  * Restrict usage to code within packages whose groups share
-  * the same library group prefix up to the last &quot;.&quot;, so for
-  * example libraries foo.bar:lib1 amd foo.baz:lib2 share
-  * the prefix &quot;foo.&quot; and so they can use each other's
-  * apis that are restricted to this scope. Similarly for
-  * com.foo.bar:lib1 and com.foo.baz:lib2 where they share
-  * &quot;com.foo.&quot;. Library com.bar.qux:lib3 however will not
-  * be able to use the restricted api because it only
-  * shares the prefix &quot;com.&quot; and not all the way until the
-  * last &quot;.&quot;.
-  */
-LIBRARY_GROUP_PREFIX,
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Restrict usage to tests.
+</span><span style="color:#75715e">  */</span>
+TESTS<span style="color:#f92672">,</span>
 
-/**
-  * Restrict usage to tests.
-  */
-TESTS,
-
-/**
-  * Restrict usage to subclasses of the enclosing class.
-  * &lt;p&gt;
-  * &lt;strong&gt;Note:&lt;/strong&gt; This scope should not be used to annotate
-  * packages.
-  */
-SUBCLASSES,
-</code></pre>
-
-<p>名前から何となく想起できると思います。LIBRARY系のスコープはやや複雑に感じました。</p>
-
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">  * Restrict usage to subclasses of the enclosing class.
+</span><span style="color:#75715e">  * &lt;p&gt;
+</span><span style="color:#75715e">  * &lt;strong&gt;Note:&lt;/strong&gt; This scope should not be used to annotate
+</span><span style="color:#75715e">  * packages.
+</span><span style="color:#75715e">  */</span>
+SUBCLASSES<span style="color:#f92672">,</span>
+</code></pre></div><p>名前から何となく想起できると思います。LIBRARY系のスコープはやや複雑に感じました。</p>
 <p>次から、実際の挙動を見ていきます。</p>
-
-<h2 id="同一モジュール内">同一モジュール内</h2>
-
+<h2 id="heading1">同一モジュール内</h2>
 <p>最初に、呼び出される側の定義です。</p>
-
-<pre><code class="language-kotlin">object Hoge {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
   @RestrictTo(RestrictTo.Scope.LIBRARY)
-  fun library() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
   @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-  fun libraryGroup() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 
   @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-  fun libraryGroupPrefix() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 
   @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-  fun subclasses() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 
   @RestrictTo(RestrictTo.Scope.TESTS)
-  fun tests() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 }
-</code></pre>
-
-<p>適当にスコープをつけたメソッドを定義しただけです。</p>
-
+</code></pre></div><p>適当にスコープをつけたメソッドを定義しただけです。</p>
 <p>次に呼び出し側です。</p>
-
 <p>まずは、アプリケーションコードから呼び出してみます。</p>
-
-<pre><code class="language-kotlin">Hoge.library() // OK
-Hoge.libraryGroup() // OK
-Hoge.libraryGroupPrefix() // OK
-Hoge.subclasses() // NG
-Hoge.tests() // NG
-</code></pre>
-
-<p>SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いので、納得出来ます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// NG
+</span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// NG
+</span></code></pre></div><p>SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いので、納得出来ます。</p>
 <p>次に、テストコードから呼び出しになります。</p>
-
-<pre><code class="language-kotlin">Hoge.library() // OK
-Hoge.libraryGroup() // OK
-Hoge.libraryGroupPrefix() // OK
-Hoge.subclasses() // OK
-Hoge.tests() // OK
-</code></pre>
-
-<p>SUBCLASSESスコープのときはNGだと思ったんですけど、全部OKでした。テストのときはlintって走らないんですかね？（無知）</p>
-
-<h2 id="同一プロジェクト内-ライブラリモジュール">同一プロジェクト内、ライブラリモジュール</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// OK
+</span></code></pre></div><p>SUBCLASSESスコープのときはNGだと思ったんですけど、全部OKでした。テストのときはlintって走らないんですかね？（無知）</p>
+<h2 id="heading2">同一プロジェクト内、ライブラリモジュール</h2>
 <p>次に、lib1という名前でライブラリモジュールを作り、そこで定義したクラスに、appモジュールからアクセスしてみます。</p>
-
 <p>settings.gradleは次のようになります。</p>
-
 <pre><code>include ':app'
 include ':lib1'
-</code></pre>
-
-<p>まず、lib1に次のクラスを定義します。</p>
-
-<pre><code class="language-kotlin">object Hoge2 {
+</code></pre><p>まず、lib1に次のクラスを定義します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge2</span> {
   @RestrictTo(RestrictTo.Scope.LIBRARY)
-  fun library() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
   @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-  fun libraryGroup() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 
   @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-  fun libraryGroupPrefix() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 
   @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-  fun subclasses() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 
   @RestrictTo(RestrictTo.Scope.TESTS)
-  fun tests() {}
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 }
-</code></pre>
-
-<p>次に、appモジュールからアクセスしてみます。</p>
-
-<pre><code class="language-kotlin">Hoge2.library() // OK
-Hoge2.libraryGroup() // OK
-Hoge2.libraryGroupPrefix() // OK
-Hoge2.subclasses() // NG
-Hoge2.tests() // NG
-</code></pre>
-
-<p>LIBRARY、LIBRARY_GROUP、LIBRARY_GROUP_PREFIXでOKになりました。現状だと同一プロジェクト内に各モジュールが定義されている場合、これらのスコープは特に考慮されなそうでした。</p>
-
-<h2 id="サードパーティライブラリの場合">サードパーティライブラリの場合</h2>
-
+</code></pre></div><p>次に、appモジュールからアクセスしてみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge2.library() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge2.libraryGroup() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge2.libraryGroupPrefix() <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>Hoge2.subclasses() <span style="color:#75715e">// NG
+</span><span style="color:#75715e"></span>Hoge2.tests() <span style="color:#75715e">// NG
+</span></code></pre></div><p>LIBRARY、LIBRARY_GROUP、LIBRARY_GROUP_PREFIXでOKになりました。現状だと同一プロジェクト内に各モジュールが定義されている場合、これらのスコープは特に考慮されなそうでした。</p>
+<h2 id="heading3">サードパーティライブラリの場合</h2>
 <p>androidx内で定義されているスコープが付いたクラスに、appモジュールからアクセスしてみます。</p>
-
 <p>まずは、ライブラリモジュール内の定義から。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ContentFrameLayout</span> <span style="color:#66d9ef">extends</span> FrameLayout
 
-<pre><code class="language-java">@RestrictTo(LIBRARY)
-public class ContentFrameLayout extends FrameLayout
+<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
 
----
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MediaItem</span> <span style="color:#f92672">{</span>
+  <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP<span style="color:#f92672">)</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span>
+<span style="color:#f92672">}</span>
 
-public class MediaItem {
-  @RestrictTo(LIBRARY_GROUP)
-  public static class Builder
-}
+<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
 
----
-
-@RestrictTo(LIBRARY_GROUP_PREFIX)
-public class DrawableWrapper extends Drawable implements Drawable.Callback
-</code></pre>
-
-<p>次に、appから呼び出してみます。</p>
-
-<pre><code class="language-kotlin">ContentFrameLayout(...) // NG
-MediaItem.Builder().build() // NG
-DrawableWrapper(...) // OK
-</code></pre>
-
-<p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
+<span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>
+</code></pre></div><p>次に、appから呼び出してみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ContentFrameLayout(...) <span style="color:#75715e">// NG
+</span><span style="color:#75715e"></span>MediaItem.Builder().build() <span style="color:#75715e">// NG
+</span><span style="color:#75715e"></span>DrawableWrapper(...) <span style="color:#75715e">// OK
+</span></code></pre></div><p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
 しかし、LIBRARY_GROUP_PREFIXは怒られませんでした。これは多分間違った挙動だと思うのでいつか直ると思います。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading4">まとめ</h2>
 <ul>
 <li>ざっくりと挙動を見ていきました。
-
 <ul>
 <li>ライブラリ開発をしているときはLIBRARY**系のスコープを意識すると良さそう</li>
 <li>アプリケーション開発時は、TESTS、SUBCLASSESを必要に応じてつける感じで</li>
-</ul></li>
+</ul>
+</li>
 <li>LIBRARY_GROUP_PREFIXは、おそらくマルチモジュール環境で有効に使うことが可能だと思うので、今後に期待</li>
 <li>なぜこのような挙動になるか、などの細かい部分は実際のRestrictToクラスのコメントを見ていただけると幸いでございます</li>
 <li>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</li>

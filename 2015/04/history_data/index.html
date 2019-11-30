@@ -22,9 +22,8 @@
   <meta property="twitter:title" content="データベース: 履歴データについて">
 
   
-  <meta property="twitter:description" content="
-
-RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないで …">
+  <meta property="twitter:description" content="RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.
+ …">
   
 
   
@@ -91,20 +90,12 @@ RDBで履歴データを保持する方法についてまとめました. そも
     
     <span class="post-date">Created at Thu, Apr 9, 2015</span>
     
-    
-
-<p>RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.</p>
-
-<h2 id="履歴データとは">履歴データとは?</h2>
-
+    <p>RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.</p>
+<h2 id="heading">履歴データとは?</h2>
 <p>スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.</p>
-
-<h2 id="フラグを付ける">フラグを付ける</h2>
-
+<h2 id="heading1">フラグを付ける</h2>
 <p>最初に一番オーソドックス?な, フラグをつけて管理する方法です.</p>
-
 <p><code>products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -114,7 +105,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>active</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
@@ -122,14 +112,12 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>200</td>
 <td>0</td>
 </tr>
-
 <tr>
 <td>2</td>
 <td>卵</td>
 <td>250</td>
 <td>1</td>
 </tr>
-
 <tr>
 <td>3</td>
 <td>肉</td>
@@ -138,25 +126,17 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p>activeなデータを取得するときは, <code>SELECT * FROM products WHERE active = 1;</code> とします.</p>
-
 <p>この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.</p>
-
 <ul>
 <li>activeフラグはカーディナリティが低く効率が悪い</li>
 <li>テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある</li>
 <li>activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない</li>
 </ul>
-
 <p>単純で分かりやすいですが, あまり使わないほうが良い方法のようです.</p>
-
-<h2 id="範囲を指定する">範囲を指定する</h2>
-
+<h2 id="heading2">範囲を指定する</h2>
 <p>次は範囲を指定する方法です.</p>
-
 <p><code>products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -167,7 +147,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>end_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
@@ -176,7 +155,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>2015-03-22</td>
 <td>2015-04-06</td>
 </tr>
-
 <tr>
 <td>2</td>
 <td>卵</td>
@@ -184,7 +162,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>2015-04-07</td>
 <td>9999-01-01</td>
 </tr>
-
 <tr>
 <td>3</td>
 <td>肉</td>
@@ -194,25 +171,17 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p>activeなデータを取得するときは, <code>SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date;</code> とします.</p>
-
 <p>この方法も分かりやすいのですが, バッドノウハウです.</p>
-
 <ul>
 <li>テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある</li>
 <li>start_date, end_dateの値を決めるロジックを, アプリ側 もしくは, トリガーに組み込む必要がある</li>
 <li>end_dateに非常に大きな値 or NULLを入れる必要がある</li>
 </ul>
-
 <p>NULLはRDBにとって癌のようなもので, 出来る限り除去したほうが良いとされています. そういう意味で, あまり良い方法とは言えません.</p>
-
-<h2 id="active-inactiveなデータを分割">active, inactiveなデータを分割</h2>
-
+<h2 id="active-inactive">active, inactiveなデータを分割</h2>
 <p>テーブル分割をする方法です. RDBっぽい解決方法です.</p>
-
 <p><code>products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -222,7 +191,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>start_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>2</td>
@@ -230,7 +198,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>250</td>
 <td>2015-04-06</td>
 </tr>
-
 <tr>
 <td>3</td>
 <td>肉</td>
@@ -239,9 +206,7 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p><code>old_products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -251,7 +216,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>start_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
@@ -261,15 +225,10 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p>この方法の場合, 頻繁に参照するであろう<code>products</code>テーブルのサイズが小さくなるので検索パフォーマンスが安定します. しかし,  <code>products</code>テーブルから, <code>old_products</code>テーブルに移すロジックを, アプリ側 or トリガーで制御する必要があります.</p>
-
-<h2 id="upcomingテーブルを使う">upcomingテーブルを使う</h2>
-
+<h2 id="upcoming">upcomingテーブルを使う</h2>
 <p>上記の方法の拡張版です. 過去のデータだけでなく, 未来のデータを<code>upcoming_products</code>テーブルに入れる方法です. テーブルの更新を自動的にやりたいときに有効です.</p>
-
 <p><code>products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -279,7 +238,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>start_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>2</td>
@@ -287,7 +245,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>250</td>
 <td>2015-04-06</td>
 </tr>
-
 <tr>
 <td>3</td>
 <td>肉</td>
@@ -296,9 +253,7 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p><code>old_products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -308,7 +263,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>start_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
@@ -318,9 +272,7 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p><code>upcoming_products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
@@ -330,7 +282,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <th>start_date</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>4</td>
@@ -338,7 +289,6 @@ RDBで履歴データを保持する方法についてまとめました. そも
 <td>200</td>
 <td>2015-05-12</td>
 </tr>
-
 <tr>
 <td>5</td>
 <td>卵</td>
@@ -347,49 +297,36 @@ RDBで履歴データを保持する方法についてまとめました. そも
 </tr>
 </tbody>
 </table>
-
 <p>バッチ処理を行い, <code>upcoming_products</code>テーブルの <code>start_date</code> が有効になったら, <code>products</code>テーブルに移動します.</p>
-
-<h2 id="外部キー制約への対応">外部キー制約への対応</h2>
-
+<h2 id="heading3">外部キー制約への対応</h2>
 <p>上記のようなルールでテーブル分割をすると, <code>products.id</code>を外部キーに指定し, 運用することが困難になります(頻繁に<code>old_products</code>テーブルに移動されるため). そこで, マスターテーブルを作ってしまう方法があります.</p>
-
 <p><code>master_products</code>テーブル</p>
-
 <table>
 <thead>
 <tr>
 <th>id</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
 </tr>
-
 <tr>
 <td>2</td>
 </tr>
-
 <tr>
 <td>3</td>
 </tr>
-
 <tr>
 <td>4</td>
 </tr>
-
 <tr>
 <td>5</td>
 </tr>
 </tbody>
 </table>
-
 <p><code>master_products.id</code>テーブルを外部キーに指定して運用します. これで外部キーの問題が解決出来ました.</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading4">まとめ</h2>
 <p>履歴データを保持する方法を紹介しました. 個人的には最後の方法が好みなのですが, idのみを保持するテーブルが出来てしまい, リレーショナルモデル的にどうなの?という気がしています. 何か他にいい方法があったらTwitterでぜひ教えて下さい. なんでもします.</p>
 
     <div class="mt30"></div>

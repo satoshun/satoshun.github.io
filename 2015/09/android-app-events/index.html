@@ -20,14 +20,10 @@
   <meta property="twitter:title" content="Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました">
 
   
-  <meta property="twitter:description" content="
-
-イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.
-
+  <meta property="twitter:description" content="イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.
 アプリの技術的機能, 特徴は以下になります.
 
-
-HTTPを介してイベン …">
+HTTPを介してイベントのデー …">
   
 
   
@@ -94,175 +90,146 @@ HTTPを介してイベン …">
     
     <span class="post-date">Created at Sun, Sep 6, 2015</span>
     
-    
-
-<p>イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.</p>
-
+    <p>イベントを検索するAndroidアプリを作成したので, 使った技術のまとめです.</p>
 <p>アプリの技術的機能, 特徴は以下になります.</p>
-
 <ul>
 <li>HTTPを介してイベントのデータを取得する
-
 <ul>
-<li>検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある</li>
+<li>検索対象のサーバは複数あるため(今回は3つ), どこかでそれらのレスポンスデータを同期する必要がある
+<ul>
 <li>それら複数のサーバーはJSONを返すが, 微妙にJSONの構造が異なる</li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Data-Bindingライブラリを使う</li>
 <li>MVP(Model-View-Presenter)パターンを使う
-
 <ul>
 <li>Activity(Fragment)に機能が集中しないようにしたい!</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>上記を中心にどのように実装をしたかを説明をしていきます.</p>
-
 <p>フルソースコードはここにあります. <a href="https://github.com/satoshun/AndroidEvents">https://github.com/satoshun/AndroidEvents</a></p>
-
-<h2 id="httpを介してイベントのデータを取得する">HTTPを介してイベントのデータを取得する</h2>
-
+<h2 id="http">HTTPを介してイベントのデータを取得する</h2>
 <p>connpass, Atnd, Zusaarの3つのAPIを使うことにしました. <a href="http://square.github.io/retrofit/">Retrofit</a>でAPIを定義し,
 JSONのパースには<a href="https://github.com/google/gson">Gson</a>, データの処理には<a href="https://github.com/ReactiveX/RxJava">RxJava</a>を使いました.</p>
-
 <p>例えば, connpass APIは以下のように定義しました.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/** Get data from Conpass  */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Connpass</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/v1/event&#34;</span><span style="color:#f92672">)</span>
+    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>
+            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ymd&#34;</span><span style="color:#f92672">)</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<pre><code class="language-java">/** Get data from Conpass  */
-public interface Connpass {
-    @GET(&quot;/v1/event&quot;)
-    Observable&lt;ConnpassResponse&gt; search(
-            @Query(&quot;ymd&quot;) List&lt;String&gt; ymds);
-
-    @GET(&quot;/v1/event&quot;)
-    Observable&lt;ConnpassResponse&gt; search(
-            @Query(&quot;keyword&quot;) String keyword,
-            @Query(&quot;ymd&quot;) List&lt;String&gt; ymds);
-}
-</code></pre>
-
-<p>keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
+    <span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/v1/event&#34;</span><span style="color:#f92672">)</span>
+    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>
+            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;keyword&#34;</span><span style="color:#f92672">)</span> String keyword<span style="color:#f92672">,</span>
+            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ymd&#34;</span><span style="color:#f92672">)</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
 Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます.
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10</a>)</p>
-
 <p>次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
 今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.</p>
-
-<pre><code class="language-java">Observable.merge(
-  connpass.search(keyword, generateYmd()),
-  atnd.search(keyword, generateYmd()),
-  zusaar.search(keyword, generateYmd()))
-  .subscribe(...)
-</code></pre>
-
-<p><code>Observable.merge</code>は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>
+  connpass<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+  atnd<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+  zusaar<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">)</span>
+</code></pre></div><p><code>Observable.merge</code>は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
 あとは, これをsubscribeして, データを取得します.(<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41</a>)</p>
-
-<h2 id="data-bindingライブラリを使う">Data-Bindingライブラリを使う</h2>
-
+<h2 id="databinding">Data-Bindingライブラリを使う</h2>
 <p>Data-BindingはXMLレイアウトにbindしたいデータ(インスタンス)を記述することで, よしなにデータを出力してくれる機能です.
 AngularJSのデータバインディングをイメージして貰えると良いと思います.
 書くコード量が減り, とても便利なライブラリでした. (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml</a>)</p>
-
 <p>また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
 ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventAdapter</span> <span style="color:#66d9ef">extends</span> BaseAdapter <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">      .. ....
+</span><span style="color:#75715e">     */</span>
 
-<pre><code class="language-java">public class EventAdapter extends BaseAdapter {
-    /*
-      .. ....
-     */
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> View <span style="color:#a6e22e">getView</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> position<span style="color:#f92672">,</span> View convertView<span style="color:#f92672">,</span> ViewGroup parent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        View view <span style="color:#f92672">=</span> convertView<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>view <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            AdapterEventBinding binding <span style="color:#f92672">=</span> AdapterEventBinding<span style="color:#f92672">.</span><span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span>inflater<span style="color:#f92672">,</span> parent<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            view <span style="color:#f92672">=</span> binding<span style="color:#f92672">.</span><span style="color:#a6e22e">getRoot</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            view<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>binding<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            AdapterEventBinding binding = AdapterEventBinding.inflate(inflater, parent, false);
-            view = binding.getRoot();
-            view.setTag(binding);
-        }
+        AdapterEventBinding binding <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>AdapterEventBinding<span style="color:#f92672">)</span> view<span style="color:#f92672">.</span><span style="color:#a6e22e">getTag</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Event event <span style="color:#f92672">=</span> getItem<span style="color:#f92672">(</span>position<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setEvent</span><span style="color:#f92672">(</span>event<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setDateFormat</span><span style="color:#f92672">(</span>DATE_FORMAT<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        AdapterEventBinding binding = (AdapterEventBinding) view.getTag();
-        Event event = getItem(position);
-        binding.setEvent(event);
-        binding.setDateFormat(DATE_FORMAT);
-
-        return view;
-    }
-}
-</code></pre>
-
-<p>AdapterEventBindingをViewHolderの代わりに使っています.
+        <span style="color:#66d9ef">return</span> view<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>AdapterEventBindingをViewHolderの代わりに使っています.
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34</a>)
 なかなか良いと思います.</p>
-
-<h2 id="mvp-model-view-presenter-パターンを使う">MVP(Model-View-Presenter)パターンを使う</h2>
-
+<h2 id="mvpmodelviewpresenter">MVP(Model-View-Presenter)パターンを使う</h2>
 <p>MVPパターンとは, MVCの親戚?のようなパターンで, 責務をModel, View, Presenterにそれぞれ分割するパターンです.</p>
-
 <p>Android開発は, Activity(Fragment)の責務が大きくなりがちです. 具体的にはActivityは以下のよう責務を持ちます.</p>
-
 <ul>
 <li>ユーザからのイベントハンドリング
-
 <ul>
 <li>クリック, ロングクリック, &hellip;</li>
-</ul></li>
+</ul>
+</li>
 <li>システムからのイベントハンドリング
-
 <ul>
 <li>画面回転, アプリ終了, &hellip;</li>
-</ul></li>
+</ul>
+</li>
 <li>データの取得する際の非同期処理
-
 <ul>
 <li>HTTP(network), SQLite, SharedPreferences, &hellip;</li>
-</ul></li>
+</ul>
+</li>
 <li>取得したデータをパースしてViewにパースしたデータを割り当てる</li>
 </ul>
-
 <p>これらを全て1つのActivityで処理をすると, どうしてもFat-Activityになってしまいます. (１つのAcitvityが1000行ありますみたいな)</p>
-
 <p>そこでMVPです.</p>
-
 <ul>
 <li>Presenter
-
 <ul>
 <li>Modelから(非同期に)データを取得し, Viewに取得したデータをどのようにに表示するかを指定する(ビューロジック)</li>
-</ul></li>
+</ul>
+</li>
 <li>Model
-
 <ul>
-<li>データを取得してアプリで使いやすい形にデータをパースする. いわゆるビジネスロジック.</li>
+<li>データを取得してアプリで使いやすい形にデータをパースする. いわゆるビジネスロジック.
+<ul>
 <li>Retrofitを叩く</li>
 <li>SQLiteにQueryを発行する</li>
-</ul></li>
-<li>View(Activity)
-
-<ul>
-<li>ユーザからのクリックイベントなど, イベントのハンドリングをする(onClickとか)</li>
-<li>イベントの処理はPresenterに任せる</li>
-<li>必要なデータをPresenterから受け取り, 画面に表示する</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+<li>View(Activity)
+<ul>
+<li>ユーザからのクリックイベントなど, イベントのハンドリングをする(onClickとか)
+<ul>
+<li>イベントの処理はPresenterに任せる</li>
+</ul>
+</li>
+<li>必要なデータをPresenterから受け取り, 画面に表示する</li>
+</ul>
+</li>
+</ul>
 <p>このように責務を分割することで, Activityの責務が薄くなります.
 今回のコードも今まで自分が書いたコードと比較すると, 大分良くなった気がします(当人比)</p>
-
-<h2 id="その他-メモ">その他, メモ</h2>
-
+<h2 id="-">その他, メモ</h2>
 <h3 id="dagger2">Dagger2</h3>
-
 <p>DI(Dependency Injection)をするためのツールで, 実装をデバッグ時, 本番時, テスト時に切り替えられるライブラリです.
 デバッグ時はデータの取得先を変えたい, テスト時にはネットワークアクセスしないで欲しい, などといった時に力を発揮します.</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <p>MVPパターンの話をしましたが, MVPが絶対良いという話ではないです.
 しかし, 何もパターンがないとFat-Activityになってしまったり, 無秩序なコードになってしまいがちなので, そのような場合は, MVPのようなパターンを導入したほうが良いと思います.</p>
-
 <p>まだアプリ自体はまだ付けたい機能があるため, 公開していません. 近々しようと思います.</p>
-
 <h2 id="references">references</h2>
-
 <ul>
 <li><a href="http://antonioleiva.com/mvp-android/">MVP for Android: how to organize the presentation layer</a></li>
 </ul>

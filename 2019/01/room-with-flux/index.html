@@ -28,11 +28,8 @@
   <meta property="twitter:title" content="FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない">
 
   
-  <meta property="twitter:description" content="
-
-FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。
-
-結論から申しますと冗長なコードが多 …">
+  <meta property="twitter:description" content="FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。
+結論から申しますと冗長なコードが多く、良 …">
   
 
   
@@ -99,61 +96,41 @@ FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い
     
     <span class="post-date">Created at Thu, Jan 24, 2019</span>
     
-    
-
-<p>FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。</p>
-
+    <p>FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。</p>
 <p>結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂</p>
-
 <p>また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。</p>
-
 <h2 id="room-in-memory">Room in memory?</h2>
-
 <p>Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。</p>
-
 <p>使い方は次のようになります。</p>
-
-<pre><code class="language-kotlin">Room
-  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Room
+  .inMemoryDatabaseBuilder(context, MyDatabase<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   .build()
-</code></pre>
-
-<p>in memoryを使う理由としては、</p>
-
+</code></pre></div><p>in memoryを使う理由としては、</p>
 <ul>
 <li>ディスパッチするアクションを永続化する必要はないだろう</li>
 <li>マイグレーションが必要ない</li>
 </ul>
-
 <p>になります。</p>
-
-<h2 id="実装に入っていく">実装に入っていく</h2>
-
+<h2 id="heading">実装に入っていく</h2>
 <p>では、実装の説明をしていきます。</p>
-
 <p>まずはActionをRoomのEntityとして定義します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorAction</span>
 
-<pre><code class="language-kotlin">sealed class AuthorAction
-
-@Entity(tableName = &quot;author1&quot;)
-data class Author1(
-  @PrimaryKey val _id: Long = 0, // always 0
-  val name: String,
-  val age: Int
+@Entity(tableName = <span style="color:#e6db74">&#34;author1&#34;</span>)
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author1</span>(
+  @PrimaryKey <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
+  <span style="color:#66d9ef">val</span> age: Int
 ) : AuthorAction()
 
-@Entity(tableName = &quot;author2&quot;)
-data class Author2(
-  @PrimaryKey val _id: Long = 0, // always 0
-  val name: String,
-  val age: Int
+@Entity(tableName = <span style="color:#e6db74">&#34;author2&#34;</span>)
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author2</span>(
+  @PrimaryKey <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
+  <span style="color:#66d9ef">val</span> age: Int
 ) : AuthorAction()
-</code></pre>
-
-<p>Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、<code>@PrimaryKey(autoGenerate = true)</code>を使っても良いと思います。</p>
-
+</code></pre></div><p>Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、<code>@PrimaryKey(autoGenerate = true)</code>を使っても良いと思います。</p>
 <p>次にDaoを定義します。これはFluxでいうところのDispatcherになります。</p>
-
 <pre><code>@Dao
 interface AuthorDispatcher {
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
@@ -174,29 +151,21 @@ interface AuthorDispatcher {
   )
   fun mappedAuthor(): LiveData&lt;MappedAuthor?&gt;
 }
-</code></pre>
-
-<p>となります。<code>@Insert</code>でアクションをdispatchメソッドを、<code>@Query</code>でsubscribeメソッドを実装しています。</p>
-
+</code></pre><p>となります。<code>@Insert</code>でアクションをdispatchメソッドを、<code>@Query</code>でsubscribeメソッドを実装しています。</p>
 <p>これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！</p>
-
-<h2 id="まとめ-考察">まとめ/考察</h2>
-
+<h2 id="heading1">まとめ/考察</h2>
 <p>RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。</p>
-
 <ul>
 <li>Storeに書いていたロジックをSQLに任せることが出来る
-
 <ul>
 <li>Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう</li>
-</ul></li>
+</ul>
+</li>
 <li>ほげほげDispactherクラスがアプリ内に蔓延する</li>
 <li>コードが冗長😂</li>
 </ul>
-
 <p>工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
 FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊</p>
-
 <p>検証に用いたサンプルコードは<a href="https://github.com/satoshun-android-example/RoomDispatcherExample">RoomDispatcherExample</a>にあります。</p>
 
     <div class="mt30"></div>

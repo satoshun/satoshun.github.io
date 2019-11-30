@@ -24,13 +24,9 @@
   <meta property="twitter:title" content="読んだ: Web API: The Good Parts">
 
   
-  <meta property="twitter:description" content="
-
-この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは感想的なものです.
-
+  <meta property="twitter:description" content="この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは感想的なものです.
 Web APIとは何か
-
-使いやすく, 理解しやすく, 拡張 …">
+使いやすく, 理解しやすく, 拡張性が高く …">
   
 
   
@@ -97,84 +93,56 @@ Web APIとは何か
     
     <span class="post-date">Created at Sun, Mar 15, 2015</span>
     
-    
-
-<p>この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは感想的なものです.</p>
-
-<h2 id="web-apiとは何か">Web APIとは何か</h2>
-
+    <p>この記事には, 僕の主観, 解釈が入っています. 本のまとめというよりかは感想的なものです.</p>
+<h2 id="web-api">Web APIとは何か</h2>
 <p>使いやすく, 理解しやすく, 拡張性が高く設計する必要があります.</p>
-
 <ul>
 <li>使いやすく: クライアントが苦労しない, 素直な実装が出来る</li>
 <li>理解しやすく: 「エンドポイントが明確」, 「Twitterなどの他のWeb APIを参考にし, 慣習に従っている」.</li>
 <li>拡張性が高く: インターフェースの変更はクライアントに影響するため, バージョニングなどを使うなど, クライアントに影響を与えにくい設計になっている</li>
 </ul>
-
 <p>一般に公開するLSUD(Large Set of Unknown Developers)と, 自社内のサービスで使う, SSKD(Small Set of Unknown Developers)のどちらの用途で使うかで大きく2つに分けることが出来ます. SSKDの場合は, クライアントのコントロールがしやすいので, 世間の常識から外れた設計をしても大きな問題にはなりませんが, <strong>理解のしやすさ</strong> がなくなってしまうので, SSKDでもちゃんとした設計をする必要があります.</p>
-
-<h2 id="エンドポイントの設計とリクエストの形式">エンドポイントの設計とリクエストの形式</h2>
-
-<p>HTTPにおける, エンドポイントはURIになります. URIは<strong>リソースを示します</strong>. 例えば, <a href="http://localhost/users">http://localhost/users</a> なら, ホストlocalhostのユーザ一覧を指し示しています. さらに, ユーザIDが2のユーザを取得したいときは, <a href="http://localhost/users/2">http://localhost/users/2</a> とすれば直感的です. さらにさらに, ユーザIDが2のユーザの投稿一覧を取得したいときは, <a href="http://localhost/users/2/posts">http://localhost/users/2/posts</a> とすれば, 直感的です.</p>
-
-<p>ここで, 上記の例ではデータを*取得*することにだけ, 注目していましたが, データを消去したい, 更新したいなどの機能も当然必要です. HTTPでは, *method*を指定することで, それらの機能使い分けることが出来ます. よく使うmethodには, データを取得するGET, データを登録するPOST, データを更新するPUT, データを消去するDELETEがあります. 例えば, DELETE <a href="http://localhost/users/2">http://localhost/users/2</a> とすれば, ユーザIDが2のユーザを削除することが期待でき, PUT <a href="http://localhost/users/2">http://localhost/users/2</a> とすれば, ユーザIDが2のユーザの情報を更新することが期待されます. また, PUTと似たmethodにBATCHというものがあり, PUTは全データの上書き, BATCHは一部データの上書きという違いがあります. 例えるなら, PUTは, MongoDBの$setを使わないupdateみたいな振る舞いが, BATCHはSQLのUPDATEのように, 指定フィールドのみの更新が期待されます. URI+methodは, URIが示しているリソースに対して, methodの処理をする. とルールを統一することで理解しやすいエンドポイントを作成することが可能になります.</p>
-
-<h2 id="レスポンスデータの設計">レスポンスデータの設計</h2>
-
+<h2 id="heading">エンドポイントの設計とリクエストの形式</h2>
+<p>HTTPにおける, エンドポイントはURIになります. URIは<strong>リソースを示します</strong>. 例えば, http://localhost/users なら, ホストlocalhostのユーザ一覧を指し示しています. さらに, ユーザIDが2のユーザを取得したいときは, http://localhost/users/2 とすれば直感的です. さらにさらに, ユーザIDが2のユーザの投稿一覧を取得したいときは, http://localhost/users/2/posts とすれば, 直感的です.</p>
+<p>ここで, 上記の例ではデータを<em>取得</em>することにだけ, 注目していましたが, データを消去したい, 更新したいなどの機能も当然必要です. HTTPでは, <em>method</em>を指定することで, それらの機能使い分けることが出来ます. よく使うmethodには, データを取得するGET, データを登録するPOST, データを更新するPUT, データを消去するDELETEがあります. 例えば, DELETE http://localhost/users/2 とすれば, ユーザIDが2のユーザを削除することが期待でき, PUT http://localhost/users/2 とすれば, ユーザIDが2のユーザの情報を更新することが期待されます. また, PUTと似たmethodにBATCHというものがあり, PUTは全データの上書き, BATCHは一部データの上書きという違いがあります. 例えるなら, PUTは, MongoDBの$setを使わないupdateみたいな振る舞いが, BATCHはSQLのUPDATEのように, 指定フィールドのみの更新が期待されます. URI+methodは, URIが示しているリソースに対して, methodの処理をする. とルールを統一することで理解しやすいエンドポイントを作成することが可能になります.</p>
+<h2 id="heading1">レスポンスデータの設計</h2>
 <p>一般的にWEBブラウザに対して返すレスポンスデータはHTMLですが, APIに対してはJSON, XMLが主流です(他にも多々あります). 大きなブレイクするーが無い限りは, JSONに対応しておけば問題無いと思います.
-具体的なレスポンスデータの中身なのですが, 出来る限りシンプルにかつ, クライアントが求めているであろうデータを返すようにします. バックグラウンド側(DBの設計など)を, レスポンスデータに反映させるのではなくて, あくまでクライアントが使いやすい形に整形してあげます. 例えば, GET <a href="http://localhost/users/2">http://localhost/users/2</a> は, ユーザIDが2のユーザ情報を取得することが期待されますが, このサービスが, ブログシステムだとすると, このユーザが投稿したブログのリストも一緒に返してあげれば使いやすいのではないかと推測できます(あくまで例です).</p>
-
-<pre><code class="language-json">{
-    &quot;id&quot;: 2,
-    &quot;username&quot;: &quot;hoge&quot;,
-    &quot;blogs&quot;: [
+具体的なレスポンスデータの中身なのですが, 出来る限りシンプルにかつ, クライアントが求めているであろうデータを返すようにします. バックグラウンド側(DBの設計など)を, レスポンスデータに反映させるのではなくて, あくまでクライアントが使いやすい形に整形してあげます. 例えば, GET http://localhost/users/2 は, ユーザIDが2のユーザ情報を取得することが期待されますが, このサービスが, ブログシステムだとすると, このユーザが投稿したブログのリストも一緒に返してあげれば使いやすいのではないかと推測できます(あくまで例です).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
+    <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
+    <span style="color:#f92672">&#34;blogs&#34;</span>: [
         {
-            &quot;id&quot;: 1,
-            &quot;title&quot;: &quot;ぷりぷりー&quot;
+            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+            <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
         }
     ]
 }
-</code></pre>
-
-<p>しかし, データが大きくなると負荷が大きくなってしまうのでやりすぎには注意が必要です. また, データ構造は出来る限りシンプルにしたほうが望ましいと思います. 上記のJSONの例で言うと, 下のような設計にすることも考えられます.</p>
-
-<pre><code class="language-json">{
-    &quot;user&quot;: {
-        &quot;id&quot;: 2,
-        &quot;username&quot;: &quot;hoge&quot;,
-        &quot;blogs&quot;: [
+</code></pre></div><p>しかし, データが大きくなると負荷が大きくなってしまうのでやりすぎには注意が必要です. また, データ構造は出来る限りシンプルにしたほうが望ましいと思います. 上記のJSONの例で言うと, 下のような設計にすることも考えられます.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;user&#34;</span>: {
+        <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
+        <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
+        <span style="color:#f92672">&#34;blogs&#34;</span>: [
             {
-                &quot;id&quot;: 1,
-                &quot;title&quot;: &quot;ぷりぷりー&quot;
+                <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+                <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
             }
         ]
     }
 }
-</code></pre>
-
-<p>key: userでユーザ固有の情報を囲いました. このようにしたほうが, userの情報ということを示せるので良いように見えます. しかし, GET <a href="http://localhost/users/2">http://localhost/users/2</a> にアクセスしている時点で, userデータを取得しようとしていることは明白なので, 今回の場合は少し冗長なように見えます.</p>
-
-<h2 id="httpの仕様を最大限利用する">HTTPの仕様を最大限利用する</h2>
-
+</code></pre></div><p>key: userでユーザ固有の情報を囲いました. このようにしたほうが, userの情報ということを示せるので良いように見えます. しかし, GET http://localhost/users/2 にアクセスしている時点で, userデータを取得しようとしていることは明白なので, 今回の場合は少し冗長なように見えます.</p>
+<h2 id="http">HTTPの仕様を最大限利用する</h2>
 <p>ステータスコードを正しく使うことが重要です. ステータスコードは正常系の2xx系, リダイレクト系の3xx系, クライアント側に起因するエラーの4xx系, サーバ側に起因するエラーの5xx系に分けることが出来ます. 正しく処理されていないのに, 2xx系を返してしまうとクライアントに誤解を与えてしまうので, 正しいステータスコードを返す必要があります.</p>
-
 <p>Cacheの機能を上手に使うと, クライアントは無駄な通信を減らすことができ, ユーザに良い体験をさせることが出来ます. また, リクエストの数が少なくなるため, サーバの負荷を下げることが出来ます. しかし, Cacheの時間を長く設定してしまうと, データのリアルタイム性がなくなってしまうので, エンドポイントの性質に応じて指定する必要があります.</p>
-
-<h2 id="設計変更をしやすいweb-apiを作る">設計変更をしやすいWeb APIを作る</h2>
-
-<p>一度作成したエンドポイントのレスポンスデータや, リクエストに必要なクエリを変更すると, クライアントに影響が出てしまいます. SSKDだとしてもiOS, Androidクライアントのアップデートは全員がやってくれないので, 古いバージョンのアプリで動作しなくなる可能性があります. なので, 一度作成したエンドポイントのインターフェースを修正することは容易には出来ません. しかし, APIの再設計をしなければいけないタイミングが来たとしたら, バージョニングすることで解決出来ます. 具体的には <a href="http://localhost/v2/users">http://localhost/v2/users</a> のようにv2とバージョンを指定するようにします. 新しいクライアントアプリからは新しいバージョンを指定することで, フウリクライアントへの影響を抑えてAPIを再設計することが出来ます. しかし, 当然古いバージョンのAPIも運用する必要があり, 運用コストを考えると, 小規模なサービスではバージョニングは出来ないものと思ったほうが良いと思います.</p>
-
-<h2 id="堅牢なweb-apiを作る">堅牢なWeb.APIを作る</h2>
-
-<p>最後にセキュリティの話です. 有名なものに, XSSとXSRFがあります. XSSは攻撃者が何かしらの方法でJavaScriptのコードを登録し, そのJavaScriptをユーザに実行させることで攻撃します. XSSは, *&lt;*などの文字をエスケープすることで防げます. XSRFは, 他サイトから不正なパラメータを設定し, POSTにより不正な値を登録させようとする攻撃です. これは, POSTするパラメータの中にToken(CSRFトークンみたいなもの)を持たせることで防ぐことが出来ます.</p>
-
+<h2 id="web-api1">設計変更をしやすいWeb APIを作る</h2>
+<p>一度作成したエンドポイントのレスポンスデータや, リクエストに必要なクエリを変更すると, クライアントに影響が出てしまいます. SSKDだとしてもiOS, Androidクライアントのアップデートは全員がやってくれないので, 古いバージョンのアプリで動作しなくなる可能性があります. なので, 一度作成したエンドポイントのインターフェースを修正することは容易には出来ません. しかし, APIの再設計をしなければいけないタイミングが来たとしたら, バージョニングすることで解決出来ます. 具体的には http://localhost/v2/users のようにv2とバージョンを指定するようにします. 新しいクライアントアプリからは新しいバージョンを指定することで, フウリクライアントへの影響を抑えてAPIを再設計することが出来ます. しかし, 当然古いバージョンのAPIも運用する必要があり, 運用コストを考えると, 小規模なサービスではバージョニングは出来ないものと思ったほうが良いと思います.</p>
+<h2 id="webapi">堅牢なWeb.APIを作る</h2>
+<p>最後にセキュリティの話です. 有名なものに, XSSとXSRFがあります. XSSは攻撃者が何かしらの方法でJavaScriptのコードを登録し, そのJavaScriptをユーザに実行させることで攻撃します. XSSは, <em>&lt;</em>などの文字をエスケープすることで防げます. XSRFは, 他サイトから不正なパラメータを設定し, POSTにより不正な値を登録させようとする攻撃です. これは, POSTするパラメータの中にToken(CSRFトークンみたいなもの)を持たせることで防ぐことが出来ます.</p>
 <p>AndroidやiOSといったモバイルアプリからのアクセスに限っているのなら, ブラウザからはアクセス出来ないようにするのも効果的です. APIアクセスの時は, 特別なHeaderを付与することで特定の端末からのアクセスのみ許可することが出来ます. 手軽にやるなら, User-Agentによって切り替えるの良いと思います.</p>
-
 <p>Cookieは, HTTPSの時にしか送れないようにする(Secure), JavaScriptからは読み込めないようにする(HttpOnly)することで, セキュアになります.
 あとは, 正しいHeaderを付与するのが大切です. JSONを返しているなら application/json をメディアタイプに設定する. Varyを設定し, キャッシュをコントロールする. などです.</p>
-
-<h2 id="感想-まとめ">感想, まとめ</h2>
-
+<h2 id="-">感想, まとめ</h2>
 <p>TCP/IP プロトコル解説などと比較すると, プラティカルな内容でした. 本を読むときは, 具体的な実践本 =&gt; 理論書 のように読んだほうが理解が捗る気がします.</p>
 
     <div class="mt30"></div>

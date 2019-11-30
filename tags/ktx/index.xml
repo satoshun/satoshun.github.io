@@ -20,11 +20,11 @@
       <guid>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</guid>
       <description>JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。
  Activity Version 1.0.0-alpha06 Fragment Version 1.1.0-alpha06  これは、次のように使うことが出来ます。
-class MainActivity : AppCompatActivity(R.layout.main_act) class MainFragment : Fragment(R.layout.main_frag)  Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。
+class MainActivity : AppCompatActivity(R.layout.main_act) class MainFragment : Fragment(R.layout.main_frag) Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。
 ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。
 Activityの場合 まずはActvityの例です。
-// 拡張関数を定義しておく fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T = DataBindingUtil.bind(getContentView())!! private fun Activity.getContentView(): View = findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0] // MainActivity.kt class MainActivity : AppCompatActivity(R.layout.main_act) { private lateinit var binding: MainActBinding override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) binding = bindView() ... } }  また、Activityの場合に限り、by lazyと組み合わせることも可能です。
-class MainActivity : AppCompatActivity(R.</description>
+// 拡張関数を定義しておく fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T = DataBindingUtil.bind(getContentView())!! private fun Activity.getContentView(): View = findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0] // MainActivity.kt class MainActivity : AppCompatActivity(R.layout.main_act) { private lateinit var binding: MainActBinding override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) binding = bindView() ... } } また、Activityの場合に限り、by lazyと組み合わせることも可能です。
+class MainActivity : AppCompatActivity(R.layout.main_act) { private val binding by lazy { bindView&amp;lt;MainActBinding&amp;gt;() } override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
     
     <item>
@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity(R.</description>
       <description>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。
 以下、2019年3月10日 2019年3月11日の調査結果になります。 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。
 Lifecycle
-// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope  LifecycleOwner
-// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope  ViewModel
-// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope  WorkManager
-abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された abstract suspend fun doWork(): Result }  Room
-// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;quot;SELECT * FROM hoge WHERE id = :id&amp;quot;) suspend fun get(id: String): Hoge .</description>
+// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope LifecycleOwner
+// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope ViewModel
+// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope WorkManager
+abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された  abstract suspend fun doWork(): Result } Room
+// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;#34;SELECT * FROM hoge WHERE id = :id&amp;#34;) suspend fun get(id: String): Hoge .</description>
     </item>
     
   </channel>

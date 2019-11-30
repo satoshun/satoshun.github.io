@@ -24,10 +24,7 @@
   <meta property="twitter:title" content="Kotlin: FlowのBufferの指定について">
 
   
-  <meta property="twitter:description" content="
-
-CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
-
+  <meta property="twitter:description" content="CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
 この記事は、少 …">
   
 
@@ -95,150 +92,110 @@ CoroutineのFlowにはBufferを指定することができます。Bufferの指�
     
     <span class="post-date">Updated at Sun, Aug 4, 2019</span>
     
-    
-
-<p>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。</p>
-
+    <p>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。</p>
 <p>この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。</p>
-
-<h2 id="bufferの種類">Bufferの種類</h2>
-
+<h2 id="buffer">Bufferの種類</h2>
 <p>Bufferの種類は5つあります。</p>
-
 <ul>
 <li>UNLIMITED</li>
 <li>RENDEZVOUS</li>
 <li>CONFLATED</li>
 <li>BUFFERED</li>
 <li>50、100などの、具体的な値
-
 <ul>
 <li>実質、BUFFEREDと同じ挙動をする</li>
-</ul></li>
 </ul>
-
-<h2 id="検証コード">検証コード</h2>
-
-<pre><code class="language-kotlin">// flowストリームの作成
-val f = flow {
-  repeat(100) {
-    delay(1)
-    emit(&quot;$it&quot;)
+</li>
+</ul>
+<h2 id="heading">検証コード</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// flowストリームの作成
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> f = flow {
+  repeat(<span style="color:#ae81ff">100</span>) {
+    delay(<span style="color:#ae81ff">1</span>)
+    emit(<span style="color:#e6db74">&#34;$it&#34;</span>)
   }
 }
 
-// observeする
-lifecycleScope.launch {
+<span style="color:#75715e">// observeする
+</span><span style="color:#75715e"></span>lifecycleScope.launch {
   f
-    .buffer(...) ここでBufferを指定する
+    .buffer(...) <span style="color:#960050;background-color:#1e0010">こ</span><span style="color:#960050;background-color:#1e0010">こ</span><span style="color:#960050;background-color:#1e0010">で</span>Buffer<span style="color:#960050;background-color:#1e0010">を</span><span style="color:#960050;background-color:#1e0010">指</span><span style="color:#960050;background-color:#1e0010">定</span><span style="color:#960050;background-color:#1e0010">す</span><span style="color:#960050;background-color:#1e0010">る</span>
     .collect {
-      delay(100)
-      Log.d(&quot;t4&quot;, &quot;$it&quot;)
+      delay(<span style="color:#ae81ff">100</span>)
+      Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
     }
 }
-</code></pre>
-
-<p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
-
+</code></pre></div><p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
 <p>次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerでは<code>delay(100)</code>しているので、処理に約100msかかります。</p>
-
 <p>これは、次の関係を作り出しています</p>
-
 <ul>
 <li>Consumerの処理時間 &gt; Producerの処理時間</li>
 </ul>
-
 <p>この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。</p>
-
 <h3 id="unlimited">UNLIMITED</h3>
-
-<pre><code class="language-kotlin">f
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
   .buffer(Channel.UNLIMITED)
   .collect {
-    delay(100)
-    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+    delay(<span style="color:#ae81ff">100</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
   }
-</code></pre>
-
-<p>UNLIMITEDはBufferのサイズを無制限にします。</p>
-
+</code></pre></div><p>UNLIMITEDはBufferのサイズを無制限にします。</p>
 <p>Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。</p>
-
 <ul>
 <li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
-
 <h3 id="rendezvous">RENDEZVOUS</h3>
-
-<pre><code class="language-kotlin">f
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
   .buffer(Channel.RENDEZVOUS)
   .collect {
-    delay(100)
-    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+    delay(<span style="color:#ae81ff">100</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
   }
-</code></pre>
-
-<p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
-
+</code></pre></div><p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
 <p>Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。</p>
-
 <ul>
 <li>Producer: Consumerが空いていることを確認して値を流してくる</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
-
 <h3 id="conflated">CONFLATED</h3>
-
-<pre><code class="language-kotlin">f
-  .buffer(Channel.CONFLATED) // or conflate()
-  .collect {
-    delay(100)
-    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
+  .buffer(Channel.CONFLATED) <span style="color:#75715e">// or conflate()
+</span><span style="color:#75715e"></span>  .collect {
+    delay(<span style="color:#ae81ff">100</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
   }
-</code></pre>
-
-<p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
-
+</code></pre></div><p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
 <p>最新の値は取得できますが、古い値は削除されてしまいます。</p>
-
 <ul>
 <li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュを上書きする</li>
 <li>Consumer: 処理に時間がかかる場合は途中の値を失う。</li>
 </ul>
-
 <h3 id="buffered">BUFFERED</h3>
-
-<pre><code class="language-kotlin">f
-  .buffer(Channel.BUFFERED) // or 100などの具体的な値
-  .collect {
-    delay(100)
-    Log.d(&quot;t4&quot;, &quot;$it&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
+  .buffer(Channel.BUFFERED) <span style="color:#75715e">// or 100などの具体的な値
+</span><span style="color:#75715e"></span>  .collect {
+    delay(<span style="color:#ae81ff">100</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
   }
-</code></pre>
-
-<p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
-
+</code></pre></div><p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
 <p>バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。</p>
-
 <ul>
 <li>Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>UNLIMITED、BUFFERED、RENDEZVOUSはすべての値をConsumerが受け取ることが出来る
-
 <ul>
 <li>Producerが無限に値を作り出す場合、UNLIMITEDはメモリを枯渇させる可能性がありそう</li>
-</ul></li>
+</ul>
+</li>
 <li>CONFLATEDはすべての値を受け取ることができない可能性がある
-
 <ul>
 <li>Consumerの処理が重くて、最新の値のみにしか興味ない場合は有効</li>
-</ul></li>
+</ul>
+</li>
 <li>BUFFERED、RENDEZVOUSはConsumerの状態に応じてProducerが待つ</li>
 </ul>
 

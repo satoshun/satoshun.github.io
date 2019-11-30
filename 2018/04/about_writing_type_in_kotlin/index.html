@@ -24,17 +24,11 @@
   <meta property="twitter:title" content="Kotlin: ローカルで明示的に型を宣言することについて">
 
   
-  <meta property="twitter:description" content="
-
-ポエムです。
-
+  <meta property="twitter:description" content="ポエムです。
 結論
-
 基本的にローカルで明示的に型を宣言するのは好ましくない
-
 問題
-
-Kotlinではval(var)で変数定義することができ、型宣言を …">
+Kotlinではval(var)で変数定義することができ、型宣言を省略すること …">
   
 
   
@@ -101,27 +95,15 @@ Kotlinではval(var)で変数定義することができ、型宣言を …">
     
     <span class="post-date">Created at Mon, Apr 16, 2018</span>
     
-    
-
-<p>ポエムです。</p>
-
-<h2 id="結論">結論</h2>
-
+    <p>ポエムです。</p>
+<h2 id="heading">結論</h2>
 <p>基本的にローカルで明示的に型を宣言するのは好ましくない</p>
-
-<h2 id="問題">問題</h2>
-
+<h2 id="heading1">問題</h2>
 <p>Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。</p>
-
-<pre><code class="language-kotlin">val userName = dataSource.getUserName()
-</code></pre>
-
-<p>型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> userName = dataSource.getUserName()
+</code></pre></div><p>型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。</p>
 <p>Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする</li>
 </ul>

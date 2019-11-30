@@ -24,11 +24,8 @@
   <meta property="twitter:title" content="Android: Groupieの内部でやっている差分更新周りの話">
 
   
-  <meta property="twitter:description" content="
-
-GroupieにはGroupAdapter#updateメソッドという便利なメソッドがあります。
-
-この記事ではupdateメソッドをコールした時に、どのよ …">
+  <meta property="twitter:description" content="GroupieにはGroupAdapter#updateメソッドという便利なメソッドがあります。
+この記事ではupdateメソッドをコールした時に、どのように差 …">
   
 
   
@@ -95,140 +92,87 @@ GroupieにはGroupAdapter#updateメソッドという便利なメソッドがあ
     
     <span class="post-date">Created at Thu, Nov 21, 2019</span>
     
-    
-
-<p>Groupieには<code>GroupAdapter#update</code>メソッドという便利なメソッドがあります。</p>
-
+    <p>Groupieには<code>GroupAdapter#update</code>メソッドという便利なメソッドがあります。</p>
 <p>この記事では<code>update</code>メソッドをコールした時に、どのように差分更新されるかを、簡単な説明と実際に動かしてみて見ていきます。</p>
-
-<h2 id="そもそもrecyclerviewの差分更新って何よ">そもそもRecyclerViewの差分更新って何よ</h2>
-
+<h2 id="recyclerview">そもそもRecyclerViewの差分更新って何よ</h2>
 <p>RecyclerViewでは、DiffUtil.Callbackクラスを実装することで、前のAdapterの状態と、新しいAdapterの状態の差分を計算することが出来ます。その計算結果をもとに、RecyclerViewでは効率的にViewを更新してくれます。またいい感じにアニメーションを実行してくれます。</p>
-
 <p>Groupieでは、内部で<code>DiffUtil.Callback</code>を実装した<code>DiffCallback</code>クラスがあり、そのクラスをもとに差分更新が行われます。</p>
-
-<h2 id="diffcallbackクラスの実装を見ていく">DiffCallbackクラスの実装を見ていく</h2>
-
+<h2 id="diffcallback">DiffCallbackクラスの実装を見ていく</h2>
 <p>まずは<code>areItemsTheSame</code>メソッドから。<code>areItemsTheSame</code>メソッドは、Itemが同一かどうかを判定します。</p>
-
-<pre><code class="language-java">@Override
-public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
-    return newItem.isSameAs(oldItem);
-}
-</code></pre>
-
-<p>まず、1つ前のItemと新しいItemを取ってきて、<code>newItem.isSameAs(oldItem);</code>をコールしています。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">areItemsTheSame</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> oldItemPosition<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> newItemPosition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Item oldItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>oldGroups<span style="color:#f92672">,</span> oldItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Item newItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>newGroups<span style="color:#f92672">,</span> newItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> newItem<span style="color:#f92672">.</span><span style="color:#a6e22e">isSameAs</span><span style="color:#f92672">(</span>oldItem<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>まず、1つ前のItemと新しいItemを取ってきて、<code>newItem.isSameAs(oldItem);</code>をコールしています。</p>
 <p><code>isSameAs</code>メソッドは次の定義になっています。</p>
-
-<pre><code class="language-java">public boolean isSameAs(Item other) {
-    if (getViewType() != other.getViewType()) {
-        return false;
-    }
-    return getId() == other.getId();
-}
-</code></pre>
-
-<p>ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isSameAs</span><span style="color:#f92672">(</span>Item other<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>getViewType<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> other<span style="color:#f92672">.</span><span style="color:#a6e22e">getViewType</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> getId<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> other<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。</p>
 <p>Idは、Itemクラスのコンストラクタから与えることが出来ます。</p>
-
-<pre><code class="language-java">protected Item(long id) {
-    this.id = id;
-}
-</code></pre>
-
-<p>なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">Item</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。
 例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。</p>
-
-<hr />
-
+<hr>
 <p>次に、<code>areContentsTheSame</code>メソッド。<code>areContentsTheSame</code>メソッドは、このItemの内容が同じかどうかを判定します。</p>
-
-<pre><code class="language-java">@Override
-public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
-    return newItem.hasSameContentAs(oldItem);
-}
-</code></pre>
-
-<p>1つ前のItemと新しいItemを取ってきて、<code>newItem.hasSameContentAs(oldItem);</code>をコールしています。</p>
-
-<pre><code class="language-java">public boolean hasSameContentAs(Item other) {
-    return this.equals(other);
-}
-</code></pre>
-
-<p>デフォルトでは、<code>Object#equals</code>メソッドをコールしているので、同一のインスタンスかどうかで、Itemの内容が同じかどうかを判定しています。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">areContentsTheSame</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> oldItemPosition<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> newItemPosition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Item oldItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>oldGroups<span style="color:#f92672">,</span> oldItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Item newItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>newGroups<span style="color:#f92672">,</span> newItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> newItem<span style="color:#f92672">.</span><span style="color:#a6e22e">hasSameContentAs</span><span style="color:#f92672">(</span>oldItem<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>1つ前のItemと新しいItemを取ってきて、<code>newItem.hasSameContentAs(oldItem);</code>をコールしています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasSameContentAs</span><span style="color:#f92672">(</span>Item other<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>other<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>デフォルトでは、<code>Object#equals</code>メソッドをコールしているので、同一のインスタンスかどうかで、Itemの内容が同じかどうかを判定しています。
 Itemのインスタンスが変わったらfalseを返し、Itemの内容が変わっても、同一インスタンスならtrueを返します。</p>
-
 <p>なので、基本的には<code>hasSameContentAs</code>ないし、<code>equals</code>メソッドをoverrideしたほうが良いです。</p>
-
 <p>Kotlinなら、data classで定義するのも手です。equalsを自動で実装してくれるからです。</p>
-
-<pre><code class="language-kotlin">data class HogeItem(model, id) : Item&lt;...&gt;(id) ...
-</code></pre>
-
-<hr />
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeItem</span>(model, id) : Item&lt;...&gt;(id) ...
+</code></pre></div><hr>
 <p>最後に、<code>getChangePayload</code>メソッド。<code>getChangePayload</code>メソッドは、Itemの差分を計算して、payloadを求めます。</p>
-
-<pre><code class="language-java">public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-    Item oldItem = GroupUtils.getItem(oldGroups, oldItemPosition);
-    Item newItem = GroupUtils.getItem(newGroups, newItemPosition);
-    return oldItem.getChangePayload(newItem);
-}
-</code></pre>
-
-<p>1つ前のItemと新しいItemを取ってきて、<code>newItem.getChangePayload(oldItem);</code>をコールしています。</p>
-
-<pre><code class="language-java">public Object getChangePayload(Item newItem) {
-    return null;
-}
-</code></pre>
-
-<p>デフォルトでは、nullを返しており、payloadの計算は行われません。ここでいい感じにpayloadを計算してあげると、効率よく差分更新が出来ます。</p>
-
-<h2 id="ケースごとに動作を見てみる">ケースごとに動作を見てみる</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getChangePayload</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> oldItemPosition<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> newItemPosition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Item oldItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>oldGroups<span style="color:#f92672">,</span> oldItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Item newItem <span style="color:#f92672">=</span> GroupUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getItem</span><span style="color:#f92672">(</span>newGroups<span style="color:#f92672">,</span> newItemPosition<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> oldItem<span style="color:#f92672">.</span><span style="color:#a6e22e">getChangePayload</span><span style="color:#f92672">(</span>newItem<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>1つ前のItemと新しいItemを取ってきて、<code>newItem.getChangePayload(oldItem);</code>をコールしています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getChangePayload</span><span style="color:#f92672">(</span>Item newItem<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>デフォルトでは、nullを返しており、payloadの計算は行われません。ここでいい感じにpayloadを計算してあげると、効率よく差分更新が出来ます。</p>
+<h2 id="heading">ケースごとに動作を見てみる</h2>
 <p>今までのを踏まえて、いろいろなケースでどのように動作するかを見ていきます。</p>
-
-<h3 id="違うid-インスタンスを毎回生成する">違うid &amp;&amp; インスタンスを毎回生成する</h3>
-
-<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
-  fun update() {
-    update(listOf(BasicItem())) // 毎回新しく生成する &amp;&amp; idは毎回違う
-  }
+<h3 id="id--">違うid &amp;&amp; インスタンスを毎回生成する</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+    update(listOf(BasicItem())) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは毎回違う
+</span><span style="color:#75715e"></span>  }
 }
 
-class BasicItem : Item&lt;GroupieViewHolder&gt;()
-</code></pre>
-
-<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
-
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span> : Item&lt;GroupieViewHolder&gt;()
+</code></pre></div><!-- raw HTML omitted -->
 <p>Itemが点滅しているのが分かります。これは、Idが毎回異なるので、<code>areItemsTheSame</code>がfalseを返すためです。この場合、Viewは再利用されません。</p>
-
-<h3 id="同じid-インスタンスを毎回生成する-equalsなどを実装しない">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsなどを実装しない</h3>
-
-<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
-  fun update() {
-    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
-  }
+<h3 id="id----equals">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsなどを実装しない</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+    update(listOf(BasicItem(<span style="color:#ae81ff">3</span>))) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは固定
+</span><span style="color:#75715e"></span>  }
 }
 
-class BasicItem(id: Long) : Item&lt;GroupieViewHolder&gt;(id)
-</code></pre>
-
-<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
-
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span>(id: Long) : Item&lt;GroupieViewHolder&gt;(id)
+</code></pre></div><!-- raw HTML omitted -->
 <p>この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、<code>areContentsTheSame</code>がfalseを返すためです。
 <code>areContentsTheSame</code>がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。</p>
-
-<h3 id="同じid-インスタンスを毎回生成する-equalsを実装して-trueを返す">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
-
+<h3 id="id----equalstrue">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
 <pre><code>class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
   fun update() {
     update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
@@ -237,49 +181,38 @@ class BasicItem(id: Long) : Item&lt;GroupieViewHolder&gt;(id)
 
 // dataクラスなのでequalsが実装される
 data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
-</code></pre>
-
-<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
-
+</code></pre><!-- raw HTML omitted -->
 <p>この場合は、Itemが点滅していないのが分かります。これは、<code>areItemsTheSame</code>と<code>areContentsTheSame</code>がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、<code>areContentsTheSame</code>がtrueなので、Viewの中身を更新する必要がないためです。</p>
-
 <p>多くの処理をスキップ、再利用することが出来ます。</p>
-
-<h3 id="同じidを渡す-インスタンスを毎回生成する-getchangepayloadを実装する">同じidを渡す &amp;&amp; インスタンスを毎回生成する &amp;&amp; getChangePayloadを実装する</h3>
-
-<pre><code class="language-kotlin">class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
-  fun update() {
-    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
-  }
+<h3 id="id----getchangepayload">同じidを渡す &amp;&amp; インスタンスを毎回生成する &amp;&amp; getChangePayloadを実装する</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+    update(listOf(BasicItem(<span style="color:#ae81ff">3</span>))) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは固定
+</span><span style="color:#75715e"></span>  }
 }
 
-class BasicItem(id: Long) : Item&lt;GroupieViewHolder&gt;(id) {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span>(id: Long) : Item&lt;GroupieViewHolder&gt;(id) {
   ...
-  override fun getChangePayload(newItem: Item&lt;*&gt;): Any? {
-    return newItem.id // 今回はサンプルなので適当な実装
-  }
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getChangePayload</span>(newItem: Item&lt;*&gt;): Any? {
+    <span style="color:#66d9ef">return</span> newItem.id <span style="color:#75715e">// 今回はサンプルなので適当な実装
+</span><span style="color:#75715e"></span>  }
 }
-</code></pre>
-
-<p><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/></p>
-
+</code></pre></div><!-- raw HTML omitted -->
 <p>この場合も、Itemが点滅していないのが分かります。これは、<code>areContentsTheSame</code>はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、<code>areContentsTheSame</code>がfalseなので、Viewの中身を更新する必要があるためです。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>Groupie（RecyclerView）で効率的に差分更新をしたいなら、以下の3点を考慮する必要があります
-
 <ul>
 <li><code>areItemsTheSame</code>メソッド: Itemのidに一意な値を渡す</li>
 <li><code>areContentsTheSame</code>メソッド: data classにする または equalsメソッドの実装 または <code>hasSameContentAs</code>メソッドを実装する</li>
 <li><code>getChangePayload</code>メソッド: 古いItemと新しいItemのどこが差分なのかを計算して、適切なpayloadを返す</li>
-</ul></li>
+</ul>
+</li>
 <li>本文中では触れてないんですが、RecyclerViewがデフォルトで使う、DefaultItemAnimatorの設定を変えることで、ここらへんの挙動を変えることが出来ます
-
 <ul>
 <li>例えば、supportsChangeAnimationsをfalseすると、<code>getChangePayload</code>を実装していなくても、Viewが再利用されるようになります</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

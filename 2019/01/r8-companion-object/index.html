@@ -26,10 +26,7 @@
   <meta property="twitter:title" content="R8/Proguard: KotlinのCompanion objectとobjectについて">
 
   
-  <meta property="twitter:description" content="
-
-コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
-
+  <meta property="twitter:description" content="コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
 この記事は、R8 …">
   
 
@@ -97,88 +94,61 @@
     
     <span class="post-date">Created at Sun, Jan 20, 2019</span>
     
-    
-
-<p>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。</p>
-
+    <p>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。</p>
 <p>この記事は、<a href="https://jakewharton.com/r8-optimization-staticization/">R8 Optimization: Staticization</a>にとても影響を受けています。</p>
-
 <h2 id="companion-object">Companion object</h2>
-
 <p>例えば、次のコードがあるとします。</p>
-
-<pre><code class="language-kotlin">class CompanionTest {
-    companion object {
-        fun show(i: Int) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> {
+    <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
+        <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
             ...
         }
     }
 }
-</code></pre>
+</code></pre></div><p>これを最適化なしで変換すると次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Companion Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Companion<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<p>これを最適化なしで変換すると次のようになります。</p>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public final class CompanionTest {
-    public static final Companion Companion = new Companion();
-
-    public static final class Companion {
-        private Companion() {
-        }
-
-        public final void show(int i) {
-            ...
-        }
-    }
-}
-</code></pre>
-
-<p>Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。</p>
-
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。</p>
 <p>そこでR8による最適化を行うと次のようになります。</p>
-
-<pre><code class="language-java">public abstract class CompanionTest {
-    public static final void show(int i) {
-        ...
-    }
-}
-</code></pre>
-
-<p>無駄な内部クラス（enclosing class）が消えて、staticメソッドに変換されているのが分かります。このshowメソッドはわざわざインスタンスメソッドにする必要がないため、このような最適化が行われます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>無駄な内部クラス（enclosing class）が消えて、staticメソッドに変換されているのが分かります。このshowメソッドはわざわざインスタンスメソッドにする必要がないため、このような最適化が行われます。</p>
 <h2 id="object">object</h2>
-
 <p>objectも同様です。</p>
-
-<pre><code class="language-kotlin">object ObjectTest {
-    fun show(i: Int) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ObjectTest</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
         ...
     }
 }
-</code></pre>
+</code></pre></div><p>最適化なしだと次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObjectTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> ObjectTest INSTANCE <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectTest<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<p>最適化なしだと次のようになります。</p>
-
-<pre><code class="language-java">public final class ObjectTest {
-    public static final ObjectTest INSTANCE = new ObjectTest();
-
-    public final void show(int i) {
-        ...
-    }
-}
-</code></pre>
-
-<p>INSTANCEフィールドが生成されていることが分かります。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>INSTANCEフィールドが生成されていることが分かります。</p>
 <p>次にR8による最適化を行います。</p>
-
-<pre><code class="language-java">public abstract class ObjectTest {
-    public static final void show(int i) {
-        ...
-    }
-}
-</code></pre>
-
-<p>Companion objectと同様に冗長なインスタンス生成が消えています。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObjectTest</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Companion objectと同様に冗長なインスタンス生成が消えています。
 Proguardの場合、インスタンス生成は消えないので、R8の一歩進んだ最適化といえます。（もしかしたらProguardの設定次第でインスタンス生成をしないように出来るかもしれないです。）</p>
 
     <div class="mt30"></div>

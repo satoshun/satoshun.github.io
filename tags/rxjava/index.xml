@@ -21,7 +21,7 @@
       <description>現状での差異をまとめておきます。
 RxJava2との差異 READMEから README.md
 RxJava2 との差分は以下のようになっています。
- fixed API mistakes and many limits of RxJava 2  RxJava2のいくつかのAPIのミス、制限を直している  intended to be a replacement for RxJava 2 with relatively few binary incompatible changes  APIに多少の変更があり、バイナリ互換がない  test and diagnostic support via test schedulers, test consumers and plugin hooks  テストのサポートの充実   3.x different docsから 3.x different docs
+ fixed API mistakes and many limits of RxJava 2  RxJava2のいくつかのAPIのミス、制限を直している   intended to be a replacement for RxJava 2 with relatively few binary incompatible changes  APIに多少の変更があり、バイナリ互換がない   test and diagnostic support via test schedulers, test consumers and plugin hooks  テストのサポートの充実    3.x different docsから 3.x different docs
 asメソッドとtoメソッド toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。
 // Obsevable.java public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter) // Single.</description>
     </item>
@@ -33,10 +33,10 @@ asメソッドとtoメソッド toメソッドはFunction型を引数から取�
       
       <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
       <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
-launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;) }  asyncで包むことで、並列に処理をすることができます。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;#34;${task1.await()}\n${task2.await()}&amp;#34;) } asyncで包むことで、並列に処理をすることができます。
 次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
-launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;) }  runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
-また、次のように書くことは出来ません。
+launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;#34;$result1\n&amp;#34; + &amp;#34;$result2\n&amp;#34;) } runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+ また、次のように書くことは出来ません。
 launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
     </item>
     
@@ -67,10 +67,10 @@ RxAndroid’s New Async API
 検証に使用したサンプルプロジェクトは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample
 サンプルプロジェクトをかいつまんで説明します。
 まず2つのスケジューラを作成し、
-private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false) private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)  作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。
-// asyncがfalseの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(mainScheduler) .subscribe(...) // asyncがtrueの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(asyncMainScheduler) .subscribe(...)  フルコードは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt
+private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false) private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true) 作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。
+// asyncがfalseの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(mainScheduler) .subscribe(...) // asyncがtrueの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(asyncMainScheduler) .subscribe(...) フルコードは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt
 結果は、以下のようになりました。
-// API27 エミュレータ main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和 main=130857ms, async=126582ms main=131401ms, async=126909ms main=130763ms, async=126504ms main=132758ms, async=127972ms // API21 エミュレータ main=129869ms, async=125795ms main=130050ms, async=125888ms main=129935ms, async=125853ms main=129908ms, async=125838ms main=129927ms, async=125824ms  asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</description>
+// API27 エミュレータ main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和 main=130857ms, async=126582ms main=131401ms, async=126909ms main=130763ms, async=126504ms main=132758ms, async=127972ms // API21 エミュレータ main=129869ms, async=125795ms main=130050ms, async=125888ms main=129935ms, async=125853ms main=129908ms, async=125838ms main=129927ms, async=125824ms asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</description>
     </item>
     
   </channel>

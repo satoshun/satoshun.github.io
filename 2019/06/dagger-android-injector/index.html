@@ -22,9 +22,7 @@
   <meta property="twitter:title" content="Dagger2: 2.23に入ったHasAndroidInjectorについて">
 
   
-  <meta property="twitter:description" content="
-
-Dagger 2.23に新しく、HasAndroidInjectorインターフェースが入りました。
+  <meta property="twitter:description" content="Dagger 2.23に新しく、HasAndroidInjectorインターフェースが入りました。
 これは、従来のHasActivityInjector …">
   
 
@@ -92,117 +90,86 @@ Dagger 2.23に新しく、HasAndroidInjectorインターフェースが入りま
     
     <span class="post-date">Updated at Sun, Jun 2, 2019</span>
     
-    
-
-<p>Dagger 2.23に新しく、<code>HasAndroidInjector</code>インターフェースが入りました。
+    <p>Dagger 2.23に新しく、<code>HasAndroidInjector</code>インターフェースが入りました。
 これは、従来の<code>HasActivityInjector</code>や<code>HasFragmentInjector</code>などを置き換えるために作られました。</p>
-
 <p>この記事では、どのように置き換えるかを説明していきたいと思います。</p>
-
 <p>また、<code>DaggerApplication</code>や<code>DaggerActivity</code>などの基底クラスは使っていないものとします。</p>
-
-<h2 id="置き換えていく">置き換えていく</h2>
-
+<h2 id="heading">置き換えていく</h2>
 <h3 id="appcomponent">AppComponent</h3>
-
 <p>AndroidSupportInjectionModuleを使っているなら、<code>AndroidInjectionModule</code>に置き換えます。
 今後は、<code>AndroidSupportInjectionModule</code>を使う必要はありません。</p>
-
-<pre><code class="language-kotlin">@Singleton
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Singleton
 @dagger.Component(
   modules = [
-    AndroidInjectionModule::class, // AndroidInjectionModuleを使う
-    ...
+    AndroidInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, <span style="color:#75715e">// AndroidInjectionModuleを使う
+</span><span style="color:#75715e"></span>    ...
   ]
 )
-interface AppComponent ...
-</code></pre>
-
-<h3 id="application">Application</h3>
-
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> ...
+</code></pre></div><h3 id="application">Application</h3>
 <p>Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを<code>HasAndroidInjector</code>に置き換えます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application(),
+  <span style="color:#75715e">// HasAndroidInjectorのみでおｋ
+</span><span style="color:#75715e"></span>  HasAndroidInjector {
 
-<pre><code class="language-kotlin">class App : Application(),
-  // HasAndroidInjectorのみでおｋ
-  HasAndroidInjector {
+  <span style="color:#75715e">// 型変数がAnyになる
+</span><span style="color:#75715e"></span>  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
 
-  // 型変数がAnyになる
-  @Inject lateinit var androidInjector: DispatchingAndroidInjector&lt;Any&gt;
-
-  // 返り値の型変数がAnyになる
-  override fun androidInjector(): AndroidInjector&lt;Any&gt; {
-    DaggerAppComponent.factory().create(this).inject(this)
-    return androidInjector
+  <span style="color:#75715e">// 返り値の型変数がAnyになる
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;Any&gt; {
+    DaggerAppComponent.factory().create(<span style="color:#66d9ef">this</span>).inject(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">return</span> androidInjector
   }
 }
-</code></pre>
-
-<p>今まではActivity用、Fragment用、Service用などのクラスごとに<code>DispatchingAndroidInjector</code>がありましたが、それが1つの<code>DispatchingAndroidInjector&lt;Any&gt;</code>まとまりました。</p>
-
+</code></pre></div><p>今まではActivity用、Fragment用、Service用などのクラスごとに<code>DispatchingAndroidInjector</code>がありましたが、それが1つの<code>DispatchingAndroidInjector&lt;Any&gt;</code>まとまりました。</p>
 <h2 id="activity-fragment">Activity, Fragment</h2>
-
 <p>HasSupportFragmentInjectorなどのInjectorは、<code>HasAndroidInjector</code>に置き換えます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity(),
+  <span style="color:#75715e">// HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う
+</span><span style="color:#75715e"></span>  HasAndroidInjector {
 
-<pre><code class="language-kotlin">class MainActivity : AppCompatActivity(),
-  // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う
-  HasAndroidInjector {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
 
-  @Inject lateinit var androidInjector: DispatchingAndroidInjector&lt;Any&gt;
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    AndroidInjection.inject(this) // ここは一緒
-    ...
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+    AndroidInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
+</span><span style="color:#75715e"></span>    ...
   }
 
-  override fun androidInjector(): AndroidInjector&lt;Any&gt; {
-    return androidInjector
-  }
-}
-
----以下、Fragment---
-
-class MainFragment : Fragment() {
-  override fun onAttach(context: Context) {
-    AndroidSupportInjection.inject(this) // ここは一緒
-    ...
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;Any&gt; {
+    <span style="color:#66d9ef">return</span> androidInjector
   }
 }
-</code></pre>
 
-<p>となります。従来の***Injectorが汎用的な<code>HasAndroidInjector</code>まとまりました😃</p>
+---<span style="color:#960050;background-color:#1e0010">以</span><span style="color:#960050;background-color:#1e0010">下</span><span style="color:#960050;background-color:#1e0010">、</span>Fragment---
 
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
+    AndroidSupportInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
+</span><span style="color:#75715e"></span>    ...
+  }
+}
+</code></pre></div><p>となります。従来の***Injectorが汎用的な<code>HasAndroidInjector</code>まとまりました😃</p>
 <p>大きなコードの修正は必要なさそうです。</p>
-
-<h2 id="なぜこの変更が入ったか">なぜこの変更が入ったか?</h2>
-
+<h2 id="heading1">なぜこの変更が入ったか?</h2>
 <p>ronshapiroさんが以下のツイートをしていました。</p>
-
-<p><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Dagger 2.23 turns off formatting by default so your build is faster, but has a flag to turn it back on if you&#39;d like.<br><br>It also brings bug fixes and a more flexible <a href="https://t.co/d0MeQYkvAV">https://t.co/d0MeQYkvAV</a> API that will allow for more androidx support<a href="https://t.co/vtW7gebmu2">https://t.co/vtW7gebmu2</a></p>&mdash; Ron Shapiro (@rdshapiro) <a href="https://twitter.com/rdshapiro/status/1133493726561619968?ref_src=twsrc%5Etfw">May 28, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
+<!-- raw HTML omitted -->
 <p>今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。</p>
-
-<h2 id="daggerapplicationや-daggerappcompatactivity-daggersupportfragmentなどを使っている場合">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
-
+<h2 id="daggerapplicationdaggerappcompatactivitydaggersupportfragment">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
 <p>2.23では、これらの基底クラスで<code>HasAndroidInjector</code>を使っているので特に対応は必要ありません。</p>
-
-<pre><code class="language-java">// HasAndroidInjectorを使う実装に置き換わっている
-@Beta
-public abstract class DaggerApplication extends Application implements HasAndroidInjector {
-  ...
-}
-</code></pre>
-
-<p>唯一、AppComponentでは<code>AndroidSupportInjectionModule</code>を使っていると思うのでそこの置き換えは必要です。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HasAndroidInjectorを使う実装に置き換わっている
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Beta</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DaggerApplication</span> <span style="color:#66d9ef">extends</span> Application <span style="color:#66d9ef">implements</span> HasAndroidInjector <span style="color:#f92672">{</span>
+  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>唯一、AppComponentでは<code>AndroidSupportInjectionModule</code>を使っていると思うのでそこの置き換えは必要です。</p>
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>HasAndroidInjectorという1つの汎用インターフェースが爆誕した</li>
 <li>androidxのサポート増やしてくれそう。嬉しい😃
-
 <ul>
 <li>（ViewModel対応してほしい&hellip;）</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

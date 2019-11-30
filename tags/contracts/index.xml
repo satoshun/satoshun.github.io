@@ -20,14 +20,14 @@
       <guid>https://satoshun.github.io/2018/11/more_convenient_contracts/</guid>
       <description>Kotlin 1.3.0からContractsが実装されました。 Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。
 例えば、isNullOrEmptyメソッドがfalse返すなら、 Contractsによりnullでないことが保証されます。
-val a: String? = ... if (!a.isNullOrEmpty()) { println(a.length) // !!が必要ない }  Contractsがない時代だと呼び出し元でisNullOrEmptyがどんな振る舞いをするかを知るすべがなかったので、 !!をつける必要があったのですが、Contractsによりnullでないことが保証できるので、!!を省略できます。
+val a: String? = ... if (!a.isNullOrEmpty()) { println(a.length) // !!が必要ない } Contractsがない時代だと呼び出し元でisNullOrEmptyがどんな振る舞いをするかを知るすべがなかったので、 !!をつける必要があったのですが、Contractsによりnullでないことが保証できるので、!!を省略できます。
 isNullOrEmptyの実装は次のようになります。
-@kotlin.internal.InlineOnly public inline fun CharSequence?.isNullOrEmpty(): Boolean { contract { returns(false) implies (this@isNullOrEmpty != null) } return this == null || this.length == 0 }  contractはDSL（関数）として定義されています。 これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。
+@kotlin.internal.InlineOnly public inline fun CharSequence?.isNullOrEmpty(): Boolean { contract { returns(false) implies (this@isNullOrEmpty != null) } return this == null || this.length == 0 } contractはDSL（関数）として定義されています。 これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。
 isNullOrEmptyの場合はreturns(false) implies (this@isNullOrEmpty != null)が契約として定義されています。
 これは、「returns(false): falseを返すなら (this@isNullOrEmpty != null): 自分自身がnullじゃない」という意味になります。 なので呼び出し元ではfalseが返ってきたら、nullではないことが保証されるので、smartcastにより!!をつける必要がなくなるわけです。
 なので、例えばT.isEmpty(t: T?): Booleanのようなメソッドがあり、ついでにnullチェックもこの関数の中でやっているようなときは、 contractを定義することでより使いやすい関数にすることが出来ます。
 他の例を見てみます。スコープ関数applyの実装は次になります。
-@kotlin.internal.InlineOnly public inline fun &amp;lt;T&amp;gt; T.</description>
+@kotlin.internal.InlineOnly public inline fun &amp;lt;T&amp;gt; T.apply(block: T.() -&amp;gt; Unit): T { contract { callsInPlace(block, InvocationKind.</description>
     </item>
     
   </channel>

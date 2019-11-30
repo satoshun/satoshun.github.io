@@ -26,11 +26,8 @@
   <meta property="twitter:title" content="雑メモ: ViewModel SavedStateのコードリーディング">
 
   
-  <meta property="twitter:description" content="
-
-ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。
-
-この …">
+  <meta property="twitter:description" content="ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。
+この記事の …">
   
 
   
@@ -97,239 +94,184 @@ ViewModelのSavedStateがどのように実現しているのか、内部でど�
     
     <span class="post-date">Created at Tue, May 21, 2019</span>
     
-    
-
-<p>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。</p>
-
+    <p>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。</p>
 <p>この記事のソースコードは全て、下記のライセンスに従います。</p>
-
-<pre><code class="language-xml">/*
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">/*
  * Copyright 2019 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-</code></pre>
-
-<h2 id="まずsavedstate本体のコード">まずsavedstate本体のコード</h2>
-
+</code></pre></div><h2 id="savedstate">まずsavedstate本体のコード</h2>
 <p>主な登場クラスは以下です。</p>
-
-<h3 id="savedstateregistry-savedstateprovider">SavedStateRegistry.SavedStateProvider</h3>
-
-<pre><code class="language-java">/**
- * This interface marks a component that contributes to saved state.
- */
-public interface SavedStateProvider {
-   /**
-    * Called to retrieve a state from a component before being killed
-    * so later the state can be received from {@link #consumeRestoredStateForKey(String)}
-    *
-    * @return S with your saved state.
-    */
-    @NonNull
-    Bundle saveState();
-}
-</code></pre>
-
-<p><code>onSaveInstanceState</code>のタイミングでコールされ、<code>outState</code>に追加で、保存したい値をBundle型で返却します。</p>
-
+<h3 id="savedstateregistrysavedstateprovider">SavedStateRegistry.SavedStateProvider</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * This interface marks a component that contributes to saved state.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SavedStateProvider</span> <span style="color:#f92672">{</span>
+   <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * Called to retrieve a state from a component before being killed
+</span><span style="color:#75715e">    * so later the state can be received from {@link #consumeRestoredStateForKey(String)}
+</span><span style="color:#75715e">    *
+</span><span style="color:#75715e">    * @return S with your saved state.
+</span><span style="color:#75715e">    */</span>
+    <span style="color:#a6e22e">@NonNull</span>
+    Bundle <span style="color:#a6e22e">saveState</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>onSaveInstanceState</code>のタイミングでコールされ、<code>outState</code>に追加で、保存したい値をBundle型で返却します。</p>
 <h3 id="savedstateregistry">SavedStateRegistry</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * An interface for plugging components that consumes and contributes to the saved state.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * &lt;p&gt;This objects lifetime is bound to the lifecycle of owning component: when activity or
+</span><span style="color:#75715e"> * fragment is recreated, new instance of the object is created as well.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistry</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">consumeRestoredStateForKey</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> String key<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerSavedStateProvider</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> String key<span style="color:#f92672">,</span>
+            <span style="color:#a6e22e">@NonNull</span> SavedStateProvider provider<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">unregisterSavedStateProvider</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> String key<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isRestored</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">runOnNextRecreation</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Class<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> AutoRecreated<span style="color:#f92672">&gt;</span> clazz<span style="color:#f92672">)</span>
 
-<pre><code class="language-java">/**
- * An interface for plugging components that consumes and contributes to the saved state.
- *
- * &lt;p&gt;This objects lifetime is bound to the lifecycle of owning component: when activity or
- * fragment is recreated, new instance of the object is created as well.
- */
-public final class SavedStateRegistry {
-    public Bundle consumeRestoredStateForKey(@NonNull String key)
-    public void registerSavedStateProvider(@NonNull String key,
-            @NonNull SavedStateProvider provider)
-    public void unregisterSavedStateProvider(@NonNull String key)
-    public boolean isRestored()
-    public void runOnNextRecreation(@NonNull Class&lt;? extends AutoRecreated&gt; clazz)
-
-    void performRestore(@NonNull Lifecycle lifecycle, @Nullable Bundle savedState)
-    void performSave(@NonNull Bundle outBundle)
-}
-</code></pre>
-
-<p>先程のSavedStateProviderを<code>registerSavedStateProvider</code>メソッドを通して集約し、<code>performRestore</code>、<code>performSave</code>によって、savedStateから読み込み、outStateに保存します。</p>
-
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performRestore</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Lifecycle lifecycle<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Bundle savedState<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Bundle outBundle<span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>先程のSavedStateProviderを<code>registerSavedStateProvider</code>メソッドを通して集約し、<code>performRestore</code>、<code>performSave</code>によって、savedStateから読み込み、outStateに保存します。</p>
 <h3 id="savedstateregistryowner">SavedStateRegistryOwner</h3>
-
-<pre><code class="language-java">/**
- * A scope that owns {@link SavedStateRegistry}
- */
-public interface SavedStateRegistryOwner extends LifecycleOwner {
-    /**
-     * Returns owned {@link SavedStateRegistry}
-     *
-     * @return a {@link SavedStateRegistry}
-     */
-    @NonNull
-    SavedStateRegistry getSavedStateRegistry();
-}
-</code></pre>
-
-<p>SavedStateRegistryOwnerは先程の<code>SavedStateRegistry</code>のOwnerになります。これは、<code>ComponentActivity</code>や<code>Fragment</code>が実装しています。LifecycleOwner、Lifecycleのような実装です。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * A scope that owns {@link SavedStateRegistry}
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SavedStateRegistryOwner</span> <span style="color:#66d9ef">extends</span> LifecycleOwner <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Returns owned {@link SavedStateRegistry}
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * @return a {@link SavedStateRegistry}
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#a6e22e">@NonNull</span>
+    SavedStateRegistry <span style="color:#a6e22e">getSavedStateRegistry</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>SavedStateRegistryOwnerは先程の<code>SavedStateRegistry</code>のOwnerになります。これは、<code>ComponentActivity</code>や<code>Fragment</code>が実装しています。LifecycleOwner、Lifecycleのような実装です。</p>
 <h3 id="savedstateregistrycontroller">SavedStateRegistryController</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * An API for {@link SavedStateRegistryOwner} implementations to control {@link SavedStateRegistry}.
+</span><span style="color:#75715e"> * &lt;p&gt;
+</span><span style="color:#75715e"> * {@code SavedStateRegistryOwner} should call {@link #performRestore(Bundle)} to restore state of
+</span><span style="color:#75715e"> * {@link SavedStateRegistry} and {@link #performSave(Bundle)} to gather SavedState from it.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistryController</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> SavedStateRegistry <span style="color:#a6e22e">getSavedStateRegistry</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performRestore</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedState<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Bundle outBundle<span style="color:#f92672">)</span>
 
-<pre><code class="language-java">/**
- * An API for {@link SavedStateRegistryOwner} implementations to control {@link SavedStateRegistry}.
- * &lt;p&gt;
- * {@code SavedStateRegistryOwner} should call {@link #performRestore(Bundle)} to restore state of
- * {@link SavedStateRegistry} and {@link #performSave(Bundle)} to gather SavedState from it.
- */
-public final class SavedStateRegistryController {
-    public SavedStateRegistry getSavedStateRegistry()
-    public void performRestore(@Nullable Bundle savedState)
-    public void performSave(@NonNull Bundle outBundle)
-
-    public static SavedStateRegistryController create(@NonNull SavedStateRegistryOwner owner)
-}
-</code></pre>
-
-<p><code>SavedStateRegistryOwner</code>のための実装です。ComponentActivityやFragmentではこのクラスを介して、Bundleから値を復元/restoreしたり、保存/saveします。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SavedStateRegistryController <span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> SavedStateRegistryOwner owner<span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>SavedStateRegistryOwner</code>のための実装です。ComponentActivityやFragmentではこのクラスを介して、Bundleから値を復元/restoreしたり、保存/saveします。</p>
 <p>これがSavedStateで使われている主なクラスになります。</p>
-
 <p>次に、ViewModelのsaveの実行の流れを見てみます。</p>
-
-<h2 id="viewmodelのsaveの実行の流れ">ViewModelのsaveの実行の流れ</h2>
-
+<h2 id="viewmodelsave">ViewModelのsaveの実行の流れ</h2>
 <p>ViewModelのSavedStateのsaveの実行の流れを見ながら、コードリーディングをしていきます。</p>
-
-<h3 id="1-viewmodelを生成する">1. ViewModelを生成する</h3>
-
+<h3 id="1-viewmodel">1. ViewModelを生成する</h3>
 <p>ViewModelとSavedStateを一緒に扱い時は、<code>SavedStateVMFactory</code>を使います。
 これは、ViewModelインスタンスに<code>SavedStateHandle</code>インスタンスを渡すために必要なFactoryです。</p>
-
-<pre><code class="language-kotlin">// thisはFragmentActivity
-val vm = ViewModelProvider(this, SavedStateVMFactory(this))
-    .get(MyViewModel::class.java)
-</code></pre>
-
-<p>こう書くことで、MyViewModelで<code>SavedStateHandle</code>を受け取ることが出来ます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> vm = ViewModelProvider(<span style="color:#66d9ef">this</span>, SavedStateVMFactory(<span style="color:#66d9ef">this</span>))
+    .<span style="color:#66d9ef">get</span>(MyViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</code></pre></div><p>こう書くことで、MyViewModelで<code>SavedStateHandle</code>を受け取ることが出来ます。</p>
 <p>SavedStateVMFactoryでは以下の処理を行っています。</p>
-
 <ul>
 <li><code>SavedStateHandle</code>インスタンスの生成
-
 <ul>
 <li>SavedStateHandleでは、<code>SavedStateProvider</code>の実装と、outStateに保存/saveしたい状態を保持している</li>
-</ul></li>
+</ul>
+</li>
 <li>生成したSavedStateHandleインスタンスをViewModelに渡す</li>
 <li><code>SavedStateRegistry</code>に、SavedStateHandleで保持しているSavedStateProviderを登録する</li>
 </ul>
+<h3 id="2-componentactivityonsaveinstancestate">2. <code>ComponentActivity#onSaveInstanceState</code></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ComponentActivity</span> <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> SavedStateRegistryController mSavedStateRegistryController <span style="color:#f92672">=</span>
+            SavedStateRegistryController<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<h3 id="2-componentactivity-onsaveinstancestate">2. <code>ComponentActivity#onSaveInstanceState</code></h3>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onSaveInstanceState</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Bundle outState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        mSavedStateRegistryController<span style="color:#f92672">.</span><span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span>outState<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>まずは、SavedStateRegistryControllerに、<code>outState</code>に保存を頼みます。</p>
+<h3 id="3-savedstateregistrycontrollerperformsave">3. <code>SavedStateRegistryController#performSave</code></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistryController</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> SavedStateRegistry mRegistry<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">public class ComponentActivity ... {
-    private final SavedStateRegistryController mSavedStateRegistryController =
-            SavedStateRegistryController.create(this);
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        ...
-        mSavedStateRegistryController.performSave(outState);
-    }
-}
-</code></pre>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Bundle outBundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        mRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span>outBundle<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>SavedStateRegistry</code>に処理を委譲します。</p>
+<h3 id="4-savedstateregistryperformsave">4. <code>SavedStateRegistry#performSave</code></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistry</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> SafeIterableMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> SavedStateProvider<span style="color:#f92672">&gt;</span> mComponents <span style="color:#f92672">=</span>
+            <span style="color:#66d9ef">new</span> SafeIterableMap<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> Bundle mRestoredState<span style="color:#f92672">;</span>
 
-<p>まずは、SavedStateRegistryControllerに、<code>outState</code>に保存を頼みます。</p>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<h3 id="3-savedstateregistrycontroller-performsave">3. <code>SavedStateRegistryController#performSave</code></h3>
-
-<pre><code class="language-java">public final class SavedStateRegistryController {
-    private final SavedStateRegistry mRegistry;
-
-    ...
-
-    public void performSave(@NonNull Bundle outBundle) {
-        mRegistry.performSave(outBundle);
-    }
-}
-</code></pre>
-
-<p><code>SavedStateRegistry</code>に処理を委譲します。</p>
-
-<h3 id="4-savedstateregistry-performsave">4. <code>SavedStateRegistry#performSave</code></h3>
-
-<pre><code class="language-java">public final class SavedStateRegistry {
-    private SafeIterableMap&lt;String, SavedStateProvider&gt; mComponents =
-            new SafeIterableMap&lt;&gt;();
-    private Bundle mRestoredState;
-
-    ...
-
-    void performSave(@NonNull Bundle outBundle) {
-        Bundle components = new Bundle();
-        if (mRestoredState != null) {
-            components.putAll(mRestoredState);
-        }
-        for (Iterator&lt;Map.Entry&lt;String, SavedStateProvider&gt;&gt; it =
-                mComponents.iteratorWithAdditions(); it.hasNext(); ) {
-            Map.Entry&lt;String, SavedStateProvider&gt; entry1 = it.next();
-            components.putBundle(entry1.getKey(), entry1.getValue().saveState());
-        }
-        outBundle.putBundle(SAVED_COMPONENTS_KEY, components);
-    }
-}
-</code></pre>
-
-<p><code>outBundle#putBundle</code>を通して、保存を行います。今で、直接Activityの<code>onSaveInstanceState</code>をoverrideして書いていた処理がここに移ったイメージです。</p>
-
-<h3 id="5-savedstatehandleの-savedstateprovider-の実装">5. SavedStateHandleの<code>SavedStateProvider</code>の実装</h3>
-
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">performSave</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> Bundle outBundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Bundle components <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mRestoredState <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            components<span style="color:#f92672">.</span><span style="color:#a6e22e">putAll</span><span style="color:#f92672">(</span>mRestoredState<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Iterator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> SavedStateProvider<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span>
+                mComponents<span style="color:#f92672">.</span><span style="color:#a6e22e">iteratorWithAdditions</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> SavedStateProvider<span style="color:#f92672">&gt;</span> entry1 <span style="color:#f92672">=</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            components<span style="color:#f92672">.</span><span style="color:#a6e22e">putBundle</span><span style="color:#f92672">(</span>entry1<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> entry1<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">saveState</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        outBundle<span style="color:#f92672">.</span><span style="color:#a6e22e">putBundle</span><span style="color:#f92672">(</span>SAVED_COMPONENTS_KEY<span style="color:#f92672">,</span> components<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>outBundle#putBundle</code>を通して、保存を行います。今で、直接Activityの<code>onSaveInstanceState</code>をoverrideして書いていた処理がここに移ったイメージです。</p>
+<h3 id="5-savedstatehandlesavedstateprovider">5. SavedStateHandleの<code>SavedStateProvider</code>の実装</h3>
 <p>実際に保存される内容を決めるのはSavedStateHandleのSavedStateProviderの実装/中身になります。</p>
-
 <p>実装は次のようになっています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> mRegular<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">final Map&lt;String, Object&gt; mRegular;
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String VALUES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;values&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String KEYS <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;keys&#34;</span><span style="color:#f92672">;</span>
 
-private static final String VALUES = &quot;values&quot;;
-private static final String KEYS = &quot;keys&quot;;
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> SavedStateProvider mSavedStateProvider <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SavedStateProvider<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@NonNull</span>
+    <span style="color:#a6e22e">@Overrides</span>
+    <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">saveState</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> keySet <span style="color:#f92672">=</span> mRegular<span style="color:#f92672">.</span><span style="color:#a6e22e">keySet</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ArrayList keys <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>keySet<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ArrayList value <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>keys<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String key <span style="color:#f92672">:</span> keySet<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            keys<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            value<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>mRegular<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-private final SavedStateProvider mSavedStateProvider = new SavedStateProvider() {
-    @SuppressWarnings(&quot;unchecked&quot;)
-    @NonNull
-    @Overrides
-    public Bundle saveState() {
-        Set&lt;String&gt; keySet = mRegular.keySet();
-        ArrayList keys = new ArrayList(keySet.size());
-        ArrayList value = new ArrayList(keys.size());
-        for (String key : keySet) {
-            keys.add(key);
-            value.add(mRegular.get(key));
-        }
-
-        Bundle res = new Bundle();
-        // &quot;parcelable&quot; arraylists - lol
-        res.putParcelableArrayList(&quot;keys&quot;, keys);
-        res.putParcelableArrayList(&quot;values&quot;, value);
-        return res;
-    }
-};
-</code></pre>
-
-<p>Mapに保存したい値を保持しておいて、それをBundleに書き出すだけです。</p>
-
+        Bundle res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#75715e">// &#34;parcelable&#34; arraylists - lol
+</span><span style="color:#75715e"></span>        res<span style="color:#f92672">.</span><span style="color:#a6e22e">putParcelableArrayList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;keys&#34;</span><span style="color:#f92672">,</span> keys<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        res<span style="color:#f92672">.</span><span style="color:#a6e22e">putParcelableArrayList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;values&#34;</span><span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+</code></pre></div><p>Mapに保存したい値を保持しておいて、それをBundleに書き出すだけです。</p>
 <p>ざっくりと保存の流れはこんな感じです:D</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <ul>
 <li>LifecycleOwnerのような感じで実装されていた</li>
 <li>SavedStateProviderを実装して、registerSavedStateProviderに渡せば、誰でもカスタムのSavedStateが書ける😃</li>

@@ -22,17 +22,12 @@
   <meta property="twitter:title" content="Kotlin: Inline Functionだけではメソッドカウントは減らない">
 
   
-  <meta property="twitter:description" content="
-
-結論
-
+  <meta property="twitter:description" content="結論
 
 R8/Proguardをちゃんと使う
 
-
 背景
-
-Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減る …">
+Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思ってい …">
   
 
   
@@ -99,67 +94,47 @@ Inline Functionを使うと、関数がインライン化されるので、自�
     
     <span class="post-date">Created at Thu, Aug 2, 2018</span>
     
-    
-
-<h2 id="結論">結論</h2>
-
+    <h2 id="heading">結論</h2>
 <ul>
 <li>R8/Proguardをちゃんと使う</li>
 </ul>
-
-<h2 id="背景">背景</h2>
-
+<h2 id="heading1">背景</h2>
 <p>Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思っていました。けど、そんなことはなかったという話です。</p>
-
 <p>実際に動かして確認してみます。下記の関数を追加し、Build APK → Analyze APKでclasses.dexのメソッドカウントを調べてみます。</p>
-
 <p>まずは、R8無しで調べてみます。</p>
-
-<pre><code class="language-kotlin">fun hoge() {
-    println(&quot;hogehoge&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
+    println(<span style="color:#e6db74">&#34;hogehoge&#34;</span>)
 }
-</code></pre>
-
-<p>当然メソッドカウントが1増えています。</p>
-
+</code></pre></div><p>当然メソッドカウントが1増えています。</p>
 <p>次に、inlineを付けてみます。</p>
-
-<pre><code class="language-kotlin">inline fun hoge() {
-    println(&quot;hogehoge&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
+    println(<span style="color:#e6db74">&#34;hogehoge&#34;</span>)
 }
-</code></pre>
-
-<p>こちらもメソッドカウントが1増えました。
+</code></pre></div><p>こちらもメソッドカウントが1増えました。
 show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。</p>
-
-<pre><code class="language-kotlin">@Metadata(
-    mv = {1, 1, 10},
-    bv = {1, 0, 2},
-    k = 2,
-    d1 = {&quot;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&quot;},
-    d2 = {&quot;hoge&quot;, &quot;&quot;, &quot;production sources for module app&quot;}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Metadata(
+    mv = {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>},
+    bv = {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>},
+    k = <span style="color:#ae81ff">2</span>,
+    d1 = {<span style="color:#e6db74">&#34;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&#34;</span>},
+    d2 = {<span style="color:#e6db74">&#34;hoge&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;production sources for module app&#34;</span>}
 )
-public final class MainActivityKt {
-    public static final void hoge() {
-        String var1 = &quot;hogehoge&quot;;
-        System.out.println(var1);
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityKt</span> {
+    <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void hoge() {
+        String var1 = <span style="color:#e6db74">&#34;hogehoge&#34;</span>;
+        System.<span style="color:#66d9ef">out</span>.println(var1);
     }
 }
-</code></pre>
-
-<p>ただし、ここで重要なのは、inlineをつけたメソッドはインライン化されるため、上記のメソッドは生成されるけど、実際にはコールされない点です。
+</code></pre></div><p>ただし、ここで重要なのは、inlineをつけたメソッドはインライン化されるため、上記のメソッドは生成されるけど、実際にはコールされない点です。
 コールされない、参照がないのでR8で削除することができます。</p>
-
 <p>実際にR8/Proguardを有効にしてBuild APK → Analyze APKで確認したところ、inlineをつけた場合はメソッドカウントが増えていないことが確認できました。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>InlineメソッドはR8/Proguardと組み合わせればメソッドカウントを減らす効果がある
-
 <ul>
 <li>とはいえ、5.0(ART)からはruntimeからmultidexをサポートしているので、昔ほどメソッドカウントを意識する必要はないと思う</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

@@ -21,11 +21,11 @@
       <description>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
 この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。
 Bufferの種類 Bufferの種類は5つあります。
- UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする   検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;quot;$it&amp;quot;) } } // observeする lifecycleScope.launch { f .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) } }  このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
+ UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする    検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;#34;$it&amp;#34;) } } // observeする lifecycleScope.launch { f .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } } このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
 次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerではdelay(100)しているので、処理に約100msかかります。
 これは、次の関係を作り出しています
  Consumerの処理時間 &amp;gt; Producerの処理時間  この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
-UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;quot;t4&amp;quot;, &amp;quot;$it&amp;quot;) }  UNLIMITEDはBufferのサイズを無制限にします。
+UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } UNLIMITEDはBufferのサイズを無制限にします。
 Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。
  Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく Consumer: すべての値を順番通りに受け取ることが出来る  RENDEZVOUS f .</description>
     </item>
@@ -36,12 +36,12 @@ Consumer側で処理が終わってなくても値を送ります。その値は
       <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</guid>
-      <description> Kotlinの公式?ではwildcard importを多様しているなって思っていました。
+      <description>Kotlinの公式?ではwildcard importを多様しているなって思っていました。
 Roman Elizarovさんが、Extension-oriented design中でちらっとメリットについて話していました。
  You might notice that our Kotlin code usually uses wildcard imports like import com.example.*. It is handy in Kotlin, because importing just a class in Kotlin is rarely enough. All the useful, convenient, utility functions are typically defined in the same package but outside of the class as extension functions.
  まとめると、Javaとは違い、Kotlinでは拡張関数があります。拡張関数の多くは、クラスと同じパッケージに定義されますが、拡張関数なのでクラスの外側に配置されます。wildcard importでは外側に配置された、拡張関数もまとめてimportすることが出来るため便利です。
 という理由らしいです。
-雑談: wildcard importのデメリット  名前衝突が起きやすい どのような依存があるのかが分かりにくい  レビューのしずらさ  無駄なクラスへの依存が生まれる  </description>
+雑談: wildcard importのデメリット  名前衝突が起きやすい どのような依存があるのかが分かりにくい  レビューのしずらさ   無駄なクラスへの依存が生まれる  </description>
     </item>
     
     <item>
@@ -52,7 +52,7 @@ Roman Elizarovさんが、Extension-oriented design中でちらっとメリッ�
       <guid>https://satoshun.github.io/2019/04/kotlin-watch-property-change/</guid>
       <description>オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。
 次が、この記事で紹介したいコードです。
-// 1つのプロパティの変更を検知したい fun &amp;lt;S, A1&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(prop1: KProperty1&amp;lt;S, A1&amp;gt;): LiveData&amp;lt;A1&amp;gt; = this .map { prop1.get(it) } .distinctUntilChanged() // 2つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt; ): LiveData&amp;lt;Pair&amp;lt;A1, A2&amp;gt;&amp;gt; = this .map { prop1.get(it) to prop2.get(it) } .distinctUntilChanged() // 3つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2, A3&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt;, prop3: KProperty1&amp;lt;S, A3&amp;gt; ): LiveData&amp;lt;Triple&amp;lt;A1, A2, A3&amp;gt;&amp;gt; = this .map { Triple(prop1.get(it), prop2.</description>
+// 1つのプロパティの変更を検知したい fun &amp;lt;S, A1&amp;gt; LiveData&amp;lt;S&amp;gt;.watch(prop1: KProperty1&amp;lt;S, A1&amp;gt;): LiveData&amp;lt;A1&amp;gt; = this .map { prop1.get(it) } .distinctUntilChanged() // 2つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt; ): LiveData&amp;lt;Pair&amp;lt;A1, A2&amp;gt;&amp;gt; = this .map { prop1.get(it) to prop2.get(it) } .distinctUntilChanged() // 3つのプロパティの変更を検知したい fun &amp;lt;S, A1, A2, A3&amp;gt; LiveData&amp;lt;S&amp;gt;.watch( prop1: KProperty1&amp;lt;S, A1&amp;gt;, prop2: KProperty1&amp;lt;S, A2&amp;gt;, prop3: KProperty1&amp;lt;S, A3&amp;gt; ): LiveData&amp;lt;Triple&amp;lt;A1, A2, A3&amp;gt;&amp;gt; = this .map { Triple(prop1.get(it), prop2.get(it), prop3.</description>
     </item>
     
     <item>
@@ -66,11 +66,12 @@ Roman Elizarovさんが、Extension-oriented design中でちらっとメリッ�
 checkNotNullを使うかどうか could also be code no preference myself
 Kotlinの標準ライブラリに、checkNotNullがあります。 これは、値がnullならIllegalStateException例外を投げるものです。
 以下のコードは同じ意味を持ちます。
-val state = someState ?: throw IllegalStateException(&amp;quot;State must be set beforehand&amp;quot;) val state = checkNotNull(someState) { &amp;quot;State must be set beforehand&amp;quot; }  ただ、no preference myselfと言っている通り、使うかどうかはプロジェクトで分かれそうです。 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。
+val state = someState ?: throw IllegalStateException(&amp;#34;State must be set beforehand&amp;#34;) val state = checkNotNull(someState) { &amp;#34;State must be set beforehand&amp;#34; } ただ、no preference myselfと言っている通り、使うかどうかはプロジェクトで分かれそうです。 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。
 命名はto***が慣用的 idiomatic naming would be toUrl on the Kotlin side
 OkHttpでは、HttpUrlをURLに変換するためのメソッドとしてfun url(): URLが定義されています。しかし、fun toUrl(): URLのほうがKotlinっぽいよと指摘がありました。
 確かに、言われてみるとAtoBクラス変換のメソッド名は、to***が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。
-constを使う discussion link</description>
+constを使う discussion link
+constを使うと、Compile Time Constantsとなり、付けない場合に比べ効率的に動作します。ただし、プリミティブか、String型のみに有効です。</description>
     </item>
     
     <item>
@@ -79,10 +80,10 @@ constを使う discussion link</description>
       <pubDate>Tue, 19 Mar 2019 12:31:05 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2019/03/kotlin-invoke-operator/</guid>
-      <description> KotlinではJavaと異なり、コンストラクタ呼び出しの時にnewキーワードが必要ありません。
-class A ... val a = A()  よって、次のように関数をコンストラクタのように使うことが出来ます。
-// Coroutine Jobの定義 @Suppress(&amp;quot;FunctionName&amp;quot;) public fun Job(parent: Job? = null): Job = JobImpl(parent) ... val job = Job()  また、次のようにcompanion object + operator invokeを使うことも出来ます。
-// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() { companion object { @JvmStatic @JvmName(&amp;quot;create&amp;quot;) operator fun invoke() = CoroutineCallAdapterFactory() } } ... val factory = CoroutineCallAdapterFactory()  まとめ  JobImplのような実装クラスを隠したいときに便利  </description>
+      <description>KotlinではJavaと異なり、コンストラクタ呼び出しの時にnewキーワードが必要ありません。
+class A ... val a = A() よって、次のように関数をコンストラクタのように使うことが出来ます。
+// Coroutine Jobの定義 @Suppress(&amp;#34;FunctionName&amp;#34;) public fun Job(parent: Job? = null): Job = JobImpl(parent) ... val job = Job() また、次のようにcompanion object + operator invokeを使うことも出来ます。
+// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter class CoroutineCallAdapterFactory private constructor() : CallAdapter.Factory() { companion object { @JvmStatic @JvmName(&amp;#34;create&amp;#34;) operator fun invoke() = CoroutineCallAdapterFactory() } } ... val factory = CoroutineCallAdapterFactory() まとめ  JobImplのような実装クラスを隠したいときに便利  </description>
     </item>
     
     <item>
@@ -92,10 +93,10 @@ class A ... val a = A()  よって、次のように関数をコンストラク�
       
       <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
       <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
-launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;quot;${task1.await()}\n${task2.await()}&amp;quot;) }  asyncで包むことで、並列に処理をすることができます。
+launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;#34;${task1.await()}\n${task2.await()}&amp;#34;) } asyncで包むことで、並列に処理をすることができます。
 次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
-launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;quot;$result1\n&amp;quot; + &amp;quot;$result2\n&amp;quot;) }  runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
-また、次のように書くことは出来ません。
+launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;#34;$result1\n&amp;#34; + &amp;#34;$result2\n&amp;#34;) } runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+ また、次のように書くことは出来ません。
 launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
     </item>
     
@@ -108,11 +109,11 @@ launch { val task1 = async { MainService.task1() } val task2 = async { MainServi
       <description>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。
 以下、2019年3月10日 2019年3月11日の調査結果になります。 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。
 Lifecycle
-// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope  LifecycleOwner
-// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope  ViewModel
-// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope  WorkManager
-abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された abstract suspend fun doWork(): Result }  Room
-// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;quot;SELECT * FROM hoge WHERE id = :id&amp;quot;) suspend fun get(id: String): Hoge .</description>
+// Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope LifecycleOwner
+// LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope ViewModel
+// ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope WorkManager
+abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された  abstract suspend fun doWork(): Result } Room
+// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;#34;SELECT * FROM hoge WHERE id = :id&amp;#34;) suspend fun get(id: String): Hoge .</description>
     </item>
     
     <item>
@@ -124,7 +125,7 @@ abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) 
       <description>コードの最適化の話です。この記事ではKotlinのlambda式の最適化について紹介します。
 Kotlin lambda Kotlinでは関数型がファーストクラスです。とても便利なのですが、ラムダを使うたびに内部的にはクラスを1つ定義するため、クラス数、メソッド数がどんどん増えていきます。
 例えば、次のコードを最適化なしでコンパイルしてみます。
-fun main() { lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda2&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda3&amp;quot;) } ... } private fun lambdaTest1(body: () -&amp;gt; Unit) { ... body() ... }  // コンパイル後 public static final void main() { LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE); ... } final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; { public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1(); LambdaTestKt$main$1() { super(0); } public final void invoke() { System.</description>
+fun main() { lambdaTest1 { println(&amp;#34;Kotlin lambda1&amp;#34;) } lambdaTest1 { println(&amp;#34;Kotlin lambda2&amp;#34;) } lambdaTest1 { println(&amp;#34;Kotlin lambda3&amp;#34;) } ... } private fun lambdaTest1(body: () -&amp;gt; Unit) { ... body() ... } // コンパイル後 public static final void main() { LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE); ... } final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; { public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1(); LambdaTestKt$main$1() { super(0); } public final void invoke() { System.</description>
     </item>
     
     <item>
@@ -136,8 +137,8 @@ fun main() { lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) } lambdaT
       <description>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
 この記事は、R8 Optimization: Staticizationにとても影響を受けています。
 Companion object 例えば、次のコードがあるとします。
-class CompanionTest { companion object { fun show(i: Int) { ... } } }  これを最適化なしで変換すると次のようになります。
-public final class CompanionTest { public static final Companion Companion = new Companion(); public static final class Companion { private Companion() { } public final void show(int i) { ... } } }  Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。
+class CompanionTest { companion object { fun show(i: Int) { ... } } } これを最適化なしで変換すると次のようになります。
+public final class CompanionTest { public static final Companion Companion = new Companion(); public static final class Companion { private Companion() { } public final void show(int i) { ... } } } Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。
 そこでR8による最適化を行うと次のようになります。
 public abstract class CompanionTest { public static final void show(int i) { .</description>
     </item>
@@ -150,8 +151,8 @@ public abstract class CompanionTest { public static final void show(int i) { .</
       <guid>https://satoshun.github.io/2018/12/coroutine_autodispose/</guid>
       <description>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいきそうです。
 ContinuationInterceptorとは? ContinuationInterceptorは次のようなインターフェースです。
-/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;quot;1.3&amp;quot;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... }  interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
-class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.</description>
+/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;#34;1.3&amp;#34;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... } interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
+class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.Key&amp;lt;*&amp;gt; get() = ContinuationInterceptor override fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; { // ContinuationからJobを取得  val job = continuation.</description>
     </item>
     
     <item>
@@ -164,9 +165,9 @@ class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : Con
 Resultが1.3からstdlibに入ったので紹介をしたいと思います。
 ResultはSuccess T | Failure Throwableの2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。
 基本的な使い方 使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。
-val i: Result&amp;lt;Int&amp;gt; = Result.success(10) val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException())  また、runCatching関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。
-val a = runCatching { doSomeThing() }  Resultに対する操作は以下のようにします。
-// successに対して操作 val i = Result.success(10) i.getOrNull() // 10 i.isSuccess // true i.exceptionOrNull() // null i.map { 10 * 10 }.getOrNull() // 100 i.onSuccess { println(&amp;quot;success&amp;quot;) }.onFailure { println(&amp;quot;failure&amp;quot;) } i.recover { 1111 }.getOrNull() // 10 // failureに対して操作 val t = Result.</description>
+val i: Result&amp;lt;Int&amp;gt; = Result.success(10) val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException()) また、runCatching関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。
+val a = runCatching { doSomeThing() } Resultに対する操作は以下のようにします。
+// successに対して操作 val i = Result.success(10) i.getOrNull() // 10 i.isSuccess // true i.exceptionOrNull() // null i.map { 10 * 10 }.getOrNull() // 100 i.onSuccess { println(&amp;#34;success&amp;#34;) }.onFailure { println(&amp;#34;failure&amp;#34;) } i.recover { 1111 }.getOrNull() // 10  // failureに対して操作 val t = Result.</description>
     </item>
     
     <item>
@@ -176,9 +177,9 @@ val a = runCatching { doSomeThing() }  Resultに対する操作は以下のよ�
       
       <guid>https://satoshun.github.io/2018/12/coroutine_build_perf/</guid>
       <description>注意: 計測方法は実環境に全く即していないので意味がない可能性が高いです。
-環境  AGP3.4.0-alpha06 Kotlin 1.3.10 Kotlinx.coroutine 1.0.1 Gradle 5.0  比較対象  kotlinx.coroutineを使ったサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている 300 * 7の2100箇所がCoroutine関連のコードになります  kotlinx.coroutineを使わないサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中で適当なメソッド（Handler().post {}）をコールしている  サンプルコード  計測コマンド Build Scanを使って計測します。その際。build-cacheはoffにします。
-./gradlew clean ./gradlew build --no-build-cache --scan  両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。 また試行回数は10回程度で、最終結果のみを以下に掲載します。
-kotlinx.coroutineを使う Time spent executing tasks 1m 16.034s All tasks	207	2m 42.833s Tasks avoided	12 (09.7%)	0.062s From cache	0 (00.0%)	0.000s Up-to-date	12 (09.</description>
+環境  AGP3.4.0-alpha06 Kotlin 1.3.10 Kotlinx.coroutine 1.0.1 Gradle 5.0  比較対象  kotlinx.coroutineを使ったサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中でcoroutine builderやsuspend関数をコールしている  300 * 7の2100箇所がCoroutine関連のコードになります     kotlinx.coroutineを使わないサンプル  クラス数 300 各クラスは7つのメソッドを持ち、その中で適当なメソッド（Handler().post {}）をコールしている   サンプルコード  計測コマンド Build Scanを使って計測します。その際。build-cacheはoffにします。
+./gradlew clean ./gradlew build --no-build-cache --scan 両サンプルのクラス数、メソッド数を合わせただけなので、全く正当な比較でないことを留意ください。 また試行回数は10回程度で、最終結果のみを以下に掲載します。
+kotlinx.coroutineを使う Time spent executing tasks 1m 16.034s All tasks	207	2m 42.833s Tasks avoided	12 (09.7%)	0.062s From cache	0 (00.0%)	0.</description>
     </item>
     
     <item>
@@ -189,14 +190,14 @@ kotlinx.coroutineを使う Time spent executing tasks 1m 16.034s All tasks	207	2
       <guid>https://satoshun.github.io/2018/11/more_convenient_contracts/</guid>
       <description>Kotlin 1.3.0からContractsが実装されました。 Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。
 例えば、isNullOrEmptyメソッドがfalse返すなら、 Contractsによりnullでないことが保証されます。
-val a: String? = ... if (!a.isNullOrEmpty()) { println(a.length) // !!が必要ない }  Contractsがない時代だと呼び出し元でisNullOrEmptyがどんな振る舞いをするかを知るすべがなかったので、 !!をつける必要があったのですが、Contractsによりnullでないことが保証できるので、!!を省略できます。
+val a: String? = ... if (!a.isNullOrEmpty()) { println(a.length) // !!が必要ない } Contractsがない時代だと呼び出し元でisNullOrEmptyがどんな振る舞いをするかを知るすべがなかったので、 !!をつける必要があったのですが、Contractsによりnullでないことが保証できるので、!!を省略できます。
 isNullOrEmptyの実装は次のようになります。
-@kotlin.internal.InlineOnly public inline fun CharSequence?.isNullOrEmpty(): Boolean { contract { returns(false) implies (this@isNullOrEmpty != null) } return this == null || this.length == 0 }  contractはDSL（関数）として定義されています。 これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。
+@kotlin.internal.InlineOnly public inline fun CharSequence?.isNullOrEmpty(): Boolean { contract { returns(false) implies (this@isNullOrEmpty != null) } return this == null || this.length == 0 } contractはDSL（関数）として定義されています。 これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。
 isNullOrEmptyの場合はreturns(false) implies (this@isNullOrEmpty != null)が契約として定義されています。
 これは、「returns(false): falseを返すなら (this@isNullOrEmpty != null): 自分自身がnullじゃない」という意味になります。 なので呼び出し元ではfalseが返ってきたら、nullではないことが保証されるので、smartcastにより!!をつける必要がなくなるわけです。
 なので、例えばT.isEmpty(t: T?): Booleanのようなメソッドがあり、ついでにnullチェックもこの関数の中でやっているようなときは、 contractを定義することでより使いやすい関数にすることが出来ます。
 他の例を見てみます。スコープ関数applyの実装は次になります。
-@kotlin.internal.InlineOnly public inline fun &amp;lt;T&amp;gt; T.</description>
+@kotlin.internal.InlineOnly public inline fun &amp;lt;T&amp;gt; T.apply(block: T.() -&amp;gt; Unit): T { contract { callsInPlace(block, InvocationKind.</description>
     </item>
     
     <item>
@@ -207,11 +208,11 @@ isNullOrEmptyの場合はreturns(false) implies (this@isNullOrEmpty != null)が�
       <guid>https://satoshun.github.io/2018/11/kotlin-nullable-generic/</guid>
       <description>Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。 KotlinのNon-Null型に対してnullを代入しようとすると、代入するタイミングで例外を吐きます。 JavaとKotlinを一緒に使っていると、この例外に遭遇することがあると思います。
 具体的には以下の挙動をします。
-public class Hoge { // nullを返すメソッド static String getName() { return null; } }  val d: String = Hoge.getName() // ここで例外が投げられる println(d.length) // これは実行されない  このコードは、val d: String = Hoge.getName()でIllegalStateExceptionを投げます。 Non-Null型にnullを代入しようとしているからです。
+public class Hoge { // nullを返すメソッド  static String getName() { return null; } } val d: String = Hoge.getName() // ここで例外が投げられる println(d.length) // これは実行されない このコードは、val d: String = Hoge.getName()でIllegalStateExceptionを投げます。 Non-Null型にnullを代入しようとしているからです。
 次に、代入するタイミングで例外を投げなくする方法を紹介します。
 具体的には以下のコードで達成できます。
-fun &amp;lt;T&amp;gt; castNull(): T = null as T val d: String = castNull() // ここでは例外が投げられない println(d.length) // ここで例外が投げられる  なぜこのような挙動になるのかを説明します。まず castNull()メソッドに定義されたジェネリック型TはAny?をupperに持ちます。 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。
-GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String; CHECKCAST java/lang/Object  CHECKCASTしかしておらず、nullかどうかのチェックをしていません。 なので、val d: String = castNull()ではnullチェックがされないため例外が投げられず、実際にメソッドをコールするprintln(d.</description>
+fun &amp;lt;T&amp;gt; castNull(): T = null as T val d: String = castNull() // ここでは例外が投げられない println(d.length) // ここで例外が投げられる なぜこのような挙動になるのかを説明します。まず castNull()メソッドに定義されたジェネリック型TはAny?をupperに持ちます。 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。
+GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String; CHECKCAST java/lang/Object CHECKCASTしかしておらず、nullかどうかのチェックをしていません。 なので、val d: String = castNull()ではnullチェックがされないため例外が投げられず、実際にメソッドをコールするprintln(d.length)のタイミングで例外が投げられます。</description>
     </item>
     
     <item>
@@ -222,11 +223,11 @@ GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String; CHECKCAST java/lang/Obj
       <guid>https://satoshun.github.io/2018/11/extension-typesafe/</guid>
       <description>Kotlinの拡張関数の話です。
 以下のクラスがあったとします。
-class A&amp;lt;T&amp;gt;(val value: T) { fun isNull(): Boolean { return value != null } } fun main() { val a1: A&amp;lt;Int&amp;gt; = ... a1.isNull() }  このとき、a1.isNull()の結果は自明です。なぜならA&amp;lt;Int&amp;gt;で宣言している時点でnonNullが確定しているためです。
-fun main() { val a2: A&amp;lt;Int?&amp;gt; = ... a2.isNull() }  このとき、a2.isNull()の結果は自明ではありません。 なぜならA&amp;lt;Int?&amp;gt;でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。
+class A&amp;lt;T&amp;gt;(val value: T) { fun isNull(): Boolean { return value != null } } fun main() { val a1: A&amp;lt;Int&amp;gt; = ... a1.isNull() } このとき、a1.isNull()の結果は自明です。なぜならA&amp;lt;Int&amp;gt;で宣言している時点でnonNullが確定しているためです。
+fun main() { val a2: A&amp;lt;Int?&amp;gt; = ... a2.isNull() } このとき、a2.isNull()の結果は自明ではありません。 なぜならA&amp;lt;Int?&amp;gt;でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。
 この2つの例から、a1.isNull()はそもそもnonNullなのでisNull()メソッドをコールできないほうが良いのではないか？という考えが浮かびます。
 Kotlinの拡張関数を使うことで達成できます。
-class A&amp;lt;T&amp;gt;(val value: T) // nullableのときにコールできるようにする fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull(): Boolean { return value != null } fun main() { val a1: A&amp;lt;Int&amp;gt; = .</description>
+class A&amp;lt;T&amp;gt;(val value: T) // nullableのときにコールできるようにする fun &amp;lt;T : Any&amp;gt; A&amp;lt;T?&amp;gt;.isNull(): Boolean { return value != null } fun main() { val a1: A&amp;lt;Int&amp;gt; = ... a1.isNull() // コンパイルエラー!</description>
     </item>
     
     <item>
@@ -236,9 +237,10 @@ class A&amp;lt;T&amp;gt;(val value: T) // nullableのときにコールできる
       
       <guid>https://satoshun.github.io/2018/10/kotlin-decrease-function_params/</guid>
       <description>Kotlinでは拡張関数が定義されており、拡張関数を使うことで1つ関数のパラメータを省略できます。
-fun hoge(a: String) { println(a) } -&amp;gt; fun String.hoge() { println(this) }  次に、インターフェース（クラス）内で拡張関数を定義することで、さらに1つの関数のパラメータを省略できます。
-interface User fun hoge(a: String, b: User) { println(a) println(b) } -&amp;gt; interface User { fun String.hoge() { println(this) println(this@User) } }  さらに、reified type parameterを使うことで、関数のパラメータを省略できます。
-fun &amp;lt;T&amp;gt; hoge(a: String, b: User, c: Class&amp;lt;T&amp;gt;) { println(a) println(b) println(c) } -&amp;gt; class User { inline fun &amp;lt;reified T&amp;gt; String.hoge() { println(this) println(this@User) println(T::class) } }  interfaceだと、inline関数が使えないのでクラスで定義してあります。</description>
+fun hoge(a: String) { println(a) } -&amp;gt; fun String.hoge() { println(this) } 次に、インターフェース（クラス）内で拡張関数を定義することで、さらに1つの関数のパラメータを省略できます。
+interface User fun hoge(a: String, b: User) { println(a) println(b) } -&amp;gt; interface User { fun String.hoge() { println(this) println(this@User) } } さらに、reified type parameterを使うことで、関数のパラメータを省略できます。
+fun &amp;lt;T&amp;gt; hoge(a: String, b: User, c: Class&amp;lt;T&amp;gt;) { println(a) println(b) println(c) } -&amp;gt; class User { inline fun &amp;lt;reified T&amp;gt; String.hoge() { println(this) println(this@User) println(T::class) } } interfaceだと、inline関数が使えないのでクラスで定義してあります。
+まとめ  Kotlinの拡張関数、reified便利😊  </description>
     </item>
     
     <item>
@@ -250,11 +252,11 @@ fun &amp;lt;T&amp;gt; hoge(a: String, b: User, c: Class&amp;lt;T&amp;gt;) { prin
       <description>（この記事は1.3-M2を使っています。）
 Kotlin 1.3でInline classesが入ります。これはパフォーマンスに影響を与えずに、値のラッパークラスを作成することが出来ます。
 例えば、次のように書くことが出来ます。
-inline class UserId(val id: String) { val url get() = &amp;quot;http://$id&amp;quot; } val userId = UserId(&amp;quot;user-dayo&amp;quot;) println(userId.url)  このコードは一見、UserIdインスタンスが生成されそうです。 しかし、コンパイルされたコードではUserIdインスタンスは生成されません。
-public static final class UserId$Erased { ... @NotNull public static final String getUrl(String $this) { return &amp;quot;http://&amp;quot; + $this; } ... } String userId = &amp;quot;user-dayo&amp;quot;; String var1 = UserId$Erased.getUrl(userId); System.out.println(var1);  UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成されたUserId$Erasedクラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。
+inline class UserId(val id: String) { val url get() = &amp;#34;http://$id&amp;#34; } val userId = UserId(&amp;#34;user-dayo&amp;#34;) println(userId.url) このコードは一見、UserIdインスタンスが生成されそうです。 しかし、コンパイルされたコードではUserIdインスタンスは生成されません。
+public static final class UserId$Erased { ... @NotNull public static final String getUrl(String $this) { return &amp;#34;http://&amp;#34; + $this; } ... } String userId = &amp;#34;user-dayo&amp;#34;; String var1 = UserId$Erased.getUrl(userId); System.out.println(var1); UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成されたUserId$Erasedクラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。
 ここからが本題です。 Inline classesがAndroid開発のどこで役立つのかを考えたときに、 Gsonなどのライブラリによってdeserialize/serializeされるクラスで有効使えると思いました。
 例えば、次のコードがあったとします。
-data class Response( @SerializedName(&amp;quot;user_id&amp;quot;) val userId: String, @SerializedName(&amp;quot;friend_id&amp;quot;) val friendId: String )  これはuserIdとfriendIdをStringで受け取っており、このStringが何のStringかの情報が欠落しています。型による分類が出来てない状態です。</description>
+data class Response( @SerializedName(&amp;#34;user_id&amp;#34;) val userId: String, @SerializedName(&amp;#34;friend_id&amp;#34;) val friendId: String ) これはuserIdとfriendIdをStringで受け取っており、このStringが何のStringかの情報が欠落しています。型による分類が出来てない状態です。</description>
     </item>
     
     <item>
@@ -266,10 +268,10 @@ data class Response( @SerializedName(&amp;quot;user_id&amp;quot;) val userId: St
       <description>結論  R8/Proguardをちゃんと使う  背景 Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思っていました。けど、そんなことはなかったという話です。
 実際に動かして確認してみます。下記の関数を追加し、Build APK → Analyze APKでclasses.dexのメソッドカウントを調べてみます。
 まずは、R8無しで調べてみます。
-fun hoge() { println(&amp;quot;hogehoge&amp;quot;) }  当然メソッドカウントが1増えています。
+fun hoge() { println(&amp;#34;hogehoge&amp;#34;) } 当然メソッドカウントが1増えています。
 次に、inlineを付けてみます。
-inline fun hoge() { println(&amp;quot;hogehoge&amp;quot;) }  こちらもメソッドカウントが1増えました。 show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。
-@Metadata( mv = {1, 1, 10}, bv = {1, 0, 2}, k = 2, d1 = {&amp;quot;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&amp;quot;}, d2 = {&amp;quot;hoge&amp;quot;, &amp;quot;&amp;quot;, &amp;quot;production sources for module app&amp;quot;} ) public final class MainActivityKt { public static final void hoge() { String var1 = &amp;quot;hogehoge&amp;quot;; System.</description>
+inline fun hoge() { println(&amp;#34;hogehoge&amp;#34;) } こちらもメソッドカウントが1増えました。 show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。
+@Metadata( mv = {1, 1, 10}, bv = {1, 0, 2}, k = 2, d1 = {&amp;#34;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&amp;#34;}, d2 = {&amp;#34;hoge&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;production sources for module app&amp;#34;} ) public final class MainActivityKt { public static final void hoge() { String var1 = &amp;#34;hogehoge&amp;#34;; System.</description>
     </item>
     
     <item>
@@ -280,8 +282,8 @@ inline fun hoge() { println(&amp;quot;hogehoge&amp;quot;) }  こちらもメソ�
       <guid>https://satoshun.github.io/2018/07/typealias_omit_annotation/</guid>
       <description>Kotlinではtypealiasと呼ばれる、既存のタイプに対して別名をつける機能があります。 https://kotlinlang.org/docs/reference/type-aliases.html
 典型的な使い方として、下のような複雑な型に名前をつけると可読性が高くなります。
-typealias MyHandler = (Int, String, Any) -&amp;gt; Unit  さらにtypealiasは、アノテーションをつけることも出来ます。
-typealias NonWildcardList&amp;lt;T&amp;gt; = List&amp;lt;@JvmSuppressWildcards T&amp;gt;  JvmSuppressWildcardsはDagger(参考リンク)やretrofit(参考リンク)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。</description>
+typealias MyHandler = (Int, String, Any) -&amp;gt; Unit さらにtypealiasは、アノテーションをつけることも出来ます。
+typealias NonWildcardList&amp;lt;T&amp;gt; = List&amp;lt;@JvmSuppressWildcards T&amp;gt; JvmSuppressWildcardsはDagger(参考リンク)やretrofit(参考リンク)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。</description>
     </item>
     
     <item>
@@ -290,10 +292,10 @@ typealias NonWildcardList&amp;lt;T&amp;gt; = List&amp;lt;@JvmSuppressWildcards T
       <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/05/coroutinebinding-intro/</guid>
-      <description> CoroutineBindingライブラリを作ったのでその紹介です。 https://github.com/satoshun/CoroutineBinding
+      <description>CoroutineBindingライブラリを作ったのでその紹介です。 https://github.com/satoshun/CoroutineBinding
 Android開発でCoroutineの流れが来ていると思っていて、RxBindingのような感じで、 CoroutineフレンドリーにViewのイベントを受け取れたら便利そうだなと思い作りました。
 使い方 例えばclickのイベントを受け取りたいとします。 CoroutineBindingでは以下のように書くことが出来ます。
-val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root) launch(UI) { for (click in root.clicks()) { Log.d(&amp;quot;clicked&amp;quot;, click.toString()) } }  RxBindingのように使うことが出来ます! 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。
+val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root) launch(UI) { for (click in root.clicks()) { Log.d(&amp;#34;clicked&amp;#34;, click.toString()) } } RxBindingのように使うことが出来ます! 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。
 まとめ  Coroutineを使っている人なら便利に使えると思うので、ぜひ使って下さい! https://github.com/satoshun/CoroutineBinding 何かあればissueや、PRを貰えると嬉しいです  </description>
     </item>
     
@@ -303,10 +305,10 @@ val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root) launch(UI) { for (cl
       <pubDate>Mon, 16 Apr 2018 22:50:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</guid>
-      <description> ポエムです。
+      <description>ポエムです。
 結論 基本的にローカルで明示的に型を宣言するのは好ましくない
 問題 Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。
-val userName = dataSource.getUserName()  型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。
+val userName = dataSource.getUserName() 型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。
 Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。
 まとめ  ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする  </description>
     </item>
@@ -317,10 +319,10 @@ Kotlinにおいて型宣言を書くことはコメントを書くことに等�
       <pubDate>Sun, 07 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/01/extension-function-with-protected/</guid>
-      <description> LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。
-package android.arch.lifecycle; public abstract class LiveData&amp;lt;T&amp;gt; { protected void onActive() { } }  onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。
-package android.arch.lifecycle fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる }  同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。
-package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // コンパイルエラー &amp;quot;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&amp;quot; }  なぜかこのような挙動になるか? protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。
+      <description>LiveDataのonActiveメソッドで説明します。onActiveメソッドは以下で定義されています。
+package android.arch.lifecycle; public abstract class LiveData&amp;lt;T&amp;gt; { protected void onActive() { } } onActiveはprotectedで定義されています。同一パッケージ内で拡張関数を定義することで、onActiveメソッドに拡張関数内からアクセスする事ができます。
+package android.arch.lifecycle fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // LiveDataクラスと同一のパッケージで定義することで、protectedメソッドにアクセスできる } 同一のパッケージで定義していない場合はprotectedメソッドにアクセスすることは出来ず、コンパイルエラーになります。
+package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnActive() { onActive() // コンパイルエラー &amp;#34;Cannot access &amp;#39;onActive&amp;#39;: it is protected in &amp;#39;LiveData&amp;#39;&amp;#34; } なぜかこのような挙動になるか? protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。
 まとめ protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう
 参考  https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a  </description>
     </item>

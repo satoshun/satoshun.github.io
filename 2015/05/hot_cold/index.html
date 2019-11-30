@@ -20,11 +20,8 @@
   <meta property="twitter:title" content="ReactiveX: Hot, Coldの違い">
 
   
-  <meta property="twitter:description" content="
-
-ReactiveXにおける, Cold/Hot Observableの違いを説明します.
-
-(本文中の「subscribeする」と, 「Observerを登 …">
+  <meta property="twitter:description" content="ReactiveXにおける, Cold/Hot Observableの違いを説明します.
+(本文中の「subscribeする」と, 「Observerを登録す …">
   
 
   
@@ -91,87 +88,64 @@ ReactiveXにおける, Cold/Hot Observableの違いを説明します.
     
     <span class="post-date">Created at Fri, May 22, 2015</span>
     
-    
-
-<p><a href="http://reactivex.io/">ReactiveX</a>における, <code>Cold/Hot</code> Observableの違いを説明します.</p>
-
+    <p><a href="http://reactivex.io/">ReactiveX</a>における, <code>Cold/Hot</code> Observableの違いを説明します.</p>
 <p>(本文中の「subscribeする」と, 「Observerを登録する」は同義です.)</p>
-
 <h2 id="cold-observable">Cold Observable</h2>
-
 <p>Cold ObservableはSubscribeされると動作を開始します.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">source</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Rx</span>.<span style="color:#a6e22e">Observable</span>.<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>);
 
-<pre><code class="language-js">var source = Rx.Observable.range(1, 10);
-
-// 何か処理
-// ...
-
-source.subscribe(function(x) {
-  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-});
-</code></pre>
-
-<p>例えば, 上のコードだと, sourceを定義した時点ではストリームが生成されておらず,
+<span style="color:#75715e">// 何か処理
+</span><span style="color:#75715e"></span><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">source</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">x</span>) {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">x</span>); <span style="color:#75715e">// 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+</span><span style="color:#75715e"></span>});
+</code></pre></div><p>例えば, 上のコードだと, sourceを定義した時点ではストリームが生成されておらず,
 source.subscribeされた時に, 初めてストリームが生成されます.
 遅延評価(lazy evaluation)のような振る舞いをします.</p>
-
 <p>次に, 1つのCold Observableに対して複数subscribeしたとします.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">source</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Rx</span>.<span style="color:#a6e22e">Observable</span>.<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>);
 
-<pre><code class="language-js">var source = Rx.Observable.range(1, 10);
-
-// 何か処理
-// ...
-
-source.subscribe(function(x) {
-  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-});
-source.subscribe(function(x) {
-  console.log(x); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-});
-</code></pre>
-
-<p>2つのsubscribeに対して, 別々のストリームが生成されます. 各subscribeは, <code>完全に独立して動作</code>します.</p>
-
+<span style="color:#75715e">// 何か処理
+</span><span style="color:#75715e"></span><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">source</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">x</span>) {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">x</span>); <span style="color:#75715e">// 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+</span><span style="color:#75715e"></span>});
+<span style="color:#a6e22e">source</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">x</span>) {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">x</span>); <span style="color:#75715e">// 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+</span><span style="color:#75715e"></span>});
+</code></pre></div><p>2つのsubscribeに対して, 別々のストリームが生成されます. 各subscribeは, <code>完全に独立して動作</code>します.</p>
 <p>Cold Observableをまとめると,</p>
-
 <ul>
 <li>subscribeされるまでCold状態(ストリームが生成されない)</li>
 <li>ストリームはObserverごとに独立して生成される</li>
 </ul>
-
 <h2 id="hot-observable">Hot Observable</h2>
-
 <p>次にHot Observableです. Hot Observableはsubscribeしないでもストリームが生成されます.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">source</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Rx</span>.<span style="color:#a6e22e">Observable</span>.<span style="color:#a6e22e">interval</span>(<span style="color:#ae81ff">1000</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">hot</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">source</span>.<span style="color:#a6e22e">publish</span>();
 
-<pre><code class="language-js">var source = Rx.Observable.interval(1000);
-var hot = source.publish();
-
-// この時点ではストリームは生成されていない
-hot.subscribe(function() {
-  console.log('part1');
+<span style="color:#75715e">// この時点ではストリームは生成されていない
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">hot</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#66d9ef">function</span>() {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;part1&#39;</span>);
 });
 
-// ストリームが生成される
-hot.connect();
+<span style="color:#75715e">// ストリームが生成される
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">hot</span>.<span style="color:#a6e22e">connect</span>();
 
-hot.subscribe(function() {
-  console.log('part2');
+<span style="color:#a6e22e">hot</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#66d9ef">function</span>() {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;part2&#39;</span>);
 });
-</code></pre>
-
-<p>RxJSでは, publishメソッドをコールするとHotなObservableを作成することが出来ます. それに対して, connectするとストリームが流れ始めます.
+</code></pre></div><p>RxJSでは, publishメソッドをコールするとHotなObservableを作成することが出来ます. それに対して, connectするとストリームが流れ始めます.
 subscribeとは無関係にストリームが生成されるのがポイントです. Observerが登録されていない時は, データは消滅します.
 また, HotなObservableは, 1つのストリームに対して複数subscribeすることが出来ます. Coldの場合は, ストリームとsubscribeは, 1対1だったのが, Hotの場合は1対多になります.</p>
-
 <p>Hot Observableをまとめると,</p>
-
 <ul>
 <li>subscribeとは無関係にストリームが生成される</li>
 <li>複数Observerを1つのストリームの上に乗せることが出来る</li>
 </ul>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <p>Hot, ColdなObservableについて説明しました. 1つのストリーム(同じデータ)に対して複数のことをしたいときはHot, そうでない時はColdを使えば良いと思います. 基本的にはColdを扱うことが多いとは思います.</p>
 
     <div class="mt30"></div>

@@ -24,10 +24,7 @@
   <meta property="twitter:title" content="ViewPager2で要素をループさせる">
 
   
-  <meta property="twitter:description" content="
-
-ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。
-
+  <meta property="twitter:description" content="ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。
 ViewPager2ではRecyclerViewを使うことが出来るの …">
   
 
@@ -95,88 +92,61 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
     
     <span class="post-date">Created at Sun, Oct 13, 2019</span>
     
-    
-
-<p>ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。</p>
-
+    <p>ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。</p>
 <p>ViewPager2ではRecyclerViewを使うことが出来るので、RecyclerViewと同じような実装で実現することが出来ます。</p>
-
 <p>最終的にこんなのが作れます。（a、b、cの要素でループしている）</p>
-
-<p><img src="/blog/android/jetpack/viewpager2/viewpager2-loop.gif" style="max-width:280px" /></p>
-
+<p><!-- raw HTML omitted --></p>
 <p>今回の検証に用いたコードは、<a href="https://github.com/satoshun-android-example/ViewPager2/tree/master/app/src/main/java/com/github/satoshun/example/infinite">satoshun/ViewPager2</a>にあります😃</p>
-
 <p>では、コードを説明していきます。今回は、1つのViewTypeを扱います。</p>
-
-<h2 id="実際のコード">実際のコード</h2>
-
+<h2 id="heading">実際のコード</h2>
 <p>まず、<code>RecyclerView.Adapter</code>のサイズを決める<code>getItemCount</code>メソッドの実装です。
 限りなく大きい値、<code>Int.MAX_VALUE</code>を返します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
+</code></pre></div><p>次に、<code>onBindViewHolder</code>メソッドを次のように実装します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
 
-<pre><code class="language-kotlin">override fun getItemCount(): Int = Int.MAX_VALUE
-</code></pre>
-
-<p>次に、<code>onBindViewHolder</code>メソッドを次のように実装します。</p>
-
-<pre><code class="language-kotlin">private val itemData: List&lt;Data&gt;
-
-override fun onBindViewHolder(holder: InfiniteViewHolder, position: Int) {
-  val data = itemData[position % itemData.size]
+<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
+  <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
   ...
 }
-</code></pre>
-
-<p><code>itemData</code>にはViewの生成に必要な実際のデータが入っています。<code>position % itemData.size</code>とindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。</p>
-
+</code></pre></div><p><code>itemData</code>にはViewの生成に必要な実際のデータが入っています。<code>position % itemData.size</code>とindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。</p>
 <p>最終的な、RecyclerView.Adapterは次のようになります。（onCreateViewHolderメソッドは重要でないので、省略しています）</p>
-
-<pre><code class="language-kotlin">class InfiniteAdapter(
-  private val itemData: List&lt;Data&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteAdapter</span>(
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
 ) : RecyclerView.Adapter&lt;InfiniteViewHolder&gt;() {
 
-  override fun getItemCount(): Int = Int.MAX_VALUE
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ...
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = ...
 
-  override fun onBindViewHolder(holder: InfiniteViewHolder, position: Int) {
-    val data = itemData[position % itemData.size]
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
+    <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
     ...
   }
 }
-</code></pre>
-
-<p>最後に、ViewPager2のセットアップをします。</p>
-
-<pre><code class="language-kotlin">with(binding.viewpager) {
-  val infiniteAdapter = InfiniteAdapter(itemData = mockAdapterData)
+</code></pre></div><p>最後に、ViewPager2のセットアップをします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(binding.viewpager) {
+  <span style="color:#66d9ef">val</span> infiniteAdapter = InfiniteAdapter(itemData = mockAdapterData)
   adapter = infiniteAdapter
-  val center = Int.MAX_VALUE / 2
-  val start = center - (center % mockAdapterData.size)
-  setCurrentItem(start, false)
+  <span style="color:#66d9ef">val</span> center = Int.MAX_VALUE / <span style="color:#ae81ff">2</span>
+  <span style="color:#66d9ef">val</span> start = center - (center % mockAdapterData.size)
+  setCurrentItem(start, <span style="color:#66d9ef">false</span>)
 }
 
-private val mockAdapterData = (0..2).map {
-  Data(title = ('a' + it).toString())
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mockAdapterData = (<span style="color:#ae81ff">0.</span>.<span style="color:#ae81ff">2</span>).map {
+  Data(title = (<span style="color:#e6db74">&#39;a&#39;</span> + it).toString())
 }
-</code></pre>
-
-<p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
-
+</code></pre></div><p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
 <p>これで完成です！複数のViewTypeを扱いたいときは、もう少し工夫が必要になると思いますが、基本はこれだけで動かすことが出来ます。</p>
-
-<h2 id="注意点">注意点</h2>
-
+<h2 id="heading1">注意点</h2>
 <ul>
 <li><code>Int.MAX_VALUE / 2</code> 回スクロールすると、先頭にたどり着くので、実は無限スクロールではない
-
 <ul>
 <li>とはいえ、普通そんなにスクロールしないし、無視しても問題ないと思います</li>
-</ul></li>
 </ul>
-
-<h2 id="まとめ">まとめ</h2>
-
+</li>
+</ul>
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>ViewPager2はRecyclerViewの知識を使えるので嬉しい😃</li>
 <li>コードは、<a href="https://github.com/satoshun-android-example/ViewPager2/tree/master/app/src/main/java/com/github/satoshun/example/infinite">satoshun/ViewPager2</a>にあるので、細かいところはこちらを見て下さい。</li>

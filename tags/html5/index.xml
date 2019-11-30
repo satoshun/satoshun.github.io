@@ -22,10 +22,10 @@
 Shadow DOMとは? 外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.
 Shadow DOMの誕生背景 なぜShadow DOMが出てきたかについて説明します.
 CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,
-.hoge { font-size: 30px; }  と書くと, hogeをclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分でhogeクラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます. 仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.
+.hoge { font-size: 30px; } と書くと, hogeをclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分でhogeクラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます. 仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.
 フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.
 使い方 Shadow DOMを作るにはcreateShadowRootAPIを使います. 以下, Shadow DOM版Hello Worldです.
-&amp;lt;div id=&amp;quot;shadow&amp;quot;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; function insertShadow() { // Shadow DOMの作成 var shadow = document.querySelector(&#39;#shadow&#39;).createShadowRoot(); shadow.textContent = &#39;Hello world&#39;; } insertShadow(); &amp;lt;/script&amp;gt;  Shadow DOMが挿入され, Hello Worldと表示されます.</description>
+&amp;lt;div id=&amp;#34;shadow&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; function insertShadow() { // Shadow DOMの作成  var shadow = document.querySelector(&amp;#39;#shadow&amp;#39;).createShadowRoot(); shadow.textContent = &amp;#39;Hello world&amp;#39;; } insertShadow(); &amp;lt;/script&amp;gt; Shadow DOMが挿入され, Hello Worldと表示されます.</description>
     </item>
     
   </channel>

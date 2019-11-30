@@ -19,10 +19,10 @@
       
       <guid>https://satoshun.github.io/2019/02/droidkaigi-2019/</guid>
       <description>DroidKaigi2019でセッションが採択されたので発表しました。
- https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao
-最初に発表の反省点です。
- 多く詰め込みすぎて、1つ1つの掘り下げが疎かになった  結果的に広く浅い発表になってしまったため、1つの1つがあまり丁寧に説明できていなかったように感じています。重要な部分はもう少し丁寧に発表すべきでした。  早口すぎ、俺は生き急いでるのか？  本当に申し訳ありませんでした。前日に最終確認したところ20分近くオーバーしてしまい、そこからある程度は間引いたんですが、早口でいくという戦略を取ってしまいました😂 他の方の発表のように聞きやすい発表を今後は意識していきます！   次に良かった点です。
- 発表前の休憩時間に、司会の@neonankitiさんの助けで、アイスブレイク?のようなことができた  @neonankitiさんとは初対面だったんですが、謎の掛け合いができ、会場の雰囲気も良くなったように思います😊  なんだかんだとR8のコードを触れたのは良かった  R8コンパイラのコードに触れるかどうか悩んだのですが、printデバッグなどを駆使して、理解が間違っていないことが確認できたので、載せてみました。概要だけですが、個人的には良かったと思っています。  最後に話した実践編のウケが良くてよかった  R8の凄さが分かりやすく伝えられたのかなと思います😊   最後に、僕の発表を聞きに来てくれた人、運営のみなさんありがとうございました😊
+https://speakerdeck.com/satoshun/proguard-che-di-bi-jiao
+ 最初に発表の反省点です。
+ 多く詰め込みすぎて、1つ1つの掘り下げが疎かになった  結果的に広く浅い発表になってしまったため、1つの1つがあまり丁寧に説明できていなかったように感じています。重要な部分はもう少し丁寧に発表すべきでした。   早口すぎ、俺は生き急いでるのか？  本当に申し訳ありませんでした。前日に最終確認したところ20分近くオーバーしてしまい、そこからある程度は間引いたんですが、早口でいくという戦略を取ってしまいました😂 他の方の発表のように聞きやすい発表を今後は意識していきます！     次に良かった点です。
+ 発表前の休憩時間に、司会の@neonankitiさんの助けで、アイスブレイク?のようなことができた  @neonankitiさんとは初対面だったんですが、謎の掛け合いができ、会場の雰囲気も良くなったように思います😊   なんだかんだとR8のコードを触れたのは良かった  R8コンパイラのコードに触れるかどうか悩んだのですが、printデバッグなどを駆使して、理解が間違っていないことが確認できたので、載せてみました。概要だけですが、個人的には良かったと思っています。   最後に話した実践編のウケが良くてよかった  R8の凄さが分かりやすく伝えられたのかなと思います😊     最後に、僕の発表を聞きに来てくれた人、運営のみなさんありがとうございました😊
 また来年もあれば登壇できるように頑張ります💪</description>
     </item>
     
@@ -38,7 +38,7 @@
 square/retrofit
 ライブラリ側の設定はこれで完了です。
 使う側の設定 AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。
-implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot; &amp;gt; ./gradlew installRelease ... Warning: there were 267 unresolved references to classes or interfaces. You may need to add missing library jars or update their versions. If your code works fine without the missing classes, you can suppress the warnings with &#39;-dontwarn&#39; options. (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass) Warning: Exception while processing task java.io.IOException: Please correct the above warnings first. Thread(Tasks limiter_2): destruction  失敗しました😂</description>
+implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot; &amp;gt; ./gradlew installRelease ... Warning: there were 267 unresolved references to classes or interfaces. You may need to add missing library jars or update their versions. If your code works fine without the missing classes, you can suppress the warnings with &#39;-dontwarn&#39; options. (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass) Warning: Exception while processing task java.io.IOException: Please correct the above warnings first. Thread(Tasks limiter_2): destruction 失敗しました😂</description>
     </item>
     
     <item>
@@ -61,7 +61,7 @@ implementation &amp;quot;com.squareup.retrofit2:retrofit:2.4.0&amp;quot; &amp;gt
       <description>コードの最適化の話です。この記事ではKotlinのlambda式の最適化について紹介します。
 Kotlin lambda Kotlinでは関数型がファーストクラスです。とても便利なのですが、ラムダを使うたびに内部的にはクラスを1つ定義するため、クラス数、メソッド数がどんどん増えていきます。
 例えば、次のコードを最適化なしでコンパイルしてみます。
-fun main() { lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda2&amp;quot;) } lambdaTest1 { println(&amp;quot;Kotlin lambda3&amp;quot;) } ... } private fun lambdaTest1(body: () -&amp;gt; Unit) { ... body() ... }  // コンパイル後 public static final void main() { LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE); ... } final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; { public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1(); LambdaTestKt$main$1() { super(0); } public final void invoke() { System.</description>
+fun main() { lambdaTest1 { println(&amp;#34;Kotlin lambda1&amp;#34;) } lambdaTest1 { println(&amp;#34;Kotlin lambda2&amp;#34;) } lambdaTest1 { println(&amp;#34;Kotlin lambda3&amp;#34;) } ... } private fun lambdaTest1(body: () -&amp;gt; Unit) { ... body() ... } // コンパイル後 public static final void main() { LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$1.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$2.INSTANCE); LambdaTestKt.lambdaTest1((Function0) LambdaTestKt$main$3.INSTANCE); ... } final class LambdaTestKt$main$1 extends Lambda implements Function0&amp;lt;Unit&amp;gt; { public static final LambdaTestKt$main$1 INSTANCE = new LambdaTestKt$main$1(); LambdaTestKt$main$1() { super(0); } public final void invoke() { System.</description>
     </item>
     
     <item>
@@ -73,8 +73,8 @@ fun main() { lambdaTest1 { println(&amp;quot;Kotlin lambda1&amp;quot;) } lambdaT
       <description>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
 この記事は、R8 Optimization: Staticizationにとても影響を受けています。
 Companion object 例えば、次のコードがあるとします。
-class CompanionTest { companion object { fun show(i: Int) { ... } } }  これを最適化なしで変換すると次のようになります。
-public final class CompanionTest { public static final Companion Companion = new Companion(); public static final class Companion { private Companion() { } public final void show(int i) { ... } } }  Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。
+class CompanionTest { companion object { fun show(i: Int) { ... } } } これを最適化なしで変換すると次のようになります。
+public final class CompanionTest { public static final Companion Companion = new Companion(); public static final class Companion { private Companion() { } public final void show(int i) { ... } } } Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。
 そこでR8による最適化を行うと次のようになります。
 public abstract class CompanionTest { public static final void show(int i) { .</description>
     </item>
@@ -90,10 +90,11 @@ Class Merging? その名の通り、Classをマージする最適化です。最
 まずは縦方向のClass Mergingについて説明します。
 縦方向? 縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。
 例えば、次の実装は最適化によって1つにまとめられます。
-interface IVertical { fun show(i: Int) } class Vertical( private val a: Int ) : IVertical { override fun show(i: Int) { println(&amp;quot;start called $i $a&amp;quot;) } }  &amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;
-public final class Vertical { ... public final void show(int i) { ... } }  IVerticalインターフェースが見事に消されていることが分かります。
+interface IVertical { fun show(i: Int) } class Vertical( private val a: Int ) : IVertical { override fun show(i: Int) { println(&amp;#34;start called $i $a&amp;#34;) } } &amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;
+public final class Vertical { ... public final void show(int i) { ... } } IVerticalインターフェースが見事に消されていることが分かります。
 また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。
- R8: Vertical Merger Proguard: Vertical Merger  次に横方向のマージを紹介します。</description>
+ R8: Vertical Merger Proguard: Vertical Merger  次に横方向のマージを紹介します。
+横方向? Staticメソッドのみを持つクラスを1つにまとめるなどの最適化を行います。</description>
     </item>
     
   </channel>

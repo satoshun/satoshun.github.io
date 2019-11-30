@@ -24,14 +24,11 @@
   <meta property="twitter:title" content="マルチモジュールの遷移について考える Part1">
 
   
-  <meta property="twitter:description" content="
-
-Androidのトレンドの1つにマルチモジュール構成があります。
+  <meta property="twitter:description" content="Androidのトレンドの1つにマルチモジュール構成があります。
 マルチモジュールによるメリットとして、
 
-
 ビルド時間の短縮
-依存関係を各モジュールに閉じ …">
+依存関係を各モジュールに閉じ込める …">
   
 
   
@@ -98,147 +95,102 @@ Androidのトレンドの1つにマルチモジュール構成があります。
     
     <span class="post-date">Created at Mon, Dec 31, 2018</span>
     
-    
-
-<p>Androidのトレンドの1つにマルチモジュール構成があります。
+    <p>Androidのトレンドの1つにマルチモジュール構成があります。
 マルチモジュールによるメリットとして、</p>
-
 <ul>
 <li>ビルド時間の短縮</li>
 <li>依存関係を各モジュールに閉じ込めることでコードをクリーンに保つことが期待できる</li>
 </ul>
-
 <p>などがあります。大規模なプロジェクトでは上記のメリットは大きいため、マルチモジュールに移行していくことになると思います。</p>
-
 <p>この記事は、マルチモジュールにした際のActivity間の遷移について考えたいと思います。目指すゴールとしては、</p>
-
 <ul>
 <li>型安全にしたい、もしくはコンパイル時にチェックする機構が欲しい</li>
 <li>コード量を減らしたい</li>
 </ul>
-
 <p>Part1では、遷移専用のモジュールを作る方法を考えてみます。</p>
-
 <p>サンプルコード: <a href="https://github.com/satoshun-android-example/MultiActivityRouterExample">satoshun-android-example/MultiActivityRouterExample</a></p>
-
-<h2 id="遷移専用のモジュールを作る">遷移専用のモジュールを作る</h2>
-
+<h2 id="heading">遷移専用のモジュールを作る</h2>
 <p>まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。</p>
-
 <p>例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。</p>
-
 <ul>
 <li>メインではサブ画面が必要なのでサブモジュールに依存する</li>
 <li>サブではメイン画面が必要なのでメインモジュールに依存する</li>
 </ul>
-
-<hr />
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwecY1CaGcBmH5nSNa5BGBSfCpoZHjOE8WGW5tPpKDAW85vT3QbuAq6K0" width=300></p>
-
-<hr />
-
+<hr>
+<!-- raw HTML omitted -->
+<hr>
 <p>これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。
 直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。</p>
-
 <p>そこで、</p>
-
 <ul>
 <li>メイン画面に遷移するメインルーターモジュール</li>
 <li>サブ画面に遷移するサブルーターモジュール</li>
 </ul>
-
 <p>の2つのモジュールを作ります。</p>
-
 <p>メインルーターモジュールでは次の遷移専用インターフェースを定義します。</p>
-
-<pre><code class="language-kotlin">interface MainRouter {
-  fun routeToMain(context: Context): Intent
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainRouter</span> {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent
 }
-</code></pre>
-
-<p>そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。</p>
-
-<pre><code class="language-kotlin">internal class MainRouterImpl @Inject constructor() : MainRouter {
-  override fun routeToMain(context: Context): Intent {
-    return Intent(context, MainActivity::class.java)
+</code></pre></div><p>そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouterImpl</span> @Inject <span style="color:#66d9ef">constructor</span>() : MainRouter {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent {
+    <span style="color:#66d9ef">return</span> Intent(context, MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   }
 }
 
 ---
 
 @Module
-internal interface MainActivityModule {
-  @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
+  @Binds <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMainRouter</span>(impl: MainRouterImpl): MainRouter
 }
-</code></pre>
-
-<p>これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</p>
-
-<pre><code class="language-kotlin">class SubActivity : AppCompatActivity() {
-  @Inject lateinit var router: MainRouter
+</code></pre></div><p>これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: MainRouter
 
   ...
 }
-</code></pre>
-
-<p>最終的な依存図は次のようになります。</p>
-
-<hr />
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwebLoUFcrO-RzpnksWyaOGgDKLGYMGTJO8If09iv9bnSN41AGRUqGBV63c8oZ6y7LG0o3Kc12K80ge7B8JKl1HWG0000" width=300></p>
-
-<hr />
-
+</code></pre></div><p>最終的な依存図は次のようになります。</p>
+<hr>
+<!-- raw HTML omitted -->
+<hr>
 <p>これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃</p>
-
-<h2 id="補足">補足</h2>
-
+<h2 id="heading1">補足</h2>
 <p>いちいちルーターモジュールを作るのがめんどうなのであれば、共通のRouterインターフェースを作る方法もあります。</p>
-
-<pre><code class="language-kotlin">interface Router&lt;T&gt; {
-  fun route(context: Context, params: T): Intent
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Router</span>&lt;T&gt; {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
 }
-</code></pre>
+</code></pre></div><p>実装は次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">---<span style="color:#960050;background-color:#1e0010">実</span><span style="color:#960050;background-color:#1e0010">装</span>
 
-<p>実装は次のようになります。</p>
-
-<pre><code class="language-kotlin">---実装
-
-internal class MainRouter2Impl @Inject constructor() : Router&lt;Unit&gt; {
-  override fun route(context: Context, params: Unit): Intent {
-    return Intent(context, MainActivity::class.java)
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouter2Impl</span> @Inject <span style="color:#66d9ef">constructor</span>() : Router&lt;Unit&gt; {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: Unit): Intent {
+    <span style="color:#66d9ef">return</span> Intent(context, MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   }
 }
 
----Daggerの設定
+---Dagger<span style="color:#960050;background-color:#1e0010">の</span><span style="color:#960050;background-color:#1e0010">設</span><span style="color:#960050;background-color:#1e0010">定</span>
 
 @Module
-internal interface MainActivityModule {
-  @Named(&quot;main&quot;)
-  @Binds fun bindMain2Router(impl: MainRouter2Impl): Router&lt;Unit&gt;
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
+  @Named(<span style="color:#e6db74">&#34;main&#34;</span>)
+  @Binds <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMain2Router</span>(impl: MainRouter2Impl): Router&lt;Unit&gt;
 }
 
----使用側
+---<span style="color:#960050;background-color:#1e0010">使</span><span style="color:#960050;background-color:#1e0010">用</span><span style="color:#960050;background-color:#1e0010">側</span>
 
-class SubActivity : AppCompatActivity() {
-  @field:[Inject Named(&quot;main&quot;)] lateinit var router: Router&lt;Unit&gt;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
+  @field:[Inject Named(<span style="color:#e6db74">&#34;main&#34;</span>)] <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: Router&lt;Unit&gt;
   ...
 }
-</code></pre>
-
-<p>DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre></div><p>DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。</p>
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>相互に行き来したい画面があったときに、遷移専用のモジュールを作ることで循環参照を防ぐことが出来る</li>
 <li>基本的に画面を含んだモジュールは遷移したいときがほとんどだと思うので、遷移専用のモジュールを作ることで無駄な依存を作ることを防ぐことが出来る</li>
 <li>遷移用のモジュールが増える😂😂😂</li>
 </ul>
-
 <p>Part2ではDeeplinkやnavigationを絡めた遷移の方法について考えてみたいと思います😃</p>
-
 <p>サンプルコード: <a href="https://github.com/satoshun-android-example/MultiActivityRouterExample">satoshun-android-example/MultiActivityRouterExample</a></p>
 
     <div class="mt30"></div>

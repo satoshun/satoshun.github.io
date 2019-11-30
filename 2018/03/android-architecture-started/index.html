@@ -24,10 +24,7 @@
   <meta property="twitter:title" content="感想: Androidアプリ設計パターン入門">
 
   
-  <meta property="twitter:description" content="
-
-Androidアプリ設計パターン入門を読んだのでざっくりと感想。
-
+  <meta property="twitter:description" content="Androidアプリ設計パターン入門を読んだのでざっくりと感想。
 https://peaks.cc/books/architecture_patterns …">
   
 
@@ -95,70 +92,65 @@ https://peaks.cc/books/architecture_patterns …">
     
     <span class="post-date">Created at Fri, Mar 2, 2018</span>
     
-    
-
-<p>Androidアプリ設計パターン入門を読んだのでざっくりと感想。</p>
-
+    <p>Androidアプリ設計パターン入門を読んだのでざっくりと感想。</p>
 <p><a href="https://peaks.cc/books/architecture_patterns">https://peaks.cc/books/architecture_patterns</a></p>
-
-<h2 id="感想">感想</h2>
-
+<h2 id="heading">感想</h2>
 <ul>
 <li>MVP
-
 <ul>
 <li>PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう
-
 <ul>
 <li>PresenterでView、Modelが何を出来るかを知らなければならない</li>
-</ul></li>
+</ul>
+</li>
 <li>Contractみたいなインタフェースを切るのは好き
-
 <ul>
 <li>それを見ただけで何をそのページでやっているのかが掴めるので</li>
-</ul></li>
+</ul>
+</li>
 <li>PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう</li>
-</ul></li>
+</ul>
+</li>
 <li>MVVM
-
 <ul>
 <li>個人的にはMVPより好き
-
 <ul>
 <li>ViewModelがViewの参照を持たなくて良いので少しスッキリする
-
 <ul>
 <li>ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う
-
 <ul>
 <li>DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Flux
-
 <ul>
 <li>単一方向データフローは凄い良いと思う
-
 <ul>
 <li>単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴</li>
-</ul></li>
+</ul>
+</li>
 <li>ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い</li>
 <li>FluxもAACとの相性は良いと思う</li>
-</ul></li>
+</ul>
+</li>
 <li>負債の話
-
 <ul>
 <li>負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った</li>
-</ul></li>
+</ul>
+</li>
 <li>メモ
-
 <ul>
 <li>データ層の抽象化に関してはRepository的なものを作るで良さそう</li>
 <li>データ側はRx、UI側に反映する時はLiveDataが良さそう</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

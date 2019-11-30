@@ -28,9 +28,7 @@
   <meta property="twitter:title" content="でかいappモジュールがあるときに、中間モジュールを入れることで差分ビルドを上手く効かせる">
 
   
-  <meta property="twitter:description" content="
-
-マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程で …">
+  <meta property="twitter:description" content="マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程で …">
   
 
   
@@ -97,68 +95,45 @@
     
     <span class="post-date">Updated at Mon, Feb 11, 2019</span>
     
-    
-
-<p>マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）</p>
-
+    <p>マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）</p>
 <p>例えば、以下のモジュール構成を考えます。</p>
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000" width=400></p>
-
+<!-- raw HTML omitted -->
 <p>頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。</p>
-
 <p>そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。</p>
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00" width=400></p>
-
+<!-- raw HTML omitted -->
 <p>途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。</p>
-
 <p>ただし、いくつか条件があります。</p>
-
-<h3 id="1-中間モジュールで公開可能なものに限る">1. 中間モジュールで公開可能なものに限る</h3>
-
+<h3 id="1-">1. 中間モジュールで公開可能なものに限る</h3>
 <p>例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。
 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。</p>
-
 <p>中間モジュールのコードイメージとしては以下のようになります。</p>
-
-<pre><code class="language-kotlin">fun createUserFragment(userName: String, age: Int): Fragment {
-  return UserFragment.createFragment(userName, age)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createUserFragment</span>(userName: String, age: Int): Fragment {
+  <span style="color:#66d9ef">return</span> UserFragment.createFragment(userName, age)
 }
 
-fun createUserIntent(context: Context): Intent {
-  return Intent(context, UserActivity::class.java)
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createUserIntent</span>(context: Context): Intent {
+  <span style="color:#66d9ef">return</span> Intent(context, UserActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 }
-</code></pre>
-
-<p>UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。</p>
-
-<h3 id="2-implementationで依存を定義する">2. implementationで依存を定義する</h3>
-
+</code></pre></div><p>UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。</p>
+<h3 id="2-implementation">2. implementationで依存を定義する</h3>
 <p>apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。</p>
-
-<h3 id="3-dagger2使ってると多分無理">3. Dagger2使ってると多分無理</h3>
-
+<h3 id="3-dagger2">3. Dagger2使ってると多分無理</h3>
 <p>Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。</p>
-
 <p>詳しくは<a href="https://github.com/google/dagger/issues/970">Dagger/#970</a>にあります。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <ul>
 <li>やりすぎ感はある
-
 <ul>
 <li>ただでさえ複雑な、モジュール構成がさらに煩雑になりそう。ただし、最終的には消えるので、差分ビルドの恩恵を受けるためのステップだとすれば許せるかも?</li>
 <li>Dagger2を使っていると推移的依存が必要になり、使えない、もしくは工夫が必要になる</li>
-</ul></li>
+</ul>
+</li>
 <li>サンプルは<a href="https://github.com/satoshun-android-example/ApplicationModulesSpeedUpExample">satoshun/ApplicationModulesSpeedUpExample</a>にあります
-
 <ul>
 <li>サブモジュールを変更したときのビルドは爆速でした😊</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>Daggerの部分のいい解決方法を知っている人がいたら、教えて頂けると幸いです😊😊😊</p>
 
     <div class="mt30"></div>

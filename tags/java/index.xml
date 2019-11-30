@@ -19,13 +19,9 @@
       
       <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
       <description>AndroidKaigiの記事まとめです.
-DroidKaigi - Welcome talk   DroidKaigi - Welcome talk  from mhidaka
-エンジニアのための勉強会をやるよ!みたいな内容
-Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法   Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -  from Yuki Anzai 
-CardboardのUXをカメラで向上する   CardboardのUXをカメラで向上する (droidkaigi 2015&amp;frasl;04)  from Kenichi Takahashi 
-絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル   あるゲームアプリケーションの構成とアップデートサイクル  from Kentaro Iizuka 
-開発を効率的に進めるられるまでの道程   開発を効率的に進めるられるまでの道程  from Takao Sumitomo 
-アプリの企画、プロトタイプからリリースに至るまで   初学者に嬉しいAndroid開発環境   【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)  from Hiroyuki Kusu</description>
+DroidKaigi - Welcome talk エンジニアのための勉強会をやるよ!みたいな内容
+Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 CardboardのUXをカメラで向上する 絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル 開発を効率的に進めるられるまでの道程 アプリの企画、プロトタイプからリリースに至るまで 初学者に嬉しいAndroid開発環境 大容量データのダウンロード戦略  複数Threadでダウンロードしても, 帯域があまっていないと早くならない. 100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す. 小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.  Android学ぶ君へ。生き抜くためのナレッジ共有 進化するART  JITコンパイラがAOTコンパイラに  アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.    新言語KotlinでAndroidプログラミング ARTのメモリ管理 Bitmapは怖くない。 DroidKaigi つかえるGradleプロジェクトの作り方 モバイルにおける電力最適化のための1プラクティス アプリを公開する前に、最低限知っておきたいセキュリティ事項 http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf
+デザイナーがXMLを書くことでできる改善しやすいアプリ開発 JellyBeanとKitKatで実現するマテリアルデザイン Material Designを取り入れたデザインリニューアル 僕らのデータ同期プラクティス Android と SELinux androidsola 感想, まとめ  EventBusを使う際の設計はどうするの? カオスになりそう. 画面向き変更はハマりどころが多そう. ノウハウためたい  </description>
     </item>
     
     <item>
@@ -40,7 +36,7 @@ FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除さ�
 これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.
 FragmentStatePagerAdapterを使う FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.
 以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.
-public class PagerAdapter extends FragmentPagerAdapter { ... ... public void refresh() { notifyDataSetChanged(); } }  FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.
+public class PagerAdapter extends FragmentPagerAdapter { ... ... public void refresh() { notifyDataSetChanged(); } } FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.
 次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.
 public class PagerAdapter extends FragmentStatePagerAdapter { private List&amp;lt;Fragment&amp;gt; mFragments; ... ... @Override public int getItemPosition(Object object) { Fragment target = (Fragment) object; if (mFragments.</description>
     </item>
@@ -53,14 +49,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter { private List&amp;l
       <guid>https://satoshun.github.io/2015/02/android-resource_string/</guid>
       <description>res/values/strings.xmlは, 文字列関連のリソースを管理するファイルです. 文字列をプログラム外で定義することで, 多国語の対応, デバッグブルドの時にサーバのURLを変更する等が, コードをいじらずに容易に行えます.
 また, 意外といろいろな機能があったので, 紹介したいと思います.
-基本的な使い方 &amp;lt;string name=&amp;quot;app_name&amp;quot;&amp;gt;Application&amp;lt;/string&amp;gt;  のように記述して使います. アプリケーション側では, 下のように取得します.
-getString(R.string.app_name); or context.getString(R.string.app_name);  特に, 説明はいらないと思います.
+基本的な使い方 &amp;lt;string name=&amp;#34;app_name&amp;#34;&amp;gt;Application&amp;lt;/string&amp;gt; のように記述して使います. アプリケーション側では, 下のように取得します.
+getString(R.string.app_name); or context.getString(R.string.app_name); 特に, 説明はいらないと思います.
 arrayの定義 strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.
 string-array要素で定義してあげます.
-&amp;lt;string-array name=&amp;quot;sports&amp;quot;&amp;gt; &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt; &amp;lt;/string-array&amp;gt;  アプリケーション側では下のように取得します.
-getResources().getStringArray(R.array.sports) or context.getResources().getStringArray(R.array.sports)  Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.
+&amp;lt;string-array name=&amp;#34;sports&amp;#34;&amp;gt; &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt; &amp;lt;/string-array&amp;gt; アプリケーション側では下のように取得します.
+getResources().getStringArray(R.array.sports) or context.getResources().getStringArray(R.array.sports) Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.
 値展開 strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.
-&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;quot;hoge&amp;quot;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;quot;hogestr&amp;quot;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt;  アプリケーション側では, 下のように指定します.</description>
+&amp;lt;!--%1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;#34;hoge&amp;#34;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!--%1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;#34;hogestr&amp;#34;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt; アプリケーション側では, 下のように指定します.
+getString(R.string.hoge, 100)); // Hello 100 getString(R.string.hogestr, &amp;#34;value&amp;#34;, 100)); // value 100 value %1$s は「第1引数の文字列」をここに展開しろ.</description>
     </item>
     
     <item>
@@ -72,10 +69,10 @@ getResources().getStringArray(R.array.sports) or context.getResources().getStrin
       <description>AndroidでPull to Refreshの実装方法です. ListViewなどを下方向に引っ張ると, データを更新するように出来ます. Gmailとかで使われているあれです.
 具体的には, SwipeRefreshLayoutを使って実装します. 以下でコードで説明していきます.
 XML側の記述 ListViewに覆いかぶさるように定義します.
-&amp;lt;android.support.v4.widget.SwipeRefreshLayout android:id=&amp;quot;@+id/refresh&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; &amp;gt; &amp;lt;ListView android:id=&amp;quot;@android:id/list&amp;quot; android:layout_width=&amp;quot;match_parent&amp;quot; android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt; &amp;lt;/android.support.v4.widget.SwipeRefreshLayout&amp;gt;  XML側はこれで完了です. これで, ListViewを引っ張ると「Pull to Refresh」のアニメーションが起こります.
+&amp;lt;android.support.v4.widget.SwipeRefreshLayout android:id=&amp;#34;@+id/refresh&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;match_parent&amp;#34; &amp;gt; &amp;lt;ListView android:id=&amp;#34;@android:id/list&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;match_parent&amp;#34; /&amp;gt; &amp;lt;/android.support.v4.widget.SwipeRefreshLayout&amp;gt; XML側はこれで完了です. これで, ListViewを引っ張ると「Pull to Refresh」のアニメーションが起こります.
 Activity側の記述 Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.
 実装例です. setOnRefreshListenerでListenerを登録します.
-private SwipeRefreshLayout mSwipe; @Override protected void onCreate(Bundle savedInstanceState) { ... mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh); // Callback登録 mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() { @Override public void onRefresh() { /* ここに適当な処理を書く */ mSwipe.setRefreshing(false); } }); }  ListViewを引っ張ると, setOnRefreshListenerメソッドがコールされます. setOnRefreshListenerの最後に, setRefreshing(false)をコールします.</description>
+private SwipeRefreshLayout mSwipe; @Override protected void onCreate(Bundle savedInstanceState) { ... mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh); // Callback登録  mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() { @Override public void onRefresh() { /* ここに適当な処理を書く */ mSwipe.setRefreshing(false); } }); } ListViewを引っ張ると, setOnRefreshListenerメソッドがコールされます. setOnRefreshListenerの最後に, setRefreshing(false)をコールします. これは, 更新アニメーションをOffにするものです.</description>
     </item>
     
     <item>
@@ -87,7 +84,7 @@ private SwipeRefreshLayout mSwipe; @Override protected void onCreate(Bundle save
       <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
-package main import &amp;quot;fmt&amp;quot; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
+package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
     
   </channel>

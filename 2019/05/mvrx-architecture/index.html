@@ -26,11 +26,7 @@
   <meta property="twitter:title" content="MvRxの雑な感想">
 
   
-  <meta property="twitter:description" content="
-
-雑多なことを書いただけのブログになります。内容はあまりないよう〜。
-
-
+  <meta property="twitter:description" content="雑多なことを書いただけのブログになります。内容はあまりないよう〜。
 
 MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
   
@@ -99,109 +95,88 @@ MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
     
     <span class="post-date">Created at Sun, May 5, 2019</span>
     
-    
-
-<p>雑多なことを書いただけのブログになります。内容はあまりないよう〜。</p>
-
-<hr />
-
+    <p>雑多なことを書いただけのブログになります。内容はあまりないよう〜。</p>
+<hr>
 <p><a href="https://github.com/airbnb/MvRx">MvRx</a>はAirbnbが開発をしているOSSフレームワークです。</p>
-
 <p>特徴としては</p>
-
 <ul>
 <li>Kotlinファースト</li>
 <li>RxJavaを使っている</li>
 <li>AAC（Android Architecture Components）をベースにしている
-
 <ul>
 <li>AACをRxJavaであったり、便利関数、クラス群で補佐している感じ</li>
-</ul></li>
+</ul>
+</li>
 <li>多くの部分でReactのAPIを参考にしてる
-
 <ul>
 <li>State、renderなど</li>
-</ul></li>
+</ul>
+</li>
 <li><a href="https://github.com/airbnb/epoxy">Epoxy</a>と相性が良い
-
 <ul>
 <li>一緒に使うことを推奨している</li>
 <li>ReactのComponentのように振る舞わうことが出来る</li>
-</ul></li>
+</ul>
+</li>
 <li>ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う
-
 <ul>
 <li>副作用がない（減らしたい）</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>ボイラープレートなコードを減らすことが期待できます😃</p>
-
-<h2 id="個人的に気になった部分-好きなとこ">個人的に気になった部分、好きなとこ</h2>
-
-<h3 id="stateでview状態を管理するところ">StateでView状態を管理するところ</h3>
-
+<h2 id="heading">個人的に気になった部分、好きなとこ</h2>
+<h3 id="stateview">StateでView状態を管理するところ</h3>
 <p>Stateを定義することのメリットは以下かなと思ってます。</p>
-
 <ul>
 <li>Stateを見れば、Viewの構成要素が分かる
-
 <ul>
 <li>MVPアーキテクチャのViewインターフェースのような役割を果たす</li>
-</ul></li>
+</ul>
+</li>
 <li>状態の管理が楽
-
 <ul>
 <li>Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い
-
 <ul>
 <li>MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Viewからロジックを取ることが出来る
-
 <ul>
 <li>もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる</li>
-</ul></li>
 </ul>
-
-<h3 id="asyncがすごい良い">Asyncがすごい良い</h3>
-
+</li>
+</ul>
+<h3 id="async">Asyncがすごい良い</h3>
 <p>MvRxではAsyncというsealed classが定義されていて、</p>
-
 <ul>
 <li>Uninitialized</li>
 <li>Loading</li>
 <li>Success</li>
 <li>Fail</li>
 </ul>
-
 <p>の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。</p>
-
 <p>プロジェクトに、Asyncだけ取り入れるのもアリだと思います。</p>
-
-<h3 id="single-eventの処理をどうするのか">Single Eventの処理をどうするのか</h3>
-
+<h3 id="single-event">Single Eventの処理をどうするのか</h3>
 <p>State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う</p>
-
 <ul>
 <li>invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも
-
 <ul>
 <li>やっぱりSingle Eventの取り扱いって大変なんやなって</li>
 <li>とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない</li>
-</ul></li>
 </ul>
-
-<h2 id="参考">参考</h2>
-
+</li>
+</ul>
+<h2 id="heading1">参考</h2>
 <ul>
 <li><a href="https://github.com/chrisbanes/tivi">Tivi</a>
-
 <ul>
 <li>プロジェクトも大きく、Coroutineなども使っている</li>
 <li>これ見れば、なんとなく肌感は分かると思います</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

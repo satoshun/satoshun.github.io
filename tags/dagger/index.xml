@@ -22,10 +22,10 @@
 この記事では、どのように置き換えるかを説明していきたいと思います。
 また、DaggerApplicationやDaggerActivityなどの基底クラスは使っていないものとします。
 置き換えていく AppComponent AndroidSupportInjectionModuleを使っているなら、AndroidInjectionModuleに置き換えます。 今後は、AndroidSupportInjectionModuleを使う必要はありません。
-@Singleton @dagger.Component( modules = [ AndroidInjectionModule::class, // AndroidInjectionModuleを使う ... ] ) interface AppComponent ...  Application Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorをHasAndroidInjectorに置き換えます。
-class App : Application(), // HasAndroidInjectorのみでおｋ HasAndroidInjector { // 型変数がAnyになる @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; // 返り値の型変数がAnyになる override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { DaggerAppComponent.factory().create(this).inject(this) return androidInjector } }  今まではActivity用、Fragment用、Service用などのクラスごとにDispatchingAndroidInjectorがありましたが、それが1つのDispatchingAndroidInjector&amp;lt;Any&amp;gt;まとまりました。
+@Singleton @dagger.Component( modules = [ AndroidInjectionModule::class, // AndroidInjectionModuleを使う  ... ] ) interface AppComponent ... Application Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorをHasAndroidInjectorに置き換えます。
+class App : Application(), // HasAndroidInjectorのみでおｋ  HasAndroidInjector { // 型変数がAnyになる  @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; // 返り値の型変数がAnyになる  override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { DaggerAppComponent.factory().create(this).inject(this) return androidInjector } } 今まではActivity用、Fragment用、Service用などのクラスごとにDispatchingAndroidInjectorがありましたが、それが1つのDispatchingAndroidInjector&amp;lt;Any&amp;gt;まとまりました。
 Activity, Fragment HasSupportFragmentInjectorなどのInjectorは、HasAndroidInjectorに置き換えます。
-class MainActivity : AppCompatActivity(), // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う HasAndroidInjector { @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; override fun onCreate(savedInstanceState: Bundle?</description>
+class MainActivity : AppCompatActivity(), // HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う  HasAndroidInjector { @Inject lateinit var androidInjector: DispatchingAndroidInjector&amp;lt;Any&amp;gt; override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
     
     <item>
@@ -36,10 +36,10 @@ class MainActivity : AppCompatActivity(), // HasSupportFragmentInjectorの代わ
       <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</guid>
       <description>ViewModel + SavedStateでDaggerを使う方法を考えてみました。
 前提知識・課題 SavedStateを使う場合、ViewModelにSavedStateHandleインスタンスを渡さなければいけません。
-class MyViewModel( private val state: SavedStateHandle ) : ViewModel() { ... }  SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
+class MyViewModel( private val state: SavedStateHandle ) : ViewModel() { ... } SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
 生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。
-// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this)) .get(MyViewModel::class.java)  コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
-class TestViewModel( private val state: SavedStateHandle, private val name: String ) : ViewModel() class TestViewModelFactory( owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) { override fun &amp;lt;T : ViewModel&amp;gt; create( key: String, modelClass: Class&amp;lt;T&amp;gt;, handle: SavedStateHandle ): T { return TestViewModel(handle, &amp;quot;test&amp;quot;) as T } } // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this)) .</description>
+// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this)) .get(MyViewModel::class.java) コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
+class TestViewModel( private val state: SavedStateHandle, private val name: String ) : ViewModel() class TestViewModelFactory( owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) { override fun &amp;lt;T : ViewModel&amp;gt; create( key: String, modelClass: Class&amp;lt;T&amp;gt;, handle: SavedStateHandle ): T { return TestViewModel(handle, &amp;#34;test&amp;#34;) as T } } // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this)) .</description>
     </item>
     
     <item>
@@ -62,8 +62,8 @@ Component.Factoryとは? 実は、Component.FactoryでやれることはComponen
       <guid>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</guid>
       <description>Dagger2のちょっとしたtipsです。
 次の2つのメソッドは同じ振る舞いをします。
-@Module class MainActivityModule { // 普通の書き方 @Provides fun provideMainContractView(activity: MainActivity): MainContract.View { return activity } // 拡張関数を使った書き方 @Provides fun MainActivity.provideMainContractView(): MainContract.View { return this } }  なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。
-... @Provides @NotNull public final MainContract.View provideMainContractView(@NotNull MainActivity $receiver) { Intrinsics.checkParameterIsNotNull($receiver, &amp;quot;receiver$0&amp;quot;); return (MainContract.View)$receiver; } ...  拡張関数として定義したMainActivityは$receiverとなり、引数に入っていることが分かります。拡張関数は上記のように解釈されるため、@Providesと組み合わせて使うことが出来ます。
+@Module class MainActivityModule { // 普通の書き方  @Provides fun provideMainContractView(activity: MainActivity): MainContract.View { return activity } // 拡張関数を使った書き方  @Provides fun MainActivity.provideMainContractView(): MainContract.View { return this } } なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。
+... @Provides @NotNull public final MainContract.View provideMainContractView(@NotNull MainActivity $receiver) { Intrinsics.checkParameterIsNotNull($receiver, &amp;#34;receiver$0&amp;#34;); return (MainContract.View)$receiver; } ... 拡張関数として定義したMainActivityは$receiverとなり、引数に入っていることが分かります。拡張関数は上記のように解釈されるため、@Providesと組み合わせて使うことが出来ます。
 まとめ 多分、使い所ないと思います😃😃😃</description>
     </item>
     
@@ -89,13 +89,13 @@ Component.Factoryとは? 実は、Component.FactoryでやれることはComponen
 また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。
 検証に用いたコードはsatoshun-android-example/DynamicFeatureDaggerExampleにあります😊
 前提知識 通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。
-この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
-そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
+  この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
+  そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
 ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。
 最初に、SubActivityをDaggerApplicationのように振る舞わさせるためにModuleRootActivityクラスを定義します。 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。
-abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.moduleInjector injector.activity.inject(this) super.onCreate(savedInstanceState) } protected abstract val moduleComponent: ModuleActivityComponent override fun supportFragmentInjector(): AndroidInjector&amp;lt;Fragment&amp;gt; = fragmentInjector } class ModuleActivityInjector @Inject constructor( internal val activity: DispatchingAndroidInjector&amp;lt;Activity&amp;gt; ) interface ModuleActivityComponent { val moduleInjector: ModuleActivityInjector } interface HasModuleInjector : HasSupportFragmentInjector abstract class ModuleChildFragment : Fragment() { override fun onAttach(context: Context) { AndroidSupportInjection.</description>
+abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.moduleInjector injector.activity.inject(this) super.</description>
     </item>
     
     <item>
@@ -107,8 +107,8 @@ abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @In
       <description>この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃
 基本編 一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成はViewModelProviderを介して行う必要があるためです。
 例えば、次のコードは間違っています。
-class MainViewModel @Inject constructor(...): ViewModel() class MainActivity { @Inject lateinit var viewModel: MainViewModel ... }  この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。
-class MainViewModel(...): ViewModel() @Module class MainActivityModule { @Provides fun provideMainViewModel(...) : MainViewModel { // ViewModelProviderを使ってインスタンスを生成する return ViewModelProviders.of(...).get(MainViewModel::class.java) } } class MainActivity { @Inject lateinit var viewModel: MainViewModel ... }  @Providesを使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。
+class MainViewModel @Inject constructor(...): ViewModel() class MainActivity { @Inject lateinit var viewModel: MainViewModel ... } この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。
+class MainViewModel(...): ViewModel() @Module class MainActivityModule { @Provides fun provideMainViewModel(...) : MainViewModel { // ViewModelProviderを使ってインスタンスを生成する  return ViewModelProviders.of(...).get(MainViewModel::class.java) } } class MainActivity { @Inject lateinit var viewModel: MainViewModel ... } @Providesを使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。
 また、ViewModelを直接注入せずに、ViewModelProvider.Factoryを注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。
 class MainViewModel(...): ViewModel() or class MainViewModel @Inject constructor(...): ViewModel() @Module class MainActivityModule { @Provides fun provideViewModelFactory(.</description>
     </item>
@@ -124,8 +124,8 @@ GradleでcompileがDeprecatedになり、implementationまたはapiを使うこ�
 Dagger2でもcompileをimplementationに置き換えるPRが出されました。https://github.com/google/dagger/pull/1130
 内容が興味深かったのでまとめてみようと思います。
 まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。
-// Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries  ここでjakeさんが
- I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.</description>
+// Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries ここでjakeさんが
+ I think this one is somewhat debatable, but you&#39;re likely to mark it as implementation in every module that contains the compiler so it&#39;s probably a non-problem.</description>
     </item>
     
     <item>
@@ -138,10 +138,10 @@ Dagger2でもcompileをimplementationに置き換えるPRが出されました�
 この記事ではそんな夢を叶える方法を紹介します。
 サンプルコードはここにあります。
 FragmentFactory Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。
-class MainFragment : Fragment() { @Inject lateinit var userHandler: UserHandler ... }  これをコンストラクタインジェクションにしたい。
-class MainFragment @Inject constructor( private val userHandler: UserHandler ) : Fragment() { ... }  androidx.fragment:fragment:1.1.0-alpha01から、FragmentFactoryが追加されました!! これを使うことでコンストラクタインジェクションが可能になります。
+class MainFragment : Fragment() { @Inject lateinit var userHandler: UserHandler ... } これをコンストラクタインジェクションにしたい。
+class MainFragment @Inject constructor( private val userHandler: UserHandler ) : Fragment() { ... } androidx.fragment:fragment:1.1.0-alpha01から、FragmentFactoryが追加されました!! これを使うことでコンストラクタインジェクションが可能になります。
 MainFragmentインスタンスを生成するFragmentFactoryを作成します。
-class MainFragmentFactory @Inject constructor( private val fragment: Provider&amp;lt;MainFragment&amp;gt; ) : FragmentFactory() { override fun instantiate( classLoader: ClassLoader, className: String, args: Bundle? ): Fragment { if (className == MainFragment::class.java.name) { return fragment.get() } return super.</description>
+class MainFragmentFactory @Inject constructor( private val fragment: Provider&amp;lt;MainFragment&amp;gt; ) : FragmentFactory() { override fun instantiate( classLoader: ClassLoader, className: String, args: Bundle? ): Fragment { if (className == MainFragment::class.java.name) { return fragment.get() } return super.instantiate(classLoader, className, args) } } FragmentFactory.</description>
     </item>
     
     <item>
@@ -152,14 +152,14 @@ class MainFragmentFactory @Inject constructor( private val fragment: Provider&am
       <guid>https://satoshun.github.io/2018/09/android-dagger-simple-example/</guid>
       <description>みなさんこんにちは
 今回はDaggerの話をします。Dagger + Kotlinの1つ気になる点として@Inject lateinit var になってしまうところがあると思います。
-class HogeActivity { @Inject lateinit var hoge: Hoge }  これをなんとか出来ないかなと思って考えてみました。
+class HogeActivity { @Inject lateinit var hoge: Hoge } これをなんとか出来ないかなと思って考えてみました。
 結論から言うと最終形はこのようになります。
-class HogeActivity { private val hoge: Hoge by inject() }  private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。
+class HogeActivity { private val hoge: Hoge by inject() } private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。
 今回はIntoMapを使って実装することにしました。
 IntoMapとはその名の通りMapにバインドするためのアノテーションです。 詳しくはドキュメントを見てください。
 サンプルコードで説明していきます。
 まずはIntoMapを使い、MapへのバインドをModuleに定義していきます。
-@Module interface HogeModule { @Binds @IntoMap @ClassKey(Hoge1::class) fun bindHoge1(hoge: Hoge1): Any @Binds @IntoMap @ClassKey(Hoge2::class) fun bindHoge2(hoge: Hoge2): Any } class Hoge1 @Inject constructor() class Hoge2 @Inject constructor() @MustBeDocumented @Retention(AnnotationRetention.RUNTIME) @MapKey annotation class ClassKey(val value: KClass&amp;lt;out Any&amp;gt;)  Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。</description>
+@Module interface HogeModule { @Binds @IntoMap @ClassKey(Hoge1::class) fun bindHoge1(hoge: Hoge1): Any @Binds @IntoMap @ClassKey(Hoge2::class) fun bindHoge2(hoge: Hoge2): Any } class Hoge1 @Inject constructor() class Hoge2 @Inject constructor() @MustBeDocumented @Retention(AnnotationRetention.RUNTIME) @MapKey annotation class ClassKey(val value: KClass&amp;lt;out Any&amp;gt;) Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。</description>
     </item>
     
     <item>
@@ -172,13 +172,13 @@ IntoMapとはその名の通りMapにバインドするためのアノテーシ�
 これは、startup timeを改善するための機能です。どれくらい差があるかを担当アプリで実際に調べてみました。
 確認に使用した端末はAndroid8系のGalaxyと、Android7系のXperiaの計2台になります。
 確認に使用したシェルスクリプト adb shellコマンドから起動時間を調べるコマンドです。計11回startup timeを確認する事ができます。
-for i in {0..10} do adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt sleep 10 done  下記を参考にしました。
+for i in {0..10} do adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &amp;gt;&amp;gt; hoge.txt sleep 10 done 下記を参考にしました。
  https://developer.android.com/topic/performance/vitals/launch-time  fastInit有効の場合 下記をbuild.gradleに追加します。
-kapt { javacOptions { option(&amp;quot;-Adagger.fastInit=enabled&amp;quot;) } }  結果:
-平均: 1609ms  fastInit無効の場合 結果:
-平均: 1607ms  まとめ ほぼ変わらない数字が出てきてしまいました。悲しい。 Dagger生成コードを見る限りだと、最初のComponentのcreateのタイミングでComponentが持っているフィールドの初期化が行われていなかったので、早くなりそうだなと思ったんですが、実際にはほぼ変わりませんでした。
+kapt { javacOptions { option(&amp;#34;-Adagger.fastInit=enabled&amp;#34;) } } 結果:
+平均: 1609ms fastInit無効の場合 結果:
+平均: 1607ms まとめ ほぼ変わらない数字が出てきてしまいました。悲しい。 Dagger生成コードを見る限りだと、最初のComponentのcreateのタイミングでComponentが持っているフィールドの初期化が行われていなかったので、早くなりそうだなと思ったんですが、実際にはほぼ変わりませんでした。
 芳しくない結果になった推測として
- 担当アプリのDaggerの書き方が正しくないからこの結果になった?  要調査、しかし一般的なAndroid-Daggerを使った書き方をしているので正しいはず  確認に使用したコマンドが良くないのかも?  なにか分かったら追記します、もしくは間違っている点があればご指摘いただければ幸いです😊</description>
+ 担当アプリのDaggerの書き方が正しくないからこの結果になった?  要調査、しかし一般的なAndroid-Daggerを使った書き方をしているので正しいはず   確認に使用したコマンドが良くないのかも?  なにか分かったら追記します、もしくは間違っている点があればご指摘いただければ幸いです😊</description>
     </item>
     
     <item>
@@ -187,16 +187,16 @@ kapt { javacOptions { option(&amp;quot;-Adagger.fastInit=enabled&amp;quot;) } } 
       <pubDate>Tue, 26 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2018/06/dagger-android-with_custom_scope/</guid>
-      <description>Daggerを使い、複数のインスタンス間で同一のインスタンスを使う時は、スコープを使うことで実現できます。 Androidでは、すべてのActivityで共通のインスタンスを使うには SingletonスコープとAppComponentを組み合わせて使う方法がよく知られています。 しかし、特定のActivity間でのみ共通のインスタンスを使いたい場合にはこの方法は使えません。SingletonだとすべてのActivity間で共通のインスタンスが使えてしまいます。
+      <description>Daggerを使い、複数のインスタンス間で同一のインスタンスを使う時は、スコープを使うことで実現できます。 Androidでは、すべてのActivityで共通のインスタンスを使うには SingletonスコープとAppComponentを組み合わせて使う方法がよく知られています。 しかし、__特定__のActivity間でのみ共通のインスタンスを使いたい場合にはこの方法は使えません。Singletonだと__すべて__のActivity間で共通のインスタンスが使えてしまいます。
 この記事では、Dagger-Androidを使ったサンプルコードをベースに、「特定のActivity間のみで同一インスタンスを使う方法」を説明します。 また、基本的なDaggerの使い方は知っている前提で説明していきます。
 サンプルコードはこちらになります。 コードを見ると理解がより深まると思うので、ぜひご覧になってください😊
-では説明していきます。今回のサンプルコードの目指すところは
+ では説明していきます。今回のサンプルコードの目指すところは
  UserScopeを定義し、MainActivity、UserScopedActivityで同一のUserManagerインスタンスを使用する  とします。
 まず最初にUserScopeを定義します。
-@Scope @MustBeDocumented @Retention(AnnotationRetention.RUNTIME) annotation class UserScope  次にUserSubcomponentを作ります。
-@UserScope @Subcomponent interface UserSubcomponent { @Subcomponent.Builder interface Builder { fun build(): UserSubcomponent } val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt; }  ここでは、UserSubcomponentにUserScopeスコープを持たせています。 このように書くことで、SubcomponentとScopeを結びつけることが出来ます。
+@Scope @MustBeDocumented @Retention(AnnotationRetention.RUNTIME) annotation class UserScope 次にUserSubcomponentを作ります。
+@UserScope @Subcomponent interface UserSubcomponent { @Subcomponent.Builder interface Builder { fun build(): UserSubcomponent } val activityInjector: DispatchingAndroidInjector&amp;lt;Activity&amp;gt; } ここでは、UserSubcomponentにUserScopeスコープを持たせています。 このように書くことで、SubcomponentとScopeを結びつけることが出来ます。
 次にAppComponentを作ります。
-@Singleton @Component( modules = [ AndroidSupportInjectionModule::class ] ) interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; { @Component.Builder interface Builder { @BindsInstance fun application(application: App): Builder fun build(): AppComponent } override fun inject(app: App) // AppComponentとUserSubcomponentを結びつける val userComponentBuilder: UserSubcomponent.</description>
+@Singleton @Component( modules = [ AndroidSupportInjectionModule::class ] ) interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; { @Component.Builder interface Builder { @BindsInstance fun application(application: App): Builder fun build(): AppComponent } override fun inject(app: App) // AppComponentとUserSubcomponentを結びつける  val userComponentBuilder: UserSubcomponent.</description>
     </item>
     
     <item>
@@ -212,7 +212,7 @@ DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
  /src/production/java/com/jakewharton/u2020/Modules.java /src/internalDebug/java/com/jakewharton/u2020/Modules.java /src/internalRelease/java/com/jakewharton/u2020/Modules.javaに  それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています. これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.
 こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.
  Debugのみログを有効にしたい APIのエンドポイントを変えたい debug専用のViewを出したい Test用のインスタンスをinjectしたい etc, etc&amp;hellip;  以下では, より細かく説明していきます.
-Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
+Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のViewはこんな感じです. Debugビルドの時は, このContainerをinjectしています.
 DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
 Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
 public final class DebugDataModule { .</description>
@@ -227,7 +227,7 @@ public final class DebugDataModule { .</description>
       <description>概要 この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します. Dagger2はDI(Dependency Injection)をするライブラリです.
 DIとは? DIとはDependency Injectionの略で, 訳すと「依存性の注入」です. ここでいう依存とは クラス同士の依存関係のことを表します. クラス同士の依存関係は, 委譲パターンの時に現れます.
 例えば, 以下のコードがあったとします.
-class Blogger { public Blogger() { } public void post(String title) { // 何かメインの処理 // ... // fileにlogを取る FileLogger logger = new FileLogger(title); logger.logging(); } } class FileLogger implements Logger { @Override public void logging(String... messages) { // fileにmessagesを書き出す File file = new File(&amp;quot;hoge.txt&amp;quot;); ... } } interface Logger { void logging(String messgae); }  クラスBloggerはクラスFileLoggerに依存している.</description>
+class Blogger { public Blogger() { } public void post(String title) { // 何かメインの処理  // ...  // fileにlogを取る  FileLogger logger = new FileLogger(title); logger.logging(); } } class FileLogger implements Logger { @Override public void logging(String... messages) { // fileにmessagesを書き出す  File file = new File(&amp;#34;hoge.txt&amp;#34;); ... } } interface Logger { void logging(String messgae); } クラスBloggerはクラスFileLoggerに依存している.</description>
     </item>
     
   </channel>

@@ -28,9 +28,7 @@
   <meta property="twitter:title" content="Dynamic Feature ModuleでDagger Androidを使う">
 
   
-  <meta property="twitter:description" content="
-
-Dependency injection in a multi module projectを見て、Dynamic FeatureをDagger …">
+  <meta property="twitter:description" content="Dependency injection in a multi module projectを見て、Dynamic FeatureをDagger Android …">
   
 
   
@@ -97,163 +95,127 @@ Dependency injection in a multi module projectを見て、Dynamic FeatureをDagg
     
     <span class="post-date">Created at Wed, Jan 16, 2019</span>
     
-    
-
-<p><a href="https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7">Dependency injection in a multi module project</a>を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。</p>
-
+    <p><a href="https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7">Dependency injection in a multi module project</a>を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。</p>
 <p>結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。</p>
-
 <p>また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。</p>
-
 <p>検証に用いたコードは<a href="https://github.com/satoshun-android-example/DynamicFeatureDaggerExample">satoshun-android-example/DynamicFeatureDaggerExample</a>にあります😊</p>
-
-<h2 id="前提知識">前提知識</h2>
-
+<h2 id="heading">前提知識</h2>
 <p>通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。</p>
-
-<hr />
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00" width=300></p>
-
-<hr />
-
+<hr>
+<!-- raw HTML omitted -->
+<hr>
 <p>この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。</p>
-
-<hr />
-
-<p><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40" width=300></p>
-
-<hr />
-
+<hr>
+<!-- raw HTML omitted -->
+<hr>
 <p>そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。</p>
-
 <p>ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。</p>
-
-<h2 id="実装">実装</h2>
-
+<h2 id="heading1">実装</h2>
 <p>Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。</p>
-
 <p>では、実装を始めます。</p>
-
 <p>最初に、SubActivityをDaggerApplicationのように振る舞わさせるために<code>ModuleRootActivity</code>クラスを定義します。
 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。</p>
-
-<pre><code class="language-kotlin">abstract class ModuleRootActivity : AppCompatActivity(),
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleRootActivity</span> : AppCompatActivity(),
   HasModuleInjector {
-  @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&lt;Fragment&gt;
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentInjector: DispatchingAndroidInjector&lt;Fragment&gt;
 
-  private lateinit var injector: ModuleActivityInjector
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> injector: ModuleActivityInjector
 
-  override fun onCreate(savedInstanceState: Bundle?) {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     injector = moduleComponent.moduleInjector
-    injector.activity.inject(this)
-    super.onCreate(savedInstanceState)
+    injector.activity.inject(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
   }
 
-  protected abstract val moduleComponent: ModuleActivityComponent
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">val</span> moduleComponent: ModuleActivityComponent
 
-  override fun supportFragmentInjector(): AndroidInjector&lt;Fragment&gt; =
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">supportFragmentInjector</span>(): AndroidInjector&lt;Fragment&gt; =
     fragmentInjector
 }
 
-class ModuleActivityInjector @Inject constructor(
-  internal val activity: DispatchingAndroidInjector&lt;Activity&gt;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleActivityInjector</span> @Inject <span style="color:#66d9ef">constructor</span>(
+  <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">val</span> activity: DispatchingAndroidInjector&lt;Activity&gt;
 )
 
-interface ModuleActivityComponent {
-  val moduleInjector: ModuleActivityInjector
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ModuleActivityComponent</span> {
+  <span style="color:#66d9ef">val</span> moduleInjector: ModuleActivityInjector
 }
 
-interface HasModuleInjector : HasSupportFragmentInjector
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HasModuleInjector</span> : HasSupportFragmentInjector
 
-abstract class ModuleChildFragment : Fragment() {
-  override fun onAttach(context: Context) {
-    AndroidSupportInjection.inject(this)
-    super.onAttach(context)
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleChildFragment</span> : Fragment() {
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
+    AndroidSupportInjection.inject(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">super</span>.onAttach(context)
   }
 }
-</code></pre>
-
-<p>次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。</p>
-
-<pre><code class="language-kotlin">@ModuleScope
+</code></pre></div><p>次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@ModuleScope
 @Component(
-  dependencies = [CoreComponent::class], // 共通で使うComponent
-  modules = [
-    AndroidSupportInjectionModule::class,
-    SubBuilder::class
-  ]
+  dependencies = [CoreComponent<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>], <span style="color:#75715e">// 共通で使うComponent
+</span><span style="color:#75715e"></span>  modules = [
+    AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>,
+    SubBuilder<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>
+  <span style="color:#960050;background-color:#1e0010">]</span>
 )
-internal interface SubComponent : ModuleActivityComponent {
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubComponent</span> : ModuleActivityComponent {
   @Component.Builder
-  interface Builder {
-    fun appComponent(module: CoreComponent): Builder
-    fun build(): Sub1Component
+  <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Builder</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">appComponent</span>(module: CoreComponent): Builder
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">build</span>(): Sub1Component
   }
 }
 
 @Module(
-  includes = [SubActivityModule::class]
+  includes = [SubActivityModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>]
 )
-interface SubBuilder
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubBuilder</span>
 
 @Module
-internal interface SubActivityModule {
-  @ContributesAndroidInjector(modules = [SubFragmentsModule::class])
-  fun contributeSubActivity(): SubActivity
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubActivityModule</span> {
+  @ContributesAndroidInjector(modules = [SubFragmentsModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">contributeSubActivity</span>(): SubActivity
 }
 
 @Module
-internal interface SubFragmentsModule {
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubFragmentsModule</span> {
   @ContributesAndroidInjector
-  fun contributeSubFragment(): SubFragment
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">contributeSubFragment</span>(): SubFragment
 }
 
-class SubActivity : ModuleRootActivity() {
-  @Inject lateinit var ...
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : ModuleRootActivity() {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span>
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
     setContentView(R.layout.sub_act)
     ...
   }
 
-  override val moduleComponent: ModuleActivityComponent
-    get() = DaggerSubComponent
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> moduleComponent: ModuleActivityComponent
+    <span style="color:#66d9ef">get</span>() = DaggerSubComponent
       .builder()
       .appComponent(App.coreComponent())
       .build()
 }
 
-class SubFragment : ModuleChildFragment() {
-  @Inject lateinit var ...
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubFragment</span> : ModuleChildFragment() {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span>
 }
-</code></pre>
-
-<p><code>ModuleRootActivity</code>で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。</p>
-
+</code></pre></div><p><code>ModuleRootActivity</code>で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。</p>
 <p>これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃</p>
-
 <p>細かい部分はサンプルを見ていただけたらと思います。<a href="https://github.com/satoshun-android-example/DynamicFeatureDaggerExample">DynamicFeatureDaggerExample</a></p>
-
-<h2 id="メモ1-1つのfeature-module内で複数activityがある場合">メモ1: 1つのFeature Module内で複数Activityがある場合</h2>
-
+<h2 id="1-1feature-moduleactivity">メモ1: 1つのFeature Module内で複数Activityがある場合</h2>
 <p>このパターンは考慮出来ていないです😂
 おそらく、頑張ってApplicationクラス内でstaticで保持するか、もしくは、CoreComponentでScopedで管理するのが良いと思っています。</p>
-
-<h2 id="メモ2-configuration-change対応">メモ2: Configuration Change対応</h2>
-
+<h2 id="2-configuration-change">メモ2: Configuration Change対応</h2>
 <p>Feature Root ComponentはActivityではなく、AACのViewModelで保持したほうが良いかも知れないです。</p>
-
-<h2 id="メモ3-そもそもdagger-androidを使う必要あるのか">メモ3: そもそもDagger Androidを使う必要あるのか?</h2>
-
+<h2 id="3-dagger-android">メモ3: そもそもDagger Androidを使う必要あるのか?</h2>
 <p>Scopeをガンガン使いたい時、すでにDagger Androidを導入している場合は使ってもいいかも。
 ただPlaidのように、Dagger Androidを使わないほうがコードが複雑にならなそうなので、使わないほうが基本良いと思います。（今後心変わりする可能性は大いにあります）</p>
-
-<hr />
-
+<hr>
 <p>では、Happy Dagger Life 😊😊😊</p>
 
     <div class="mt30"></div>

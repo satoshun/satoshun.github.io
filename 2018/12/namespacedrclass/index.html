@@ -22,9 +22,7 @@
   <meta property="twitter:title" content="Android: namespacedRClassフラグでRクラスを小さく保つ">
 
   
-  <meta property="twitter:description" content="
-
-Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングでnamespacedRClassフラグが新しく追加されたので …">
+  <meta property="twitter:description" content="Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングでnamespacedRClassフラグが新しく追加されたので紹介 …">
   
 
   
@@ -91,89 +89,67 @@ Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで
     
     <span class="post-date">Updated at Wed, Dec 12, 2018</span>
     
-    
-
-<p>Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで<code>namespacedRClass</code>フラグが新しく追加されたので紹介します。
+    <p>Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングで<code>namespacedRClass</code>フラグが新しく追加されたので紹介します。
 本記事では<code>3.4.0-alpha07</code>で試しました。</p>
-
 <p>まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
 それを解決するために<code>namespacedRClass</code>が追加されました。使い方は簡単で、次の記述を<code>gradle.properties</code>に追加するだけです。</p>
-
 <pre><code>android.namespacedRClass=true
-</code></pre>
-
-<p>では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
+</code></pre><p>では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
 例として、appcompatに依存しているライブラリモジュールを用意します。</p>
-
 <p>まずは、<code>namespacedRClass=false</code>の時のRクラスです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">R</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public final class R {
-    private R() {}
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">anim</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">anim</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-    public static final class anim {
-        private anim() {}
-
-        public static final int abc_fade_in = 0x7f010000;
-        public static final int abc_fade_out = 0x7f010001;
-        public static final int abc_grow_fade_in_from_bottom = 0x7f010002;
-        public static final int abc_popup_enter = 0x7f010003;
-    ...
-    ...
-</code></pre>
-
-<p>依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。</p>
-
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_fade_in <span style="color:#f92672">=</span> 0x7f010000<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_fade_out <span style="color:#f92672">=</span> 0x7f010001<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_grow_fade_in_from_bottom <span style="color:#f92672">=</span> 0x7f010002<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_popup_enter <span style="color:#f92672">=</span> 0x7f010003<span style="color:#f92672">;</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</code></pre></div><p>依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。</p>
 <p>では次に、<code>namespacedRClass=true</code>の時です。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">R</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-<pre><code class="language-java">public final class R {
-    private R() {}
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">color</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-    public static final class color {
-        private color() {}
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> red3 <span style="color:#f92672">=</span> 0x7f04004b<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">id</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-        public static final int red3 = 0x7f04004b;
-    }
-    public static final class id {
-        private id() {}
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> title <span style="color:#f92672">=</span> 0x7f0700b1<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">layout</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">layout</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-        public static final int title = 0x7f0700b1;
-    }
-    public static final class layout {
-        private layout() {}
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> base3 <span style="color:#f92672">=</span> 0x7f09001d<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">string</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">string</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 
-        public static final int base3 = 0x7f09001d;
-    }
-    public static final class string {
-        private string() {}
-
-        public static final int base_string3 = 0x7f0b002a;
-    }
-}
-</code></pre>
-
-<p>このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> base_string3 <span style="color:#f92672">=</span> 0x7f0b002a<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。
 ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!!</p>
-
 <p>今後、中、大規模なAndroid開発はマルチモジュールに強く依存することになると思うので、このオプションをつけることで、デバッグ時のapkサイズを抑えることが期待できます。（リリース時はR8/Proguardを使うと思うので特に影響はない）</p>
-
-<h2 id="注意点">注意点</h2>
-
+<h2 id="heading">注意点</h2>
 <p>ただし、注意点として、依存関係にあるライブラリのRクラスのマージが行われないため、appcompatなどのRクラスにアクセスしたいときは、明示的にRクラスをimportをする必要があります。</p>
-
-<pre><code class="language-kotlin">import androidx.appcompat.R as AppCompatR
-</code></pre>
-
-<p>今までだとライブラリモジュールのRクラスからすべてのリソースにアクセスできたのですが、それができなくなります。なので、このオプションをtrueしたときは、ライブラリモジュールでRクラスのimportパスを変更する必要があります。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> androidx.appcompat.R <span style="color:#66d9ef">as</span> AppCompatR
+</code></pre></div><p>今までだとライブラリモジュールのRクラスからすべてのリソースにアクセスできたのですが、それができなくなります。なので、このオプションをtrueしたときは、ライブラリモジュールでRクラスのimportパスを変更する必要があります。</p>
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>マルチモジュール時代に適した機能だと思う
-
 <ul>
 <li>ライブラリサブモジュールのRクラスのサイズ大きくなる問題を解決できる</li>
 <li>デバッグ時のapkサイズをやや小さく出来る</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

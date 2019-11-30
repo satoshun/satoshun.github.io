@@ -20,10 +20,8 @@
   <meta property="twitter:title" content="KotlinのNon-Null型にnullを代入する方法">
 
   
-  <meta property="twitter:description" content="
-
-Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
-KotlinのNon-Null型に対し …">
+  <meta property="twitter:description" content="Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
+KotlinのNon-Null型に対してnull …">
   
 
   
@@ -90,54 +88,35 @@ KotlinのNon-Null型に対し …">
     
     <span class="post-date">Created at Wed, Nov 7, 2018</span>
     
-    
-
-<p>Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
+    <p>Kotlinではnullを扱いやすくするためにNullable、Non-Nullを型で制限することが出来ます。
 KotlinのNon-Null型に対してnullを代入しようとすると、代入するタイミングで例外を吐きます。
 JavaとKotlinを一緒に使っていると、この例外に遭遇することがあると思います。</p>
-
 <p>具体的には以下の挙動をします。</p>
-
-<pre><code class="language-java">public class Hoge {
-    // nullを返すメソッド
-    static String getName() {
-        return null;
-    }
-}
-</code></pre>
-
-<pre><code class="language-kotlin">val d: String = Hoge.getName() // ここで例外が投げられる
-println(d.length) // これは実行されない
-</code></pre>
-
-<p>このコードは、<code>val d: String = Hoge.getName()</code>で<code>IllegalStateException</code>を投げます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hoge</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// nullを返すメソッド
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> d: String = Hoge.getName() <span style="color:#75715e">// ここで例外が投げられる
+</span><span style="color:#75715e"></span>println(d.length) <span style="color:#75715e">// これは実行されない
+</span></code></pre></div><p>このコードは、<code>val d: String = Hoge.getName()</code>で<code>IllegalStateException</code>を投げます。
 Non-Null型にnullを代入しようとしているからです。</p>
-
 <p>次に、代入するタイミングで例外を投げなくする方法を紹介します。</p>
-
 <p>具体的には以下のコードで達成できます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">castNull</span>(): T = <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> T
 
-<pre><code class="language-kotlin">fun &lt;T&gt; castNull(): T = null as T
 
-
-val d: String = castNull() // ここでは例外が投げられない
-println(d.length) // ここで例外が投げられる
-</code></pre>
-
-<p>なぜこのような挙動になるのかを説明します。まず <code>castNull()</code>メソッドに定義されたジェネリック型Tは<code>Any?</code>をupperに持ちます。
+<span style="color:#66d9ef">val</span> d: String = castNull() <span style="color:#75715e">// ここでは例外が投げられない
+</span><span style="color:#75715e"></span>println(d.length) <span style="color:#75715e">// ここで例外が投げられる
+</span></code></pre></div><p>なぜこのような挙動になるのかを説明します。まず <code>castNull()</code>メソッドに定義されたジェネリック型Tは<code>Any?</code>をupperに持ちます。
 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。</p>
-
 <pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 CHECKCAST java/lang/Object
-</code></pre>
-
-<p><code>CHECKCAST</code>しかしておらず、nullかどうかのチェックをしていません。
+</code></pre><p><code>CHECKCAST</code>しかしておらず、nullかどうかのチェックをしていません。
 なので、<code>val d: String = castNull()</code>ではnullチェックがされないため例外が投げられず、実際にメソッドをコールする<code>println(d.length)</code>のタイミングで例外が投げられます。</p>
-
 <p>Non-Null型である<code>String</code>にnullを代入することが出来ました。</p>
-
 <p>次に、<code>fun &lt;T: Any&gt; castNull(): T = null as T</code>と、Non-Null型をupperにした場合のバイトコードは次になります。</p>
-
 <pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 DUP
 IFNONNULL L1
@@ -145,19 +124,12 @@ NEW kotlin/TypeCastException
 DUP
 LDC &quot;null cannot be cast to non-null type T&quot;
 INVOKESPECIAL kotlin/TypeCastException.&lt;init&gt; (Ljava/lang/String;)V
-</code></pre>
-
-<p>こちらのバイトコードには、nullチェックが入っていることが分かります。nullチェックをしているため、<code>val d: String = castNull()</code>のタイミングで例外が投げられます。</p>
-
+</code></pre><p>こちらのバイトコードには、nullチェックが入っていることが分かります。nullチェックをしているため、<code>val d: String = castNull()</code>のタイミングで例外が投げられます。</p>
 <p>Nullableな型をupperに持つ、持たないでnullチェックをするかどうかが決まる、という話でした。</p>
-
 <p>この挙動は <a href="https://youtrack.jetbrains.com/issue/KT-8135">https://youtrack.jetbrains.com/issue/KT-8135</a> ISSUEにバグとして報告されているので、今後異なるバイトコードが生成される可能性があります。
 もし、この挙動に依存するようなコードを書いている場合は注意が必要です。</p>
-
 <p>実世界では、mockito-kotlinがこの挙動に依存しているので、より興味がある方はぜひ読んでください😃 <a href="https://github.com/nhaarman/mockito-kotlin/blob/2.x/mockito-kotlin/src/main/kotlin/com/nhaarman/mockitokotlin2/internal/CreateInstance.kt#L46">ここのあたりで使っています</a></p>
-
-<h2 id="参考">参考</h2>
-
+<h2 id="heading">参考</h2>
 <ul>
 <li><a href="https://github.com/nhaarman/mockito-kotlin">https://github.com/nhaarman/mockito-kotlin</a></li>
 <li><a href="https://youtrack.jetbrains.com/issue/KT-8135">https://youtrack.jetbrains.com/issue/KT-8135</a></li>

@@ -22,8 +22,8 @@
 gist: https://gist.github.com/satoshun/3dc1302dbc163c9a9245
 にソースコードがあります.
 nil pointer receiver nilについて. 下のコードを見てください.
-package main import &amp;quot;fmt&amp;quot; type A struct { } func (a *A) b() { fmt.Println(1000) } func main() { var a *A = nil a.b() }  どう考えても, runtime error: nil pointer access 的なものが出るだろうと思っていました.
-sato$ go run main.go 1000  ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです! この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.
+package main import &amp;quot;fmt&amp;quot; type A struct { } func (a *A) b() { fmt.Println(1000) } func main() { var a *A = nil a.b() } どう考えても, runtime error: nil pointer access 的なものが出るだろうと思っていました.
+sato$ go run main.go 1000 ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです! この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.
 ちなみに, Value receiverの場合はエラーが出ます.
 package main import &amp;quot;fmt&amp;quot; type A struct { } // b is value receiver func (a A) b() { fmt.</description>
     </item>
@@ -38,12 +38,12 @@ package main import &amp;quot;fmt&amp;quot; type A struct { } // b is value rece
 下の手順でデプロイを行っています.
  Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動)  実際のPlaybookは以下のようになります.
 deploy.yml
---- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;quot;{{ user }}&amp;quot; tasks: - include: update_binary.yml - include: restart.yml  各タスクについて, 説明してきます.
+--- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;quot;{{ user }}&amp;quot; tasks: - include: update_binary.yml - include: restart.yml 各タスクについて, 説明してきます.
 Linux-amd64用のバイナリ生成 Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.
 やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.
 Makefile
-get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build .  build.yml
---- - name: build src command: make build-amd64 chdir={{ local_home }}  local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
+get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build . build.yml
+--- - name: build src command: make build-amd64 chdir={{ local_home }} local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
     </item>
     
     <item>
@@ -55,7 +55,7 @@ get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build .  build.yml
       <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
-package main import &amp;quot;fmt&amp;quot; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
+package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
     
   </channel>

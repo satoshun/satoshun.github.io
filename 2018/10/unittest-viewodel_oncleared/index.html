@@ -24,9 +24,7 @@
   <meta property="twitter:title" content="UnitテストでViewModelのonClearedをテストする">
 
   
-  <meta property="twitter:description" content="
-
-ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。 …">
+  <meta property="twitter:description" content="ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。 …">
   
 
   
@@ -93,84 +91,56 @@
     
     <span class="post-date">Updated at Wed, Dec 26, 2018</span>
     
-    
-
-<p>ふとAACの<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel">ViewModel</a>のonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。</p>
-
+    <p>ふとAACの<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel">ViewModel</a>のonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。</p>
 <p>環境は</p>
-
 <pre><code>&quot;junit:junit:4.12&quot;
 &quot;androidx.test:rules:1.1.1&quot;
 &quot;androidx.test:runner:1.1.1&quot;
 &quot;androidx.test.ext:junit:1.1.0&quot;
 &quot;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&quot;
 &quot;org.robolectric:robolectric:4.1&quot;
-</code></pre>
-
-<p>になります。</p>
-
+</code></pre><p>になります。</p>
 <p>また、サンプルコードは <a href="https://github.com/satoshun-android-example/Tests">satoshun-android-example/Tests</a>にあるので、参考してください😊</p>
-
-<h3 id="1-viewmodelstoreを使う">1. ViewModelStoreを使う</h3>
-
+<h3 id="1-viewmodelstore">1. ViewModelStoreを使う</h3>
 <p><code>ViewModelProviders.of(activity).get(class)</code>からViewModelを取得したときに、取得したViewModelは<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModelStore">ViewModelStore</a>にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。</p>
-
-<pre><code class="language-kotlin">@RunWith(AndroidJUnit4::class)
-class BaseViewModelTest {
-  @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@RunWith(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseViewModelTest</span> {
+  @get:Rule <span style="color:#66d9ef">val</span> activityRule = ActivityTestRule(FragmentActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
   @Test
-  fun `dispose a coroutine when finished lifecycle of ViewModel`() {
-    activityRule.activity.viewModelStore.clear() // ViewModelが開放される
-  }
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel`</span>() {
+    activityRule.activity.viewModelStore.clear() <span style="color:#75715e">// ViewModelが開放される
+</span><span style="color:#75715e"></span>  }
 }
-</code></pre>
-
-<p>このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。</p>
-
+</code></pre></div><p>このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。</p>
 <p>なので、素直にonDestroyをコールするテストも書いてみます。</p>
-
-<h3 id="2-instrumentation-callactivityondestroyを使う">2. Instrumentation.callActivityOnDestroyを使う</h3>
-
+<h3 id="2-instrumentationcallactivityondestroy">2. Instrumentation.callActivityOnDestroyを使う</h3>
 <p><code>Instrumentation</code>クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
 <code>Instrumentation</code>は<code>InstrumentationRegistry</code>クラスから取得することができ、次のように書くことで、<code>onDestroy</code>をコールすることができます。</p>
-
-<pre><code class="language-kotlin">@Test
-fun `dispose a coroutine when finished lifecycle of ViewModel 2`() {
-  // onDestroyがコールされViewModelが開放される
-  InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel 2`</span>() {
+  <span style="color:#75715e">// onDestroyがコールされViewModelが開放される
+</span><span style="color:#75715e"></span>  InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
 }
-</code></pre>
-
-<p>ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！</p>
-
+</code></pre></div><p>ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！</p>
 <p><em>以下追記</em></p>
-
-<h3 id="3-activityscenarioを使う">3. ActivityScenarioを使う</h3>
-
+<h3 id="3-activityscenario">3. ActivityScenarioを使う</h3>
 <p>新しく追加されたActivityScenarioを使うとよりすっきりと<code>onDestroy</code>を表現することが出来ます。</p>
-
-<pre><code class="language-kotlin">@Test
-fun `dispose a coroutine when finished lifecycle of ViewModel 3`() {
-  val scenario = ActivityScenario.launch(FragmentActivity::class.java)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel 3`</span>() {
+  <span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(FragmentActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   ...
-  // onDestroy状態になり、ViewModelのonClearedがコールされる
-  scenario.moveToState(Lifecycle.State.DESTROYED)
+  <span style="color:#75715e">// onDestroy状態になり、ViewModelのonClearedがコールされる
+</span><span style="color:#75715e"></span>  scenario.moveToState(Lifecycle.State.DESTROYED)
 }
-</code></pre>
-
-<p>ActivityScenarioは<code>moveToState</code>を介して、Activityのライフサイクルを操作することが出来ます。
+</code></pre></div><p>ActivityScenarioは<code>moveToState</code>を介して、Activityのライフサイクルを操作することが出来ます。
 今回はActivityをonDestroy状態にしたいので、scenario.moveToState(Lifecycle.State.DESTROYED)をコールします。</p>
-
 <p>これで、Unitテストで<code>ViewModel.onCleared</code>のテストをすることが出来ます！！</p>
-
-<h3 id="まとめ">まとめ</h3>
-
+<h3 id="heading">まとめ</h3>
 <ul>
 <li>新しく追加されたActivityScenarioを使えばかなりすっきりとライフサイクルが絡むテストが書ける！！</li>
 <li><a href="https://github.com/satoshun-android-example/Tests">サンプルコード satoshun-android-example/Tests</a></li>
 </ul>
-
 <p>以上になります。Happy Testing😊😊😊</p>
 
     <div class="mt30"></div>

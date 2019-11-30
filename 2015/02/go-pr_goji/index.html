@@ -22,11 +22,8 @@
   <meta property="twitter:title" content="Go: GojiにPRした話">
 
   
-  <meta property="twitter:description" content="
-
-Goにハマりつつあります. 最近家ではGo or Androidって感じです.
-
-最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, …">
+  <meta property="twitter:description" content="Goにハマりつつあります. 最近家ではGo or Androidって感じです.
+最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, Goji …">
   
 
   
@@ -93,26 +90,16 @@ Goにハマりつつあります. 最近家ではGo or Androidって感じです
     
     <span class="post-date">Created at Sun, Feb 22, 2015</span>
     
-    
-
-<p>Goにハマりつつあります. 最近家ではGo or Androidって感じです.</p>
-
+    <p>Goにハマりつつあります. 最近家ではGo or Androidって感じです.</p>
 <p>最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, GojiにPRをしたのでその話.</p>
-
 <h2 id="goji">Goji?</h2>
-
 <p><code>Goji is a minimalistic web framework that values composability and simplicity</code> です. SinatraのようなMicro Frameworkになっています.</p>
-
-<h2 id="どこにprしたか">どこにPRしたか?</h2>
-
+<h2 id="pr">どこにPRしたか?</h2>
 <p>バグではなくて, こっちのほうがGoライクにだよ!と思ったのでPRをしました.
 計2回PRしたので, それぞれ紹介します.</p>
-
 <h2 id="switch-type-assertion">switch type assertion</h2>
-
 <p>1つ目は, switch type assertionについてです.
 switch文の冒頭にある, type assertionの結果を使うようにしました.</p>
-
 <pre><code>--- a/web/pattern.go
 +++ b/web/pattern.go
 @@ -32,13 +32,13 @@ type Pattern interface {
@@ -133,15 +120,10 @@ switch文の冒頭にある, type assertionの結果を使うようにしまし�
         default:
                 log.Fatalf(&quot;Unknown pattern type %v. Expected a web.Pattern, &quot;+
                         &quot;regexp.Regexp, or a string.&quot;, p)
-</code></pre>
-
-<p>こちらのほうが, caseの中で個別にtype assertionをする必要がないので, 良いと思います.</p>
-
+</code></pre><p>こちらのほうが, caseの中で個別にtype assertionをする必要がないので, 良いと思います.</p>
 <h2 id="range-syntax">range syntax</h2>
-
 <p>次は, range syntaxです.
 s.patsはsliceになっており, 最初はlenで実装していましたが, rangeを使ったほうがスッキリするじゃないかと思いPRしました.</p>
-
 <pre><code>-       for i := 0; i &lt; len(s.pats); i++ {
 +       for i, pat := range s.pats {
                 sli := s.literals[i]
@@ -156,12 +138,8 @@ s.patsはsliceになっており, 最初はlenで実装していましたが, ra
                 }
                 path = path[m:]
         }
-</code></pre>
-
-<p>これは, 正直好みの問題かなとも思います. しかしrangeを使うほうが, 全ての<code>s.pats</code>でループするということを強調できるので, readableかなと思います.</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre><p>これは, 正直好みの問題かなとも思います. しかしrangeを使うほうが, 全ての<code>s.pats</code>でループするということを強調できるので, readableかなと思います.</p>
+<h2 id="heading">まとめ</h2>
 <p>GojiへのPRがプライベートでの初PRになりました. 今回くらい簡単な内容でしたら問題無いですが, もっと英語を勉強せねばとも思います.</p>
 
     <div class="mt30"></div>

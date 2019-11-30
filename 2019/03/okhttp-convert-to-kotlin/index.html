@@ -24,10 +24,8 @@
   <meta property="twitter:title" content="OkHttp: Java to KotlinのPRを見て勉強する">
 
   
-  <meta property="twitter:description" content="
-
-OkHttpがKotlin化をするというISSUEが立てられました。
-Upgrade OkHttp 3 to Kotlin and call it …">
+  <meta property="twitter:description" content="OkHttpがKotlin化をするというISSUEが立てられました。
+Upgrade OkHttp 3 to Kotlin and call it OkHttp …">
   
 
   
@@ -94,77 +92,45 @@ Upgrade OkHttp 3 to Kotlin and call it …">
     
     <span class="post-date">Created at Sun, Mar 24, 2019</span>
     
-    
-
-<p>OkHttpがKotlin化をするというISSUEが立てられました。
+    <p>OkHttpがKotlin化をするというISSUEが立てられました。
 <a href="https://github.com/square/okhttp/issues/4723">Upgrade OkHttp 3 to Kotlin and call it OkHttp 4</a></p>
-
 <p>これの是非についてはさておき。現状、いくつかのJavaコードがKotlinへと置き換わっているので、それらのレビューで気になったこと、知らなかったこと、忘れがちなことを勉強がてらまとめたいと思います。</p>
-
-<h2 id="checknotnullを使うかどうか">checkNotNullを使うかどうか</h2>
-
+<h2 id="checknotnull">checkNotNullを使うかどうか</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266693078">could also be <em>code</em> no preference myself</a></p>
-
 <p>Kotlinの標準ライブラリに、<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/check-not-null.html">checkNotNull</a>があります。
 これは、値がnullなら<code>IllegalStateException</code>例外を投げるものです。</p>
-
 <p>以下のコードは同じ意味を持ちます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> state = someState <span style="color:#f92672">?:</span> <span style="color:#66d9ef">throw</span> IllegalStateException(<span style="color:#e6db74">&#34;State must be set beforehand&#34;</span>)
 
-<pre><code class="language-kotlin">val state = someState ?: throw IllegalStateException(&quot;State must be set beforehand&quot;)
-
-val state = checkNotNull(someState) { &quot;State must be set beforehand&quot; }
-</code></pre>
-
-<p>ただ、<code>no preference myself</code>と言っている通り、使うかどうかはプロジェクトで分かれそうです。
+<span style="color:#66d9ef">val</span> state = checkNotNull(someState) { <span style="color:#e6db74">&#34;State must be set beforehand&#34;</span> }
+</code></pre></div><p>ただ、<code>no preference myself</code>と言っている通り、使うかどうかはプロジェクトで分かれそうです。
 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。</p>
-
-<h2 id="命名はto-が慣用的">命名はto***が慣用的</h2>
-
+<h2 id="to">命名はto***が慣用的</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266693257">idiomatic naming would be toUrl on the Kotlin side</a></p>
-
 <p>OkHttpでは、HttpUrlをURLに変換するためのメソッドとして<code>fun url(): URL</code>が定義されています。しかし、<code>fun toUrl(): URL</code>のほうがKotlinっぽいよと指摘がありました。</p>
-
 <p>確かに、言われてみるとAtoBクラス変換のメソッド名は、<code>to***</code>が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。</p>
-
-<h2 id="constを使う">constを使う</h2>
-
+<h2 id="const">constを使う</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266695491">discussion link</a></p>
-
 <p>constを使うと、Compile Time Constantsとなり、付けない場合に比べ効率的に動作します。ただし、プリミティブか、String型のみに有効です。</p>
-
 <p>より詳しくは<a href="https://kotlinlang.org/docs/reference/properties.html#compile-time-constants">公式ドキュメント</a>で。</p>
-
 <p>constを付けたほうが良いことは知っていたのですが、公式ドキュメントを読んだことがなかったので勉強になりました。</p>
-
-<h2 id="事前計算済みプロパティにのみ依存している場合は-事前計算済みプロパティにを使う">事前計算済みプロパティにのみ依存している場合は、事前計算済みプロパティにを使う</h2>
-
+<h2 id="heading">事前計算済みプロパティにのみ依存している場合は、事前計算済みプロパティにを使う</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266702974">scheme is a val, so this can just be a precomputed property without the get()</a></p>
-
 <p>isHttpsプロパティは最初、get()で定義していたんですが、isHttpsで使っているschemeプロパティがvalなので、get()が取り除かれました。</p>
-
 <p>事前計算出来るプロパティは事前に計算しておく方針のようです。そのほうが、無駄なメソッドが定義されないので、良いという判断なのでしょうか？</p>
-
-<h2 id="プロパティ-get-jvmnameはより慣用的">プロパティ + get:JvmNameはより慣用的</h2>
-
+<h2 id="--getjvmname">プロパティ + get:JvmNameはより慣用的</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266697339">property + @getJvmName(&ldquo;size&rdquo;) seems more idiomatic</a></p>
-
 <p>単純かつ副作用がない関数はプロパティのほうがKotlinっぽいです。さらに、<code>@get:JvmName</code>を使うことで、Javaからスムーズに使うことが出来ます、</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">size</span>(): Int = encodedNames.size
 
-<pre><code class="language-kotlin">fun size(): Int = encodedNames.size
-
-@get:JvmName(&quot;size&quot;)
-val size get(): Int = encodedNames.size
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+@get:JvmName(<span style="color:#e6db74">&#34;size&#34;</span>)
+<span style="color:#66d9ef">val</span> size <span style="color:#66d9ef">get</span>(): Int = encodedNames.size
+</code></pre></div><h2 id="heading1">まとめ</h2>
 <ul>
 <li>valをうまく使うことが、Kotlinっぽさを出すのに大切なんだなって</li>
 <li><code>checkNotNull</code>は、スコープ関数と一緒で、ある程度使い方の認識を合わせないとコードの一貫性が無くなりそう</li>
 </ul>
-
-<h2 id="今回の記事を書くために調べたコミット">今回の記事を書くために調べたコミット</h2>
-
+<h2 id="heading2">今回の記事を書くために調べたコミット</h2>
 <ul>
 <li><a href="https://github.com/square/okhttp/pull/4741">Convert some basic types to Kotlin #4741</a></li>
 <li><a href="https://github.com/square/okhttp/pull/4745">HttpUrl in Kotlin #4745</a></li>

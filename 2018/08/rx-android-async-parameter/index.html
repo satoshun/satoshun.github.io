@@ -24,9 +24,7 @@
   <meta property="twitter:title" content="RxAndroidのasyncパラメータを試してみた">
 
   
-  <meta property="twitter:description" content="
-
-RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これはMessage#setAsynchronousを使うことで、UIのパフォー …">
+  <meta property="twitter:description" content="RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これはMessage#setAsynchronousを使うことで、UIのパフォーマン …">
   
 
   
@@ -93,48 +91,33 @@ RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これ
     
     <span class="post-date">Created at Tue, Aug 21, 2018</span>
     
-    
-
-<p>RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これは<code>Message#setAsynchronous</code>を使うことで、UIのパフォーマンス向上を狙った機能です。
+    <p>RxAndroid 2.1.0で新しくasyncパラメータが追加されました。これは<code>Message#setAsynchronous</code>を使うことで、UIのパフォーマンス向上を狙った機能です。
 下のリンクに詳細な内容が書かれています。</p>
-
 <p><a href="https://medium.com/@sweers/rxandroids-new-async-api-4ab5b3ad3e93">RxAndroid’s New Async API</a></p>
-
 <p>この記事では、asyncがfalseの場合とtrueの場合でどれくらいの差が出るかを検証してみました。</p>
-
 <p>検証に使用したサンプルプロジェクトは以下になります。
 <a href="https://github.com/satoshun-android-example/RxAndroidExample">https://github.com/satoshun-android-example/RxAndroidExample</a></p>
-
 <p>サンプルプロジェクトをかいつまんで説明します。</p>
-
 <p>まず2つのスケジューラを作成し、</p>
-
-<pre><code class="language-kotlin">private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false)
-private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true)
-</code></pre>
-
-<p>作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。</p>
-
-<pre><code class="language-kotlin">// asyncがfalseの場合
-Observable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">false</span>)
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">true</span>)
+</code></pre></div><p>作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// asyncがfalseの場合
+</span><span style="color:#75715e"></span>Observable
     .fromCallable { System.currentTimeMillis() }
     .delay(index, TimeUnit.MILLISECONDS)
     .observeOn(mainScheduler)
     .subscribe(...)
 
-// asyncがtrueの場合
-Observable
+<span style="color:#75715e">// asyncがtrueの場合
+</span><span style="color:#75715e"></span>Observable
     .fromCallable { System.currentTimeMillis() }
     .delay(index, TimeUnit.MILLISECONDS)
     .observeOn(asyncMainScheduler)
     .subscribe(...)
-</code></pre>
-
-<p>フルコードは以下になります。
+</code></pre></div><p>フルコードは以下になります。
 <a href="https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt">https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt</a></p>
-
 <p>結果は、以下のようになりました。</p>
-
 <pre><code>// API27 エミュレータ
 main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和
 main=130857ms, async=126582ms
@@ -148,25 +131,17 @@ main=130050ms, async=125888ms
 main=129935ms, async=125853ms
 main=129908ms, async=125838ms
 main=129927ms, async=125824ms
-</code></pre>
-
-<p>asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</p>
-
+</code></pre><p>asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</p>
 <p>ただ注意点として、この機能は副作用がある可能性があります(なのでデフォルトではasyncはfasle)。ただ、Uberで1年間、プロダクションで運用したところ、特に大きな問題は起きなかったらしいので  <a href="https://github.com/ReactiveX/RxAndroid/pull/416">https://github.com/ReactiveX/RxAndroid/pull/416</a> 、ほぼ安全と考えて良さそうです。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <ul>
 <li>サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう</li>
-
-<li><p>導入は以下のコードを追加するだけなので、とても簡単</p>
-
-<pre><code class="language-kotlin">RxAndroidPlugins.setInitMainThreadSchedulerHandler {
-AndroidSchedulers.from(Looper.getMainLooper(), true)
-}
-</code></pre></li>
+<li>導入は以下のコードを追加するだけなので、とても簡単</li>
 </ul>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">RxAndroidPlugins.setInitMainThreadSchedulerHandler {
+    AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">true</span>)
+}
+</code></pre></div>
     <div class="mt30"></div>
     
       <ul class="article-post-tags">

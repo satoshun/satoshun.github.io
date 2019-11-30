@@ -22,16 +22,10 @@
   <meta property="twitter:title" content="RxJava 3.xの開発が本格的に始まりました">
 
   
-  <meta property="twitter:description" content="
-
-現状での差異をまとめておきます。
-
+  <meta property="twitter:description" content="現状での差異をまとめておきます。
 RxJava2との差異
-
 READMEから
-
 README.md
-
 RxJava2 との差分は以下のようになっています。 …">
   
 
@@ -99,133 +93,96 @@ RxJava2 との差分は以下のようになっています。 …">
     
     <span class="post-date">Updated at Tue, Jun 25, 2019</span>
     
-    
-
-<p>現状での差異をまとめておきます。</p>
-
-<h2 id="rxjava2との差異">RxJava2との差異</h2>
-
-<h3 id="readmeから">READMEから</h3>
-
+    <p>現状での差異をまとめておきます。</p>
+<h2 id="rxjava2">RxJava2との差異</h2>
+<h3 id="readme">READMEから</h3>
 <p><a href="https://github.com/ReactiveX/RxJava/blob/3.x/README.md">README.md</a></p>
-
 <p>RxJava2 との差分は以下のようになっています。</p>
-
 <ul>
 <li>fixed API mistakes and many limits of RxJava 2
-
 <ul>
 <li>RxJava2のいくつかのAPIのミス、制限を直している</li>
-</ul></li>
+</ul>
+</li>
 <li>intended to be a replacement for RxJava 2 with relatively few binary incompatible changes
-
 <ul>
 <li>APIに多少の変更があり、バイナリ互換がない</li>
-</ul></li>
+</ul>
+</li>
 <li>test and diagnostic support via test schedulers, test consumers and plugin hooks
-
 <ul>
 <li>テストのサポートの充実</li>
-</ul></li>
 </ul>
-
-<h3 id="3-x-different-docsから">3.x different docsから</h3>
-
+</li>
+</ul>
+<h3 id="3x-different-docs">3.x different docsから</h3>
 <p><a href="https://github.com/ReactiveX/RxJava/blob/3.x/docs/What's-different-in-3.0.md">3.x different docs</a></p>
-
-<h4 id="asメソッドとtoメソッド">asメソッドとtoメソッド</h4>
-
+<h4 id="asto">asメソッドとtoメソッド</h4>
 <p>toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Obsevable.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> Observable<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> converter<span style="color:#f92672">)</span>
 
-<pre><code class="language-java">// Obsevable.java
-public final &lt;R&gt; R to(Function&lt;? super Observable&lt;T&gt;, R&gt; converter)
-
-// Single.java
-public final &lt;R&gt; R to(Function&lt;? super Single&lt;T&gt;, R&gt; convert
-</code></pre>
-
-<p>同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。</p>
-
+<span style="color:#75715e">// Single.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> Single<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> convert
+</code></pre></div><p>同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。</p>
 <p>→ そこで、asメソッドが誕生</p>
-
 <p>asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型が定義され、1つのクラスに実装できるようになりました。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Observable.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> ObservableConverter<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> R<span style="color:#f92672">&gt;</span> converter<span style="color:#f92672">)</span>
 
-<pre><code class="language-java">// Observable.java
-public final &lt;R&gt; R to(@NonNull ObservableConverter&lt;T, ? extends R&gt; converter)
-
-// Single.java
-public final &lt;R&gt; R to(@NonNull SingleConverter&lt;T, ? extends R&gt; converter) {
-</code></pre>
-
-<p>→ autodisposeみたいな、ライブラリを作るときに便利</p>
-
+<span style="color:#75715e">// Single.java
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> SingleConverter<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> R<span style="color:#f92672">&gt;</span> converter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</code></pre></div><p>→ autodisposeみたいな、ライブラリを作るときに便利</p>
 <p>従来のtoメソッドは消えて、RxJava 3ではasに統合された。（メソッド名はtoです)</p>
-
-<h4 id="functional-typesがthrowableをthrowするようになった">Functional typesがThrowableをthrowするようになった</h4>
-
+<h4 id="functional-typesthrowablethrow">Functional typesがThrowableをthrowするようになった</h4>
 <p>今まではFunctional typesとして、Callableインターフェースを使っていました。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@FunctionalInterface</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Callable</span><span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">      * Computes a result, or throws an exception if unable to do so.
+</span><span style="color:#75715e">      *
+</span><span style="color:#75715e">      * @return computed result
+</span><span style="color:#75715e">      * @throws Exception if unable to compute a result
+</span><span style="color:#75715e">      */</span>
+    V <span style="color:#a6e22e">call</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>これからは、Supplierインターフェースを使うようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
 
-<pre><code class="language-java">@FunctionalInterface
-public interface Callable&lt;V&gt; {
-    /**
-      * Computes a result, or throws an exception if unable to do so.
-      *
-      * @return computed result
-      * @throws Exception if unable to compute a result
-      */
-    V call() throws Exception;
-}
-</code></pre>
-
-<p>これからは、Supplierインターフェースを使うようになります。</p>
-
-<pre><code class="language-java">public interface Supplier&lt;T&gt; {
-
-    /**
-     * Produces a value or throws an exception.
-     * @return the value produced
-     * @throws Throwable if the implementation wishes to throw any type of exception
-     */
-    T get() throws Throwable;
-}
-</code></pre>
-
-<p>throwする例外がException -&gt; Throwableに広がりました。</p>
-
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Produces a value or throws an exception.
+</span><span style="color:#75715e">     * @return the value produced
+</span><span style="color:#75715e">     * @throws Throwable if the implementation wishes to throw any type of exception
+</span><span style="color:#75715e">     */</span>
+    T <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>throwする例外がException -&gt; Throwableに広がりました。</p>
 <p>ちなみに、lambda式を使っている場合は変更するコードを必要がないかもしれません。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// before
+</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<pre><code class="language-java">// before
-source.to(flowable -&gt; flowable.blockingFirst());
-
-// after
-source.to(flowable -&gt; flowable.blockingFirst());
-</code></pre>
-
-<h4 id="startwithメソッド">startWithメソッド</h4>
-
+<span style="color:#75715e">// after
+</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><h4 id="startwith">startWithメソッド</h4>
 <p>startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがありましたが、
 startWithItem、startWithIterableにそれぞれリネームされました。</p>
-
-<h2 id="メモ-その他">メモ・その他</h2>
-
+<h2 id="heading">メモ・その他</h2>
 <ul>
 <li>continued support for Java 6+ &amp; Android 2.3+
-
 <ul>
 <li>RxJava 2.xとサポートバージョンは変わらないっぽい🎉</li>
-</ul></li>
+</ul>
+</li>
 <li>RxJava 2からの、大きな変更はなさそう。APIの整理がメイン？</li>
 <li>12月に正式版のリリースのようです <a href="https://twitter.com/RxJava/status/1141324394595266562">twitter/Rxjava</a></li>
 </ul>
-
-<h2 id="追記">追記</h2>
-
+<h2 id="heading1">追記</h2>
 <ul>
 <li>3.0.0-RC0が出ました
-
 <ul>
 <li><a href="https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar">https://search.maven.org/artifact/io.reactivex.rxjava3/rxjava/3.0.0-RC0/jar</a></li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

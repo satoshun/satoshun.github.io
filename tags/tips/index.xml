@@ -20,10 +20,10 @@
       <guid>https://satoshun.github.io/2015/02/tips-ser/</guid>
       <description>サクッとローカルサーバを立てるためのTipsを紹介します.
 下記コマンドは, Pythonが入っていれば, 問題なく動きます.
-$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ...  僕は, 上記コマンドをaliasに登録しています.
-alias ser=&#39;python -m CGIHTTPServer&#39;  これで, serでサーバが立つようになりました.
+$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... 僕は, 上記コマンドをaliasに登録しています.
+alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
 ちなみに, Portを指定することも出来ます.
-$ ser Serving HTTP on 0.0.0.0 port 8000 ... $ ser 8001 Serving HTTP on 0.0.0.0 port 8001 ...  簡単にローカルサーバを立てることが出来るようになりました.</description>
+$ ser Serving HTTP on 0.0.0.0 port 8000 ... $ ser 8001 Serving HTTP on 0.0.0.0 port 8001 ... 簡単にローカルサーバを立てることが出来るようになりました.</description>
     </item>
     
   </channel>

@@ -26,9 +26,7 @@
   <meta property="twitter:title" content="Dagger 2.22にFactoryクラスが導入されました">
 
   
-  <meta property="twitter:description" content="
-
-Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。 …">
+  <meta property="twitter:description" content="Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。 …">
   
 
   
@@ -95,119 +93,94 @@ Dagger 2.22からComponent.Factoryクラスが導入されました。この記�
     
     <span class="post-date">Created at Sun, Apr 7, 2019</span>
     
-    
-
-<p>Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。</p>
-
-<h2 id="component-factoryとは">Component.Factoryとは?</h2>
-
+    <p>Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。</p>
+<h2 id="componentfactory">Component.Factoryとは?</h2>
 <p>実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。</p>
-
 <p>例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。</p>
-
-<pre><code class="language-kotlin">// Factoryを使う場合
-@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Factoryを使う場合
+</span><span style="color:#75715e"></span>@Component
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
+  <span style="color:#66d9ef">val</span> presenter: ArticlePresenter
 
   @Component.Factory
-  interface Factory {
-    fun create(
+  <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Factory</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">create</span>(
       @BindsInstance id: Long
     ): AppComponent
   }
 }
 
-val component = DaggerAppComponent
+<span style="color:#66d9ef">val</span> component = DaggerAppComponent
   .factory()
-  .create(50)
-val presenter = component.presentere
+  .create(<span style="color:#ae81ff">50</span>)
+<span style="color:#66d9ef">val</span> presenter = component.presentere
 
 ---
 
-// Builderを使う場合
-@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
+<span style="color:#75715e">// Builderを使う場合
+</span><span style="color:#75715e"></span>@Component
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
+  <span style="color:#66d9ef">val</span> presenter: ArticlePresenter
 
   @Component.Builder
-  interface Builder {
-    @BindsInstance fun bindId(id: Long): Builder
-    fun build(): AppComponent
+  <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Builder</span> {
+    @BindsInstance <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindId</span>(id: Long): Builder
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">build</span>(): AppComponent
   }
 }
 
-val component = DaggerAppComponent
+<span style="color:#66d9ef">val</span> component = DaggerAppComponent
   .builder()
-  .bindId(50)
+  .bindId(<span style="color:#ae81ff">50</span>)
   .build()
-val presenter = component.presenter
-</code></pre>
-
-<p>この2つのコードは、AppComponentにIntをBindsしています。渡し方、定義の仕方は違いますが、やっていることは変わりません。</p>
-
+<span style="color:#66d9ef">val</span> presenter = component.presenter
+</code></pre></div><p>この2つのコードは、AppComponentにIntをBindsしています。渡し方、定義の仕方は違いますが、やっていることは変わりません。</p>
 <p>ただし、Factoryを使うパターンはstatelessです。
 Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドから必要な値を渡します。</p>
-
-<h2 id="ユースケース">ユースケース</h2>
-
+<h2 id="heading">ユースケース</h2>
 <p>次に、Factoryのユースケースを考えます。そもそもこの機能は <a href="https://github.com/google/dagger/issues/935">Feature request: factory method in components for assisted injection</a> を解決したいモチベーションがあります。</p>
-
 <p>例えば、次のコードをDaggerで解決したい。</p>
-
-<pre><code class="language-java">class ArticlePresenter {
-	...
-	ArticlePresenter(long articleId, ArticleService articleService) {
-		...
-	}
-}
-</code></pre>
-
-<p>longの値を後から決めたいときには、今までだと</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticlePresenter</span> <span style="color:#f92672">{</span>
+	<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+	ArticlePresenter<span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> articleId<span style="color:#f92672">,</span> ArticleService articleService<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+		<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+	<span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>longの値を後から決めたいときには、今までだと</p>
 <ul>
 <li>AssistedInject</li>
 <li>AutoFactory</li>
 </ul>
-
 <p>のどちらかを使っていました。これに、今回のdagger.Factoryが加わりました。
 dagger.Factoryを使うと、このコードを解決することが出来ます！</p>
-
 <p>ただし、現状のdagger.Factoryだと多くのボイラープレートコードが必要です。</p>
-
-<pre><code class="language-kotlin">@Component
-interface AppComponent {
-  val presenter: ArticlePresenter
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Component
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
+  <span style="color:#66d9ef">val</span> presenter: ArticlePresenter
 
   @Component.Factory
-  interface Factory {
-    fun create(
+  <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Factory</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">create</span>(
       @BindsInstance id: Long
     ): AppComponent
   }
 }
 
-val component = DaggerAppComponent
+<span style="color:#66d9ef">val</span> component = DaggerAppComponent
   .factory()
-  .create(50)
-</code></pre>
-
-<p>AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレートコードを緩和することが出来ます。
+  .create(<span style="color:#ae81ff">50</span>)
+</code></pre></div><p>AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレートコードを緩和することが出来ます。
 なので、このようなパターンのコードがよく出てくるようなプロジェクトは、AssistedInject or AutoFactoryの導入を検討しても良いと思います。pure Daggerで運用したい、もしくはそこまでこのパターンが出てこないなら、dagger.Factoryを使うのが良いかと思います。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>dagger.Factoryが導入された
-
 <ul>
 <li>ただし、AutoFactoryやAssistedInjectのほうが多機能</li>
-</ul></li>
+</ul>
+</li>
 <li>サンプルコードは<a href="https://github.com/satoshun-android-example/DaggerFactoryExample">satoshun/DaggerFactoryExample</a>にあります😃</li>
 </ul>
-
-<hr />
-
+<hr>
 <p>内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあれば<a href="https://twitter.com/stsn_jp">Twitter</a>などから教えてもらえればとても嬉しいです😊</p>
 
     <div class="mt30"></div>

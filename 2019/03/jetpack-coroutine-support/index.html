@@ -28,10 +28,8 @@
   <meta property="twitter:title" content="Android: JetpackのCoroutine Supportについて">
 
   
-  <meta property="twitter:description" content="
-
-Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
-どのライブラリで対応が進んでいるか気になったので、軽 …">
+  <meta property="twitter:description" content="Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
+どのライブラリで対応が進んでいるか気になったので、軽くま …">
   
 
   
@@ -98,85 +96,62 @@ Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポート
     
     <span class="post-date">Updated at Sun, Mar 10, 2019</span>
     
-    
-
-<p>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
+    <p>Jetpackのいくつかのライブラリでは、Kotlin Coroutineのサポートが入っていますが、
 どのライブラリで対応が進んでいるか気になったので、軽くまとめます。使い方については言及しません。</p>
-
 <p>以下、<del>2019年3月10日</del> 2019年3月11日の調査結果になります。
 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。</p>
-
 <p>Lifecycle</p>
-
-<pre><code class="language-kotlin">// Lifecycleに従うCoroutineScopeの生成
-val Lifecycle.coroutineScope: CoroutineScope
-</code></pre>
-
-<p>LifecycleOwner</p>
-
-<pre><code class="language-kotlin">// LifecycleOwnerに従うCoroutineScopeの生成
-val LifecycleOwner.lifecycleScope: CoroutineScope
-</code></pre>
-
-<p>ViewModel</p>
-
-<pre><code class="language-kotlin">// ViewModelに従うCoroutineScopeの生成
-val ViewModel.viewModelScope: CoroutineScope
-</code></pre>
-
-<p>WorkManager</p>
-
-<pre><code class="language-kotlin">abstract class CoroutineWorker(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Lifecycleに従うCoroutineScopeの生成
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> Lifecycle.coroutineScope: CoroutineScope
+</code></pre></div><p>LifecycleOwner</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// LifecycleOwnerに従うCoroutineScopeの生成
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> LifecycleOwner.lifecycleScope: CoroutineScope
+</code></pre></div><p>ViewModel</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ViewModelに従うCoroutineScopeの生成
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> ViewModel.viewModelScope: CoroutineScope
+</code></pre></div><p>WorkManager</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutineWorker</span>(
   appContext: Context,
   params: WorkerParameters
 ) : ListenableWorker(appContext, params) {
-  // suspendメソッドで定義された
-  abstract suspend fun doWork(): Result
+  <span style="color:#75715e">// suspendメソッドで定義された
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">doWork</span>(): Result
 }
-</code></pre>
-
-<p>Room</p>
-
-<pre><code class="language-kotlin">// Dao内でsuspendメソッドが使える
-@Dao
-interface HogesDao {
+</code></pre></div><p>Room</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Dao内でsuspendメソッドが使える
+</span><span style="color:#75715e"></span>@Dao
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HogesDao</span> {
   @Insert
-  suspend fun add(hoge: Hoge)
+  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">add</span>(hoge: Hoge)
 
-  @Query(&quot;SELECT * FROM hoge WHERE id = :id&quot;)
-  suspend fun get(id: String): Hoge
+  @Query(<span style="color:#e6db74">&#34;SELECT * FROM hoge WHERE id = :id&#34;</span>)
+  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">get</span>(id: String): Hoge
 
   ...
 }
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre></div><h2 id="heading">まとめ</h2>
 <ul>
 <li>Lifecycle、LifecycleOwner、ViewModelはそれらのライフサイクルに従う、CoroutineScopeの生成が出来る</li>
 <li>WorkManagerのdoWorkがsuspendメソッドになった
-
 <ul>
 <li>doWorkの中で、他のsuspendメソッドがコールできる</li>
-</ul></li>
+</ul>
+</li>
 <li>RoomのDao内でsuspendメソッドが定義出来る</li>
 </ul>
-
 <p>結構対応がされていた😃😃😃</p>
-
-<h2 id="補足">補足</h2>
-
+<h2 id="heading1">補足</h2>
 <ul>
 <li>LiveDataへのサポートも入るかも
-
 <ul>
 <li><a href="https://android-review.googlesource.com/c/platform/frameworks/support/+/890736">WIP corutine live data (Id0e47973) · Gerrit Code Review</a></li>
-</ul></li>
+</ul>
+</li>
 <li>Lifecycleに特定のstateに入った時に実行される拡張関数群が入りそう
-
 <ul>
 <li><a href="https://android-review.googlesource.com/c/platform/frameworks/support/+/905134">Lifecycle Dispatcher (Ib1211c0f) · Gerrit Code Review</a></li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

@@ -20,15 +20,11 @@
   <meta property="twitter:title" content="Python: Pythonライクな書き方 Part1">
 
   
-  <meta property="twitter:description" content="
-
-Pythonライクな書き方について紹介します. Part1です.
-
+  <meta property="twitter:description" content="Pythonライクな書き方について紹介します. Part1です.
 for文関連
-
 indexを使いたいとき
-
-Bad: range, len …">
+Bad: range, lenを使う
+names = …">
   
 
   
@@ -95,294 +91,179 @@ Bad: range, len …">
     
     <span class="post-date">Created at Thu, Apr 30, 2015</span>
     
-    
-
-<p>Pythonライクな書き方について紹介します. Part1です.</p>
-
-<h2 id="for文関連">for文関連</h2>
-
-<h3 id="indexを使いたいとき">indexを使いたいとき</h3>
-
+    <p>Pythonライクな書き方について紹介します. Part1です.</p>
+<h2 id="for">for文関連</h2>
+<h3 id="index">indexを使いたいとき</h3>
 <p>Bad: range, lenを使う</p>
-
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
-for i in range(len(names)):
-    print i, names[i]
-</code></pre>
-
-<p>Good: enumerateを使う</p>
-
-<pre><code class="language-python">for i, name in enumerate(names):
-    print i, name
-</code></pre>
-
-<h3 id="2つのコレクションを扱うとき">2つのコレクションを扱うとき</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>]
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(names)):
+    <span style="color:#66d9ef">print</span> i, names[i]
+</code></pre></div><p>Good: enumerateを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i, name <span style="color:#f92672">in</span> enumerate(names):
+    <span style="color:#66d9ef">print</span> i, name
+</code></pre></div><h3 id="2">2つのコレクションを扱うとき</h3>
 <p>Bad: indexを使ってアクセスする</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>]
+ages <span style="color:#f92672">=</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">19</span>, <span style="color:#ae81ff">11</span>]
 
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
-ages = [12, 19, 11]
-
-for i in range(min(len(names), len(ages))):
-    print names[i], ages[i]
-</code></pre>
-
-<p>Good: 組み込み関数zipを使う</p>
-
-<pre><code class="language-python">for name, age in zip(names, ages):
-    print name, age
-</code></pre>
-
-<h2 id="dictionaryでkey-valueを使う">dictionaryでkey, valueを使う</h2>
-
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(min(len(names), len(ages))):
+    <span style="color:#66d9ef">print</span> names[i], ages[i]
+</code></pre></div><p>Good: 組み込み関数zipを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> name, age <span style="color:#f92672">in</span> zip(names, ages):
+    <span style="color:#66d9ef">print</span> name, age
+</code></pre></div><h2 id="dictionarykey-value">dictionaryでkey, valueを使う</h2>
 <p>Bad: keyでアクセス, valueを取得する</p>
-
-<pre><code class="language-python">persons = {'TDN': 12, 'tanaka': 24, 'nakata': 11}
-for k in persons:
-    print k, persons[k]
-</code></pre>
-
-<p>Good: itemsメソッドを使う</p>
-
-<pre><code class="language-python">persons = {'TDN': 12, 'tanaka': 24, 'nakata': 11}
-for k, v in persons.items():
-    print k, v
-</code></pre>
-
-<h2 id="値の入れかえ-swap-values">値の入れかえ(swap values)</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">persons <span style="color:#f92672">=</span> {<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">12</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tanaka</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">24</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">nakata</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">11</span>}
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> persons:
+    <span style="color:#66d9ef">print</span> k, persons[k]
+</code></pre></div><p>Good: itemsメソッドを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">persons <span style="color:#f92672">=</span> {<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">12</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tanaka</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">24</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">nakata</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">11</span>}
+<span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> persons<span style="color:#f92672">.</span>items():
+    <span style="color:#66d9ef">print</span> k, v
+</code></pre></div><h2 id="swap-values">値の入れかえ(swap values)</h2>
 <p>Bad: tmp変数を定義する</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+b <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
 
-<pre><code class="language-python">a = 0
-b = 10
+tmp <span style="color:#f92672">=</span> a
+a <span style="color:#f92672">=</span> b
+b <span style="color:#f92672">=</span> tmp
+</code></pre></div><p>Good: onelineで交換する</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>
 
-tmp = a
-a = b
-b = tmp
-</code></pre>
-
-<p>Good: onelineで交換する</p>
-
-<pre><code class="language-python">a, b = 0, 10
-
-a, b = b, a
-</code></pre>
-
-<h2 id="dictionaryの作成">dictionaryの作成</h2>
-
+a, b <span style="color:#f92672">=</span> b, a
+</code></pre></div><h2 id="dictionary">dictionaryの作成</h2>
 <p>indexを使う方法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>]
+d <span style="color:#f92672">=</span> dict(enumerate(names))
 
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
-d = dict(enumerate(names))
+<span style="color:#f92672">&gt;</span> {<span style="color:#ae81ff">0</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#ae81ff">1</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#ae81ff">2</span>: <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>}
+</code></pre></div><p>2つのリストのペアを使う方法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>]
+ages <span style="color:#f92672">=</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">19</span>, <span style="color:#ae81ff">11</span>]
+d <span style="color:#f92672">=</span> dict(zip(names, ages))
 
-&gt; {0: 'TDN', 1: 'suzuki', 2: 'tom'}
-</code></pre>
-
-<p>2つのリストのペアを使う方法</p>
-
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
-ages = [12, 19, 11]
-d = dict(zip(names, ages))
-
-&gt; {'tom': 11, 'suzuki': 19, 'TDN': 12}
-</code></pre>
-
-<h2 id="dictionaryを使ったグルーピング">dictionaryを使ったグルーピング</h2>
-
+<span style="color:#f92672">&gt;</span> {<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">11</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">19</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>: <span style="color:#ae81ff">12</span>}
+</code></pre></div><h2 id="dictionary1">dictionaryを使ったグルーピング</h2>
 <p>Bad: ifでいちいちチェックする</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sato</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">seko</span><span style="color:#e6db74">&#39;</span>]
+d <span style="color:#f92672">=</span> {}
+<span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names:
+    key <span style="color:#f92672">=</span> name[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">if</span> key <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> d:
+        d[key] <span style="color:#f92672">=</span> []
+    d[key]<span style="color:#f92672">.</span>append(name)
+</code></pre></div><p>Good: setdefaultを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sato</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">seko</span><span style="color:#e6db74">&#39;</span>]
+d <span style="color:#f92672">=</span> {}
+<span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names:
+    key <span style="color:#f92672">=</span> name[<span style="color:#ae81ff">0</span>]
+    d<span style="color:#f92672">.</span>setdefault(key, [])<span style="color:#f92672">.</span>append(name)
+</code></pre></div><p>Good: defaultdictを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> collections <span style="color:#f92672">import</span> defaultdict
 
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
-d = {}
-for name in names:
-    key = name[0]
-    if key not in d:
-        d[key] = []
-    d[key].append(name)
-</code></pre>
-
-<p>Good: setdefaultを使う</p>
-
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
-d = {}
-for name in names:
-    key = name[0]
-    d.setdefault(key, []).append(name)
-</code></pre>
-
-<p>Good: defaultdictを使う</p>
-
-<pre><code class="language-python">from collections import defaultdict
-
-names = ['TDN', 'suzuki', 'tom', 'sato', 'seko']
-d = defaultdict(list)
-for name in names:
-    key = name[0]
-    d[key].append(name)
-</code></pre>
-
-<h2 id="効率のよいソート">効率のよいソート</h2>
-
+names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sato</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">seko</span><span style="color:#e6db74">&#39;</span>]
+d <span style="color:#f92672">=</span> defaultdict(list)
+<span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names:
+    key <span style="color:#f92672">=</span> name[<span style="color:#ae81ff">0</span>]
+    d[key]<span style="color:#f92672">.</span>append(name)
+</code></pre></div><h2 id="heading">効率のよいソート</h2>
 <p>Bad: cmpを用いてソートする</p>
-
-<pre><code class="language-python">names = ['TDN', 'suzuki', 'tom']
-def cmp_function(a, b):
-    if len(a) &gt; len(b):
-        return 1
-    if len(a) &lt; len(b):
-        return -1
-    return 0
-sorted(names, cmp=cmp_function)
-</code></pre>
-
-<p>Good: keyを用いてソートする</p>
-
-<pre><code class="language-python">sorted(names, key=len)
-</code></pre>
-
-<h2 id="ファイルを開く-閉じる時">ファイルを開く, 閉じる時</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>]
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cmp_function</span>(a, b):
+    <span style="color:#66d9ef">if</span> len(a) <span style="color:#f92672">&gt;</span> len(b):
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">if</span> len(a) <span style="color:#f92672">&lt;</span> len(b):
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+sorted(names, cmp<span style="color:#f92672">=</span>cmp_function)
+</code></pre></div><p>Good: keyを用いてソートする</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sorted(names, key<span style="color:#f92672">=</span>len)
+</code></pre></div><h2 id="-">ファイルを開く, 閉じる時</h2>
 <p>Bad: finallyを使う</p>
-
-<pre><code class="language-python">f = open('build.gradle')
-try:
-    data = f.read()
-finally:
-    f.close()
-</code></pre>
-
-<p>Good: withを使う</p>
-
-<pre><code class="language-python">with open('build.gradle') as f:
-    data = f.read()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">f <span style="color:#f92672">=</span> open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">build.gradle</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#66d9ef">try</span>:
+    data <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+<span style="color:#66d9ef">finally</span>:
+    f<span style="color:#f92672">.</span>close()
+</code></pre></div><p>Good: withを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">build.gradle</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    data <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
 
 
-## リスト内包
+<span style="color:#75715e">## リスト内包</span>
 
 Bad: forをわざわざ使う
 
-</code></pre>
+<span style="color:#e6db74">``</span><span style="color:#960050;background-color:#1e0010">`</span>python
+total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+    total <span style="color:#f92672">+</span><span style="color:#f92672">=</span> i <span style="color:#f92672">*</span><span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>
+</code></pre></div><p>Good: リスト内包, ジェネレータを使う</p>
+<pre><code>total = sum(i ** 2 for i in range(10))
+</code></pre><h2 id="heading1">文字列結合</h2>
+<p>Bad: stringを + でつないでいく</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sato</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">seko</span><span style="color:#e6db74">&#39;</span>]
+s <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names:
+    s <span style="color:#f92672">+</span><span style="color:#f92672">=</span> name
+</code></pre></div><p>Good: joinメソッドを使う</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TDN</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">suzuki</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tom</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">sato</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">seko</span><span style="color:#e6db74">&#39;</span>]
+<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(names)
+</code></pre></div><h2 id="heading2">デコレータを使う</h2>
+<p>Bad: メソッド内にcacheのロジックが入りこんでいる</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_data</span>(filepath, saved<span style="color:#f92672">=</span>{}):
+    <span style="color:#66d9ef">if</span> filepath <span style="color:#f92672">in</span> saved:
+        <span style="color:#66d9ef">return</span> cache[filepath]
 
-<p>python
-total = 0
-for i in range(10):
-    total += i ** 2</p>
+    <span style="color:#66d9ef">with</span> open(filepaht, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        saved[filepath] <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+    <span style="color:#66d9ef">return</span> saved[filepath]
+</code></pre></div><p>Good: cacheのロジックを外部に切り出す</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> wraps
 
-<pre><code>
-Good: リスト内包, ジェネレータを使う
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cache</span>(func):
+    saved <span style="color:#f92672">=</span> {}
 
-</code></pre>
+    <span style="color:#a6e22e">@wraps</span>(func)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(filepath):
+        <span style="color:#66d9ef">if</span> filepath <span style="color:#f92672">in</span> saved:
+            <span style="color:#66d9ef">return</span> saved[filepath]
+        result <span style="color:#f92672">=</span> func(filepath)
+        saved[filepath] <span style="color:#f92672">=</span> result
+        <span style="color:#66d9ef">return</span> result
+    <span style="color:#66d9ef">return</span> wrapper
 
-<p>total = sum(i ** 2 for i in range(10))</p>
 
-<pre><code>
+<span style="color:#a6e22e">@cache</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_data</span>(filepath):
+    <span style="color:#66d9ef">with</span> open(filepath, <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        <span style="color:#66d9ef">return</span> f<span style="color:#f92672">.</span>read()
+</code></pre></div><h2 id="contextmanager">contextmanagerを使う</h2>
+<p>Before: 例外をpassしているのが正しいのか, 実装し忘れか判断が付き難い</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
 
-## 文字列結合
+<span style="color:#66d9ef">try</span>:
+    os<span style="color:#f92672">.</span>remove(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">.tmp</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span>:
+    <span style="color:#66d9ef">pass</span>
+</code></pre></div><p>After: ignoredのように明示的な名前をつけて定義する</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
+<span style="color:#f92672">from</span> contextlib <span style="color:#f92672">import</span> contextmanager
 
-Bad: stringを + でつないでいく
+<span style="color:#a6e22e">@contextmanager</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ignored</span>(<span style="color:#f92672">*</span>exc):
+    <span style="color:#66d9ef">try</span>:
+        <span style="color:#66d9ef">yield</span>
+    <span style="color:#66d9ef">except</span> exc:
+        <span style="color:#66d9ef">pass</span>
 
-</code></pre>
 
-<p>python
-names = [&lsquo;TDN&rsquo;, &lsquo;suzuki&rsquo;, &lsquo;tom&rsquo;, &lsquo;sato&rsquo;, &lsquo;seko&rsquo;]
-s = &ldquo;
-for name in names:
-    s += name</p>
-
-<pre><code>
-Good: joinメソッドを使う
-
-</code></pre>
-
-<p>python
-names = [&lsquo;TDN&rsquo;, &lsquo;suzuki&rsquo;, &lsquo;tom&rsquo;, &lsquo;sato&rsquo;, &lsquo;seko&rsquo;]
-&ldquo;.join(names)</p>
-
-<pre><code>
-
-## デコレータを使う
-
-Bad: メソッド内にcacheのロジックが入りこんでいる
-
-</code></pre>
-
-<p>python
-def get_data(filepath, saved={}):
-    if filepath in saved:
-        return cache[filepath]</p>
-
-<pre><code>with open(filepaht, 'r') as f:
-    saved[filepath] = f.read()
-return saved[filepath]
-</code></pre>
-
-<pre><code>
-Good: cacheのロジックを外部に切り出す
-
-</code></pre>
-
-<p>python
-from functools import wraps</p>
-
-<p>def cache(func):
-    saved = {}</p>
-
-<pre><code>@wraps(func)
-def wrapper(filepath):
-    if filepath in saved:
-        return saved[filepath]
-    result = func(filepath)
-    saved[filepath] = result
-    return result
-return wrapper
-</code></pre>
-
-<p>@cache
-def get_data(filepath):
-    with open(filepath, &lsquo;r&rsquo;) as f:
-        return f.read()</p>
-
-<pre><code>
-
-## contextmanagerを使う
-
-Before: 例外をpassしているのが正しいのか, 実装し忘れか判断が付き難い
-
-</code></pre>
-
-<p>python
-import os</p>
-
-<p>try:
-    os.remove(&lsquo;.tmp&rsquo;)
-except OSError:
-    pass</p>
-
-<pre><code>
-After: ignoredのように明示的な名前をつけて定義する
-
-</code></pre>
-
-<p>python
-import os
-from contextlib import contextmanager</p>
-
-<p>@contextmanager
-def ignored(*exc):
-    try:
-        yield
-    except exc:
-        pass</p>
-
-<p>with ignored(OSError):
-    os.remove(&lsquo;tmp&rsquo;)<br />
-```</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<span style="color:#66d9ef">with</span> ignored(<span style="color:#a6e22e">OSError</span>):
+    os<span style="color:#f92672">.</span>remove(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">tmp</span><span style="color:#e6db74">&#39;</span>)  
+</code></pre></div><h2 id="heading3">まとめ</h2>
 <p>パート2に続く..</p>
-
-<h2 id="参考">参考</h2>
-
+<h2 id="heading4">参考</h2>
 <p><a href="https://www.youtube.com/watch?v=OSGv2VnC0go">Transforming Code into Beautiful, Idiomatic Python</a></p>
 
     <div class="mt30"></div>

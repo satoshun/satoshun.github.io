@@ -22,10 +22,8 @@
   <meta property="twitter:title" content="Android: ContraintLayoutでネガティブマージンを実現する">
 
   
-  <meta property="twitter:description" content="
-
-ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
-この記事ではSpaceを使ったネガティブマー …">
+  <meta property="twitter:description" content="ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
+この記事ではSpaceを使ったネガティブマージン …">
   
 
   
@@ -92,56 +90,44 @@ ConstraintLayoutはネガティブマージンに対応していないため、�
     
     <span class="post-date">Created at Wed, Jul 25, 2018</span>
     
-    
-
-<p>ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
+    <p>ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。
 この記事では<a href="https://developer.android.com/reference/android/widget/Space">Space</a>を使ったネガティブマージンの実現について説明します。</p>
-
-<h2 id="例">例</h2>
-
+<h2 id="heading">例</h2>
 <p>ネガティブマージンと同等の大きさを持った<code>Space</code>を定義して、そこにConstraintを設定するだけです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+    <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+    <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
+    <span style="color:#a6e22e">xmlns:tools=</span><span style="color:#e6db74">&#34;http://schemas.android.com/tools&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">android:clipToPadding=</span><span style="color:#e6db74">&#34;false&#34;</span>
+    <span style="color:#a6e22e">android:padding=</span><span style="color:#e6db74">&#34;80dp&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;match_parent&quot;
-    android:clipToPadding=&quot;false&quot;
-    android:padding=&quot;80dp&quot;&gt;
+  <span style="color:#f92672">&lt;Space</span>
+      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/negative&#34;</span>
+      <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;15dp&#34;</span>
+      <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;15dp&#34;</span>
+      <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+      <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-  &lt;Space
-      android:id=&quot;@+id/negative&quot;
-      android:layout_width=&quot;15dp&quot;
-      android:layout_height=&quot;15dp&quot;
-      app:layout_constraintStart_toStartOf=&quot;parent&quot;
-      app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
-
-  &lt;ImageView
-      android:id=&quot;@+id/icon&quot;
-      android:layout_width=&quot;30dp&quot;
-      android:layout_height=&quot;30dp&quot;
-      android:contentDescription=&quot;icon&quot;
-      app:layout_constraintBottom_toBottomOf=&quot;@id/negative&quot;
-      app:layout_constraintEnd_toEndOf=&quot;@id/negative&quot;
-      tools:src=&quot;@tools:sample/avatars&quot; /&gt;
-&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
-</code></pre>
-
-<p><img src="https://lh3.googleusercontent.com/LQrkHsAeTBvqlZWuw1Ccpm_dvrnCsdK7aH2rMB6HYakF_jv3q6Zf_-QBtfOo1eD0EjLBOjxy11nx2TAlZstr354XRiSXt7HUxENJXji8ZxWNxeJUTe8g9jIstSO1PRMsw7f8O5xuCakktrJLSUPLk01CI1N6OJ9MGMvsSbSDO6o4t7oeipkV9f7klqmzdxtoxESyDzoEI5SfeMOxynhmTGLwv6RnaASEOzVyL2xEW8eq63erAiu6ptdwl-_rQkxAnAIhYpSuPZjweCPBzf3GiMJi5gx_Ciz348GmoSaTIhuGM6grHd181fBGkZQkbvgg5ggrk5pLlja1N4eZA54n5rgzKs5gT36fA8K_ZFrAQI0H50cvAbesIeDVb05MZ2pP592Kwb8moTt6xp0TTFYrJf-c-MVljio-JvAKuUC0fPWPpdgMyxkJHW4AzK9l-Yo4f2-dUdfEf06J6ktMOsld0Yzsyu07Hki6MSGeBjU3bJ3R0vDi-W6SBUNmcDzJu5kC-2ItGmq4sN8fq06XJMSwVTmfDAyfHOluWHOTlL5LV3YVvYZxxgGJ6_ldqdD2HZ0ZW8wuNpfrHTxGLYCHR5EN5ouY5ILx-snrNAfQPQ9Z9Ph0U_4UeCMlODslXyRpueecgOSBJUhwc47xrQ04b-xOJz_01EWEA61x=w1452-h720-no" alt="constraintlayout-image" width="600px"/></p>
-
+  <span style="color:#f92672">&lt;ImageView</span>
+      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/icon&#34;</span>
+      <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;30dp&#34;</span>
+      <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;30dp&#34;</span>
+      <span style="color:#a6e22e">android:contentDescription=</span><span style="color:#e6db74">&#34;icon&#34;</span>
+      <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;@id/negative&#34;</span>
+      <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;@id/negative&#34;</span>
+      <span style="color:#a6e22e">tools:src=</span><span style="color:#e6db74">&#34;@tools:sample/avatars&#34;</span> <span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+</code></pre></div><!-- raw HTML omitted -->
 <p>簡単に説明すると、<code>Space</code>に15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。
 上記の例だと、</p>
-
 <ul>
 <li><code>android:layout_marginStart=&quot;-15px&quot;</code></li>
 <li><code>android:layout_marginTop=&quot;-15px&quot;</code></li>
 </ul>
-
 <p>と同等の振る舞いをしています。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <p>ConstraintLayoutではネイティブでネガティブマージンに対応していないため、<code>Space</code>を使った、ややテクニカルな方法で実現するのが良いと思われます。</p>
 
     <div class="mt30"></div>

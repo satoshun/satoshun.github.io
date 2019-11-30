@@ -38,7 +38,7 @@ Issueの概要は、RxAndroidは2.1.0でasync messageに対応しました。し
 Goji? Goji is a minimalistic web framework that values composability and simplicity です. SinatraのようなMicro Frameworkになっています.
 どこにPRしたか? バグではなくて, こっちのほうがGoライクにだよ!と思ったのでPRをしました. 計2回PRしたので, それぞれ紹介します.
 switch type assertion 1つ目は, switch type assertionについてです. switch文の冒頭にある, type assertionの結果を使うようにしました.
---- a/web/pattern.go +++ b/web/pattern.go @@ -32,13 +32,13 @@ type Pattern interface { } func parsePattern(p interface{}) Pattern { - switch p.(type) { + switch v := p.(type) { case Pattern: - return p.</description>
+--- a/web/pattern.go +++ b/web/pattern.go @@ -32,13 +32,13 @@ type Pattern interface { } func parsePattern(p interface{}) Pattern { - switch p.(type) { + switch v := p.(type) { case Pattern: - return p.(Pattern) + return v case *regexp.</description>
     </item>
     
   </channel>

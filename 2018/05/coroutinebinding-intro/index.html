@@ -22,9 +22,8 @@
   <meta property="twitter:title" content="CoroutineBindingライブラリを作りました">
 
   
-  <meta property="twitter:description" content="
-
-CoroutineBindingライブラリを作ったのでその紹介です。 …">
+  <meta property="twitter:description" content="CoroutineBindingライブラリを作ったのでその紹介です。
+https://github.com/satoshun/CoroutineBinding …">
   
 
   
@@ -91,32 +90,22 @@ CoroutineBindingライブラリを作ったのでその紹介です。 …">
     
     <span class="post-date">Created at Sat, May 19, 2018</span>
     
-    
-
-<p>CoroutineBindingライブラリを作ったのでその紹介です。
+    <p>CoroutineBindingライブラリを作ったのでその紹介です。
 <a href="https://github.com/satoshun/CoroutineBinding">https://github.com/satoshun/CoroutineBinding</a></p>
-
 <p>Android開発でCoroutineの流れが来ていると思っていて、<a href="https://github.com/JakeWharton/RxBinding">RxBinding</a>のような感じで、
 CoroutineフレンドリーにViewのイベントを受け取れたら便利そうだなと思い作りました。</p>
-
-<h2 id="使い方">使い方</h2>
-
+<h2 id="heading">使い方</h2>
 <p>例えばclickのイベントを受け取りたいとします。
 CoroutineBindingでは以下のように書くことが出来ます。</p>
-
-<pre><code class="language-kotlin">val root = findViewById&lt;ViewGroup&gt;(R.id.root)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> root = findViewById&lt;ViewGroup&gt;(R.id.root)
 launch(UI) {
-    for (click in root.clicks()) {
-       Log.d(&quot;clicked&quot;, click.toString())
+    <span style="color:#66d9ef">for</span> (click <span style="color:#66d9ef">in</span> root.clicks()) {
+       Log.d(<span style="color:#e6db74">&#34;clicked&#34;</span>, click.toString())
     }
 }
-</code></pre>
-
-<p>RxBindingのように使うことが出来ます!
+</code></pre></div><p>RxBindingのように使うことが出来ます!
 他のAPIに関してもRxBindingに準拠しているため、RxBindingを使ったことがある人は自然に使えるようになっています。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>Coroutineを使っている人なら便利に使えると思うので、ぜひ使って下さい!</li>
 <li><a href="https://github.com/satoshun/CoroutineBinding">https://github.com/satoshun/CoroutineBinding</a> 何かあればissueや、PRを貰えると嬉しいです</li>

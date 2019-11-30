@@ -22,13 +22,14 @@
 この記事では, なぜclearfixを使うのか, clearfixとは何なのかについて説明します.
 floatの問題点 clearfixを説明する前に, floatプロパティの問題点について説明します.
 まず例をあげます.
-&amp;lt;div&amp;gt; &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt;  上記HTMLは, imgが右に寄り, その左側にtest1, test2と表示されます. floatは, 指定したエレメント以降のエレメントを反対側に回りこませることが出来ます.
+&amp;lt;div&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.png&amp;#34; style=&amp;#34;float: right&amp;#34; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; 上記HTMLは, imgが右に寄り, その左側にtest1, test2と表示されます. floatは, 指定したエレメント以降のエレメントを反対側に回りこませることが出来ます.
 回りこみを止めたいときは, clear: both;プロパティを指定します.
-&amp;lt;div&amp;gt; &amp;lt;img class=&amp;quot;test&amp;quot; src=&amp;quot;hoge.png&amp;quot; style=&amp;quot;float: right&amp;quot; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;!-- clear:bothがないと, このdivも左側に回りこむ --&amp;gt; &amp;lt;div style=&amp;quot;clear:both;&amp;quot;&amp;gt; hogehoge &amp;lt;/div&amp;gt;  clear:both;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.
+&amp;lt;div&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.png&amp;#34; style=&amp;#34;float: right&amp;#34; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;!--clear:bothがないと, このdivも左側に回りこむ --&amp;gt; &amp;lt;div style=&amp;#34;clear:both;&amp;#34;&amp;gt; hogehoge &amp;lt;/div&amp;gt; clear:both;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.
 とは言っても, floatingの解除は忘れてしまいがちです. そこでclearfixと呼ばれるテクニックを使います.
 clearfixとは clearfixとは, after擬似要素を使いfloatを解除するテクニックです.
 具体的には以下のように記述します.
-.clearfix:after { content: &amp;quot;&amp;quot;; clear: both; display: block; }  clear: both;をしてくれる要素をafter擬似要素で挿入しているだけです. これを, 親エレメントにつけておけば, floatを解除してくれます.</description>
+.clearfix:after { content: &amp;#34;&amp;#34;; clear: both; display: block; } clear: both;をしてくれる要素をafter擬似要素で挿入しているだけです. これを, 親エレメントにつけておけば, floatを解除してくれます.
+&amp;lt;div class=&amp;#34;clearfix&amp;#34;&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.</description>
     </item>
     
   </channel>

@@ -20,12 +20,12 @@
       <guid>https://satoshun.github.io/2018/12/view_lifecycle/</guid>
       <description>この記事ではFragmentでLiveDataにObserverを登録するときはFragment#getViewLifecycleを使うと良いという話をします。
 まず、Fragmentのおおまかなライフサイクルは次のようになっています。
- onAttach onCreate  onCreateView onViewCreated  &amp;hellip;  onDestoryView  onDestroy onDetach  ここで重要なのは、onDestroyが呼ばれることなく、複数回onCreateViewが呼ばれる可能性がある点です。
+ onAttach onCreate  onCreateView onViewCreated  &amp;hellip;   onDestoryView   onDestroy onDetach  ここで重要なのは、onDestroyが呼ばれることなく、複数回onCreateViewが呼ばれる可能性がある点です。
 例えば、次のコードは間違っている可能性があります。
-class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) viewModel.data.observe(this, Observer { ... }) } }  なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
+class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) viewModel.data.observe(this, Observer { ... }) } } なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
 前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。 よって、FragmentにはView用のLifecycleが用意されています。それが、Fragment#getViewLifecycleです。
 前述のコードは次のように書くことが出来ます。
-class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) // ViewのLifecycleOwnerを渡す viewModel.data.observe(viewLifecycleOwner, Observer { ... }) } }  このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</description>
+class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) // ViewのLifecycleOwnerを渡す  viewModel.data.observe(viewLifecycleOwner, Observer { ... }) } } このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</description>
     </item>
     
   </channel>

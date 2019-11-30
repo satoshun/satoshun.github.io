@@ -20,14 +20,10 @@
   <meta property="twitter:title" content="拡張関数 &#43; ジェネリック型でよりタイプセーフを得る">
 
   
-  <meta property="twitter:description" content="
-
-Kotlinの拡張関数の話です。
-
+  <meta property="twitter:description" content="Kotlinの拡張関数の話です。
 以下のクラスがあったとします。
-
 class A&lt;T&gt;(val value: T) {
-  fun …">
+  fun isNull …">
   
 
   
@@ -94,61 +90,44 @@ class A&lt;T&gt;(val value: T) {
     
     <span class="post-date">Created at Sat, Nov 3, 2018</span>
     
-    
-
-<p>Kotlinの拡張関数の話です。</p>
-
+    <p>Kotlinの拡張関数の話です。</p>
 <p>以下のクラスがあったとします。</p>
-
-<pre><code class="language-kotlin">class A&lt;T&gt;(val value: T) {
-  fun isNull(): Boolean {
-    return value != null
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) {
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">isNull</span>(): Boolean {
+    <span style="color:#66d9ef">return</span> value != <span style="color:#66d9ef">null</span>
   }
 }
 
-fun main() {
-  val a1: A&lt;Int&gt; = ...
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = ...
   a1.isNull()
 }
-</code></pre>
-
-<p>このとき、<code>a1.isNull()</code>の結果は自明です。なぜなら<code>A&lt;Int&gt;</code>で宣言している時点でnonNullが確定しているためです。</p>
-
-<pre><code class="language-kotlin">fun main() {
-  val a2: A&lt;Int?&gt; = ...
+</code></pre></div><p>このとき、<code>a1.isNull()</code>の結果は自明です。なぜなら<code>A&lt;Int&gt;</code>で宣言している時点でnonNullが確定しているためです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = ...
   a2.isNull()
 }
-</code></pre>
-
-<p>このとき、<code>a2.isNull()</code>の結果は自明ではありません。
+</code></pre></div><p>このとき、<code>a2.isNull()</code>の結果は自明ではありません。
 なぜなら<code>A&lt;Int?&gt;</code>でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。</p>
-
 <p>この2つの例から、<code>a1.isNull()</code>はそもそもnonNullなので<code>isNull()</code>メソッドをコールできないほうが良いのではないか？という考えが浮かびます。</p>
-
 <p>Kotlinの拡張関数を使うことで達成できます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T)
 
-<pre><code class="language-kotlin">class A&lt;T&gt;(val value: T)
-
-// nullableのときにコールできるようにする
-fun &lt;T : Any&gt; A&lt;T?&gt;.isNull(): Boolean {
-  return value != null
+<span style="color:#75715e">// nullableのときにコールできるようにする
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;T : Any&gt; <span style="color:#a6e22e">A</span>&lt;T?&gt;.isNull(): Boolean {
+  <span style="color:#66d9ef">return</span> value != <span style="color:#66d9ef">null</span>
 }
 
-fun main() {
-  val a1: A&lt;Int&gt; = ...
-  a1.isNull() // コンパイルエラー!!
-
-  val a2: A&lt;Int?&gt; = ...
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = ...
+  a1.isNull() <span style="color:#75715e">// コンパイルエラー!!
+</span><span style="color:#75715e"></span>
+  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = ...
   a2.isNull()
 }
-</code></pre>
-
-<p><code>fun &lt;T : Any&gt; A&lt;T?&gt;.isNull()</code>と宣言することでnullable時のみコールできます。</p>
-
+</code></pre></div><p><code>fun &lt;T : Any&gt; A&lt;T?&gt;.isNull()</code>と宣言することでnullable時のみコールできます。</p>
 <p>ジェネリック型がnullable時のみコールしたい場合に有効なテクニックでした😃</p>
-
-<h2 id="参考">参考</h2>
-
+<h2 id="heading">参考</h2>
 <ul>
 <li><a href="http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/">http://blog.nightlynexus.com/kotlin-extension-members-are-great-even-for-types-you-do-control/</a></li>
 </ul>

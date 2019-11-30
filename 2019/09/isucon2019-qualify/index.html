@@ -24,11 +24,8 @@
   <meta property="twitter:title" content="ISUCON9 予選ログ">
 
   
-  <meta property="twitter:description" content="
-
-ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
-
-僕がやったことを …">
+  <meta property="twitter:description" content="ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
+僕がやったことをつらつ …">
   
 
   
@@ -95,110 +92,97 @@ ISUCON9にチームSsstohで会社の友達と参加してきました。最終�
     
     <span class="post-date">Created at Wed, Sep 11, 2019</span>
     
-    
-
-<p>ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D</p>
-
+    <p>ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D</p>
 <p>僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。</p>
-
 <p>ちなみに言語はGoです。</p>
-
-<h2 id="僕がやったこと">僕がやったこと</h2>
-
+<h2 id="heading">僕がやったこと</h2>
 <ul>
 <li>朝
-
 <ul>
 <li>寝坊しました</li>
-</ul></li>
 </ul>
-
-<p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ISUCON起床失敗</p>&mdash; Sato Shun🧁 (@stsn_jp) <a href="https://twitter.com/stsn_jp/status/1170138234036207616?ref_src=twsrc%5Etfw">September 7, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
+</li>
+</ul>
+<!-- raw HTML omitted -->
 <ul>
 <li>12:00くらいまで
-
 <ul>
 <li>アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた
-
 <ul>
 <li>スコアほぼ変わらず。それはそう</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>12:00から
-
 <ul>
 <li><code>/users/transactions.json</code>が遅そうだったので、そこを潰す
-
 <ul>
 <li>USERの取得などがN+1クエリだったので、それを <code>IN</code>句に置き換え</li>
 <li>道中、外部APIを叩いてるところがボトルネックっぽいことに気づく</li>
-</ul></li>
+</ul>
+</li>
 <li>ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）</li>
-</ul></li>
+</ul>
+</li>
 <li>16:30くらい
-
 <ul>
 <li><code>/new_items/:root_category_id.json</code>、<code>/new_items.json</code>のN+1クエリログを倒す
-
 <ul>
 <li>ここらへんで確か8000~9000くらい</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>17:30くらい
-
 <ul>
 <li>他の人のPRみたり、静的ファイルをNginxから返すようにしてた
-
 <ul>
 <li>ここらへんで10000~くらい</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>最後らへん
-
 <ul>
 <li>ログを出力しないようにしたり修正
-
 <ul>
 <li>ここらへんで最終スコアの11,860くらい</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <p>こんな感じ</p>
-
-<h2 id="反省点">反省点</h2>
-
+<h2 id="heading1">反省点</h2>
 <ul>
 <li>3台構成に出来なかった
-
 <ul>
 <li>練習不足で時間が足りなかったんやなって</li>
-</ul></li>
+</ul>
+</li>
 <li>キャンペーンモードを忘れていた
-
 <ul>
 <li>READMEはちゃんと読もうな</li>
-</ul></li>
+</ul>
+</li>
 <li>ログインにボトルネックがあることに気づかなかった
-
 <ul>
 <li>pprofしていこうな</li>
-</ul></li>
+</ul>
+</li>
 <li>SQLの書き方が記憶から失われていた
-
 <ul>
 <li>頑張っていこうな</li>
-</ul></li>
+</ul>
+</li>
 <li>寝坊しない
-
 <ul>
 <li>それは無理かもしれない</li>
-</ul></li>
 </ul>
-
-<h2 id="まとめ">まとめ</h2>
-
+</li>
+</ul>
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>本線頑張るぞ〜😃</li>
 </ul>

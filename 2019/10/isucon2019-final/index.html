@@ -24,11 +24,8 @@
   <meta property="twitter:title" content="ISUCON9 決勝参加ログ">
 
   
-  <meta property="twitter:description" content="
-
-ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D
-
-やったことと、反省点を簡単にまとめておきます。選択 …">
+  <meta property="twitter:description" content="ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D
+やったことと、反省点を簡単にまとめておきます。選択言語 …">
   
 
   
@@ -95,69 +92,60 @@ ISUCON9の決勝に出場してきました。最終スコアは再起動試験�
     
     <span class="post-date">Created at Mon, Oct 7, 2019</span>
     
-    
-
-<p>ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D</p>
-
+    <p>ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D</p>
 <p>やったことと、反省点を簡単にまとめておきます。選択言語はGoです。</p>
-
-<h2 id="やったこと">やったこと</h2>
-
+<h2 id="heading">やったこと</h2>
 <ul>
 <li>最初の1時間くらい
-
 <ul>
 <li>適当にブラウザから、サイトを触ってみる</li>
 <li>アプリコード読む
-
 <ul>
 <li>何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><code>/api/train/search</code>のN+1の削除、クエリ最適化
-
 <ul>
 <li><code>/api/train/search</code>でベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った
-
 <ul>
 <li>ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><code>/api/train/seats</code>のN+1の削除、クエリ最適化
-
 <ul>
 <li>計測の結果、次の2番目のボトルネックだった
-
 <ul>
 <li>こっちは割とスムーズに出来た</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>seat_masterなどのインメモリ化
-
 <ul>
 <li>insertがないテーブルをインメモリにすればいいんちゃうと思ってやった</li>
-</ul></li>
+</ul>
+</li>
 <li>いろいろINDEX貼ったりとか</li>
 </ul>
-
-<h2 id="反省点">反省点</h2>
-
+<h2 id="heading1">反省点</h2>
 <ul>
 <li>ほんまに練習不足
-
 <ul>
 <li>Docker分かんなすぎてハゲそうだった</li>
 <li>N+1とかもっとスムーズに解決しないとね</li>
-</ul></li>
+</ul>
+</li>
 <li>全体的な流れを把握しようとしなかったので、もう駄目
-
 <ul>
 <li>局所的に攻めても、なかなかスコア上がんないんだよね</li>
-</ul></li>
 </ul>
-
-<h2 id="来年">来年</h2>
-
+</li>
+</ul>
+<h2 id="heading2">来年</h2>
 <ul>
 <li>優勝します💁</li>
 </ul>

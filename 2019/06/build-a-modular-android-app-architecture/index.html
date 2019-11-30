@@ -26,13 +26,9 @@
   <meta property="twitter:title" content="Google I/O&#39;19: Build a Modular Android App Architectureのまとめ・感想">
 
   
-  <meta property="twitter:description" content="
-
-以下の動画のまとめです。
-
-Build a Modular Android App Architecture (Google I/O&rsquo;19)
-
- …">
+  <meta property="twitter:description" content="以下の動画のまとめです。
+Build a Modular Android App Architecture (Google I/O&#39;19)
+なぜモジュール化をす …">
   
 
   
@@ -99,281 +95,219 @@ Build a Modular Android App Architecture (Google I/O&rsquo;19)
     
     <span class="post-date">Created at Sun, Jun 9, 2019</span>
     
-    
-
-<p>以下の動画のまとめです。</p>
-
-<p><a href="https://www.youtube.com/watch?v=PZBg5DIzNww">Build a Modular Android App Architecture (Google I/O&rsquo;19)</a></p>
-
-<h2 id="なぜモジュール化をするか">なぜモジュール化をするか?</h2>
-
-<h3 id="スケール">スケール</h3>
-
+    <p>以下の動画のまとめです。</p>
+<p><a href="https://www.youtube.com/watch?v=PZBg5DIzNww">Build a Modular Android App Architecture (Google I/O'19)</a></p>
+<h2 id="heading">なぜモジュール化をするか?</h2>
+<h3 id="heading1">スケール</h3>
 <p>モジュール化することで、開発者が独立して開発出来るようになる</p>
-
 <ul>
 <li>人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効</li>
 </ul>
-
-<h3 id="保守性">保守性</h3>
-
+<h3 id="heading2">保守性</h3>
 <p>例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる</p>
-
 <ul>
 <li>何をしているのか、何をしたいのかが理解しにくい</li>
 <li>長いレイアウトファイル名になりがち</li>
 </ul>
-
-<h3 id="ビルド時間の短縮">ビルド時間の短縮</h3>
-
+<h3 id="heading3">ビルド時間の短縮</h3>
 <p>変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる</p>
-
-<h3 id="ciの高速化">CIの高速化</h3>
-
+<h3 id="ci">CIの高速化</h3>
 <p>再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる</p>
-
 <ul>
 <li><a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/">androidx/dependencyTracker</a>を使うといい感じにテストが出来る（らしい）</li>
 </ul>
-
-<h3 id="apkサイズの縮小">APKサイズの縮小</h3>
-
+<h3 id="apk">APKサイズの縮小</h3>
 <p>App Bundle、Dynamic Deliveryの恩恵を受けられる</p>
-
-<h2 id="モジュール">モジュール</h2>
-
+<h2 id="heading4">モジュール</h2>
 <p>どのようにモジュール分けをするか?</p>
-
-<h3 id="1-feature-機能-ごとに分ける">1. Feature（機能）ごとに分ける</h3>
-
+<h3 id="1-feature">1. Feature（機能）ごとに分ける</h3>
 <p>ライブラリモジュールとDynamic Featureモジュールの2種類がある。</p>
-
 <ul>
 <li>ライブラリモジュール
-
 <ul>
 <li><code>com.android.library</code>を指定する</li>
-</ul></li>
+</ul>
+</li>
 <li>Dynamic Featureモジュール
-
 <ul>
 <li>onDemand trueとfalseがある
-
 <ul>
 <li>Paidのような一部のユーザが使う機能の場合はtrueが良い</li>
 <li>Onboardingのように、後でいらなくなる機能の場合はfalseが良い</li>
-</ul></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <p>Plaidでは以下のようなモジュール構成にした。</p>
-
-<p><img src="https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no" width=500 /></p>
-
+<p><!-- raw HTML omitted --></p>
 <p>dribbleと、designernewsがDynamic Featureモジュールになっている。</p>
-
-<h3 id="2-layer-層-階層-ごとに分ける">2. Layer（層、階層）ごとに分ける</h3>
-
+<h3 id="2-layer">2. Layer（層、階層）ごとに分ける</h3>
 <p>Plaidでは以下のように分けた。</p>
-
-<p><img src="https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no" width=500 /></p>
-
-<p><img src="https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no" width=500 /></p>
-
+<p><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted --></p>
 <ul>
 <li>Web Servicesの知識はUIはいらないので、implementationを指定する
-
 <ul>
 <li>そうすることで、UIがDTOやRetrofitの知識を知らないですむ</li>
-</ul></li>
+</ul>
+</li>
 <li>Entitiesの知識はUIが必要なので、apiを指定する
-
 <ul>
 <li>ただし、この場合、DAOsの知識までUIが知ってしまうので微妙
-
 <ul>
 <li>そこでCommon Value Objectsの導入</li>
-</ul></li>
-</ul></li>
 </ul>
-
-<p><img src="https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no" width=500 /></p>
-
+</li>
+</ul>
+</li>
+</ul>
+<p><!-- raw HTML omitted --></p>
 <p>こうすることで、UIがDAOの知識を知らずに済む</p>
-
 <h3 id="fakes-for-tests">Fakes for tests</h3>
-
-<p><img src="https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no" width=500 /></p>
-
+<p><!-- raw HTML omitted --></p>
 <ul>
 <li>モックよりも優れた方法
-
 <ul>
 <li>fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる
-
 <ul>
 <li>（モックはその場、その場で作られがちという意味？）</li>
-</ul></li>
-</ul></li>
 </ul>
-
-<h3 id="featureモジュールの利点">Featureモジュールの利点</h3>
-
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="feature">Featureモジュールの利点</h3>
 <ul>
 <li>カプセル化</li>
 <li>Dynamic Delivery</li>
 </ul>
-
-<h3 id="layerごとに分ける利点">Layerごとに分ける利点</h3>
-
+<h3 id="layer">Layerごとに分ける利点</h3>
 <ul>
 <li>サードパーティライブラリの依存を独立</li>
 <li>構造をもたらす</li>
 </ul>
-
-<h3 id="dynamic-deliveryの課題">Dynamic Deliveryの課題</h3>
-
+<h3 id="dynamic-delivery">Dynamic Deliveryの課題</h3>
 <p>Featureモジュール間のNavigationをどうするか?</p>
-
 <ul>
 <li>appから、Dynamic Featureモジュールへの依存を持てない
-
 <ul>
 <li>（これはDynamic Deliveryの制約のため）</li>
 <li>文字列、リフレクションでstartActivityするしかない</li>
 <li>Fragmentも同様</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>今後、Navigationライブラリで自然に書けるようになるらしい😃</p>
-
-<h2 id="データベース">データベース</h2>
-
-<h3 id="1つのデータベースのみ持つ">1つのデータベースのみ持つ</h3>
-
+<h2 id="heading5">データベース</h2>
+<h3 id="1">1つのデータベースのみ持つ</h3>
 <ul>
 <li>pros
-
 <ul>
 <li>コネクションの管理が楽</li>
 <li>テーブルのシェアが簡単</li>
-</ul></li>
+</ul>
+</li>
 <li>cons
-
 <ul>
 <li>モジュール間に依存が生まれる</li>
-</ul></li>
 </ul>
-
-<h3 id="モジュールごとに1つのデータベースを持つ">モジュールごとに1つのデータベースを持つ</h3>
-
+</li>
+</ul>
+<h3 id="11">モジュールごとに1つのデータベースを持つ</h3>
 <ul>
 <li>pros
-
 <ul>
 <li>モジュール間の依存が疎になる</li>
-</ul></li>
+</ul>
+</li>
 <li>cons
-
 <ul>
 <li>データベースのコネクション管理がめんどい</li>
 <li>繰り返しのコードが生まれやすい</li>
-</ul></li>
 </ul>
-
-<h3 id="hybridアプローチ">hybridアプローチ</h3>
-
+</li>
+</ul>
+<h3 id="hybrid">hybridアプローチ</h3>
 <p>特にルールを決めずに、データベースモジュールを作っていく</p>
-
 <ul>
 <li>pros
-
 <ul>
 <li>Flexible</li>
-</ul></li>
+</ul>
+</li>
 <li>cons
-
 <ul>
 <li>Fiexible
-
 <ul>
 <li>どこに、どのDAO、Entityを置けば良いのかの判断を常に迫られる</li>
-</ul></li>
-</ul></li>
 </ul>
-
-<p><img src="https://lh3.googleusercontent.com/gTSq0TPmgz2B2iyb_qidLaq-G8VSSnmSOI_VDez7Mu0UBASB5h7PIRDKWMJPrH40XGxFCw3QDenkSgiD6f4D2U5EhBAK_OEayUdIVtH5hX53vvUQM7Q-4AiJHx0NDt-4iRjCjaTeIlJs16YyeZpEt6iIvgp9HrAD_cr7vE5myFyRzeJnaHSU_vzZULGICVIWBmgxKFAcHUKDdiHRHUMuncyewUxZGc_O5t3xlQvXUanCQxVh6NXvBQZXxhFpqYRMwPiSTTNmIGz8BFFnX5JqHZAdKULHDZDV8FjeT6KtQXFjPQMMrEm6c_Sdka9aHgH5c4U76VbhF9lJd1xnn0i_jeVhbBXZ4Ylhwuem8trNGg0L2-JSphGwz2dlud0oS39CwN3spcRFEXkyQ3F6AjaW0omnmWYh1S3r2p_W9Wd3Yxyy3H7egkYyHdYmdqU76m5s0y9pCL3VWaiGvLZFr61Z0NVABPVW9O_dDS5jroA8OV4yJn_q6kMEQ_QgYz5uCatq_a86gXcWFRBipdZfhqMCZCMvJ8apGzKzrIyDuiM-3GMk_IZLR4ybtgdpFoxIEdXhCPHpUnWiCPQ6xsH3Od2P485MLbKLdZWDp76NB36DZRhlPAs33Z5h-ItZfm1mKok05rXrzibepyocRNr2rUKnOoyaHtsaxKek=w2160-h1202-no" width=500 /></p>
-
+</li>
+</ul>
+</li>
+</ul>
+<p><!-- raw HTML omitted --></p>
 <p>マルチモジュール対応Room絶賛開発中らしい😃</p>
-
 <h3 id="android-free-modules">Android free modules</h3>
-
 <p>multi platformにする場合</p>
-
 <ul>
 <li>Kotlin nativeとか
-
 <ul>
 <li>ちゃんとユースケースを持っているなら、multi platformは良い選択</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>テストの高速化</p>
-
 <ul>
 <li>確かにテストは早くなるが、テストのためだけにAndroid freeにするのは冗長
-
 <ul>
 <li>Robolectricで十分</li>
 <li>Android Frameworkの再開発は無駄e</li>
-</ul></li>
 </ul>
-
-<h2 id="最後に">最後に</h2>
-
+</li>
+</ul>
+<h2 id="heading6">最後に</h2>
 <ul>
 <li>最小限の依存関係でモジュールを構成する</li>
 <li>関心事の分離
-
 <ul>
 <li>ビジネスロジックがUIに依存しない</li>
-</ul></li>
+</ul>
+</li>
 <li>抽象化
-
 <ul>
 <li>抽象化は非常に便利だが、複雑になりがちなので、抽象化により得れる利点を常に考える</li>
-</ul></li>
+</ul>
+</li>
 <li>これらのモジュール化のやりかたは、あくまでオプション
-
 <ul>
 <li>ユーザはマルチモジュールなコードだからって5つ星はくれない</li>
 <li>あくまでユーザが一番大事</li>
-</ul></li>
 </ul>
-
-<h2 id="まとめ-感想">まとめ・感想</h2>
-
+</li>
+</ul>
+<h2 id="heading7">まとめ・感想</h2>
 <ul>
 <li>Dynamic DeliveryはNavigationに対応が入ってきたあたりで導入検討したいなって思った
-
 <ul>
 <li>まだノウハウが少ない印象なので</li>
-</ul></li>
+</ul>
+</li>
 <li>Fakeのためのモジュールはいいアイデアだなって思った
-
 <ul>
 <li>テストで、モックはあまり使わない流れなのかもしれない
-
 <ul>
 <li>確かにモックをカジュアルに使いすぎると何をテストしているか分からなくなるときがある</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>やっぱ関心ごとの分離って大事なんやなって
-
 <ul>
 <li>層、モジュールでうまく強制、表現したい</li>
 <li>サードパーティライブラリへの依存が、特定のモジュールに押し込めるのは良さ</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 
     <div class="mt30"></div>

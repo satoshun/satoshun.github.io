@@ -24,10 +24,8 @@
   <meta property="twitter:title" content="Android: Navigationのdialogタグ周りのコードちょっと読んでみた">
 
   
-  <meta property="twitter:description" content="
-
-Navigation Component 2.1.0からdialogタグが使えるようになりました。
-どんな感じで処理をしているのか気になったので、ざっくりと …">
+  <meta property="twitter:description" content="Navigation Component 2.1.0からdialogタグが使えるようになりました。
+どんな感じで処理をしているのか気になったので、ざっくりとメモ …">
   
 
   
@@ -94,78 +92,63 @@ Navigation Component 2.1.0からdialogタグが使えるようになりました
     
     <span class="post-date">Created at Sat, Nov 9, 2019</span>
     
-    
-
-<p>Navigation Component 2.1.0からdialogタグが使えるようになりました。
+    <p>Navigation Component 2.1.0からdialogタグが使えるようになりました。
 どんな感じで処理をしているのか気になったので、ざっくりとメモ書き。</p>
-
-<h2 id="1-abstract-navigatorクラス">1. abstract Navigatorクラス</h2>
-
+<h2 id="1-abstract-navigator">1. abstract Navigatorクラス</h2>
 <p>このクラスは最終的にどのように、対象クラスをnavigateされるかを決めるクラスです。
 Activityなら、ActivityNavigator。FragmentならFragmentNavigatorが使われます。
 dialogの場合は、DialogFragmentNavigator経由でdialogが発火するようになっています。</p>
-
-<h2 id="2-navinlaterでdialogタグの場合-dialogfragmentnavigatorを使うようにしている">2. NavInlaterでdialogタグの場合、DialogFragmentNavigatorを使うようにしている</h2>
-
-<p>NavInflaterは単純なXMLパーサーになっています。<dialog ...> を発見したら、DialogFragmentNavigatorからNavDestinationを作成するようになっています。
+<h2 id="2-navinlaterdialogdialogfragmentnavigator">2. NavInlaterでdialogタグの場合、DialogFragmentNavigatorを使うようにしている</h2>
+<p>NavInflaterは単純なXMLパーサーになっています。&lt;dialog &hellip;&gt; を発見したら、DialogFragmentNavigatorからNavDestinationを作成するようになっています。
 このNavDestinationは実際にコールされるときに、DialogFragmentNavigatorを呼び出すような仕組みなっています。</p>
-
-<h2 id="3-dialogfragmentnavigatorの中身">3. DialogFragmentNavigatorの中身</h2>
-
+<h2 id="3-dialogfragmentnavigator">3. DialogFragmentNavigatorの中身</h2>
 <p>一部分を抜粋します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e"> * Copyright 2019 The Android Open Source Project
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+</span><span style="color:#75715e"> * you may not use this file except in compliance with the License.
+</span><span style="color:#75715e"> * You may obtain a copy of the License at
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> *      http://www.apache.org/licenses/LICENSE-2.0
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * Unless required by applicable law or agreed to in writing, software
+</span><span style="color:#75715e"> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+</span><span style="color:#75715e"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span><span style="color:#75715e"> * See the License for the specific language governing permissions and
+</span><span style="color:#75715e"> * limitations under the License.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#a6e22e">@Nullable</span>
+<span style="color:#a6e22e">@Override</span>
+<span style="color:#66d9ef">public</span> NavDestination <span style="color:#a6e22e">navigate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> <span style="color:#66d9ef">final</span> Destination destination<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Bundle args<span style="color:#f92672">,</span>
+        <span style="color:#a6e22e">@Nullable</span> NavOptions navOptions<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Navigator<span style="color:#f92672">.</span><span style="color:#a6e22e">Extras</span> navigatorExtras<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<pre><code class="language-java">/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-...
-@Nullable
-@Override
-public NavDestination navigate(@NonNull final Destination destination, @Nullable Bundle args,
-        @Nullable NavOptions navOptions, @Nullable Navigator.Extras navigatorExtras) {
-    ...
+    <span style="color:#66d9ef">final</span> Fragment frag <span style="color:#f92672">=</span> mFragmentManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getFragmentFactory</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">instantiate</span><span style="color:#f92672">(</span>
+            mContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> className<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>DialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>frag<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Dialog destination &#34;</span> <span style="color:#f92672">+</span> destination<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is not an instance of DialogFragment&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">final</span> DialogFragment dialogFragment <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>DialogFragment<span style="color:#f92672">)</span> frag<span style="color:#f92672">;</span>
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">setArguments</span><span style="color:#f92672">(</span>args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addObserver</span><span style="color:#f92672">(</span>mObserver<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    final Fragment frag = mFragmentManager.getFragmentFactory().instantiate(
-            mContext.getClassLoader(), className);
-    if (!DialogFragment.class.isAssignableFrom(frag.getClass())) {
-        throw new IllegalArgumentException(&quot;Dialog destination &quot; + destination.getClassName()
-                + &quot; is not an instance of DialogFragment&quot;);
-    }
-    final DialogFragment dialogFragment = (DialogFragment) frag;
-    dialogFragment.setArguments(args);
-    dialogFragment.getLifecycle().addObserver(mObserver);
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">show</span><span style="color:#f92672">(</span>mFragmentManager<span style="color:#f92672">,</span> DIALOG_TAG <span style="color:#f92672">+</span> mDialogCount<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    dialogFragment.show(mFragmentManager, DIALOG_TAG + mDialogCount++);
-
-    return destination;
-}
-...
-</code></pre>
-
-<p>やっていることは単純で、</p>
-
+    <span style="color:#66d9ef">return</span> destination<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</code></pre></div><p>やっていることは単純で、</p>
 <ol>
 <li>FragmentFactory経由で対象のDialogFragmentを生成する</li>
 <li>argumentsのセット</li>
 <li>ダイアログが終了したかどうかをハンドリングするために、ライフサイクルに登録</li>
 <li>DialogFragment#showをコールして、ダイアログを出す</li>
 </ol>
-
 <p>これでDialogFragmentを起動しています。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading">まとめ</h2>
 <ul>
 <li>とっても雑に書きました</li>
 <li>Navigatorっていう抽象クラスがあって、そこを拡張ポイントにして、実装されていた</li>

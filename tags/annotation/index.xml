@@ -24,7 +24,7 @@
 この記事では、このRestrictToアノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。
 また、Android Studio 3.5.0-beta05で検証しました。
 この記事内に出てくるRestrictTo関連のコードは以下のライセンスに従います。
-/* * Copyright (C) 2016 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.</description>
+/* * Copyright (C) 2016 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.</description>
     </item>
     
   </channel>

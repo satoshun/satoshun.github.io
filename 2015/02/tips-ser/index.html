@@ -23,9 +23,7 @@
 
   
   <meta property="twitter:description" content="サクッとローカルサーバを立てるためのTipsを紹介します.
-
 下記コマンドは, Pythonが入っていれば, 問題なく動きます.
-
 $ python -m …">
   
 
@@ -94,30 +92,19 @@ $ python -m …">
     <span class="post-date">Created at Sun, Feb 22, 2015</span>
     
     <p>サクッとローカルサーバを立てるためのTipsを紹介します.</p>
-
 <p>下記コマンドは, Pythonが入っていれば, 問題なく動きます.</p>
-
-<pre><code class="language-shell">$ python -m CGIHTTPServer
-Serving HTTP on 0.0.0.0 port 8000 ...
-</code></pre>
-
-<p>僕は, 上記コマンドをaliasに登録しています.</p>
-
-<pre><code class="language-shell">alias ser='python -m CGIHTTPServer'
-</code></pre>
-
-<p>これで, serでサーバが立つようになりました.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python -m CGIHTTPServer
+Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">8000</span> ...
+</code></pre></div><p>僕は, 上記コマンドをaliasに登録しています.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">alias ser<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;python -m CGIHTTPServer&#39;</span>
+</code></pre></div><p>これで, serでサーバが立つようになりました.</p>
 <p>ちなみに, Portを指定することも出来ます.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ser
+Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">8000</span> ...
 
-<pre><code class="language-shell">$ ser
-Serving HTTP on 0.0.0.0 port 8000 ...
-
-$ ser 8001
-Serving HTTP on 0.0.0.0 port 8001 ...
-</code></pre>
-
-<p>簡単にローカルサーバを立てることが出来るようになりました.</p>
+$ ser <span style="color:#ae81ff">8001</span>
+Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">8001</span> ...
+</code></pre></div><p>簡単にローカルサーバを立てることが出来るようになりました.</p>
 
     <div class="mt30"></div>
     

@@ -19,10 +19,10 @@
       
       <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
       <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
-テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
+ テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
 まず、 Firebaseからクラッシュログをコピーします。
-次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
-そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
+ 次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
+ そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
     </item>
     
     <item>
@@ -34,7 +34,7 @@
       <description>Java 8 library desugaring in D8 and R8で、desugarがA subset of java.timeに対応したとのことで、ThreeTenABPが置き換えられるのでは？と思い、ウキウキで試してみました。
 環境は com.android.tools.build:gradle:4.0.0-alpha01になります。
 セットアップ build.gradleに、coreLibraryDesugaringEnabledを追加します。
-compileOptions { sourceCompatibility JavaVersion.VERSION_1_8 targetCompatibility JavaVersion.VERSION_1_8 coreLibraryDesugaringEnabled true }  これで完了です。
+compileOptions { sourceCompatibility JavaVersion.VERSION_1_8 targetCompatibility JavaVersion.VERSION_1_8 coreLibraryDesugaringEnabled true } これで完了です。
 java.timeのAPIを呼び出してみる 29, 21のエミュレーターで次のコードを試したところ、クラッシュすることなく、無事に実行することが出来ました！
 // Instant API val date = Date() val instant = date.toInstant() binding.instant.text = instant.epochSecond.toString() // ZoneId API val zoneId = ZoneId.systemDefault() binding.zoneId.text = zoneId.id println(instant.atZone(zoneId).dayOfMonth) println(instant.atZone(zoneId).month) // LocalDate API val now = LocalDate.now() binding.localDate.text = now.dayOfMonth.toString() println(now.dayOfMonth) // ZoneOffset API val zoneOffset = ZoneOffset.</description>
     </item>
@@ -47,11 +47,11 @@ java.timeのAPIを呼び出してみる 29, 21のエミュレーターで次の�
       <guid>https://satoshun.github.io/2018/12/namespacedrclass/</guid>
       <description>Android Gradle Plugin（以下AGP）3.3のalphaのどこかのタイミングでnamespacedRClassフラグが新しく追加されたので紹介します。 本記事では3.4.0-alpha07で試しました。
 まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。 それを解決するためにnamespacedRClassが追加されました。使い方は簡単で、次の記述をgradle.propertiesに追加するだけです。
-android.namespacedRClass=true  では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。 例として、appcompatに依存しているライブラリモジュールを用意します。
+android.namespacedRClass=true では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。 例として、appcompatに依存しているライブラリモジュールを用意します。
 まずは、namespacedRClass=falseの時のRクラスです。
-public final class R { private R() {} public static final class anim { private anim() {} public static final int abc_fade_in = 0x7f010000; public static final int abc_fade_out = 0x7f010001; public static final int abc_grow_fade_in_from_bottom = 0x7f010002; public static final int abc_popup_enter = 0x7f010003; ... ...  依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。
+public final class R { private R() {} public static final class anim { private anim() {} public static final int abc_fade_in = 0x7f010000; public static final int abc_fade_out = 0x7f010001; public static final int abc_grow_fade_in_from_bottom = 0x7f010002; public static final int abc_popup_enter = 0x7f010003; ... ... 依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。
 では次に、namespacedRClass=trueの時です。
-public final class R { private R() {} public static final class color { private color() {} public static final int red3 = 0x7f04004b; } public static final class id { private id() {} public static final int title = 0x7f0700b1; } public static final class layout { private layout() {} public static final int base3 = 0x7f09001d; } public static final class string { private string() {} public static final int base_string3 = 0x7f0b002a; } }  このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。 ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!</description>
+public final class R { private R() {} public static final class color { private color() {} public static final int red3 = 0x7f04004b; } public static final class id { private id() {} public static final int title = 0x7f0700b1; } public static final class layout { private layout() {} public static final int base3 = 0x7f09001d; } public static final class string { private string() {} public static final int base_string3 = 0x7f0b002a; } } このモジュールで定義したリソースの内容しか含まれていないことが分かります。appcompatのRクラスは含まれていません。 ライブラリモジュールのRクラスのサイズがかなり小さくすることが出来ました!</description>
     </item>
     
   </channel>

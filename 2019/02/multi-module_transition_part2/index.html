@@ -28,11 +28,8 @@
   <meta property="twitter:title" content="マルチモジュールの遷移について考える Part2">
 
   
-  <meta property="twitter:description" content="
-
-マルチモジュール遷移方法Part2です。Part1はここになります😌
-
-Part2では、Navigation Componentを使うパターンを考えてみま …">
+  <meta property="twitter:description" content="マルチモジュール遷移方法Part2です。Part1はここになります😌
+Part2では、Navigation Componentを使うパターンを考えてみます。今回 …">
   
 
   
@@ -99,121 +96,85 @@ Part2では、Navigation Componentを使うパターンを考えてみま …">
     
     <span class="post-date">Created at Fri, Feb 15, 2019</span>
     
-    
-
-<p>マルチモジュール遷移方法Part2です。<a href="https://satoshun.github.io/2018/12/multi-module_transition_part1/">Part1</a>はここになります😌</p>
-
+    <p>マルチモジュール遷移方法Part2です。<a href="https://satoshun.github.io/2018/12/multi-module_transition_part1/">Part1</a>はここになります😌</p>
 <p>Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。</p>
-
 <p>また、今回の検証に用いたコードは<a href="https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample">satoshun/MultiModuleNavigationComponentExample</a>にあります。</p>
-
-<h2 id="モジュール構成について">モジュール構成について</h2>
-
+<h2 id="heading">モジュール構成について</h2>
 <p>細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。</p>
-
-<p><img src="https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00" width=600></p>
-
+<!-- raw HTML omitted -->
 <p>各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。</p>
-
 <p>このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。</p>
-
 <p>では、実装に入っていきます。今回はDagger2を使って実装をします。</p>
-
-<h2 id="featureモジュール側の遷移用インターフェースの定義">featureモジュール側の遷移用インターフェースの定義</h2>
-
+<h2 id="feature">featureモジュール側の遷移用インターフェースの定義</h2>
 <p>前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。</p>
-
 <p>main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。</p>
-
-<pre><code class="language-kotlin">interface MainModuleRouter {
-  // sub1画面へ移動する
-  fun routeToSub1()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
+  <span style="color:#75715e">// sub1画面へ移動する
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>()
 }
-</code></pre>
-
-<p>Mainモジュール用のインターフェースなので、<code>MainModuleRouter</code>という名前にし、sub1画面へ遷移するためのメソッドを定義しています。</p>
-
+</code></pre></div><p>Mainモジュール用のインターフェースなので、<code>MainModuleRouter</code>という名前にし、sub1画面へ遷移するためのメソッドを定義しています。</p>
 <p>そしてこのインターフェースを、MainFragmentで使います。</p>
-
-<pre><code class="language-kotlin">class MainFragment : Fragment() {
-  @Inject lateinit var moduleRouter: MainModuleRouter
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> moduleRouter: MainModuleRouter
 
   ...
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
+    <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
 
     view.findViewById&lt;View&gt;(R.id.route).setOnClickListener {
       moduleRouter.routeToSub1()
     }
   }
 }
-</code></pre>
-
-<p>これでfeatureモジュールでの遷移用インターフェースの定義は完了です。</p>
-
+</code></pre></div><p>これでfeatureモジュールでの遷移用インターフェースの定義は完了です。</p>
 <p>次にこのインターフェースの実装をします。</p>
-
-<h2 id="routerモジュール側の遷移用インターフェースの実装">routerモジュール側の遷移用インターフェースの実装</h2>
-
+<h2 id="router">routerモジュール側の遷移用インターフェースの実装</h2>
 <p>今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+  <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_graph&#34;</span>
+  <span style="color:#a6e22e">app:startDestination=</span><span style="color:#e6db74">&#34;@id/nav_main_frag&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;navigation xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-  xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-  android:id=&quot;@+id/nav_graph&quot;
-  app:startDestination=&quot;@id/nav_main_frag&quot;&gt;
+  <span style="color:#f92672">&lt;fragment</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_main_frag&#34;</span>
+    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;com.github.satoshun.example.feature.main.MainFragment&#34;</span><span style="color:#f92672">&gt;</span>
 
-  &lt;fragment
-    android:id=&quot;@+id/nav_main_frag&quot;
-    android:name=&quot;com.github.satoshun.example.feature.main.MainFragment&quot;&gt;
-
-    &lt;action
-      android:id=&quot;@+id/main_to_sub1&quot;
-      app:destination=&quot;@id/nav_sub1_frag&quot; /&gt;
-  &lt;/fragment&gt;
+    <span style="color:#f92672">&lt;action</span>
+      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/main_to_sub1&#34;</span>
+      <span style="color:#a6e22e">app:destination=</span><span style="color:#e6db74">&#34;@id/nav_sub1_frag&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/fragment&gt;</span>
 
   ...
-&lt;/navigation&gt;
-</code></pre>
-
-<p>そして、これを用いて遷移用インターフェースを実装します。</p>
-
-<pre><code class="language-kotlin">class MainModuleRouterImpl @Inject constructor(
-  private val controller: NavController
+<span style="color:#f92672">&lt;/navigation&gt;</span>
+</code></pre></div><p>そして、これを用いて遷移用インターフェースを実装します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainModuleRouterImpl</span> @Inject <span style="color:#66d9ef">constructor</span>(
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> controller: NavController
 ) : MainModuleRouter {
-  override fun routeToSub1() {
-    // NavComponentで自動生成されるコードを用いて遷移
-    controller.navigate(MainFragmentDirections.mainToSub1())
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>() {
+    <span style="color:#75715e">// NavComponentで自動生成されるコードを用いて遷移
+</span><span style="color:#75715e"></span>    controller.navigate(MainFragmentDirections.mainToSub1())
   }
 }
-</code></pre>
-
-<p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>
-
+</code></pre></div><p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>
 <p>あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。</p>
-
-<h2 id="メモ">メモ</h2>
-
-<h3 id="routerモジュールをわざわざ作る必要はないかも">routerモジュールをわざわざ作る必要はないかも</h3>
-
+<h2 id="heading1">メモ</h2>
+<h3 id="router1">routerモジュールをわざわざ作る必要はないかも</h3>
 <p>構成図を見てほしいのですが、実はrouterモジュールをわざわざ作る必要はなく、appモジュールに含めても良いです。routerモジュールを作るのがめんどう、もしくは意味がないと感じるなら、appモジュールで実装しても良いと思います。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading2">まとめ</h2>
 <ul>
 <li>Navigation Componentでモジュール間の遷移を宣言的にXMLで書けるのは見やすくて非常に良いと思いました。
-
 <ul>
 <li>またNavigation Componentはactivityの記述もできるので、既存アプリへの導入も比較的しやすいと思います</li>
-</ul></li>
+</ul>
+</li>
 <li>app/routerでは各featureモジュールへの依存を持つことができるので、クラスへの参照を持ちながら、navgationのgraphを作ることができる
-
 <ul>
 <li>navigation graphはActivity/Fragmentへの参照を持たなくても作ることが可能だが、持ったほうがLintなどの兼ね合いで安全</li>
-</ul></li>
+</ul>
+</li>
 <li>サンプルコードは<a href="https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample">satoshun/MultiModuleNavigationComponentExample</a>にあります。</li>
 </ul>
-
 <p>次は最終章になる予定です。DFMの遷移について書きます😃</p>
 
     <div class="mt30"></div>

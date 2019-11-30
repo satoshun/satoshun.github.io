@@ -22,10 +22,7 @@
   <meta property="twitter:title" content="Android: FragmentPagerAdapterでハマった話">
 
   
-  <meta property="twitter:description" content="
-
-ハマったのでメモ. 以下のことをしたかった.
-
+  <meta property="twitter:description" content="ハマったのでメモ. 以下のことをしたかった.
 
 データ取得するまで, Fragment内でProgress Barを出力
 ネットワークからデータを取得し, …">
@@ -95,72 +92,53 @@
     
     <span class="post-date">Created at Wed, Mar 18, 2015</span>
     
-    
-
-<p>ハマったのでメモ. 以下のことをしたかった.</p>
-
+    <p>ハマったのでメモ. 以下のことをしたかった.</p>
 <ul>
 <li>データ取得するまで, Fragment内でProgress Barを出力</li>
 <li>ネットワークからデータを取得し, Fragment内にあるAdapterのデータ更新</li>
 <li>UIに反映</li>
 </ul>
-
-<h2 id="notifydatasetchangedメソッドが効かない">notifyDataSetChangedメソッドが効かない</h2>
-
+<h2 id="notifydatasetchanged">notifyDataSetChangedメソッドが効かない</h2>
 <p>データが更新した後に FragmentPagerAdapter#notifyDataSetChangedメソッドを叩けばFramentが再生成されるんでしょ?と思っていた時期が僕にもありました.
 notifyDataSetChangedメソッドを叩いても, データがUIに反映されず, ProgressBarが表示されたままでした.</p>
-
 <p>FragmentPagerAdapterでは, 基本的に一度作られたFragmentは削除されず, notifyDataSetChangedメソッドでデータを更新したよーと知らせても, Fragmentを再生成してくれません.(仕様通り)</p>
-
 <p>これはどうしたものかと思っていろいろ調べたところ, FragmentStatePagerAdapterクラスにいきつきました.</p>
-
-<h2 id="fragmentstatepageradapterを使う">FragmentStatePagerAdapterを使う</h2>
-
+<h2 id="fragmentstatepageradapter">FragmentStatePagerAdapterを使う</h2>
 <p>FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.</p>
-
 <p>以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentPagerAdapter <span style="color:#f92672">{</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<pre><code class="language-java">public class PagerAdapter extends FragmentPagerAdapter {
-    ...
-    ...
-
-    public void refresh() {
-        notifyDataSetChanged();
-    }
-}
-</code></pre>
-
-<p>FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refresh</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        notifyDataSetChanged<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.</p>
 <p>次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentStatePagerAdapter <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Fragment<span style="color:#f92672">&gt;</span> mFragments<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">public class PagerAdapter extends FragmentStatePagerAdapter {
-    private List&lt;Fragment&gt; mFragments;
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-    ...
-    ...
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getItemPosition</span><span style="color:#f92672">(</span>Object object<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Fragment target <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Fragment<span style="color:#f92672">)</span> object<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mFragments<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>target<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> POSITION_UNCHANGED<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
 
-    @Override
-    public int getItemPosition(Object object) {
-        Fragment target = (Fragment) object;
-        if (mFragments.contains(target)) {
-            return POSITION_UNCHANGED;
-        }
+        <span style="color:#66d9ef">return</span> POSITION_NONE<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-        return POSITION_NONE;
-    }
-
-    public void refresh() {
-        mFragments.clear();
-        notifyDataSetChanged();
-    }
-}
-</code></pre>
-
-<p>getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, <code>POSITION_NONE</code> を返すとFragmentを再生成してくれます. つまり, データを更新した後に <code>POSITION_NONE</code> を返すように実装すれば良いわけです.</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refresh</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        mFragments<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        notifyDataSetChanged<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>getItemPositionは, Fragmentの状態を管理しているメソッドです. ここで, <code>POSITION_NONE</code> を返すとFragmentを再生成してくれます. つまり, データを更新した後に <code>POSITION_NONE</code> を返すように実装すれば良いわけです.</p>
+<h2 id="heading">まとめ</h2>
 <p>FragmentPagerAdapterはFragmentの再生成をしない代わりに, パフォーマンスが高くなっています. 場合によって使い分ける必要がありそうです.</p>
 
     <div class="mt30"></div>

@@ -26,10 +26,7 @@
   <meta property="twitter:title" content="R8/Proguard: Daggerの生成コードがR8でどのように変わるかを見る">
 
   
-  <meta property="twitter:description" content="
-
-コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。
-
+  <meta property="twitter:description" content="コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。
 まずはサンプルコードです。 …">
   
 
@@ -97,121 +94,102 @@
     
     <span class="post-date">Created at Sun, Jan 20, 2019</span>
     
-    
-
-<p>コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。</p>
-
+    <p>コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。</p>
 <p>まずはサンプルコードです。</p>
-
-<pre><code class="language-kotlin">@Component(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Component(
   modules = [
-    AppModule1::class,
-    AppModule2::class
-  ]
+    AppModule1<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>,
+    AppModule2<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>
+  <span style="color:#960050;background-color:#1e0010">]</span>
 )
-interface AppComponent {
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
   @Component.Builder
-  interface Builder {
-    fun build(): AppComponent
+  <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Builder</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">build</span>(): AppComponent
   }
 
-  fun inject(activity: MainActivity)
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">inject</span>(activity: MainActivity)
 }
 
 @Module
-class AppModule1 {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppModule1</span> {
   @Provides
-  fun provideService(): AppService {
-    val retrofit = Retrofit.Builder()
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService</span>(): AppService {
+    <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
       ...
-    return retrofit.create()
+    <span style="color:#66d9ef">return</span> retrofit.create()
   }
 }
 
 @Module
-object AppModule2 {
+<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">AppModule2</span> {
   @JvmStatic
   @Provides
-  fun provideService2(): AppService2 {
-    val retrofit = Retrofit.Builder()
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService2</span>(): AppService2 {
+    <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
       ...
-    return retrofit.create()
+    <span style="color:#66d9ef">return</span> retrofit.create()
   }
 }
 
 ---
 
-class MainActivity : AppCompatActivity() {
-  @Inject lateinit var appService: AppService
-  @Inject lateinit var appService2: AppService2
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService: AppService
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService2: AppService2
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    val appComponent = DaggerAppComponent.builder().build()
-    appComponent.inject(this)
+    <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder().build()
+    appComponent.inject(<span style="color:#66d9ef">this</span>)
 
     ...
   }
 }
-</code></pre>
-
-<p>シンプルなAppComponentを定義して、そこにAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。</p>
-
+</code></pre></div><p>シンプルなAppComponentを定義して、そこにAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。</p>
 <p>これを最適化なしでdex変換して、デコンパイルしてみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#a6e22e">@NotNull</span>
+    <span style="color:#66d9ef">public</span> AppService appService<span style="color:#f92672">;</span>
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#a6e22e">@NotNull</span>
+    <span style="color:#66d9ef">public</span> AppService2 appService2<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">public final class MainActivity extends AppCompatActivity {
-    @Inject
-    @NotNull
-    public AppService appService;
-    @Inject
-    @NotNull
-    public AppService2 appService2;
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-    ...
-
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        DaggerAppComponent.builder().build().inject(this);
-        ...
-    }
-}
-</code></pre>
-
-<p>普通のコードです。KotlinをJava変換しただけなので、特におかしな部分もありません。</p>
-
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        setContentView<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        DaggerAppComponent<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inject</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>普通のコードです。KotlinをJava変換しただけなので、特におかしな部分もありません。</p>
 <p>次にR8による最適化を実行します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#66d9ef">extends</span> m <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> AppService o<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> AppService2 p<span style="color:#f92672">;</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 
-<pre><code class="language-java">public final class MainActivity extends m {
-    public AppService o;
-    public AppService2 p;
-    ...
-
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView((int) R.layout.activity_main);
-        Object a = new AppModule1().a();
-        a.a(a, &quot;Cannot return null from a non-@Nullable @Provides method&quot;);
-        this.o = a;
-        this.p = AppModule2_ProvideService2Factory.a();
-        ...
-    }
-}
-</code></pre>
-
-<p>何ということでしょう。<code>DaggerAppComponent</code>が消えました！</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle bundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>bundle<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        setContentView<span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Object a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppModule1<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        a<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Cannot return null from a non-@Nullable @Provides method&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">o</span> <span style="color:#f92672">=</span> a<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">p</span> <span style="color:#f92672">=</span> AppModule2_ProvideService2Factory<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>何ということでしょう。<code>DaggerAppComponent</code>が消えました！</p>
 <p>DaggerAppComponentの各メソッドがMainActivity側にインライン展開されることで、完全にDaggerAppComponentを消すことが出来ます。
 実際にapkの中身を見て、DaggerAppComponentクラスが存在しないことを確認しました。R8すごい😃</p>
-
-<h2 id="補足">補足</h2>
-
+<h2 id="heading">補足</h2>
 <p>Proguardだと、デフォルトのだと上記のサンプルから、<code>DaggerAppComponent</code>を消すことが出来ませんでした。</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading1">まとめ</h2>
 <ul>
 <li>R8すごい😃😃😃</li>
 </ul>

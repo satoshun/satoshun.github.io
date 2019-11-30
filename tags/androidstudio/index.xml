@@ -19,10 +19,10 @@
       
       <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
       <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
-テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
+ テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
 まず、 Firebaseからクラッシュログをコピーします。
-次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
-そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
+ 次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
+ そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
     </item>
     
   </channel>

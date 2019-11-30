@@ -24,9 +24,7 @@
   <meta property="twitter:title" content="R8/Proguard: JarファイルからProGuard設定ファイルを読み込んでくれるようになりました">
 
   
-  <meta property="twitter:description" content="
-
-AGP3.3.0ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになり …">
+  <meta property="twitter:description" content="AGP3.3.0ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりまし …">
   
 
   
@@ -93,25 +91,15 @@ AGP3.3.0ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、Jarファイ�
     
     <span class="post-date">Updated at Mon, Jan 28, 2019</span>
     
-    
-
-<p><del>AGP3.3.0</del>ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
+    <p><del>AGP3.3.0</del>ProGuardはAGP3.3.0、R8は導入されたAGP3.2.0から、JarファイルのProGuard設定ファイルを組み込めるようになりました。その機能紹介です。
 今まで、aarでは<code>consumerProguardFiles</code>で、ライブラリのProGuard設定を指定できました。それのJar、Javaバージョンとなります。</p>
-
-<h2 id="ライブラリ開発者側の設定">ライブラリ開発者側の設定</h2>
-
+<h2 id="heading">ライブラリ開発者側の設定</h2>
 <p>RetrofitなどのSquare社のライブラリでは、早くもこの機能に対応しているので、それを例にして説明します。</p>
-
 <p>まず、<code>resources/META-INF/prougard</code>ディレクトリの中にProGuardの設定ファイルを置きます。</p>
-
 <p><a href="https://github.com/square/retrofit/tree/master/retrofit/src/main/resources/META-INF/proguard">square/retrofit</a></p>
-
 <p>ライブラリ側の設定はこれで完了です。</p>
-
-<h2 id="使う側の設定">使う側の設定</h2>
-
+<h2 id="heading1">使う側の設定</h2>
 <p>AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。</p>
-
 <pre><code>implementation &quot;com.squareup.retrofit2:retrofit:2.4.0&quot;
 
 &gt; ./gradlew installRelease
@@ -123,12 +111,8 @@ Warning: there were 267 unresolved references to classes or interfaces.
          (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass)
 Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.
 Thread(Tasks limiter_2): destruction
-</code></pre>
-
-<p>失敗しました😂</p>
-
+</code></pre><p>失敗しました😂</p>
 <p>次にMETA-INFが入った2.5.0でビルドをします。</p>
-
 <pre><code>implementation &quot;com.squareup.retrofit2:retrofit:2.5.0&quot;
 
 &gt; ./gradlew installRelease
@@ -136,12 +120,8 @@ Thread(Tasks limiter_2): destruction
 
 BUILD SUCCESSFUL in 21s
 38 actionable tasks: 18 executed, 20 from cache
-</code></pre>
-
-<p>成功しました😊</p>
-
+</code></pre><p>成功しました😊</p>
 <p>META-INFファイルをちゃんと読み込めているようです。ProGuardのconfigurationファイルを確認したところ、RetrofitのProGuard設定が入っていました。</p>
-
 <pre><code>// configuration.txt
 ...
 # Retain service method parameters when optimizing.
@@ -150,26 +130,18 @@ BUILD SUCCESSFUL in 21s
     &lt;methods&gt;;
 }
 ...
-</code></pre>
-
-<h2 id="補足">補足</h2>
-
+</code></pre><h2 id="heading2">補足</h2>
 <p>この機能はR8/ProGuard、両方とも対応しているようです。</p>
-
-<h2 id="追記">追記</h2>
-
+<h2 id="heading3">追記</h2>
 <p>最初、冒頭でR8もAGP3.3.0からと書いたんですが、それは誤りで、AGP3.2.0のR8が導入されたタイミングでした。</p>
-
 <p><a href="https://twitter.com/kafumi__/status/1089816485386747905">@kafumi__</a>さんにご指摘いただきました！ありがとうございます😊</p>
-
-<h2 id="まとめ">まとめ</h2>
-
+<h2 id="heading4">まとめ</h2>
 <ul>
 <li>ライブラリがJarであったとしても、ライブラリ作者が対応してくれればProGuardの設定が楽になる!!!
-
 <ul>
 <li>現状、有名なライブラリでは、OkHttp、Retrofit、Coroutineなどが対応しています😊</li>
-</ul></li>
+</ul>
+</li>
 <li>この機能がProGuardでも使えるのを知らなかったので、公式ドキュメントなどのリンクを知っている方がいれば教えてほしいです🙏🙏🙏</li>
 </ul>
 
