@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 30 Nov 2019 06:14:19 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 08 Dec 2019 10:32:03 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GitHub Actions: 最近使っているGitHub Actionsたち</title>
+      <link>https://satoshun.github.io/2019/12/github-actions-first/</link>
+      <pubDate>Sun, 08 Dec 2019 10:32:03 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/12/github-actions-first/</guid>
+      <description>プライベート、仕事で使っているGitHub Actionsを雑に紹介します。
+Release Drafter Release Drafterは、マージされたPRをもとに、いい感じにリリースノートを作ってくれます。
+OSSのライブラリ開発で便利なので、最近導入しました。
+Image Actions Image Actionsは、PRを出したときに、画像を圧縮をチャレンジし、小さくなった場合、圧縮したファイルをコミットしてくれます。
+ただし、デザイナーがすでに圧縮してくれているなら、特に何もしてくれないので、弊アプリではあまり活躍してないです。
+First Interaction First Interactionは、初めてPRを出した人に、定型文を出すことが出来るGitHub actionです。
+「はじめてのPRありがとうございます🙏ここ見といてね」みたいなメッセージを出して使ってます。
+Assign Author/Auto Assign Assign Author、Auto Assignは、自分にアサインしたり、均等にレビュワーを指定する事ができます。
+レビューワーを分散させたかったので、使ってます。これ系のactionは他にもあるので、いろいろ調べるのも楽しそう。
+まとめ  GitHub Actionsはいいぞ〜  </description>
+    </item>
     
     <item>
       <title>メモ Android: Navigation Component &#43; Toolbar(ActionBar)周りのコードを読んで見る</title>
