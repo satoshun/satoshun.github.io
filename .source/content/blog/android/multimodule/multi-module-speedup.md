@@ -12,13 +12,13 @@ thumbnail = "https://bit.ly/2DqyKVb"
 
 例えば、以下のモジュール構成を考えます。
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000" width=400>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000" width="400" >}}
 
 頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。
 
 そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00" width=400>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00" width="400" >}}
 
 途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。
 
