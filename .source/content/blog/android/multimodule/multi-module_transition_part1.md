@@ -34,7 +34,7 @@ Part1では、遷移専用のモジュールを作る方法を考えてみます
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwecY1CaGcBmH5nSNa5BGBSfCpoZHjOE8WGW5tPpKDAW85vT3QbuAq6K0" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwecY1CaGcBmH5nSNa5BGBSfCpoZHjOE8WGW5tPpKDAW85vT3QbuAq6K0" width="300" >}}
 
 ---
 
@@ -87,7 +87,7 @@ class SubActivity : AppCompatActivity() {
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwebLoUFcrO-RzpnksWyaOGgDKLGYMGTJO8If09iv9bnSN41AGRUqGBV63c8oZ6y7LG0o3Kc12K80ge7B8JKl1HWG0000" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLutBpmSTEInysRTHytRNtSFEtvbDqlvovwic_kqxKpdixUpCMLd9zRa9-NcbUY40rN2r4Kgv1OhE0UwebLoUFcrO-RzpnksWyaOGgDKLGYMGTJO8If09iv9bnSN41AGRUqGBV63c8oZ6y7LG0o3Kc12K80ge7B8JKl1HWG0000" width="300" >}}
 
 ---
 
