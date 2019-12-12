@@ -22,7 +22,7 @@ draft = false
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00" width="300" >}}
 
 ---
 
@@ -30,7 +30,7 @@ draft = false
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40" width="300" >}}
 
 ---
 
