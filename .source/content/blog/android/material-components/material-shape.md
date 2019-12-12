@@ -13,7 +13,7 @@ Shapeがmaterial androidの1.1.0-alpha01から実装されました。
 
 Shapeとは、こんなやつです。
 
-<img src="/blog/android/material-components/material-shape.png" />
+{{< figure src="/blog/android/material-components/material-shape.png" >}}
 
 参照: [About shape](https://material.io/design/shape/about-shape.html)
 
@@ -86,7 +86,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-cut.png" width="300" />
+{{< figure src="/blog/android/material-components/bottom-sheet-cut.png" width="300" >}}
 
 `cornerFamily`にはcut以外にも、roundedを取ることが出来ます。roundedを指定すると次のようになります。
 
@@ -98,7 +98,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 </style>
 ```
 
-<img src="/blog/android/material-components/bottom-sheet-rounded.png" width="300" />
+{{< figure src="/blog/android/material-components/bottom-sheet-rounded.png" width="300" >}}
 
 `shapeAppearanceLargeComponent`を指定することは、BottomSheetDialog以外の、他のコンポーネントにも影響が出るので、注意してください。
 
@@ -130,7 +130,7 @@ shapeAppearanceに、`?attr/shapeAppearanceLargeComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-bottomstyle-rounded.png" width="300" />
+{{< figure src="/blog/android/material-components/bottom-sheet-bottomstyle-rounded.png" width="300" >}}
 
 BottomSheetDialogはこんな感じで、StyleからShapeを指定することが出来ます。
 
@@ -173,7 +173,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" width="300" />
+{{< figure src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" width="300" >}}
 
 ### XMLから直接指定する
 
@@ -195,7 +195,7 @@ shapeAppearanceに、`?attr/shapeAppearanceSmallComponent`が使われていま�
 
 こんな感じになります。
 
-<img src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" width="300" />
+{{< figure src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" width="300" >}}
 
 
 ## まとめ
