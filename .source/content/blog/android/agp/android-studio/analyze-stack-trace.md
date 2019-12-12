@@ -15,16 +15,16 @@ draft = false
 
 まず、 Firebaseからクラッシュログをコピーします。
 
-<img src="/blog/android/agp/android-studio/firebase-crash-log.png" />
+{{< figure src="/blog/android/agp/android-studio/firebase-crash-log.png" >}}
 
 ---
 
 次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
 
-<img src="/blog/android/agp/android-studio/firebase-crash-log-android-studio.png" />
+{{< figure src="/blog/android/agp/android-studio/firebase-crash-log-android-studio.png" >}}
 
 ---
 
 そうすると、Android Studio上で、関数ジャンプが出来るようになります！
 
-<img src="/blog/android/agp/android-studio/firebase-crash-log-result.png" />
+{{< figure src="/blog/android/agp/android-studio/firebase-crash-log-result.png" >}}
