@@ -109,7 +109,7 @@ fab.hideMotionSpec = MotionSpec.createFromResource(
 
 最終的な、アニメーションはこんな感じになります。
 
-<img src="https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no" width=400 />
+{{< figure src="https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no" width="400" >}}
 
 アニメーション時間が長くなり、ボヨンボヨンしていることが分かると思います。
 
