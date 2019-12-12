@@ -17,7 +17,7 @@ Part1.5としているのは、Part1にdynamic feature moduleを補足した内�
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUzoqw77pzCVDgvxic_jqxOodipTpSINdvnRavwNcbIX49nOKF6vUzBXfn-FcfO-RzpnkNXsha5Yi01H6LlMuQUlZvcc6s5GMboOPOYermg7K25NfPh3hC5KcvnUbSd5n0LsXe9kINvwdQmUn1qt0Y8iB90mN0ci3YQEAS3cavgK0mmO0" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUzoqw77pzCVDgvxic_jqxOodipTpSINdvnRavwNcbIX49nOKF6vUzBXfn-FcfO-RzpnkNXsha5Yi01H6LlMuQUlZvcc6s5GMboOPOYermg7K25NfPh3hC5KcvnUbSd5n0LsXe9kINvwdQmUn1qt0Y8iB90mN0ci3YQEAS3cavgK0mmO0" width="300" >}}
 
 ---
 
@@ -45,7 +45,7 @@ sub2 -down-> core
 
 ---
 
-<img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUzoqw77pzCVDgvxic_jqxOodipTpSINdvnRavwNcbIX49nOKF6vUzBXfn-FcfO-RzpnkNXsha5Yi01H6LlMuQUlZvcc6s5GMboOPOYermg7K25NfPh3hC5KcvnUbSd5nWSnMq4t9By_JjGCx2MG2YW0Na80BG7IXQ08BeUY2A798pKi1XXO0" width=300>
+{{< figure src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUzoqw77pzCVDgvxic_jqxOodipTpSINdvnRavwNcbIX49nOKF6vUzBXfn-FcfO-RzpnkNXsha5Yi01H6LlMuQUlZvcc6s5GMboOPOYermg7K25NfPh3hC5KcvnUbSd5nWSnMq4t9By_JjGCx2MG2YW0Na80BG7IXQ08BeUY2A798pKi1XXO0" width="300" >}}
 
 ---
 
