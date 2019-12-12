@@ -13,7 +13,7 @@ ViewPager2ではRecyclerViewを使うことが出来るので、RecyclerViewと�
 
 最終的にこんなのが作れます。（a、b、cの要素でループしている）
 
-<img src="/blog/android/jetpack/viewpager2/viewpager2-loop.gif" style="max-width:280px" />
+{{< figure src="/blog/android/jetpack/viewpager2/viewpager2-loop.gif" style="max-width:280px" >}}
 
 今回の検証に用いたコードは、[satoshun/ViewPager2](https://github.com/satoshun-android-example/ViewPager2/tree/master/app/src/main/java/com/github/satoshun/example/infinite)にあります😃
 
