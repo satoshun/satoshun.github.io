@@ -126,7 +126,7 @@ class Adapter : GroupAdapter<GroupieViewHolder>() {
 class BasicItem : Item<GroupieViewHolder>()
 ```
 
-<img src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/>
+{{< figure src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;" >}}
 
 Itemが点滅しているのが分かります。これは、Idが毎回異なるので、`areItemsTheSame`がfalseを返すためです。この場合、Viewは再利用されません。
 
@@ -142,7 +142,7 @@ class Adapter : GroupAdapter<GroupieViewHolder>() {
 class BasicItem(id: Long) : Item<GroupieViewHolder>(id)
 ```
 
-<img src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/>
+{{< figure src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;" >}}
 
 この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、`areContentsTheSame`がfalseを返すためです。
 `areContentsTheSame`がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。
@@ -161,7 +161,7 @@ class Adapter : GroupAdapter<GroupieViewHolder>() {
 data class BasicItem(private val id: Long) : Item<GroupieViewHolder>(id)
 ```
 
-<img src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/>
+{{< figure src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;" >}}
 
 この場合は、Itemが点滅していないのが分かります。これは、`areItemsTheSame`と`areContentsTheSame`がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、`areContentsTheSame`がtrueなので、Viewの中身を更新する必要がないためです。
 
@@ -184,7 +184,7 @@ class BasicItem(id: Long) : Item<GroupieViewHolder>(id) {
 }
 ```
 
-<img src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;"/>
+{{< figure src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250" style="object-fit: cover;object-position: 100% 0;" >}}
 
 この場合も、Itemが点滅していないのが分かります。これは、`areContentsTheSame`はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、`areContentsTheSame`がfalseなので、Viewの中身を更新する必要があるためです。
 
