@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 08 Dec 2019 10:32:03 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Dec 2019 12:25:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>ci</title>
       <link>https://satoshun.github.io/tags/ci/</link>
-      <pubDate>Sun, 08 Dec 2019 10:32:03 +0000</pubDate>
+      <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/ci/</guid>
       <description></description>
@@ -24,7 +24,7 @@
     <item>
       <title>githubactions</title>
       <link>https://satoshun.github.io/tags/githubactions/</link>
-      <pubDate>Sun, 08 Dec 2019 10:32:03 +0000</pubDate>
+      <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/githubactions/</guid>
       <description></description>

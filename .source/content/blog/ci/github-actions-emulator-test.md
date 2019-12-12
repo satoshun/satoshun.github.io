@@ -1,21 +1,21 @@
 +++
-date = "Thu Dec 12 12:06:53 UTC 2019"
-title = "GitHub Actions: 実機テストをする"
+date = "Thu Dec 12 12:25:11 UTC 2019"
+title = "GitHub Actionsでエミュレータテストをする"
 tags = ["ci", "githubactions"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-GitHub Actionsで実機テストを回したかったので調べてみました。
+GitHub Actionsでエミュレータでテストを回したかったので調べてみました。
 
-結論、AutoDisposeで実機テストを行っていたので、それをアレンジする感じがいいと思います[AutoDispose/ci.yml](https://github.com/uber/AutoDispose/blob/master/.github/workflows/ci.yml)
+結論、AutoDisposeでエミュレータでテストを行っていたので、それをアレンジする感じがいいと思います。詳しくは [AutoDispose/ci.yml](https://github.com/uber/AutoDispose/blob/master/.github/workflows/ci.yml) を見てください。
 
-## 最終形
+## エミュレータテストをするスクリプト
 
 特にキャッシュとかを考えないなら、以下のスクリプトで動きます。
 
-```yml
+```
 name: CI
 
 on: [push, pull_request]
@@ -46,12 +46,11 @@ jobs:
 
 [malinskiy/action-android](https://github.com/Malinskiy/action-android)という、便利GitHub Actionがあるので、それを呼び出すだけでおｋです。
 
-あとは、`cmd: ./gradlew connectedCheck --stacktrace`みたいな感じで、自分のプロジェクトに適したテストコマンドをコールするだけでいけます。
+あとは、`cmd: ./gradlew connectedCheck --stacktrace`みたいな感じで、自分のプロジェクトに適したテストコマンドをコールするだけでいけます。stacktraceを出しておくと、デバッグのときなどに便利です。
 
-[結果](https://github.com/satoshun-kotlin-example/CoroutineCatalog/commit/0b8336d8ff2c7cc37510857c816e10c3ea31b295/checks?check_suite_id=355095099)はこんな感じになります。
+[結果](https://github.com/satoshun-kotlin-example/CoroutineCatalog/commit/0b8336d8ff2c7cc37510857c816e10c3ea31b295/checks?check_suite_id=355095099) はこんな感じになります。
 
-<img src="/blog/android/ci/github-result.png" width="300" />
-
+{{< figure src="/blog/ci/github-result.png" width="600" >}}
 
 ## まとめ
 
