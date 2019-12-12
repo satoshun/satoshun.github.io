@@ -13,7 +13,7 @@ draft = true
 
 [RxRedux](https://github.com/freeletics/RxRedux)
 
-<img src="https://raw.githubusercontent.com/freeletics/RxRedux/master/docs/rxredux.png" width=360/>
+{{< figure "https://raw.githubusercontent.com/freeletics/RxRedux/master/docs/rxredux.png" width=360 >}}
 
 - Activity、Fragmentの継承: なし
 - Kotlin: Kotlinファースト

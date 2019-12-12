@@ -13,7 +13,7 @@ https://github.com/freeletics/RxRedux
 
 RxReduxはReduxを実現するためのライブラリです。
 
-<img src="https://raw.githubusercontent.com/freeletics/RxRedux/master/docs/rxredux.png" width=50%>
+{{< figure "https://raw.githubusercontent.com/freeletics/RxRedux/master/docs/rxredux.png" width=50% >}}
 
 次の拡張関数を提供しています。
 

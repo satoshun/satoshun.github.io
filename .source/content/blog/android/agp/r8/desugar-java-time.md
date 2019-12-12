@@ -58,7 +58,7 @@ apkの中身を見たところ、`java.time`用のバックポートライブラ
 
 以下、apkの中身になります。
 
-{{< figure src="/blog/android/agp/r8/desugar-time-apk.png" width="100%">}}
+{{< figure src="/blog/android/agp/r8/desugar-time-apk.png" width="100%" >}}
 
 `java.time` は `j$.time`に変換されていました。
 
