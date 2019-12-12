@@ -185,7 +185,7 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
 
 こんな感じのアニメーションになります。
 
-<img src="https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no" width=400>
+{{< figure src="https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no" width="400" >}}
 
 ## まとめ
 
