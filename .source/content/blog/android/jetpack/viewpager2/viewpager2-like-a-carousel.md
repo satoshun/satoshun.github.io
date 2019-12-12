@@ -11,7 +11,7 @@ draft = false
 
 最終的にこんなのが作れます。
 
-<img src="/blog/android/jetpack/viewpager2/viewpager2-carousel.gif" style="max-width:280px" />
+{{< figure src="/blog/android/jetpack/viewpager2/viewpager2-carousel.gif" style="max-width:280px" >}}
 
 では、コードを説明していきます。
 
