@@ -126,7 +126,10 @@ println(zoneOffset)
 </code></pre></div><h2 id="heading1">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>
 <p>以下、apkの中身になります。</p>
-<p><!-- raw HTML omitted --></p>
+<figure>
+    <img src="/blog/android/agp/r8/desugar-time-apk.png" width="100%"/> 
+</figure>
+
 <p><code>java.time</code> は <code>j$.time</code>に変換されていました。</p>
 <p>また、<code>Date#toInstant</code>など、既存クラスに新しく追加された<code>date.time</code>のAPIも使えます。R8のコードを読んだところ、おそらく次のAPIが対応しています。</p>
 <pre><code>&quot;retarget_lib_member&quot;: {

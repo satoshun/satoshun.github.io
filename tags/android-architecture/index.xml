@@ -28,9 +28,9 @@ CIの高速化 再ビルドが必要なモジュールのみテストをすれ�
 モジュール どのようにモジュール分けをするか?
 1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
  ライブラリモジュール  com.android.libraryを指定する   Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い      Plaidでは以下のようなモジュール構成にした。
-dribbleと、designernewsがDynamic Featureモジュールになっている。
+  dribbleと、designernewsがDynamic Featureモジュールになっている。
 2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
- Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入      こうすることで、UIがDAOの知識を知らずに済む</description>
+     Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入        こうすることで、UIがDAOの知識を知らずに済む</description>
     </item>
     
     <item>

@@ -45,7 +45,7 @@
       <description>ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。
 ViewPager2ではRecyclerViewを使うことが出来るので、RecyclerViewと同じような実装で実現することが出来ます。
 最終的にこんなのが作れます。（a、b、cの要素でループしている）
-今回の検証に用いたコードは、satoshun/ViewPager2にあります😃
+  今回の検証に用いたコードは、satoshun/ViewPager2にあります😃
 では、コードを説明していきます。今回は、1つのViewTypeを扱います。
 実際のコード まず、RecyclerView.Adapterのサイズを決めるgetItemCountメソッドの実装です。 限りなく大きい値、Int.MAX_VALUEを返します。
 override fun getItemCount(): Int = Int.MAX_VALUE 次に、onBindViewHolderメソッドを次のように実装します。
@@ -62,7 +62,7 @@ class InfiniteAdapter( private val itemData: List&amp;lt;Data&amp;gt; ) : Recycl
       <guid>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</guid>
       <description>横のアイテムをチラ見せする画面をViewPager2で書けるよって話です。
 最終的にこんなのが作れます。
-では、コードを説明していきます。
+  では、コードを説明していきます。
 1. 横のアイテムをチラ見せする まず、ViewPager2をLayout内に定義します。
 &amp;lt;androidx.viewpager2.widget.ViewPager2 android:id=&amp;#34;@+id/viewpager&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:orientation=&amp;#34;horizontal&amp;#34; /&amp;gt; 次に、横のアイテムをどれだけチラ見せるかを定義します。
 &amp;lt;dimen name=&amp;#34;offset&amp;#34;&amp;gt;32dp&amp;lt;/dimen&amp;gt; 次に、各アイテム間にどれだけのマージンをつけるかを定義します。
@@ -136,8 +136,8 @@ mediator.attach() これで、ViewPager2 + TabLayoutを実現できます。と�
       
       <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
       <description>Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。 動画だとここらへんになります。
-改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます    Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る   リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される    Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった  新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
-Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）
+改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます    Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る   リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される    Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった    新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
+  Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）
 メリット  コンパイルが早くなる  Data Bindingより機能が少なくなるのでそれはそう   &amp;lt;layout&amp;gt;で囲う必要がなくなった  これ個人的には好きでなかったので嬉しい。ネストが減る    デメリット  &amp;lt;data&amp;gt;セクションがなくなる  モデルの値とViewのマッピングはコード側ですることになりそう   多分BindingAdapterは使えない  これもコード側ですることになりそう   双方向バインディングとか使えない  おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。</description>
     </item>
     

@@ -20,7 +20,7 @@
       <guid>https://satoshun.github.io/2019/11/material-shape/</guid>
       <description>Shapeがmaterial androidの1.1.0-alpha01から実装されました。
 Shapeとは、こんなやつです。
-参照: About shape
+  参照: About shape
 この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。
 より詳しい説明は公式ドキュメント/Shape.mdを参照してください。
 まずはテーマを設定する Theme.MaterialComponentsを使う必要があります。

@@ -23,13 +23,13 @@
 また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。
 検証に用いたコードはsatoshun-android-example/DynamicFeatureDaggerExampleにあります😊
 前提知識 通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。
-  この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
-  そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
+    この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
+    そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
 ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。
 最初に、SubActivityをDaggerApplicationのように振る舞わさせるためにModuleRootActivityクラスを定義します。 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。
-abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.moduleInjector injector.activity.inject(this) super.</description>
+abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.</description>
     </item>
     
   </channel>
