@@ -13,7 +13,7 @@ androidxのライブラリのリリースをGitHubのReleases onlyを使って�
 
 <br />
 
-<img src="/blog/product/androidx-releases-1.png" width="50%" />
+{{< figure src="/blog/product/androidx-releases-1.png" width="50%" >}}
 
 <br />
 
@@ -21,7 +21,7 @@ androidxのライブラリのリリースをGitHubのReleases onlyを使って�
 
 <br />
 
-<img src="/blog/product/androidx-releases-2.png" width="70%" />
+{{< figure src="/blog/product/androidx-releases-2.png" width="70%" >}}
 
 <br />
 
