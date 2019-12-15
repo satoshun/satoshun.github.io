@@ -16,20 +16,16 @@ MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを�
 
 - viewModelScopeとは?
 - suspend関数をコールする場合
-- Flow APIをコールする場合
-
+- FlowをViewModelでコール/購読する場合
 
 ## ViewModel.viewModelScopeとは?
 
 `androidx.lifecycle:lifecycle-viewmodel-ktx`ライブラリで、viewModelScope拡張関数が使うことが出来ます。
 
-```
+```kotlin
 /**
  * [CoroutineScope] tied to this [ViewModel].
  * This scope will be canceled when ViewModel will be cleared, i.e [ViewModel.onCleared] is called
- *
- * This scope is bound to
- * [Dispatchers.Main.immediate][kotlinx.coroutines.MainCoroutineDispatcher.immediate]
  */
 val ViewModel.viewModelScope: CoroutineScope
 ```
@@ -37,7 +33,7 @@ val ViewModel.viewModelScope: CoroutineScope
 ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。
 ViewModelでCoroutineを扱うときは、このスコープで実行しておけば、自動的にdisposeしてくれるので、メモリリークの心配もないです。
 
-また、`viewModelScope`は、mainスレッド上で実行してくれるため、`LiveData.setValue`を使います。
+また、`viewModelScope`は、メインスレッド上で実行してくれるため、`LiveData.setValue`を使います。
 
 ```kotlin
 val userLiveData = MutableLiveData(...)
@@ -45,7 +41,7 @@ val userLiveData = MutableLiveData(...)
 viewModelScope.launch {
     val user = userRepository.getUser() // 適当なsuspend関数をコール
 
-    userLiveData.setValue(user) // mainスレッド上で実行されることが保証されているのでsetValueを使う
+    userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う
     // userLiveData.postValues(user)
 }
 ```
@@ -114,6 +110,7 @@ viewModelScope.launch {
 sealed class NetWorkResult<T> {
     class Success<T>(val value: T) : NetWorkResult<T>()
     class Error(val exception: Exception) : NetWorkResult<Nothing>()
+    ...
 }
 ```
 
@@ -136,8 +133,55 @@ class UserRepository(private val retrofitService: UserApi) {
 
 ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。
 
+
 ## Flow APIの話
 
-Flow APIは、複数の値を流すストリームを表現することが出来ます。
+Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものと考えられます。
+
+Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複登録の心配がないためです。`SavedStateHandle`を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。
+
+```kotlin
+class MyViewModel(private val state: SavedStateHandle) : ViewModel() {
+    init {
+        ...
+    }
+}
+```
+
+Flowの購読方法なんですが、`collect(collectLatest)`もしくは、`launchIn`を使います。
+
+```kotlin
+class MyViewModel(...) : ViewModel() {
+    init {
+        viewModelScope.launch {
+            repository.getFlowStream()
+                .collect { ... }
+        }
+
+        repository.getFlowStream()
+            .onEach { ... }
+            .launchIn(viewModelScope)
+    }
+}
+```
+
+エラーや、完了イベントをハンドリング必要がある場合、catch、onCompletionメソッドを使います。
+
+```kotlin
+repository.getFlowStream()
+    .onEach { ... }
+    .catch { ...}
+    .onCompletion {  }
+    .launchIn(viewModelScope)
+```
+
+個人的にはネストが少なくなるので、`launchIn`を使う書き方のほうが好みです。
 
 
+## まとめ
+
+- viewModelScopeメソッドを使うと自動でリソースを解放してくれる
+- runCatchingを使うと、いい感じにエラーハンドリングが出来る
+- launchInを使うと、いい感じにFlowを購読できる
+
+Coroutineはいいぞ〜
