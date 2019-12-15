@@ -150,7 +150,7 @@
 }
 </code></pre></div><p>となります。従来の***Injectorが汎用的な<code>HasAndroidInjector</code>まとまりました😃</p>
 <p>大きなコードの修正は必要なさそうです。</p>
-<h2 id="heading1">なぜこの変更が入ったか?</h2>
+<h2 id="heading-1">なぜこの変更が入ったか?</h2>
 <p>ronshapiroさんが以下のツイートをしていました。</p>
 <!-- raw HTML omitted -->
 <p>今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。</p>
@@ -162,7 +162,7 @@
   <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>唯一、AppComponentでは<code>AndroidSupportInjectionModule</code>を使っていると思うのでそこの置き換えは必要です。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>HasAndroidInjectorという1つの汎用インターフェースが爆誕した</li>
 <li>androidxのサポート増やしてくれそう。嬉しい😃

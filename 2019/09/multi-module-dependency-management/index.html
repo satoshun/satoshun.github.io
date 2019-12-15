@@ -185,11 +185,11 @@ extにバージョンを定義します。</p>
 </ul>
 </li>
 </ul>
-<h2 id="heading1">結局どっちがいいのか？</h2>
+<h2 id="heading-1">結局どっちがいいのか？</h2>
 <p>安定しているのは、extraプロパティを使う方法だと思います。
 buildSrc + Kotlinの方法はProject Structureが使えないのと、最近まで、コード補完がうまく効かない問題もあり、もう少し待ったほうが無難かもしれません。
 ただ、どちらもクリティカルなものではないので、最終的には好みで決定すれば良いと思います。</p>
-<h2 id="heading2">運用について</h2>
+<h2 id="heading-2">運用について</h2>
 <p>Tips的に、運用に役立つ便利ライブラリ、ASの機能を紹介します。</p>
 <h3 id="gradle-versions-plugin">Gradle Versions Plugin</h3>
 <p><a href="https://github.com/ben-manes/gradle-versions-plugin">Gradle Versions Plugin</a>は、ライブラリにアップデートがあるかをチェックしてくれるライブラリです。超便利です。</p>
@@ -197,7 +197,7 @@ buildSrc + Kotlinの方法はProject Structureが使えないのと、最近ま�
 <p><a href="https://github.com/jmfayard/buildSrcVersions">de.fayard.buildSrcVersions</a>は、buildSrc以下に、いい感じにバージョン管理用のKotlinファイルを作ってくれるライブラリです。実際に使ったことはないのですが、超便利そうです。</p>
 <h3 id="android-studio-project-structure">Android Studio Project Structure</h3>
 <p>Android Studioには<a href="https://developer.android.com/studio/projects#ProjectStructure">Project Structure</a>は、各モジュールのライブラリへの依存を一覧で見ることが出来ます。アップデートがあるライブラリを知ることが出来ます。</p>
-<h2 id="heading3">まとめ</h2>
+<h2 id="heading-3">まとめ</h2>
 <ul>
 <li>バージョン管理には、大きく2つの方法がある
 <ul>
@@ -207,7 +207,7 @@ buildSrc + Kotlinの方法はProject Structureが使えないのと、最近ま�
 </li>
 <li>最終的には、プロジェクトの構成や好みなどを加味して決めればいいと思います</li>
 </ul>
-<h2 id="heading4">リファレンス</h2>
+<h2 id="heading-4">リファレンス</h2>
 <ul>
 <li><a href="https://square.github.io/okhttp/">OkHttp</a></li>
 <li><a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencies/Dependencies.kt">androidx: Dependencies.kt</a></li>

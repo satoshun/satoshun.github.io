@@ -276,7 +276,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 <p>何故かと言うと、<code>ContributesAndroidInjector</code>はSubcomponentを作るシンタックスシュガーのようなものですが、
 <code>MainActivityModule</code>と<code>UserScopedActivityModule</code>はそれぞれ独立したSubcomponentを作るので、独立したComponent間で同一インスタンスを使うことが出来ないためです。</p>
 <p>今回のように、<code>UserSubcomponent</code>を定義して、そのComponentをベースに所属させる必要があります。</p>
-<h2 id="heading1">まとめ</h2>
+<h2 id="heading-1">まとめ</h2>
 <ul>
 <li>特定のActivityのみで共通のインスタンスを使いたいときは、結構めんどう
 <ul>

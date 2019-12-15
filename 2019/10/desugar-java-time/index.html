@@ -123,7 +123,7 @@ println(now.dayOfMonth)
 <span style="color:#75715e">// ZoneOffset API
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = ZoneOffset.ofHours(<span style="color:#ae81ff">10</span>)
 println(zoneOffset)
-</code></pre></div><h2 id="heading1">どのようにして実現しているか？</h2>
+</code></pre></div><h2 id="heading-1">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>
 <p>以下、apkの中身になります。</p>
 <figure>
@@ -143,7 +143,7 @@ println(zoneOffset)
 <h2 id="threetenabp">ThreeTenABPへの置き換え</h2>
 <p>バックポートされた<code>j$.time</code>のクラスと、<code>ThreeTenABP</code>のクラスを比較したところ、ほとんどのクラスが同じだったので、パッケージパスを変えるだけで、問題なく置き換えが出来ると思います。
 ただもちろん、パフォーマンス、バグなどの問題はある可能性があります。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>新しく追加されたdesugarを使うと、低いminversionでも<code>java.time</code>が使えるようになります😃</li>
 <li>簡単に使える!!</li>

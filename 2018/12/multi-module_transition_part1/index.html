@@ -161,7 +161,7 @@
 
 <hr>
 <p>これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃</p>
-<h2 id="heading1">補足</h2>
+<h2 id="heading-1">補足</h2>
 <p>いちいちルーターモジュールを作るのがめんどうなのであれば、共通のRouterインターフェースを作る方法もあります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Router</span>&lt;T&gt; {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
@@ -190,7 +190,7 @@
   ...
 }
 </code></pre></div><p>DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>相互に行き来したい画面があったときに、遷移専用のモジュールを作ることで循環参照を防ぐことが出来る</li>
 <li>基本的に画面を含んだモジュールは遷移したいときがほとんどだと思うので、遷移専用のモジュールを作ることで無駄な依存を作ることを防ぐことが出来る</li>

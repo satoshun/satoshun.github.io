@@ -98,7 +98,7 @@
 <p>まず、<code>resources/META-INF/prougard</code>ディレクトリの中にProGuardの設定ファイルを置きます。</p>
 <p><a href="https://github.com/square/retrofit/tree/master/retrofit/src/main/resources/META-INF/proguard">square/retrofit</a></p>
 <p>ライブラリ側の設定はこれで完了です。</p>
-<h2 id="heading1">使う側の設定</h2>
+<h2 id="heading-1">使う側の設定</h2>
 <p>AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。</p>
 <pre><code>implementation &quot;com.squareup.retrofit2:retrofit:2.4.0&quot;
 
@@ -130,12 +130,12 @@ BUILD SUCCESSFUL in 21s
     &lt;methods&gt;;
 }
 ...
-</code></pre><h2 id="heading2">補足</h2>
+</code></pre><h2 id="heading-2">補足</h2>
 <p>この機能はR8/ProGuard、両方とも対応しているようです。</p>
-<h2 id="heading3">追記</h2>
+<h2 id="heading-3">追記</h2>
 <p>最初、冒頭でR8もAGP3.3.0からと書いたんですが、それは誤りで、AGP3.2.0のR8が導入されたタイミングでした。</p>
 <p><a href="https://twitter.com/kafumi__/status/1089816485386747905">@kafumi__</a>さんにご指摘いただきました！ありがとうございます😊</p>
-<h2 id="heading4">まとめ</h2>
+<h2 id="heading-4">まとめ</h2>
 <ul>
 <li>ライブラリがJarであったとしても、ライブラリ作者が対応してくれればProGuardの設定が楽になる!!!
 <ul>

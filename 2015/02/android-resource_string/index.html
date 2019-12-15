@@ -116,7 +116,7 @@ or
 
 context<span style="color:#f92672">.</span><span style="color:#a6e22e">getResources</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
 </code></pre></div><p>Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.</p>
-<h2 id="heading1">値展開</h2>
+<h2 id="heading-1">値展開</h2>
 <p>strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> %1: 引数1, $d: 数字 </span><span style="color:#75715e">--&gt;</span>
 <span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;hoge&#34;</span><span style="color:#f92672">&gt;</span>Hello %1$d<span style="color:#f92672">&lt;/string&gt;</span>
@@ -139,9 +139,9 @@ context<span style="color:#f92672">.</span><span style="color:#a6e22e">getResour
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">getResources().getQuantityString(R.plurals.number, 1, 1)); // one
 getResources().getQuantityString(R.plurals.number, 10, 100)); // other 100
 </code></pre></div><p>第二引数にquantityに与える数字を指定します. 1ならone, 0ならzeroがそれぞれ対応します. 複数形の場合に文字列を変えたいときなどに有効です.</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <p>strings.xmlには, 意外といろいろな機能がありました. switch的な処理が書けるpluralsは頭の片隅に入れておくと良さそう.</p>
-<h2 id="heading3">参考</h2>
+<h2 id="heading-3">参考</h2>
 <ul>
 <li><a href="https://developer.android.com/samples/BasicNetworking/res/values/strings.html">strings.xml | Android Developers</a></li>
 <li><a href="http://y-anz-m.blogspot.jp/2011/03/android-xml.html">Android　複雑な文字列を xml で定義する</a></li>

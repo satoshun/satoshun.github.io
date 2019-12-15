@@ -134,11 +134,11 @@ runCatching { doSomethingSync() }
     .onFailure { showErrorDialog(it) }
     .onSuccess { processData(it) }
 </code></pre></div><p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
-<h2 id="heading1">補足</h2>
+<h2 id="heading-1">補足</h2>
 <h3 id="result">Resultは戻り値として返せない</h3>
 <p>これは、Resultのユースケースから外さないための制約です。なぜなら、Resultはその関数内で処理すべき例外であり、関数の呼び出し側で処理させるべきではないためです。
 例えば、ある関数の返り値が<code>Result&lt;User&gt;</code>となっていたときに、失敗する可能性は呼び出し側に伝わりますが、どのような失敗が起こるか分かりません。どのようにエラーを処理するかはこの関数内で完結すべきなので、返り値としてResultを指定することは出来ません。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <p>簡単にまとめました。より詳細な内容は<a href="https://github.com/Kotlin/KEEP/blob/master/proposals/stdlib/result.md">Result KEEP</a>を見てください😊</p>
 
     <div class="mt30"></div>

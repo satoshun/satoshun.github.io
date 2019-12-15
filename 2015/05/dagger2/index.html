@@ -149,7 +149,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 <p>DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
 なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.</p>
 <h2 id="dagger2">Dagger2概念</h2>
-<p>Dagger2は大きく分けて, <code>Component</code>, <code>Module` </code>Provide<code>, </code>Inject` の4つの要素があります.
+<p>Dagger2は大きく分けて, <code>Component</code>, <code>Module</code> <code>Provide</code>, <code>Inject</code> の4つの要素があります.
 上記を定義しクラス間の依存関係を解決します.</p>
 <ul>
 <li>@Inject: 依存を注入します.</li>
@@ -158,7 +158,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 <li>@Component: @Injectと@Module間の関係を定義します.</li>
 </ul>
 <p>これだけでは分からないと思うので, 具体的な例をあげて説明します.</p>
-<h2 id="heading1">依存関係の定義</h2>
+<h2 id="heading-1">依存関係の定義</h2>
 <p>最初に依存関係を定義します. <code>javax.inject.Inject</code>アノテーションを使います.</p>
 <p>上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// inject field directly
@@ -212,12 +212,12 @@ blogger<span style="color:#f92672">.</span><span style="color:#a6e22e">post</spa
 <li>@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する</li>
 <li>アプリで依存解決Graphを使い, DIを行う</li>
 </ul>
-<h2 id="heading2">感想</h2>
+<h2 id="heading-2">感想</h2>
 <p>DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
 最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
 Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).</p>
 <p>Part2では, より実践的なDagger2の使い方について説明します.</p>
-<h2 id="heading3">参考</h2>
+<h2 id="heading-3">参考</h2>
 <ul>
 <li><a href="https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014">Dependency Injection with Dagger 2 (Devoxx 2014)</a></li>
 <li><a href="http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345">Dependency Injection With Dagger 2 on Android</a></li>

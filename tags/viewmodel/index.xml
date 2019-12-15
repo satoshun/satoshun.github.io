@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 25 May 2019 10:38:15 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 15 Dec 2019 07:15:43 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/viewmodel/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ViewModelとKotlin Coroutinesの書き方あれこれ</title>
+      <link>https://satoshun.github.io/2019/12/android-viewodel-kotlin-coroutine/</link>
+      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/12/android-viewodel-kotlin-coroutine/</guid>
+      <description>ViewModel + Kotlin Coroutineを使う場合、どんな感じでViewModelでCoroutineを表現するかについてあれこれ書いてみました。
+MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを考えています。
+環境はandroidx.lifecycle:lifecycle-viewmodel-ktxは2.2.0-rc03、Coroutineは1.3.3です。
+この記事は次の順序で進んでいきます。
+ viewModelScopeとは? suspend関数をコールするとき Flowをコール/購読するとき  viewModelScopeとは? androidx.lifecycle:lifecycle-viewmodel-ktxライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。
+/** * [CoroutineScope] tied to this [ViewModel]. * This scope will be canceled when ViewModel will be cleared, i.e [ViewModel.onCleared] is called */ val ViewModel.viewModelScope: CoroutineScope ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。 このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。
+また、viewModelScopeは、メインスレッド上で実行してくれるため、LiveData.setValueを使い、値を更新します。
+val userLiveData = MutableLiveData(...) viewModelScope.launch { val user = userRepository.getUser() // 適当なsuspend関数をコール  userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う  // userLiveData.postValues(user) } viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
+suspend関数をコールするとき ネットワークコールなどのAPIは、suspendで表現することになると思います。 また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。
+なので、Repository層での定義は次のようになります。</description>
+    </item>
     
     <item>
       <title>ViewModel SavedState &#43; Dagger</title>

@@ -226,7 +226,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
   }
 }
 </code></pre></div><p>applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。</p>
-<h2 id="heading1">まとめ</h2>
+<h2 id="heading-1">まとめ</h2>
 <ul>
 <li>おそらくLiveDataの値を更新する部分は、<code>ViewModel</code>や<code>Store</code>クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。</li>
 <li>もっと良い、楽できる書き方があればぜひ教えてください!!</li>

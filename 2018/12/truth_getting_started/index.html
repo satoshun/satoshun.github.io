@@ -122,8 +122,8 @@ assertThat<span style="color:#f92672">(</span>middleName<span style="color:#f926
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertThat<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p><code>&lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&gt; should have contained &lt;PINK&gt;</code> のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。</p>
 <p>以上がTruthのメリットになります。</p>
-<h2 id="heading1">補足</h2>
-<h3 id="truthandroid">Truth-Androidライブラリ</h3>
+<h2 id="heading-1">補足</h2>
+<h3 id="truth-android">Truth-Androidライブラリ</h3>
 <p>JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。
 例えば、Intentには以下のアサーションメソッドを使うことが出来ます。</p>
 <pre><code>hasComponent
@@ -150,7 +150,7 @@ hasFlags
 </li>
 </ul>
 <p>多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>Truthを使うと失敗メッセージがわかりやすくなる、便利!</li>
 <li>AssertJを使っているなら乗り換えるメリットはないかも</li>

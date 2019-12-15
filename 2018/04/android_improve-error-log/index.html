@@ -94,7 +94,7 @@ Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを
 <p>Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。</p>
 <p>理由としては、Data Bindingの生成が失敗すると、<code>MainActivityBinding</code>みたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。
 デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)</p>
-<h2 id="heading1">解決法</h2>
+<h2 id="heading-1">解決法</h2>
 <p>全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">kapt <span style="color:#f92672">{</span>
     javacOptions <span style="color:#f92672">{</span>
@@ -141,7 +141,7 @@ e: .java:96: error: incompatible types: possible lossy conversion from long to i
 :app:kaptProductDebugKotlin FAILED
 </code></pre><p>beforeではDataBindingの参照エラーしか出ていないんですが、afterではIntDefでのエラーログが出ていることが分かります。
 これが本当に欲しかったエラーログで、これを修正することで無事解決することが出来ました。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>Data Binding便利だけどやっぱつれぇわ</li>
 </ul>

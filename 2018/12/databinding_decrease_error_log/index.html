@@ -118,7 +118,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation
 @error.NonExistentClass()
 </code></pre><p>ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃</p>
-<h2 id="heading1">クライアント側の対応</h2>
+<h2 id="heading-1">クライアント側の対応</h2>
 <p>これに伴い、一部APIがdeprecatedになります。例えば、<code>main_act.xml</code>は次のようにAPIが変更されます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActBinding</span> <span style="color:#66d9ef">extends</span> ViewDataBinding <span style="color:#f92672">{</span>
   <span style="color:#a6e22e">@NonNull</span>
@@ -146,13 +146,13 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object component<span style="color:#f92672">)</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。</p>
-<h2 id="heading2">補足</h2>
+<h2 id="heading-2">補足</h2>
 <p>AGPのアップデートは気軽に出来ないので、
 Data Bindingのバージョンだけをアップデートしようと思ったんですが、エラーが出てしまい出来ませんでした。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">kapt <span style="color:#e6db74">&#34;androidx.databinding:databinding-compiler:3.4.0-alpha07&#34;</span>
 </code></pre></div><pre><code>ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
 </code></pre><p>AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。</p>
-<h2 id="heading3">まとめ</h2>
+<h2 id="heading-3">まとめ</h2>
 <ul>
 <li>AGPのアップデートをすればData Bindingのツラミの1つであったエラーログから解放される（かも）</li>
 <li><a href="https://github.com/satoshun-android-example/DataBindingApiDeprecateExample">サンプルコードはここ</a>にあります😃</li>

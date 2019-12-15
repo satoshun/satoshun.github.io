@@ -117,7 +117,7 @@
 <hr>
 <p>そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。</p>
 <p>ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。</p>
-<h2 id="heading1">実装</h2>
+<h2 id="heading-1">実装</h2>
 <p>Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。</p>
 <p>では、実装を始めます。</p>

@@ -151,7 +151,7 @@ or
 }
 </code></pre></div><p>activity-ktxに定義されている<code>viewModels</code>拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。</p>
 <p>次に、この2パターンのどちらの書き方がいいかを考えていきます。</p>
-<h2 id="heading1">実例編</h2>
+<h2 id="heading-1">実例編</h2>
 <p><code>@Provides</code>を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。</p>
 <p>両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。</p>
 <hr>
@@ -204,7 +204,7 @@ or
 </ul>
 <hr>
 <p>個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>一番プロジェクトに適したパターンを適用するのが良いと思います😃</li>
 <li>DaggerでViewModelサポートの<a href="https://github.com/google/dagger/issues/1271">Issue</a>が立っており、DaggerがViewModelをサポートする計画があります

@@ -138,7 +138,7 @@ Retrofitを使うと, このようにinterfaceとして, APIを定義するこ�
   <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">)</span>
 </code></pre></div><p><code>Observable.merge</code>は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
 あとは, これをsubscribeして, データを取得します.(<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41</a>)</p>
-<h2 id="databinding">Data-Bindingライブラリを使う</h2>
+<h2 id="data-binding">Data-Bindingライブラリを使う</h2>
 <p>Data-BindingはXMLレイアウトにbindしたいデータ(インスタンス)を記述することで, よしなにデータを出力してくれる機能です.
 AngularJSのデータバインディングをイメージして貰えると良いと思います.
 書くコード量が減り, とても便利なライブラリでした. (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml</a>)</p>
@@ -169,7 +169,7 @@ ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#fi
 </code></pre></div><p>AdapterEventBindingをViewHolderの代わりに使っています.
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34</a>)
 なかなか良いと思います.</p>
-<h2 id="mvpmodelviewpresenter">MVP(Model-View-Presenter)パターンを使う</h2>
+<h2 id="mvpmodel-view-presenter">MVP(Model-View-Presenter)パターンを使う</h2>
 <p>MVPパターンとは, MVCの親戚?のようなパターンで, 責務をModel, View, Presenterにそれぞれ分割するパターンです.</p>
 <p>Android開発は, Activity(Fragment)の責務が大きくなりがちです. 具体的にはActivityは以下のよう責務を持ちます.</p>
 <ul>

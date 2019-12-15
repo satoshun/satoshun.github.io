@@ -113,10 +113,10 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>結果:</p>
 <pre><code>平均: 1609ms
-</code></pre><h2 id="fastinit1">fastInit無効の場合</h2>
+</code></pre><h2 id="fastinit-1">fastInit無効の場合</h2>
 <p>結果:</p>
 <pre><code>平均: 1607ms
-</code></pre><h2 id="heading1">まとめ</h2>
+</code></pre><h2 id="heading-1">まとめ</h2>
 <p>ほぼ変わらない数字が出てきてしまいました。悲しい。
 Dagger生成コードを見る限りだと、最初のComponentのcreateのタイミングでComponentが持っているフィールドの初期化が行われていなかったので、早くなりそうだなと思ったんですが、実際にはほぼ変わりませんでした。</p>
 <p>芳しくない結果になった推測として</p>

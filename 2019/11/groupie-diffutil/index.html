@@ -211,7 +211,7 @@ data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
 </figure>
 
 <p>この場合も、Itemが点滅していないのが分かります。これは、<code>areContentsTheSame</code>はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、<code>areContentsTheSame</code>がfalseなので、Viewの中身を更新する必要があるためです。</p>
-<h2 id="heading1">まとめ</h2>
+<h2 id="heading-1">まとめ</h2>
 <ul>
 <li>Groupie（RecyclerView）で効率的に差分更新をしたいなら、以下の3点を考慮する必要があります
 <ul>

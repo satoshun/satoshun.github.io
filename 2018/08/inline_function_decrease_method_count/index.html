@@ -98,7 +98,7 @@ Inline Functionを使うと、関数がインライン化されるので、自�
 <ul>
 <li>R8/Proguardをちゃんと使う</li>
 </ul>
-<h2 id="heading1">背景</h2>
+<h2 id="heading-1">背景</h2>
 <p>Inline Functionを使うと、関数がインライン化されるので、自動的にメソッド数が1減ると思っていました。けど、そんなことはなかったという話です。</p>
 <p>実際に動かして確認してみます。下記の関数を追加し、Build APK → Analyze APKでclasses.dexのメソッドカウントを調べてみます。</p>
 <p>まずは、R8無しで調べてみます。</p>
@@ -128,7 +128,7 @@ show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイル
 </code></pre></div><p>ただし、ここで重要なのは、inlineをつけたメソッドはインライン化されるため、上記のメソッドは生成されるけど、実際にはコールされない点です。
 コールされない、参照がないのでR8で削除することができます。</p>
 <p>実際にR8/Proguardを有効にしてBuild APK → Analyze APKで確認したところ、inlineをつけた場合はメソッドカウントが増えていないことが確認できました。</p>
-<h2 id="heading2">まとめ</h2>
+<h2 id="heading-2">まとめ</h2>
 <ul>
 <li>InlineメソッドはR8/Proguardと組み合わせればメソッドカウントを減らす効果がある
 <ul>
