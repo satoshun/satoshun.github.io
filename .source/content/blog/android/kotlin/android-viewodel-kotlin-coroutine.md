@@ -1,26 +1,27 @@
 +++
-date = "Sun Dec 15 05:03:08 UTC 2019"
+date = "Sun Dec 15 07:15:43 UTC 2019"
 title = "ViewModelとKotlin Coroutinesの書き方あれこれ"
 tags = ["android", "kotlin", "viewmodel", "coroutine"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-ViewModel + Kotlin Coroutineを使う場合、どんな感じでViewModelでCoroutineを実行するかについて考えてみました。
-MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを使っています。
+ViewModel + Kotlin Coroutineを使う場合、どんな感じでViewModelでCoroutineを表現するかについてあれこれ書いてみました。
 
-`androidx.lifecycle:lifecycle-viewmodel-ktx`は2.2.0-rc03、Coroutineは1.3.3です。
+MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを考えています。
+
+環境は`androidx.lifecycle:lifecycle-viewmodel-ktx`は2.2.0-rc03、Coroutineは1.3.3です。
 
 この記事は次の順序で進んでいきます。
 
 - viewModelScopeとは?
-- suspend関数をコールする場合
-- FlowをViewModelでコール/購読する場合
+- suspend関数をコールするとき
+- Flowをコール/購読するとき
 
-## ViewModel.viewModelScopeとは?
+## viewModelScopeとは?
 
-`androidx.lifecycle:lifecycle-viewmodel-ktx`ライブラリで、viewModelScope拡張関数が使うことが出来ます。
+`androidx.lifecycle:lifecycle-viewmodel-ktx`ライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。
 
 ```kotlin
 /**
@@ -31,9 +32,9 @@ val ViewModel.viewModelScope: CoroutineScope
 ```
 
 ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。
-ViewModelでCoroutineを扱うときは、このスコープで実行しておけば、自動的にdisposeしてくれるので、メモリリークの心配もないです。
+このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。
 
-また、`viewModelScope`は、メインスレッド上で実行してくれるため、`LiveData.setValue`を使います。
+また、`viewModelScope`は、メインスレッド上で実行してくれるため、`LiveData.setValue`を使い、値を更新します。
 
 ```kotlin
 val userLiveData = MutableLiveData(...)
@@ -46,15 +47,15 @@ viewModelScope.launch {
 }
 ```
 
-viewModelScopeを使っている限り、postValueメソッドを使うケースは無いと思います。
+viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
 
 
-## suspend関数をコールする場合
+## suspend関数をコールするとき
 
-ネットワークコールなどのAPIは、基本的にワンショットAPIなので、suspendで定義することになると思います。
-Retrofitでは2.6.0から、suspendが使えるようになりました。
+ネットワークコールなどのAPIは、suspendで表現することになると思います。
+また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。
 
-なので、Repository層での定義は次のようになると思います。
+なので、Repository層での定義は次のようになります。
 
 ```kotlin
 interface UserApi {
@@ -102,9 +103,9 @@ viewModelScope.launch {
 }
 ```
 
-個人的には`runCatching`のほうが好きです😃
+個人的には`runCatching`のほうが好きです。
 
-また、Repository側で適当な型で包むパターンもあると思います。例えばNetWorkResultのようなクラスがあるとします。
+また、ViewModelで例外処理をするのではなく、Repository側で適当な型で包むパターンもあると思います。例えばNetWorkResultのようなクラスがあるとします。
 
 ```kotlin
 sealed class NetWorkResult<T> {
@@ -114,7 +115,7 @@ sealed class NetWorkResult<T> {
 }
 ```
 
-このクラスをRepository側で使います。
+このクラスをRepository側の返り値として使います。
 
 ```kotlin
 class UserRepository(private val retrofitService: UserApi) {
@@ -129,16 +130,16 @@ class UserRepository(private val retrofitService: UserApi) {
 }
 ```
 
-こうすることで、ViewModel側では、try-catchを使わなくて良くなり、代わりにwhen式を使うことになります。
+こうすることで、ViewModel側では、try-catchを使わなくて良くなり、try-catchの代わりにwhen式を使うことになります。
 
 ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。
 
 
-## Flow APIの話
+## Flowをコール/購読するとき
 
-Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものと考えられます。
+Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものです。
 
-Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複登録の心配がないためです。`SavedStateHandle`を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。
+Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複で購読する心配がないためです。`SavedStateHandle`を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。
 
 ```kotlin
 class MyViewModel(private val state: SavedStateHandle) : ViewModel() {
@@ -148,7 +149,7 @@ class MyViewModel(private val state: SavedStateHandle) : ViewModel() {
 }
 ```
 
-Flowの購読方法なんですが、`collect(collectLatest)`もしくは、`launchIn`を使います。
+Flowの購読方法なんですが、`collect、collectLatest`もしくは、`launchIn`を使います。
 
 ```kotlin
 class MyViewModel(...) : ViewModel() {
@@ -165,23 +166,24 @@ class MyViewModel(...) : ViewModel() {
 }
 ```
 
-エラーや、完了イベントをハンドリング必要がある場合、catch、onCompletionメソッドを使います。
+エラーや、完了イベントのハンドリングが必要な場合、`catch`、`onCompletion`メソッドを使います。
 
 ```kotlin
 repository.getFlowStream()
     .onEach { ... }
-    .catch { ...}
-    .onCompletion {  }
+    .catch { ... }
+    .onCompletion { ... }
     .launchIn(viewModelScope)
 ```
 
-個人的にはネストが少なくなるので、`launchIn`を使う書き方のほうが好みです。
+個人的にはネストが少なくなるので、`launchIn`の書き方のほうが好みです。
 
 
 ## まとめ
 
-- viewModelScopeメソッドを使うと自動でリソースを解放してくれる
+- viewModelScopeメソッドを使うとViewModelの破棄に合わせてリソースを解放してくれる
 - runCatchingを使うと、いい感じにエラーハンドリングが出来る
 - launchInを使うと、いい感じにFlowを購読できる
+- 例外が起きる可能性がある場合は、`catch`などを使ってエラーハンドリングする必要がある
 
 Coroutineはいいぞ〜
