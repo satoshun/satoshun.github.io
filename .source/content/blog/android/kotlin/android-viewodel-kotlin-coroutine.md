@@ -5,6 +5,7 @@ tags = ["android", "kotlin", "viewmodel", "coroutine"]
 blogimport = true
 type = "post"
 draft = false
+lastmod = "Wed Dec 18 00:49:32 UTC 2019"
 +++
 
 ViewModel + Kotlin Coroutineを使う場合、どんな感じでViewModelでCoroutineを表現するかについてあれこれ書いてみました。

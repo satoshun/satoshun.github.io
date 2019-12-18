@@ -91,7 +91,7 @@
   <div class="post">
     <h1 class="post-title">ViewModelとKotlin Coroutinesの書き方あれこれ</h1>
     
-    <span class="post-date">Created at Sun, Dec 15, 2019</span>
+    <span class="post-date">Updated at Wed, Dec 18, 2019</span>
     
     <p>ViewModel + Kotlin Coroutineを使う場合、どんな感じでViewModelでCoroutineを表現するかについてあれこれ書いてみました。</p>
 <p>MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを考えています。</p>
@@ -175,6 +175,16 @@ viewModelScope.launch {
     }
 }
 </code></pre></div><p>こうすることで、ViewModel側では、try-catchを使わなくて良くなり、try-catchの代わりにwhen式を使うことになります。</p>
+<hr>
+<p>また、<code>androidx.lifecycle:lifecycle-livedata-ktx</code>に含まれている、livedata builderを使う方法もあります。livedata builderを使うと次のように書くことが出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> user = liveData&lt;User&gt; {
+    runCatching { repository.getUser() }
+        .onSuccess { emit(it) }
+        .onFailure { ... }
+
+    ...
+}
+</code></pre></div><p>非常にすっきりと書くことが出来ます！</p>
 <p>ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。</p>
 <h2 id="flow">Flowをコール/購読するとき</h2>
 <p>Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものです。</p>
