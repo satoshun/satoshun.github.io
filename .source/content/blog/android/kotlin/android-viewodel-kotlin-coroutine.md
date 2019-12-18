@@ -132,8 +132,23 @@ class UserRepository(private val retrofitService: UserApi) {
 
 こうすることで、ViewModel側では、try-catchを使わなくて良くなり、try-catchの代わりにwhen式を使うことになります。
 
-ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。
+---
 
+また、`androidx.lifecycle:lifecycle-livedata-ktx`に含まれている、livedata builderを使う方法もあります。livedata builderを使うと次のように書くことが出来ます。
+
+```kotlin
+val user = liveData<User> {
+    runCatching { repository.getUser() }
+        .onSuccess { emit(it) }
+        .onFailure { ... }
+
+    ...
+}
+```
+
+非常にすっきりと書くことが出来ます！
+
+ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。
 
 ## Flowをコール/購読するとき
 
