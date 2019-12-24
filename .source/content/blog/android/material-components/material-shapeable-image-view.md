@@ -1,17 +1,21 @@
 +++
-date = "Tue Nov 26 00:30:46 UTC 2019"
+date = "Tue Dec 24 00:40:05 UTC 2019"
 title = "Material Components: ShapeableImageViewで丸く切り抜かれた画像を表示する"
 tags = ["android", "materialcomponents", "shape", "imageview"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Material androidの1.2.0-alpha03にShapeableImageViewが爆誕したのでそれの紹介です。
 
+[material-components-android/1.2.0-alpha03](https://github.com/material-components/material-components-android/releases/tag/1.2.0-alpha03)
+
 ## ShapeableImageView?
 
-読んで字の如くで、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。
+名は体を表しており、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。
+
+さっそくいじっていきたいと思います。
 
 ## 丸を設定してみる
 
@@ -37,11 +41,11 @@ Material androidの1.2.0-alpha03にShapeableImageViewが爆誕したのでそれ
   app:srcCompat="@drawable/img" />
 ```
 
-cornerSizeを50%指定すると、ちょうど丸のshapeになります。
-
 {{< figure src="/blog/android/material-components/shapeable-circle.png" width="300" >}}
 
-コードからやる場合は、ShapeAppearanceModelを介して行います。
+画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
+
+コードから設定する場合は、ShapeAppearanceModelを介して行います。
 
 ```kotlin
 val model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
@@ -74,12 +78,12 @@ imageView.shapeAppearanceModel = model
   app:strokeWidth="2dp" />
 ```
 
-先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、カット、ひし形を作れます。
+{{< figure src="/blog/android/material-components/shapeable-diamond.png" width="300" >}}
+
+先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、ひし形を作れます。
 
 合わせて、strokeColorとstrokeWidthを指定することでstrokeをつけることが可能です。
 
-{{< figure src="/blog/android/material-components/shapeable-diamond.png" width="300" >}}
-
 ## まとめ
 
-今までGlideとかPicassoとかライブラリ側でやっていた処理がこちら側に移るかも!?
+今までGlideとかPicassoなどのライブラリ側でやっていた処理をこちらに移しても良いかも
