@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 26 Nov 2019 00:30:46 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Dec 2019 00:40:05 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/materialcomponents/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Material Components: ShapeableImageViewで丸く切り抜かれた画像を表示する</title>
+      <link>https://satoshun.github.io/2019/12/material-shapeable-image-view/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2019/12/material-shapeable-image-view/</guid>
+      <description>Material androidの1.2.0-alpha03にShapeableImageViewが爆誕したのでそれの紹介です。
+material-components-android/1.2.0-alpha03
+ShapeableImageView? 名は体を表しており、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。
+さっそくいじっていきたいと思います。
+丸を設定してみる スタイルから定義する場合は、次のようにやります。
+&amp;lt;!--スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.PILL&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!--レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/circle&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.PILL&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; /&amp;gt;   画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
+コードから設定する場合は、ShapeAppearanceModelを介して行います。
+val model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build() imageView.shapeAppearanceModel = model ひし形を設定してみる &amp;amp; strokeをつける スタイルから定義する場合は、次のようにやります。
+&amp;lt;!--スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.Diamond&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!--レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/diamond&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.Diamond&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; app:strokeColor=&amp;#34;?attr/colorSecondary&amp;#34; app:strokeWidth=&amp;#34;2dp&amp;#34; /&amp;gt;   先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、ひし形を作れます。</description>
+    </item>
     
     <item>
       <title>Material Components: ShapeとBottomSheetDialogとMaterialButton</title>

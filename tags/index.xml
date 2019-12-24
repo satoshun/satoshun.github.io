@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 15 Dec 2019 07:15:43 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Dec 2019 00:40:05 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,36 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>imageview</title>
+      <link>https://satoshun.github.io/tags/imageview/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/imageview/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>materialcomponents</title>
+      <link>https://satoshun.github.io/tags/materialcomponents/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shape</title>
+      <link>https://satoshun.github.io/tags/shape/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/shape/</guid>
       <description></description>
     </item>
     
@@ -81,24 +108,6 @@
       <pubDate>Sat, 30 Nov 2019 06:14:19 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/navigation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>materialcomponents</title>
-      <link>https://satoshun.github.io/tags/materialcomponents/</link>
-      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>shape</title>
-      <link>https://satoshun.github.io/tags/shape/</link>
-      <pubDate>Tue, 26 Nov 2019 00:30:46 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/shape/</guid>
       <description></description>
     </item>
     
