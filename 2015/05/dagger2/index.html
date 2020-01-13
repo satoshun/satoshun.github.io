@@ -91,10 +91,10 @@ Dagger2 …">
     
     <span class="post-date">Created at Fri, May 8, 2015</span>
     
-    <h2 id="heading">概要</h2>
+    <h2 id="概要">概要</h2>
 <p>この記事では, 最初にDIとは何かについて説明します. DIを理解した後にDagger2の基本的な使い方を紹介します.
 Dagger2はDI(Dependency Injection)をするライブラリです.</p>
-<h2 id="di">DIとは?</h2>
+<h2 id="diとは">DIとは?</h2>
 <p>DIとはDependency Injectionの略で, 訳すと「依存性の注入」です.
 ここでいう依存とは <code>クラス同士の依存関係</code>のことを表します.
 クラス同士の依存関係は, 委譲パターンの時に現れます.</p>
@@ -148,7 +148,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 <p>余談ですが, AngularJSを使ったことのある方なら<code>function($scope, $resources) {}</code>のようなコードを見たことがあると思います. これも典型的なDIパターンになります.</p>
 <p>DIが便利なのは分かっていただけたと思います. しかし, いちいち引数にインスタンスを指定するのはちと面倒です.
 なので, DIを補佐してくれるライブラリを使うのが一般的です. その中でもAndroidで若手有望株Dagger2について説明します.</p>
-<h2 id="dagger2">Dagger2概念</h2>
+<h2 id="dagger2概念">Dagger2概念</h2>
 <p>Dagger2は大きく分けて, <code>Component</code>, <code>Module</code> <code>Provide</code>, <code>Inject</code> の4つの要素があります.
 上記を定義しクラス間の依存関係を解決します.</p>
 <ul>
@@ -158,7 +158,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 <li>@Component: @Injectと@Module間の関係を定義します.</li>
 </ul>
 <p>これだけでは分からないと思うので, 具体的な例をあげて説明します.</p>
-<h2 id="heading-1">依存関係の定義</h2>
+<h2 id="依存関係の定義">依存関係の定義</h2>
 <p>最初に依存関係を定義します. <code>javax.inject.Inject</code>アノテーションを使います.</p>
 <p>上記のBloggerクラスに適用してみます. Field Injection, Constructor Injectionの2種類の定義方法があります.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// inject field directly
@@ -181,7 +181,7 @@ or
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これで, 依存関係の定義は完了です. Field, Constructor Injectionの両方の書き方を覚えて下さい.</p>
-<h2 id="module">Moduleの作成</h2>
+<h2 id="moduleの作成">Moduleの作成</h2>
 <p>Moduleには, 上記の<code>@Inject</code>で定義したクラスのインスタンスの生成方法を記述します.
 <code>@Module</code>と<code>@Provides</code>アノテーションを使い, 定義します.</p>
 <p>Loggerを提供するModuleを作成します.</p>
@@ -194,7 +194,7 @@ class DebugModule {
 }
 </code></pre><p>これで, Loggerを提供するModuleの定義が出来ました.</p>
 <p>最後にComponentを作成します.</p>
-<h2 id="component">Componentの作成</h2>
+<h2 id="componentの作成">Componentの作成</h2>
 <p>Componentは複数Moduleをまとめたものです.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span><span style="color:#f92672">(</span>modules <span style="color:#f92672">=</span> DebugModule<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ApplicationComponent</span> <span style="color:#f92672">{</span>
@@ -212,12 +212,12 @@ blogger<span style="color:#f92672">.</span><span style="color:#a6e22e">post</spa
 <li>@Componentで複数のModuleを用いて, 依存解決Graphオブジェクトを生成する</li>
 <li>アプリで依存解決Graphを使い, DIを行う</li>
 </ul>
-<h2 id="heading-2">感想</h2>
+<h2 id="感想">感想</h2>
 <p>DIのとはなんぞやということと, Dagger2の基本概念を説明しました.
 最初は手順が多くて大変だと思いますが, 覚えてしまうと案外簡単に使えます.
 Androidの場合, テスト, Debug, Production環境の大きく3つの環境がありますが, それぞれの環境を切り替えることも容易になります(詳しくはPart2で話します).</p>
 <p>Part2では, より実践的なDagger2の使い方について説明します.</p>
-<h2 id="heading-3">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://speakerdeck.com/jakewharton/dependency-injection-with-dagger-2-devoxx-2014">Dependency Injection with Dagger 2 (Devoxx 2014)</a></li>
 <li><a href="http://code.tutsplus.com/tutorials/dependency-injection-with-dagger-2-on-android--cms-23345">Dependency Injection With Dagger 2 on Android</a></li>

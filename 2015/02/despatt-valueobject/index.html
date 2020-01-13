@@ -91,7 +91,7 @@
     
     <p>Value Object(値オブジェクト)は, メンバとメソッドを持ちクラスとしての特徴を持つが, immutableであり, identityキー(RDSでいうところのautoincremental id)を持たないオブジェクトのことです. 異なるオブジェクト同士であっても値が等しければ等しいとみなされます.
 immutableなので, primitive(int, floatなど)な値と同等に扱うことが出来ます.</p>
-<h2 id="immutable">immutableであるメリット</h2>
+<h2 id="immutableであるメリット">immutableであるメリット</h2>
 <p>immutableであるメリットとしては</p>
 <ul>
 <li>状態を持たないので, 呼び出し順序を考慮しなくて良い</li>
@@ -106,9 +106,9 @@ immutableなので, primitive(int, floatなど)な値と同等に扱うことが
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, <code>rightnow.add(Calendar.DATE, -1)</code>を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
 オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.</p>
-<h2 id="indentity">indentityキーを持たないメリット</h2>
+<h2 id="indentityキーを持たないメリット">indentityキーを持たないメリット</h2>
 <p>Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います. identityキーが重要かどうかで, パターンが変わってくるので, 慣れが必要そうです.</p>
-<h1 id="heading">参考</h1>
+<h1 id="参考">参考</h1>
 <ul>
 <li><a href="https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html">https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/chap2.html</a></li>
 </ul>

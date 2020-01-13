@@ -112,7 +112,7 @@
     - include: update_binary.yml
     - include: restart.yml
 </code></pre><p>各タスクについて, 説明してきます.</p>
-<h2 id="linux-amd64">Linux-amd64用のバイナリ生成</h2>
+<h2 id="linux-amd64用のバイナリ生成">Linux-amd64用のバイナリ生成</h2>
 <p>Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.</p>
 <p>やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.</p>
 <p>Makefile</p>
@@ -126,7 +126,7 @@
 - name: build src
   command: make build-amd64 chdir={{ local_home }}
 </code></pre><p>local_homeは変数で, Makefileがあるディレクトリを定義しています.</p>
-<h2 id="heading">バイナリをデプロイ</h2>
+<h2 id="バイナリをデプロイ">バイナリをデプロイ</h2>
 <p>ファイルをサーバーにコピーする時は, copyモジュールを使います.</p>
 <p>update_binary.yml</p>
 <pre><code>---
@@ -135,7 +135,7 @@
     src={{ local_home }}/{{ project_name }}
     dest={{ go_bin }}/{{ project_name }}
 </code></pre><p>srcにバイナリのpath, destにバイナリをデプロイするpathを指定します.</p>
-<h2 id="heading-1">アプリのリスタート</h2>
+<h2 id="アプリのリスタート">アプリのリスタート</h2>
 <p>supervisorctlモジュールを使います.</p>
 <p>restart.yml</p>
 <pre><code>---
@@ -154,9 +154,9 @@
 <span style="color:#a6e22e">stderr_logfile</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/var/log/supervisor/%(program_name)s-error.log</span>
 <span style="color:#a6e22e">stopsignal</span><span style="color:#f92672">=</span><span style="color:#e6db74">INT</span>
 </code></pre></div><p>commandにGoのバイナリを指定して, あとはいつものおまじないです.</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>デプロイスクリプトを作っておくことは, 非常によいことだと思います. Ansibleはshell scriptくらいの気軽さで書け, エラーハンドリングなどをよしなにやってくれるのでさくっと書けてお勧めです.</p>
-<h3 id="a-namecaution1a1"><!-- raw HTML omitted --><!-- raw HTML omitted -->注意1</h3>
+<h3 id="a-namecaution1a注意1"><!-- raw HTML omitted --><!-- raw HTML omitted -->注意1</h3>
 <p>HomebrewでGoをクロスプラットフォームにビルド出来るようにするには,
 &ndash;cross-compile-allオプションを付けてあげます.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install go --cross-compile-all

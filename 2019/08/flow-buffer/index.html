@@ -94,7 +94,7 @@
     
     <p>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。</p>
 <p>この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。</p>
-<h2 id="buffer">Bufferの種類</h2>
+<h2 id="bufferの種類">Bufferの種類</h2>
 <p>Bufferの種類は5つあります。</p>
 <ul>
 <li>UNLIMITED</li>
@@ -107,7 +107,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="heading">検証コード</h2>
+<h2 id="検証コード">検証コード</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// flowストリームの作成
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> f = flow {
   repeat(<span style="color:#ae81ff">100</span>) {
@@ -184,7 +184,7 @@
 <li>Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>UNLIMITED、BUFFERED、RENDEZVOUSはすべての値をConsumerが受け取ることが出来る
 <ul>

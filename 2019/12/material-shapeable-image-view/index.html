@@ -98,7 +98,7 @@
 <h2 id="shapeableimageview">ShapeableImageView?</h2>
 <p>名は体を表しており、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。</p>
 <p>さっそくいじっていきたいと思います。</p>
-<h2 id="heading">丸を設定してみる</h2>
+<h2 id="丸を設定してみる">丸を設定してみる</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> スタイル定義 </span><span style="color:#75715e">--&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.PILL&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
@@ -125,7 +125,7 @@
 <p>コードから設定する場合は、ShapeAppearanceModelを介して行います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
 imageView.shapeAppearanceModel = model
-</code></pre></div><h2 id="--stroke">ひし形を設定してみる &amp; strokeをつける</h2>
+</code></pre></div><h2 id="ひし形を設定してみる--strokeをつける">ひし形を設定してみる &amp; strokeをつける</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> スタイル定義 </span><span style="color:#75715e">--&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.Diamond&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
@@ -152,7 +152,7 @@ imageView.shapeAppearanceModel = model
 
 <p>先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、ひし形を作れます。</p>
 <p>合わせて、strokeColorとstrokeWidthを指定することでstrokeをつけることが可能です。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>今までGlideとかPicassoなどのライブラリ側でやっていた処理をこちらに移しても良いかも</p>
 
     <div class="mt30"></div>

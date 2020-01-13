@@ -111,7 +111,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-</code></pre></div><h2 id="savedstate">まずsavedstate本体のコード</h2>
+</code></pre></div><h2 id="まずsavedstate本体のコード">まずsavedstate本体のコード</h2>
 <p>主な登場クラスは以下です。</p>
 <h3 id="savedstateregistrysavedstateprovider">SavedStateRegistry.SavedStateProvider</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
@@ -178,9 +178,9 @@
 </code></pre></div><p><code>SavedStateRegistryOwner</code>のための実装です。ComponentActivityやFragmentではこのクラスを介して、Bundleから値を復元/restoreしたり、保存/saveします。</p>
 <p>これがSavedStateで使われている主なクラスになります。</p>
 <p>次に、ViewModelのsaveの実行の流れを見てみます。</p>
-<h2 id="viewmodelsave">ViewModelのsaveの実行の流れ</h2>
+<h2 id="viewmodelのsaveの実行の流れ">ViewModelのsaveの実行の流れ</h2>
 <p>ViewModelのSavedStateのsaveの実行の流れを見ながら、コードリーディングをしていきます。</p>
-<h3 id="1-viewmodel">1. ViewModelを生成する</h3>
+<h3 id="1-viewmodelを生成する">1. ViewModelを生成する</h3>
 <p>ViewModelとSavedStateを一緒に扱い時は、<code>SavedStateVMFactory</code>を使います。
 これは、ViewModelインスタンスに<code>SavedStateHandle</code>インスタンスを渡すために必要なFactoryです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
@@ -241,7 +241,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>outBundle#putBundle</code>を通して、保存を行います。今で、直接Activityの<code>onSaveInstanceState</code>をoverrideして書いていた処理がここに移ったイメージです。</p>
-<h3 id="5-savedstatehandlesavedstateprovider">5. SavedStateHandleの<code>SavedStateProvider</code>の実装</h3>
+<h3 id="5-savedstatehandleのsavedstateproviderの実装">5. SavedStateHandleの<code>SavedStateProvider</code>の実装</h3>
 <p>実際に保存される内容を決めるのはSavedStateHandleのSavedStateProviderの実装/中身になります。</p>
 <p>実装は次のようになっています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> mRegular<span style="color:#f92672">;</span>
@@ -271,7 +271,7 @@
 <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
 </code></pre></div><p>Mapに保存したい値を保持しておいて、それをBundleに書き出すだけです。</p>
 <p>ざっくりと保存の流れはこんな感じです:D</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>LifecycleOwnerのような感じで実装されていた</li>
 <li>SavedStateProviderを実装して、registerSavedStateProviderに渡せば、誰でもカスタムのSavedStateが書ける😃</li>

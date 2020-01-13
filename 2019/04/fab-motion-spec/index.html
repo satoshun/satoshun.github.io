@@ -105,7 +105,7 @@ MotionSpecを使うことで、次のアニメーション属性をカスタマ�
 </ul>
 <p>例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。</p>
 <p>FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。</p>
-<h2 id="motionspecanimator-xml">最初にMotionSpec用のanimator XMLを定義する</h2>
+<h2 id="最初にmotionspec用のanimator-xmlを定義する">最初にMotionSpec用のanimator XMLを定義する</h2>
 <p>デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。</p>
 <p>FloatingActionButton用のXMLはソースコードを読んでいくと、<code>design_fab_show_motion_spec.xml</code>と<code>design_fab_hide_motion_spec.xml</code>で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。</p>
 <p>まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている<code>design_fab_show_motion_spec.xml</code>の中身になります。</p>
@@ -181,7 +181,7 @@ fab.hideMotionSpec = MotionSpec.createFromResource(
 </figure>
 
 <p>アニメーション時間が長くなり、ボヨンボヨンしていることが分かると思います。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>MotionSpecを使えば、アニメーションの長さやinterpolatorをカスタマイズすることが出来る
 <ul>

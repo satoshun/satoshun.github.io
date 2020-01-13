@@ -104,7 +104,7 @@
 </figure>
 
 <p>では、コードを説明していきます。</p>
-<h2 id="1-">1. 横のアイテムをチラ見せする</h2>
+<h2 id="1-横のアイテムをチラ見せする">1. 横のアイテムをチラ見せする</h2>
 <p>まず、ViewPager2をLayout内に定義します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.viewpager2.widget.ViewPager2</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/viewpager&#34;</span>
@@ -136,7 +136,7 @@ viewpager.setPageTransformer { page, position -&gt;
 }
 </code></pre></div><p>PageTransformerはスクロールに応じてコールバックされる関数になります。
 この中で、<code>translationX</code>をpositionの値に応じて動かすことで、左右のアイテムのチラ見せを実現出来ます。</p>
-<h2 id="2-scale">2. さらにScaleも変更する</h2>
+<h2 id="2-さらにscaleも変更する">2. さらにScaleも変更する</h2>
 <p>前述したチラ見せPageTransformerに加え、Scale用のPageTransformerも作ります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewpager.setPageTransformer(CompositePageTransformer().apply {
   addTransformer { page, position -&gt;
@@ -154,12 +154,12 @@ viewpager.setPageTransformer { page, position -&gt;
 </code></pre></div><p><code>CompositePageTransformer</code>を使うことで、複数のPageTransformerをセットすることが出来ます。
 前で作ったチラ見せPageTransformerに加え、新しくScale用のPageTransformerを定義します。</p>
 <p>Scale用のPageTransformer内では、<code>scale</code>の値をpositionの値に応じて動かすことで、Scaleアニメーションを実現出来ます。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ViewPager2便利だし、もうbetaなので積極的に使っていっても良いのでは😃</li>
 <li>実際のコードは <a href="https://github.com/satoshun-android-example/ViewPager2">satoshun-android/ViewPager2</a>にあります。</li>
 </ul>
-<h2 id="heading-1">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419">Look Deep Into ViewPager2</a></li>
 </ul>

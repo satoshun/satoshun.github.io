@@ -133,7 +133,7 @@ main=129908ms, async=125838ms
 main=129927ms, async=125824ms
 </code></pre><p>asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</p>
 <p>ただ注意点として、この機能は副作用がある可能性があります(なのでデフォルトではasyncはfasle)。ただ、Uberで1年間、プロダクションで運用したところ、特に大きな問題は起きなかったらしいので  <a href="https://github.com/ReactiveX/RxAndroid/pull/416">https://github.com/ReactiveX/RxAndroid/pull/416</a> 、ほぼ安全と考えて良さそうです。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう</li>
 <li>導入は以下のコードを追加するだけなので、とても簡単</li>

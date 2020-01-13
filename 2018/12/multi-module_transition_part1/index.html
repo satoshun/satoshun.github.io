@@ -109,7 +109,7 @@
 </ul>
 <p>Part1では、遷移専用のモジュールを作る方法を考えてみます。</p>
 <p>サンプルコード: <a href="https://github.com/satoshun-android-example/MultiActivityRouterExample">satoshun-android-example/MultiActivityRouterExample</a></p>
-<h2 id="heading">遷移専用のモジュールを作る</h2>
+<h2 id="遷移専用のモジュールを作る">遷移専用のモジュールを作る</h2>
 <p>まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。</p>
 <p>例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。</p>
 <ul>
@@ -161,7 +161,7 @@
 
 <hr>
 <p>これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃</p>
-<h2 id="heading-1">補足</h2>
+<h2 id="補足">補足</h2>
 <p>いちいちルーターモジュールを作るのがめんどうなのであれば、共通のRouterインターフェースを作る方法もあります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Router</span>&lt;T&gt; {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
@@ -190,7 +190,7 @@
   ...
 }
 </code></pre></div><p>DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>相互に行き来したい画面があったときに、遷移専用のモジュールを作ることで循環参照を防ぐことが出来る</li>
 <li>基本的に画面を含んだモジュールは遷移したいときがほとんどだと思うので、遷移専用のモジュールを作ることで無駄な依存を作ることを防ぐことが出来る</li>

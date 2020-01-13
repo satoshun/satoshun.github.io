@@ -104,7 +104,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
 </ul>
 <p>では、どのように書くのかを見ていきます。</p>
 <hr>
-<h3 id="1-">1. 配置する方向を決める</h3>
+<h3 id="1-配置する方向を決める">1. 配置する方向を決める</h3>
 <p><code>android:orientation</code>から、horizontal or verticalを指定できます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
@@ -123,7 +123,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
 
   ...
 </code></pre></div><p>これはorientationにhorizontalを持ちます。また、通常のViewのように各constraintsを指定し、配置することができます。</p>
-<h3 id="2-wrapmode">2. wrapModeを決める</h3>
+<h3 id="2-wrapmodeを決める">2. wrapModeを決める</h3>
 <p><code>flow_wrapMode</code>で指定することができます。</p>
 <p>wrapModeでは、どのようにViewを並べるかを指定でき、3種類のmodeがあります。</p>
 <ol>
@@ -155,7 +155,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
     <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
     <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><p>これはchainで対象のViewを配置します。</p>
-<h3 id="3-view">3. 対象のViewを指定する</h3>
+<h3 id="3-対象のviewを指定する">3. 対象のViewを指定する</h3>
 <p><code>constraint_referenced_ids</code>から指定します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
@@ -200,7 +200,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
 
   ...
 </code></pre></div><p>この場合、「title1、title2、title3」が対象のViewになります。また、これらのViewはhorizontalの方向に、chainで順々に配置されます。</p>
-<h3 id="4-">4. その他、細かい調整</h3>
+<h3 id="4-その他細かい調整">4. その他、細かい調整</h3>
 <p>対象のView間のマージンや、行（列）の最大数、Viewの配置場所などの細かい部分の指定ができます。</p>
 <ul>
 <li>app:flow_horizontalStyle = &ldquo;spread|spread_inside|packed&rdquo; (default spread)</li>
@@ -255,7 +255,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
     <img src="https://lh3.googleusercontent.com/qn9Xbhr9pqrmsJEzQ2YfhzSnJS1I9HpR_s6_UrCSxoqRHQQQ32unFB3G4ls72OuMLuIclSZ89-8=w246-h437-no" width="400"/> 
 </figure>
 
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ConstraintLayout alpha5になってFlowが入った。かなり便利に使えそう
 <ul>
@@ -264,7 +264,7 @@ Flowを使うことで、対象のViewを様々なルールで並べることが
 </li>
 <li>betaはGoogle I/O前後に来るらしいので、正式版までもう少し😃</li>
 </ul>
-<h2 id="heading-1">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://speakerdeck.com/camaelon/constraintlayout-2-dot-0">ConstraintLayout 2.0</a></li>
 <li><a href="https://androidstudio.googleblog.com/2019/04/constraintlayout-200-alpha-5.html">ConstraintLayout 2.0.0 alpha 5</a></li>

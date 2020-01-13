@@ -108,7 +108,7 @@ Shapeとは、こんなやつです。
 <p>参照: <a href="https://material.io/design/shape/about-shape.html">About shape</a></p>
 <p>この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。</p>
 <p>より詳しい説明は<a href="https://github.com/material-components/material-components-android/blob/master/docs/theming/Shape.md">公式ドキュメント/Shape.md</a>を参照してください。</p>
-<h2 id="heading">まずはテーマを設定する</h2>
+<h2 id="まずはテーマを設定する">まずはテーマを設定する</h2>
 <p><code>Theme.MaterialComponents</code>を使う必要があります。</p>
 <ul>
 <li>Theme.MaterialComponents.Light</li>
@@ -119,14 +119,14 @@ Shapeとは、こんなやつです。
 ...
 </code></pre></div><p>こんな感じです。</p>
 <p>準備は終わったので、BottomSheetDialogにShapeを適用してみます。</p>
-<h2 id="bottomsheetdialogshape">BottomSheetDialogにShapeを指定していく</h2>
+<h2 id="bottomsheetdialogにshapeを指定していく">BottomSheetDialogにShapeを指定していく</h2>
 <p>（多分）大きく3つの指定方法があります。</p>
 <ul>
 <li><code>shapeAppearanceLargeComponent</code>を指定する</li>
 <li><code>bottomSheetDialogTheme</code>を指定する</li>
 <li>独自でテーマを作り、BottomSheetDialogの引数などから与える</li>
 </ul>
-<h3 id="shapeappearancelargecomponent">shapeAppearanceLargeComponentを指定する</h3>
+<h3 id="shapeappearancelargecomponentを指定する">shapeAppearanceLargeComponentを指定する</h3>
 <p>デフォルトだとBottomSheetDialogのスタイルとして、<code>@style/Widget.MaterialComponents.BottomSheet.Modal</code>を使うようになっています。</p>
 <p>このスタイルの定義は、次のようになっています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span><span style="color:#f92672">&gt;</span>
@@ -167,7 +167,7 @@ Shapeとは、こんなやつです。
 </figure>
 
 <p><code>shapeAppearanceLargeComponent</code>を指定することは、BottomSheetDialog以外の、他のコンポーネントにも影響が出るので、注意してください。</p>
-<h3 id="bottomsheetdialogtheme">bottomSheetDialogThemeを指定する</h3>
+<h3 id="bottomsheetdialogthemeを指定する">bottomSheetDialogThemeを指定する</h3>
 <p><code>bottomSheetDialogTheme</code>から、BottomSheetDialogのShapeの設定を変えることも出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
   ...
@@ -194,13 +194,13 @@ Shapeとは、こんなやつです。
 </figure>
 
 <p>BottomSheetDialogはこんな感じで、StyleからShapeを指定することが出来ます。</p>
-<h2 id="materialbuttonshape">MaterialButtonにShapeを指定していく</h2>
+<h2 id="materialbuttonにshapeを指定していく">MaterialButtonにShapeを指定していく</h2>
 <p>（多分）大きく2つの指定方法があります。</p>
 <ul>
 <li><code>shapeAppearanceSmallComponent</code>を指定する</li>
 <li>Shape用のスタイルを作り、MaterialButtonの引数、XMLの定義などから与える</li>
 </ul>
-<h3 id="shapeappearancesmallcomponent">shapeAppearanceSmallComponentを指定する</h3>
+<h3 id="shapeappearancesmallcomponentを指定する">shapeAppearanceSmallComponentを指定する</h3>
 <p><code>MaterialButton</code>は、デフォルトでは<code>Widget.MaterialComponents.Button</code>スタイルを使うようになっています。</p>
 <p>これは、次のように定義されています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.Button&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.AppCompat.Button&#34;</span><span style="color:#f92672">&gt;</span>
@@ -223,7 +223,7 @@ Shapeとは、こんなやつです。
     <img src="/blog/android/material-components/bottom-sheet-materialbutton-rounded.png" width="300"/> 
 </figure>
 
-<h3 id="xml">XMLから直接指定する</h3>
+<h3 id="xmlから直接指定する">XMLから直接指定する</h3>
 <p>次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、<code>shapeAppearanceOverlay</code>から指定します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay.Sample.MediumComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
@@ -241,7 +241,7 @@ Shapeとは、こんなやつです。
     <img src="/blog/android/material-components/bottom-sheet-materialbutton-cut.png" width="300"/> 
 </figure>
 
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>テーマから指定するやり方と、XMLなどから直接指定するやり方がある
 <ul>
@@ -259,7 +259,7 @@ Shapeとは、こんなやつです。
 </li>
 </ul>
 <hr>
-<h2 id="heading-2">修正</h2>
+<h2 id="修正">修正</h2>
 <p>瀬戸さんから、<a href="https://twitter.com/seto_hi/status/1199132546954432512">Twitter</a>で、ご指摘を頂いたんですが、
 個別にコンポーネントに対して、Shapeの指定をするときは、<a href="https://material.io/develop/android/theming/shape/">Shape Theming</a>にもある通り、<code>shapeAppearanceOverlay</code>から指定するのが正しいです。</p>
 <p>ご指摘ありがとうございます😊</p>

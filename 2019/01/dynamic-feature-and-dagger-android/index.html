@@ -99,7 +99,7 @@
 <p>結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。</p>
 <p>また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。</p>
 <p>検証に用いたコードは<a href="https://github.com/satoshun-android-example/DynamicFeatureDaggerExample">satoshun-android-example/DynamicFeatureDaggerExample</a>にあります😊</p>
-<h2 id="heading">前提知識</h2>
+<h2 id="前提知識">前提知識</h2>
 <p>通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。</p>
 <hr>
@@ -117,7 +117,7 @@
 <hr>
 <p>そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。</p>
 <p>ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。</p>
-<h2 id="heading-1">実装</h2>
+<h2 id="実装">実装</h2>
 <p>Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。</p>
 <p>では、実装を始めます。</p>
@@ -213,12 +213,12 @@
 </code></pre></div><p><code>ModuleRootActivity</code>で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。</p>
 <p>これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃</p>
 <p>細かい部分はサンプルを見ていただけたらと思います。<a href="https://github.com/satoshun-android-example/DynamicFeatureDaggerExample">DynamicFeatureDaggerExample</a></p>
-<h2 id="1-1feature-moduleactivity">メモ1: 1つのFeature Module内で複数Activityがある場合</h2>
+<h2 id="メモ1-1つのfeature-module内で複数activityがある場合">メモ1: 1つのFeature Module内で複数Activityがある場合</h2>
 <p>このパターンは考慮出来ていないです😂
 おそらく、頑張ってApplicationクラス内でstaticで保持するか、もしくは、CoreComponentでScopedで管理するのが良いと思っています。</p>
-<h2 id="2-configuration-change">メモ2: Configuration Change対応</h2>
+<h2 id="メモ2-configuration-change対応">メモ2: Configuration Change対応</h2>
 <p>Feature Root ComponentはActivityではなく、AACのViewModelで保持したほうが良いかも知れないです。</p>
-<h2 id="3-dagger-android">メモ3: そもそもDagger Androidを使う必要あるのか?</h2>
+<h2 id="メモ3-そもそもdagger-androidを使う必要あるのか">メモ3: そもそもDagger Androidを使う必要あるのか?</h2>
 <p>Scopeをガンガン使いたい時、すでにDagger Androidを導入している場合は使ってもいいかも。
 ただPlaidのように、Dagger Androidを使わないほうがコードが複雑にならなそうなので、使わないほうが基本良いと思います。（今後心変わりする可能性は大いにあります）</p>
 <hr>

@@ -94,7 +94,7 @@
     <span class="post-date">Updated at Fri, Jan 18, 2019</span>
     
     <p>この記事はDaggerとJetpackのViewModelをある程度知っている前提で進んでいきます😃</p>
-<h2 id="heading">基本編</h2>
+<h2 id="基本編">基本編</h2>
 <p>一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は<code>ViewModelProvider</code>を介して行う必要があるためです。</p>
 <p>例えば、次のコードは間違っています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> @Inject <span style="color:#66d9ef">constructor</span>(...): ViewModel()
@@ -151,7 +151,7 @@ or
 }
 </code></pre></div><p>activity-ktxに定義されている<code>viewModels</code>拡張関数を使ってMainViewModelインスタンスを生成します。これでViewModelのライフサイクルを保ちつつ、Daggerで依存を解決することが出来ます。</p>
 <p>次に、この2パターンのどちらの書き方がいいかを考えていきます。</p>
-<h2 id="heading-1">実例編</h2>
+<h2 id="実例編">実例編</h2>
 <p><code>@Provides</code>を使うパターンと、Factoryを使うパターンは良いところ、悪いところがそれぞれあるので、好きな方を選べばいいと思います。</p>
 <p>両アプローチともに、ソースコード、ノウハウが出ているので参考リンクを張っておきます。</p>
 <hr>
@@ -204,7 +204,7 @@ or
 </ul>
 <hr>
 <p>個人的には一番最後の自分のパターンを押したいところですが、上記のパターンはそれぞれメリット/デメリットがあると思うので、プロジェクトによって使い分けるのがよいと思います。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>一番プロジェクトに適したパターンを適用するのが良いと思います😃</li>
 <li>DaggerでViewModelサポートの<a href="https://github.com/google/dagger/issues/1271">Issue</a>が立っており、DaggerがViewModelをサポートする計画があります

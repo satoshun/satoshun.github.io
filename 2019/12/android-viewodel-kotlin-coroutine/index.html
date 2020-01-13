@@ -102,7 +102,7 @@
 <li>suspend関数をコールするとき</li>
 <li>Flowをコール/購読するとき</li>
 </ul>
-<h2 id="viewmodelscope">viewModelScopeとは?</h2>
+<h2 id="viewmodelscopeとは">viewModelScopeとは?</h2>
 <p><code>androidx.lifecycle:lifecycle-viewmodel-ktx</code>ライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * [CoroutineScope] tied to this [ViewModel].
@@ -121,7 +121,7 @@ viewModelScope.launch {
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// userLiveData.postValues(user)
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。</p>
-<h2 id="suspend">suspend関数をコールするとき</h2>
+<h2 id="suspend関数をコールするとき">suspend関数をコールするとき</h2>
 <p>ネットワークコールなどのAPIは、suspendで表現することになると思います。
 また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。</p>
 <p>なので、Repository層での定義は次のようになります。</p>
@@ -186,7 +186,7 @@ viewModelScope.launch {
 }
 </code></pre></div><p>非常にすっきりと書くことが出来ます！</p>
 <p>ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。</p>
-<h2 id="flow">Flowをコール/購読するとき</h2>
+<h2 id="flowをコール購読するとき">Flowをコール/購読するとき</h2>
 <p>Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものです。</p>
 <p>Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複で購読する心配がないためです。<code>SavedStateHandle</code>を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle) : ViewModel() {
@@ -214,7 +214,7 @@ viewModelScope.launch {
     .onCompletion { ... }
     .launchIn(viewModelScope)
 </code></pre></div><p>個人的にはネストが少なくなるので、<code>launchIn</code>の書き方のほうが好みです。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>viewModelScopeメソッドを使うとViewModelの破棄に合わせてリソースを解放してくれる</li>
 <li>runCatchingを使うと、いい感じにエラーハンドリングが出来る</li>

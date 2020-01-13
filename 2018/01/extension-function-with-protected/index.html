@@ -109,11 +109,11 @@ package …">
 <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">LiveData</span>&lt;T&gt;.accessOnActive() {
   onActive() <span style="color:#75715e">// コンパイルエラー &#34;Cannot access &#39;onActive&#39;: it is protected in &#39;LiveData&#39;&#34;
 </span><span style="color:#75715e"></span>}
-</code></pre></div><h2 id="heading">なぜかこのような挙動になるか?</h2>
+</code></pre></div><h2 id="なぜかこのような挙動になるか">なぜかこのような挙動になるか?</h2>
 <p>protectedメソッドは同一パッケージ内であればアクセスできるので、拡張関数を同一パッケージ内で定義することでprotectedメソッドにアクセスできるようになります。Javaでも同様のルールです。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>protectedなメソッドに拡張関数内からアクセスするのは行儀的には良くないと思うので、奥の手段として使うのが良さそう</p>
-<h2 id="heading-2">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a">https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a</a></li>
 </ul>

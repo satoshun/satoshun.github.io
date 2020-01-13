@@ -94,7 +94,7 @@
     <span class="post-date">Created at Sun, Apr 7, 2019</span>
     
     <p>Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。</p>
-<h2 id="componentfactory">Component.Factoryとは?</h2>
+<h2 id="componentfactoryとは">Component.Factoryとは?</h2>
 <p>実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。</p>
 <p>例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Factoryを使う場合
@@ -137,7 +137,7 @@
 </code></pre></div><p>この2つのコードは、AppComponentにIntをBindsしています。渡し方、定義の仕方は違いますが、やっていることは変わりません。</p>
 <p>ただし、Factoryを使うパターンはstatelessです。
 Builderはセッターメソッドを使ってフィールドの状態を変えていきますが、Factoryはcreateメソッドから必要な値を渡します。</p>
-<h2 id="heading">ユースケース</h2>
+<h2 id="ユースケース">ユースケース</h2>
 <p>次に、Factoryのユースケースを考えます。そもそもこの機能は <a href="https://github.com/google/dagger/issues/935">Feature request: factory method in components for assisted injection</a> を解決したいモチベーションがあります。</p>
 <p>例えば、次のコードをDaggerで解決したい。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticlePresenter</span> <span style="color:#f92672">{</span>
@@ -171,7 +171,7 @@ dagger.Factoryを使うと、このコードを解決することが出来ます
   .create(<span style="color:#ae81ff">50</span>)
 </code></pre></div><p>AssistedInjectとAutoFactoryを使えば、ここらへんのボイラープレートコードを緩和することが出来ます。
 なので、このようなパターンのコードがよく出てくるようなプロジェクトは、AssistedInject or AutoFactoryの導入を検討しても良いと思います。pure Daggerで運用したい、もしくはそこまでこのパターンが出てこないなら、dagger.Factoryを使うのが良いかと思います。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>dagger.Factoryが導入された
 <ul>

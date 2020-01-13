@@ -93,7 +93,7 @@
     
     <p><a href="https://developer.android.com/studio/preview/features#j8-desugar">Java 8 library desugaring in D8 and R8</a>で、desugarが<code>A subset of java.time</code>に対応したとのことで、<a href="https://github.com/JakeWharton/ThreeTenABP">ThreeTenABP</a>が置き換えられるのでは？と思い、ウキウキで試してみました。</p>
 <p>環境は <code>com.android.tools.build:gradle:4.0.0-alpha01</code>になります。</p>
-<h2 id="heading">セットアップ</h2>
+<h2 id="セットアップ">セットアップ</h2>
 <p>build.gradleに、coreLibraryDesugaringEnabledを追加します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">compileOptions <span style="color:#f92672">{</span>
   sourceCompatibility JavaVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_1_8</span>
@@ -102,7 +102,7 @@
   coreLibraryDesugaringEnabled <span style="color:#66d9ef">true</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これで完了です。</p>
-<h2 id="javatimeapi">java.timeのAPIを呼び出してみる</h2>
+<h2 id="javatimeのapiを呼び出してみる">java.timeのAPIを呼び出してみる</h2>
 <p>29, 21のエミュレーターで次のコードを試したところ、クラッシュすることなく、無事に実行することが出来ました！</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Instant API
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> date = Date()
@@ -123,7 +123,7 @@ println(now.dayOfMonth)
 <span style="color:#75715e">// ZoneOffset API
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = ZoneOffset.ofHours(<span style="color:#ae81ff">10</span>)
 println(zoneOffset)
-</code></pre></div><h2 id="heading-1">どのようにして実現しているか？</h2>
+</code></pre></div><h2 id="どのようにして実現しているか">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>
 <p>以下、apkの中身になります。</p>
 <figure>
@@ -140,10 +140,10 @@ println(zoneOffset)
   &quot;java.util.GregorianCalendar#toZonedDateTime&quot;: &quot;java.util.DesugarGregorianCalendar&quot;
 },
 </code></pre><p>このあたりのAPIが使えるのは便利そうです。</p>
-<h2 id="threetenabp">ThreeTenABPへの置き換え</h2>
+<h2 id="threetenabpへの置き換え">ThreeTenABPへの置き換え</h2>
 <p>バックポートされた<code>j$.time</code>のクラスと、<code>ThreeTenABP</code>のクラスを比較したところ、ほとんどのクラスが同じだったので、パッケージパスを変えるだけで、問題なく置き換えが出来ると思います。
 ただもちろん、パフォーマンス、バグなどの問題はある可能性があります。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>新しく追加されたdesugarを使うと、低いminversionでも<code>java.time</code>が使えるようになります😃</li>
 <li>簡単に使える!!</li>

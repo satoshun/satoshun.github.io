@@ -109,7 +109,7 @@
 
 <p>途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。</p>
 <p>ただし、いくつか条件があります。</p>
-<h3 id="1-">1. 中間モジュールで公開可能なものに限る</h3>
+<h3 id="1-中間モジュールで公開可能なものに限る">1. 中間モジュールで公開可能なものに限る</h3>
 <p>例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。
 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。</p>
 <p>中間モジュールのコードイメージとしては以下のようになります。</p>
@@ -121,12 +121,12 @@
   <span style="color:#66d9ef">return</span> Intent(context, UserActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 }
 </code></pre></div><p>UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。</p>
-<h3 id="2-implementation">2. implementationで依存を定義する</h3>
+<h3 id="2-implementationで依存を定義する">2. implementationで依存を定義する</h3>
 <p>apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。</p>
-<h3 id="3-dagger2">3. Dagger2使ってると多分無理</h3>
+<h3 id="3-dagger2使ってると多分無理">3. Dagger2使ってると多分無理</h3>
 <p>Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。</p>
 <p>詳しくは<a href="https://github.com/google/dagger/issues/970">Dagger/#970</a>にあります。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>やりすぎ感はある
 <ul>

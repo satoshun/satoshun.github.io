@@ -96,7 +96,7 @@
 <p>このパターンのメリットは, <code>if (obj == null) </code>のような面倒臭い記述を除去出来るところです.
 また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます.
 (nullの時の処理を, Objectに持たせることが出来るパターン)</p>
-<h2 id="heading">例</h2>
+<h2 id="例">例</h2>
 <p>例があった方が分かり易いので, 簡単なサンプルプログラムです.</p>
 <p>まずは, Null Objectを使わない場合になります.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
@@ -181,7 +181,7 @@ student <span style="color:#f92672">=</span> Student<span style="color:#f92672">
 student <span style="color:#f92672">=</span> Student<span style="color:#f92672">.</span>get_student(<span style="color:#ae81ff">100</span>)
 student<span style="color:#f92672">.</span>show()
 </code></pre></div><p>これでオブジェクト指向的なコードになりました.</p>
-<h3 id="heading-1">まとめ</h3>
+<h3 id="まとめ">まとめ</h3>
 <p>nullの時のboilerplate的な処理をオブジェクトに閉じ込めることが出来るパターンになります.
 <code>if hoge != null</code>が良く出てくるようなら, このパターンを使うと良いと思います.</p>
 

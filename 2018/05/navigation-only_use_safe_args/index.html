@@ -95,7 +95,7 @@
     <p>Google I/O 2018でJetpackが登場し、新たにNavigationライブラリが導入されました。
 ざっくりと説明すると、画面の遷移の実装を助けるライブラリになっています。実装的には、FragmentTransactionを直接いじることがなくなるといったメリットがあります。</p>
 <p>このライブラリの機能に、<a href="https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing#Safe-args">safeargs</a>というものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。</p>
-<h2 id="safeargs">safeargsを使ってみる</h2>
+<h2 id="safeargsを使ってみる">safeargsを使ってみる</h2>
 <p>一般的にFragmentに適当な値を渡すときは<code>Bundle</code>を通して渡します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 呼び出し側
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> bundle = Bundle()
@@ -179,10 +179,10 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
 
 <span style="color:#75715e">// 呼び出され側
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> args = HogeFragmentArgs.fromBundle(arguments)
-</code></pre></div><h2 id="heading">まとめ</h2>
+</code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>Navigationは大きいライブラリなので、とりあえずの練習でsafe argsの機能だけつまみ食いするのは、
 個人的には良さそうだと思っています。</p>
-<h2 id="heading-1">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://github.com/googlecodelabs/android-navigation">https://github.com/googlecodelabs/android-navigation</a></li>
 </ul>

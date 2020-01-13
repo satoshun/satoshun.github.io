@@ -92,9 +92,9 @@ Shadow DOMとは?
     <span class="post-date">Created at Sat, Mar 14, 2015</span>
     
     <p>Web Componentsの機能の一つ Shadow DOMについて説明します.</p>
-<h2 id="shadow-dom">Shadow DOMとは?</h2>
+<h2 id="shadow-domとは">Shadow DOMとは?</h2>
 <p>外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.</p>
-<h2 id="shadow-dom-1">Shadow DOMの誕生背景</h2>
+<h2 id="shadow-domの誕生背景">Shadow DOMの誕生背景</h2>
 <p>なぜShadow DOMが出てきたかについて説明します.</p>
 <p>CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">hoge</span> {
@@ -103,7 +103,7 @@ Shadow DOMとは?
 </code></pre></div><p>と書くと, <code>hoge</code>をclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分で<code>hoge</code>クラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます.
 仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.</p>
 <p>フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.</p>
-<h2 id="heading">使い方</h2>
+<h2 id="使い方">使い方</h2>
 <p>Shadow DOMを作るには<code>createShadowRoot</code>APIを使います. 以下, Shadow DOM版Hello Worldです.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;shadow&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
 
@@ -137,10 +137,10 @@ Shadow DOMとは?
   <span style="color:#a6e22e">insertShadow2</span>();
   &lt;/<span style="color:#f92672">script</span>&gt;
 </code></pre></div><p>上記のように書くと, Hello world1は黒いままで, <code>color: red;</code>は効きません. なぜなら, Shadow DOMでtemplateの中身は外部と隔離されているためです. これがShadow DOMです.</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>Shadow DOMの概要, 簡単な使い方について書いてみました.</p>
 <p>2014年現在は実用するには厳しいですが, 2017年くらいには実用的になっていると思います(なんとなく). 今すぐに使いたい人は <a href="https://github.com/Polymer/polymer">https://github.com/Polymer/polymer</a> などのpolyfillを使うのがいいかと思います.</p>
-<h2 id="heading-2">参考サイト</h2>
+<h2 id="参考サイト">参考サイト</h2>
 <ul>
 <li>Shadow DOM 101: <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/</a></li>
 <li>Web Componentsで行うHTMLのコンポーネント化: <a href="http://ameblo.jp/ca-1pixel/entry-11815188808.html">http://ameblo.jp/ca-1pixel/entry-11815188808.html</a></li>

@@ -99,7 +99,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
     <p>マルチモジュール遷移方法Part2です。<a href="https://satoshun.github.io/2018/12/multi-module_transition_part1/">Part1</a>はここになります😌</p>
 <p>Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。</p>
 <p>また、今回の検証に用いたコードは<a href="https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample">satoshun/MultiModuleNavigationComponentExample</a>にあります。</p>
-<h2 id="heading">モジュール構成について</h2>
+<h2 id="モジュール構成について">モジュール構成について</h2>
 <p>細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。</p>
 <figure>
     <img src="https://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLutBpeSTEEnyrB7pVlUToy-kdipLnS1Od9sOdfgGfAYGK5yMcfYIMbHQbA2jLS2WhHG95O45sKNrgIMXJBLOkakhWqoH1DEKWe5iQ8nw7925EJ4KoJ4RAcvFpSWloyrBmIi3lGN1wha5Yi01H6LWNHYqqXH0PPxUF6kOyRrptPFGqi3t8likpBnktFb-z-tBJaSVFcnqtxmIPDVToq7CHesWdN4a-4kKQacmiB1Iuka2KAkdOebe4KGCKG2e4XeQ2Rab-U1rCC3MDq2IEi4Z1Jk20Cg7WDghrOv13sEwJcfG2J6G00" width="600"/> 
@@ -108,7 +108,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 <p>各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。</p>
 <p>このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。</p>
 <p>では、実装に入っていきます。今回はDagger2を使って実装をします。</p>
-<h2 id="feature">featureモジュール側の遷移用インターフェースの定義</h2>
+<h2 id="featureモジュール側の遷移用インターフェースの定義">featureモジュール側の遷移用インターフェースの定義</h2>
 <p>前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。</p>
 <p>main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
@@ -132,7 +132,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 }
 </code></pre></div><p>これでfeatureモジュールでの遷移用インターフェースの定義は完了です。</p>
 <p>次にこのインターフェースの実装をします。</p>
-<h2 id="router">routerモジュール側の遷移用インターフェースの実装</h2>
+<h2 id="routerモジュール側の遷移用インターフェースの実装">routerモジュール側の遷移用インターフェースの実装</h2>
 <p>今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
   <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
@@ -161,10 +161,10 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 }
 </code></pre></div><p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>
 <p>あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。</p>
-<h2 id="heading-1">メモ</h2>
-<h3 id="router-1">routerモジュールをわざわざ作る必要はないかも</h3>
+<h2 id="メモ">メモ</h2>
+<h3 id="routerモジュールをわざわざ作る必要はないかも">routerモジュールをわざわざ作る必要はないかも</h3>
 <p>構成図を見てほしいのですが、実はrouterモジュールをわざわざ作る必要はなく、appモジュールに含めても良いです。routerモジュールを作るのがめんどう、もしくは意味がないと感じるなら、appモジュールで実装しても良いと思います。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Navigation Componentでモジュール間の遷移を宣言的にXMLで書けるのは見やすくて非常に良いと思いました。
 <ul>

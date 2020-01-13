@@ -94,7 +94,7 @@
 これは、従来の<code>HasActivityInjector</code>や<code>HasFragmentInjector</code>などを置き換えるために作られました。</p>
 <p>この記事では、どのように置き換えるかを説明していきたいと思います。</p>
 <p>また、<code>DaggerApplication</code>や<code>DaggerActivity</code>などの基底クラスは使っていないものとします。</p>
-<h2 id="heading">置き換えていく</h2>
+<h2 id="置き換えていく">置き換えていく</h2>
 <h3 id="appcomponent">AppComponent</h3>
 <p>AndroidSupportInjectionModuleを使っているなら、<code>AndroidInjectionModule</code>に置き換えます。
 今後は、<code>AndroidSupportInjectionModule</code>を使う必要はありません。</p>
@@ -150,11 +150,11 @@
 }
 </code></pre></div><p>となります。従来の***Injectorが汎用的な<code>HasAndroidInjector</code>まとまりました😃</p>
 <p>大きなコードの修正は必要なさそうです。</p>
-<h2 id="heading-1">なぜこの変更が入ったか?</h2>
+<h2 id="なぜこの変更が入ったか">なぜこの変更が入ったか?</h2>
 <p>ronshapiroさんが以下のツイートをしていました。</p>
 <!-- raw HTML omitted -->
 <p>今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。</p>
-<h2 id="daggerapplicationdaggerappcompatactivitydaggersupportfragment">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
+<h2 id="daggerapplicationやdaggerappcompatactivitydaggersupportfragmentなどを使っている場合">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
 <p>2.23では、これらの基底クラスで<code>HasAndroidInjector</code>を使っているので特に対応は必要ありません。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HasAndroidInjectorを使う実装に置き換わっている
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Beta</span>
@@ -162,7 +162,7 @@
   <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>唯一、AppComponentでは<code>AndroidSupportInjectionModule</code>を使っていると思うのでそこの置き換えは必要です。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>HasAndroidInjectorという1つの汎用インターフェースが爆誕した</li>
 <li>androidxのサポート増やしてくれそう。嬉しい😃

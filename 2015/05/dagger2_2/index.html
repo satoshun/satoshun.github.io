@@ -93,7 +93,7 @@ u2020 …">
     
     <span class="post-date">Created at Sun, May 24, 2015</span>
     
-    <h2 id="heading">概要</h2>
+    <h2 id="概要">概要</h2>
 <p>この記事では, JakeWhartonさんの<a href="https://github.com/JakeWharton/u2020">u2020</a>から, AndroidでDagger2を使うときの実践的な方法を紹介します.
 u2020はDagger1を使っていますが, Dagger2においても同様に使えるテクニックなので, u2020をベースにして説明します.</p>
 <p>DI, Dagger2の基本について知りたい方は, <a href="/2015/05/dagger2/">Part1</a>を見て下さい.</p>
@@ -104,7 +104,7 @@ u2020はDagger1を使っていますが, Dagger2においても同様に使え�
 <li>Mockモードの定義
 -　まとめ</li>
 </ul>
-<h2 id="debugproductionmodule">debugとproductionでModuleを切り替える</h2>
+<h2 id="debugとproductionでmoduleを切り替える">debugとproductionでModuleを切り替える</h2>
 <p>gradleは, <code>productFlavors</code>を設定することで, ソースコード, ビルド設定を切り替えることが出来ます. u2020では, production, internalのflavorがあります.
 そして, u2020はflavorの種類によって, DIする対象を切り替えています. production用のComponentとdebug用のComponentを作成することでそれを実現しています.
 具体的には,</p>
@@ -124,12 +124,12 @@ u2020はDagger1を使っていますが, Dagger2においても同様に使え�
 <li>etc, etc&hellip;</li>
 </ul>
 <p>以下では, より細かく説明していきます.</p>
-<h2 id="debugview">Debug専用のViewを作る</h2>
+<h2 id="debug専用のviewを作る">Debug専用のViewを作る</h2>
 <p>u2020では, Debug専用のView <code>DebugAppContainer</code>があります.
 <!-- raw HTML omitted -->Debug専用のView<!-- raw HTML omitted -->
 はこんな感じです. Debugビルドの時は, このContainerをinjectしています.</p>
 <p>DebugAppContainerは簡単にいえば, <code>DrawerLayout</code>を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.</p>
-<h2 id="mock">Mockモードの定義</h2>
+<h2 id="mockモードの定義">Mockモードの定義</h2>
 <p>u2020ではMockモードがあり, Mockデータを表示機能があります.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DebugDataModule</span> <span style="color:#f92672">{</span>
   <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
@@ -146,7 +146,7 @@ u2020はDagger1を使っていますが, Dagger2においても同様に使え�
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
 サーバ問題を解決しています. retrofitの<code>MockRestAdapter</code>を組み合わせ, mockからデータを取得しています.</p>
-<h2 id="activitylifecycle">activityのlifecycleのログを取る</h2>
+<h2 id="activityのlifecycleのログを取る">activityのlifecycleのログを取る</h2>
 <p>Applicationクラスには, <code>registerActivityLifecycleCallbacks</code>メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &hellip;)でイベントを受け取ることが出来ます.
 <code>ActivityLifecycleCallbackss</code>インターフェースの定義は以下になります.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityCreated</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">,</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
@@ -158,7 +158,7 @@ u2020はDagger1を使っていますが, Dagger2においても同様に使え�
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityDestroyed</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
 </code></pre></div><p>u2020では,　<a href="https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java">SocketActivityHierarchyServer</a>クラスをデバッグ, Activityが正しく振舞っているかを確認しています.</p>
 <p>一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&hellip;)</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>u2020はDagger以外にもノウハウが多くあり, 非常に勉強になりました. 正直10%くらいしか理解できていないので, 次はu2020全体にフォーカスを当てた記事を書くので楽しみに待っていて下さい.</p>
 
     <div class="mt30"></div>

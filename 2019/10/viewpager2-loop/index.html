@@ -101,7 +101,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 
 <p>今回の検証に用いたコードは、<a href="https://github.com/satoshun-android-example/ViewPager2/tree/master/app/src/main/java/com/github/satoshun/example/infinite">satoshun/ViewPager2</a>にあります😃</p>
 <p>では、コードを説明していきます。今回は、1つのViewTypeを扱います。</p>
-<h2 id="heading">実際のコード</h2>
+<h2 id="実際のコード">実際のコード</h2>
 <p>まず、<code>RecyclerView.Adapter</code>のサイズを決める<code>getItemCount</code>メソッドの実装です。
 限りなく大きい値、<code>Int.MAX_VALUE</code>を返します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
@@ -141,7 +141,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 }
 </code></pre></div><p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
 <p>これで完成です！複数のViewTypeを扱いたいときは、もう少し工夫が必要になると思いますが、基本はこれだけで動かすことが出来ます。</p>
-<h2 id="heading-1">注意点</h2>
+<h2 id="注意点">注意点</h2>
 <ul>
 <li><code>Int.MAX_VALUE / 2</code> 回スクロールすると、先頭にたどり着くので、実は無限スクロールではない
 <ul>
@@ -149,7 +149,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 </ul>
 </li>
 </ul>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ViewPager2はRecyclerViewの知識を使えるので嬉しい😃</li>
 <li>コードは、<a href="https://github.com/satoshun-android-example/ViewPager2/tree/master/app/src/main/java/com/github/satoshun/example/infinite">satoshun/ViewPager2</a>にあるので、細かいところはこちらを見て下さい。</li>

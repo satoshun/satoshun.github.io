@@ -149,7 +149,7 @@ presenter.watchUserAge.observe(<span style="color:#66d9ef">this</span>) {
 </span><span style="color:#75715e"></span>presenter.user.postValue(User(name = <span style="color:#e6db74">&#34;posted1&#34;</span>, age = <span style="color:#ae81ff">0</span>))
 </code></pre></div><p>この場合、Userのnameプロパティだけが変更されているので、<code>presenter.watchUserName</code>に登録したObserverのみが発火します。
 変更が加わったプロパティだけを無事検知することができました😃</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>多くのデータを持ったオブジェクトの一部の変更のみ検知したい時に使うと便利かもしれない😋</li>
 </ul>

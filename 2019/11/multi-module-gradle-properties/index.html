@@ -106,7 +106,7 @@ Android マルチモジュール: ライブラリの …">
 <li>モジュール内でProGuard/R8の設定をする</li>
 <li>Rファイルを小さく保つ</li>
 </ul>
-<h2 id="heading">モジュール内のリソース名にルールを持たせる</h2>
+<h2 id="モジュール内のリソース名にルールを持たせる">モジュール内のリソース名にルールを持たせる</h2>
 <p><a href="https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.LibraryExtension.html#com.android.build.gradle.LibraryExtension:resourcePrefix">resourcePrefix</a>は、リソース名のプレフィックスにルールを設けるプロパティです。</p>
 <p>例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）は<code>home_</code>から始まる必要があります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
@@ -121,7 +121,7 @@ Android マルチモジュール: ライブラリの …">
 </span><span style="color:#75715e"></span>  <span style="color:#f92672">&lt;</span>string name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;home_app_name&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#960050;background-color:#1e0010">適</span><span style="color:#960050;background-color:#1e0010">当</span><span style="color:#960050;background-color:#1e0010">な</span><span style="color:#960050;background-color:#1e0010">文</span><span style="color:#960050;background-color:#1e0010">字</span><span style="color:#960050;background-color:#1e0010">列</span><span style="color:#f92672">&lt;</span><span style="color:#e6db74">/string&gt;
 </span><span style="color:#e6db74">&lt;/</span>resource<span style="color:#f92672">&gt;</span>
 </code></pre></div><p>これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。</p>
-<h2 id="buildconfig">BuildConfigを作らない</h2>
+<h2 id="buildconfigを作らない">BuildConfigを作らない</h2>
 <p>モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、<a href="https://github.com/uber/AutoDispose/blob/1.4.0/build.gradle#L229">uber/AudoDispose</a>では、次のように設定しています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
 </span><span style="color:#75715e"></span>project<span style="color:#f92672">.</span><span style="color:#a6e22e">android</span> <span style="color:#f92672">{</span>
@@ -132,7 +132,7 @@ Android マルチモジュール: ライブラリの …">
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。</p>
-<h2 id="proguardr8">モジュール内でProGuard/R8の設定をする</h2>
+<h2 id="モジュール内でproguardr8の設定をする">モジュール内でProGuard/R8の設定をする</h2>
 <p><a href="https://developer.android.com/studio/projects/android-library#Considerations">consumerProguardFiles</a>を使うことで、モジュールのProguard/R8の設定を定義することが出来ます。</p>
 <p>例えば、次のように使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
@@ -145,7 +145,7 @@ Android マルチモジュール: ライブラリの …">
 <span style="color:#75715e">// consumer-rules.pro
 </span><span style="color:#75715e"></span><span style="color:#f92672">-</span>keep <span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">*</span><span style="color:#960050;background-color:#1e0010"> </span><span style="color:#a6e22e">implements</span> com<span style="color:#f92672">.</span><span style="color:#a6e22e">google</span><span style="color:#f92672">.</span><span style="color:#a6e22e">gson</span><span style="color:#f92672">.</span><span style="color:#a6e22e">TypeAdapterFactory</span>
 </code></pre></div><p>このように書くことで、ProGuardを有効にしてビルドした時に、<code>consumer-rules.pro</code>の設定も考慮して、コード最適化を行ってくれます。</p>
-<h2 id="r">Rファイルを小さく保つ</h2>
+<h2 id="rファイルを小さく保つ">Rファイルを小さく保つ</h2>
 <p>R.javaは依存関係にあるモジュールのR.javaを、マージしていくような動作をするため、マルチモジュール環境だと各モジュール内で生成されるR.javaのサイズが馬鹿にならないことがあります。そこで、gradle.propertiesに次の設定をすることで、モジュールのR.javaのサイズを抑えることが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// gradle.properties
 </span><span style="color:#75715e"></span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">namespacedRClass</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
@@ -154,7 +154,7 @@ Android マルチモジュール: ライブラリの …">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> com.jakewharton.sdksearch.roboto.R <span style="color:#66d9ef">as</span> RobotoR
 </code></pre></div><p><a href="https://github.com/JakeWharton/SdkSearch/blob/abb9ee2845382fd8448fe4831d1911a01c1976b2/search/ui-android/src/main/java/com/jakewharton/sdksearch/search/ui/SearchUiBinder.kt#L21">SdkSearch/SearchUiBinder</a></p>
 <p>また、この設定は、experimentalなフラグなので、今後挙動が変わる可能性があります。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ざっと4つの設定を紹介しました😃</li>
 <li>他に何かあれば教えていただけると幸いでございます:D</li>

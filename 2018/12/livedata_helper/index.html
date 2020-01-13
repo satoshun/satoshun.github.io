@@ -111,7 +111,7 @@ class MainViewModel {
 </code></pre></div><p>こうすることで、外のクラスからは<code>MutableLiveData</code>が直接見えなくなり、明示的に型変換をしない限り<code>LiveData</code>の値を更新できなくなります。</p>
 <p>ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。
 なので、それの解決策を以下で紹介します。</p>
-<h2 id="1">その1</h2>
+<h2 id="その1">その1</h2>
 <p>まずコードをのせます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel2</span> {
   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(value: T) {
@@ -159,7 +159,7 @@ ViewModel2クラスと同じパッケージに入れることで、ViewModel2か
 ViewModel2を継承したクラスからのみLiveDataの値を更新できます。</p>
 <p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外からsetValueメソッドをコールするとコンパイルエラーになります。</p>
 <p>protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。</p>
-<h2 id="2">その2</h2>
+<h2 id="その2">その2</h2>
 <p>こちらもまずコードをのせます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel3</span> {
   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(value: T) {
@@ -202,7 +202,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <p>ViewModelLiveData3クラスとViewModel3クラスを適当なサブモジュール内で定義します。
 そして、Kotlinのinternalを修飾子を使うことで、外のモジュールからは直接値を更新することができなくなります。</p>
 <p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。</p>
-<h2 id="heading">補足</h2>
+<h2 id="補足">補足</h2>
 <p>abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ViewModel2</span> {
   <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(value: T) {
@@ -226,7 +226,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
   }
 }
 </code></pre></div><p>applyやwithを使ってViewModel2がreceiverになると、setValueメソッドがコール出来るため、外から値を更新することが出来てしまいます。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>おそらくLiveDataの値を更新する部分は、<code>ViewModel</code>や<code>Store</code>クラスに集中すると思うので、それらのBaseクラスで上記のメソッドを定義することで楽ができるようになると思います。</li>
 <li>もっと良い、楽できる書き方があればぜひ教えてください!!</li>

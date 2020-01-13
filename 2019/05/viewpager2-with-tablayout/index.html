@@ -93,7 +93,7 @@
     
     <p>Material ComponentsでViewPager2 + TabLayoutのコードが入ったのでそれの紹介。まだalphaへのリリースもされていないので、APIは大きく変わるかもしれません。おそらく<code>1.1.0-alpha07</code>に入ってくると思います。</p>
 <p>TabLayoutはViewPagerでサポートされていましたが、それがViewPager2にも来たって感じです。</p>
-<h2 id="heading">使い方</h2>
+<h2 id="使い方">使い方</h2>
 <p>新しく追加された<a href="https://github.com/material-components/material-components-android/blob/67e4489293290853de83ef1b00205058ae25fa8e/lib/java/com/google/android/material/tabs/TabLayoutMediator.java">TabLayoutMediator</a>を使います。</p>
 <p>まず、<code>TabLayoutMediator</code>インスタンスを生成します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> viewPager: ViewPager2 = findViewById(R.id.viewpager)
@@ -107,7 +107,7 @@ ViewPagerのPageAdapterとは違い、RecyclerViewのAdapterからはタイト�
 <p>最後に<code>attach</code>関数を呼び出します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">mediator.attach()
 </code></pre></div><p>これで、ViewPager2 + TabLayoutを実現できます。とても簡単！！</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ViewPager2もエコシステムが整いつつある😊</li>
 <li>今回試したサンプルコードは <a href="https://github.com/satoshun-android-example/ViewPager2">satoshun-android-example/ViewPager2</a>にあります😃</li>

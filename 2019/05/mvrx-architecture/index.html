@@ -125,8 +125,8 @@ MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
 </li>
 </ul>
 <p>ボイラープレートなコードを減らすことが期待できます😃</p>
-<h2 id="heading">個人的に気になった部分、好きなとこ</h2>
-<h3 id="stateview">StateでView状態を管理するところ</h3>
+<h2 id="個人的に気になった部分好きなとこ">個人的に気になった部分、好きなとこ</h2>
+<h3 id="stateでview状態を管理するところ">StateでView状態を管理するところ</h3>
 <p>Stateを定義することのメリットは以下かなと思ってます。</p>
 <ul>
 <li>Stateを見れば、Viewの構成要素が分かる
@@ -149,7 +149,7 @@ MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
 </ul>
 </li>
 </ul>
-<h3 id="async">Asyncがすごい良い</h3>
+<h3 id="asyncがすごい良い">Asyncがすごい良い</h3>
 <p>MvRxではAsyncというsealed classが定義されていて、</p>
 <ul>
 <li>Uninitialized</li>
@@ -159,7 +159,7 @@ MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
 </ul>
 <p>の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。</p>
 <p>プロジェクトに、Asyncだけ取り入れるのもアリだと思います。</p>
-<h3 id="single-event">Single Eventの処理をどうするのか</h3>
+<h3 id="single-eventの処理をどうするのか">Single Eventの処理をどうするのか</h3>
 <p>State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う</p>
 <ul>
 <li>invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも
@@ -169,7 +169,7 @@ MvRxはAirbnbが開発をしているOSSフレームワークです。 …">
 </ul>
 </li>
 </ul>
-<h2 id="heading-1">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://github.com/chrisbanes/tivi">Tivi</a>
 <ul>

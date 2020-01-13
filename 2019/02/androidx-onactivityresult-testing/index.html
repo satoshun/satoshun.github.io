@@ -99,7 +99,7 @@
     <p>Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。
 まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、<code>AndroidJUnit4</code>ランナーが使えるなど、かなりの部分が共通化出来ます。</p>
 <p>この記事では、ユニットテストで<code>Activity.onActivityResult</code>のテストをどこまでandroid testのように書けるかを検証します。</p>
-<h2 id="heading">テスト対象コード</h2>
+<h2 id="テスト対象コード">テスト対象コード</h2>
 <p>まず最初に、テスト対象コードは次のようになっています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
   ...
@@ -145,7 +145,7 @@
 }
 </code></pre></div><p>これはMainActivityで<code>startActivityForResult</code>がコールされ、Sub2Activityで<code>setResult</code>で値をセットし、MainActivityの<code>onActivityResult</code>で結果を受け取るサンプルコードになります。</p>
 <p>では、テストを書いていきます。</p>
-<h2 id="heading-1">テストコード</h2>
+<h2 id="テストコード">テストコード</h2>
 <p>以下が、今回書いたテストコードになります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@RunWith(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityTest</span> {
@@ -248,14 +248,14 @@ main.onActivity {
 </code></pre></div><p>まずは、クリックイベントを発火し、<code>startActivityForResult</code>をコールします。渡したIntentを<code>Intents.intended</code>で正しいことを確認します。最後に、Espressoを使って、<code>onActivityResult</code>の結果を正しく反映されているかを確認します。</p>
 <p>これで、テスト完了です😃
 2つのActivityに関連するonActivityResultのテストが無事に出来ました！！</p>
-<h2 id="heading-2">補足</h2>
+<h2 id="補足">補足</h2>
 <p>Espressoにはご存知、clickをするためのAPIがあるのですが、うまく動きませんでした。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// not working!!
 </span><span style="color:#75715e"></span>Espresso
   .onView(ViewMatchers.withId(R.id.button))
   .perform(ViewActions.click())
 </code></pre></div><p>調べたんですが、原因がわかりませんでした😂分かり次第追記します。</p>
-<h2 id="heading-3">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>上記のテストくらいなら、ユニットテストで書ける。すごい😃
 <ul>

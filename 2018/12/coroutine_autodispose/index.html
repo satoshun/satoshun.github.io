@@ -94,7 +94,7 @@
     <span class="post-date">Created at Sun, Dec 23, 2018</span>
     
     <p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
-<h2 id="continuationinterceptor">ContinuationInterceptorとは?</h2>
+<h2 id="continuationinterceptorとは">ContinuationInterceptorとは?</h2>
 <p>ContinuationInterceptorは次のようなインターフェースです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * Marks coroutine context element that intercepts coroutine continuations.
@@ -157,7 +157,7 @@
 }
 </code></pre></div><p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
 <p>フルコードは<a href="https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt">ここに</a>あります。</p>
-<h2 id="heading">使い方</h2>
+<h2 id="使い方">使い方</h2>
 <p>使い方は次のようになります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
   CoroutineScope {
@@ -188,7 +188,7 @@
   }
 }
 </code></pre></div><p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊</li>
 </ul>

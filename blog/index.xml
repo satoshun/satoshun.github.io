@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 28 Dec 2019 13:05:58 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2020 11:47:10 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kotlin: FlowのflowOnオペレータの挙動</title>
+      <link>https://satoshun.github.io/2020/01/coroutine-flowon/</link>
+      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/01/coroutine-flowon/</guid>
+      <description>CoroutineのFlowにはflowOnオペレータが定義されており、実行コンテキストを変更することが出来ます。
+この記事はRxJava2のsubscribeOnとの挙動の違いを見ていきたいと思います。
+動かしてみる まずは、Flowから。
+withContext(Dispatchers.Main) { flowOf(1) .map { // Dispatchers.Defaultで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .flowOn(Dispatchers.Default) .map { // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .collect { // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) } } flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。
+次にRxJavaです。
+Single .just(1) .map { // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .subscribeOn(Schedulers.io()) .map { // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .subscribe({ // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) }) {} RxJavaではsubscribeOnは、特に途中でスケジューラーの変更が無い限り同一のスレッドで動作します。 なので、subscribeOn(Schedulers.io())を設定すると、下部（downstream)でもSchedulers.io上で実行されます。
+FlowのflowOnを、RxJavaのsubscribeOnと同じ感覚で実装すると、間違ってしまうので注意が必要です。
+ただ、Flowのmapなどのオペレーターはsuspend関数を取るので、基本的にはスレッドを意識しなくても良いはずです。
+まとめ  flowOnとRxJavaのsubscribeOn、動作がそれぞれ異なるので注意が必要  </description>
+    </item>
     
     <item>
       <title>2019年のアウトプット振り返り</title>

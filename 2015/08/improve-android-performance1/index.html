@@ -131,12 +131,12 @@
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>Month annotationをIntDefで定義し, <code>getDate(@Month int)</code>と書くことでtype-safeにgetDateメソッドを宣言することが出来ます.
 この書き方は, 「enumのtype-safe」と「定数のパフォーマンス」を満たしています.</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>定数はtype-safeでないため, IntDef(StringDef) annotationを使い, type-safeを提供する</li>
 <li>enumはパフォーマンスに影響を与える可能性があるため, IntDef(StringDef) annotationを使うことを検討する</li>
 </ul>
-<h2 id="heading-1">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="http://tools.android.com/tech-docs/support-annotations">Support Annotations</a></li>
 </ul>

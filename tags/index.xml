@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 28 Dec 2019 13:05:58 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2020 11:47:10 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>coroutine</title>
+      <link>https://satoshun.github.io/tags/coroutine/</link>
+      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/coroutine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flow</title>
+      <link>https://satoshun.github.io/tags/flow/</link>
+      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/flow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kotlin</title>
+      <link>https://satoshun.github.io/tags/kotlin/</link>
+      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>portofolio</title>
@@ -54,24 +81,6 @@
       <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/shape/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>coroutine</title>
-      <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/coroutine/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin</title>
-      <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
     </item>
     
@@ -207,15 +216,6 @@
       <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/server/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flow</title>
-      <link>https://satoshun.github.io/tags/flow/</link>
-      <pubDate>Sat, 03 Aug 2019 23:37:02 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/flow/</guid>
       <description></description>
     </item>
     

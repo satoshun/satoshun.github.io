@@ -97,30 +97,30 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
     
     <p>以下の動画のまとめです。</p>
 <p><a href="https://www.youtube.com/watch?v=PZBg5DIzNww">Build a Modular Android App Architecture (Google I/O'19)</a></p>
-<h2 id="heading">なぜモジュール化をするか?</h2>
-<h3 id="heading-1">スケール</h3>
+<h2 id="なぜモジュール化をするか">なぜモジュール化をするか?</h2>
+<h3 id="スケール">スケール</h3>
 <p>モジュール化することで、開発者が独立して開発出来るようになる</p>
 <ul>
 <li>人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効</li>
 </ul>
-<h3 id="heading-2">保守性</h3>
+<h3 id="保守性">保守性</h3>
 <p>例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる</p>
 <ul>
 <li>何をしているのか、何をしたいのかが理解しにくい</li>
 <li>長いレイアウトファイル名になりがち</li>
 </ul>
-<h3 id="heading-3">ビルド時間の短縮</h3>
+<h3 id="ビルド時間の短縮">ビルド時間の短縮</h3>
 <p>変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる</p>
-<h3 id="ci">CIの高速化</h3>
+<h3 id="ciの高速化">CIの高速化</h3>
 <p>再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる</p>
 <ul>
 <li><a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/">androidx/dependencyTracker</a>を使うといい感じにテストが出来る（らしい）</li>
 </ul>
-<h3 id="apk">APKサイズの縮小</h3>
+<h3 id="apkサイズの縮小">APKサイズの縮小</h3>
 <p>App Bundle、Dynamic Deliveryの恩恵を受けられる</p>
-<h2 id="heading-4">モジュール</h2>
+<h2 id="モジュール">モジュール</h2>
 <p>どのようにモジュール分けをするか?</p>
-<h3 id="1-feature">1. Feature（機能）ごとに分ける</h3>
+<h3 id="1-feature機能ごとに分ける">1. Feature（機能）ごとに分ける</h3>
 <p>ライブラリモジュールとDynamic Featureモジュールの2種類がある。</p>
 <ul>
 <li>ライブラリモジュール
@@ -145,7 +145,7 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </figure>
 
 <p>dribbleと、designernewsがDynamic Featureモジュールになっている。</p>
-<h3 id="2-layer">2. Layer（層、階層）ごとに分ける</h3>
+<h3 id="2-layer層階層ごとに分ける">2. Layer（層、階層）ごとに分ける</h3>
 <p>Plaidでは以下のように分けた。</p>
 <figure>
     <img src="https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no" width="500"/> 
@@ -192,17 +192,17 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </ul>
 </li>
 </ul>
-<h3 id="feature">Featureモジュールの利点</h3>
+<h3 id="featureモジュールの利点">Featureモジュールの利点</h3>
 <ul>
 <li>カプセル化</li>
 <li>Dynamic Delivery</li>
 </ul>
-<h3 id="layer">Layerごとに分ける利点</h3>
+<h3 id="layerごとに分ける利点">Layerごとに分ける利点</h3>
 <ul>
 <li>サードパーティライブラリの依存を独立</li>
 <li>構造をもたらす</li>
 </ul>
-<h3 id="dynamic-delivery">Dynamic Deliveryの課題</h3>
+<h3 id="dynamic-deliveryの課題">Dynamic Deliveryの課題</h3>
 <p>Featureモジュール間のNavigationをどうするか?</p>
 <ul>
 <li>appから、Dynamic Featureモジュールへの依存を持てない
@@ -214,8 +214,8 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </li>
 </ul>
 <p>今後、Navigationライブラリで自然に書けるようになるらしい😃</p>
-<h2 id="heading-5">データベース</h2>
-<h3 id="1">1つのデータベースのみ持つ</h3>
+<h2 id="データベース">データベース</h2>
+<h3 id="1つのデータベースのみ持つ">1つのデータベースのみ持つ</h3>
 <ul>
 <li>pros
 <ul>
@@ -229,7 +229,7 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </ul>
 </li>
 </ul>
-<h3 id="1-1">モジュールごとに1つのデータベースを持つ</h3>
+<h3 id="モジュールごとに1つのデータベースを持つ">モジュールごとに1つのデータベースを持つ</h3>
 <ul>
 <li>pros
 <ul>
@@ -243,7 +243,7 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </ul>
 </li>
 </ul>
-<h3 id="hybrid">hybridアプローチ</h3>
+<h3 id="hybridアプローチ">hybridアプローチ</h3>
 <p>特にルールを決めずに、データベースモジュールを作っていく</p>
 <ul>
 <li>pros
@@ -284,7 +284,7 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </ul>
 </li>
 </ul>
-<h2 id="heading-6">最後に</h2>
+<h2 id="最後に">最後に</h2>
 <ul>
 <li>最小限の依存関係でモジュールを構成する</li>
 <li>関心事の分離
@@ -304,7 +304,7 @@ Build a Modular Android App Architecture (Google I/O&#39;19)
 </ul>
 </li>
 </ul>
-<h2 id="heading-7">まとめ・感想</h2>
+<h2 id="まとめ感想">まとめ・感想</h2>
 <ul>
 <li>Dynamic DeliveryはNavigationに対応が入ってきたあたりで導入検討したいなって思った
 <ul>

@@ -150,7 +150,7 @@ launch {
   }
 }
 </code></pre></div><p>このように書くことで、例えばtask1がキャンセルされたとしても、他の部分の処理を継続することが出来ます。</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>エラー &amp; キャンセル時にも処理を継続したいならsupervisorScope + runCatchingを使う</li>
 <li>エラー時のみ処理を継続したいなら、runCatchingだけで対応できる</li>

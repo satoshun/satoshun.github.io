@@ -117,7 +117,7 @@
 </span><span style="color:#75715e"> * limitations under the License.
 </span><span style="color:#75715e"> */</span>
 </code></pre></div><p>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</p>
-<h2 id="scope">Scopeの一覧</h2>
+<h2 id="scopeの一覧">Scopeの一覧</h2>
 <p>RestrictToの定義は以下のようになっています。（コメント等は削除してます。）</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
     Scope<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
@@ -133,7 +133,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>GROUP_IDはdeprecatedとのことなので、それ以外のLIBRARY、 LIBRARY_GROUP、 LIBRARY_GROUP_PREFIX、 TESTS、 SUBCLASSESの挙動について見ていきます。</p>
-<h2 id="heading">各スコープについて</h2>
+<h2 id="各スコープについて">各スコープについて</h2>
 <p>次のように説明があります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e">  * Restrict usage to code within the same library (e.g. the same
@@ -175,7 +175,7 @@ TESTS<span style="color:#f92672">,</span>
 SUBCLASSES<span style="color:#f92672">,</span>
 </code></pre></div><p>名前から何となく想起できると思います。LIBRARY系のスコープはやや複雑に感じました。</p>
 <p>次から、実際の挙動を見ていきます。</p>
-<h2 id="heading-1">同一モジュール内</h2>
+<h2 id="同一モジュール内">同一モジュール内</h2>
 <p>最初に、呼び出される側の定義です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
   @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -209,7 +209,7 @@ SUBCLASSES<span style="color:#f92672">,</span>
 </span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// OK
 </span></code></pre></div><p>SUBCLASSESスコープのときはNGだと思ったんですけど、全部OKでした。テストのときはlintって走らないんですかね？（無知）</p>
-<h2 id="heading-2">同一プロジェクト内、ライブラリモジュール</h2>
+<h2 id="同一プロジェクト内ライブラリモジュール">同一プロジェクト内、ライブラリモジュール</h2>
 <p>次に、lib1という名前でライブラリモジュールを作り、そこで定義したクラスに、appモジュールからアクセスしてみます。</p>
 <p>settings.gradleは次のようになります。</p>
 <pre><code>include ':app'
@@ -238,7 +238,7 @@ include ':lib1'
 </span><span style="color:#75715e"></span>Hoge2.subclasses() <span style="color:#75715e">// NG
 </span><span style="color:#75715e"></span>Hoge2.tests() <span style="color:#75715e">// NG
 </span></code></pre></div><p>LIBRARY、LIBRARY_GROUP、LIBRARY_GROUP_PREFIXでOKになりました。現状だと同一プロジェクト内に各モジュールが定義されている場合、これらのスコープは特に考慮されなそうでした。</p>
-<h2 id="heading-3">サードパーティライブラリの場合</h2>
+<h2 id="サードパーティライブラリの場合">サードパーティライブラリの場合</h2>
 <p>androidx内で定義されているスコープが付いたクラスに、appモジュールからアクセスしてみます。</p>
 <p>まずは、ライブラリモジュール内の定義から。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
@@ -261,7 +261,7 @@ include ':lib1'
 </span><span style="color:#75715e"></span>DrawableWrapper(...) <span style="color:#75715e">// OK
 </span></code></pre></div><p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
 しかし、LIBRARY_GROUP_PREFIXは怒られませんでした。これは多分間違った挙動だと思うのでいつか直ると思います。</p>
-<h2 id="heading-4">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ざっくりと挙動を見ていきました。
 <ul>

@@ -101,7 +101,7 @@
 &quot;org.robolectric:robolectric:4.1&quot;
 </code></pre><p>になります。</p>
 <p>また、サンプルコードは <a href="https://github.com/satoshun-android-example/Tests">satoshun-android-example/Tests</a>にあるので、参考してください😊</p>
-<h3 id="1-viewmodelstore">1. ViewModelStoreを使う</h3>
+<h3 id="1-viewmodelstoreを使う">1. ViewModelStoreを使う</h3>
 <p><code>ViewModelProviders.of(activity).get(class)</code>からViewModelを取得したときに、取得したViewModelは<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModelStore">ViewModelStore</a>にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@RunWith(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseViewModelTest</span> {
@@ -114,7 +114,7 @@
 }
 </code></pre></div><p>このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。</p>
 <p>なので、素直にonDestroyをコールするテストも書いてみます。</p>
-<h3 id="2-instrumentationcallactivityondestroy">2. Instrumentation.callActivityOnDestroyを使う</h3>
+<h3 id="2-instrumentationcallactivityondestroyを使う">2. Instrumentation.callActivityOnDestroyを使う</h3>
 <p><code>Instrumentation</code>クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
 <code>Instrumentation</code>は<code>InstrumentationRegistry</code>クラスから取得することができ、次のように書くことで、<code>onDestroy</code>をコールすることができます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
@@ -124,7 +124,7 @@
 }
 </code></pre></div><p>ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！</p>
 <p><em>以下追記</em></p>
-<h3 id="3-activityscenario">3. ActivityScenarioを使う</h3>
+<h3 id="3-activityscenarioを使う">3. ActivityScenarioを使う</h3>
 <p>新しく追加されたActivityScenarioを使うとよりすっきりと<code>onDestroy</code>を表現することが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel 3`</span>() {
@@ -136,7 +136,7 @@
 </code></pre></div><p>ActivityScenarioは<code>moveToState</code>を介して、Activityのライフサイクルを操作することが出来ます。
 今回はActivityをonDestroy状態にしたいので、scenario.moveToState(Lifecycle.State.DESTROYED)をコールします。</p>
 <p>これで、Unitテストで<code>ViewModel.onCleared</code>のテストをすることが出来ます！！</p>
-<h3 id="heading">まとめ</h3>
+<h3 id="まとめ">まとめ</h3>
 <ul>
 <li>新しく追加されたActivityScenarioを使えばかなりすっきりとライフサイクルが絡むテストが書ける！！</li>
 <li><a href="https://github.com/satoshun-android-example/Tests">サンプルコード satoshun-android-example/Tests</a></li>

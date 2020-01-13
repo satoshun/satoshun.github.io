@@ -90,7 +90,7 @@
     
     <p>CSSには「clearfix」と呼ばれるテクニックがあります.</p>
 <p>この記事では, なぜclearfixを使うのか, clearfixとは何なのかについて説明します.</p>
-<h2 id="float">floatの問題点</h2>
+<h2 id="floatの問題点">floatの問題点</h2>
 <p>clearfixを説明する前に, floatプロパティの問題点について説明します.</p>
 <p>まず例をあげます.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span>&gt;
@@ -113,7 +113,7 @@ floatは, 指定したエレメント以降のエレメントを反対側に回�
 &lt;/<span style="color:#f92672">div</span>&gt;
 </code></pre></div><p><code>clear:both;</code>の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.</p>
 <p>とは言っても, floatingの解除は忘れてしまいがちです. そこでclearfixと呼ばれるテクニックを使います.</p>
-<h2 id="clearfix">clearfixとは</h2>
+<h2 id="clearfixとは">clearfixとは</h2>
 <p>clearfixとは, after擬似要素を使いfloatを解除するテクニックです.</p>
 <p>具体的には以下のように記述します.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">clearfix</span>:<span style="color:#a6e22e">after</span> {
@@ -133,7 +133,7 @@ floatは, 指定したエレメント以降のエレメントを反対側に回�
   hogehoge
 &lt;/<span style="color:#f92672">div</span>&gt;
 </code></pre></div><p>後続の要素に<code>clear:both;</code>を記述しなくてよいので, 無駄なミスを防ぐことが出来ます.</p>
-<h2 id="heading">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <p>floatはCSSのハマリポイントの1つだと思います. 要素の高さが取得できないなどの時は, floatが解除されていないかを疑いましょう.</p>
 <p>他にも, いろいろなclearfixの書き方があるので, 調べてみて下さい.</p>
 

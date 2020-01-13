@@ -94,10 +94,10 @@
     
     <p>Groupieには<code>GroupAdapter#update</code>メソッドという便利なメソッドがあります。</p>
 <p>この記事では<code>update</code>メソッドをコールした時に、どのように差分更新されるかを、簡単な説明と実際に動かしてみて見ていきます。</p>
-<h2 id="recyclerview">そもそもRecyclerViewの差分更新って何よ</h2>
+<h2 id="そもそもrecyclerviewの差分更新って何よ">そもそもRecyclerViewの差分更新って何よ</h2>
 <p>RecyclerViewでは、DiffUtil.Callbackクラスを実装することで、前のAdapterの状態と、新しいAdapterの状態の差分を計算することが出来ます。その計算結果をもとに、RecyclerViewでは効率的にViewを更新してくれます。またいい感じにアニメーションを実行してくれます。</p>
 <p>Groupieでは、内部で<code>DiffUtil.Callback</code>を実装した<code>DiffCallback</code>クラスがあり、そのクラスをもとに差分更新が行われます。</p>
-<h2 id="diffcallback">DiffCallbackクラスの実装を見ていく</h2>
+<h2 id="diffcallbackクラスの実装を見ていく">DiffCallbackクラスの実装を見ていく</h2>
 <p>まずは<code>areItemsTheSame</code>メソッドから。<code>areItemsTheSame</code>メソッドは、Itemが同一かどうかを判定します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">areItemsTheSame</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> oldItemPosition<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> newItemPosition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -149,9 +149,9 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>デフォルトでは、nullを返しており、payloadの計算は行われません。ここでいい感じにpayloadを計算してあげると、効率よく差分更新が出来ます。</p>
-<h2 id="heading">ケースごとに動作を見てみる</h2>
+<h2 id="ケースごとに動作を見てみる">ケースごとに動作を見てみる</h2>
 <p>今までのを踏まえて、いろいろなケースでどのように動作するかを見ていきます。</p>
-<h3 id="id--">違うid &amp;&amp; インスタンスを毎回生成する</h3>
+<h3 id="違うid--インスタンスを毎回生成する">違うid &amp;&amp; インスタンスを毎回生成する</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
     update(listOf(BasicItem())) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは毎回違う
@@ -164,7 +164,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 </figure>
 
 <p>Itemが点滅しているのが分かります。これは、Idが毎回異なるので、<code>areItemsTheSame</code>がfalseを返すためです。この場合、Viewは再利用されません。</p>
-<h3 id="id----equals">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsなどを実装しない</h3>
+<h3 id="同じid--インスタンスを毎回生成する--equalsなどを実装しない">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsなどを実装しない</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
     update(listOf(BasicItem(<span style="color:#ae81ff">3</span>))) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは固定
@@ -178,7 +178,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 
 <p>この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、<code>areContentsTheSame</code>がfalseを返すためです。
 <code>areContentsTheSame</code>がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。</p>
-<h3 id="id----equalstrue">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
+<h3 id="同じid--インスタンスを毎回生成する--equalsを実装してtrueを返す">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
 <pre><code>class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
   fun update() {
     update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
@@ -193,7 +193,7 @@ data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
 
 <p>この場合は、Itemが点滅していないのが分かります。これは、<code>areItemsTheSame</code>と<code>areContentsTheSame</code>がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、<code>areContentsTheSame</code>がtrueなので、Viewの中身を更新する必要がないためです。</p>
 <p>多くの処理をスキップ、再利用することが出来ます。</p>
-<h3 id="id----getchangepayload">同じidを渡す &amp;&amp; インスタンスを毎回生成する &amp;&amp; getChangePayloadを実装する</h3>
+<h3 id="同じidを渡す--インスタンスを毎回生成する--getchangepayloadを実装する">同じidを渡す &amp;&amp; インスタンスを毎回生成する &amp;&amp; getChangePayloadを実装する</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adapter</span> : GroupAdapter&lt;GroupieViewHolder&gt;() {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
     update(listOf(BasicItem(<span style="color:#ae81ff">3</span>))) <span style="color:#75715e">// 毎回新しく生成する &amp;&amp; idは固定
@@ -211,7 +211,7 @@ data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
 </figure>
 
 <p>この場合も、Itemが点滅していないのが分かります。これは、<code>areContentsTheSame</code>はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、<code>areContentsTheSame</code>がfalseなので、Viewの中身を更新する必要があるためです。</p>
-<h2 id="heading-1">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Groupie（RecyclerView）で効率的に差分更新をしたいなら、以下の3点を考慮する必要があります
 <ul>

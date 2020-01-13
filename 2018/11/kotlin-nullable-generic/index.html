@@ -129,7 +129,7 @@ INVOKESPECIAL kotlin/TypeCastException.&lt;init&gt; (Ljava/lang/String;)V
 <p>この挙動は <a href="https://youtrack.jetbrains.com/issue/KT-8135">https://youtrack.jetbrains.com/issue/KT-8135</a> ISSUEにバグとして報告されているので、今後異なるバイトコードが生成される可能性があります。
 もし、この挙動に依存するようなコードを書いている場合は注意が必要です。</p>
 <p>実世界では、mockito-kotlinがこの挙動に依存しているので、より興味がある方はぜひ読んでください😃 <a href="https://github.com/nhaarman/mockito-kotlin/blob/2.x/mockito-kotlin/src/main/kotlin/com/nhaarman/mockitokotlin2/internal/CreateInstance.kt#L46">ここのあたりで使っています</a></p>
-<h2 id="heading">参考</h2>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://github.com/nhaarman/mockito-kotlin">https://github.com/nhaarman/mockito-kotlin</a></li>
 <li><a href="https://youtrack.jetbrains.com/issue/KT-8135">https://youtrack.jetbrains.com/issue/KT-8135</a></li>

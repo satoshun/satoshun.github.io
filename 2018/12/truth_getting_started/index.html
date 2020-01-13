@@ -99,7 +99,7 @@
 <li>デフォルトの失敗メッセージがわかりやすい</li>
 </ul>
 <p>それぞれについて説明していきます。</p>
-<h2 id="readable">readableにアサーションが書ける</h2>
+<h2 id="readableにアサーションが書ける">readableにアサーションが書ける</h2>
 <p>ドキュメントのbenefitにあるサンプルを取り上げ説明します。
 <a href="http://google.github.io/truth/benefits">http://google.github.io/truth/benefits</a></p>
 <p>まず従来のJUnitスタイルを使って書きます。</p>
@@ -112,7 +112,7 @@ assertThat<span style="color:#f92672">(</span>middleName<span style="color:#f926
 </code></pre></div><p>assertThatはTruthに定義されているメソッドです。<code>middleName</code>がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。</p>
 <p>上記の<code>isAbsent</code>はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。
 例えばIterableには、<code>containsAnyIn</code>や<code>isEmpty</code>などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。</p>
-<h2 id="heading">失敗メッセージがわかりやすい</h2>
+<h2 id="失敗メッセージがわかりやすい">失敗メッセージがわかりやすい</h2>
 <p>こちらもbenefitにあるサンプルを取り上げます。</p>
 <p>まずは従来にJUnitスタイルから。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertTrue<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
@@ -122,8 +122,8 @@ assertThat<span style="color:#f92672">(</span>middleName<span style="color:#f926
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertThat<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 </code></pre></div><p><code>&lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&gt; should have contained &lt;PINK&gt;</code> のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。</p>
 <p>以上がTruthのメリットになります。</p>
-<h2 id="heading-1">補足</h2>
-<h3 id="truth-android">Truth-Androidライブラリ</h3>
+<h2 id="補足">補足</h2>
+<h3 id="truth-androidライブラリ">Truth-Androidライブラリ</h3>
 <p>JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。
 例えば、Intentには以下のアサーションメソッドを使うことが出来ます。</p>
 <pre><code>hasComponent
@@ -138,7 +138,7 @@ extras
 categories
 hasFlags
 </code></pre><p>Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。</p>
-<h3 id="assertj">AssertJとの比較</h3>
+<h3 id="assertjとの比較">AssertJとの比較</h3>
 <p>これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison</p>
 <p>現状の主だった差分は次のようになっています。</p>
 <ul>
@@ -150,7 +150,7 @@ hasFlags
 </li>
 </ul>
 <p>多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。</p>
-<h2 id="heading-2">まとめ</h2>
+<h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Truthを使うと失敗メッセージがわかりやすくなる、便利!</li>
 <li>AssertJを使っているなら乗り換えるメリットはないかも</li>
