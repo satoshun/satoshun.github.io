@@ -1,13 +1,13 @@
 +++
-date = "Mon Jan 13 10:41:05 UTC 2020"
+date = "Mon Jan 13 11:47:10 UTC 2020"
 title = "Kotlin: FlowのflowOnオペレータの挙動"
 tags = ["kotlin", "coroutine", "flow"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-CoroutineのFlowにはflowOnオペレータが定義されており、これを使うことで、実行コンテキストを変更することが出来ます。
+CoroutineのFlowにはflowOnオペレータが定義されており、実行コンテキストを変更することが出来ます。
 
 この記事はRxJava2のsubscribeOnとの挙動の違いを見ていきたいと思います。
 
@@ -36,7 +36,7 @@ withContext(Dispatchers.Main) {
 }
 ```
 
-このように、それぞれ動きます。flowOnはdownstreamには影響しないためです。
+flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。
 
 次にRxJavaです。
 
@@ -61,12 +61,12 @@ Single
 ```
 
 RxJavaではsubscribeOnは、特に途中でスケジューラーの変更が無い限り同一のスレッドで動作します。
-なので、`subscribeOn(Schedulers.io())`を設定すると、observerもSchedulers.io上で実行されます。
+なので、`subscribeOn(Schedulers.io())`を設定すると、下部（downstream)でもSchedulers.io上で実行されます。
 
-RxJavaと同じ感覚で実装すると、間違ってしまうので注意が必要です。
+FlowのflowOnを、RxJavaのsubscribeOnと同じ感覚で実装すると、間違ってしまうので注意が必要です。
 
 ただ、Flowのmapなどのオペレーターはsuspend関数を取るので、基本的にはスレッドを意識しなくても良いはずです。
 
 ## まとめ
 
-- flowOnとRxJavaのsubscribeOn、動作がそれぞれ異なるので注意が必要:D
+- flowOnとRxJavaのsubscribeOn、動作がそれぞれ異なるので注意が必要
