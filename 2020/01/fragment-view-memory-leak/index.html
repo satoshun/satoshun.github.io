@@ -92,7 +92,7 @@ Use …">
   <div class="post">
     <h1 class="post-title">FragmentでViewの参照を持つとメモリリークする話と実装</h1>
     
-    <span class="post-date">Created at Sat, Jan 18, 2020</span>
+    <span class="post-date">Updated at Sat, Jan 18, 2020</span>
     
     <p>View Bindingのドキュメントが更新され、onDestroyViewのタイミングで保持しているBindingの参照を解放する節が追記されました。</p>
 <p><a href="https://developer.android.com/topic/libraries/view-binding#fragments">Use view binding in fragments</a></p>
@@ -103,6 +103,16 @@ Use …">
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// onCreatedViewで初期化
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> _binding: ResultProfileBinding? = <span style="color:#66d9ef">null</span>
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding <span style="color:#66d9ef">get</span>() = _binding<span style="color:#f92672">!!</span>
+
+<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+): View? {
+  _binding = ResultProfileBinding.inflate(inflater, container, <span style="color:#66d9ef">false</span>)
+  <span style="color:#66d9ef">val</span> view = binding.root
+  <span style="color:#66d9ef">return</span> view
+}
 
 <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDestroyView</span>() {
   _binding = <span style="color:#66d9ef">null</span>
@@ -120,10 +130,17 @@ Use …">
 </code></pre></div><p>AutoClearedValueは、<code>viewLifecycleOwnerLiveData</code>を購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。</p>
 <p>詳細な実装は<a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt">AutoClearedValue.kt</a>を見てください。</p>
 <h2 id="3-databinding-ktxを使う">3. DataBinding-Ktxを使う</h2>
-<p><a href="https://github.com/wada811/DataBinding-ktx">DataBinding-ktx</a>というライブラリを使うことで、valで定義することが可能になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// onCreatedViewで初期化しないのでも済む
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: ViewBindingFragmentBinding <span style="color:#66d9ef">by</span> viewBinding()
-</code></pre></div><p>内部で、リフレクションを用いており、ViewBindingの場合でも自動的にBindingを生成してくれます。
+<p><a href="https://github.com/wada811/DataBinding-ktx">DataBinding-ktx</a>を使うことで、valで定義することが可能になります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: ViewBindingFragmentBinding <span style="color:#66d9ef">by</span> viewBinding()
+
+<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
+  inflater: LayoutInflater,
+  container: ViewGroup?,
+  savedInstanceState: Bundle?
+): View? {
+  <span style="color:#66d9ef">return</span> binding.root
+}
+</code></pre></div><p>内部で、リフレクションを用いており、ViewBindingの場合でも<code>binding.root</code>とbindingにアクセスするだけで、自動的にBindingインスタンスを生成してくれます。
 また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。</p>
 <h2 id="4-viewsettag-gettagを使った実装を使う">4. View.setTag, getTagを使った実装を使う</h2>
 <p>自動的に解放する部分の実装の話なんですが、setTag、getTagを使った実装でも参照を解放することが可能です。</p>
@@ -145,7 +162,8 @@ Use …">
     }
   }
 </code></pre></div><p><a href="https://gist.github.com/satoshun/0185c4231983016f6afa4d8f8c423cd9">Gist/サンプルコード</a></p>
-<p>viewLifecycleOwnerLiveDataを使わないパターンの実装になります。また、このコードではFragmentのコンストラクタからレイアウトIDを渡すことを想定しています。</p>
+<p>viewLifecycleOwnerLiveDataを使わないパターンの実装になります。また、このコードではFragmentのコンストラクタからレイアウトIDを渡すことを想定しています。
+コンストラクタからIDを渡すことで、onCreateViewを省略することが出来ます。</p>
 <p>この例では、DataBindingを想定していますが、ViewBindingで使う場合には、リフレクションを用いるか、もしくはファクトリを渡す必要があります。</p>
 <p>リフレクションを使う場合は、次のようになります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;reified T : ViewBinding&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
@@ -163,7 +181,7 @@ Use …">
   }
 </code></pre></div><h2 id="個人的な感想">個人的な感想</h2>
 <p>AACサンプルで使っているAutoClearedValueを使うのが良いのではと思っています。なぜかっていうと、RecyclerView.AdapterなどのBinding以外でも使うことが出来るからです。より汎用的だと思います。</p>
-<p>とはいえ、bindingを保持する変数をvalにしたいよねって話もあると思うので、そのときは3、4の方法を参考にするのが良いと思います。</p>
+<p>とはいえ、bindingを保持する変数をvalにしたいよねって話であったり、コンストラクタからレイアウトID渡したいよねっていう話があると思うので、そのときは3、4の方法を参考にするのが良いと思います。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>FragmentでViewの参照を持つBindingを保持するとメモリリークする
@@ -174,6 +192,9 @@ Use …">
 <li>AutoClearedValueが汎用的に使える</li>
 <li>Bindingの参照をvalにしたいなら、DataBinding-Ktxか、4の方法を参考にすると良さそう</li>
 </ul>
+<h2 id="追記">追記</h2>
+<p>wada811さんから、DataBinding-ktxではonCreatedViewでの初期化が必須との指摘を頂き、修正しました。ご指摘ありがとうございます😄</p>
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="ja" dir="ltr">DataBinding-ktx ですが、onCreateView での初期化は必須ですー</p>&mdash; wada811 (@wada811) <a href="https://twitter.com/wada811/status/1218534139088891905?ref_src=twsrc%5Etfw">January 18, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <div class="mt30"></div>
     
