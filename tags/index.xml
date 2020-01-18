@@ -7,10 +7,46 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 13 Jan 2020 11:47:10 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fragment</title>
+      <link>https://satoshun.github.io/tags/fragment/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/fragment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jetpack</title>
+      <link>https://satoshun.github.io/tags/jetpack/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/jetpack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lifecycle</title>
+      <link>https://satoshun.github.io/tags/lifecycle/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/lifecycle/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>coroutine</title>
@@ -45,15 +81,6 @@
       <pubDate>Sat, 28 Dec 2019 13:05:58 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/portofolio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
@@ -108,15 +135,6 @@
       <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/githubactions/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jetpack</title>
-      <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sat, 30 Nov 2019 06:14:19 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
     </item>
     
@@ -576,24 +594,6 @@
       <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/library/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>fragment</title>
-      <link>https://satoshun.github.io/tags/fragment/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/fragment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lifecycle</title>
-      <link>https://satoshun.github.io/tags/lifecycle/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/lifecycle/</guid>
       <description></description>
     </item>
     

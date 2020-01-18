@@ -19,9 +19,8 @@
       
       <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
       <description>DroidKaigiの記事まとめです.
-DroidKaigi - Welcome talk エンジニアのための勉強会をやるよ!みたいな内容
-Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 CardboardのUXをカメラで向上する 絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル 開発を効率的に進めるられるまでの道程 アプリの企画、プロトタイプからリリースに至るまで 初学者に嬉しいAndroid開発環境 大容量データのダウンロード戦略  複数Threadでダウンロードしても, 帯域があまっていないと早くならない. 100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す. 小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.  Android学ぶ君へ。生き抜くためのナレッジ共有 進化するART  JITコンパイラがAOTコンパイラに  アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.    新言語KotlinでAndroidプログラミング ARTのメモリ管理 Bitmapは怖くない。 DroidKaigi つかえるGradleプロジェクトの作り方 モバイルにおける電力最適化のための1プラクティス アプリを公開する前に、最低限知っておきたいセキュリティ事項 http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf
-デザイナーがXMLを書くことでできる改善しやすいアプリ開発 JellyBeanとKitKatで実現するマテリアルデザイン Material Designを取り入れたデザインリニューアル 僕らのデータ同期プラクティス Android と SELinux androidsola 感想, まとめ  EventBusを使う際の設計はどうするの? カオスになりそう. 画面向き変更はハマりどころが多そう. ノウハウためたい  </description>
+DroidKaigi - Welcome talk   DroidKaigi - Welcome talk  from mhidaka エンジニアのための勉強会をやるよ!みたいな内容
+Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法   Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -  from Yuki Anzai  CardboardのUXをカメラで向上する   CardboardのUXをカメラで向上する (droidkaigi 2015/04)  from Kenichi Takahashi  絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル   あるゲームアプリケーションの構成とアップデートサイクル  from Kentaro Iizuka  開発を効率的に進めるられるまでの道程   開発を効率的に進めるられるまでの道程  from Takao Sumitomo  アプリの企画、プロトタイプからリリースに至るまで   初学者に嬉しいAndroid開発環境   【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)  from Hiroyuki Kusu  大容量データのダウンロード戦略  複数Threadでダウンロードしても, 帯域があまっていないと早くならない.</description>
     </item>
     
     <item>

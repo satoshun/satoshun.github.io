@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 21 Dec 2018 07:08:34 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/lifecycle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>FragmentでViewの参照を持つとメモリリークする話と実装</title>
+      <link>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</guid>
+      <description>View Bindingのドキュメントが更新され、onDestroyViewのタイミングで保持しているBindingの参照を解放する節が追記されました。
+Use view binding in fragments
+Fragment自体のライフサイクルのほうが、FragmentのViewのライフサイクルより長いので、FragmentでBindingの参照を保持するとリークしてしまうためです。
+この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。
+1. onDestoryViewで解放する 公式ドキュメントに載っている方法です。
+// onCreatedViewで初期化 private var _binding: ResultProfileBinding? = null private val binding get() = _binding!! override fun onDestroyView() { _binding = null } onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。
+2. AACサンプルで使っているAutoClearedValueを使う takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。
+ DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました https://t.co/IUNmeQLzfB
+&amp;mdash; takahirom (@new_runnable) January 17, 2020   次のように使います。
+// onCreatedViewで初期化する var binding by autoCleared&amp;lt;RepoFragmentBinding&amp;gt;() var adapter by autoCleared&amp;lt;RepoFragmentAdapter&amp;gt;() AutoClearedValueは、viewLifecycleOwnerLiveDataを購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。
+詳細な実装はAutoClearedValue.ktを見てください。
+3. DataBinding-Ktxを使う DataBinding-ktxというライブラリを使うことで、valで定義することが可能になります。
+// onCreatedViewで初期化しないのでも済む private val binding: ViewBindingFragmentBinding by viewBinding() 内部で、リフレクションを用いており、ViewBindingの場合でも自動的にBindingを生成してくれます。 また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。</description>
+    </item>
     
     <item>
       <title>FragmentとgetViewLifecycleの話</title>

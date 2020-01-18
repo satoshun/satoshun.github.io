@@ -212,7 +212,7 @@ DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
  /src/production/java/com/jakewharton/u2020/Modules.java /src/internalDebug/java/com/jakewharton/u2020/Modules.java /src/internalRelease/java/com/jakewharton/u2020/Modules.javaに  それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています. これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.
 こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.
  Debugのみログを有効にしたい APIのエンドポイントを変えたい debug専用のViewを出したい Test用のインスタンスをinjectしたい etc, etc&amp;hellip;  以下では, より細かく説明していきます.
-Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のViewはこんな感じです. Debugビルドの時は, このContainerをinjectしています.
+Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
 DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
 Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
 public final class DebugDataModule { .</description>

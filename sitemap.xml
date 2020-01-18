@@ -3,8 +3,43 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/fragment/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/jetpack/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/lifecycle/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-01-18T13:09:08+00:00</lastmod>
   </url>
   
   <url>
@@ -28,16 +63,6 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2019/12/2019-output/</loc>
     <lastmod>2019-12-28T13:05:58+00:00</lastmod>
   </url>
@@ -45,11 +70,6 @@
   <url>
     <loc>https://satoshun.github.io/tags/portofolio/</loc>
     <lastmod>2019-12-28T13:05:58+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2019-12-24T00:40:05+00:00</lastmod>
   </url>
   
   <url>
@@ -100,11 +120,6 @@
   <url>
     <loc>https://satoshun.github.io/2019/12/github-actions-first/</loc>
     <lastmod>2019-12-08T10:32:03+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2019-11-30T06:14:19+00:00</lastmod>
   </url>
   
   <url>
@@ -648,17 +663,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/fragment/</loc>
-    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2018/12/view_lifecycle/</loc>
-    <lastmod>2018-12-21T07:08:34+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/lifecycle/</loc>
     <lastmod>2018-12-21T07:08:34+00:00</lastmod>
   </url>
   

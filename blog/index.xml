@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 13 Jan 2020 11:47:10 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>FragmentでViewの参照を持つとメモリリークする話と実装</title>
+      <link>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</guid>
+      <description>View Bindingのドキュメントが更新され、onDestroyViewのタイミングで保持しているBindingの参照を解放する節が追記されました。
+Use view binding in fragments
+Fragment自体のライフサイクルのほうが、FragmentのViewのライフサイクルより長いので、FragmentでBindingの参照を保持するとリークしてしまうためです。
+この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。
+1. onDestoryViewで解放する 公式ドキュメントに載っている方法です。
+// onCreatedViewで初期化 private var _binding: ResultProfileBinding? = null private val binding get() = _binding!! override fun onDestroyView() { _binding = null } onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。
+2. AACサンプルで使っているAutoClearedValueを使う takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。
+ DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました https://t.co/IUNmeQLzfB
+&amp;mdash; takahirom (@new_runnable) January 17, 2020   次のように使います。
+// onCreatedViewで初期化する var binding by autoCleared&amp;lt;RepoFragmentBinding&amp;gt;() var adapter by autoCleared&amp;lt;RepoFragmentAdapter&amp;gt;() AutoClearedValueは、viewLifecycleOwnerLiveDataを購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。
+詳細な実装はAutoClearedValue.ktを見てください。
+3. DataBinding-Ktxを使う DataBinding-ktxというライブラリを使うことで、valで定義することが可能になります。
+// onCreatedViewで初期化しないのでも済む private val binding: ViewBindingFragmentBinding by viewBinding() 内部で、リフレクションを用いており、ViewBindingの場合でも自動的にBindingを生成してくれます。 また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。</description>
+    </item>
     
     <item>
       <title>Kotlin: FlowのflowOnオペレータの挙動</title>
@@ -276,8 +297,8 @@ dependencies { api deps.okio api deps.kotlinStdlib compileOnly deps.android comp
       <description>ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
 僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。
 ちなみに言語はGoです。
-僕がやったこと  朝  寝坊しました     12:00くらいまで  アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた  スコアほぼ変わらず。それはそう     12:00から  /users/transactions.jsonが遅そうだったので、そこを潰す  USERの取得などがN+1クエリだったので、それを IN句に置き換え 道中、外部APIを叩いてるところがボトルネックっぽいことに気づく   ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）   16:30くらい  /new_items/:root_category_id.json、/new_items.jsonのN+1クエリログを倒す  ここらへんで確か8000~9000くらい     17:30くらい  他の人のPRみたり、静的ファイルをNginxから返すようにしてた  ここらへんで10000~くらい     最後らへん  ログを出力しないようにしたり修正  ここらへんで最終スコアの11,860くらい      こんな感じ
-反省点  3台構成に出来なかった  練習不足で時間が足りなかったんやなって   キャンペーンモードを忘れていた  READMEはちゃんと読もうな   ログインにボトルネックがあることに気づかなかった  pprofしていこうな   SQLの書き方が記憶から失われていた  頑張っていこうな   寝坊しない  それは無理かもしれない    まとめ  本線頑張るぞ〜😃  </description>
+僕がやったこと  朝  寝坊しました    ISUCON起床失敗
+&amp;mdash; Sato Shun🧁 (@stsn_jp) September 7, 2019   12:00くらいまで  アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた  スコアほぼ変わらず。それはそう     12:00から  /users/transactions.jsonが遅そうだったので、そこを潰す  USERの取得などがN+1クエリだったので、それを IN句に置き換え 道中、外部APIを叩いてるところがボトルネックっぽいことに気づく   ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）   16:30くらい  /new_items/:root_category_id.json、/new_items.jsonのN+1クエリログを倒す  ここらへんで確か8000~9000くらい     17:30くらい  他の人のPRみたり、静的ファイルをNginxから返すようにしてた  ここらへんで10000~くらい     最後らへん  ログを出力しないようにしたり修正  ここらへんで最終スコアの11,860くらい      こんな感じ</description>
     </item>
     
     <item>
@@ -325,8 +346,12 @@ Consumer側で処理が終わってなくても値を送ります。その値は
       <guid>https://satoshun.github.io/2019/07/androidx-releases/</guid>
       <description>androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。 androidx-releasesにそれぞれのリポジトリがあります。
 例えば、Appcompatのリリースを検知したかったら、次の画像のように、androidx-releases/appcompatのNotificationsのReleases Onlyをチェックします。
-  この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
-  まとめ  作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃  </description>
+
+  
+この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
+
+  
+まとめ  作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃  </description>
     </item>
     
     <item>
@@ -1390,6 +1415,7 @@ val root = findViewById&amp;lt;ViewGroup&amp;gt;(R.id.root) launch(UI) { for (cl
 まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。 振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。
 型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。
 人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。
+
 to be continued.</description>
     </item>
     
@@ -1536,7 +1562,7 @@ DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
  /src/production/java/com/jakewharton/u2020/Modules.java /src/internalDebug/java/com/jakewharton/u2020/Modules.java /src/internalRelease/java/com/jakewharton/u2020/Modules.javaに  それぞれModuleを定義し, それをApplicationクラスから読み込むようにしています. これで, flavorごとにinjectするインスタンスを切り替えることが出来ます.
 こうすると何が嬉しいんでしょうか? 例えば以下のことが可能になります.
  Debugのみログを有効にしたい APIのエンドポイントを変えたい debug専用のViewを出したい Test用のインスタンスをinjectしたい etc, etc&amp;hellip;  以下では, より細かく説明していきます.
-Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のViewはこんな感じです. Debugビルドの時は, このContainerをinjectしています.
+Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
 DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
 Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
 public final class DebugDataModule { .</description>
@@ -1590,9 +1616,8 @@ persons = {&amp;#39;TDN&amp;#39;: 12, &amp;#39;tanaka&amp;#39;: 24, &amp;#39;nak
       
       <guid>https://satoshun.github.io/2015/04/droid-kaigi/</guid>
       <description>DroidKaigiの記事まとめです.
-DroidKaigi - Welcome talk エンジニアのための勉強会をやるよ!みたいな内容
-Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 CardboardのUXをカメラで向上する 絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル 開発を効率的に進めるられるまでの道程 アプリの企画、プロトタイプからリリースに至るまで 初学者に嬉しいAndroid開発環境 大容量データのダウンロード戦略  複数Threadでダウンロードしても, 帯域があまっていないと早くならない. 100MBくらいのデータをダウンロードするときは, オンメモリではOutOfMemoryになる. 適切にファイルに書き出す. 小さいファイルをダウンロードするときは, 複数Threadのほうが恩恵大きいが, 大きいファイルをダウンロードするときは, そこまで恩恵がない. メモリの管理が大変なので, シングルスレッドのほうが良さそう.  Android学ぶ君へ。生き抜くためのナレッジ共有 進化するART  JITコンパイラがAOTコンパイラに  アプリケーション実行時から, アプリケーションインストール時にバイトコードにコンパイルするようになった.    新言語KotlinでAndroidプログラミング ARTのメモリ管理 Bitmapは怖くない。 DroidKaigi つかえるGradleプロジェクトの作り方 モバイルにおける電力最適化のための1プラクティス アプリを公開する前に、最低限知っておきたいセキュリティ事項 http://www.taosoftware.co.jp/blog/wp-content/uploads/2015/04/98fb763db77cdfecf79a1387877d3c87.pdf
-デザイナーがXMLを書くことでできる改善しやすいアプリ開発 JellyBeanとKitKatで実現するマテリアルデザイン Material Designを取り入れたデザインリニューアル 僕らのデータ同期プラクティス Android と SELinux androidsola 感想, まとめ  EventBusを使う際の設計はどうするの? カオスになりそう. 画面向き変更はハマりどころが多そう. ノウハウためたい  </description>
+DroidKaigi - Welcome talk   DroidKaigi - Welcome talk  from mhidaka エンジニアのための勉強会をやるよ!みたいな内容
+Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法   Activity, Fragment, CustomView の使い分け - マッチョなActivityにさよならする方法 -  from Yuki Anzai  CardboardのUXをカメラで向上する   CardboardのUXをカメラで向上する (droidkaigi 2015/04)  from Kenichi Takahashi  絶対落ちないアプリの作り方 あるゲームアプリケーションの構成とアップデートサイクル   あるゲームアプリケーションの構成とアップデートサイクル  from Kentaro Iizuka  開発を効率的に進めるられるまでの道程   開発を効率的に進めるられるまでの道程  from Takao Sumitomo  アプリの企画、プロトタイプからリリースに至るまで   初学者に嬉しいAndroid開発環境   【DroidKaigi2015】初学者に嬉しいAndroid開発環境(あとMVCとか)  from Hiroyuki Kusu  大容量データのダウンロード戦略  複数Threadでダウンロードしても, 帯域があまっていないと早くならない.</description>
     </item>
     
     <item>

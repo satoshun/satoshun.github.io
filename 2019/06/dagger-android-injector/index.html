@@ -152,7 +152,7 @@
 <p>大きなコードの修正は必要なさそうです。</p>
 <h2 id="なぜこの変更が入ったか">なぜこの変更が入ったか?</h2>
 <p>ronshapiroさんが以下のツイートをしていました。</p>
-<!-- raw HTML omitted -->
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Dagger 2.23 turns off formatting by default so your build is faster, but has a flag to turn it back on if you&#39;d like.<br><br>It also brings bug fixes and a more flexible <a href="https://t.co/d0MeQYkvAV">https://t.co/d0MeQYkvAV</a> API that will allow for more androidx support<a href="https://t.co/vtW7gebmu2">https://t.co/vtW7gebmu2</a></p>&mdash; Ron Shapiro (@rdshapiro) <a href="https://twitter.com/rdshapiro/status/1133493726561619968?ref_src=twsrc%5Etfw">May 28, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。</p>
 <h2 id="daggerapplicationやdaggerappcompatactivitydaggersupportfragmentなどを使っている場合">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
 <p>2.23では、これらの基底クラスで<code>HasAndroidInjector</code>を使っているので特に対応は必要ありません。</p>
