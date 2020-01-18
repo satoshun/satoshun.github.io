@@ -25,3 +25,8 @@ publishDir = "../"
 	github = "https://github.com/satoshun"
 	gplus = "https://plus.google.com/102988556020375542271"
 	icon = "https://bit.ly/2S8StSM"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
