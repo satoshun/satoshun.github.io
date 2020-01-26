@@ -125,7 +125,7 @@ Dagger2でもcompileをimplementationに置き換えるPRが出されました�
 内容が興味深かったのでまとめてみようと思います。
 まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。
 // Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries ここでjakeさんが
- I think this one is somewhat debatable, but you&#39;re likely to mark it as implementation in every module that contains the compiler so it&#39;s probably a non-problem.</description>
+ I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.</description>
     </item>
     
     <item>

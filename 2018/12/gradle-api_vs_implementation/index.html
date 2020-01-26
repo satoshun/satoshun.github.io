@@ -111,7 +111,7 @@ dependencies {
 + implementation 'com.google.dagger:dagger-android-support:2.x' // if you use the support libraries
 </code></pre><p>ここでjakeさんが</p>
 <blockquote>
-<p>I think this one is somewhat debatable, but you're likely to mark it as implementation in every module that contains the compiler so it's probably a non-problem.</p>
+<p>I think this one is somewhat debatable, but you&rsquo;re likely to mark it as implementation in every module that contains the compiler so it&rsquo;s probably a non-problem.</p>
 </blockquote>
 <p>とコメントしました。「Daggerコンパイラの依存はすべてのモジュールで明示的に書くだろうから、多分implementationで問題ないけど、議論の余地はある。」と。</p>
 <p>この議論を生んだ要因として、Daggerライブラリの性質があります。

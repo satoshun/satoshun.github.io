@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,27 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>edgetoedge</title>
+      <link>https://satoshun.github.io/tags/edgetoedge/</link>
+      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/edgetoedge/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ui</title>
+      <link>https://satoshun.github.io/tags/ui/</link>
+      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/ui/</guid>
       <description></description>
     </item>
     

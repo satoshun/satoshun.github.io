@@ -7,10 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>fitsSystemWindowsの話をつらつらと</title>
+      <link>https://satoshun.github.io/2020/01/android-fitssystemwindows/</link>
+      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/01/android-fitssystemwindows/</guid>
+      <description>fitsSystemWindowsについてマスターしつつあるので、つらつらと学んだことをまとめておきます。
+SystemUiVisibilityの詳細な設定については説明を割愛するのでご了承ください。
+そもそもfitsSystemWindowsとは? Android端末には、status bar、navigation barなどのSystem UIと総称されるViewがあります。 デフォルトでは、System UIにコンテンツの要素が被ることはありません。そこには制約があります。 しかし、SystemUiVisibilityの設定を変えることで、コンテンツの要素をSystem UIの裏側描くことが可能になります。
+    右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。
+ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?
+    右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。
+このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。
+&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;     見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
+    paddingTopと、paddingBottomに値が指定されていることが分かります。これはfitsSystemWindowsのデフォルトの振る舞いによるものです。
+fitsSystemWindowsはデフォルトで、paddingTopにstatus barの高さを、paddingBottomにnavigation barの高さを設定します。それにより、コンテンツがSystem UIに被らないようになります。
+まとめると「fitsSystemWindowsはSystem UIの高さに応じてpaddingに値をセットする」振る舞いをします。
+しかし、これはデフォルトの動作で、fitsSystemWindowsの動作を変更することが出来ます。
+AppBarLayoutはfitsSystemWindowsのデフォルトの動作を変更しているViewなので、AppBarLayoutにfitsSystemWindowsをつけた場合にどのように動作するかを見てみます。
+AppBarLayoutのfitsSystemWindowsの解釈 fitsSystemWindowsをAppBarLayoutに設定します。
+&amp;lt;LinearLayout&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;       見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
+    省略するのですが、fitsSystemWindowsを指定しない場合のAppBarLayoutの高さは154でした。上記の図の220という数字は 154(元の高さ) + 66(status barの高さ) = 220です。</description>
+    </item>
     
     <item>
       <title>FragmentでViewの参照を持つとメモリリークする話と実装</title>
@@ -428,7 +452,7 @@ Roman Elizarovさんが、Extension-oriented design中でちらっとメリッ�
       
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
       <description>以下の動画のまとめです。
-Build a Modular Android App Architecture (Google I/O&#39;19)
+Build a Modular Android App Architecture (Google I/O&amp;rsquo;19)
 なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
  人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
  何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
@@ -1048,7 +1072,7 @@ Dagger2でもcompileをimplementationに置き換えるPRが出されました�
 内容が興味深かったのでまとめてみようと思います。
 まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。
 // Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries ここでjakeさんが
- I think this one is somewhat debatable, but you&#39;re likely to mark it as implementation in every module that contains the compiler so it&#39;s probably a non-problem.</description>
+ I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.</description>
     </item>
     
     <item>
