@@ -110,13 +110,44 @@ AppbarLayoutはpaddingTopを設定するのではなく、高さを調整する�
 
 View.setOnApplyWindowInsetsListenerから、OnApplyWindowInsetsListenerを設定しておくと、デフォルトのfitsSystemWindowsではなく、OnApplyWindowInsetsListenerのほうがコールバックされます。
 
-OnApplyWindowInsetsListenerには、WindowInsetsが渡ってきます。この中にはSystem UIのサイズが入っています。
+OnApplyWindowInsetsListenerには、WindowInsetsが渡ってきます。この中にはSystem UIのサイズが入っています。また、WindowInsetsには消費したかどうかを表すフラグがあります。
 
-例えば、status barの2倍のサイズのpaddingTopを設定したいときは次のようにします。
+例えば、status barの2倍のサイズのpaddingTopを設定して、これ以降のViewにSystem WindowInsetsを渡したくないときは次のようにします。
 
 ```kotlin
 binding.appbar.setOnApplyWindowInsetsListener { v, insets ->
   binding.appbar.updatePadding(top = insets.systemWindowInsetTop * 2)
-  insets
+  insets.consumeSystemWindowInsets()
 }
 ```
+
+このAPIを使うことで、fitsSystemWindowsよりもはるかに細かく制御することが出来ます。
+
+CoordinatorLayoutなどのViewもこのAPIを使って細かくWindowInsetsを制御をしています。
+
+## 個人的なハマりどころ
+
+### fitsSystemWindowsは複数つけても意味がない
+
+これはデフォルトの場合の挙動なのですが、fitsSystemWindowsはWindowInsetsを消費するので、一度でも使ってしまうとそれ以降のViewに対して影響を与えません。
+
+```xml
+<LinearLayou android:fitsSystemWindows="true">
+  <ImageView android:fitsSystemWindows="true" />
+  ...
+</LinearLayout>
+```
+
+なので、この場合ImageViewにつけたfitsSystemWindowsは意味がないです。親のLinearLayoutで既に消費されているためです。
+
+しかし、AppbarLayoutなどの特殊な振る舞いをするViewの場合は、子供のfitsSystemWindowsに意味があったりするので注意が必要です。
+
+また、ViewによってSystem WindowInsetsを消費したり、しなかったりするのでそこも注意が必要です。DrawerLayoutは消費し、AppbarLayoutは消費します。
+
+
+## まとめ
+
+- fitsSystemWindowsはデフォルトでpaddingTop、paddingBottomをセットする
+- 動作をカスタムしている場合は注意が必要
+  - しかし、大抵はいい感じにやってくれるので特に意識しなくて良いと思う
+- 自分でカスタムしたい場合は、setOnApplyWindowInsetsListenerを使って頑張る
