@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 02 Jun 2019 09:08:57 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Feb 2020 04:51:36 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger2: 2.26時点でのKotlinサポート状況</title>
+      <link>https://satoshun.github.io/2020/02/dagger-kotlin-support-2.26/</link>
+      <pubDate>Sun, 02 Feb 2020 04:51:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/02/dagger-kotlin-support-2.26/</guid>
+      <description>Daggerの2.25から少しずつKotlin向けの対応が入っています。
+この記事ではそれらについて紹介していきます。
+objectクラスにJvmStaticが必須ではなくなった 2.25から入った変更です。
+前 @Module object AppModule { @JvmStatic // JvmStaticの指定が必須だった  @Provides fun provideFuga(): Fuga = Fuga() } 今 @Module object AppModule { @Provides fun provideFuga(): Fuga = Fuga() } Qualifierを使うときに、fieldの指定がいらなくなった これも2.25から入った変更です。
+前 @Inject @field:HogeQualifier // @field:の指定が必須だった lateinit var namedObject: NamedObject 今 @Inject @HogeQualifier lateinit var namedObject: NamedObject companion objectにModuleをつけなくて良くなった これは2.26から入った変更です。
+前 @Module interface MainActivityModule { @Module // 必須だった  companion object { @JvmStatic // 必須だった  @Provides fun provideTestHoge(): TestHoge = TestHoge() } } 今 @Module interface MainActivityModule { companion object { @Provides fun provideTestHoge(): TestHoge = TestHoge() } } まとめ ハマりがちだった部分が少しずつ解消されていく😊</description>
+    </item>
     
     <item>
       <title>Dagger2: 2.23に入ったHasAndroidInjectorについて</title>
