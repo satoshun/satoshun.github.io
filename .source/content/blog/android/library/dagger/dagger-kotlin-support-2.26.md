@@ -1,15 +1,15 @@
 +++
-date = "Sun Feb  2 04:42:12 UTC 2020"
+date = "Sun Feb  2 04:51:36 UTC 2020"
 title = "Dagger2: 2.26時点でのKotlinサポート状況"
 tags = ["dagger", "android", "di"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-Daggerでは、2.25から少しずつKotlinから使いやすくするための変更が入っています。
+Daggerの2.25から少しずつKotlin向けの対応が入っています。
 
-この記事ではそれらの変更について紹介していきます。
+この記事ではそれらについて紹介していきます。
 
 
 ## objectクラスにJvmStaticが必須ではなくなった
@@ -21,7 +21,7 @@ Daggerでは、2.25から少しずつKotlinから使いやすくするための�
 ```kotlin
 @Module
 object AppModule {
-  @JvmStatic // <-- JvmStaticの指定が必須だった
+  @JvmStatic // JvmStaticの指定が必須だった
   @Provides
   fun provideFuga(): Fuga = Fuga()
 }
@@ -44,14 +44,17 @@ object AppModule {
 ### 前
 
 ```kotlin
-// @field:の指定が必須だった
-@Inject @field:BaseQualifier lateinit var namedObject: NamedObject
+@Inject
+@field:HogeQualifier // @field:の指定が必須だった
+lateinit var namedObject: NamedObject
 ```
 
 ### 今
 
 ```kotlin
-@Inject @BaseQualifier lateinit var namedObject: NamedObject
+@Inject
+@HogeQualifier
+lateinit var namedObject: NamedObject
 ```
 
 
