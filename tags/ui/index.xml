@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Feb 2020 14:02:02 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/ui/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>doOnNextLayout、doOnLayout、doOnPreDrawの違いと、Coroutineでこれらを動かしてみる</title>
+      <link>https://satoshun.github.io/2020/02/android-doonxxx/</link>
+      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/02/android-doonxxx/</guid>
+      <description>タイトルにあるメソッドはJetpack core-ktxに定義されています。
+ doOnNextLayout doOnLayout doOnPreDraw  これらを雰囲気で使っていたので、軽く調べてみました。
+doOnNextLayout これは、指定したViewがレイアウトされたときに実行されます。 なので、measure、layoutの後にコールバックされます。
+注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。
+doOnLayout doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。
+inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) { if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) { action(this) } else { doOnNextLayout { action(it) } } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
+doOnNextLayoutと違うところは、goneでもコールされる点なのかなと思います。 Viewがgoneの場合、doOnNextLayoutはコールされないですが、doOnPreDrawではコールされます。
+コルーチンと一緒に使う chrisbanes/tiviが凄く参考になります。
+PreDrawをCoroutineと協調して動くようにしたいなら、次のようになります。
+/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License.</description>
+    </item>
     
     <item>
       <title>fitsSystemWindowsの話をつらつらと</title>
