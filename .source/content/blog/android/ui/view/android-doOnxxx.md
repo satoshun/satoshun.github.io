@@ -1,5 +1,5 @@
 +++
-date = "Tue Feb 11 13:39:06 UTC 2020"
+date = "Tue Feb 11 14:02:02 UTC 2020"
 title = "doOnNextLayout、doOnLayout、doOnPreDrawの違いと、Coroutineでこれらを動かしてみる"
 tags = ["android", "ui", "view"]
 blogimport = true
@@ -7,7 +7,7 @@ type = "post"
 draft = false
 +++
 
-タイトルのメソッドはJetpack core-ktxに定義されているメソッドです。
+タイトルにあるメソッドはJetpack core-ktxに定義されています。
 
 - [doOnNextLayout](https://developer.android.com/reference/kotlin/androidx/core/view/package-summary#doonnextlayout)
 - [doOnLayout](https://developer.android.com/reference/kotlin/androidx/core/view/package-summary#doonlayout)
@@ -18,15 +18,15 @@ draft = false
 ## doOnNextLayout
 
 これは、指定したViewがレイアウトされたときに実行されます。
-なので、onMeasure、onLayout済みの値を取得することが出来ます。
+なので、measure、layoutの後にコールバックされます。
 
-注意としては、既にレイアウト済みで、再レイアウトが行われない時はコールされません。
+注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。
 
 ## doOnLayout
 
 doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。
 
-```koltin
+```kotlin
 inline fun View.doOnLayout(crossinline action: (view: View) -> Unit) {
     if (ViewCompat.isLaidOut(this) && !isLayoutRequested) {
         action(this)
@@ -40,7 +40,7 @@ inline fun View.doOnLayout(crossinline action: (view: View) -> Unit) {
 
 ## doOnPreDraw
 
-描画される前に実行されます。よって、このタイミングではonMeasure、onLayoutは完了していて、画面に描画するぞっていうタイミングでコールバックされます。
+描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
 
 `doOnNextLayout`と違うところは、goneでもコールされる点なのかなと思います。
 Viewがgoneの場合、`doOnNextLayout`はコールされないですが、`doOnPreDraw`ではコールされます。
