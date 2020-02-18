@@ -4,26 +4,41 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2020-02-11T14:02:02+00:00</lastmod>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-02-11T14:02:02+00:00</lastmod>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/2020/02/android-doonxxx/</loc>
-    <lastmod>2020-02-11T14:02:02+00:00</lastmod>
+    <loc>https://satoshun.github.io/tags/bom/</loc>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/gradle/</loc>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/02/gradle-bom-android/</loc>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-02-11T14:02:02+00:00</lastmod>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-02-18T13:08:10+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/02/android-doonxxx/</loc>
     <lastmod>2020-02-11T14:02:02+00:00</lastmod>
   </url>
   
@@ -194,11 +209,6 @@
   
   <url>
     <loc>https://satoshun.github.io/2019/11/multi-module-gradle-properties/</loc>
-    <lastmod>2019-11-11T00:50:18+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/gradle/</loc>
     <lastmod>2019-11-11T00:50:18+00:00</lastmod>
   </url>
   

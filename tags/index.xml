@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 11 Feb 2020 14:02:02 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Feb 2020 13:08:10 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,27 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
+      <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bom</title>
+      <link>https://satoshun.github.io/tags/bom/</link>
+      <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/bom/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
@@ -207,15 +225,6 @@
       <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/recyclerview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Mon, 11 Nov 2019 00:50:18 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
