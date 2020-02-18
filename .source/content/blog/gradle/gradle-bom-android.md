@@ -7,7 +7,7 @@ type = "post"
 draft = false
 +++
 
-Gradleの5から、Bill Of Materials(BOM)が使えるようになりました。これが、結構便利だなとなったので紹介します。
+Gradleの5から、Bill Of Materials(BOM)が使えるようになりました。これが、結構いいものだと思ったので紹介します。
 
 ついでに[dependabot](https://dependabot.com/)の話もちょっとします。
 
@@ -36,6 +36,16 @@ Androidでよく使うライブラリでBOMに対応しているライブラリ�
 - [Kotlin Coroutine](https://github.com/Kotlin/kotlinx.coroutines)
 - [Firebase](https://firebase.google.com/docs/android/setup#firebase-bom)
 
+例えば、OkHttpならこんな感じで書けます。
+
+```groovy
+dependencies {
+   implementation platform("com.squareup.okhttp3:okhttp-bom:4.4.0")
+   implementation "com.squareup.okhttp3:okhttp"
+   implementation "com.squareup.okhttp3:logging-interceptor"
+}
+```
+
 BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
 
 ## dependabot?
@@ -52,7 +62,7 @@ BOMを使うことで、関連ライブラリをまとめてアップデート�
 
 ---
 
-dependabotって、`versions.retrofit = '2.7.1'`って変数で定義すると検知できないって思っていたんですけど、
+それでdependabotって、`versions.retrofit = '2.7.1'`って感じで、変数で定義すると検知できないって思っていたんですけど、
 いろいろ試してみたら、普通に出来ました:D
 
 BOMとdependabotは相性いいぞ！！って書こうと思ったんですけど、変数の場合でもアップデートを検知してくれたので、特に関係なかったです😅
