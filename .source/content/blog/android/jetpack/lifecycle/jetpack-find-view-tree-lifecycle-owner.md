@@ -7,12 +7,12 @@ type = "post"
 draft = false
 +++
 
-lifecycle 2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。
+lifecycle-2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。
 
 まだ2.3.0-alphaはリリースされていないので、androidxのSNAPSHOTで試します。
-SNAPSHOTの使い方は、ここが参考になります。
+SNAPSHOTの使い方は、[Using AndroidX Snapshot Builds](http://rahulrav.com/blog/using_snapshot_builds.html)を参考にしました。
 
-[Using AndroidX Snapshot Builds](http://rahulrav.com/blog/using_snapshot_builds.html)
+
 
 ## 使い方
 
@@ -22,9 +22,9 @@ SNAPSHOTの使い方は、ここが参考になります。
 // 関数の定義
 fun View.findViewTreeLifecycleOwner(): LifecycleOwner?
 
+
 // 使い方
 val owner = view.findViewTreeLifecycleOwner()
-
 // 使い方 + Coroutine
 view.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
   ...
@@ -32,6 +32,9 @@ view.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
 ```
 
 Viewに拡張関数が定義されており、そこから使うことが出来ます。
+
+Fragmentで生成したViewから`findViewTreeLifecycleOwner`をした場合には、
+Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。
 
 ## 内部実装
 
@@ -51,14 +54,11 @@ public class ViewTreeLifecycleOwner {
 }
 ```
 
-じゃあsetはどこで行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。
-具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、勝手にセットしてくれます。
-
-Fragmentで生成したViewから`findViewTreeLifecycleOwner`をした場合には、
-Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを取得することが可能です。
+じゃあsetはどこから行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。
+具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。
 
 ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。
-なので、現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。
+現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
