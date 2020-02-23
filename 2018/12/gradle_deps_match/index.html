@@ -101,7 +101,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// topのbuild.gradle
 </span><span style="color:#75715e"></span>allprojects <span style="color:#f92672">{</span>
     repositories <span style="color:#f92672">{</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#f92672">...</span>
 
         maven <span style="color:#f92672">{</span>
             url <span style="color:#e6db74">&#34;https://storage.googleapis.com/cloudflare-maven/public/&#34;</span>
@@ -109,11 +109,11 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
-<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
+<span style="color:#f92672">---</span>
 
 <span style="color:#75715e">// projectのbuild.gradle
 </span><span style="color:#75715e"></span>dependencies <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
     implementation <span style="color:#e6db74">&#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&#34;</span>
 <span style="color:#f92672">}</span>
@@ -122,7 +122,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// topのbuild.gradle
 </span><span style="color:#75715e"></span>allprojects <span style="color:#f92672">{</span>
     repositories <span style="color:#f92672">{</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#f92672">...</span>
 
         maven <span style="color:#f92672">{</span>
             url <span style="color:#e6db74">&#34;https://storage.googleapis.com/cloudflare-maven/public/&#34;</span>
@@ -134,25 +134,25 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
-<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
+<span style="color:#f92672">---</span>
 
 <span style="color:#75715e">// projectのbuild.gradleは一緒
 </span><span style="color:#75715e"></span>dependencies <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
     implementation <span style="color:#e6db74">&#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&#34;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>新しくcontentブロックが追加されました。ここで、このURLがどのライブラリで有効になって欲しいかを記述することが出来ます。今回のURLは<code>com.cloudflare:cloudflare-mobile-sdk</code>でのみ有効になって欲しいので、<code>includeGroup &quot;com.cloudflare&quot;</code>とgroup id指定することで達成できます。これでcloudflareのライブラリに対してダウンロード制限をかけられます!!</p>
 <p>また今回の事件の場合、JCenterに悪意のあるライブラリがアップロードされたのが問題なので、JCenterからダウンロードしたいライブラリのgroup idを<code>includeGroup</code>で指定してあげれば良いです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">repositories <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-    jcenter<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mavenContent</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
+    jcenter<span style="color:#f92672">().</span><span style="color:#a6e22e">mavenContent</span> <span style="color:#f92672">{</span>
         includeGroup <span style="color:#e6db74">&#34;org.jetbrains.kotlin&#34;</span>
         includeGroup <span style="color:#e6db74">&#34;org.jetbrains.kotlinx&#34;</span>
         includeGroup <span style="color:#e6db74">&#34;com.google.dagger&#34;</span>
         includeGroup <span style="color:#e6db74">&#34;org.jetbrains&#34;</span>
         includeGroup <span style="color:#e6db74">&#34;javax.inject&#34;</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#f92672">...</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これで、JCenterからダウンロードするライブラリに制限をかけられます😃</p>

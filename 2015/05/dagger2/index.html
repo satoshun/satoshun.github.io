@@ -100,7 +100,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 クラス同士の依存関係は, 委譲パターンの時に現れます.</p>
 <p>例えば, 以下のコードがあったとします.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Blogger</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Blogger</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Blogger</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">post</span><span style="color:#f92672">(</span>String title<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -108,22 +108,22 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// ...
 </span><span style="color:#75715e"></span>
         <span style="color:#75715e">// fileにlogを取る
-</span><span style="color:#75715e"></span>        FileLogger logger <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileLogger<span style="color:#f92672">(</span>title<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        FileLogger logger <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileLogger<span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">logging</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileLogger</span> <span style="color:#66d9ef">implements</span> Logger <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> messages<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> messages<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#75715e">// fileにmessagesを書き出す
-</span><span style="color:#75715e"></span>        File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hoge.txt&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</span><span style="color:#75715e"></span>        File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hoge.txt&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">...</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Logger</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span>String messgae<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span>String messgae<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>クラスBloggerはクラスFileLoggerに依存している</code>. ことが分かります. なぜなら, 関数post内でFileLoggerクラスを利用しているためです.
 この書き方だと, BloggerクラスはFileLoggerに依存しているため, Loggerインターフェースを実装した旨味がありません.</p>
@@ -140,7 +140,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// ...
 </span><span style="color:#75715e"></span>
         <span style="color:#75715e">// logを取る
-</span><span style="color:#75715e"></span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">logging</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">logging</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>こうすることで外部から引数で, Loggerインターフェースを実装した, FileLoggerクラス等を注入できるようになります. これがDI(依存性の注入)パターンです.</p>
@@ -165,7 +165,7 @@ Dagger2はDI(Dependency Injection)をするライブラリです.</p>
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Blogger</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Inject</span> Logger logger<span style="color:#f92672">;</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Blogger</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Blogger</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
@@ -198,13 +198,13 @@ class DebugModule {
 <p>Componentは複数Moduleをまとめたものです.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span><span style="color:#f92672">(</span>modules <span style="color:#f92672">=</span> DebugModule<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ApplicationComponent</span> <span style="color:#f92672">{</span>
-    Blogger <span style="color:#a6e22e">make</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Blogger <span style="color:#a6e22e">make</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これで, 依存関係を解決してBloggerを生成することが出来ます.</p>
 <p>アプリ側では以下のように記述します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ApplicationComponent component <span style="color:#f92672">=</span> DaggerApplicationComponent<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-Blogger blogger <span style="color:#f92672">=</span> component<span style="color:#f92672">.</span><span style="color:#a6e22e">make</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-blogger<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ApplicationComponent component <span style="color:#f92672">=</span> DaggerApplicationComponent<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">();</span>
+Blogger blogger <span style="color:#f92672">=</span> component<span style="color:#f92672">.</span><span style="color:#a6e22e">make</span><span style="color:#f92672">();</span>
+blogger<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">();</span>
 </code></pre></div><p>これが基本的なDagger2の使い方です. まとめると</p>
 <ul>
 <li>@Injectで, 依存関係を定義する</li>

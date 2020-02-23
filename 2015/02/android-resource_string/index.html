@@ -94,37 +94,37 @@
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app_name&#34;</span><span style="color:#f92672">&gt;</span>Application<span style="color:#f92672">&lt;/string&gt;</span>
 </code></pre></div><p>のように記述して使います. アプリケーション側では, 下のように取得します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">);</span>
 
 or
 
-context<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+context<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">);</span>
 </code></pre></div><p>特に, 説明はいらないと思います.</p>
 <h2 id="arrayの定義">arrayの定義</h2>
 <p>strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.</p>
 <p>string-array要素で定義してあげます.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;string-array</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sports&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;item</span><span style="color:#f92672">&gt;</span>マラソン<span style="color:#f92672">&lt;/item&gt;</span>
-    <span style="color:#f92672">&lt;item</span><span style="color:#f92672">&gt;</span>野球<span style="color:#f92672">&lt;/item&gt;</span>
-    <span style="color:#f92672">&lt;item</span><span style="color:#f92672">&gt;</span>サッカー<span style="color:#f92672">&lt;/item&gt;</span>
-    <span style="color:#f92672">&lt;item</span><span style="color:#f92672">&gt;</span>卓球<span style="color:#f92672">&lt;/item&gt;</span>
+    <span style="color:#f92672">&lt;item&gt;</span>マラソン<span style="color:#f92672">&lt;/item&gt;</span>
+    <span style="color:#f92672">&lt;item&gt;</span>野球<span style="color:#f92672">&lt;/item&gt;</span>
+    <span style="color:#f92672">&lt;item&gt;</span>サッカー<span style="color:#f92672">&lt;/item&gt;</span>
+    <span style="color:#f92672">&lt;item&gt;</span>卓球<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/string-array&gt;</span>
 </code></pre></div><p>アプリケーション側では下のように取得します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getResources<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getResources<span style="color:#f92672">().</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
 
 or
 
-context<span style="color:#f92672">.</span><span style="color:#a6e22e">getResources</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
+context<span style="color:#f92672">.</span><span style="color:#a6e22e">getResources</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
 </code></pre></div><p>Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.</p>
 <h2 id="値展開">値展開</h2>
 <p>strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> %1: 引数1, $d: 数字 </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- %1: 引数1, $d: 数字 --&gt;</span>
 <span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;hoge&#34;</span><span style="color:#f92672">&gt;</span>Hello %1$d<span style="color:#f92672">&lt;/string&gt;</span>
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> %1: 引数1, %2: 引数2, $s: 文字列 </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#75715e">&lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&gt;</span>
 <span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;hogestr&#34;</span><span style="color:#f92672">&gt;</span>%1$s %2$d %1$s<span style="color:#f92672">&lt;/string&gt;</span>
 </code></pre></div><p>アプリケーション側では, 下のように指定します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hoge</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// Hello 100
-</span><span style="color:#75715e"></span>getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hogestr</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// value 100 value
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hoge</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span> <span style="color:#75715e">// Hello 100
+</span><span style="color:#75715e"></span>getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hogestr</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span> <span style="color:#75715e">// value 100 value
 </span></code></pre></div><p><code>%1$s</code> は「第1引数の文字列」をここに展開しろ. <code>%2$d</code>は「第2引数の数字」をここに展開しろ. という意味になります</p>
 <h2 id="plurals">plurals</h2>
 <p>あまり使ったことはないですが, pluralsという要素があります.</p>

@@ -158,13 +158,13 @@
     <span style="color:#a6e22e">@NotNull</span>
     <span style="color:#66d9ef">public</span> AppService2 appService2<span style="color:#f92672">;</span>
 
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
     <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        setContentView<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        DaggerAppComponent<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inject</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+        setContentView<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">);</span>
+        DaggerAppComponent<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">().</span><span style="color:#a6e22e">inject</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">...</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>普通のコードです。KotlinをJava変換しただけなので、特におかしな部分もありません。</p>
@@ -172,16 +172,16 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#66d9ef">extends</span> m <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> AppService o<span style="color:#f92672">;</span>
     <span style="color:#66d9ef">public</span> AppService2 p<span style="color:#f92672">;</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle bundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>bundle<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        setContentView<span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Object a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppModule1<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        a<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Cannot return null from a non-@Nullable @Provides method&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>bundle<span style="color:#f92672">);</span>
+        setContentView<span style="color:#f92672">((</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">);</span>
+        Object a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AppModule1<span style="color:#f92672">().</span><span style="color:#a6e22e">a</span><span style="color:#f92672">();</span>
+        a<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span>a<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Cannot return null from a non-@Nullable @Provides method&#34;</span><span style="color:#f92672">);</span>
         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">o</span> <span style="color:#f92672">=</span> a<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">p</span> <span style="color:#f92672">=</span> AppModule2_ProvideService2Factory<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">p</span> <span style="color:#f92672">=</span> AppModule2_ProvideService2Factory<span style="color:#f92672">.</span><span style="color:#a6e22e">a</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">...</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>何ということでしょう。<code>DaggerAppComponent</code>が消えました！</p>

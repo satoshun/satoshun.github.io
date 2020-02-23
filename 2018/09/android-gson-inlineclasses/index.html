@@ -104,19 +104,19 @@ println(userId.url)
 </code></pre></div><p>このコードは一見、UserIdインスタンスが生成されそうです。
 しかし、コンパイルされたコードではUserIdインスタンスは生成されません。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserId$Erased</span> <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
     <span style="color:#a6e22e">@NotNull</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String <span style="color:#a6e22e">getUrl</span><span style="color:#f92672">(</span>String $this<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;http://&#34;</span> <span style="color:#f92672">+</span> $this<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 
 String userId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user-dayo&#34;</span><span style="color:#f92672">;</span>
-String var1 <span style="color:#f92672">=</span> UserId$Erased<span style="color:#f92672">.</span><span style="color:#a6e22e">getUrl</span><span style="color:#f92672">(</span>userId<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+String var1 <span style="color:#f92672">=</span> UserId$Erased<span style="color:#f92672">.</span><span style="color:#a6e22e">getUrl</span><span style="color:#f92672">(</span>userId<span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
 </code></pre></div><p>UserIdのインスタンスを作らずに、Stringをそのまま使っていることが分かります。そして自動生成された<code>UserId$Erased</code>クラスにあるstaticメソッドを実行しています。Inline classesでは、インスタンスを生成せずにstaticメソッドをコールすることで、インスタンス生成のコストを抑えています。</p>
 <p>ここからが本題です。
 Inline classesがAndroid開発のどこで役立つのかを考えたときに、 Gsonなどのライブラリによってdeserialize/serializeされるクラスで有効使えると思いました。</p>

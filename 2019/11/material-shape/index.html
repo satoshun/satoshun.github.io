@@ -141,14 +141,14 @@ Shapeとは、こんなやつです。
 なので、これを変えればBottomSheetDialogのShapeを変える事ができます。</p>
 <p>たとえば、次のように設定してみます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> ?attr/shapeAppearanceLargeComponentの設定 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#75715e">&lt;!-- ?attr/shapeAppearanceLargeComponentの設定 --&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceLargeComponent&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearance.Sample.LargeComponent<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.LargeComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
 
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 各corner(top right, top left, bottom left, bottom right)のサイズを指定 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#75715e">&lt;!-- 各corner(top right, top left, bottom left, bottom right)のサイズを指定 --&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>36dp<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 </code></pre></div><p>こんな感じになります。</p>
@@ -179,12 +179,12 @@ Shapeとは、こんなやつです。
 <span style="color:#f92672">&lt;/style&gt;</span>
 
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.Sample.BottomSheetDialog&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#75715e">&lt;!-- コンポーネントごとの個別の変更の場合、shapeAppearanceOverlayを使う --&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearanceOverlay.Sample.Basic<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearanceOverlay.Sample.Basic&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> cornerは、個別に指定することも可能 </span><span style="color:#75715e">--&gt;</span>
+  <span style="color:#75715e">&lt;!-- cornerは、個別に指定することも可能 --&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopRight&#34;</span><span style="color:#f92672">&gt;</span>12dp<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopLeft&#34;</span><span style="color:#f92672">&gt;</span>12dp<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>

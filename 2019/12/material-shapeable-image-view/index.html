@@ -100,13 +100,13 @@
 <p>さっそくいじっていきたいと思います。</p>
 <h2 id="丸を設定してみる">丸を設定してみる</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> スタイル定義 </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.PILL&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> レイアウト </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
 <span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/circle&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
@@ -127,13 +127,13 @@
 imageView.shapeAppearanceModel = model
 </code></pre></div><h2 id="ひし形を設定してみる--strokeをつける">ひし形を設定してみる &amp; strokeをつける</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> スタイル定義 </span><span style="color:#75715e">--&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.Diamond&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 
-<span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> レイアウト </span><span style="color:#75715e">--&gt;</span>
+<span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
 <span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/diamond&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>

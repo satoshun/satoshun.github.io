@@ -192,7 +192,7 @@
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : ModuleRootActivity() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span>
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
@@ -208,7 +208,7 @@
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubFragment</span> : ModuleChildFragment() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#960050;background-color:#1e0010">.</span>
+  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
 }
 </code></pre></div><p><code>ModuleRootActivity</code>で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。</p>
 <p>これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃</p>

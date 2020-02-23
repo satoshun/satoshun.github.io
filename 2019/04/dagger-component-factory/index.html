@@ -141,9 +141,9 @@ Builderはセッターメソッドを使ってフィールドの状態を変え�
 <p>次に、Factoryのユースケースを考えます。そもそもこの機能は <a href="https://github.com/google/dagger/issues/935">Feature request: factory method in components for assisted injection</a> を解決したいモチベーションがあります。</p>
 <p>例えば、次のコードをDaggerで解決したい。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticlePresenter</span> <span style="color:#f92672">{</span>
-	<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+	<span style="color:#f92672">...</span>
 	ArticlePresenter<span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> articleId<span style="color:#f92672">,</span> ArticleService articleService<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-		<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+		<span style="color:#f92672">...</span>
 	<span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>longの値を後から決めたいときには、今までだと</p>

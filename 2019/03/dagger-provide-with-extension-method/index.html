@@ -107,14 +107,14 @@ class MainActivityModule { …">
   }
 }
 </code></pre></div><p>なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">...</span>
    <span style="color:#a6e22e">@Provides</span>
    <span style="color:#a6e22e">@NotNull</span>
    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> MainContract<span style="color:#f92672">.</span><span style="color:#a6e22e">View</span> <span style="color:#a6e22e">provideMainContractView</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NotNull</span> MainActivity $receiver<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkParameterIsNotNull</span><span style="color:#f92672">(</span>$receiver<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;receiver$0&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkParameterIsNotNull</span><span style="color:#f92672">(</span>$receiver<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;receiver$0&#34;</span><span style="color:#f92672">);</span>
       <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>MainContract<span style="color:#f92672">.</span><span style="color:#a6e22e">View</span><span style="color:#f92672">)</span>$receiver<span style="color:#f92672">;</span>
    <span style="color:#f92672">}</span>
-<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">...</span>
 </code></pre></div><p>拡張関数として定義したMainActivityは<code>$receiver</code>となり、引数に入っていることが分かります。拡張関数は上記のように解釈されるため、<code>@Provides</code>と組み合わせて使うことが出来ます。</p>
 <h2 id="まとめ">まとめ</h2>
 <p>多分、使い所ないと思います😃😃😃</p>

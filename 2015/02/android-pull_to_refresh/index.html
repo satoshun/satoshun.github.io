@@ -113,16 +113,16 @@
 
 <span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-  mSwipe <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SwipeRefreshLayout<span style="color:#f92672">)</span> findViewById<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">refresh</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">...</span>
+  mSwipe <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SwipeRefreshLayout<span style="color:#f92672">)</span> findViewById<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">refresh</span><span style="color:#f92672">);</span>
   <span style="color:#75715e">// Callback登録
-</span><span style="color:#75715e"></span>  mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnRefreshListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SwipeRefreshLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">OnRefreshListener</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span><span style="color:#75715e"></span>  mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnRefreshListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SwipeRefreshLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">OnRefreshListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
       <span style="color:#a6e22e">@Override</span>
-      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onRefresh</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onRefresh</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
           <span style="color:#75715e">/* ここに適当な処理を書く */</span>
-          mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshing</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshing</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
       <span style="color:#f92672">}</span>
-  <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">});</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>ListViewを引っ張ると, <code>setOnRefreshListener</code>メソッドがコールされます.
 <code>setOnRefreshListener</code>の最後に, <code>setRefreshing(false)</code>をコールします. これは, 更新アニメーションをOffにするものです.</p>
@@ -132,7 +132,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setColorScheme</span><span style="color:#f92672">(</span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_blue_bright</span><span style="color:#f92672">,</span>
     android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_green_light</span><span style="color:#f92672">,</span>
     android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_orange_light</span><span style="color:#f92672">,</span>
-    android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_red_light</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_red_light</span><span style="color:#f92672">);</span>
 </code></pre></div><p>これで, 4色でアニメーションが行われます.</p>
 <h2 id="まとめ">まとめ</h2>
 <p>簡単にGmailライクなリフレッシュアニメーションが作れました.</p>

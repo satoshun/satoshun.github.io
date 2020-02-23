@@ -28,7 +28,7 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
 // build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
 例えば、次のように使います。
-// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class *implements com.</description>
+// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class * implements com.</description>
     </item>
     
     <item>

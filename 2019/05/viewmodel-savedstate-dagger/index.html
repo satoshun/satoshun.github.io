@@ -143,7 +143,7 @@ SavedStateを使う場合、ViewModel …">
 ) : ViewModel() {
   <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Factory</span> @Inject <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> dummy: Dummy) {
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">create</span>(owner: FragmentActivity): AbstractSavedStateVMFactory {
-      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010"> </span><span style="color:#a6e22e">AbstractSavedStateVMFactory</span>(owner, owner.intent.extras) {
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">AbstractSavedStateVMFactory</span>(owner, owner.intent.extras) {
         <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;T : ViewModel&gt; <span style="color:#a6e22e">create</span>(
           key: String,
           modelClass: Class&lt;T&gt;,
@@ -237,7 +237,7 @@ or
   owner: FragmentActivity,
   body: (state: SavedStateHandle) -&gt; T
 ): AbstractSavedStateVMFactory {
-  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">:</span><span style="color:#960050;background-color:#1e0010"> </span><span style="color:#a6e22e">AbstractSavedStateVMFactory</span>(owner, owner.intent.extras) {
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">AbstractSavedStateVMFactory</span>(owner, owner.intent.extras) {
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;T : ViewModel&gt; <span style="color:#a6e22e">create</span>(
       key: String,
       modelClass: Class&lt;T&gt;,

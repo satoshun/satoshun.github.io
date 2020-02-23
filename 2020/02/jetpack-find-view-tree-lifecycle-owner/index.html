@@ -4,30 +4,28 @@
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-  <meta property="og:title" content="R8/Proguard: KotlinのCompanion objectとobjectについて">
+  <meta property="og:title" content="Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する">
   
     <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2019-01-20">
+    <meta property="article:published_time" content="2020-02-23">
   
   <meta property="og:description" content="">
-  <meta property="og:url" content="https://satoshun.github.io/2019/01/r8-companion-object/">
+  <meta property="og:url" content="https://satoshun.github.io/2020/02/jetpack-find-view-tree-lifecycle-owner/">
   <meta property="og:site_name" content="stsnブログ">
   
   
     <meta property="og:tags" content="android">
   
-    <meta property="og:tags" content="r8">
+    <meta property="og:tags" content="jetpack">
   
-    <meta property="og:tags" content="proguard">
-  
-    <meta property="og:tags" content="kotlin">
+    <meta property="og:tags" content="lifecycle">
   
 
-  <meta property="twitter:title" content="R8/Proguard: KotlinのCompanion objectとobjectについて">
+  <meta property="twitter:title" content="Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する">
 
   
-  <meta property="twitter:description" content="コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。
-この記事は、R8 …">
+  <meta property="twitter:description" content="lifecycle-2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。
+まだ2.3.0-alphaはリ …">
   
 
   
@@ -37,7 +35,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title> R8/Proguard: KotlinのCompanion objectとobjectについて  - stsnブログ </title>
+  <title> Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する  - stsnブログ </title>
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -90,78 +88,61 @@
 
 <div class="content container">
   <div class="post">
-    <h1 class="post-title">R8/Proguard: KotlinのCompanion objectとobjectについて</h1>
+    <h1 class="post-title">Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する</h1>
     
-    <span class="post-date">Created at Sun, Jan 20, 2019</span>
+    <span class="post-date">Created at Sun, Feb 23, 2020</span>
     
-    <p>コードの最適化の話です。この記事ではKotlinのCompanion objectとobjectについて紹介します。</p>
-<p>この記事は、<a href="https://jakewharton.com/r8-optimization-staticization/">R8 Optimization: Staticization</a>にとても影響を受けています。</p>
-<h2 id="companion-object">Companion object</h2>
-<p>例えば、次のコードがあるとします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> {
-    <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-        <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
-            ...
-        }
-    }
+    <p>lifecycle-2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。</p>
+<p>まだ2.3.0-alphaはリリースされていないので、androidxのSNAPSHOTで試します。
+SNAPSHOTの使い方は、<a href="http://rahulrav.com/blog/using_snapshot_builds.html">Using AndroidX Snapshot Builds</a>を参考にしました。</p>
+<h2 id="使い方">使い方</h2>
+<p>関数の定義と使い方になります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 関数の定義
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.findViewTreeLifecycleOwner(): LifecycleOwner?
+
+
+<span style="color:#75715e">// 使い方
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> owner = view.findViewTreeLifecycleOwner()
+<span style="color:#75715e">// 使い方 + Coroutine
+</span><span style="color:#75715e"></span>view.findViewTreeLifecycleOwner()<span style="color:#f92672">?.</span>lifecycleScope<span style="color:#f92672">?.</span>launch {
+  ...
 }
-</code></pre></div><p>これを最適化なしで変換すると次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Companion Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Companion<span style="color:#f92672">();</span>
+</code></pre></div><p>Viewに拡張関数が定義されており、そこから使うことが出来ます。</p>
+<p>Fragmentで生成したViewから<code>findViewTreeLifecycleOwner</code>をした場合には、
+Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。</p>
+<h2 id="内部実装">内部実装</h2>
+<p>シンプルな作りになっており、ViewのタグにActivityやFragmentのLifecycleOwnerを登録しています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewTreeLifecycleOwner</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> LifecycleOwner lifecycleOwner<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    view<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">view_tree_lifecycle_owner</span><span style="color:#f92672">,</span> lifecycleOwner<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">}</span>
-
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#f92672">...</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
+  <span style="color:#a6e22e">@Nullable</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> LifecycleOwner <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    LifecycleOwner found <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>LifecycleOwner<span style="color:#f92672">)</span> view<span style="color:#f92672">.</span><span style="color:#a6e22e">getTag</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">view_tree_lifecycle_owner</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">...</span>
+  <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>Companionインスタンスが生成されているのが分かります。ただ、このCompanion objectはインスタンス生成する必要がありません。なぜなら、インターフェースの実装などをしていないからです。</p>
-<p>そこでR8による最適化を行うと次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CompanionTest</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">...</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>無駄な内部クラス（enclosing class）が消えて、staticメソッドに変換されているのが分かります。このshowメソッドはわざわざインスタンスメソッドにする必要がないため、このような最適化が行われます。</p>
-<h2 id="object">object</h2>
-<p>objectも同様です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ObjectTest</span> {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
-        ...
-    }
+</code></pre></div><p>じゃあsetはどこから行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。
+具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。</p>
+<p>ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。
+現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+  <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+  ...
+  ViewTreeLifecycleOwner.<span style="color:#66d9ef">set</span>(window.decorView, <span style="color:#66d9ef">this</span>)
+  ...
 }
-</code></pre></div><p>最適化なしだと次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObjectTest</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> ObjectTest INSTANCE <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectTest<span style="color:#f92672">();</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">...</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>INSTANCEフィールドが生成されていることが分かります。</p>
-<p>次にR8による最適化を行います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObjectTest</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">...</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Companion objectと同様に冗長なインスタンス生成が消えています。
-Proguardの場合、インスタンス生成は消えないので、R8の一歩進んだ最適化といえます。（もしかしたらProguardの設定次第でインスタンス生成をしないように出来るかもしれないです。）</p>
-
+</code></pre></div>
     <div class="mt30"></div>
     
       <ul class="article-post-tags">
         
           <li><a href="/tags/android">android</a></li>
         
-          <li><a href="/tags/r8">r8</a></li>
+          <li><a href="/tags/jetpack">jetpack</a></li>
         
-          <li><a href="/tags/proguard">proguard</a></li>
-        
-          <li><a href="/tags/kotlin">kotlin</a></li>
+          <li><a href="/tags/lifecycle">lifecycle</a></li>
         
       </ul>
     

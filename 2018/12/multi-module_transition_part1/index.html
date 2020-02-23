@@ -167,7 +167,7 @@
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
 }
 </code></pre></div><p>実装は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">---<span style="color:#960050;background-color:#1e0010">実</span><span style="color:#960050;background-color:#1e0010">装</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">---<span style="color:#960050;background-color:#1e0010">実装</span>
 
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouter2Impl</span> @Inject <span style="color:#66d9ef">constructor</span>() : Router&lt;Unit&gt; {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: Unit): Intent {
@@ -175,7 +175,7 @@
   }
 }
 
----Dagger<span style="color:#960050;background-color:#1e0010">の</span><span style="color:#960050;background-color:#1e0010">設</span><span style="color:#960050;background-color:#1e0010">定</span>
+---Dagger<span style="color:#960050;background-color:#1e0010">の設定</span>
 
 @Module
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
@@ -183,7 +183,7 @@
   @Binds <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMain2Router</span>(impl: MainRouter2Impl): Router&lt;Unit&gt;
 }
 
----<span style="color:#960050;background-color:#1e0010">使</span><span style="color:#960050;background-color:#1e0010">用</span><span style="color:#960050;background-color:#1e0010">側</span>
+---<span style="color:#960050;background-color:#1e0010">使用側</span>
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
   @field:[Inject Named(<span style="color:#e6db74">&#34;main&#34;</span>)] <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: Router&lt;Unit&gt;

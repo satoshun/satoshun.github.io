@@ -120,10 +120,10 @@ RxJava2 との差分は以下のようになっています。 …">
 <h4 id="asメソッドとtoメソッド">asメソッドとtoメソッド</h4>
 <p>toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Obsevable.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> Observable<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> converter<span style="color:#f92672">)</span>
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> Observable<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;,</span> R<span style="color:#f92672">&gt;</span> converter<span style="color:#f92672">)</span>
 
 <span style="color:#75715e">// Single.java
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;</span><span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> Single<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> convert
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">&lt;</span>R<span style="color:#f92672">&gt;</span> R <span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>Function<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> Single<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;,</span> R<span style="color:#f92672">&gt;</span> convert
 </code></pre></div><p>同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。</p>
 <p>→ そこで、asメソッドが誕生</p>
 <p>asメソッドでは、CompletableConverter、ObservableConverterなど、専用のインターフェース型が定義され、1つのクラスに実装できるようになりました。</p>
@@ -144,7 +144,7 @@ RxJava2 との差分は以下のようになっています。 …">
 </span><span style="color:#75715e">      * @return computed result
 </span><span style="color:#75715e">      * @throws Exception if unable to compute a result
 </span><span style="color:#75715e">      */</span>
-    V <span style="color:#a6e22e">call</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">;</span>
+    V <span style="color:#a6e22e">call</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception<span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これからは、Supplierインターフェースを使うようになります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
@@ -154,15 +154,15 @@ RxJava2 との差分は以下のようになっています。 …">
 </span><span style="color:#75715e">     * @return the value produced
 </span><span style="color:#75715e">     * @throws Throwable if the implementation wishes to throw any type of exception
 </span><span style="color:#75715e">     */</span>
-    T <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
+    T <span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>throwする例外がException -&gt; Throwableに広がりました。</p>
 <p>ちなみに、lambda式を使っている場合は変更するコードを必要がないかもしれません。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// before
-</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">());</span>
 
 <span style="color:#75715e">// after
-</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>source<span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>flowable <span style="color:#f92672">-&gt;</span> flowable<span style="color:#f92672">.</span><span style="color:#a6e22e">blockingFirst</span><span style="color:#f92672">());</span>
 </code></pre></div><h4 id="startwithメソッド">startWithメソッド</h4>
 <p>startWith(T)、startWith(Iterable)、 startWith(Publish)の同名で3つのメソッドがありましたが、
 startWithItem、startWithIterableにそれぞれリネームされました。</p>

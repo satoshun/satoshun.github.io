@@ -55,8 +55,8 @@ string-array要素で定義してあげます.
 &amp;lt;string-array name=&amp;#34;sports&amp;#34;&amp;gt; &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt; &amp;lt;/string-array&amp;gt; アプリケーション側では下のように取得します.
 getResources().getStringArray(R.array.sports) or context.getResources().getStringArray(R.array.sports) Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.
 値展開 strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.
-&amp;lt;!--%1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;#34;hoge&amp;#34;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!--%1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;#34;hogestr&amp;#34;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt; アプリケーション側では, 下のように指定します.
-getString(R.string.hoge, 100)); // Hello 100 getString(R.string.hogestr, &amp;#34;value&amp;#34;, 100)); // value 100 value %1$s は「第1引数の文字列」をここに展開しろ.</description>
+&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;#34;hoge&amp;#34;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;#34;hogestr&amp;#34;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt; アプリケーション側では, 下のように指定します.
+getString(R.string.hoge, 100)); // Hello 100 getString(R.</description>
     </item>
     
     <item>

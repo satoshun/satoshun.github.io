@@ -123,24 +123,24 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragmentArgs</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
 
-  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">HogeFragmentArgs</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">HogeFragmentArgs</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
   <span style="color:#f92672">}</span>
 
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> HogeFragmentArgs <span style="color:#a6e22e">fromBundle</span><span style="color:#f92672">(</span>Bundle bundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      result<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+      result<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
   <span style="color:#f92672">}</span>
 
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">return</span> step<span style="color:#f92672">;</span>
   <span style="color:#f92672">}</span>
 
-  <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">toBundle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Bundle __outBundle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    __outBundle<span style="color:#f92672">.</span><span style="color:#a6e22e">putInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">toBundle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Bundle __outBundle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle<span style="color:#f92672">();</span>
+    __outBundle<span style="color:#f92672">.</span><span style="color:#a6e22e">putInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">);</span>
     <span style="color:#66d9ef">return</span> __outBundle<span style="color:#f92672">;</span>
   <span style="color:#f92672">}</span>
 
@@ -151,11 +151,11 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
       <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> original<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> HogeFragmentArgs <span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> HogeFragmentArgs <span style="color:#a6e22e">build</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">();</span>
       result<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">;</span>
       <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -165,7 +165,7 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
       <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
       <span style="color:#66d9ef">return</span> step<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
   <span style="color:#f92672">}</span>

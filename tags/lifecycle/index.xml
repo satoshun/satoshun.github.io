@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 18 Jan 2020 13:09:08 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 01:50:36 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/lifecycle/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する</title>
+      <link>https://satoshun.github.io/2020/02/jetpack-find-view-tree-lifecycle-owner/</link>
+      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/02/jetpack-find-view-tree-lifecycle-owner/</guid>
+      <description>lifecycle-2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。
+まだ2.3.0-alphaはリリースされていないので、androidxのSNAPSHOTで試します。 SNAPSHOTの使い方は、Using AndroidX Snapshot Buildsを参考にしました。
+使い方 関数の定義と使い方になります。
+// 関数の定義 fun View.findViewTreeLifecycleOwner(): LifecycleOwner? // 使い方 val owner = view.findViewTreeLifecycleOwner() // 使い方 + Coroutine view.findViewTreeLifecycleOwner()?.lifecycleScope?.launch { ... } Viewに拡張関数が定義されており、そこから使うことが出来ます。
+Fragmentで生成したViewからfindViewTreeLifecycleOwnerをした場合には、 Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。
+内部実装 シンプルな作りになっており、ViewのタグにActivityやFragmentのLifecycleOwnerを登録しています。
+public class ViewTreeLifecycleOwner { public static void set(@NonNull View view, @Nullable LifecycleOwner lifecycleOwner) { view.setTag(R.id.view_tree_lifecycle_owner, lifecycleOwner); } @Nullable public static LifecycleOwner get(@NonNull View view) { LifecycleOwner found = (LifecycleOwner) view.getTag(R.id.view_tree_lifecycle_owner); ... } } じゃあsetはどこから行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。 具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。
+ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。 現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。
+override fun onCreate(savedInstanceState: Bundle?</description>
+    </item>
     
     <item>
       <title>FragmentでViewの参照を持つとメモリリークする話と実装</title>

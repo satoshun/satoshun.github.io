@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 18 Feb 2020 13:08:10 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 01:50:36 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: findViewTreeLifecycleOwnerでViewからLifecycleOwnerを取得する</title>
+      <link>https://satoshun.github.io/2020/02/jetpack-find-view-tree-lifecycle-owner/</link>
+      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/02/jetpack-find-view-tree-lifecycle-owner/</guid>
+      <description>lifecycle-2.3.0に、ViewからLifecycleOwnerを取得するメソッドが追加されそうなので、それのメモ。
+まだ2.3.0-alphaはリリースされていないので、androidxのSNAPSHOTで試します。 SNAPSHOTの使い方は、Using AndroidX Snapshot Buildsを参考にしました。
+使い方 関数の定義と使い方になります。
+// 関数の定義 fun View.findViewTreeLifecycleOwner(): LifecycleOwner? // 使い方 val owner = view.findViewTreeLifecycleOwner() // 使い方 + Coroutine view.findViewTreeLifecycleOwner()?.lifecycleScope?.launch { ... } Viewに拡張関数が定義されており、そこから使うことが出来ます。
+Fragmentで生成したViewからfindViewTreeLifecycleOwnerをした場合には、 Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。
+内部実装 シンプルな作りになっており、ViewのタグにActivityやFragmentのLifecycleOwnerを登録しています。
+public class ViewTreeLifecycleOwner { public static void set(@NonNull View view, @Nullable LifecycleOwner lifecycleOwner) { view.setTag(R.id.view_tree_lifecycle_owner, lifecycleOwner); } @Nullable public static LifecycleOwner get(@NonNull View view) { LifecycleOwner found = (LifecycleOwner) view.getTag(R.id.view_tree_lifecycle_owner); ... } } じゃあsetはどこから行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。 具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。
+ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。 現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。
+override fun onCreate(savedInstanceState: Bundle?</description>
+    </item>
     
     <item>
       <title>Gradle: BOMを使って依存を指定する</title>
@@ -147,10 +164,10 @@ material-components-android/1.2.0-alpha03
 ShapeableImageView? 名は体を表しており、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。
 さっそくいじっていきたいと思います。
 丸を設定してみる スタイルから定義する場合は、次のようにやります。
-&amp;lt;!--スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.PILL&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!--レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/circle&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.PILL&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; /&amp;gt;   画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
+&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.PILL&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/circle&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.PILL&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; /&amp;gt;   画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
 コードから設定する場合は、ShapeAppearanceModelを介して行います。
 val model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build() imageView.shapeAppearanceModel = model ひし形を設定してみる &amp;amp; strokeをつける スタイルから定義する場合は、次のようにやります。
-&amp;lt;!--スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.Diamond&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!--レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/diamond&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.Diamond&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; app:strokeColor=&amp;#34;?attr/colorSecondary&amp;#34; app:strokeWidth=&amp;#34;2dp&amp;#34; /&amp;gt;   先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、ひし形を作れます。</description>
+&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.Diamond&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/diamond&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.</description>
     </item>
     
     <item>
@@ -232,7 +249,7 @@ BottomSheetDialogにShapeを指定していく （多分）大きく3つの指�
 このスタイルの定義は、次のようになっています。
 &amp;lt;style name=&amp;#34;Widget.MaterialComponents.BottomSheet.Modal&amp;#34; parent=&amp;#34;Widget.MaterialComponents.BottomSheet&amp;#34;&amp;gt; ... &amp;lt;style name=&amp;#34;Widget.MaterialComponents.BottomSheet&amp;#34; parent=&amp;#34;Widget.Design.BottomSheet.Modal&amp;#34;&amp;gt; ... &amp;lt;item name=&amp;#34;shapeAppearance&amp;#34;&amp;gt;?attr/shapeAppearanceLargeComponent&amp;lt;/item&amp;gt; ... &amp;lt;/style&amp;gt; shapeAppearanceに、?attr/shapeAppearanceLargeComponentが使われています。shapeAppearanceは、Shapeの設定を流し込む部分です。 なので、これを変えればBottomSheetDialogのShapeを変える事ができます。
 たとえば、次のように設定してみます。
-&amp;lt;style name=&amp;#34;AppTheme&amp;#34; parent=&amp;#34;Theme.MaterialComponents.DayNight&amp;#34;&amp;gt; &amp;lt;!--?attr/shapeAppearanceLargeComponentの設定 --&amp;gt; &amp;lt;item name=&amp;#34;shapeAppearanceLargeComponent&amp;#34;&amp;gt;@style/ShapeAppearance.Sample.LargeComponent&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Sample.LargeComponent&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;!--各corner(top right, top left, bottom left, bottom right)のサイズを指定 --&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;36dp&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; こんな感じになります。</description>
+&amp;lt;style name=&amp;#34;AppTheme&amp;#34; parent=&amp;#34;Theme.MaterialComponents.DayNight&amp;#34;&amp;gt; &amp;lt;!-- ?attr/shapeAppearanceLargeComponentの設定 --&amp;gt; &amp;lt;item name=&amp;#34;shapeAppearanceLargeComponent&amp;#34;&amp;gt;@style/ShapeAppearance.Sample.LargeComponent&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Sample.LargeComponent&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;!-- 各corner(top right, top left, bottom left, bottom right)のサイズを指定 --&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;36dp&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; こんな感じになります。</description>
     </item>
     
     <item>
@@ -271,7 +288,7 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
 // build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
 例えば、次のように使います。
-// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class *implements com.</description>
+// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class * implements com.</description>
     </item>
     
     <item>
@@ -638,7 +655,7 @@ FloatingActionButtonを例に、実際にMotionSpecの値をいじってみま�
 最初にMotionSpec用のanimator XMLを定義する デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。
 FloatingActionButton用のXMLはソースコードを読んでいくと、design_fab_show_motion_spec.xmlとdesign_fab_hide_motion_spec.xmlで定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。
 まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されているdesign_fab_show_motion_spec.xmlの中身になります。
-&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt; &amp;lt;!--Copyright 2017 The Android Open Source Project Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt; &amp;lt;!-- Copyright 2017 The Android Open Source Project Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
     </item>
     
     <item>
@@ -1810,8 +1827,8 @@ string-array要素で定義してあげます.
 &amp;lt;string-array name=&amp;#34;sports&amp;#34;&amp;gt; &amp;lt;item&amp;gt;マラソン&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;野球&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;サッカー&amp;lt;/item&amp;gt; &amp;lt;item&amp;gt;卓球&amp;lt;/item&amp;gt; &amp;lt;/string-array&amp;gt; アプリケーション側では下のように取得します.
 getResources().getStringArray(R.array.sports) or context.getResources().getStringArray(R.array.sports) Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.
 値展開 strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.
-&amp;lt;!--%1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;#34;hoge&amp;#34;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!--%1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;#34;hogestr&amp;#34;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt; アプリケーション側では, 下のように指定します.
-getString(R.string.hoge, 100)); // Hello 100 getString(R.string.hogestr, &amp;#34;value&amp;#34;, 100)); // value 100 value %1$s は「第1引数の文字列」をここに展開しろ.</description>
+&amp;lt;!-- %1: 引数1, $d: 数字 --&amp;gt; &amp;lt;string name=&amp;#34;hoge&amp;#34;&amp;gt;Hello %1$d&amp;lt;/string&amp;gt; &amp;lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&amp;gt; &amp;lt;string name=&amp;#34;hogestr&amp;#34;&amp;gt;%1$s %2$d %1$s&amp;lt;/string&amp;gt; アプリケーション側では, 下のように指定します.
+getString(R.string.hoge, 100)); // Hello 100 getString(R.</description>
     </item>
     
     <item>
@@ -1855,7 +1872,7 @@ floatの問題点 clearfixを説明する前に, floatプロパティの問題�
 まず例をあげます.
 &amp;lt;div&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.png&amp;#34; style=&amp;#34;float: right&amp;#34; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; 上記HTMLは, imgが右に寄り, その左側にtest1, test2と表示されます. floatは, 指定したエレメント以降のエレメントを反対側に回りこませることが出来ます.
 回りこみを止めたいときは, clear: both;プロパティを指定します.
-&amp;lt;div&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.png&amp;#34; style=&amp;#34;float: right&amp;#34; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;!--clear:bothがないと, このdivも左側に回りこむ --&amp;gt; &amp;lt;div style=&amp;#34;clear:both;&amp;#34;&amp;gt; hogehoge &amp;lt;/div&amp;gt; clear:both;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.
+&amp;lt;div&amp;gt; &amp;lt;img class=&amp;#34;test&amp;#34; src=&amp;#34;hoge.png&amp;#34; style=&amp;#34;float: right&amp;#34; /&amp;gt; &amp;lt;p&amp;gt;test1&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;test2&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;!-- clear:bothがないと, このdivも左側に回りこむ --&amp;gt; &amp;lt;div style=&amp;#34;clear:both;&amp;#34;&amp;gt; hogehoge &amp;lt;/div&amp;gt; clear:both;の記述を忘れると, 後続の意図しないエレメントにも影響を及ぼしてしまうので, 忘れずに指定しなければいけません.
 とは言っても, floatingの解除は忘れてしまいがちです. そこでclearfixと呼ばれるテクニックを使います.
 clearfixとは clearfixとは, after擬似要素を使いfloatを解除するテクニックです.
 具体的には以下のように記述します.

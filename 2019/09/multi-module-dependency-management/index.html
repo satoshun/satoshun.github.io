@@ -118,7 +118,7 @@ extにバージョンを定義します。</p>
       <span style="color:#e6db74">&#39;assertj&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;3.11.0&#39;</span><span style="color:#f92672">,</span>
       <span style="color:#e6db74">&#39;bouncycastle&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;1.62&#39;</span><span style="color:#f92672">,</span>
       <span style="color:#e6db74">&#39;brotli&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;0.1.2&#39;</span><span style="color:#f92672">,</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+  <span style="color:#f92672">...</span>
 
   ext<span style="color:#f92672">.</span><span style="color:#a6e22e">deps</span> <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
       <span style="color:#e6db74">&#39;picocli&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;info.picocli:picocli:${versions.picocli}&#34;</span><span style="color:#f92672">,</span>
@@ -127,7 +127,7 @@ extにバージョンを定義します。</p>
       <span style="color:#e6db74">&#39;assertj&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;org.assertj:assertj-core:${versions.assertj}&#34;</span><span style="color:#f92672">,</span>
       <span style="color:#e6db74">&#39;bouncycastle&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&#34;</span><span style="color:#f92672">,</span>
       <span style="color:#e6db74">&#39;brotli&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;org.brotli:dec:${versions.brotli}&#34;</span><span style="color:#f92672">,</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+  <span style="color:#f92672">...</span>
 </code></pre></div><p>extプロパティにライブラリのバージョンをセットします。</p>
 <p>そして、次のように使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
@@ -135,7 +135,7 @@ extにバージョンを定義します。</p>
   api deps<span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinStdlib</span>
   compileOnly deps<span style="color:#f92672">.</span><span style="color:#a6e22e">android</span>
   compileOnly deps<span style="color:#f92672">.</span><span style="color:#a6e22e">conscrypt</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+  <span style="color:#f92672">...</span>
 </code></pre></div><p>メリット、デメリットをまとめると次になります。</p>
 <ul>
 <li>メリット
@@ -169,7 +169,7 @@ extにバージョンを定義します。</p>
     androidTestImplementation<span style="color:#f92672">(</span>JUNIT<span style="color:#f92672">)</span>
     androidTestImplementation<span style="color:#f92672">(</span>TRUTH<span style="color:#f92672">)</span>
     androidTestImplementation<span style="color:#f92672">(</span>ANDROIDX_TEST_EXT_JUNIT<span style="color:#f92672">)</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>メリット、デメリットをまとめると次になります。</p>
 <ul>

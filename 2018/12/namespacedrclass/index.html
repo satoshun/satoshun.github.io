@@ -98,39 +98,39 @@
 例として、appcompatに依存しているライブラリモジュールを用意します。</p>
 <p>まずは、<code>namespacedRClass=false</code>の時のRクラスです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">R</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">anim</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">anim</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">anim</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_fade_in <span style="color:#f92672">=</span> 0x7f010000<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_fade_out <span style="color:#f92672">=</span> 0x7f010001<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_grow_fade_in_from_bottom <span style="color:#f92672">=</span> 0x7f010002<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> abc_popup_enter <span style="color:#f92672">=</span> 0x7f010003<span style="color:#f92672">;</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
+    <span style="color:#f92672">...</span>
 </code></pre></div><p>依存関係にあるappcompatのRクラスの内容が含まれていることが分かります。</p>
 <p>では次に、<code>namespacedRClass=true</code>の時です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">R</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">color</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">color</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> red3 <span style="color:#f92672">=</span> 0x7f04004b<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">id</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> title <span style="color:#f92672">=</span> 0x7f0700b1<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">layout</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">layout</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">layout</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> base3 <span style="color:#f92672">=</span> 0x7f09001d<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">string</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">string</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">string</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
         <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> base_string3 <span style="color:#f92672">=</span> 0x7f0b002a<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>

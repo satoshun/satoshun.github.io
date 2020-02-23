@@ -118,28 +118,28 @@ dialogの場合は、DialogFragmentNavigator経由でdialogが発火するよう
 </span><span style="color:#75715e"> * See the License for the specific language governing permissions and
 </span><span style="color:#75715e"> * limitations under the License.
 </span><span style="color:#75715e"> */</span>
-<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">...</span>
 <span style="color:#a6e22e">@Nullable</span>
 <span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> NavDestination <span style="color:#a6e22e">navigate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> <span style="color:#66d9ef">final</span> Destination destination<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Bundle args<span style="color:#f92672">,</span>
         <span style="color:#a6e22e">@Nullable</span> NavOptions navOptions<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Navigator<span style="color:#f92672">.</span><span style="color:#a6e22e">Extras</span> navigatorExtras<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 
-    <span style="color:#66d9ef">final</span> Fragment frag <span style="color:#f92672">=</span> mFragmentManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getFragmentFactory</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">instantiate</span><span style="color:#f92672">(</span>
-            mContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> className<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>DialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>frag<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Dialog destination &#34;</span> <span style="color:#f92672">+</span> destination<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is not an instance of DialogFragment&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> Fragment frag <span style="color:#f92672">=</span> mFragmentManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getFragmentFactory</span><span style="color:#f92672">().</span><span style="color:#a6e22e">instantiate</span><span style="color:#f92672">(</span>
+            mContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(),</span> className<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>DialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>frag<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Dialog destination &#34;</span> <span style="color:#f92672">+</span> destination<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassName</span><span style="color:#f92672">()</span>
+                <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is not an instance of DialogFragment&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
     <span style="color:#66d9ef">final</span> DialogFragment dialogFragment <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>DialogFragment<span style="color:#f92672">)</span> frag<span style="color:#f92672">;</span>
-    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">setArguments</span><span style="color:#f92672">(</span>args<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addObserver</span><span style="color:#f92672">(</span>mObserver<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">setArguments</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addObserver</span><span style="color:#f92672">(</span>mObserver<span style="color:#f92672">);</span>
 
-    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">show</span><span style="color:#f92672">(</span>mFragmentManager<span style="color:#f92672">,</span> DIALOG_TAG <span style="color:#f92672">+</span> mDialogCount<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    dialogFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">show</span><span style="color:#f92672">(</span>mFragmentManager<span style="color:#f92672">,</span> DIALOG_TAG <span style="color:#f92672">+</span> mDialogCount<span style="color:#f92672">++);</span>
 
     <span style="color:#66d9ef">return</span> destination<span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
-<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">...</span>
 </code></pre></div><p>やっていることは単純で、</p>
 <ol>
 <li>FragmentFactory経由で対象のDialogFragmentを生成する</li>

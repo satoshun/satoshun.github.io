@@ -120,7 +120,7 @@
 <h2 id="scopeの一覧">Scopeの一覧</h2>
 <p>RestrictToの定義は以下のようになっています。（コメント等は削除してます。）</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
-    Scope<span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    Scope<span style="color:#f92672">[]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">();</span>
 
     <span style="color:#66d9ef">enum</span> Scope <span style="color:#f92672">{</span>
         LIBRARY<span style="color:#f92672">,</span>
@@ -244,14 +244,14 @@ include ':lib1'
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ContentFrameLayout</span> <span style="color:#66d9ef">extends</span> FrameLayout
 
-<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
+<span style="color:#f92672">---</span>
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MediaItem</span> <span style="color:#f92672">{</span>
   <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP<span style="color:#f92672">)</span>
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span>
 <span style="color:#f92672">}</span>
 
-<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
+<span style="color:#f92672">---</span>
 
 <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>

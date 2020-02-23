@@ -140,7 +140,7 @@
   }
 }
 
----<span style="color:#960050;background-color:#1e0010">以</span><span style="color:#960050;background-color:#1e0010">下</span><span style="color:#960050;background-color:#1e0010">、</span>Fragment---
+---<span style="color:#960050;background-color:#1e0010">以下、</span>Fragment---
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
@@ -159,7 +159,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HasAndroidInjectorを使う実装に置き換わっている
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Beta</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DaggerApplication</span> <span style="color:#66d9ef">extends</span> Application <span style="color:#66d9ef">implements</span> HasAndroidInjector <span style="color:#f92672">{</span>
-  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+  <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>唯一、AppComponentでは<code>AndroidSupportInjectionModule</code>を使っていると思うのでそこの置き換えは必要です。</p>
 <h2 id="まとめ">まとめ</h2>
