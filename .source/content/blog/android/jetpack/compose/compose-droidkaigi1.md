@@ -16,8 +16,8 @@ Timelineはこんな感じです。
 
 {{< figure src="/blog/android/jetpack/compose/timeline.png" width="50%" >}}
 
-上から順番に置き換えていきます。
+上から順番に作っていきます。
 
-## Drawerの作成
+## 1. Drawerの作成
 
 横からニュッと出てくるDrawerを作るには`ModalDrawerLayout`を使います。
