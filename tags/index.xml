@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 23 Feb 2020 01:50:36 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 29 Feb 2020 23:32:01 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,16 +15,25 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
+      <pubDate>Sat, 29 Feb 2020 23:32:01 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>compose</title>
+      <link>https://satoshun.github.io/tags/compose/</link>
+      <pubDate>Sat, 29 Feb 2020 23:32:01 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/compose/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>jetpack</title>
       <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
+      <pubDate>Sat, 29 Feb 2020 23:32:01 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/jetpack/</guid>
       <description></description>
