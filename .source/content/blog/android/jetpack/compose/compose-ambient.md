@@ -64,17 +64,27 @@ private fun MyView() {
 
 これで完了です。コードを説明してきます。
 
-Providers(exampleViewModelAmbient provides viewModel)
+---
 
-これは、Ambientに対して値を注入しています。この場合、`exampleViewModelAmbient`に、ExampleViewModelのインスタンスを注入しています。
+`Providers(exampleViewModelAmbient provides viewModel)`
 
-val viewModel = exampleViewModelAmbient.current
+Ambientに対して値を注入しています。この場合、定義した`exampleViewModelAmbient`に、ExampleViewModelのインスタンスを注入、セットしています。
 
-注入した値は `.current` で取得することが出来ます。この場合、上記で生成した、ExampleViewModelのインスタンスを取得することが出来ます。
+---
+
+`val viewModel = exampleViewModelAmbient.current`
+
+注入した値は `.current` から取得することが出来ます。この場合、上記で生成したExampleViewModelのインスタンスの値を取得することが出来ます。
+
+---
+
+`ambientOf`で定義して、Providersで値をセットすることで、コンポーネントに値を渡すことが可能になります。
+
+## 注意点
 
 注意としては、Providersで囲っていない場合にエラーになる点です。例えば、次のように書くことは出来ません。
 
-```
+```kotlin
 @Composable
 fun ExampleApp() {
   val viewModel = ExampleViewModel()
@@ -86,12 +96,35 @@ fun ExampleApp() {
   // ランタイムエラーになる!
   MyView()
 }
-
-@Composable
-private fun MyView() {
-  val viewModel = exampleViewModelAmbient.current
-  ...
-}
 ```
 
 直感的な挙動だと思います。
+
+---
+
+また、複数のProvidersで囲った場合は、直近のProvidersが有効になります。
+
+```kotlin
+fun ExampleApp() {
+  val viewModel = ExampleViewModel()
+
+  Providers(exampleViewModelAmbient provides viewModel) {
+
+    val viewModel2 = ExampleViewModel()
+    Providers(exampleViewModelAmbient provides viewModel2) {
+      // viewModel2が渡される
+      MyView()
+    }
+  }
+}
+```
+
+## まとめ
+
+- Ambientを使うことで、多くの中間コンポーネントがある場合に楽が出来る
+  - とはいえ、一般的なデータの渡し方は引数から
+- ライブラリから、ContextAmbient、CoroutineContextAmbientなどが提供されているので、それらの実装、書き方を参考にするのも良いと思います。
+
+なにか間違っている点や、疑問があればTwitterなどからご指摘いただければ幸いです😃
+
+ではでは。
