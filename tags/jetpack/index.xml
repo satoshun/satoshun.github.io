@@ -7,10 +7,33 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 29 Feb 2020 23:32:01 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Mar 2020 10:38:47 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/jetpack/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jetpack Compose: Ambientを使ってインスタンスを注入、取得する</title>
+      <link>https://satoshun.github.io/2020/03/compose-ambient/</link>
+      <pubDate>Thu, 05 Mar 2020 10:38:47 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/03/compose-ambient/</guid>
+      <description>こんにちわっふる🍰
+今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。
+前提・課題 一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。
+@Composable fun MyView(someData: Data) { ... } これがシンプル かつ 分かりやすい方法です。 しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。
+ここで、Ambientを使うとすっきりと書くことが出来ます。
+Ambientを使う まず、最初にAmbientの定義をします。Ambientの定義はambientOfメソッドから行えます。
+今回は例として、ExampleViewModelをAmbientで定義して、コンポーネントから使用します。
+まず、定義を行います。
+val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;() これで定義は完了です。ambientOfメソッドを呼び出すだけです。
+次に、これをコンポーネントから使ってみます。
+val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;() @Composable fun ExampleApp() { val viewModel = ExampleViewModel() Providers(exampleViewModelAmbient provides viewModel) { MyView() } } @Composable private fun MyView() { val viewModel = exampleViewModelAmbient.current ... } これで完了です。コードを説明してきます。
+ Providers(exampleViewModelAmbient provides viewModel)
+Ambientに対して値を注入しています。この場合、定義したexampleViewModelAmbientに、ExampleViewModelのインスタンスを注入、セットしています。
+ val viewModel = exampleViewModelAmbient.current
+注入した値は .current から取得することが出来ます。この場合、上記で生成したExampleViewModelのインスタンスの値を取得することが出来ます。</description>
+    </item>
     
     <item>
       <title>Jetpack Compose: Modelとstate</title>
