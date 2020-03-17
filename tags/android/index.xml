@@ -7,10 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 05 Mar 2020 10:38:47 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Mar 2020 09:33:04 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dagger2: Dagger2.27の新しいエラーメッセージ</title>
+      <link>https://satoshun.github.io/2020/03/dagger-improve-error-message/</link>
+      <pubDate>Tue, 17 Mar 2020 09:33:04 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/03/dagger-improve-error-message/</guid>
+      <description>Dagger 2.27でエラーメッセージの改善が入っていたので、軽く試してみました。試してみた系の記事になります。
+まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
+allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定をしていないのにInjectしてみます。
+// @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
+新しいエラーログ   
+古いエラーログ   
+ 次に、複数Providesの指定をして、Injectしてみます。
+@Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
+新しいエラーログ   
+古いエラーログ   
+まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?</description>
+    </item>
     
     <item>
       <title>Jetpack Compose: Ambientを使ってインスタンスを注入、取得する</title>
