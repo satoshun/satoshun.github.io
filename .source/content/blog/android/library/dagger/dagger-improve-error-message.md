@@ -1,6 +1,6 @@
 +++
 date = "Tue Mar 17 09:33:04 UTC 2020"
-title = "Dagger2: Dagger2.27の新しいエラーメッセージ"
+title = "Dagger2: Dagger2.27の新しいエラーメッセージを少し試してみる"
 tags = ["dagger", "android", "di"]
 blogimport = true
 type = "post"
