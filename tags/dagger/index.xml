@@ -20,11 +20,11 @@
       <guid>https://satoshun.github.io/2020/03/dagger-improve-error-message/</guid>
       <description>Dagger 2.27でエラーメッセージの改善が入っていたので、軽く試してみました。試してみた系の記事になります。
 まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
-allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定をしていないのにInjectしてみます。
+allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
 // @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
 新しいエラーログ   
 古いエラーログ   
- 次に、複数Providesの指定をして、Injectしてみます。
+ 次に、複数Providesの指定をしてみます。
 @Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
 新しいエラーログ   
 古いエラーログ   

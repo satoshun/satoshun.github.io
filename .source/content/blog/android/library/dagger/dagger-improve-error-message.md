@@ -25,7 +25,7 @@ allprojects {
 
 ## 適当にエラーを出してみる
 
-まずは、Providesの指定をしていないのにInjectしてみます。
+まずは、Providesの指定を外してみます。
 
 ```kotlin
 // @Provides <-- エラーを出したいのでコメントアウト
@@ -46,7 +46,7 @@ fun provideTestObject(): TestObject = TestObject()
 
 ---
 
-次に、複数Providesの指定をして、Injectしてみます。
+次に、複数Providesの指定をしてみます。
 
 ```kotlin
 @Provides

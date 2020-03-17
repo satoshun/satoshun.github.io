@@ -104,7 +104,7 @@
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="適当にエラーを出してみる">適当にエラーを出してみる</h2>
-<p>まずは、Providesの指定をしていないのにInjectしてみます。</p>
+<p>まずは、Providesの指定を外してみます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// @Provides &lt;-- エラーを出したいのでコメントアウト
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
@@ -121,7 +121,7 @@
 </figure>
 </a></p>
 <hr>
-<p>次に、複数Providesの指定をして、Injectしてみます。</p>
+<p>次に、複数Providesの指定をしてみます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Provides
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
