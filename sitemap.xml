@@ -963,6 +963,76 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/leakcanary/</loc>
+    <lastmod>2016-10-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</loc>
+    <lastmod>2016-10-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/10/android-orientation-data/</loc>
+    <lastmod>2016-10-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/09/isucon6/</loc>
+    <lastmod>2016-09-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/go/</loc>
+    <lastmod>2016-08-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/golang/</loc>
+    <lastmod>2016-08-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/08/go-struct-method/</loc>
+    <lastmod>2016-08-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/07/android-test-mvp/</loc>
+    <lastmod>2016-07-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/linux/</loc>
+    <lastmod>2016-07-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/07/linux-perf/</loc>
+    <lastmod>2016-07-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/python/</loc>
+    <lastmod>2016-02-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/tips/</loc>
+    <lastmod>2016-02-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/02/python-cgihttpserver/</loc>
+    <lastmod>2016-02-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</loc>
+    <lastmod>2016-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2015/09/android-app-events/</loc>
     <lastmod>2015-09-06T00:00:00+00:00</lastmod>
   </url>
@@ -1010,11 +1080,6 @@
   <url>
     <loc>https://satoshun.github.io/2015/05/dagger2/</loc>
     <lastmod>2015-05-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/python/</loc>
-    <lastmod>2015-04-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1113,11 +1178,6 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/go/</loc>
-    <lastmod>2015-02-22T04:11:23+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2015/02/go-pr_goji/</loc>
     <lastmod>2015-02-22T04:11:23+00:00</lastmod>
   </url>
@@ -1130,11 +1190,6 @@
   <url>
     <loc>https://satoshun.github.io/2015/02/android-pull_to_refresh/</loc>
     <lastmod>2015-02-22T04:09:23+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/tips/</loc>
-    <lastmod>2015-02-22T02:40:23+00:00</lastmod>
   </url>
   
   <url>
@@ -1164,11 +1219,6 @@
   
   <url>
     <loc>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</loc>
-    <lastmod>2015-02-22T02:08:23+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/golang/</loc>
     <lastmod>2015-02-22T02:08:23+00:00</lastmod>
   </url>
   
@@ -1205,6 +1255,21 @@
   <url>
     <loc>https://satoshun.github.io/2015/02/algorithm-multi_fibonacci/</loc>
     <lastmod>2015-02-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2014/11/go-goji-code-reading/</loc>
+    <lastmod>2014-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/sublimetext/</loc>
+    <lastmod>2014-05-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2014/05/subpro/</loc>
+    <lastmod>2014-05-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>

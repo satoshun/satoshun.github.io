@@ -73,5 +73,24 @@ private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false
 // API27 エミュレータ main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和 main=130857ms, async=126582ms main=131401ms, async=126909ms main=130763ms, async=126504ms main=132758ms, async=127972ms // API21 エミュレータ main=129869ms, async=125795ms main=130050ms, async=125888ms main=129935ms, async=125853ms main=129908ms, async=125838ms main=129927ms, async=125824ms asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</description>
     </item>
     
+    <item>
+      <title>Android: Fragmentを使って、画面の向きの変更時にデータを保持する</title>
+      <link>https://satoshun.github.io/2016/10/android-orientation-data/</link>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/10/android-orientation-data/</guid>
+      <description>onSaveInstanceState, onRestoreInstanceStateを使う方法もありますが, 今回はFragmentを使う方法を紹介します.
+サンプルコードは https://github.com/satoshun-example/AndroidRetainData にあります.
+ユースケース ネットワークはコストが掛かるので, 1度データを取得したら, 画面回転でアクティビティが再生成されたとしてもデータを使いまわしたい, というケースがあるとします.
+やり方 まず, データを保持するFragmentを定義します.
+最初にonCreateで, setRetainInstance(true)をコールします.
+@Override public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setRetainInstance(true); refresh(); } 次に, refreshでデータを取得します. ここではRxJava2 + Retrofitを使っています.
+void refresh() { disposables.clear(); disposables.add(provideGithubAPI() .getRepositories(&amp;#34;satoshun&amp;#34;) .subscribeOn(Schedulers.computation()) .observeOn(AndroidSchedulers.mainThread()) .subscribe( data -&amp;gt; subject.onNext(data), e -&amp;gt; subject.onError(e))); } APIコールをして, 取得したデータをBehaviorSubject(subject)に与えます.
+最後にobservableメソッドを定義し, データソース(subject)を他のオブジェクトからアクセス出来るようにします.
+Observable&amp;lt;List&amp;lt;Repo&amp;gt;&amp;gt; observable() { return subject; } Fragmentのフルソースコードはここにあります.
+次に, Activityの準備をします. ActivityのonCreateでデータFragmentを使うようにするだけです.
+@Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); dataFrag = (RetainFragment) getSupportFragmentManager().</description>
+    </item>
+    
   </channel>
 </rss>

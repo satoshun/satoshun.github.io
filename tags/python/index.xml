@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 30 Apr 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Feb 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>お手軽にローカルにサーバを立てる</title>
+      <link>https://satoshun.github.io/2016/02/python-cgihttpserver/</link>
+      <pubDate>Tue, 16 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/02/python-cgihttpserver/</guid>
+      <description>サクッとローカルにサーバを立てるためのコマンドを紹介します. Python2系が入っていれば, 下記コマンドでローカルにサーバを立てることが出来ます.
+$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... ブラウザで, http://localhost:8000にアクセス出来るようになりました.
+ちょっとコマンドが長いので, 僕は, 上記コマンドをaliasに登録しています.
+alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
+ちなみに, デフォルトではポート8000でサーバが立つのですが, 指定することも出来ます.
+$ ser 10000 Serving HTTP on 0.0.0.0 port 10000 ... これで, いつでも簡単にserでローカルにサーバを立てることが出来るようになりました.</description>
+    </item>
     
     <item>
       <title>Python: Pythonライクな書き方 Part1</title>

@@ -1434,6 +1434,74 @@ package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnAct
     </item>
     
     <item>
+      <title>LeakCanary: ソースコードリーディング</title>
+      <link>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</link>
+      <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</guid>
+      <description>LeakCanaryはメモリリークを発見してくれるライブラリです.
+どうやってメモリリークを検知しているのかが気になったのでまとめ.
+おおまかな流れ  Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされるonActivityDestroyedをリッスンする onActivityDestroyedがコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す 参照先が探せたら, notificationを作成し, メモリリークしていることを通達する notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する  という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.
+onDestroyされたActivityへの参照がなくなっているかをチェックする これにはReferenceQueueを利用します. ReferenceQueueは登録したオブジェクトがGarbage Collectorにより解放されたかどうかを調べるクラスです. これにonDestroyがコールされたActivityを登録し, GCにより解放されたかどうかを検知することでメモリリークを調べることを出来ます.
+ここで, ReferenceQueueがGCを検知しなかったら, どこからの参照が原因でGCが呼ばれないのかを探します.
+どこから参照されているかを探す どこからActivityが参照されているかを探すために, まず現在のheapのdumpを取ります. heapのdumpは Debug.dumpHprofData(/your/file/path);で取れます.
+それを https://github.com/square/hahaを使ってどこからActivityが参照されているかを探索します. HAHAは, hprofファイルから木構造を作成し, 各オブジェクトがどのような参照関係になっているかを表現します. HAHAを使い, Activityを起点とし, それの親の参照, 親の参照, &amp;hellip;と探索することでrootの参照を探します.
+あとは, 4, 5でrootの参照を通知します.
+まとめ ざっくりとLeakCanaryの説明をしました. HAHAはhprofの読み込みをいい感じにしてくれるだけなので, 肝はReferenceQueueだと思います.
+ReferenceQueueはなかなか使う機会は無いと思いますが, 覚えておくといつか得するかもしれません(適当)</description>
+    </item>
+    
+    <item>
+      <title>Android: Fragmentを使って、画面の向きの変更時にデータを保持する</title>
+      <link>https://satoshun.github.io/2016/10/android-orientation-data/</link>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/10/android-orientation-data/</guid>
+      <description>onSaveInstanceState, onRestoreInstanceStateを使う方法もありますが, 今回はFragmentを使う方法を紹介します.
+サンプルコードは https://github.com/satoshun-example/AndroidRetainData にあります.
+ユースケース ネットワークはコストが掛かるので, 1度データを取得したら, 画面回転でアクティビティが再生成されたとしてもデータを使いまわしたい, というケースがあるとします.
+やり方 まず, データを保持するFragmentを定義します.
+最初にonCreateで, setRetainInstance(true)をコールします.
+@Override public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setRetainInstance(true); refresh(); } 次に, refreshでデータを取得します. ここではRxJava2 + Retrofitを使っています.
+void refresh() { disposables.clear(); disposables.add(provideGithubAPI() .getRepositories(&amp;#34;satoshun&amp;#34;) .subscribeOn(Schedulers.computation()) .observeOn(AndroidSchedulers.mainThread()) .subscribe( data -&amp;gt; subject.onNext(data), e -&amp;gt; subject.onError(e))); } APIコールをして, 取得したデータをBehaviorSubject(subject)に与えます.
+最後にobservableメソッドを定義し, データソース(subject)を他のオブジェクトからアクセス出来るようにします.
+Observable&amp;lt;List&amp;lt;Repo&amp;gt;&amp;gt; observable() { return subject; } Fragmentのフルソースコードはここにあります.
+次に, Activityの準備をします. ActivityのonCreateでデータFragmentを使うようにするだけです.
+@Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); dataFrag = (RetainFragment) getSupportFragmentManager().</description>
+    </item>
+    
+    <item>
+      <title>Android: MVPのPresenterの非同期周りのユニットテストの書き方</title>
+      <link>https://satoshun.github.io/2016/07/android-test-mvp/</link>
+      <pubDate>Sun, 31 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/07/android-test-mvp/</guid>
+      <description>MVP(Model-View-Presenter)アーキテクチャが流行ってますね!
+MVPはテスタブルであることが1つのウリとなっていますが, 実際にPresenterのユニットテストをどのようにして書くかを紹介したいと思います.
+今回のコードは https://github.com/satoshun-example/AndroidTestSample に上げてあるので, 良かったら見て下さい.
+使うツール/ライブラリ  JUnit4 Mockito  今回, テスト書きたい箇所 今回は, MainPresenterクラスをテストします.
+public class MainPresenter implements MainContract.Presenter { @NonNull private final UserDataSource dataSource; @NonNull private final MainContract.View view; public MainPresenter(@NonNull UserDataSource dataSource, @NonNull MainContract.View view) { this.dataSource = dataSource; this.view = view; } @Override public void start() { view.showLoadingIndicator(); dataSource.getUser(new UserDataSource.Callback() { @Override public void onUserLoaded(@NonNull User user) { view.hideLoadingIndicator(); view.showUser(user); } @Override public void onNotAvailable() { view.</description>
+    </item>
+    
+    <item>
+      <title>Android: テストメソッドの命名規則について</title>
+      <link>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</link>
+      <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</guid>
+      <description>ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.
+ユニットテストの場合は, メソッドレベルでリグレッションが起きていないことを, 機能/受け入れテストの場合は, ユーザの行動レベルでリグレッションが起きていないことを保証するために必要になります.
+今回の記事では, Androidにおけるユニットテスト(各テストメソッド)の命名規則の話をします. しかし, 他の言語/プラットフォームの場合でも同様の考え方を出来ると思います.
+用語定義 アプリコード: アプリケーション本体のコード
+なぜテストケースの命名規則を気にする必要があるか? Androidアプリを作っていて, アプリコードはリファクタリングや, 新機能の追加などで頻繁に目を通しますが, テストコードは1度書いたら, そのテストが失敗するまで放置するパターンが多いなと感じています(何にしてもアプリコードほどは目を通さない)
+数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.
+まず, テストケースの構成を考える 本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.
+一般的なテストケースは次の4つの要素に分割できます.
+ 事前準備(setup) 実行(exercise) 宣言(assertion) 後処理(teardown)  これだと分かりにくいので, コードで説明すると,
+public class HogeTest { List&amp;lt;String&amp;gt; lists; @Before public void setup() { // 事前準備(setup)  lists = new ArrayList&amp;lt;&amp;gt;(); lists.add(&amp;#34;1&amp;#34;); lists.add(&amp;#34;123&amp;#34;); } @After public void teardown() { // 後処理(teardown)  } @Test public void testGet() { // 実行(exercise)  String actual = lists.</description>
+    </item>
+    
+    <item>
       <title>Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました</title>
       <link>https://satoshun.github.io/2015/09/android-app-events/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>

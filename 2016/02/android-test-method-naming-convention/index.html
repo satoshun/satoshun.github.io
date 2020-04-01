@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Android: テストメソッドの命名規則について">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2016-02-12">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2016/02/android-test-method-naming-convention/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="test">
+  
+
+  <meta property="twitter:title" content="Android: テストメソッドの命名規則について">
+
+  
+  <meta property="twitter:description" content="ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.
+ユニットテストの場合は, メソッドレベルでリグレッションが起きていないこ …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Android: テストメソッドの命名規則について  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body class="theme-dark">
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/presentation">Presentation</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Android: テストメソッドの命名規則について</h1>
+    
+    <span class="post-date">Created at Fri, Feb 12, 2016</span>
+    
+    <p>ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.</p>
+<p>ユニットテストの場合は, メソッドレベルでリグレッションが起きていないことを,
+機能/受け入れテストの場合は, ユーザの行動レベルでリグレッションが起きていないことを保証するために必要になります.</p>
+<p>今回の記事では, Androidにおけるユニットテスト(各テストメソッド)の命名規則の話をします. しかし, 他の言語/プラットフォームの場合でも同様の考え方を出来ると思います.</p>
+<h2 id="用語定義">用語定義</h2>
+<p>アプリコード: アプリケーション本体のコード</p>
+<h2 id="なぜテストケースの命名規則を気にする必要があるか">なぜテストケースの命名規則を気にする必要があるか?</h2>
+<p>Androidアプリを作っていて, アプリコードはリファクタリングや, 新機能の追加などで頻繁に目を通しますが,
+テストコードは1度書いたら, そのテストが失敗するまで放置するパターンが多いなと感じています(何にしてもアプリコードほどは目を通さない)</p>
+<p>数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.</p>
+<h2 id="まず-テストケースの構成を考える">まず, テストケースの構成を考える</h2>
+<p>本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.</p>
+<p>一般的なテストケースは次の4つの要素に分割できます.</p>
+<ol>
+<li>事前準備(setup)</li>
+<li>実行(exercise)</li>
+<li>宣言(assertion)</li>
+<li>後処理(teardown)</li>
+</ol>
+<p>これだと分かりにくいので, コードで説明すると,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeTest</span> <span style="color:#f92672">{</span>
+  List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> lists<span style="color:#f92672">;</span>
+
+  <span style="color:#a6e22e">@Before</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    lists <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+    lists<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
+    lists<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;123&#34;</span><span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@After</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 後処理(teardown)
+</span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    String actual <span style="color:#f92672">=</span> lists<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>actual<span style="color:#f92672">).</span><span style="color:#a6e22e">isEqualTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>という感じになります. JUnit4ではこのようにテストを構築します.</p>
+<h2 id="テストケースtestgetという名前">テストケース<code>testGet</code>という名前</h2>
+<p>前述の例では, テストケースの名前を<code>testGet</code>にしています. 果たして, これで意味が伝わるでしょうか?
+<code>testGet</code>から分かることは, 「getメソッドをテストしている」ことだけであって, getメソッドの<strong>何を</strong>テストしているのかが伝わってきません.
+なので, その情報をメソッド名, もしくはコメントに含める必要があります.</p>
+<p>では, どのような情報を含めれば良いのか? それを次の例で説明していきます.</p>
+<h2 id="やや複雑な例">やや複雑な例</h2>
+<p><code>Request</code>クラスの内容に応じて, HTTPでデータを取ってくる<code>HTTPConnection</code>クラスを考えます.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HTTPConnectionTest</span> <span style="color:#f92672">{</span>
+  HTTPConnection httpConnection<span style="color:#f92672">;</span>
+
+  <span style="color:#a6e22e">@Before</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    httpConnection <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTTPConnection<span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@After</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 後処理(teardown)
+</span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>inValidRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>上記テストで問題なのは, <code>execute</code>で正常, 異常の2つのことをテストしている所です.
+一般的に, 1つのテストケースでは, 1つのことをテストすべきなので, 修正します.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>inValidRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+</code></pre></div><p>これで, 1つのテストケースで1つのことをテストするようになり, 大分綺麗になりました.</p>
+<h2 id="ここでテストのメソッド名を考える">ここでテストのメソッド名を考える</h2>
+<p>このトピックがこの記事で一番伝えたい事です.</p>
+<p>前述の例では, <code>execute_ok</code>, <code>execute_ng</code>の2つのテストメソッドを作成しました.
+この2つのテストメソッドは, executeメソッドの, 正常, 異常系をテストしていることは伝わります.
+しかし, <strong>どういう条件下でこの振る舞いをするか</strong>の情報が抜けています. よって, その情報を付与する必要があります.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok_200URL</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng_404URL</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 事前準備(setup)
+</span><span style="color:#75715e"></span>    Request notFoundRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#75715e">// 実行(exercise)
+</span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>notFoundRequest<span style="color:#f92672">);</span>
+    <span style="color:#75715e">// 宣言(assertion)
+</span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
+  <span style="color:#f92672">}</span>
+</code></pre></div><p><code>execute_ok_200URL</code>, <code>execute_ng_404URL</code>とし, 前提条件をテストメソッド名に含めました.
+これで, 「200のURLならOK」, 「404のURLならNG」を返すことが, メソッド名から推測することが出来ます.</p>
+<p>これを一般化すると. <code>テスト対象メソッド_期待される振る舞い_前提条件</code>という命名規則になります. これを, ルール化することで, テストコードの可読性が上がり, 全体的に統一感のあるテストが作成できると思います.</p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はテストメソッドの命名規則について紹介しました. 個人的に開発をして思うのは, アプリコードはともかくとして, テストコードを読むのは結構苦痛だなということです.
+特に, 読みにくいテストコード(数ヶ月前の自分が書いたテストコード)は全部消したくなる衝動に駆られます. しかし, そうは言っても当然, 保守/運用/改善はしていかないといけないため, 何からしらの対策を立てなければいけません.</p>
+<p>今回の記事のように, <code>テスト対象メソッド_期待される振る舞い_前提条件</code> のようなルールを決めることで, テストコードの統一性を保つことが出来れば, 少し幸せになれるのかなと思います.</p>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/test">test</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

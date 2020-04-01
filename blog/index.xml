@@ -1637,6 +1637,138 @@ package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnAct
     </item>
     
     <item>
+      <title>LeakCanary: ソースコードリーディング</title>
+      <link>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</link>
+      <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</guid>
+      <description>LeakCanaryはメモリリークを発見してくれるライブラリです.
+どうやってメモリリークを検知しているのかが気になったのでまとめ.
+おおまかな流れ  Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされるonActivityDestroyedをリッスンする onActivityDestroyedがコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す 参照先が探せたら, notificationを作成し, メモリリークしていることを通達する notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する  という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.
+onDestroyされたActivityへの参照がなくなっているかをチェックする これにはReferenceQueueを利用します. ReferenceQueueは登録したオブジェクトがGarbage Collectorにより解放されたかどうかを調べるクラスです. これにonDestroyがコールされたActivityを登録し, GCにより解放されたかどうかを検知することでメモリリークを調べることを出来ます.
+ここで, ReferenceQueueがGCを検知しなかったら, どこからの参照が原因でGCが呼ばれないのかを探します.
+どこから参照されているかを探す どこからActivityが参照されているかを探すために, まず現在のheapのdumpを取ります. heapのdumpは Debug.dumpHprofData(/your/file/path);で取れます.
+それを https://github.com/square/hahaを使ってどこからActivityが参照されているかを探索します. HAHAは, hprofファイルから木構造を作成し, 各オブジェクトがどのような参照関係になっているかを表現します. HAHAを使い, Activityを起点とし, それの親の参照, 親の参照, &amp;hellip;と探索することでrootの参照を探します.
+あとは, 4, 5でrootの参照を通知します.
+まとめ ざっくりとLeakCanaryの説明をしました. HAHAはhprofの読み込みをいい感じにしてくれるだけなので, 肝はReferenceQueueだと思います.
+ReferenceQueueはなかなか使う機会は無いと思いますが, 覚えておくといつか得するかもしれません(適当)</description>
+    </item>
+    
+    <item>
+      <title>Android: Fragmentを使って、画面の向きの変更時にデータを保持する</title>
+      <link>https://satoshun.github.io/2016/10/android-orientation-data/</link>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/10/android-orientation-data/</guid>
+      <description>onSaveInstanceState, onRestoreInstanceStateを使う方法もありますが, 今回はFragmentを使う方法を紹介します.
+サンプルコードは https://github.com/satoshun-example/AndroidRetainData にあります.
+ユースケース ネットワークはコストが掛かるので, 1度データを取得したら, 画面回転でアクティビティが再生成されたとしてもデータを使いまわしたい, というケースがあるとします.
+やり方 まず, データを保持するFragmentを定義します.
+最初にonCreateで, setRetainInstance(true)をコールします.
+@Override public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setRetainInstance(true); refresh(); } 次に, refreshでデータを取得します. ここではRxJava2 + Retrofitを使っています.
+void refresh() { disposables.clear(); disposables.add(provideGithubAPI() .getRepositories(&amp;#34;satoshun&amp;#34;) .subscribeOn(Schedulers.computation()) .observeOn(AndroidSchedulers.mainThread()) .subscribe( data -&amp;gt; subject.onNext(data), e -&amp;gt; subject.onError(e))); } APIコールをして, 取得したデータをBehaviorSubject(subject)に与えます.
+最後にobservableメソッドを定義し, データソース(subject)を他のオブジェクトからアクセス出来るようにします.
+Observable&amp;lt;List&amp;lt;Repo&amp;gt;&amp;gt; observable() { return subject; } Fragmentのフルソースコードはここにあります.
+次に, Activityの準備をします. ActivityのonCreateでデータFragmentを使うようにするだけです.
+@Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); dataFrag = (RetainFragment) getSupportFragmentManager().</description>
+    </item>
+    
+    <item>
+      <title>ISUCON6予選で悲しくも負けてしまいました</title>
+      <link>https://satoshun.github.io/2016/09/isucon6/</link>
+      <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/09/isucon6/</guid>
+      <description>ISUCON6予選で悲しくも負けてしまいました こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.
+ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.
+今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.
+基本的なメンバーのスペック Golangで勝負しました. 最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.
+メンバーの簡単な役割分担は以下の感じです.
+ 僕(アプリ: Golang) メンバーその1(インフラ+アプリ) メンバーその2(インフラ+アプリ)  僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています. とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.
+最初の2時間くらい とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.
+プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.
+そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.
+12時くらいの段階 テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.
+re := regexp.MustCompile(&amp;#34;(&amp;#34; + strings.Join(keywords, &amp;#34;|&amp;#34;) + &amp;#34;)&amp;#34;) keywordsは7,000以上なのでここが明らかにボトルネック.
+そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.
+その結果 Aho Corasick というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで Aho Corasick のライブラリがないかを死ぬ気でググる.
+その結果, https://github.com/anknown/ahocorasick を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.
+13:30くらい 何かよく分かんないけど動いた! そしてスコアは15,000くらいになる!
+これでhtmlifyは大丈夫だと思い, keywordをredisでリストで保持して, MySQLのクエリを減らす作業に入る.
+これがミスでした. htmlifyのコストがまだ高く, ここをもう少し重点的にやるべきだった.</description>
+    </item>
+    
+    <item>
+      <title>Golang: structで宣言したメソッドを明示的に呼び出す</title>
+      <link>https://satoshun.github.io/2016/08/go-struct-method/</link>
+      <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/08/go-struct-method/</guid>
+      <description>Goでは, 宣言したtypeにメソッドを定義することが出来ます.
+典型的な用途としては, structでデータ型を宣言して, それにメソッドを定義する使い方だと思います.
+type Hoge struct { } func (h Hoge) h1() { fmt.Println(&amp;#34;called h1&amp;#34;) } func (h *Hoge) h2() { fmt.Println(&amp;#34;called h2&amp;#34;) } 通常メソッドを呼ぶ際は, インスタンスを作成し, そのインスタンスを通じてメソッドをコールします.
+h := Hoge{} h.h1() // output: called h1 h.h2() // output: called h2 このさい, h1, h2メソッドを通じて, 暗黙的にインスタンスも渡されています.
+暗黙的に渡している部分を, 明示的に渡すと下のようになります.
+h := Hoge{} Hoge.h1(h) // output: called h1 == h.h1() (*Hoge).h2(&amp;amp;h) // output: called h2 == h.h2()  (*Hoge).h1(&amp;amp;h) // output: called h1 == h.</description>
+    </item>
+    
+    <item>
+      <title>Android: MVPのPresenterの非同期周りのユニットテストの書き方</title>
+      <link>https://satoshun.github.io/2016/07/android-test-mvp/</link>
+      <pubDate>Sun, 31 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/07/android-test-mvp/</guid>
+      <description>MVP(Model-View-Presenter)アーキテクチャが流行ってますね!
+MVPはテスタブルであることが1つのウリとなっていますが, 実際にPresenterのユニットテストをどのようにして書くかを紹介したいと思います.
+今回のコードは https://github.com/satoshun-example/AndroidTestSample に上げてあるので, 良かったら見て下さい.
+使うツール/ライブラリ  JUnit4 Mockito  今回, テスト書きたい箇所 今回は, MainPresenterクラスをテストします.
+public class MainPresenter implements MainContract.Presenter { @NonNull private final UserDataSource dataSource; @NonNull private final MainContract.View view; public MainPresenter(@NonNull UserDataSource dataSource, @NonNull MainContract.View view) { this.dataSource = dataSource; this.view = view; } @Override public void start() { view.showLoadingIndicator(); dataSource.getUser(new UserDataSource.Callback() { @Override public void onUserLoaded(@NonNull User user) { view.hideLoadingIndicator(); view.showUser(user); } @Override public void onNotAvailable() { view.</description>
+    </item>
+    
+    <item>
+      <title>Linux perf: CPU編</title>
+      <link>https://satoshun.github.io/2016/07/linux-perf/</link>
+      <pubDate>Sun, 17 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/07/linux-perf/</guid>
+      <description>Linux perf: CPU編 CPU利用率, 高負荷なプロセスの特定の仕方について説明します.
+0. lscpu システムのコア数,マシンのスペックを最初に調べます.
+root@vagrant:~# lscpu Architecture: x86_64 CPU op-mode(s): 32-bit, 64-bit Byte Order: Little Endian CPU(s): 4 On-line CPU(s) list: 0-3 Thread(s) per core: 1 Core(s) per socket: 4 Socket(s): 1 NUMA node(s): 1 Vendor ID: GenuineIntel CPU family: 6 Model: 69 Model name: Intel(R) Core(TM) i7-4650U CPU @ 1.70GHz Stepping: 1 CPU MHz: 2300.000 BogoMIPS: 4600.00 Hypervisor vendor: KVM Virtualization type: full L1d cache: 32K L1i cache: 32K L2 cache: 256K L3 cache: 4096K NUMA node0 CPU(s): 0-3 Flags: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm コア数は4, Core i7ということが分かります.</description>
+    </item>
+    
+    <item>
+      <title>お手軽にローカルにサーバを立てる</title>
+      <link>https://satoshun.github.io/2016/02/python-cgihttpserver/</link>
+      <pubDate>Tue, 16 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/02/python-cgihttpserver/</guid>
+      <description>サクッとローカルにサーバを立てるためのコマンドを紹介します. Python2系が入っていれば, 下記コマンドでローカルにサーバを立てることが出来ます.
+$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... ブラウザで, http://localhost:8000にアクセス出来るようになりました.
+ちょっとコマンドが長いので, 僕は, 上記コマンドをaliasに登録しています.
+alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
+ちなみに, デフォルトではポート8000でサーバが立つのですが, 指定することも出来ます.
+$ ser 10000 Serving HTTP on 0.0.0.0 port 10000 ... これで, いつでも簡単にserでローカルにサーバを立てることが出来るようになりました.</description>
+    </item>
+    
+    <item>
+      <title>Android: テストメソッドの命名規則について</title>
+      <link>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</link>
+      <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</guid>
+      <description>ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.
+ユニットテストの場合は, メソッドレベルでリグレッションが起きていないことを, 機能/受け入れテストの場合は, ユーザの行動レベルでリグレッションが起きていないことを保証するために必要になります.
+今回の記事では, Androidにおけるユニットテスト(各テストメソッド)の命名規則の話をします. しかし, 他の言語/プラットフォームの場合でも同様の考え方を出来ると思います.
+用語定義 アプリコード: アプリケーション本体のコード
+なぜテストケースの命名規則を気にする必要があるか? Androidアプリを作っていて, アプリコードはリファクタリングや, 新機能の追加などで頻繁に目を通しますが, テストコードは1度書いたら, そのテストが失敗するまで放置するパターンが多いなと感じています(何にしてもアプリコードほどは目を通さない)
+数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.
+まず, テストケースの構成を考える 本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.
+一般的なテストケースは次の4つの要素に分割できます.
+ 事前準備(setup) 実行(exercise) 宣言(assertion) 後処理(teardown)  これだと分かりにくいので, コードで説明すると,
+public class HogeTest { List&amp;lt;String&amp;gt; lists; @Before public void setup() { // 事前準備(setup)  lists = new ArrayList&amp;lt;&amp;gt;(); lists.add(&amp;#34;1&amp;#34;); lists.add(&amp;#34;123&amp;#34;); } @After public void teardown() { // 後処理(teardown)  } @Test public void testGet() { // 実行(exercise)  String actual = lists.</description>
+    </item>
+    
+    <item>
       <title>Android: MVP, Dagger2, Retrofitなどなどでアプリを作りました</title>
       <link>https://satoshun.github.io/2015/09/android-app-events/</link>
       <pubDate>Sun, 06 Sep 2015 00:00:00 +0000</pubDate>
@@ -2014,6 +2146,32 @@ get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build . build.yml
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
 package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
+    </item>
+    
+    <item>
+      <title>Go: Goji patternマッチ部分のコードリーディング</title>
+      <link>https://satoshun.github.io/2014/11/go-goji-code-reading/</link>
+      <pubDate>Sun, 09 Nov 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2014/11/go-goji-code-reading/</guid>
+      <description>Gojiでは, sinatraライクにURLマッチングをさせることが出来ます. この記事では, URLマッチングさせる部分のソースコードを解説していきます.
+まず, parsePatternメソッドから.
+func parsePattern(p interface{}) Pattern { switch p.(type) { case Pattern: return p.(Pattern) case *regexp.Regexp: return parseRegexpPattern(p.(*regexp.Regexp)) case string: return parseStringPattern(p.(string)) default: log.Fatalf(&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;+ &amp;#34;regexp.Regexp, or a string.&amp;#34;, p) } panic(&amp;#34;log.Fatalf does not return&amp;#34;) } switch p.(type)で, 与えられたパターンの型によって処理を分岐させています. Pattern, *regexp.Regexp, stringの3パターンに対応しています.
+今回は, stringの場合, parseStringPatternの処理を見ていきます.
+parseStringPattern 中身 const bc = &amp;#34;/.;,&amp;#34; var patternRe = regexp.MustCompile(`[` + bc + `]:([^` + bc + `]+)`) func parseStringPattern(s string) stringPattern { raw := s var wildcard bool if strings.</description>
+    </item>
+    
+    <item>
+      <title>subproコマンド: Sublime Projectのプロジェクト管理</title>
+      <link>https://satoshun.github.io/2014/05/subpro/</link>
+      <pubDate>Thu, 08 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2014/05/subpro/</guid>
+      <description>subproコマンド Sublime Textのプロジェクトをterminalで管理するためのコマンドを作りました．
+結構便利だと思うので，使ってくれたら嬉しいです． https://github.com/satoshun/subpro
+インストール homebrewでインストール出来ます．
+$ brew tap satoshun/commands $ brew install subpro $ brew install subpro-completion .bashrcに下のコードを追加してください．
+if [ -f `brew --prefix`/etc/bash_completion.d/subpro_completion ]; then source `brew --prefix`/etc/bash_completion.d/subpro_completion fi 使い方 プロジェクト作成 # 基本構文 subpro create [group] [プロジェクトのディレクトリ] # 例 $ ls martini $ subpro create golang martini ## create martini project into golang directory and open project. 作成したプロジェクトを開く # 基本構文 subpro [プロジェクト名] # 例 $ subpro martini ## open martini project with sublime text プロジェクト一覧 # 例 $ subpro [tab] Display all 131 possibilities?</description>
     </item>
     
   </channel>

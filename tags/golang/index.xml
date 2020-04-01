@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Aug 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang: structで宣言したメソッドを明示的に呼び出す</title>
+      <link>https://satoshun.github.io/2016/08/go-struct-method/</link>
+      <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/08/go-struct-method/</guid>
+      <description>Goでは, 宣言したtypeにメソッドを定義することが出来ます.
+典型的な用途としては, structでデータ型を宣言して, それにメソッドを定義する使い方だと思います.
+type Hoge struct { } func (h Hoge) h1() { fmt.Println(&amp;#34;called h1&amp;#34;) } func (h *Hoge) h2() { fmt.Println(&amp;#34;called h2&amp;#34;) } 通常メソッドを呼ぶ際は, インスタンスを作成し, そのインスタンスを通じてメソッドをコールします.
+h := Hoge{} h.h1() // output: called h1 h.h2() // output: called h2 このさい, h1, h2メソッドを通じて, 暗黙的にインスタンスも渡されています.
+暗黙的に渡している部分を, 明示的に渡すと下のようになります.
+h := Hoge{} Hoge.h1(h) // output: called h1 == h.h1() (*Hoge).h2(&amp;amp;h) // output: called h2 == h.h2()  (*Hoge).h1(&amp;amp;h) // output: called h1 == h.</description>
+    </item>
     
     <item>
       <title>Golang: nil pointer receiverの話</title>

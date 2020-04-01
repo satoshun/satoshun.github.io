@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/linux/</link>
+    <description>Recent content in linux on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 17 Jul 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://satoshun.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux perf: CPU編</title>
+      <link>https://satoshun.github.io/2016/07/linux-perf/</link>
+      <pubDate>Sun, 17 Jul 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/07/linux-perf/</guid>
+      <description>Linux perf: CPU編 CPU利用率, 高負荷なプロセスの特定の仕方について説明します.
+0. lscpu システムのコア数,マシンのスペックを最初に調べます.
+root@vagrant:~# lscpu Architecture: x86_64 CPU op-mode(s): 32-bit, 64-bit Byte Order: Little Endian CPU(s): 4 On-line CPU(s) list: 0-3 Thread(s) per core: 1 Core(s) per socket: 4 Socket(s): 1 NUMA node(s): 1 Vendor ID: GenuineIntel CPU family: 6 Model: 69 Model name: Intel(R) Core(TM) i7-4650U CPU @ 1.70GHz Stepping: 1 CPU MHz: 2300.000 BogoMIPS: 4600.00 Hypervisor vendor: KVM Virtualization type: full L1d cache: 32K L1i cache: 32K L2 cache: 256K L3 cache: 4096K NUMA node0 CPU(s): 0-3 Flags: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm コア数は4, Core i7ということが分かります.</description>
+    </item>
+    
+  </channel>
+</rss>
