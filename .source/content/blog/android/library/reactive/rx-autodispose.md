@@ -1,7 +1,7 @@
 +++
 date = "2017-05-04"
 title = "RxJava: AutoDisposeで自動的にdisposeする"
-tags = ["android", "rxjava", "autodispose]
+tags = ["android", "rxjava", "autodispose"]
 blogimport = true
 type = "post"
 draft = false
