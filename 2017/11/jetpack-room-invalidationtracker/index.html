@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-11-26">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="jetpack">
+  
+    <meta property="og:tags" content="room">
+  
+
+  <meta property="twitter:title" content="Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)">
+
+  
+  <meta property="twitter:description" content="こんにちはʕ•ӫ̫͡•ʔ
+この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body class="theme-dark">
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/presentation">Presentation</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)</h1>
+    
+    <span class="post-date">Created at Sun, Nov 26, 2017</span>
+    
+    <p>こんにちはʕ•ӫ̫͡•ʔ</p>
+<p>この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。</p>
+<h2 id="前置き前提知識">前置き/前提知識</h2>
+<p><a href="https://developer.android.com/topic/libraries/architecture/room.html#db-migration">Room</a>はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。</p>
+<p>RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> {
+    @Query(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUsers</span>(): Flowable&lt;List&lt;User&gt;&gt;
+}
+</code></pre></div><p>返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。</p>
+<p>そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// クライアント側のコード
+</span><span style="color:#75715e"></span>userDao.getUsers()
+  .subscribeOn(Schedulers.io)
+  .subscribe {
+     println(it) <span style="color:#75715e">// ここが対象のテーブルが変更されるたびに評価される。
+</span><span style="color:#75715e"></span>  }
+</code></pre></div><p>テーブルの変更検知はRoomの内部クラスの<code>InvalidationTracker</code>クラスで行っています。
+これから<code>InvalidationTracker</code>の内部実装を見ていきます。</p>
+<h2 id="invalidationtrackerの流れ">InvalidationTrackerの流れ</h2>
+<ol>
+<li>InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成</li>
+<li>obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録</li>
+<li>RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認</li>
+<li>テーブルが更新されていたら変更通知コールバックを実行</li>
+</ol>
+<p>というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。</p>
+<h3 id="invalidationtrackerstarttrackingtableメソッドによりtriggerを生成する">InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する</h3>
+<p>最初に各テーブルのバージョンを管理する <code>room_table_modification_log</code>が生成されます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TABLE</span> room_table_modification_log (
+    <span style="color:#66d9ef">version</span> INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
+    table_id INTEGER
+)
+</code></pre></div><p>このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TRIGGER</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> room_table_modification_trigger_users_UPDATE <span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> users
+<span style="color:#66d9ef">BEGIN</span>
+    <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> room_table_modification_log <span style="color:#66d9ef">VALUES</span> (<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">0</span>); <span style="color:#f92672">#</span> <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">は</span>table_id
+<span style="color:#66d9ef">END</span>
+</code></pre></div><p>これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリ<code>INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); </code>は <code>room_table_modification_log</code>テーブルに最新のid + 1のrowを追加/更新するものになります。</p>
+<p>上のTriggerはUPDATEですが、その他にDELETE、INSERT用のTriggerも実行されます。これらのTriggerによりテーブルの変更(Update, Insert, Delete)を検知し、前回のversionを新しいものに更新します。</p>
+<h3 id="roomdataendtransactionのタイミングで各テーブルが更新されたかを確認する">RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認する</h3>
+<p>Triggerによりversionを更新できたので、次にその更新したテーブルを前回の状態と比較し、差分があるなら発火してあげる必要があります。それは <code>RoomData#endTransaction</code>のタイミングで行っています。</p>
+<p>endTransactionのタイミングで<code>InvalidationTracker#refreshVersionsAsync</code>をコールし、<code>room_table_modification_log</code>テーブルに変更があったら、InvalidationTrackerに登録にした<code>InvalidationTracker.Observer</code>に対してデータ変更のコールバックをします。これにより生成されたobservable(FlowableとかLiveDataとかとか)に対して変更通知をすることが出来ます。</p>
+<p>これがRoomにおけるおおまかな変更検知/通知の仕組みになります。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>SQLのTriggerを使っているところが個人的には意外というか、こんな実装があるんだと感心した</li>
+<li>上手く説明できた気がしないので、より詳細はInvalidationTrackerの実装を読んで下さい(゜レ゜)</li>
+</ul>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/jetpack">jetpack</a></li>
+        
+          <li><a href="/tags/room">room</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

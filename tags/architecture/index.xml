@@ -94,5 +94,20 @@ https://peaks.cc/books/architecture_patterns
 感想  MVP  PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう  PresenterでView、Modelが何を出来るかを知らなければならない   Contractみたいなインタフェースを切るのは好き  それを見ただけで何をそのページでやっているのかが掴めるので   PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう   MVVM  個人的にはMVPより好き  ViewModelがViewの参照を持たなくて良いので少しスッキリする  ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等     Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う  DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう     Flux  単一方向データフローは凄い良いと思う  単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴   ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い FluxもAACとの相性は良いと思う   負債の話  負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った   メモ  データ層の抽象化に関してはRepository的なものを作るで良さそう データ側はRx、UI側に反映する時はLiveDataが良さそう    </description>
     </item>
     
+    <item>
+      <title>Android: Repository層についてあれこれ</title>
+      <link>https://satoshun.github.io/2016/11/android-arch-repository/</link>
+      <pubDate>Wed, 23 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/11/android-arch-repository/</guid>
+      <description>参考: https://github.com/googlesamples/android-architecture/tree/todo-mvp
+Repository層とは? data層を抽象する層. Repositoryではアプリのキャッシュポリシーを担当する. キャッシュはメモリ, ディスクのどちらかに保存するかに依存しないようにする. そこの実装はdata層に任せる.
+具体的には, Repositoryは, remote dataオブジェクトと, local dataオブジェクトの2つのオブジェクトに依存するようにし, どこにキャッシュされるかはlocal dataオブジェクトに従う. こうすることで, Repositoryはどこにデータが保存されているかを気にしなくて良い. あくまでRepositoryはどこのdataオブジェクトからデータを取ってくるのかを決定する.
+また, Repositoryは基本的にApplicationのライフサイクルに連動し, SingletonでActivity間でデータの共有を効率的に行える. 例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)
+RxJavaとともに RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.
+@NonNull @Override public Observable&amp;lt;User&amp;gt; getUser(int id) { return localDataSource.getUser(id) .onErrorResumeNext(remoteDataSource.getUser(id)) .doOnNext(new Action1&amp;lt;User&amp;gt;() { @Override public void call(User user) { localDataSource.saveUser(user); } }) .subscribeOn(Schedulers.io()) .observeOn(AndroidSchedulers.mainThread()); } 上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります. クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.
+まとめ ざっくりと書きました. キャッシュの抽象化(Repository層) + RxJavaは非常に強力で, とても良いパターンだと思っています. クライアント(ContrllerやPresenter)のコードもきれいになり, またActivity間のデータの共有もスムーズに行うことができるので(最悪キャッシュがリリースされていてもRemoteから取得してくれる), Androidの開発に向いているパターンでもあると思います.</description>
+    </item>
+    
   </channel>
 </rss>

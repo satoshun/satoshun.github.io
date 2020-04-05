@@ -963,6 +963,86 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/2017/12/rx-as-to-operator/</loc>
+    <lastmod>2017-12-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/12/dagger-memberinjector/</loc>
+    <lastmod>2017-12-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/12/kotlin-jvmstatic-overhead/</loc>
+    <lastmod>2017-12-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/12/kotlin-curry/</loc>
+    <lastmod>2017-12-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</loc>
+    <lastmod>2017-12-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</loc>
+    <lastmod>2017-11-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/08/rx-okhttp-401/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/autodispose/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/05/rx-multicast/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/05/rx-concateager-parallel-request/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/05/rx-autodispose/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/05/rx-connectable-observable/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2017/05/rx-subject-materialize/</loc>
+    <lastmod>2017-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/11/dagger2-scope/</loc>
+    <lastmod>2016-11-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2016/11/android-arch-repository/</loc>
+    <lastmod>2016-11-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/repository/</loc>
+    <lastmod>2016-11-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/leakcanary/</loc>
     <lastmod>2016-10-16T00:00:00+00:00</lastmod>
   </url>

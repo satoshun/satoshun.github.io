@@ -362,5 +362,30 @@ package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnAct
 参考  https://medium.com/@dpreussler/unit-testing-activity-lifecycle-4e740f71e68a  </description>
     </item>
     
+    <item>
+      <title>Kotlin: Companion object &#43; @JvmStaticは冗長なメソッドが作られる</title>
+      <link>https://satoshun.github.io/2017/12/kotlin-jvmstatic-overhead/</link>
+      <pubDate>Sun, 17 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/kotlin-jvmstatic-overhead/</guid>
+      <description>下に説明のための簡単なKotlinのコードを載せます。
+class Fuga { companion object { fun fuga1() { println(&amp;#34;fuga1&amp;#34;) } @JvmStatic fun fuga2() { println(&amp;#34;fuga2&amp;#34;) } } } これをJavaに変換すると、
+public final class Fuga { public static final Fuga.Companion Companion = new Fuga.Companion((DefaultConstructorMarker)null); @JvmStatic public static final void fuga2() { Companion.fuga2(); } @Metadata( mv = {1, 1, 9}, bv = {1, 0, 2}, k = 1, d1 = {&amp;#34;\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004J\b\u0010\u0005\u001a\u00020\u0004H\u0007¨\u0006\u0006&amp;#34;}, d2 = {&amp;#34;Lcom/github/satoshun/reactivex/cache/Fuga$Companion;&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;()V&amp;#34;, &amp;#34;fuga1&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;fuga2&amp;#34;, &amp;#34;production sources for module rx-kotlin-cache_main&amp;#34;} ) public static final class Companion { public final void fuga1() { String var1 = &amp;#34;fuga1&amp;#34;; System.</description>
+    </item>
+    
+    <item>
+      <title>Kotlinでカリー化を表現する</title>
+      <link>https://satoshun.github.io/2017/12/kotlin-curry/</link>
+      <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/kotlin-curry/</guid>
+      <description>おはこんばんわ。この記事はきらぴかAdvent Calendarの2日目になります。
+この記事ではKotlinでカリー化を実装する方法について解説します。カリー化の細かい定義には触れません。詳しい説明は https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AA%E3%83%BC%E5%8C%96 を参照して下さい。
+さっそくコードから Kotlinで汎用的なカリー化のコードをどのように書けば良いのだろうと? 調べていたらとても良いコードがありました。 ここでは3つの引数を取る関数をカリー化する例を紹介します。
+fun &amp;lt;P1, P2, P3, R&amp;gt; ((P1, P2, P3) -&amp;gt; R).curried(): (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; R { return { p1: P1 -&amp;gt; { p2: P2 -&amp;gt; { p3: P3 -&amp;gt; this(p1, p2, p3) } } } } (ここから一部抜粋 :pray: : https://github.com/MarioAriasC/funKTionale/blob/master/funktionale-currying/src/main/kotlin/org/funktionale/currying/namespace.kt)
+このコードは3つの引数取る関数((P1, P2, P3) -&amp;gt; R)があり、それを (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; Rに変換するものになります。たったこれだけで引数を3つ取る関数(Function3)から1つの引数取る関数(Function1)のチェインに変換しています。
+コードの説明 最初にこのコードを見たときに返り値の (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; R  ってなんだろう?</description>
+    </item>
+    
   </channel>
 </rss>

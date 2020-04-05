@@ -44,5 +44,19 @@ class MainViewModel { private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;() v
 abstract class ViewModel2 { protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) { postValue(value) } protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) { setValue(value) } } // ViewModel2と同じパッケージに定義 public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; { @Override protected void postValue(T value) { super.</description>
     </item>
     
+    <item>
+      <title>LiveDataのpostValueは全て流れてくるとは限らない</title>
+      <link>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</link>
+      <pubDate>Wed, 06 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</guid>
+      <description>結論  LiveData.postValueを短い間に複数回コールすると最後の値しかObseverに流れてこないことがある  背景 RxJavaのSubjectの代替としてMutableLiveData(postValueとsetValueがpublicになっている)を使っている部分があり、短い間に2回コールされたとき、全ての値が流れて欲しかったが何故か1回しか叩かれていなかった。 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。
+実装詳細 LiveDataのpostValueのコードは以下のようになっています(v1.0.0)
+protected void postValue(T value) { boolean postTask; synchronized (mDataLock) { postTask = mPendingData == NOT_SET; mPendingData = value; } if (!postTask) { return; } ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable); } postValueメソッドでは
+  mPendingDataフィールドにObserverに渡すデータをセットする   メインスレッドでmPostValueRunnableを実行する (ただしmPendingDataにまだ以前のデータが残っていたら、以前のデータを更新する)  といったことをやっています。
+このコードを見て分かる通り、前にセットしたmPendingDataがObserverに渡される前に、新しい値で上書きされる可能性があることが分かります。 よって、短い間に複数回のpostValueをコールすると最後の値のみしかObserverに流れてこない可能性があります。
+まとめ  RxJavaのSubjectのように、全ての値を流す動作を意図しているとハマる そもそもLiveDataは最新のViewの状態を保持する用途だと思うので、短い間に複数回コールされたら、最後の値のみを流すのは正しい。LiveDataは悪くない。悪いのは俺。  </description>
+    </item>
+    
   </channel>
 </rss>

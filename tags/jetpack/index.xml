@@ -409,5 +409,38 @@ fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; { // sk
 参考  https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java https://medium.</description>
     </item>
     
+    <item>
+      <title>LiveDataのpostValueは全て流れてくるとは限らない</title>
+      <link>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</link>
+      <pubDate>Wed, 06 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</guid>
+      <description>結論  LiveData.postValueを短い間に複数回コールすると最後の値しかObseverに流れてこないことがある  背景 RxJavaのSubjectの代替としてMutableLiveData(postValueとsetValueがpublicになっている)を使っている部分があり、短い間に2回コールされたとき、全ての値が流れて欲しかったが何故か1回しか叩かれていなかった。 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。
+実装詳細 LiveDataのpostValueのコードは以下のようになっています(v1.0.0)
+protected void postValue(T value) { boolean postTask; synchronized (mDataLock) { postTask = mPendingData == NOT_SET; mPendingData = value; } if (!postTask) { return; } ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable); } postValueメソッドでは
+  mPendingDataフィールドにObserverに渡すデータをセットする   メインスレッドでmPostValueRunnableを実行する (ただしmPendingDataにまだ以前のデータが残っていたら、以前のデータを更新する)  といったことをやっています。
+このコードを見て分かる通り、前にセットしたmPendingDataがObserverに渡される前に、新しい値で上書きされる可能性があることが分かります。 よって、短い間に複数回のpostValueをコールすると最後の値のみしかObserverに流れてこない可能性があります。
+まとめ  RxJavaのSubjectのように、全ての値を流す動作を意図しているとハマる そもそもLiveDataは最新のViewの状態を保持する用途だと思うので、短い間に複数回コールされたら、最後の値のみを流すのは正しい。LiveDataは悪くない。悪いのは俺。  </description>
+    </item>
+    
+    <item>
+      <title>Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)</title>
+      <link>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</link>
+      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</guid>
+      <description>こんにちはʕ•ӫ̫͡•ʔ
+この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。
+前置き/前提知識 RoomはGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。
+RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。
+@Dao interface UserDao { @Query(&amp;#34;SELECT * FROM users&amp;#34;) fun getUsers(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt; } 返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。
+そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。
+// クライアント側のコード userDao.getUsers() .subscribeOn(Schedulers.io) .subscribe { println(it) // ここが対象のテーブルが変更されるたびに評価される。  } テーブルの変更検知はRoomの内部クラスのInvalidationTrackerクラスで行っています。 これからInvalidationTrackerの内部実装を見ていきます。
+InvalidationTrackerの流れ  InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成 obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録 RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認 テーブルが更新されていたら変更通知コールバックを実行  というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。
+InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する 最初に各テーブルのバージョンを管理する room_table_modification_logが生成されます。
+CREATE TEMP TABLE room_table_modification_log ( version INTEGER PRIMARY KEY AUTOINCREMENT, table_id INTEGER ) このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。
+CREATE TEMP TRIGGER IF NOT EXISTS room_table_modification_trigger_users_UPDATE AFTER UPDATE ON users BEGIN INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); # 0はtable_id END これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリINSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); は room_table_modification_logテーブルに最新のid + 1のrowを追加/更新するものになります。</description>
+    </item>
+    
   </channel>
 </rss>

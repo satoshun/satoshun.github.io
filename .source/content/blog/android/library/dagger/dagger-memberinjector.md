@@ -1,6 +1,6 @@
 +++
 date = "2017-12-19"
-title = "Dagger: MembersInjectorを使い依存を注入する
+title = "Dagger: MembersInjectorを使い依存を注入する"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"

@@ -233,6 +233,36 @@ kapt { javacOptions { option(&amp;#34;-Adagger.fastInit=enabled&amp;#34;) } } �
     </item>
     
     <item>
+      <title>Dagger: MembersInjectorを使い依存を注入する</title>
+      <link>https://satoshun.github.io/2017/12/dagger-memberinjector/</link>
+      <pubDate>Tue, 19 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/dagger-memberinjector/</guid>
+      <description>悩んでいたこと Dagger Androidを使いカスタムViewクラスに対して依存を注入する方法
+背景/前提知識 Dagger AndroidはActivity, Fragment, Serviceなどのコンポーネントを起点にして依存関係を解決してくれます。しかし、カスタムViewのコンスタラクタはAndroid Frameworkから呼び出されるため、 コンストラクタインジェクションを使うことは出来ません。ということはセッター/フィールドインジェクションを使いカスタムViewに対して、依存を注入する必要があります。
+上のことをDagger Androidで実現するにはどうすれば良いのかを考えてみました。
+解決策 MembersInjector&amp;lt;T&amp;gt;を使い依存を注入する方法が良いのではと思っています。MembersInjector&amp;lt;T&amp;gt; はとあるクラスに依存を注入するためのインターフェースになります。Component, Module側に特別な記述すること無く使えるDaggerサイドから提供されているインターフェースです。
+public interface MembersInjector&amp;lt;T&amp;gt; { void injectMembers(T instance); } 具体的な疑似コードは下のようになります。
+// カスタムView class MainView extends View { @Inject UserRepository repository; // 適当なRepositoryクラスを注入したい } // エントリポイントActivity class MainActivity extends Activity { @Inject MembersInjector&amp;lt;MainView&amp;gt; injector; @Override protected void onCreate(@Nullable Bundle savedInstanceState) { AndroidInjection.inject(this); super.onCreate(savedInstanceState); MainView view = findViewById(R.id.main_view);s injector.injectMembers(view); } } Daggerで正しくUserRepositoryを注入するための依存関係を定義できていれば、特殊な記述をすることなく、MainActivityにMembersInjector&amp;lt;MainView&amp;gt;を注入することが出来ます。注入されたMembersInjector&amp;lt;MainView&amp;gt; を 使うことで、MainViewに依存を注入することが出来ます。
+まとめ  MembersInjectorは神  </description>
+    </item>
+    
+    <item>
+      <title>Android: Dagger2のScopeについてあれこれ</title>
+      <link>https://satoshun.github.io/2016/11/dagger2-scope/</link>
+      <pubDate>Sun, 27 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/11/dagger2-scope/</guid>
+      <description>結論: Application(Singleton), Activity, Fragment, Viewの4つのScopeを作るのが良いと思います.
+Scopeとは? とあるprovideするインスタンスの生存期間を指定するアノテーションです. SingletonアノテーションもScopeの一種です. 例えば, Singletonは, その名の表すとおり, Singletonで表現したいインスタンスに対してアノテートします.
+Androidなら, OkHttpClientなどはSingletonで管理すべきなので, 下のように表現できます.
+@Singleton @Provides public static OkHttpClient provideOkHttpClient() { return new OkHttpClient.Builder() .connectTimeout(10, TimeUnit.SECONDS) .readTimeout(20, TimeUnit.SECONDS) .build(); } Singletonアノテーションを付けないと, Injectするたびに新しいインスタンスが作られます.
+また, ScopeアノテーションはDagger特有のアノテーションではなく, JSR-330で定義されているスペックなので, Daggerが廃れたとしても, JSR-330が廃れてない限り使える知識, 技術になります.
+Androidに適したScope Androidには大きく, Application, Activity, Fragment, Viewの4つのライフサイクルがあります. なので, それらに対してScopeを定義すればいいと思ってます.
+ Application: Singleton Activity: ActivityScope Fragment: FragmentScope View: ViewScope  ViewScopeはRecylerView, ListViewなどで有効に使えると思います.</description>
+    </item>
+    
+    <item>
       <title>Android: Dagger2でDIをする. u2020から読み解く編 Part2</title>
       <link>https://satoshun.github.io/2015/05/dagger2_2/</link>
       <pubDate>Sun, 24 May 2015 00:00:00 +0000</pubDate>

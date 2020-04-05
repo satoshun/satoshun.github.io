@@ -1637,6 +1637,225 @@ package android.arch fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.accessOnAct
     </item>
     
     <item>
+      <title>RxJava: as, toの違いについて</title>
+      <link>https://satoshun.github.io/2017/12/rx-as-to-operator/</link>
+      <pubDate>Sat, 23 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/rx-as-to-operator/</guid>
+      <description>RxJavaでobservable型(Flowable、Observableなど)を他の型に変換したいときには、toまたはasを使います。
+この記事ではそれぞれの違いを説明します。
+toについて toのシグニチャは以下のようになります。
+&amp;lt;R&amp;gt; R to(Function&amp;lt;? super Flowable&amp;lt;T&amp;gt;, R&amp;gt; converter) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Maybe&amp;lt;T&amp;gt;, R&amp;gt; convert) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Single&amp;lt;T&amp;gt;, R&amp;gt; convert) &amp;lt;U&amp;gt; U to(Function&amp;lt;? super Completable, U&amp;gt; converter) public interface Function&amp;lt;T, R&amp;gt; { R apply(@NonNull T t) throws Exception; } それぞれconverterをFunctionインターフェースで指定でき、upstream(オリジナルのObservable)を任意の型に変換することが出来ます。
+asについて asのシグニチャは以下のようになります。
+&amp;lt;R&amp;gt; R as(@NonNull FlowableConverter&amp;lt;T, ? extends R&amp;gt; converter) &amp;lt;R&amp;gt; R as(@NonNull ObservableConverter&amp;lt;T, ? extends R&amp;gt; converter) &amp;lt;R&amp;gt; R as(@NonNull MaybeConverter&amp;lt;T, ?</description>
+    </item>
+    
+    <item>
+      <title>Dagger: MembersInjectorを使い依存を注入する</title>
+      <link>https://satoshun.github.io/2017/12/dagger-memberinjector/</link>
+      <pubDate>Tue, 19 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/dagger-memberinjector/</guid>
+      <description>悩んでいたこと Dagger Androidを使いカスタムViewクラスに対して依存を注入する方法
+背景/前提知識 Dagger AndroidはActivity, Fragment, Serviceなどのコンポーネントを起点にして依存関係を解決してくれます。しかし、カスタムViewのコンスタラクタはAndroid Frameworkから呼び出されるため、 コンストラクタインジェクションを使うことは出来ません。ということはセッター/フィールドインジェクションを使いカスタムViewに対して、依存を注入する必要があります。
+上のことをDagger Androidで実現するにはどうすれば良いのかを考えてみました。
+解決策 MembersInjector&amp;lt;T&amp;gt;を使い依存を注入する方法が良いのではと思っています。MembersInjector&amp;lt;T&amp;gt; はとあるクラスに依存を注入するためのインターフェースになります。Component, Module側に特別な記述すること無く使えるDaggerサイドから提供されているインターフェースです。
+public interface MembersInjector&amp;lt;T&amp;gt; { void injectMembers(T instance); } 具体的な疑似コードは下のようになります。
+// カスタムView class MainView extends View { @Inject UserRepository repository; // 適当なRepositoryクラスを注入したい } // エントリポイントActivity class MainActivity extends Activity { @Inject MembersInjector&amp;lt;MainView&amp;gt; injector; @Override protected void onCreate(@Nullable Bundle savedInstanceState) { AndroidInjection.inject(this); super.onCreate(savedInstanceState); MainView view = findViewById(R.id.main_view);s injector.injectMembers(view); } } Daggerで正しくUserRepositoryを注入するための依存関係を定義できていれば、特殊な記述をすることなく、MainActivityにMembersInjector&amp;lt;MainView&amp;gt;を注入することが出来ます。注入されたMembersInjector&amp;lt;MainView&amp;gt; を 使うことで、MainViewに依存を注入することが出来ます。
+まとめ  MembersInjectorは神  </description>
+    </item>
+    
+    <item>
+      <title>Kotlin: Companion object &#43; @JvmStaticは冗長なメソッドが作られる</title>
+      <link>https://satoshun.github.io/2017/12/kotlin-jvmstatic-overhead/</link>
+      <pubDate>Sun, 17 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/kotlin-jvmstatic-overhead/</guid>
+      <description>下に説明のための簡単なKotlinのコードを載せます。
+class Fuga { companion object { fun fuga1() { println(&amp;#34;fuga1&amp;#34;) } @JvmStatic fun fuga2() { println(&amp;#34;fuga2&amp;#34;) } } } これをJavaに変換すると、
+public final class Fuga { public static final Fuga.Companion Companion = new Fuga.Companion((DefaultConstructorMarker)null); @JvmStatic public static final void fuga2() { Companion.fuga2(); } @Metadata( mv = {1, 1, 9}, bv = {1, 0, 2}, k = 1, d1 = {&amp;#34;\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004J\b\u0010\u0005\u001a\u00020\u0004H\u0007¨\u0006\u0006&amp;#34;}, d2 = {&amp;#34;Lcom/github/satoshun/reactivex/cache/Fuga$Companion;&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;()V&amp;#34;, &amp;#34;fuga1&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;fuga2&amp;#34;, &amp;#34;production sources for module rx-kotlin-cache_main&amp;#34;} ) public static final class Companion { public final void fuga1() { String var1 = &amp;#34;fuga1&amp;#34;; System.</description>
+    </item>
+    
+    <item>
+      <title>Kotlinでカリー化を表現する</title>
+      <link>https://satoshun.github.io/2017/12/kotlin-curry/</link>
+      <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/kotlin-curry/</guid>
+      <description>おはこんばんわ。この記事はきらぴかAdvent Calendarの2日目になります。
+この記事ではKotlinでカリー化を実装する方法について解説します。カリー化の細かい定義には触れません。詳しい説明は https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AA%E3%83%BC%E5%8C%96 を参照して下さい。
+さっそくコードから Kotlinで汎用的なカリー化のコードをどのように書けば良いのだろうと? 調べていたらとても良いコードがありました。 ここでは3つの引数を取る関数をカリー化する例を紹介します。
+fun &amp;lt;P1, P2, P3, R&amp;gt; ((P1, P2, P3) -&amp;gt; R).curried(): (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; R { return { p1: P1 -&amp;gt; { p2: P2 -&amp;gt; { p3: P3 -&amp;gt; this(p1, p2, p3) } } } } (ここから一部抜粋 :pray: : https://github.com/MarioAriasC/funKTionale/blob/master/funktionale-currying/src/main/kotlin/org/funktionale/currying/namespace.kt)
+このコードは3つの引数取る関数((P1, P2, P3) -&amp;gt; R)があり、それを (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; Rに変換するものになります。たったこれだけで引数を3つ取る関数(Function3)から1つの引数取る関数(Function1)のチェインに変換しています。
+コードの説明 最初にこのコードを見たときに返り値の (P1) -&amp;gt; (P2) -&amp;gt; (P3) -&amp;gt; R  ってなんだろう?</description>
+    </item>
+    
+    <item>
+      <title>LiveDataのpostValueは全て流れてくるとは限らない</title>
+      <link>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</link>
+      <pubDate>Wed, 06 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</guid>
+      <description>結論  LiveData.postValueを短い間に複数回コールすると最後の値しかObseverに流れてこないことがある  背景 RxJavaのSubjectの代替としてMutableLiveData(postValueとsetValueがpublicになっている)を使っている部分があり、短い間に2回コールされたとき、全ての値が流れて欲しかったが何故か1回しか叩かれていなかった。 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。
+実装詳細 LiveDataのpostValueのコードは以下のようになっています(v1.0.0)
+protected void postValue(T value) { boolean postTask; synchronized (mDataLock) { postTask = mPendingData == NOT_SET; mPendingData = value; } if (!postTask) { return; } ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable); } postValueメソッドでは
+  mPendingDataフィールドにObserverに渡すデータをセットする   メインスレッドでmPostValueRunnableを実行する (ただしmPendingDataにまだ以前のデータが残っていたら、以前のデータを更新する)  といったことをやっています。
+このコードを見て分かる通り、前にセットしたmPendingDataがObserverに渡される前に、新しい値で上書きされる可能性があることが分かります。 よって、短い間に複数回のpostValueをコールすると最後の値のみしかObserverに流れてこない可能性があります。
+まとめ  RxJavaのSubjectのように、全ての値を流す動作を意図しているとハマる そもそもLiveDataは最新のViewの状態を保持する用途だと思うので、短い間に複数回コールされたら、最後の値のみを流すのは正しい。LiveDataは悪くない。悪いのは俺。  </description>
+    </item>
+    
+    <item>
+      <title>Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)</title>
+      <link>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</link>
+      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</guid>
+      <description>こんにちはʕ•ӫ̫͡•ʔ
+この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。
+前置き/前提知識 RoomはGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。
+RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。
+@Dao interface UserDao { @Query(&amp;#34;SELECT * FROM users&amp;#34;) fun getUsers(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt; } 返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。
+そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。
+// クライアント側のコード userDao.getUsers() .subscribeOn(Schedulers.io) .subscribe { println(it) // ここが対象のテーブルが変更されるたびに評価される。  } テーブルの変更検知はRoomの内部クラスのInvalidationTrackerクラスで行っています。 これからInvalidationTrackerの内部実装を見ていきます。
+InvalidationTrackerの流れ  InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成 obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録 RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認 テーブルが更新されていたら変更通知コールバックを実行  というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。
+InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する 最初に各テーブルのバージョンを管理する room_table_modification_logが生成されます。
+CREATE TEMP TABLE room_table_modification_log ( version INTEGER PRIMARY KEY AUTOINCREMENT, table_id INTEGER ) このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。
+CREATE TEMP TRIGGER IF NOT EXISTS room_table_modification_trigger_users_UPDATE AFTER UPDATE ON users BEGIN INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); # 0はtable_id END これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリINSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); は room_table_modification_logテーブルに最新のid + 1のrowを追加/更新するものになります。</description>
+    </item>
+    
+    <item>
+      <title>Android: RxJava &#43; OkHttpを使って401の処理をいい感じにする</title>
+      <link>https://satoshun.github.io/2017/08/rx-okhttp-401/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/08/rx-okhttp-401/</guid>
+      <description>(この記事はRxJavaとOkHttpを知っている前提で進めていきます。またこの記事はRxJavaすごーいしたいだけの記事です。401のハンドリングのところは、RxJavaを使いたいだけのユースケースというか1例になります。)
+この記事のサンプルコードは ここ(Github)にあります。
+ API周りの開発をしていて、401のときの処理をどうするかという永遠の課題があると思います。 クライアント側で頑張るとしたら以下の感じになるかなと思います。
+ OkHttpのAuthenticatorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク OkHttpのInterceptorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク 各処理(例えばRxJavaのTransformerとか)に401用の処理を埋め込んで、retryを掛ける。  などがあるかなと(OkHttp、RxJavaを使うことを前提とする)
+このブログではOkHttpのAuthenticatorを使う方法で401の処理をいい感じにしたいと思います。
+またrefresh tokenは非同期、APIリクエストが必要であるとします。擬似コードはこんな感じです。
+fun refreshToken(): Observable&amp;lt;String&amp;gt; { return Observable.just(Credentials.basic(&amp;quot;sato&amp;quot;, &amp;quot;passwordhoge&amp;quot;)) .doOnNext { println(&amp;quot;GET credential: $it&amp;quot;) } // Log出力 .delay(2000, TimeUnit.MILLISECONDS) } 時間が掛かるんだなあくらいに思って下さい。
+401の処理を書いていく OkHttpのAuthenticatorは401のときにフックされます。なのでこの中で401ならrefresh tokenをし、結果をauthorization headerにセットして再リクエストをすれば良さそうです。
+ただここで1つ問題があります。それは、APIリクエストは並列に行われるということです。ということは、何も考えないとrefresh tokenが複数回叩かれてしまいます。なのでrefresh tokenをしているときは、後続の401はそれを待つようにしないといけません。
+愚直に表現するなら、refresh tokenをしていますよフラグをどこかに立てておいて、それがtrueなら待つ。falseならrefersh tokenをして、結果を待つといった処理になります。 並列にリクエストが行われるとしたら、マルチスレッドからコールされるのでsynchorizeなどの制御をする必要があり、めっちゃムズい。
+RxJavaを使ってみる 上記の縛りをRxJavaのpublish + refCountを使うとめっちゃいい感じに表現できます。
+private val authenticator: Authenticator = object : Authenticator { // ここがポイント。publishとrefCountを使う。  private val tokenStream = refreshToken().publish().refCount() // これだと駄目  // private val tokenStream = refreshToken()  // ここは並列に呼ばれる  override fun authenticate(route: Route, response: Response): Request?</description>
+    </item>
+    
+    <item>
+      <title>RxJava multicastについて</title>
+      <link>https://satoshun.github.io/2017/05/rx-multicast/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-multicast/</guid>
+      <description>RxJavaには, stream上のアイテムを複数のSubscriberに渡せるmulticast(再利用のような感じ)の機能があります. multicastは主に「キャッシュとして使う」, イベントをが発火したときに複数で処理をおこなう」 として使います.
+RxJavaでは2つの方法でmulticastを実現します.
+ publishを使い, ConnectableObservableを作る Subjectを使う  また, RxJava2だとFlowableがありますが, Flowableの場合は Processorを使います.
+説明だけだと分かりにくいので, サンプルコードも合わせてどうぞ.
+ ConnectableObservable Subject  ConnectableObservableについて ConnectableObservableはpublishがコールされたタイミングで生成されます. ここがStreamの開始地点, 再利用する地点になります. なので, mapやfilterなど, 共通の処理があるのなら, publishのUpstreamに書いて共通化したほうが効率が良いです.
+ConnectableObservableはconnectメソッドがコールされたタイミングで, Streamの開始をします. 従来はSubscriberを登録した(subscribeメソッドをコールした)タイミングなので, 注意が必要です.
+そして, publish + connectを組みわせることで1つのStreamに対して複数のSubscriberを登録することが出来ます.
+(source: https://github.com/ReactiveX/RxJava/wiki/Connectable-Observable-Operators)
+他にも, shareやrefcountがありますが, 基本的な考え方は変わりません.
+Subjectを使う Subjectは, ObservableとObserverの機能を同時に使うことができる実装です. 1例としては, Observerの機能を使い, 複数のObservableからデータを取得し, Observableの機能を使いそのデータをObserverに渡す, いわゆるBridgeのような事ができます.
+BehaviorSubject, ReplaySubjectなどのバラエティがあるので, 必要に応じて使い分ける必要があります. (https://github.com/ReactiveX/RxJava/wiki/subject)
+まとめ multicastを上手に使いこなすことで, データの取得回数を減らし, アプリがパフォーマンスに優れた構造になることが期待できます. そのためには, どこにmulticastを入れるか, どこからConnectableObservableにするか(publishをコールするか)を決定する必要があります. アプリごとに適切なポイント, 書き方は異なると思うので, サンプルを参考に頂けたら幸いです.
+Happy RxJava2 life!!
+参考  Multicasting in RxJava RxJava  </description>
+    </item>
+    
+    <item>
+      <title>RxJava 並行でリクエストをして, リクエストした順番で値を受け取る</title>
+      <link>https://satoshun.github.io/2017/05/rx-concateager-parallel-request/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-concateager-parallel-request/</guid>
+      <description>結論  concatEagerを使う  concat, concatEager RxJavaにはconcatEagerと, concatオペレータがあります. 似た名前ですが, 振る舞いは異なります. concatEagerはconcatと違い, 並列にObservableは処理するけど, 返してくる順番は保証されています
+ concat: 直列にObservableを処理し, 返してくる順番は保証されている concatEager: 並列にObservableを処理し, 返してくる順番は保証されている  コードで説明すると,
+// o1 ----&amp;gt; | // o2 |------&amp;gt;| // | | // s ------o1------o2 Observable.concat(o1, o2) .subscribe(); // o1 -----------&amp;gt;| // o2 --&amp;gt;---------|-| // | | // s ------------o1-o2 Observable.concatEager(o1, o2) .subscribe(); みたいな感じになります. 繰り返しになりますが ,concatEagerは同時に与えたObservableを解釈し, 順番を守ってくれます.</description>
+    </item>
+    
+    <item>
+      <title>RxJava: AutoDisposeで自動的にdisposeする</title>
+      <link>https://satoshun.github.io/2017/05/rx-autodispose/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-autodispose/</guid>
+      <description>非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.
+RxJavaでは, Disposableからキャンセルの処理を行います.
+Disposable d; public void onCreate() { d = myObservable .map(a -&amp;gt; b) .subscribe(); } public void onPause() { d.dispose(); } このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.
+AutoDisposeを使うことで, コード離れすぎ問題を解決することが出来ます.
+public void onCreate() { myObservable .to(new ObservableScoper&amp;lt;&amp;gt;(this)) .subscribe(); } このような感じで, ストリームの定義の中にAutoDisposeが提供しているScoperを埋め込むことで自動的にdisposeしてくれます.
+また, Scoperは, カスタムで柔軟に定義することが出来ます. 例えば,
+ Activityのライフサイクル Fragmentのライフサイクル RecyclerViewのライフサイクル  など, こちら側で実装することが出来ます(実装の手間は少し掛かります)
+これで, Disposableをマニュアルで呼び出すことから解放されます!
+Error Proneと組み合わせると最強 とはいえ, そもそもScopeをストリームに埋め込むのを忘れる問題があります(だって人間だもの)
+そこで, Googleが出したError Proneを組み合わせることで埋め込むのを忘れる問題を解決出来ます.
+Error ProneはJavaの間違った使い方を教えてくれる Linterのようなものです. これを使うと,
+public void onCreate() { myObservable .</description>
+    </item>
+    
+    <item>
+      <title>RxJava: Connectable Observableについて</title>
+      <link>https://satoshun.github.io/2017/05/rx-connectable-observable/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-connectable-observable/</guid>
+      <description>結論  同じStreamを複数のObserverで扱いたいときはConnectable Observableを使う  効率的!!   Connectable Observableはsubscribeをコールしても, Streamが開始しない  connectメソッドをコールした時に, Streamが開始する    基本的な使い方 同じデータを必要としているObserverがあるとします. これを単純に書くと以下のようになります.
+Obervable&amp;lt;User&amp;gt; getUsers() { return Observalbe.just(User1, User2, User3);} Obervable&amp;lt;User&amp;gt; users = getUsers(); users.subscribe(o1); users.subscribe(o2); users.subscribe(o3); これだと, subscribeされるたびに新しいStreamが作られてしまいます. 上の例だと3つの独立したObservableが作成されてしまい, 非常に効率が悪いです.
+Connectable Observableを使うことで, 1つのStreamからsubscribeすることが出来ます.
+ConnectableObservable&amp;lt;User&amp;gt; users = getUsers().publish(); users.subscribe(o1); users.subscribe(o2); users.subscribe(o3); users.connect(); // 重要!! publishオペレータを適用することで, Connectable Observableに変換出来ます. そして, Connectable Observableに対してObserverをsubscribeし, 最後にconnectをコールすることで, 共通のStreamからsubscribeすることが出来ます.
+流れとしては以下のようになります.
+ publishをコールすると, Connectable Observableが作成出来る Connectable ObservableをいくつかのObserverでsubscribeする  ここではStreamは開始されず, 登録のみされる   最後にconnectをコールする  Streamが開始される.</description>
+    </item>
+    
+    <item>
+      <title>RxJava: SubjectでonErrorを取り扱う時</title>
+      <link>https://satoshun.github.io/2017/05/rx-subject-materialize/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-subject-materialize/</guid>
+      <description>結論  materialize, dematerializeを使う.  背景 onErrorをSubjectに流すと, Subjectはdispose状態になるため, これ以降のEventを流すことが出来なくなります.
+sub.subscribe( v -&amp;gt; Log.d(&amp;#34;onNext&amp;#34;, String.valueOf(v)), e -&amp;gt; Log.d(&amp;#34;onError&amp;#34;, e.getMessage())); sub.onNext(v1); sub.onNext(v2); sub.onError(e1); sub.onNext(v3); // ignore sub.onNext(v4); // ignore これだと, Subjectがこれ以降に値を受け付けないため不便になることがあります.(ユースケース次第)
+materialize + dematerializeオペレータを使うと, この問題を解決出来ます.
+Observable.create((ObservableOnSubscribe&amp;lt;String&amp;gt;) e -&amp;gt; { e.onNext(&amp;#34;1&amp;#34;); e.onNext(&amp;#34;2&amp;#34;); e.onError(new RuntimeException(&amp;#34;e1&amp;#34;)); }).materialize().subscribe(sub::onNext); Observable.create((ObservableOnSubscribe&amp;lt;String&amp;gt;) e -&amp;gt; { e.onNext(&amp;#34;3&amp;#34;); e.onNext(&amp;#34;4&amp;#34;); e.onError(new RuntimeException(&amp;#34;e2&amp;#34;)); }).materialize().subscribe(sub::onNext); materialize を使い, ErrorイベントをNextイベントに変換します
+そして, Subscribeするタイミングで, dematerializeでNextイベントをErrorイベントに戻します.
+sub.dematerialize().subscribe( v -&amp;gt; Log.d(&amp;#34;onNext&amp;#34;, String.valueOf(v)), e -&amp;gt; Log.d(&amp;#34;onError&amp;#34;, e.getMessage())); こうすることで, Subjectをdispose状態にせずに, ObserverでonErrorイベントを処理することが出来ます.
+参照  ReactiveX - Materialize &amp;amp; Dematerialize operators  </description>
+    </item>
+    
+    <item>
+      <title>Android: Dagger2のScopeについてあれこれ</title>
+      <link>https://satoshun.github.io/2016/11/dagger2-scope/</link>
+      <pubDate>Sun, 27 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/11/dagger2-scope/</guid>
+      <description>結論: Application(Singleton), Activity, Fragment, Viewの4つのScopeを作るのが良いと思います.
+Scopeとは? とあるprovideするインスタンスの生存期間を指定するアノテーションです. SingletonアノテーションもScopeの一種です. 例えば, Singletonは, その名の表すとおり, Singletonで表現したいインスタンスに対してアノテートします.
+Androidなら, OkHttpClientなどはSingletonで管理すべきなので, 下のように表現できます.
+@Singleton @Provides public static OkHttpClient provideOkHttpClient() { return new OkHttpClient.Builder() .connectTimeout(10, TimeUnit.SECONDS) .readTimeout(20, TimeUnit.SECONDS) .build(); } Singletonアノテーションを付けないと, Injectするたびに新しいインスタンスが作られます.
+また, ScopeアノテーションはDagger特有のアノテーションではなく, JSR-330で定義されているスペックなので, Daggerが廃れたとしても, JSR-330が廃れてない限り使える知識, 技術になります.
+Androidに適したScope Androidには大きく, Application, Activity, Fragment, Viewの4つのライフサイクルがあります. なので, それらに対してScopeを定義すればいいと思ってます.
+ Application: Singleton Activity: ActivityScope Fragment: FragmentScope View: ViewScope  ViewScopeはRecylerView, ListViewなどで有効に使えると思います.</description>
+    </item>
+    
+    <item>
+      <title>Android: Repository層についてあれこれ</title>
+      <link>https://satoshun.github.io/2016/11/android-arch-repository/</link>
+      <pubDate>Wed, 23 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2016/11/android-arch-repository/</guid>
+      <description>参考: https://github.com/googlesamples/android-architecture/tree/todo-mvp
+Repository層とは? data層を抽象する層. Repositoryではアプリのキャッシュポリシーを担当する. キャッシュはメモリ, ディスクのどちらかに保存するかに依存しないようにする. そこの実装はdata層に任せる.
+具体的には, Repositoryは, remote dataオブジェクトと, local dataオブジェクトの2つのオブジェクトに依存するようにし, どこにキャッシュされるかはlocal dataオブジェクトに従う. こうすることで, Repositoryはどこにデータが保存されているかを気にしなくて良い. あくまでRepositoryはどこのdataオブジェクトからデータを取ってくるのかを決定する.
+また, Repositoryは基本的にApplicationのライフサイクルに連動し, SingletonでActivity間でデータの共有を効率的に行える. 例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)
+RxJavaとともに RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.
+@NonNull @Override public Observable&amp;lt;User&amp;gt; getUser(int id) { return localDataSource.getUser(id) .onErrorResumeNext(remoteDataSource.getUser(id)) .doOnNext(new Action1&amp;lt;User&amp;gt;() { @Override public void call(User user) { localDataSource.saveUser(user); } }) .subscribeOn(Schedulers.io()) .observeOn(AndroidSchedulers.mainThread()); } 上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります. クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.
+まとめ ざっくりと書きました. キャッシュの抽象化(Repository層) + RxJavaは非常に強力で, とても良いパターンだと思っています. クライアント(ContrllerやPresenter)のコードもきれいになり, またActivity間のデータの共有もスムーズに行うことができるので(最悪キャッシュがリリースされていてもRemoteから取得してくれる), Androidの開発に向いているパターンでもあると思います.</description>
+    </item>
+    
+    <item>
       <title>LeakCanary: ソースコードリーディング</title>
       <link>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</link>
       <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>

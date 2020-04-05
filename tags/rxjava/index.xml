@@ -74,6 +74,122 @@ private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false
     </item>
     
     <item>
+      <title>RxJava: as, toの違いについて</title>
+      <link>https://satoshun.github.io/2017/12/rx-as-to-operator/</link>
+      <pubDate>Sat, 23 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/12/rx-as-to-operator/</guid>
+      <description>RxJavaでobservable型(Flowable、Observableなど)を他の型に変換したいときには、toまたはasを使います。
+この記事ではそれぞれの違いを説明します。
+toについて toのシグニチャは以下のようになります。
+&amp;lt;R&amp;gt; R to(Function&amp;lt;? super Flowable&amp;lt;T&amp;gt;, R&amp;gt; converter) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Maybe&amp;lt;T&amp;gt;, R&amp;gt; convert) &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Single&amp;lt;T&amp;gt;, R&amp;gt; convert) &amp;lt;U&amp;gt; U to(Function&amp;lt;? super Completable, U&amp;gt; converter) public interface Function&amp;lt;T, R&amp;gt; { R apply(@NonNull T t) throws Exception; } それぞれconverterをFunctionインターフェースで指定でき、upstream(オリジナルのObservable)を任意の型に変換することが出来ます。
+asについて asのシグニチャは以下のようになります。
+&amp;lt;R&amp;gt; R as(@NonNull FlowableConverter&amp;lt;T, ? extends R&amp;gt; converter) &amp;lt;R&amp;gt; R as(@NonNull ObservableConverter&amp;lt;T, ? extends R&amp;gt; converter) &amp;lt;R&amp;gt; R as(@NonNull MaybeConverter&amp;lt;T, ?</description>
+    </item>
+    
+    <item>
+      <title>Android: RxJava &#43; OkHttpを使って401の処理をいい感じにする</title>
+      <link>https://satoshun.github.io/2017/08/rx-okhttp-401/</link>
+      <pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/08/rx-okhttp-401/</guid>
+      <description>(この記事はRxJavaとOkHttpを知っている前提で進めていきます。またこの記事はRxJavaすごーいしたいだけの記事です。401のハンドリングのところは、RxJavaを使いたいだけのユースケースというか1例になります。)
+この記事のサンプルコードは ここ(Github)にあります。
+ API周りの開発をしていて、401のときの処理をどうするかという永遠の課題があると思います。 クライアント側で頑張るとしたら以下の感じになるかなと思います。
+ OkHttpのAuthenticatorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク OkHttpのInterceptorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク 各処理(例えばRxJavaのTransformerとか)に401用の処理を埋め込んで、retryを掛ける。  などがあるかなと(OkHttp、RxJavaを使うことを前提とする)
+このブログではOkHttpのAuthenticatorを使う方法で401の処理をいい感じにしたいと思います。
+またrefresh tokenは非同期、APIリクエストが必要であるとします。擬似コードはこんな感じです。
+fun refreshToken(): Observable&amp;lt;String&amp;gt; { return Observable.just(Credentials.basic(&amp;quot;sato&amp;quot;, &amp;quot;passwordhoge&amp;quot;)) .doOnNext { println(&amp;quot;GET credential: $it&amp;quot;) } // Log出力 .delay(2000, TimeUnit.MILLISECONDS) } 時間が掛かるんだなあくらいに思って下さい。
+401の処理を書いていく OkHttpのAuthenticatorは401のときにフックされます。なのでこの中で401ならrefresh tokenをし、結果をauthorization headerにセットして再リクエストをすれば良さそうです。
+ただここで1つ問題があります。それは、APIリクエストは並列に行われるということです。ということは、何も考えないとrefresh tokenが複数回叩かれてしまいます。なのでrefresh tokenをしているときは、後続の401はそれを待つようにしないといけません。
+愚直に表現するなら、refresh tokenをしていますよフラグをどこかに立てておいて、それがtrueなら待つ。falseならrefersh tokenをして、結果を待つといった処理になります。 並列にリクエストが行われるとしたら、マルチスレッドからコールされるのでsynchorizeなどの制御をする必要があり、めっちゃムズい。
+RxJavaを使ってみる 上記の縛りをRxJavaのpublish + refCountを使うとめっちゃいい感じに表現できます。
+private val authenticator: Authenticator = object : Authenticator { // ここがポイント。publishとrefCountを使う。  private val tokenStream = refreshToken().publish().refCount() // これだと駄目  // private val tokenStream = refreshToken()  // ここは並列に呼ばれる  override fun authenticate(route: Route, response: Response): Request?</description>
+    </item>
+    
+    <item>
+      <title>RxJava multicastについて</title>
+      <link>https://satoshun.github.io/2017/05/rx-multicast/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-multicast/</guid>
+      <description>RxJavaには, stream上のアイテムを複数のSubscriberに渡せるmulticast(再利用のような感じ)の機能があります. multicastは主に「キャッシュとして使う」, イベントをが発火したときに複数で処理をおこなう」 として使います.
+RxJavaでは2つの方法でmulticastを実現します.
+ publishを使い, ConnectableObservableを作る Subjectを使う  また, RxJava2だとFlowableがありますが, Flowableの場合は Processorを使います.
+説明だけだと分かりにくいので, サンプルコードも合わせてどうぞ.
+ ConnectableObservable Subject  ConnectableObservableについて ConnectableObservableはpublishがコールされたタイミングで生成されます. ここがStreamの開始地点, 再利用する地点になります. なので, mapやfilterなど, 共通の処理があるのなら, publishのUpstreamに書いて共通化したほうが効率が良いです.
+ConnectableObservableはconnectメソッドがコールされたタイミングで, Streamの開始をします. 従来はSubscriberを登録した(subscribeメソッドをコールした)タイミングなので, 注意が必要です.
+そして, publish + connectを組みわせることで1つのStreamに対して複数のSubscriberを登録することが出来ます.
+(source: https://github.com/ReactiveX/RxJava/wiki/Connectable-Observable-Operators)
+他にも, shareやrefcountがありますが, 基本的な考え方は変わりません.
+Subjectを使う Subjectは, ObservableとObserverの機能を同時に使うことができる実装です. 1例としては, Observerの機能を使い, 複数のObservableからデータを取得し, Observableの機能を使いそのデータをObserverに渡す, いわゆるBridgeのような事ができます.
+BehaviorSubject, ReplaySubjectなどのバラエティがあるので, 必要に応じて使い分ける必要があります. (https://github.com/ReactiveX/RxJava/wiki/subject)
+まとめ multicastを上手に使いこなすことで, データの取得回数を減らし, アプリがパフォーマンスに優れた構造になることが期待できます. そのためには, どこにmulticastを入れるか, どこからConnectableObservableにするか(publishをコールするか)を決定する必要があります. アプリごとに適切なポイント, 書き方は異なると思うので, サンプルを参考に頂けたら幸いです.
+Happy RxJava2 life!!
+参考  Multicasting in RxJava RxJava  </description>
+    </item>
+    
+    <item>
+      <title>RxJava 並行でリクエストをして, リクエストした順番で値を受け取る</title>
+      <link>https://satoshun.github.io/2017/05/rx-concateager-parallel-request/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-concateager-parallel-request/</guid>
+      <description>結論  concatEagerを使う  concat, concatEager RxJavaにはconcatEagerと, concatオペレータがあります. 似た名前ですが, 振る舞いは異なります. concatEagerはconcatと違い, 並列にObservableは処理するけど, 返してくる順番は保証されています
+ concat: 直列にObservableを処理し, 返してくる順番は保証されている concatEager: 並列にObservableを処理し, 返してくる順番は保証されている  コードで説明すると,
+// o1 ----&amp;gt; | // o2 |------&amp;gt;| // | | // s ------o1------o2 Observable.concat(o1, o2) .subscribe(); // o1 -----------&amp;gt;| // o2 --&amp;gt;---------|-| // | | // s ------------o1-o2 Observable.concatEager(o1, o2) .subscribe(); みたいな感じになります. 繰り返しになりますが ,concatEagerは同時に与えたObservableを解釈し, 順番を守ってくれます.</description>
+    </item>
+    
+    <item>
+      <title>RxJava: AutoDisposeで自動的にdisposeする</title>
+      <link>https://satoshun.github.io/2017/05/rx-autodispose/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-autodispose/</guid>
+      <description>非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.
+RxJavaでは, Disposableからキャンセルの処理を行います.
+Disposable d; public void onCreate() { d = myObservable .map(a -&amp;gt; b) .subscribe(); } public void onPause() { d.dispose(); } このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.
+AutoDisposeを使うことで, コード離れすぎ問題を解決することが出来ます.
+public void onCreate() { myObservable .to(new ObservableScoper&amp;lt;&amp;gt;(this)) .subscribe(); } このような感じで, ストリームの定義の中にAutoDisposeが提供しているScoperを埋め込むことで自動的にdisposeしてくれます.
+また, Scoperは, カスタムで柔軟に定義することが出来ます. 例えば,
+ Activityのライフサイクル Fragmentのライフサイクル RecyclerViewのライフサイクル  など, こちら側で実装することが出来ます(実装の手間は少し掛かります)
+これで, Disposableをマニュアルで呼び出すことから解放されます!
+Error Proneと組み合わせると最強 とはいえ, そもそもScopeをストリームに埋め込むのを忘れる問題があります(だって人間だもの)
+そこで, Googleが出したError Proneを組み合わせることで埋め込むのを忘れる問題を解決出来ます.
+Error ProneはJavaの間違った使い方を教えてくれる Linterのようなものです. これを使うと,
+public void onCreate() { myObservable .</description>
+    </item>
+    
+    <item>
+      <title>RxJava: Connectable Observableについて</title>
+      <link>https://satoshun.github.io/2017/05/rx-connectable-observable/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-connectable-observable/</guid>
+      <description>結論  同じStreamを複数のObserverで扱いたいときはConnectable Observableを使う  効率的!!   Connectable Observableはsubscribeをコールしても, Streamが開始しない  connectメソッドをコールした時に, Streamが開始する    基本的な使い方 同じデータを必要としているObserverがあるとします. これを単純に書くと以下のようになります.
+Obervable&amp;lt;User&amp;gt; getUsers() { return Observalbe.just(User1, User2, User3);} Obervable&amp;lt;User&amp;gt; users = getUsers(); users.subscribe(o1); users.subscribe(o2); users.subscribe(o3); これだと, subscribeされるたびに新しいStreamが作られてしまいます. 上の例だと3つの独立したObservableが作成されてしまい, 非常に効率が悪いです.
+Connectable Observableを使うことで, 1つのStreamからsubscribeすることが出来ます.
+ConnectableObservable&amp;lt;User&amp;gt; users = getUsers().publish(); users.subscribe(o1); users.subscribe(o2); users.subscribe(o3); users.connect(); // 重要!! publishオペレータを適用することで, Connectable Observableに変換出来ます. そして, Connectable Observableに対してObserverをsubscribeし, 最後にconnectをコールすることで, 共通のStreamからsubscribeすることが出来ます.
+流れとしては以下のようになります.
+ publishをコールすると, Connectable Observableが作成出来る Connectable ObservableをいくつかのObserverでsubscribeする  ここではStreamは開始されず, 登録のみされる   最後にconnectをコールする  Streamが開始される.</description>
+    </item>
+    
+    <item>
+      <title>RxJava: SubjectでonErrorを取り扱う時</title>
+      <link>https://satoshun.github.io/2017/05/rx-subject-materialize/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2017/05/rx-subject-materialize/</guid>
+      <description>結論  materialize, dematerializeを使う.  背景 onErrorをSubjectに流すと, Subjectはdispose状態になるため, これ以降のEventを流すことが出来なくなります.
+sub.subscribe( v -&amp;gt; Log.d(&amp;#34;onNext&amp;#34;, String.valueOf(v)), e -&amp;gt; Log.d(&amp;#34;onError&amp;#34;, e.getMessage())); sub.onNext(v1); sub.onNext(v2); sub.onError(e1); sub.onNext(v3); // ignore sub.onNext(v4); // ignore これだと, Subjectがこれ以降に値を受け付けないため不便になることがあります.(ユースケース次第)
+materialize + dematerializeオペレータを使うと, この問題を解決出来ます.
+Observable.create((ObservableOnSubscribe&amp;lt;String&amp;gt;) e -&amp;gt; { e.onNext(&amp;#34;1&amp;#34;); e.onNext(&amp;#34;2&amp;#34;); e.onError(new RuntimeException(&amp;#34;e1&amp;#34;)); }).materialize().subscribe(sub::onNext); Observable.create((ObservableOnSubscribe&amp;lt;String&amp;gt;) e -&amp;gt; { e.onNext(&amp;#34;3&amp;#34;); e.onNext(&amp;#34;4&amp;#34;); e.onError(new RuntimeException(&amp;#34;e2&amp;#34;)); }).materialize().subscribe(sub::onNext); materialize を使い, ErrorイベントをNextイベントに変換します
+そして, Subscribeするタイミングで, dematerializeでNextイベントをErrorイベントに戻します.
+sub.dematerialize().subscribe( v -&amp;gt; Log.d(&amp;#34;onNext&amp;#34;, String.valueOf(v)), e -&amp;gt; Log.d(&amp;#34;onError&amp;#34;, e.getMessage())); こうすることで, Subjectをdispose状態にせずに, ObserverでonErrorイベントを処理することが出来ます.
+参照  ReactiveX - Materialize &amp;amp; Dematerialize operators  </description>
+    </item>
+    
+    <item>
       <title>Android: Fragmentを使って、画面の向きの変更時にデータを保持する</title>
       <link>https://satoshun.github.io/2016/10/android-orientation-data/</link>
       <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
