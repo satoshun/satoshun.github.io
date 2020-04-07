@@ -17,13 +17,11 @@ draft = false
 
 ポイントは以下の3つです。
 
-1. 4つの画像を組み合わせて、1つの円形画像を作る部分
-2. 01/01の部分は右に、@your_idの部分はYour Nameの右に配置される
-3. Your Nameの部分の文字数が多いときに、...で省略される
+- 4つの画像を組み合わせて、1つの円形画像を作る部分
+- 01/01の部分は右に、@your_idの部分はYour Nameの右に配置される
+- Your Nameの部分の文字数が多いときに、...で省略される
 
-では、どのようなConstraintLayoutを組めば実現できるかを説明していきます。
-
-今回は、4つの画像を組み合わせる部分で、Material ComponentのShapeableImageViewを使っています。ShapeableImageViewの説明は[ここを](http://localhost:1313/2019/12/material-shapeable-image-view/)見てください。
+今回は、4つの画像を組み合わせる部分で、Material ComponentのShapeableImageViewを使っています。ShapeableImageViewの説明は[ここを](/2019/12/material-shapeable-image-view/)見てください。
 
 上記で上げたポイントを中心に説明していきます。
 
@@ -41,7 +39,7 @@ draft = false
 </style>
 ```
 
-右が上のShapeを指定した画像になります。
+右の画像が、上のShapeを指定した場合になります。
 
 {{< figure src="/blog/android/jetpack/constraintlayout/constraint-practical-2.png" width="400" >}}
 
@@ -52,8 +50,6 @@ draft = false
   android:id="@+id/top_left"
   android:layout_width="30dp"
   android:layout_height="30dp"
-  android:layout_marginStart="16dp"
-  android:layout_marginTop="12dp"
   android:adjustViewBounds="true"
   android:scaleType="centerCrop"
   app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +90,8 @@ draft = false
   app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Example.BottomRight"
   tools:src="@tools:sample/avatars" />
 ```
+
+やっていることは単純で、4つのViewを`app:layout_constraintStart_toStartOf`などを使って適切な位置に配置しています。
 
 ---
 
@@ -151,7 +149,7 @@ draft = false
 
 ---
 
-Your Nameと、@your_idが真ん中に寄っているので、`layout_constraintHorizontal_chainStyle`を指定して、左寄せにします。
+Your Nameと、@your_idが真ん中に寄ってしまったので、`app:layout_constraintHorizontal_chainStyle`を指定して、左寄せにします。
 
 ```xml
 <TextView
@@ -188,9 +186,9 @@ Your Nameと、@your_idが真ん中に寄っているので、`layout_constraint
 
 ---
 
-wrap_contentの場合、制約を超えて枠をはみ出してしまうため、このような挙動になります。
+wrap_contentの場合、制約を超えて枠をはみ出してしまうためです。
 
-これを解決するために、`layout_constrainedWidth`を使います。これを使うことで、制約を超えないwrap_contentを定義できます。
+これを解決するために、`app:layout_constrainedWidth`を使います。これを使うと、制約を超えないwrap_contentを定義できます。
 
 ```xml
 <TextView
@@ -216,7 +214,7 @@ wrap_contentの場合、制約を超えて枠をはみ出してしまうため�
 
 Your Nameの部分を...にすることが出来ました。
 
-あとの部分はそう難しくないと思うので、説明を省略します。[全コード](https://github.com/satoshun-android-example/ConstraintLayout/blob/master/app/src/main/res/layout/divide_into_four_item.xml)はここにあります。
+あとの部分はそう難しくないと思うので、説明を省略させてください。[全コード](https://github.com/satoshun-android-example/ConstraintLayout/blob/master/app/src/main/res/layout/divide_into_four_item.xml)はここにあります。
 
 
 ## まとめ
@@ -224,3 +222,4 @@ Your Nameの部分を...にすることが出来ました。
 - ShapeableImageViewは便利
 - `layout_constraintHorizontal_chainStyle`、`layout_constraintHorizontal_bias`を組み合わせることで左寄せに出来る
 - 制約を超えないように、wrap_contentのレイアウトを使いたい場合は、`layout_constrainedWidth`を使う
+- [ソースコード](https://github.com/satoshun-android-example/ConstraintLayout/blob/master/app/src/main/res/layout/divide_into_four_item.xml)はここにあります。
