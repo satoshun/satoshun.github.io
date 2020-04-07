@@ -1,5 +1,5 @@
 +++
-date = "Mon Apr  6 13:27:15 UTC 2020"
+date = "Tue Apr  7 00:41:08 UTC 2020"
 title = "ちょっと複雑なレイアウトをConstraintLayoutで組むpart1"
 tags = ["android", "constraintlayout"]
 blogimport = true

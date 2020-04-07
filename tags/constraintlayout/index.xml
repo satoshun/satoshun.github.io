@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 28 Apr 2019 11:13:20 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2020 00:41:08 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/constraintlayout/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ちょっと複雑なレイアウトをConstraintLayoutで組むpart1</title>
+      <link>https://satoshun.github.io/2020/04/constraintlayout-practical1/</link>
+      <pubDate>Tue, 07 Apr 2020 00:41:08 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/04/constraintlayout-practical1/</guid>
+      <description>今回の記事では次のレイアウトを、ConstraintLayoutで組みたいと思います。
+    ポイントは以下の3つです。
+ 4つの画像を組み合わせて、1つの円形画像を作る部分 01/01の部分は右に、@your_idの部分はYour Nameの右に配置される Your Nameの部分の文字数が多いときに、&amp;hellip;で省略される  今回は、4つの画像を組み合わせる部分で、Material ComponentのShapeableImageViewを使っています。ShapeableImageViewの説明はここを見てください。
+上記で上げたポイントを中心に説明していきます。
+4つの画像を組み合わせて、1つの円形画像を作る部分 この部分は、Picasso、Glideなどの画像ライブラリに頼るパターンもあると思うんですが、今回はShapeableImageViewを使いたいと思います。
+4つのShapeableImageViewを使い、それぞれ「左上、右上、左下、右下」の部分が丸くなるShapeを定義します。 左上を丸くするShapeは次のように定義できます。
+&amp;lt;style name=&amp;#34;ShapeAppearanceOverlay.Example.TopLeft&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamilyTopLeft&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSizeTopLeft&amp;#34;&amp;gt;100%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; 右の画像が、上のShapeを指定した場合になります。
+  右上、左下、右下のShapeも同じように作ってあげます。そして、それら4つViewの制約を次のように作ってあげます。
+&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/top_left&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.TopLeft&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/top_right&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toEndOf=&amp;#34;@id/top_left&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;@id/top_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.TopRight&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/bottom_left&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/top_left&amp;#34; app:layout_constraintTop_toBottomOf=&amp;#34;@id/top_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.BottomLeft&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/bottom_right&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toEndOf=&amp;#34;@id/bottom_left&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;@id/bottom_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.</description>
+    </item>
     
     <item>
       <title>ConstraintLayout Flowの紹介</title>
