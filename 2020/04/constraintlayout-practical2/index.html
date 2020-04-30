@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2020-04-30">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2020/04/constraintlayout-practical2/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="android">
+  
+    <meta property="og:tags" content="constraintlayout">
+  
+
+  <meta property="twitter:title" content="ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2">
+
+  
+  <meta property="twitter:description" content="今回の記事では次の4つのレイアウトを、ConstraintLayoutで組みたいと思います。
+
+     
+
+
+ポイントは以下の２つです。
+
+各画像は、前の画像 …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body class="theme-dark">
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/presentation">Presentation</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2</h1>
+    
+    <span class="post-date">Created at Thu, Apr 30, 2020</span>
+    
+    <p>今回の記事では次の4つのレイアウトを、ConstraintLayoutで組みたいと思います。</p>
+<figure>
+    <img src="/blog/android/jetpack/constraintlayout/constraint-practical2-1.png" width="400"/> 
+</figure>
+
+<p>ポイントは以下の２つです。</p>
+<ul>
+<li>各画像は、前の画像に被っている</li>
+<li>各レイアウトは、4 or 3 or 2 or 1枚、いずれかの枚数を取る</li>
+</ul>
+<p>上記で上げたポイントを中心に説明していきます。</p>
+<h2 id="各画像は前の画像に被っている">各画像は、前の画像に被っている</h2>
+<p>View同士を被せる方法はいくつかあると思うんですが、今回は<code>layout_constraintStart_toStartOf</code>と<code>layout_marginStart</code>を使い表現します。</p>
+<p>まずに、1番左に配置するImageViewを定義します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;20dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>1番左に配置したいので、<code>Start_toStartOf</code>にはparentを設定しています。</p>
+<p>次に、2番目に配置するImageViewを考えます。このImageViewは、1枚目のImageViewに被るように配置します。なので、この1枚目のViewのend(終端)に制約を合わせてしまうと上手く配置できません。
+よって、1枚目のViewのstart(先端)に制約を合わせます。合わせてmarginStartも設定することで良い感じの配置が出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image2&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image1&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>3番目、4番目のViewにも同様の制約を設定してあげます。最終形は次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;20dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image2&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image1&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image3&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image2&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image4&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image3&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><figure>
+    <img src="/blog/android/jetpack/constraintlayout/constraint-practical2-2.png" width="300"/> 
+</figure>
+
+<p>1枚目、2枚目、3枚目、4枚目がそれぞれ少しずつ被っているのが分かると思います。</p>
+<p>これで4枚の画像のパターンは完成しました。次に3、2、1枚のパターンも作っていきます。</p>
+<h2 id="各画像は4321枚のいずれかの枚数を取る">各画像は、4、3、2、1枚のいずれかの枚数を取る</h2>
+<p>画像の枚数が変動するパターンを考えてみます。4つのレイアウトをそれぞれ個別に作ってもいいんですが、今回は1つのレイアウトで表現しようと思います。
+今回の場合、<code>layout_goneMarginStart</code>を使うといい感じに出来ます。</p>
+<p>前のレイアウトに対して、次のように<code>layout_goneMarginStart</code>を追加してあげます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;20dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image2&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image1&#34;</span>
+  <span style="color:#a6e22e">app:layout_goneMarginStart=</span><span style="color:#e6db74">&#34;32dp&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image3&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image2&#34;</span>
+  <span style="color:#a6e22e">app:layout_goneMarginStart=</span><span style="color:#e6db74">&#34;44dp&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image4&#34;</span>
+  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginStart=</span><span style="color:#e6db74">&#34;24dp&#34;</span>
+  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image3&#34;</span>
+  <span style="color:#a6e22e">app:layout_goneMarginStart=</span><span style="color:#e6db74">&#34;56dp&#34;</span> <span style="color:#f92672">/&gt;</span>
+</code></pre></div><figure>
+    <img src="/blog/android/jetpack/constraintlayout/constraint-practical2-3.png" width="400"/> 
+</figure>
+
+<p>画像がない状態を<code>layout_goneMarginStart</code>で表現しているのがポイントです。「1番左の画像がなかったら、2番目の画像のmarginStartを調整」、「2番目の画像がなかったら、3番目の画像のmarginStartを調整」といった具合です。</p>
+<p>これで、欲しかったレイアウトを手にすることが出来ました。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>View同士が被る場合には、制約に工夫が必要</li>
+<li>goneMarginを使うことで、制約対象のViewが存在しない場合の位置を調整できる</li>
+</ul>
+<p>フルコードは<a href="https://github.com/satoshun-android-example/ConstraintLayout/blob/master/app/src/main/res/layout/circle_image_sequence_item.xml">GitHub</a>にあります。</p>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/constraintlayout">constraintlayout</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-44009809-2', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+</script>
+
+</div>
+</body>
+</html>

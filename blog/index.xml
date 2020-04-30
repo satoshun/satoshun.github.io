@@ -7,10 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 07 Apr 2020 00:41:08 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 30 Apr 2020 04:38:16 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2</title>
+      <link>https://satoshun.github.io/2020/04/constraintlayout-practical2/</link>
+      <pubDate>Thu, 30 Apr 2020 04:38:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/04/constraintlayout-practical2/</guid>
+      <description>今回の記事では次の4つのレイアウトを、ConstraintLayoutで組みたいと思います。
+  ポイントは以下の２つです。
+ 各画像は、前の画像に被っている 各レイアウトは、4 or 3 or 2 or 1枚、いずれかの枚数を取る  上記で上げたポイントを中心に説明していきます。
+各画像は、前の画像に被っている View同士を被せる方法はいくつかあると思うんですが、今回はlayout_constraintStart_toStartOfとlayout_marginStartを使い表現します。
+まずに、1番左に配置するImageViewを定義します。
+&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image1&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;20dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; /&amp;gt; 1番左に配置したいので、Start_toStartOfにはparentを設定しています。
+次に、2番目に配置するImageViewを考えます。このImageViewは、1枚目のImageViewに被るように配置します。なので、この1枚目のViewのend(終端)に制約を合わせてしまうと上手く配置できません。 よって、1枚目のViewのstart(先端)に制約を合わせます。合わせてmarginStartも設定することで良い感じの配置が出来ます。
+&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image2&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image1&amp;#34; /&amp;gt; 3番目、4番目のViewにも同様の制約を設定してあげます。最終形は次のようになります。
+&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image1&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;20dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image2&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image1&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image3&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image2&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image4&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image3&amp;#34; /&amp;gt;   1枚目、2枚目、3枚目、4枚目がそれぞれ少しずつ被っているのが分かると思います。</description>
+    </item>
     
     <item>
       <title>ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart1</title>
@@ -600,7 +617,7 @@ Roman Elizarovさんが、Extension-oriented design中でちらっとメリッ�
       
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
       <description>以下の動画のまとめです。
-Build a Modular Android App Architecture (Google I/O&amp;rsquo;19)
+Build a Modular Android App Architecture (Google I/O&#39;19)
 なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
  人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
  何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
