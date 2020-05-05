@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 30 Apr 2020 04:38:16 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2020 06:11:48 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,36 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Thu, 30 Apr 2020 04:38:16 +0000</pubDate>
+      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ci</title>
+      <link>https://satoshun.github.io/tags/ci/</link>
+      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>github</title>
+      <link>https://satoshun.github.io/tags/github/</link>
+      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>githubactions</title>
+      <link>https://satoshun.github.io/tags/githubactions/</link>
+      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/githubactions/</guid>
       <description></description>
     </item>
     
@@ -198,33 +225,6 @@
       <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/viewmodel/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ci</title>
-      <link>https://satoshun.github.io/tags/ci/</link>
-      <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>github</title>
-      <link>https://satoshun.github.io/tags/github/</link>
-      <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/github/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>githubactions</title>
-      <link>https://satoshun.github.io/tags/githubactions/</link>
-      <pubDate>Thu, 12 Dec 2019 12:25:11 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/githubactions/</guid>
       <description></description>
     </item>
     

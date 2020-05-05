@@ -1,7 +1,7 @@
 +++
 date = "Tue May  5 06:11:48 UTC 2020"
 title = "GitHub Actions: AndroidプロジェクトのGradle周りの設定メモ"
-tags = ["ci", "githubactions"]
+tags = ["ci", "githubactions", "android"]
 blogimport = true
 type = "post"
 draft = false

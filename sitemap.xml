@@ -4,26 +4,46 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2020-04-30T04:38:16+00:00</lastmod>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-04-30T04:38:16+00:00</lastmod>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/constraintlayout/</loc>
-    <lastmod>2020-04-30T04:38:16+00:00</lastmod>
+    <loc>https://satoshun.github.io/tags/ci/</loc>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/github/</loc>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/05/github-actions-android/</loc>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/githubactions/</loc>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-04-30T04:38:16+00:00</lastmod>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/constraintlayout/</loc>
     <lastmod>2020-04-30T04:38:16+00:00</lastmod>
   </url>
   
@@ -198,22 +218,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/ci/</loc>
-    <lastmod>2019-12-12T12:25:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/github/</loc>
-    <lastmod>2019-12-12T12:25:11+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2019/12/github-actions-emulator-test/</loc>
-    <lastmod>2019-12-12T12:25:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/githubactions/</loc>
     <lastmod>2019-12-12T12:25:11+00:00</lastmod>
   </url>
   
