@@ -4,7 +4,7 @@ title = "Android: ConstraintLayoutの子にRecyclerViewを配置して、Match C
 tags = ["android", "recyclerview", "jetpack"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 備忘録です。
@@ -26,7 +26,7 @@ draft = true
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-(今回の例ではLinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerだとどういう挙動をするか分かりません)
+今回の例ではLinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。
 
 ## どんな挙動をするか?
 
@@ -57,6 +57,8 @@ private class SampleAdapter : ListAdapter<String, RecyclerView.ViewHolder>(...) 
 }
 ```
 
+500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂
+
 ## なんでか?
 
 LinearLayoutManagerでは、内部で`mInfinite` っていうフィールドを持っていて、これは次の関数によって生成されます。
@@ -68,9 +70,10 @@ boolean resolveIsInfinite() {
   }
 ```
 
-細かいところまで追えてないのですが、今回のレイアウトの場合、上記の関数がtrueを返す挙動をしていました。
+細かいところまで追えてないのですが、今回のレイアウトの場合、上記の関数がtrueを返していました。
 
 この値がtrueだと、どういうことが起こるかっていうと、RecyclerViewにアイテムを詰めるタイミングで一気に全部アイテムを詰めようと試みます。
+具体的には、次のコードになります。
 
 ```java
 int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
@@ -83,7 +86,7 @@ int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
 }
 ```
 
-mInfiniteがtrueだと、whileが`remainingSpace`に値に関わらず、最後まで行くことが可能になります。
+前述の`mInfinite`がtrueだと、whileが`remainingSpace`の値に関係なく、最後まで行くことが可能になります。
 結果、今回の場合では全アイテムをファーストビューのタイミングでバインドします。
 
 ## どう直すか?
