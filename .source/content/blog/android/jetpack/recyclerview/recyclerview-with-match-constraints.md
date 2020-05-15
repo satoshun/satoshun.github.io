@@ -26,7 +26,9 @@ draft = false
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-今回の例ではLinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。
+今回の例では、LinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。
+また、ConstraintLayout 2.0.0-beta06、RecyclerView-1.1.0で試しています。
+
 
 ## どんな挙動をするか?
 
