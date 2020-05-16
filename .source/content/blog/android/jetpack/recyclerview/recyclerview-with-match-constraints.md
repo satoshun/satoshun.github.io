@@ -27,7 +27,7 @@ draft = false
 ```
 
 今回の例では、LinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。
-また、ConstraintLayout 2.0.0-beta06、RecyclerView-1.1.0で試しています。
+また、ConstraintLayout 2.0.0-beta06、RecyclerView 1.1.0で試しています。
 
 
 ## どんな挙動をするか?
@@ -104,7 +104,7 @@ int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
   android:layout_height="wrap_content">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler3"
+    android:id="@+id/recycler"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
@@ -120,12 +120,11 @@ int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
   android:layout_height="wrap_content">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler1"
+    android:id="@+id/recycler"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
-
 
 で良いかなと思います😃
