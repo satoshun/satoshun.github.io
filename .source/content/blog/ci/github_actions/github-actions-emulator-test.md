@@ -50,7 +50,7 @@ jobs:
 
 [結果](https://github.com/satoshun-kotlin-example/CoroutineCatalog/commit/0b8336d8ff2c7cc37510857c816e10c3ea31b295/checks?check_suite_id=355095099) はこんな感じになります。
 
-{{< figure src="/blog/ci/github-result.png" width="600" >}}
+{{< figure src="/blog/ci/github_actions/github-result.png" width="600" >}}
 
 ## まとめ
 
