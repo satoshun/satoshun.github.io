@@ -1,10 +1,10 @@
 +++
-date = "Tue May 26 10:03:18 UTC 2020"
+date = "Wed May 27 03:52:50 UTC 2020"
 title = "avocadoとGitHub Actionsを使って、Vector Drawableを最適化する"
 tags = ["android", "ci", "githubactions"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Vector Drawableを最適化する [avocado](https://github.com/alexjlockwood/avocado)と、GitHub Actions組み合わせた話です。
@@ -59,5 +59,5 @@ jobs:
         branch: your_branch
 ```
 
-Vector Drawableなファイル一覧を `find . -type f -name *.xml | xargs grep "</vector>" -rl | avocado` で取得して（もっと効率の良い書き方がありそう)、差分が出来れば、[peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request)でPRを作るGitHub Actionsになっております。
-また、scheduleは週に1度実行するように指定しています。[crontab guru](https://crontab.guru/#0_0_*_*_0)が便利です。
+Vector Drawableなファイル一覧を `find . -type f -name *.xml | xargs grep "</vector>" -rl | avocado` で取得して（もっと効率の良い書き方がありそう)、差分があれば、[peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request) でPRを作ります。
+また、週に1度実行するようにScheduleを指定しています。Scheduleの記法の確認には [crontab guru](https://crontab.guru/#0_0_*_*_0) が便利です。
