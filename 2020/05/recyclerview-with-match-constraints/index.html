@@ -107,7 +107,7 @@
     <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 <span style="color:#f92672">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
 </code></pre></div><p>今回の例では、LinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。
-また、ConstraintLayout 2.0.0-beta06、RecyclerView-1.1.0で試しています。</p>
+また、ConstraintLayout 2.0.0-beta06、RecyclerView 1.1.0で試しています。</p>
 <h2 id="どんな挙動をするか">どんな挙動をするか?</h2>
 <p>このレイアウトはファーストビューのタイミングで、<strong>すべてのアイテム</strong>をバインドしようとします。</p>
 <p>例えば500個のRecyclerViewアイテムがあったときに、画面に収まるかどうかに関わらず500個のバインドが走ります。</p>
@@ -162,7 +162,7 @@
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span><span style="color:#f92672">&gt;</span>
 
   <span style="color:#f92672">&lt;androidx.recyclerview.widget.RecyclerView</span>
-    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/recycler3&#34;</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/recycler&#34;</span>
     <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
     <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
     <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
@@ -176,7 +176,7 @@
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span><span style="color:#f92672">&gt;</span>
 
   <span style="color:#f92672">&lt;androidx.recyclerview.widget.RecyclerView</span>
-    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/recycler1&#34;</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/recycler&#34;</span>
     <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
     <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
     <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>

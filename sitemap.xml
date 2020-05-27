@@ -4,16 +4,41 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2020-05-15T13:25:48+00:00</lastmod>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/2020/05/recyclerview-with-match-constraints/</loc>
-    <lastmod>2020-05-15T13:25:48+00:00</lastmod>
+    <loc>https://satoshun.github.io/2020/05/android-avocado-with-github-actions/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/ci/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/githubactions/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-05-27T03:52:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/05/recyclerview-with-match-constraints/</loc>
     <lastmod>2020-05-15T13:25:48+00:00</lastmod>
   </url>
   
@@ -28,32 +53,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-05-15T13:25:48+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/</loc>
-    <lastmod>2020-05-15T13:25:48+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/ci/</loc>
-    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/github/</loc>
-    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2020/05/github-actions-android/</loc>
-    <lastmod>2020-05-05T06:11:48+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/githubactions/</loc>
     <lastmod>2020-05-05T06:11:48+00:00</lastmod>
   </url>
   
@@ -353,11 +353,6 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/pr/</loc>
-    <lastmod>2019-07-20T02:57:15+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/tags/product/</loc>
     <lastmod>2019-07-20T02:57:15+00:00</lastmod>
   </url>
@@ -405,11 +400,6 @@
   <url>
     <loc>https://satoshun.github.io/tags/rxjava3/</loc>
     <lastmod>2019-06-25T12:38:16+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/code/</loc>
-    <lastmod>2019-06-19T00:48:27+00:00</lastmod>
   </url>
   
   <url>
@@ -570,6 +560,16 @@
   <url>
     <loc>https://satoshun.github.io/2019/03/dagger-provide-with-extension-method/</loc>
     <lastmod>2019-03-05T00:10:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/github/</loc>
+    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/pr/</loc>
+    <lastmod>2019-03-02T13:21:05+00:00</lastmod>
   </url>
   
   <url>
@@ -1083,11 +1083,6 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/go/</loc>
-    <lastmod>2016-08-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/tags/golang/</loc>
     <lastmod>2016-08-01T00:00:00+00:00</lastmod>
   </url>
@@ -1273,8 +1268,18 @@
   </url>
   
   <url>
+    <loc>https://satoshun.github.io/tags/code/</loc>
+    <lastmod>2015-02-22T04:53:36+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/2015/02/despatt-valueobject/</loc>
     <lastmod>2015-02-22T04:53:36+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/go/</loc>
+    <lastmod>2015-02-22T04:11:23+00:00</lastmod>
   </url>
   
   <url>

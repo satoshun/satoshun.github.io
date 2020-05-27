@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 15 May 2020 13:25:48 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 03:52:50 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,27 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Fri, 15 May 2020 13:25:48 +0000</pubDate>
+      <pubDate>Wed, 27 May 2020 03:52:50 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ci</title>
+      <link>https://satoshun.github.io/tags/ci/</link>
+      <pubDate>Wed, 27 May 2020 03:52:50 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>githubactions</title>
+      <link>https://satoshun.github.io/tags/githubactions/</link>
+      <pubDate>Wed, 27 May 2020 03:52:50 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/githubactions/</guid>
       <description></description>
     </item>
     
@@ -36,33 +54,6 @@
       <pubDate>Fri, 15 May 2020 13:25:48 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/recyclerview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ci</title>
-      <link>https://satoshun.github.io/tags/ci/</link>
-      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>github</title>
-      <link>https://satoshun.github.io/tags/github/</link>
-      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/github/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>githubactions</title>
-      <link>https://satoshun.github.io/tags/githubactions/</link>
-      <pubDate>Tue, 05 May 2020 06:11:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/githubactions/</guid>
       <description></description>
     </item>
     
@@ -319,15 +310,6 @@
     </item>
     
     <item>
-      <title>pr</title>
-      <link>https://satoshun.github.io/tags/pr/</link>
-      <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/pr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>product</title>
       <link>https://satoshun.github.io/tags/product/</link>
       <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
@@ -378,15 +360,6 @@
       <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/rxjava3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>code</title>
-      <link>https://satoshun.github.io/tags/code/</link>
-      <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/code/</guid>
       <description></description>
     </item>
     
@@ -495,6 +468,24 @@
       <pubDate>Sun, 24 Mar 2019 02:36:27 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/okhttp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>github</title>
+      <link>https://satoshun.github.io/tags/github/</link>
+      <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pr</title>
+      <link>https://satoshun.github.io/tags/pr/</link>
+      <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/pr/</guid>
       <description></description>
     </item>
     
@@ -760,15 +751,6 @@
     </item>
     
     <item>
-      <title>go</title>
-      <link>https://satoshun.github.io/tags/go/</link>
-      <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>golang</title>
       <link>https://satoshun.github.io/tags/golang/</link>
       <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
@@ -909,6 +891,24 @@
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/html5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code</title>
+      <link>https://satoshun.github.io/tags/code/</link>
+      <pubDate>Sun, 22 Feb 2015 04:53:36 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://satoshun.github.io/tags/go/</link>
+      <pubDate>Sun, 22 Feb 2015 04:11:23 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/go/</guid>
       <description></description>
     </item>
     

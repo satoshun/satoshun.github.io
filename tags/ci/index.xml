@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 05 May 2020 06:11:48 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 03:52:50 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/ci/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>avocadoとGitHub Actionsを使って、Vector Drawableを最適化する</title>
+      <link>https://satoshun.github.io/2020/05/android-avocado-with-github-actions/</link>
+      <pubDate>Wed, 27 May 2020 03:52:50 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/05/android-avocado-with-github-actions/</guid>
+      <description>Vector Drawableを最適化する avocadoと、GitHub Actions組み合わせた話です。
+🥑avocado🥑? avocadoを使うことで、Vector Drawableを最適化することができます。使い方は簡単です。
+avocado [file name] Vector Drawableによっては、結構最適化されます。
+GitHub Actionsに組み込む 1週間単位でavocadoを実行して、PRを作るGitHub Actionsになります。
+name: avocado on: schedule: - cron: &amp;#39;0 0 * * 0&amp;#39; jobs: build: runs-on: ubuntu-latest steps: - name: Checkout uses: actions/checkout@v2 - name: Setup node uses: actions/setup-node@v1 with: node-version: &amp;#39;12&amp;#39; - name: Setup avocado run: npm install -g avocado - name: Run avocado run: find . -type f -name *.xml | xargs grep &amp;#34;&amp;lt;/vector&amp;gt;&amp;#34; -rl | avocado - name: PR id: cpr uses: peter-evans/create-pull-request@v2 with: token: ${{ secrets.</description>
+    </item>
     
     <item>
       <title>GitHub Actions: AndroidプロジェクトのGradle周りの設定メモ</title>
