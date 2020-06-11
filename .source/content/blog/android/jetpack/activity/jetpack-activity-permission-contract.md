@@ -1,15 +1,17 @@
 +++
-date = "Thu Jun 11 10:28:26 UTC 2020"
+date = "Thu Jun 11 10:47:24 UTC 2020"
 title = "Android: ActivityResultContractを使ってRuntime Permissionsを実装する"
 tags = ["android", "jetpack", "activity"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Activity 1.2.0-alpha02から導入された、ActivityResultContractを使うことで、Runtime Permissionsをいい感じに実装することが可能になりました。
 
-## 書き方
+この記事では、どのように実装すれば良いかを簡単に説明します。
+
+## 単一のPermissonを要求する
 
 `android.permission.ACCESS_FINE_LOCATION`が欲しい時は、次のように書くことが出来ます。
 
@@ -21,7 +23,7 @@ class HogeActivity : AppCompatActivity() {
     ActivityResultContracts.RequestPermission(),
     ACCESS_FINE_LOCATION
   ) { isGranted ->
-    // Permissionの取得に成功したかどうかがBoolean値で返ってくる
+    // Permissionの取得に成功したかどうか、Boolean値で返ってくる
     Toast.makeText(this@AppActivity, "isGranted $isGranted", Toast.LENGTH_LONG).show()
   }
 
@@ -32,11 +34,9 @@ class HogeActivity : AppCompatActivity() {
 }
 ```
 
-単一のPermissionの場合、このように書くことが出来ます。
+## 複数のPermissonを要求する
 
----
-
-また、複数のPermissonが欲しい時は次のように書くことが出来ます。
+複数のPermissonの場合は、次のように書くことが出来ます。
 
 ```kotlin
 class HogeActivity : AppCompatActivity(R.layout.app_act) {
@@ -45,7 +45,7 @@ class HogeActivity : AppCompatActivity(R.layout.app_act) {
     ActivityResultContracts.RequestMultiplePermissions(),
     arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE
   ) { grants ->
-    // Permissionの取得に成功したかどうかがMap<String, Boolean>>で返ってくる
+    // Permissionの取得に成功したかどうか、Map<String, Boolean>>で返ってくる
     Toast.makeText(this@AppActivity, "grants $grants", Toast.LENGTH_LONG).show()
   }
 
@@ -58,4 +58,4 @@ class HogeActivity : AppCompatActivity(R.layout.app_act) {
 
 ## まとめ
 
-ActivityResultContract API便利〜
+ActivityResultContract便利〜
