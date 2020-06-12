@@ -1,6 +1,7 @@
 +++
 date = "Thu Jun 11 10:47:24 UTC 2020"
-title = "Android: ActivityResultContractを使ってRuntime Permissionsを実装する"
+lastmod = "Fri Jun 12 13:28:24 UTC 2020"
+title = "Android: ActivityResultContractを使ってを実装する"
 tags = ["android", "jetpack", "activity"]
 blogimport = true
 type = "post"
@@ -13,7 +14,9 @@ Activity 1.2.0-alpha02から導入された、ActivityResultContractを使うこ
 
 ## 単一のPermissonを要求する
 
-`android.permission.ACCESS_FINE_LOCATION`が欲しい時は、次のように書くことが出来ます。
+新しく追加された `registerForActivityResult` 拡張関数に、`ActivityResultContracts.RequestPermission()`を指定することで、単一のPermissionを要求することが出来ます。
+
+例えば、`android.permission.ACCESS_FINE_LOCATION`が欲しい時は、次のように書くことが出来ます。
 
 ```kotlin
 class HogeActivity : AppCompatActivity() {
@@ -36,7 +39,9 @@ class HogeActivity : AppCompatActivity() {
 
 ## 複数のPermissonを要求する
 
-複数のPermissonの場合は、次のように書くことが出来ます。
+複数の場合は、`ActivityResultContracts.RequestMultiplePermissions()`を指定します。
+
+例えば、`android.permission.ACCESS_FINE_LOCATION`、`android.permission.READ_EXTERNAL_STORAGE`が欲しい時は、次のように書くことが出来ます。
 
 ```kotlin
 class HogeActivity : AppCompatActivity(R.layout.app_act) {
