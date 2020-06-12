@@ -89,12 +89,13 @@
   <div class="post">
     <h1 class="post-title">Android: ActivityResultContractを使ってRuntime Permissionsを実装する</h1>
     
-    <span class="post-date">Created at Thu, Jun 11, 2020</span>
+    <span class="post-date">Updated at Fri, Jun 12, 2020</span>
     
     <p>Activity 1.2.0-alpha02から導入された、ActivityResultContractを使うことで、Runtime Permissionsをいい感じに実装することが可能になりました。</p>
 <p>この記事では、どのように実装すれば良いかを簡単に説明します。</p>
 <h2 id="単一のpermissonを要求する">単一のPermissonを要求する</h2>
-<p><code>android.permission.ACCESS_FINE_LOCATION</code>が欲しい時は、次のように書くことが出来ます。</p>
+<p>新しく追加された <code>registerForActivityResult</code> 拡張関数に、<code>ActivityResultContracts.RequestPermission()</code>を指定することで、単一のPermissionを要求することが出来ます。</p>
+<p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>が欲しい時は、次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity() {
 
   <span style="color:#75715e">// 定義側
@@ -112,7 +113,8 @@
   }
 }
 </code></pre></div><h2 id="複数のpermissonを要求する">複数のPermissonを要求する</h2>
-<p>複数のPermissonの場合は、次のように書くことが出来ます。</p>
+<p>複数の場合は、<code>ActivityResultContracts.RequestMultiplePermissions()</code>を指定します。</p>
+<p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>、<code>android.permission.READ_EXTERNAL_STORAGE</code>が欲しい時は、次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity(R.layout.app_act) {
   <span style="color:#75715e">// 定義側
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestPermissions = registerForActivityResult(

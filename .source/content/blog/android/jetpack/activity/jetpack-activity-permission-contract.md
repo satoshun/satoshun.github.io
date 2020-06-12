@@ -1,7 +1,7 @@
 +++
 date = "Thu Jun 11 10:47:24 UTC 2020"
 lastmod = "Fri Jun 12 13:28:24 UTC 2020"
-title = "Android: ActivityResultContractを使ってを実装する"
+title = "Android: ActivityResultContractを使ってRuntime Permissionsを実装する"
 tags = ["android", "jetpack", "activity"]
 blogimport = true
 type = "post"

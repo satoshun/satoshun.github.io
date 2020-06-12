@@ -20,9 +20,11 @@
       <guid>https://satoshun.github.io/2020/06/jetpack-activity-permission-contract/</guid>
       <description>Activity 1.2.0-alpha02から導入された、ActivityResultContractを使うことで、Runtime Permissionsをいい感じに実装することが可能になりました。
 この記事では、どのように実装すれば良いかを簡単に説明します。
-単一のPermissonを要求する android.permission.ACCESS_FINE_LOCATIONが欲しい時は、次のように書くことが出来ます。
-class HogeActivity : AppCompatActivity() { // 定義側  private val requestLocation = registerForActivityResult( ActivityResultContracts.RequestPermission(), ACCESS_FINE_LOCATION ) { isGranted -&amp;gt; // Permissionの取得に成功したかどうか、Boolean値で返ってくる  Toast.makeText(this@AppActivity, &amp;#34;isGranted $isGranted&amp;#34;, Toast.LENGTH_LONG).show() } private fun hoge() { // 呼び出し側  requestLocation.launch(Unit) } } 複数のPermissonを要求する 複数のPermissonの場合は、次のように書くことが出来ます。
-class HogeActivity : AppCompatActivity(R.layout.app_act) { // 定義側  private val requestPermissions = registerForActivityResult( ActivityResultContracts.RequestMultiplePermissions(), arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE ) { grants -&amp;gt; // Permissionの取得に成功したかどうか、Map&amp;lt;String, Boolean&amp;gt;&amp;gt;で返ってくる  Toast.makeText(this@AppActivity, &amp;#34;grants $grants&amp;#34;, Toast.</description>
+単一のPermissonを要求する 新しく追加された registerForActivityResult 拡張関数に、ActivityResultContracts.RequestPermission()を指定することで、単一のPermissionを要求することが出来ます。
+例えば、android.permission.ACCESS_FINE_LOCATIONが欲しい時は、次のように書くことが出来ます。
+class HogeActivity : AppCompatActivity() { // 定義側  private val requestLocation = registerForActivityResult( ActivityResultContracts.RequestPermission(), ACCESS_FINE_LOCATION ) { isGranted -&amp;gt; // Permissionの取得に成功したかどうか、Boolean値で返ってくる  Toast.makeText(this@AppActivity, &amp;#34;isGranted $isGranted&amp;#34;, Toast.LENGTH_LONG).show() } private fun hoge() { // 呼び出し側  requestLocation.launch(Unit) } } 複数のPermissonを要求する 複数の場合は、ActivityResultContracts.RequestMultiplePermissions()を指定します。
+例えば、android.permission.ACCESS_FINE_LOCATION、android.permission.READ_EXTERNAL_STORAGEが欲しい時は、次のように書くことが出来ます。
+class HogeActivity : AppCompatActivity(R.layout.app_act) { // 定義側  private val requestPermissions = registerForActivityResult( ActivityResultContracts.RequestMultiplePermissions(), arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE ) { grants -&amp;gt; // Permissionの取得に成功したかどうか、Map&amp;lt;String, Boolean&amp;gt;&amp;gt;で返ってくる  Toast.</description>
     </item>
     
   </channel>
