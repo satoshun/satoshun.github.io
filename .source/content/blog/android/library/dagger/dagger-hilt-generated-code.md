@@ -1,10 +1,10 @@
 +++
-date = "Sun Jun 21 06:49:26 UTC 2020"
+date = "Sun Jun 21 07:43:11 UTC 2020"
 title = "Android: Dagger HiltとDagger Androidの生成コードの違いについて"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 ## 結論
@@ -24,7 +24,7 @@ Daggerのバージョンは2.28、Hiltのバージョンは2.28-alphaで検証�
 
 Dagger Androidでは、`@ContributesAndroidInjector`を使うことで、ActivityのSubcomponentを自動生成してくれます。
 
-例えば、`MainActivity`に対しては、次のようなコードが生成されます。
+例えば、`MainActivity`を指定すると、次のようなコードが生成されます。
 
 ```java
 @Module(subcomponents = MainActivityModule_ContributeMainActivity.MainActivitySubcomponent.class)
@@ -41,21 +41,21 @@ public abstract class MainActivityModule_ContributeMainActivity {
 }
 ```
 
-このSubcomponentは、`MainActivity`専用に作られているので、このSubcomponent配下では、MainActivityを直接injectすることが可能です。
+このSubcomponentは、`MainActivity`専用に作られていることが分かります。`MainActivity`専用に作っているので、このSubcomponent配下では、MainActivityを直接injectすることが可能です。
 
 ```kotlin
 class MainCounter @Inject constructor(private val mainActivity: MainActivity) {...}
 ```
 
-このMainCounterを他のActivityに対してinjectしようとすると、エラーが出ます。これが、SubcomponentをActivity毎に独立で作るメリットです。
+このMainCounterを他のActivityに対してinjectしようとすると、エラーが出ます。これが、専用のSubcomponentをActivity毎に独立で作るメリットです。
 
 次に、Dagger Hiltを見てみます。
 
 ## Dagger Hiltの生成コード
 
-Dagger Androidでは、`@AndroidEntryPoint`を使うことで、ActivityのSubcomponentを自動生成してくれます。
+Dagger Hiltでは、`@AndroidEntryPoint`を使うことで、ActivityのSubcomponentを自動生成してくれます。
 
-例えば、`MainActivity`と、`SubActivity`に対しては、次のようなコードが生成されます。
+例えば、`MainActivity`と、`SubActivity`を指定すると、次のようなコードが生成されます。
 
 ```java
 @Subcomponent(
@@ -81,13 +81,13 @@ public abstract static class ActivityC implements MainActivity_GeneratedInjector
 }
 ```
 
-Dagger Androidとの大きな差異は、MainActivityとSubActivityが共通のSubcomponentを持つことです。
-これは、Dagger Hiltの設計によるもので、1つの大きなSubcomponentのほうが、何かと良いだろうという事でこのようになりました。
+Dagger Androidとの大きな差異は、MainActivityとSubActivityで共通のSubcomponentを持つことです。
+これは、Dagger Hiltの設計によるもので、1つの大きなSubcomponentのほうが、何かと良いだろうという事でこのようになっています。
 
 ただ、Dagger Androidと比較したときに、1つのSubcomponentになったことで、`MainCounter`のようなクラスを作りにくくなりました。
 なぜなら、Subcomponentを共通化したことにより、`MainActivity`などの専用のActivityを直接inject出来ないためです。
 
-例えばDagger hiltでは次のコードは違法です。
+例えばDagger Hiltでは次のコードは違法です。
 
 ```kotlin
 // 違法
