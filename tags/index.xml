@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 13 Jun 2020 08:38:48 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jun 2020 07:43:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,18 @@
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sat, 13 Jun 2020 08:38:48 +0000</pubDate>
+      <pubDate>Sun, 21 Jun 2020 07:43:11 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dagger</title>
+      <link>https://satoshun.github.io/tags/dagger/</link>
+      <pubDate>Sun, 21 Jun 2020 07:43:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/dagger/</guid>
       <description></description>
     </item>
     
@@ -81,15 +90,6 @@
       <pubDate>Thu, 30 Apr 2020 04:38:16 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/constraintlayout/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dagger</title>
-      <link>https://satoshun.github.io/tags/dagger/</link>
-      <pubDate>Tue, 17 Mar 2020 09:33:04 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/dagger/</guid>
       <description></description>
     </item>
     

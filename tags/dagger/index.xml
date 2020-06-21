@@ -7,10 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 17 Mar 2020 09:33:04 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jun 2020 07:43:11 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: Dagger HiltとDagger Androidの生成コードの違いについて</title>
+      <link>https://satoshun.github.io/2020/06/dagger-hilt-generated-code/</link>
+      <pubDate>Sun, 21 Jun 2020 07:43:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/06/dagger-hilt-generated-code/</guid>
+      <description>結論  Dagger Hiltは1つのSubcomponentが作られる Dagger AndroidはActivityごとに専用のSubcomponentが作られる  （ドキュメントに書いてる通りです）
+生成コードの違いについて Dagger Hiltが爆誕したので、Dagger Androidと比較したときに、生成コードにはどのような違いがあるかを検証してみました。今回は、Activityのみに焦点を当てています。
+Daggerのバージョンは2.28、Hiltのバージョンは2.28-alphaで検証しました。
+Dagger Androidの生成コード Dagger Androidでは、@ContributesAndroidInjectorを使うことで、ActivityのSubcomponentを自動生成してくれます。
+例えば、MainActivityを指定すると、次のようなコードが生成されます。
+@Module(subcomponents = MainActivityModule_ContributeMainActivity.MainActivitySubcomponent.class) public abstract class MainActivityModule_ContributeMainActivity { private MainActivityModule_ContributeMainActivity() {} ... @Subcomponent public interface MainActivitySubcomponent extends AndroidInjector&amp;lt;MainActivity&amp;gt; { @Subcomponent.Factory interface Factory extends AndroidInjector.Factory&amp;lt;MainActivity&amp;gt; {} } } このSubcomponentは、MainActivity専用に作られていることが分かります。MainActivity専用に作っているので、このSubcomponent配下では、MainActivityを直接injectすることが可能です。
+class MainCounter @Inject constructor(private val mainActivity: MainActivity) {...} このMainCounterを他のActivityに対してinjectしようとすると、エラーが出ます。これが、専用のSubcomponentをActivity毎に独立で作るメリットです。
+次に、Dagger Hiltを見てみます。
+Dagger Hiltの生成コード Dagger Hiltでは、@AndroidEntryPointを使うことで、ActivityのSubcomponentを自動生成してくれます。
+例えば、MainActivityと、SubActivityを指定すると、次のようなコードが生成されます。
+@Subcomponent( modules = { FragmentCBuilderModule.class, ViewCBuilderModule.class, DefaultViewModelFactories.ActivityModule.class, HiltWrapper_ActivityModule.class, MainActivityModule.</description>
+    </item>
     
     <item>
       <title>Dagger2: Dagger2.27の新しいエラーメッセージを少し試してみる</title>
