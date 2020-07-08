@@ -4,7 +4,37 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2020-06-21T07:43:11+00:00</lastmod>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/compose/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/jetpack/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/07/compose-preview/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-07-08T11:36:04+00:00</lastmod>
   </url>
   
   <url>
@@ -13,22 +43,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-06-21T07:43:11+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2020-06-21T07:43:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-06-21T07:43:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2020-06-21T07:43:11+00:00</lastmod>
   </url>
   
@@ -49,11 +64,6 @@
   
   <url>
     <loc>https://satoshun.github.io/2020/06/jetpack-activity-permission-contract/</loc>
-    <lastmod>2020-06-12T13:28:24+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/jetpack/</loc>
     <lastmod>2020-06-12T13:28:24+00:00</lastmod>
   </url>
   
@@ -110,11 +120,6 @@
   <url>
     <loc>https://satoshun.github.io/tags/di/</loc>
     <lastmod>2020-03-17T09:33:04+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/compose/</loc>
-    <lastmod>2020-03-05T10:38:47+00:00</lastmod>
   </url>
   
   <url>

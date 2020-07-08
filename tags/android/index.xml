@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 21 Jun 2020 07:43:11 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jul 2020 11:36:04 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jetpack Compose: PreviewParameterアノテーションを使っていろいろなプレビューを作る</title>
+      <link>https://satoshun.github.io/2020/07/compose-preview/</link>
+      <pubDate>Wed, 08 Jul 2020 11:36:04 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/07/compose-preview/</guid>
+      <description>この記事では、PreviewParameterアノテーションを使って複数のプレビューを出す方法について説明します。
+Previewアノテーションについて Jetpack Composeでは、@Previewを使うことでプレビューを表示することが出来ます。
+例えば、TestScreenのプレビューは次のように定義することが出来ます。
+@Composable fun TestScreen( user: User, count: Int ) { ... } @Preview(&amp;#34;test screen&amp;#34;) @Composable fun PreviewTestScreen() { TestScreen(user = User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;), count = 10) } ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、@Previewを複数定義することですが、@PreviewParameterを使うことでよりスマートに書くことが出来ます。
+具体的には、次のように書くことが出来ます。
+class PreviewUserProvider : PreviewParameterProvider&amp;lt;User&amp;gt; { override val values: Sequence&amp;lt;User&amp;gt; get() = sequenceOf( User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;), User(id = &amp;#34;2&amp;#34;, name = &amp;#34;スズキ&amp;#34;) ) } @Preview(&amp;#34;test screen parameter&amp;#34;) @Composable fun PreviewParameterTestScreen( @PreviewParameter(PreviewUserProvider::class) user: User ) { TestScreen(user = user, count = 10) } 最初に、PreviewParameterProviderインターフェースを実装します。PreviewParameterProviderでは、プレビューしたいインスタンス（パラメータ）を定義してあげます。 実装したクラスを @PreviewParameter(PreviewUserProvider::class) と指定することで、プレビューを複数出すことが出来ます。</description>
+    </item>
     
     <item>
       <title>Android: Dagger HiltとDagger Androidの生成コードの違いについて</title>
