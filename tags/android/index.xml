@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 08 Jul 2020 11:36:04 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jul 2020 05:14:48 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jetpack Compose: IOSchedをJetpack Composeで書く part1</title>
+      <link>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</link>
+      <pubDate>Sun, 12 Jul 2020 05:14:48 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</guid>
+      <description>この記事では、Jetpack Composeを学ぶために、公式の IoSched のUIをJetpack Composeに書き換えていく記事になります。 完全に見た目を同一にするという所まではやらずに、大体一緒の見た目で妥協するのでご了承下さい。
+Part1では、ホーム画面のAppbarを作るところまでをやります。
+また、この記事のコードのライセンスはGoogle I/Oアプリと同等です。
+Copyright 2014 Google Inc. All rights reserved. Licensed under the Apache License, Version 2.0 (the &amp;quot;License&amp;quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &amp;quot;AS IS&amp;quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+    </item>
     
     <item>
       <title>Jetpack Compose: PreviewParameterアノテーションを使っていろいろなプレビューを作る</title>

@@ -32,7 +32,7 @@ limitations under the License.
 
 ## IOSchedのAppbar
 
-まず最初に、IoSchedのスクショになります。これをComposeに置き換えていきます。
+まず最初に、IOSchedのスクショになります。これをComposeに置き換えていきます。
 
 {{< figure src="/blog/android/jetpack/compose/iosched-appbar.png" width="50%" >}}
 
@@ -113,7 +113,7 @@ IconButton(onClick = { TODO() }) {
 }
 ```
 
-次に、`actions`引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、`Icon`と`IconButton`を組み合わせて使います。また、IoSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、`defaultWidth`と`defaultHeight`から設定できます。今回は`36.dp`を設定します。次に、色の変更は`tint`からします。今回は`Color(0xFF1A73E8)`を指定し、青っぽい色に設定します。
+次に、`actions`引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、`Icon`と`IconButton`を組み合わせて使います。また、IOSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、`defaultWidth`と`defaultHeight`から設定できます。今回は`36.dp`を設定します。次に、色の変更は`tint`からします。今回は`Color(0xFF1A73E8)`を指定し、青っぽい色に設定します。
 
 ```kotlin
 IconButton(onClick = { TODO() }) {
@@ -131,7 +131,7 @@ IconButton(onClick = { TODO() }) {
 
 {{< figure src="/blog/android/jetpack/compose/iosched-sample-appbar.png" width="50%" >}}
 
-おおよそIoSchedのAppbarと同じ見た目になりました😃
+おおよそIOSchedのAppbarと同じ見た目になりました😃
 
 ## まとめ
 
