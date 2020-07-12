@@ -1,13 +1,13 @@
 +++
-date = "Sun Jul 12 02:52:31 UTC 2020"
+date = "Sun Jul 12 05:14:48 UTC 2020"
 title = "Jetpack Compose: IOSchedをJetpack Composeで書く part1"
 tags = ["android", "jetpack", "compose"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-この記事では、Jetpack Composeを学ぶためにIoSchedのUIをJetpack Composeに書き換えていく記事になります。
+この記事では、Jetpack Composeを学ぶために、公式の [IoSched](https://github.com/google/iosched) のUIをJetpack Composeに書き換えていく記事になります。
 完全に見た目を同一にするという所まではやらずに、大体一緒の見た目で妥協するのでご了承下さい。
 
 Part1では、ホーム画面のAppbarを作るところまでをやります。
@@ -38,10 +38,10 @@ limitations under the License.
 
 ## Drawer、Menuなどを実装していく
 
-Jetpack Composeでは、`Scaffold`を使うことで前述の画像のような、基本的な画面を作ることが出来ます。
+Jetpack Composeでは、`Scaffold`関数を使うことで前述の画像のような、基本的な画面を作ることが出来ます。
 
 ```kotlin
-Composable
+@Composable
 fun Scaffold(
     scaffoldState: ScaffoldState = remember { ScaffoldState() },
     topBar: @Composable (() -> Unit)? = null,
@@ -57,9 +57,9 @@ fun Scaffold(
 )
 ```
 
-`Scaffold`関数の定義はこのようになっています。引数を見ると、topBar、bottomBarといったAppbarの設定や、floatingActionButton、drawerContentなどの指定も出来ます。
+`Scaffold`関数の定義はこのようになっています。引数を見ると、topBar、bottomBarからAppbarを、floatingActionButtonからFloatingActionButton、drawerContentからDrawerの指定が出来ます。
 
-まずは、topBar引数から、上部にAppbarを設定してみます。Appbarのためのレイアウト`TopAppBar`が定義されているので、これを使います。
+まずは、topBar引数から、上部にAppbarを設定してみます。Appbarを構築するために`TopAppBar`が定義されているので、これを使います。
 
 ```kotlin
 Scaffold(
@@ -72,7 +72,7 @@ Scaffold(
 )
 ```
 
-`TopAppBar`関数を使うと、画面上部にAppbarをレイアウト出来ます。今回はタイトルを`title`引数から、ナビゲーションアイコンを`navigationIcon`引数から、アカウントアイコンを`actions`引数から設定します。
+`TopAppBar`関数を使うと、画面上部にAppbarをレイアウト出来ます。今回はタイトルを`title`引数から、ナビゲーションアイコンを`navigationIcon`引数から、アカウントアイコンを`actions`引数からそれぞれ設定します。
 
 
 ```kotlin
@@ -105,7 +105,7 @@ Text(text = "Home")
 ```
 
 次に、`navigationIcon`引数。ここでは、メニューアイコンを出力したいので、`IconButton`関数と`Icon`関数を使います。`IconButton`はonClickからのクリックハンドリングや、レイアウトを調整してくれる機能があります。
-`IconButton`関数と`Icon`関数を組み合わせることで、いい感じにアイコンを表示することが出来ます。また、Iconの引数に指定している`Icons.Filled.Menu`はJetpack Compose material側で定義されている material iconです。基本的なアイコンはライブラリ側で定義されており、今回はそれを使っています。
+`IconButton`関数と`Icon`関数を組み合わせることで、いい感じにアイコンを表示することが出来ます。また、Iconの引数に指定している`Icons.Filled.Menu`はJetpack Compose materialライブラリ側で定義されているアイコンです。基本的なアイコンはライブラリ側で定義されており、今回はそれを使っています。
 
 ```kotlin
 IconButton(onClick = { TODO() }) {
@@ -113,7 +113,7 @@ IconButton(onClick = { TODO() }) {
 }
 ```
 
-次に、`actions`引数。ここでは、その他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、`navigationIcon`と同様に`Icon`と`IconButton`を組み合わせます。また、IoSchedに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。
+次に、`actions`引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、`Icon`と`IconButton`を組み合わせて使います。また、IoSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、`defaultWidth`と`defaultHeight`から設定できます。今回は`36.dp`を設定します。次に、色の変更は`tint`からします。今回は`Color(0xFF1A73E8)`を指定し、青っぽい色に設定します。
 
 ```kotlin
 IconButton(onClick = { TODO() }) {
@@ -126,8 +126,6 @@ IconButton(onClick = { TODO() }) {
   )
 }
 ```
-
-まずはサイズの変更から。サイズは`defaultWidth`と`defaultHeight`から設定できます。今回はそれぞれ`36.dp`を設定します。次に、色の変更は`tint`からします。今回は`Color(0xFF1A73E8)`を指定することで、青っぽい色にすることが出来ます。
 
 最終的に、次のようになります。
 
