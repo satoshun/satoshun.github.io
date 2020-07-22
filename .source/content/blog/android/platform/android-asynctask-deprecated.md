@@ -4,7 +4,7 @@ title = "Android: RIP AsyncTask"
 tags = ["android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 javadocコメントとコミットログは次のようになっています。
@@ -19,7 +19,7 @@ AsyncTaskの目的は、UIスレッドを簡単に扱うためのものだけど
 
 ### Contextのリークや、configuration changeなどでクラッシュしてしまう
 
-この状態は、AsyncTaskを正しく使った場合は起こらないと認識しています。AsyncTaskには、RxJavaはKotlin Coroutineと同様に、タスクをcancelするためのメソッドがあります。このメソッドを `onDestory` などの適切なタイミングでコールしてあげればリーク、クラッシュを防ぐごとが出来ます。この問題は、他のフレームワークでも同様に起こるので、AsyncTaskの問題というよりは、非同期プログラミングの問題なのかなと思っています。
+この状態は、AsyncTaskを正しく使った場合は起こらないと認識しています。AsyncTaskには、RxJavaはKotlin Coroutineと同様に、タスクをcancelするためのメソッドがあります。このメソッドを `onDestory` などの適切なタイミングでコールしてあげればリーク、クラッシュを防ぐごとが出来ます。この問題は、他のフレームワークでも同様に起こるので、AsyncTaskの問題というよりは、非同期プログラミングの問題なのかなと思っています。ただ、Coroutineにはstructured concurrency、RxJavaにはRxAutoDisposeがあるなど、これらのミスが起きにくい環境にはなっています。
 
 ### 3つのgenerics型がしんどかった
 
@@ -29,8 +29,8 @@ AsyncTaskのクラス宣言は次のようになっています。
 public abstract class AsyncTask<Params, Progress, Result>
 ```
 
-個人的には、3つのgenerics型が何となく難しいと感じていました。当時を思い出すと、よく順番が分からなくなっていた気がします。
+個人的には、3つのgenerics型が何となく難しいと感じていました。当時を思い返すと、よく順番が分からなくなっていた気がします。
 
-### RxJavaなどの他のエコシステムが栄えていた
+### RxJavaなどの他のエコシステムが栄えた
 
-AsyncTaskとかLoaderとかそこらへんのが難しいなぁとなっているところに、RxJavaのようなイケてるフレームワークが出てきて、銀の弾丸だぞっていう感じで広告されたことで、一気に端に追いやられてしまったのかなと思います。実際に、RxJavaはJava8のラムダ式と相性が良い、当時retrolambdaが流行っていたなどの理由もあると思います。
+AsyncTaskとかLoaderとかそこらへんのが難しいなぁとなっているところに、RxJavaのようなイケてるフレームワークが出てきて、銀の弾丸だぞっていう感じで広告されたことで、一気に端に追いやられてしまったのかなと思っています。他には、RxJavaはJava8のラムダ式と相性が良い、当時retrolambdaが流行っていたなどの理由もあると思います。

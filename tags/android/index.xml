@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 12 Jul 2020 05:14:48 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jul 2020 02:58:19 +0000</lastBuildDate>
     
 	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Android: RIP AsyncTask</title>
+      <link>https://satoshun.github.io/2020/07/android-asynctask-deprecated/</link>
+      <pubDate>Wed, 22 Jul 2020 02:58:19 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/07/android-asynctask-deprecated/</guid>
+      <description>javadocコメントとコミットログは次のようになっています。
+ AsyncTask was intended to enable proper and easy use of the UI thread. However, the most common use case was for integrating into UI, and that would cause Context leaks, missed callbacks, or crashes on configuration changes. It also has inconsistent behavior on different versions of the platform, swallows exceptions from {@code doInBackground}, and does not provide much utility over using {@link Executor}s directly.
+ https://android-review.googlesource.com/c/platform/frameworks/base/+/1156409
+AsyncTaskの目的は、UIスレッドを簡単に扱うためのものだけど、Contextのリークや、configuration changeなどでクラッシュしてしまうのでそもそも目的を達成していない。また、Androidのバージョンごとに振る舞いに一貫性がないのも問題だと。ただでさえ、非同期プログラミングは難しいのに、バージョンごとに振る舞いが異なっていたらしんどさ倍増って話だと言う話です。</description>
+    </item>
     
     <item>
       <title>Jetpack Compose: IOSchedをJetpack Composeで書く part1</title>
