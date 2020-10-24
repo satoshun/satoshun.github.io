@@ -105,7 +105,7 @@ SNAPSHOTの使い方は、<a href="http://rahulrav.com/blog/using_snapshot_build
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> owner = view.findViewTreeLifecycleOwner()
 <span style="color:#75715e">// 使い方 + Coroutine
 </span><span style="color:#75715e"></span>view.findViewTreeLifecycleOwner()<span style="color:#f92672">?.</span>lifecycleScope<span style="color:#f92672">?.</span>launch {
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>Viewに拡張関数が定義されており、そこから使うことが出来ます。</p>
 <p>Fragmentで生成したViewから<code>findViewTreeLifecycleOwner</code>をした場合には、
@@ -129,9 +129,9 @@ Fragmentのライフサイクルが取得出来るので、適切なライフサ
 現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
   <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-  ...
+  <span style="color:#f92672">..</span>.
   ViewTreeLifecycleOwner.<span style="color:#66d9ef">set</span>(window.decorView, <span style="color:#66d9ef">this</span>)
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div>
     <div class="mt30"></div>

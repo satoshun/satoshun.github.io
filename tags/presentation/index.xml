@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 07 Feb 2019 13:19:13 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/presentation/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 07 Feb 2019 13:19:13 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/presentation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DroidKaigi2019で「R8/ProGuard 徹底比較」というテーマで発表しました</title>
       <link>https://satoshun.github.io/2019/02/droidkaigi-2019/</link>

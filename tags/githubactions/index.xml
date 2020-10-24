@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 27 May 2020 03:52:50 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/githubactions/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 27 May 2020 03:52:50 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/githubactions/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>avocadoとGitHub Actionsを使って、Vector Drawableを最適化する</title>
       <link>https://satoshun.github.io/2020/05/android-avocado-with-github-actions/</link>

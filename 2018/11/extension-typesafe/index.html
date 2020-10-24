@@ -94,17 +94,17 @@ class A&lt;T&gt;(val value: T) {
 <p>以下のクラスがあったとします。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">isNull</span>(): Boolean {
-    <span style="color:#66d9ef">return</span> value != <span style="color:#66d9ef">null</span>
+    <span style="color:#66d9ef">return</span> value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>
   }
 }
 
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = ...
+  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = <span style="color:#f92672">..</span>.
   a1.isNull()
 }
 </code></pre></div><p>このとき、<code>a1.isNull()</code>の結果は自明です。なぜなら<code>A&lt;Int&gt;</code>で宣言している時点でnonNullが確定しているためです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = ...
+  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = <span style="color:#f92672">..</span>.
   a2.isNull()
 }
 </code></pre></div><p>このとき、<code>a2.isNull()</code>の結果は自明ではありません。
@@ -114,15 +114,15 @@ class A&lt;T&gt;(val value: T) {
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T)
 
 <span style="color:#75715e">// nullableのときにコールできるようにする
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;T : Any&gt; <span style="color:#a6e22e">A</span>&lt;T?&gt;.isNull(): Boolean {
-  <span style="color:#66d9ef">return</span> value != <span style="color:#66d9ef">null</span>
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">Any</span>&gt; <span style="color:#a6e22e">A</span>&lt;T?&gt;.isNull(): Boolean {
+  <span style="color:#66d9ef">return</span> value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>
 }
 
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = ...
+  <span style="color:#66d9ef">val</span> a1: A&lt;Int&gt; = <span style="color:#f92672">..</span>.
   a1.isNull() <span style="color:#75715e">// コンパイルエラー!!
 </span><span style="color:#75715e"></span>
-  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = ...
+  <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = <span style="color:#f92672">..</span>.
   a2.isNull()
 }
 </code></pre></div><p><code>fun &lt;T : Any&gt; A&lt;T?&gt;.isNull()</code>と宣言することでnullable時のみコールできます。</p>

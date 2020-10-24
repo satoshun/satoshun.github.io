@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 21 Nov 2019 12:35:25 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/groupie/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 21 Nov 2019 12:35:25 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/groupie/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android: Groupieの内部でやっている差分更新周りの話</title>
       <link>https://satoshun.github.io/2019/11/groupie-diffutil/</link>

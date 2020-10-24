@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/edgetoedge/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/edgetoedge/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>fitsSystemWindowsの話をつらつらと</title>
       <link>https://satoshun.github.io/2020/01/android-fitssystemwindows/</link>

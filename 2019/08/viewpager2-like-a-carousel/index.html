@@ -130,7 +130,7 @@
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">val</span> pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin)
 <span style="color:#66d9ef">val</span> offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset)
-viewpager.setPageTransformer { page, position -&gt;
+viewpager.setPageTransformer { page, position <span style="color:#f92672">-&gt;</span>
   <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
   page.translationX = -offset
 }
@@ -139,12 +139,12 @@ viewpager.setPageTransformer { page, position -&gt;
 <h2 id="2-さらにscaleも変更する">2. さらにScaleも変更する</h2>
 <p>前述したチラ見せPageTransformerに加え、Scale用のPageTransformerも作ります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewpager.setPageTransformer(CompositePageTransformer().apply {
-  addTransformer { page, position -&gt;
+  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
     <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
     page.translationX = -offset
   }
 
-  addTransformer { page, position -&gt;
+  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
     <span style="color:#75715e">// 6は適当な値です
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scale = <span style="color:#ae81ff">1</span> - (abs(position) / <span style="color:#ae81ff">6</span>)
     page.scaleX = scale

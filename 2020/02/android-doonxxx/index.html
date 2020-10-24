@@ -110,12 +110,12 @@ doOnPreDraw
 <p>注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。</p>
 <h2 id="doonlayout">doOnLayout</h2>
 <p>doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.doOnLayout(<span style="color:#66d9ef">crossinline</span> action: (view: View) -&gt; Unit) {
-    <span style="color:#66d9ef">if</span> (ViewCompat.isLaidOut(<span style="color:#66d9ef">this</span>) &amp;&amp; !isLayoutRequested) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.doOnLayout(<span style="color:#66d9ef">crossinline</span> action: (view: View) <span style="color:#f92672">-&gt;</span> Unit) {
+    <span style="color:#66d9ef">if</span> (ViewCompat.isLaidOut(<span style="color:#66d9ef">this</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!is</span>LayoutRequested) {
         action(<span style="color:#66d9ef">this</span>)
     } <span style="color:#66d9ef">else</span> {
         doOnNextLayout {
-            action(it)
+            action(<span style="color:#66d9ef">it</span>)
         }
     }
 }
@@ -141,7 +141,7 @@ Viewがgoneの場合、<code>doOnNextLayout</code>はコールされないです
 </span><span style="color:#75715e"> * See the License for the specific language governing permissions and
 </span><span style="color:#75715e"> * limitations under the License.
 </span><span style="color:#75715e"> */</span>
-<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.awaitPreDraw() = suspendCancellableCoroutine&lt;Unit&gt; { cont -&gt;
+<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.awaitPreDraw() = suspendCancellableCoroutine&lt;Unit&gt; { cont <span style="color:#f92672">-&gt;</span>
     <span style="color:#66d9ef">val</span> listener = OneShotPreDrawListener.add(<span style="color:#66d9ef">this</span>) {
         cont.resume(Unit)
     }

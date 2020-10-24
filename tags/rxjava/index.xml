@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 24 Jun 2019 13:52:14 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/rxjava/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 24 Jun 2019 13:52:14 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/rxjava/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RxJava 3.xの開発が本格的に始まりました</title>
       <link>https://satoshun.github.io/2019/06/rxjava3-preview/</link>

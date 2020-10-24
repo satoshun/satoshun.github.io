@@ -116,11 +116,11 @@
 <p>ここで重要なのは、<code>onDestroy</code>が呼ばれることなく、複数回<code>onCreateView</code>が呼ばれる可能性がある点です。</p>
 <p>例えば、次のコードは間違っている可能性があります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
-    ...
+    <span style="color:#f92672">..</span>.
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
         <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
         viewModel.<span style="color:#66d9ef">data</span>.observe(<span style="color:#66d9ef">this</span>, Observer {
-            ...
+            <span style="color:#f92672">..</span>.
         })
     }
 }
@@ -131,12 +131,12 @@
 よって、FragmentにはView用のLifecycleが用意されています。それが、<code>Fragment#getViewLifecycle</code>です。</p>
 <p>前述のコードは次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
-    ...
+    <span style="color:#f92672">..</span>.
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
         <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
         <span style="color:#75715e">// ViewのLifecycleOwnerを渡す
 </span><span style="color:#75715e"></span>        viewModel.<span style="color:#66d9ef">data</span>.observe(viewLifecycleOwner, Observer {
-            ...
+            <span style="color:#f92672">..</span>.
         })
     }
 }

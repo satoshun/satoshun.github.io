@@ -93,7 +93,7 @@ fun hoge(a: String) { …">
   println(a)
 }
 
--&gt;
+<span style="color:#f92672">-&gt;</span>
 
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.hoge() {
   println(<span style="color:#66d9ef">this</span>)
@@ -106,27 +106,27 @@ fun hoge(a: String) { …">
   println(b)
 }
 
--&gt;
+<span style="color:#f92672">-&gt;</span>
 
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">User</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.hoge() {
     println(<span style="color:#66d9ef">this</span>)
-    println(<span style="color:#66d9ef">this</span>@User)
+    println(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@User</span>)
   }
 }
 </code></pre></div><p>さらに、reified type parameterを使うことで、関数のパラメータを省略できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">hoge</span>(a: String, b: User, c: Class&lt;T&gt;) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">hoge</span>(a: String, b: User, c: Class&lt;T&gt;) {
   println(a)
   println(b)
   println(c)
 }
 
--&gt;
+<span style="color:#f92672">-&gt;</span>
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
-  <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;reified T&gt; <span style="color:#a6e22e">String</span>.hoge() {
+  <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">String</span>.hoge() {
     println(<span style="color:#66d9ef">this</span>)
-    println(<span style="color:#66d9ef">this</span>@User)
+    println(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@User</span>)
     println(T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
   }
 }

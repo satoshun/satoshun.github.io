@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/aac/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/aac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android: 拡張関数でLiveDataのSingle Eventを扱う</title>
       <link>https://satoshun.github.io/2018/05/singlelivedata/</link>

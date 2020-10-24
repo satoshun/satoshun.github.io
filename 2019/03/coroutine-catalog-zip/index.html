@@ -98,7 +98,7 @@ launch {
   <span style="color:#66d9ef">val</span> task1 = async { MainService.task1() }
   <span style="color:#66d9ef">val</span> task2 = async { MainService.task2() }
 
-  println(<span style="color:#e6db74">&#34;${task1.await()}\n${task2.await()}&#34;</span>)
+  println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${task1.await()}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">${task2.await()}</span><span style="color:#e6db74">&#34;</span>)
 }
 </code></pre></div><p>asyncで包むことで、並列に処理をすることができます。</p>
 <p>次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元で<code>runCatching</code>を使います。</p>
@@ -108,7 +108,7 @@ launch {
 
   <span style="color:#66d9ef">val</span> result1 = task1.await()
   <span style="color:#66d9ef">val</span> result2 = task2.await()
-  println(<span style="color:#e6db74">&#34;$result1\n&#34;</span> + <span style="color:#e6db74">&#34;$result2\n&#34;</span>)
+  println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> + <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result2</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
 }
 </code></pre></div><p><code>runCatching</code>を使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。</p>
 <hr>
@@ -120,7 +120,7 @@ launch {
   <span style="color:#75715e">// awaitのタイミングでrunCatchingを使う
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
   <span style="color:#66d9ef">val</span> result2 = runCatching { task2.await() }
-  println(<span style="color:#e6db74">&#34;$result1\n&#34;</span> + <span style="color:#e6db74">&#34;$result2\n&#34;</span>)
+  println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> + <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result2</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
 }
 </code></pre></div><p>デフォルトの設定だと例外は伝搬し、子が倒れたら親も倒れます。</p>
 <p>しかし、<code>supervisorScope</code>を使うと、上記の振る舞いを防ぐことができます。</p>
@@ -132,7 +132,7 @@ launch {
     <span style="color:#75715e">// supervisorScopeを使っているのでこのタイミングでもおｋ
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
     <span style="color:#66d9ef">val</span> result2 = runCatching { task2.await() }
-    println(<span style="color:#e6db74">&#34;$result1\n&#34;</span> + <span style="color:#e6db74">&#34;$result2\n&#34;</span>)
+    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> + <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result2</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
   }
 }
 </code></pre></div><p><code>supervisorScope</code>を使うと、<code>Deferred.await</code>のタイミングで例外のハンドリングをすることが出来ます。</p>
@@ -146,7 +146,7 @@ launch {
 
     <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
     <span style="color:#66d9ef">val</span> result2 = runCatching { task2.await() }
-    println(<span style="color:#e6db74">&#34;$result1\n&#34;</span> + <span style="color:#e6db74">&#34;$result2\n&#34;</span>)
+    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> + <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$result2</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
   }
 }
 </code></pre></div><p>このように書くことで、例えばtask1がキャンセルされたとしても、他の部分の処理を継続することが出来ます。</p>

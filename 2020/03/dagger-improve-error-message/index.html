@@ -108,7 +108,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// @Provides &lt;-- エラーを出したいのでコメントアウト
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
-@Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> testObject: TestObject
+<span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> testObject: TestObject
 </code></pre></div><p>すると、次のようになります。</p>
 <h3 id="新しいエラーログ">新しいエラーログ</h3>
 <p><a href="/blog/android/library/dagger/dagger-missing-binding-new.png"><figure>
@@ -122,13 +122,13 @@
 </a></p>
 <hr>
 <p>次に、複数Providesの指定をしてみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Provides
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Provides</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
-@Provides
+<span style="color:#a6e22e">@Provides</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject2</span>(): TestObject = TestObject()
 
-@Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> testObject: TestObject
+<span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> testObject: TestObject
 </code></pre></div><p>すると、次のようになります。</p>
 <h3 id="新しいエラーログ-1">新しいエラーログ</h3>
 <p><a href="/blog/android/library/dagger/dagger-duplicate-binding-new.png"><figure>

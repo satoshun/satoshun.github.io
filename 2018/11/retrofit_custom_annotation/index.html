@@ -96,8 +96,8 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequireAuth</span>
 </code></pre></div><p>次に、上記で定義したアノテーションを使い、Apiを定義します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ApiService</span> {
-  @RequireAuth
-  @GET(<span style="color:#e6db74">&#34;login&#34;</span>)
+  <span style="color:#a6e22e">@RequireAuth</span>
+  <span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;login&#34;</span>)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(: retrofit2.Call&lt;Unit&gt;
 }
 </code></pre></div><p>次に、<code>RequireAuth</code>を処理するための<code>okhttp3.Interceptor</code>を定義します。</p>
@@ -107,7 +107,7 @@
 
     <span style="color:#66d9ef">val</span> invocation = request.tag(Invocation<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     <span style="color:#66d9ef">val</span> authAnnotation = invocation<span style="color:#f92672">?.</span>method()<span style="color:#f92672">?.</span>getAnnotation(RequireAuth<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-    <span style="color:#66d9ef">if</span> (authAnnotation != <span style="color:#66d9ef">null</span>) {
+    <span style="color:#66d9ef">if</span> (authAnnotation <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
       request = request
         .newBuilder()
         .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic AAAAA&#34;</span>).build()
@@ -130,14 +130,14 @@ Retrofit 2.5.0から<code>Invocation</code>が追加され、<code>Request</code
 <h2 id="invocation以前の場合">Invocation以前の場合</h2>
 <p>Invocation以前は、<code>Headers</code>を使い認証情報を付与するテクニックがありました。
 詳しくは<a href="https://speakerdeck.com/jakewharton/making-retrofit-work-for-you-ohio-devfest-2016?slide=39">Making Retrofit Work For You</a>にあります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Headers(<span style="color:#e6db74">&#34;Auth: true&#34;</span>)
-@GET(<span style="color:#e6db74">&#34;useheaderlogin&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Headers</span>(<span style="color:#e6db74">&#34;Auth: true&#34;</span>)
+<span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;useheaderlogin&#34;</span>)
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(): retrofit2.Call&lt;Unit&gt;
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Auth2Interceptor</span> : Interceptor {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">intercept</span>(chain: Interceptor.Chain): Response {
     <span style="color:#66d9ef">var</span> request = chain.request()
 
-    <span style="color:#66d9ef">if</span> (request.header(<span style="color:#e6db74">&#34;Auth&#34;</span>) != <span style="color:#66d9ef">null</span>) {
+    <span style="color:#66d9ef">if</span> (request.header(<span style="color:#e6db74">&#34;Auth&#34;</span>) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
       request = request
         .newBuilder()
         .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic BBBBB&#34;</span>).build()

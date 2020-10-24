@@ -178,19 +178,19 @@ SUBCLASSES<span style="color:#f92672">,</span>
 <h2 id="同一モジュール内">同一モジュール内</h2>
 <p>最初に、呼び出される側の定義です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
-  @RestrictTo(RestrictTo.Scope.LIBRARY)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.SUBCLASSES)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.TESTS)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.TESTS)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 }
 </code></pre></div><p>適当にスコープをつけたメソッドを定義しただけです。</p>
@@ -216,19 +216,19 @@ SUBCLASSES<span style="color:#f92672">,</span>
 include ':lib1'
 </code></pre><p>まず、lib1に次のクラスを定義します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge2</span> {
-  @RestrictTo(RestrictTo.Scope.LIBRARY)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.SUBCLASSES)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 
-  @RestrictTo(RestrictTo.Scope.TESTS)
+  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.TESTS)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 }
 </code></pre></div><p>次に、appモジュールからアクセスしてみます。</p>
@@ -256,9 +256,9 @@ include ':lib1'
 <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>
 </code></pre></div><p>次に、appから呼び出してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ContentFrameLayout(...) <span style="color:#75715e">// NG
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ContentFrameLayout(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// NG
 </span><span style="color:#75715e"></span>MediaItem.Builder().build() <span style="color:#75715e">// NG
-</span><span style="color:#75715e"></span>DrawableWrapper(...) <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>DrawableWrapper(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// OK
 </span></code></pre></div><p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
 しかし、LIBRARY_GROUP_PREFIXは怒られませんでした。これは多分間違った挙動だと思うのでいつか直ると思います。</p>
 <h2 id="まとめ">まとめ</h2>

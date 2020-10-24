@@ -96,14 +96,14 @@
     
     <p>コードの最適化の話です。この記事では実践に寄せて、Daggerの生成コードがR8によってどのように変化するかを見ます。</p>
 <p>まずはサンプルコードです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Component(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>(
   modules = [
     AppModule1<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>,
     AppModule2<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>
   <span style="color:#960050;background-color:#1e0010">]</span>
 )
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
-  @Component.Builder
+  <span style="color:#a6e22e">@Component</span>.Builder
   <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Builder</span> {
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">build</span>(): AppComponent
   }
@@ -111,32 +111,32 @@
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">inject</span>(activity: MainActivity)
 }
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppModule1</span> {
-  @Provides
+  <span style="color:#a6e22e">@Provides</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService</span>(): AppService {
     <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
-      ...
+      <span style="color:#f92672">..</span>.
     <span style="color:#66d9ef">return</span> retrofit.create()
   }
 }
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">AppModule2</span> {
-  @JvmStatic
-  @Provides
+  <span style="color:#a6e22e">@JvmStatic</span>
+  <span style="color:#a6e22e">@Provides</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService2</span>(): AppService2 {
     <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
-      ...
+      <span style="color:#f92672">..</span>.
     <span style="color:#66d9ef">return</span> retrofit.create()
   }
 }
 
----
+<span style="color:#f92672">--</span>-
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService: AppService
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService2: AppService2
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService: AppService
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> appService2: AppService2
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
@@ -145,7 +145,7 @@
     <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder().build()
     appComponent.inject(<span style="color:#66d9ef">this</span>)
 
-    ...
+    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><p>シンプルなAppComponentを定義して、そこにAppModule1とAppModule2を紐づけています。それを、MainActivityで使うコードになっています。</p>

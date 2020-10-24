@@ -125,7 +125,7 @@
 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleRootActivity</span> : AppCompatActivity(),
   HasModuleInjector {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentInjector: DispatchingAndroidInjector&lt;Fragment&gt;
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentInjector: DispatchingAndroidInjector&lt;Fragment&gt;
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> injector: ModuleActivityInjector
 
@@ -141,7 +141,7 @@
     fragmentInjector
 }
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleActivityInjector</span> @Inject <span style="color:#66d9ef">constructor</span>(
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleActivityInjector</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
   <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">val</span> activity: DispatchingAndroidInjector&lt;Activity&gt;
 )
 
@@ -158,8 +158,8 @@
   }
 }
 </code></pre></div><p>次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@ModuleScope
-@Component(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@ModuleScope</span>
+<span style="color:#a6e22e">@Component</span>(
   dependencies = [CoreComponent<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>], <span style="color:#75715e">// 共通で使うComponent
 </span><span style="color:#75715e"></span>  modules = [
     AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>,
@@ -167,37 +167,37 @@
   <span style="color:#960050;background-color:#1e0010">]</span>
 )
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubComponent</span> : ModuleActivityComponent {
-  @Component.Builder
+  <span style="color:#a6e22e">@Component</span>.Builder
   <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Builder</span> {
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">appComponent</span>(module: CoreComponent): Builder
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">build</span>(): Sub1Component
   }
 }
 
-@Module(
+<span style="color:#a6e22e">@Module</span>(
   includes = [SubActivityModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>]
 )
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubBuilder</span>
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubActivityModule</span> {
-  @ContributesAndroidInjector(modules = [SubFragmentsModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
+  <span style="color:#a6e22e">@ContributesAndroidInjector</span>(modules = [SubFragmentsModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">contributeSubActivity</span>(): SubActivity
 }
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SubFragmentsModule</span> {
-  @ContributesAndroidInjector
+  <span style="color:#a6e22e">@ContributesAndroidInjector</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">contributeSubFragment</span>(): SubFragment
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : ModuleRootActivity() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
     setContentView(R.layout.sub_act)
-    ...
+    <span style="color:#f92672">..</span>.
   }
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> moduleComponent: ModuleActivityComponent
@@ -208,7 +208,7 @@
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubFragment</span> : ModuleChildFragment() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> <span style="color:#960050;background-color:#1e0010">...</span>
 }
 </code></pre></div><p><code>ModuleRootActivity</code>で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。</p>
 <p>これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃</p>

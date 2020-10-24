@@ -107,14 +107,14 @@
     .fromCallable { System.currentTimeMillis() }
     .delay(index, TimeUnit.MILLISECONDS)
     .observeOn(mainScheduler)
-    .subscribe(...)
+    .subscribe(<span style="color:#f92672">..</span>.)
 
 <span style="color:#75715e">// asyncがtrueの場合
 </span><span style="color:#75715e"></span>Observable
     .fromCallable { System.currentTimeMillis() }
     .delay(index, TimeUnit.MILLISECONDS)
     .observeOn(asyncMainScheduler)
-    .subscribe(...)
+    .subscribe(<span style="color:#f92672">..</span>.)
 </code></pre></div><p>フルコードは以下になります。
 <a href="https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt">https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt</a></p>
 <p>結果は、以下のようになりました。</p>

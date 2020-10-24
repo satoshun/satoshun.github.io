@@ -6,10 +6,6 @@
     <description>Recent content in Series-Desc on stsnブログ</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    
-	<atom:link href="https://satoshun.github.io/series-desc/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Sato Shun</copyright><atom:link href="https://satoshun.github.io/series-desc/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 30 Apr 2020 04:38:16 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/constraintlayout/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 30 Apr 2020 04:38:16 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/constraintlayout/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ちょっと複雑なレイアウトをConstraintLayoutで組んでみるpart2</title>
       <link>https://satoshun.github.io/2020/04/constraintlayout-practical2/</link>

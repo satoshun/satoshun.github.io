@@ -104,7 +104,7 @@ JavaとKotlinを一緒に使っていると、この例外に遭遇すること�
 Non-Null型にnullを代入しようとしているからです。</p>
 <p>次に、代入するタイミングで例外を投げなくする方法を紹介します。</p>
 <p>具体的には以下のコードで達成できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">castNull</span>(): T = <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> T
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">castNull</span>(): T = <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> T
 
 
 <span style="color:#66d9ef">val</span> d: String = castNull() <span style="color:#75715e">// ここでは例外が投げられない

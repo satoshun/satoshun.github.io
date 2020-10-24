@@ -135,23 +135,23 @@
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent
 }
 </code></pre></div><p>そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouterImpl</span> @Inject <span style="color:#66d9ef">constructor</span>() : MainRouter {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() : MainRouter {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent {
     <span style="color:#66d9ef">return</span> Intent(context, MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   }
 }
 
----
+<span style="color:#f92672">--</span>-
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
-  @Binds <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMainRouter</span>(impl: MainRouterImpl): MainRouter
+  <span style="color:#a6e22e">@Binds</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMainRouter</span>(impl: MainRouterImpl): MainRouter
 }
 </code></pre></div><p>これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: MainRouter
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: MainRouter
 
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>最終的な依存図は次のようになります。</p>
 <hr>
@@ -167,27 +167,27 @@
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
 }
 </code></pre></div><p>実装は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">---<span style="color:#960050;background-color:#1e0010">実装</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#f92672">--</span>-<span style="color:#960050;background-color:#1e0010">実装</span>
 
-<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouter2Impl</span> @Inject <span style="color:#66d9ef">constructor</span>() : Router&lt;Unit&gt; {
+<span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouter2Impl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() : Router&lt;Unit&gt; {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: Unit): Intent {
     <span style="color:#66d9ef">return</span> Intent(context, MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   }
 }
 
----Dagger<span style="color:#960050;background-color:#1e0010">の設定</span>
+<span style="color:#f92672">--</span>-Dagger<span style="color:#960050;background-color:#1e0010">の設定</span>
 
-@Module
+<span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
-  @Named(<span style="color:#e6db74">&#34;main&#34;</span>)
-  @Binds <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMain2Router</span>(impl: MainRouter2Impl): Router&lt;Unit&gt;
+  <span style="color:#a6e22e">@Named</span>(<span style="color:#e6db74">&#34;main&#34;</span>)
+  <span style="color:#a6e22e">@Binds</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMain2Router</span>(impl: MainRouter2Impl): Router&lt;Unit&gt;
 }
 
----<span style="color:#960050;background-color:#1e0010">使用側</span>
+<span style="color:#f92672">--</span>-<span style="color:#960050;background-color:#1e0010">使用側</span>
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
-  @field:[Inject Named(<span style="color:#e6db74">&#34;main&#34;</span>)] <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: Router&lt;Unit&gt;
-  ...
+  <span style="color:#a6e22e">@field</span>:[Inject Named(<span style="color:#e6db74">&#34;main&#34;</span>)] <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: Router&lt;Unit&gt;
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>DaggerのNamedアノテーションと組み合わせることでいい感じに共通Routerを作ることが出来ます。</p>
 <h2 id="まとめ">まとめ</h2>

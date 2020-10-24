@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/system/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/system/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AnsibleでGhostアプリをデプロイ</title>
       <link>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</link>

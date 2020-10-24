@@ -102,9 +102,9 @@
 <h2 id="テスト対象コード">テスト対象コード</h2>
 <p>まず最初に、テスト対象コードは次のようになっています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
-  ...
+  <span style="color:#f92672">..</span>.
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-    ...
+    <span style="color:#f92672">..</span>.
 
     button.setOnClickListener {
       startActivityForResult(
@@ -122,8 +122,8 @@
     <span style="color:#66d9ef">data</span>: Intent?
   ) {
     <span style="color:#66d9ef">super</span>.onActivityResult(requestCode, resultCode, <span style="color:#66d9ef">data</span>)
-    <span style="color:#66d9ef">if</span> (requestCode == <span style="color:#ae81ff">1</span>) {
-      <span style="color:#66d9ef">if</span> (resultCode == Activity.RESULT_OK) {
+    <span style="color:#66d9ef">if</span> (requestCode <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
+      <span style="color:#66d9ef">if</span> (resultCode <span style="color:#f92672">==</span> Activity.RESULT_OK) {
         <span style="color:#66d9ef">val</span> value = <span style="color:#66d9ef">data</span><span style="color:#f92672">!!</span>.getIntExtra(<span style="color:#e6db74">&#34;test&#34;</span>, -<span style="color:#ae81ff">1</span>)
         button.text = value.toString()
       }
@@ -147,18 +147,18 @@
 <p>では、テストを書いていきます。</p>
 <h2 id="テストコード">テストコード</h2>
 <p>以下が、今回書いたテストコードになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@RunWith(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityTest</span> {
-  @get:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+  <span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
-  @Test
+  <span style="color:#a6e22e">@Test</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onActivityResultTest</span>() {
     <span style="color:#66d9ef">val</span> expectCode = <span style="color:#ae81ff">10</span>
 
     <span style="color:#75715e">// assertion setResult
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     scenario.onActivity {
-      it.findViewById&lt;View&gt;(R.id.button).performClick()
+      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
     }
 
     <span style="color:#75715e">// assertion resultCode
@@ -184,7 +184,7 @@
 
     <span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     main.onActivity {
-      it.findViewById&lt;View&gt;(R.id.button).performClick()
+      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
 
       <span style="color:#75715e">// assertion intent for startActivity(ForResult)
 </span><span style="color:#75715e"></span>      <span style="color:#66d9ef">val</span> name = ComponentName(
@@ -202,11 +202,11 @@
   }
 }
 </code></pre></div><p>上から順番に重要な部分を説明していきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@get:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </code></pre></div><p>これは、Espresso-Intentsを使うときに必要なルールです。<code>Intens.intended</code>、<code>intending</code>を使うために必要なルールになります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 scenario.onActivity {
-    it.findViewById&lt;View&gt;(R.id.button).performClick()
+    <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
 }
 </code></pre></div><p>ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
 ボタンがクリックされると、Sub2Activityで<code>setResult</code>が発火するようになっています。</p>
@@ -232,7 +232,7 @@ bundleSubject.integer(<span style="color:#e6db74">&#34;test&#34;</span>).isEqual
 MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 main.onActivity {
-  it.findViewById&lt;View&gt;(R.id.button).performClick()
+  <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
 
   <span style="color:#66d9ef">val</span> name = ComponentName(
     ApplicationProvider.getApplicationContext&lt;Application&gt;(),

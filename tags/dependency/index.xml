@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 13 Dec 2018 11:16:06 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/dependency/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 13 Dec 2018 11:16:06 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dependency/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する</title>
       <link>https://satoshun.github.io/2018/12/gradle_deps_match/</link>

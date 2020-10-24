@@ -100,18 +100,18 @@
   flowOf(<span style="color:#ae81ff">1</span>)
     .map {
       <span style="color:#75715e">// Dispatchers.Defaultで動く
-</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
-      it
+</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
+      <span style="color:#66d9ef">it</span>
     }
     .flowOn(Dispatchers.Default)
     .map {
       <span style="color:#75715e">// Dispatchers.Mainで動く
-</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
-      it
+</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
+      <span style="color:#66d9ef">it</span>
     }
     .collect {
       <span style="color:#75715e">// Dispatchers.Mainで動く
-</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
+</span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
     }
 }
 </code></pre></div><p>flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。</p>
@@ -120,18 +120,18 @@
   .just(<span style="color:#ae81ff">1</span>)
   .map {
     <span style="color:#75715e">// Schedulers.io上で動く
-</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
-    it
+</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">it</span>
   }
   .subscribeOn(Schedulers.io())
   .map {
     <span style="color:#75715e">// Schedulers.io上で動く
-</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
-    it
+</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">it</span>
   }
   .subscribe({
     <span style="color:#75715e">// Schedulers.io上で動く
-</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;${Thread.currentThread()}&#34;</span>)
+</span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
   }) {}
 </code></pre></div><p>RxJavaではsubscribeOnは、特に途中でスケジューラーの変更が無い限り同一のスレッドで動作します。
 なので、<code>subscribeOn(Schedulers.io())</code>を設定すると、下部（downstream)でもSchedulers.io上で実行されます。</p>

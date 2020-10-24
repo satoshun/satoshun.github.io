@@ -97,9 +97,9 @@
 <h2 id="前置き前提知識">前置き/前提知識</h2>
 <p><a href="https://developer.android.com/topic/libraries/architecture/room.html#db-migration">Room</a>はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。</p>
 <p>RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> {
-    @Query(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
+    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUsers</span>(): Flowable&lt;List&lt;User&gt;&gt;
 }
 </code></pre></div><p>返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。</p>
@@ -108,7 +108,7 @@
 </span><span style="color:#75715e"></span>userDao.getUsers()
   .subscribeOn(Schedulers.io)
   .subscribe {
-     println(it) <span style="color:#75715e">// ここが対象のテーブルが変更されるたびに評価される。
+     println(<span style="color:#66d9ef">it</span>) <span style="color:#75715e">// ここが対象のテーブルが変更されるたびに評価される。
 </span><span style="color:#75715e"></span>  }
 </code></pre></div><p>テーブルの変更検知はRoomの内部クラスの<code>InvalidationTracker</code>クラスで行っています。
 これから<code>InvalidationTracker</code>の内部実装を見ていきます。</p>

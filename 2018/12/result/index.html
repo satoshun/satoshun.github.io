@@ -128,11 +128,11 @@ t.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="c
     showErrorDialog(e)
 }
 
---&gt;
+<span style="color:#f92672">--</span>&gt;
 
 runCatching { doSomethingSync() }
-    .onFailure { showErrorDialog(it) }
-    .onSuccess { processData(it) }
+    .onFailure { showErrorDialog(<span style="color:#66d9ef">it</span>) }
+    .onSuccess { processData(<span style="color:#66d9ef">it</span>) }
 </code></pre></div><p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
 <h2 id="補足">補足</h2>
 <h3 id="resultは戻り値として返せない">Resultは戻り値として返せない</h3>

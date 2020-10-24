@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 22 Jul 2020 02:58:19 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 24 Oct 2020 13:19:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: 既存のDagger AndroidからHiltへの移行について</title>
+      <link>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</link>
+      <pubDate>Sat, 24 Oct 2020 13:19:26 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</guid>
+      <description>dagger hiltもalphaになって久しいので、既存のプロジェクトを徐々に置き換える方法を簡単なサンプルと共に説明します。
+より詳細な説明は公式のドキュメント https://dagger.dev/hilt/migration-guide を見ると良きです。
+既存の構成 既存ではdagger androidが使われていて、MainActivityとSubActivityがそれぞれ定義されているとします。そのうち、MainActivityをhiltに移行したいと思います。
+class App : DaggerApplication() { override fun androidInjector(): AndroidInjector&amp;lt;App&amp;gt; { return ... } } @Singleton @Component( modules = [ AndroidInjectionModule::class, MyActivityModule::class ] ) interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; @Module( includes = [	... ] ) interface MyActivityModule { // 今回移行したいdaggerの定義  @ContributesAndroidInjector(modules = [MainFragmentModule::class]) fun contributeMainActivity(): MainActivity @ContributesAndroidInjector(modules = ...) fun contributeSubActivity(): SubActivity } まずは、AppComponentのhilt対応をします。まずhiltの依存をbuild.gradleに追加します。そして、HiltAndroidApp、EntryPoint、InstallInアノテーションを使って、次のように書き換えます。
+@HiltAndroidApp class App : DaggerApplication() { @EntryPoint @InstallIn(SingletonComponent::class) interface ApplicationInjector : AndroidInjector&amp;lt;App&amp;gt; override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { return EntryPoints.</description>
+    </item>
     
     <item>
       <title>Android: RIP AsyncTask</title>
@@ -122,7 +131,7 @@ name: avocado on: schedule: - cron: &amp;#39;0 0 * * 0&amp;#39; jobs: build: run
 &amp;lt;androidx.constraintlayout.widget.ConstraintLayout android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;wrap_content&amp;#34;&amp;gt; &amp;lt;androidx.recyclerview.widget.RecyclerView android:id=&amp;#34;@+id/recycler&amp;#34; android:layout_width=&amp;#34;0dp&amp;#34; android:layout_height=&amp;#34;wrap_content&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt; 今回の例では、LinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。 また、ConstraintLayout 2.0.0-beta06、RecyclerView 1.1.0で試しています。
 どんな挙動をするか? このレイアウトはファーストビューのタイミングで、すべてのアイテムをバインドしようとします。
 例えば500個のRecyclerViewアイテムがあったときに、画面に収まるかどうかに関わらず500個のバインドが走ります。
-with(recycler) { // 横方向のLinearLayoutManager  layoutManager = LinearLayoutManager( this@ConstraintMatchConstraintsActivity, RecyclerView.HORIZONTAL, false ) // 500個のアイテムを生成  adapter = SampleAdapter().apply { submitList((0..500).map { &amp;#34;$index $it&amp;#34; }) } } private class SampleAdapter : ListAdapter&amp;lt;String, RecyclerView.ViewHolder&amp;gt;(...) { ... override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { println(getItem(position)) // ここが、0 ~ 500まで表示される  } } 500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</description>
+with(recycler) { // 横方向のLinearLayoutManager  layoutManager = LinearLayoutManager( this@ConstraintMatchConstraintsActivity, RecyclerView.HORIZONTAL, false ) // 500個のアイテムを生成  adapter = SampleAdapter().apply { submitList((0..500).map { &amp;#34;$index$it&amp;#34; }) } } private class SampleAdapter : ListAdapter&amp;lt;String, RecyclerView.ViewHolder&amp;gt;(...) { ... override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { println(getItem(position)) // ここが、0 ~ 500まで表示される  } } 500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</description>
     </item>
     
     <item>
@@ -469,7 +478,7 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
       <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
-      <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
+      <description>Android Studio: Debugging Tips n&#39; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
  テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
 まず、 Firebaseからクラッシュログをコピーします。
    次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
@@ -1031,7 +1040,7 @@ Class Merging? その名の通り、Classをマージする最適化です。最
 まずは縦方向のClass Mergingについて説明します。
 縦方向? 縦方向とはスーパータイプの実装が1つだったときに、そのスーパータイプと実装であるサブタイプを1つにまとめる最適化です。
 例えば、次の実装は最適化によって1つにまとめられます。
-interface IVertical { fun show(i: Int) } class Vertical( private val a: Int ) : IVertical { override fun show(i: Int) { println(&amp;#34;start called $i $a&amp;#34;) } } &amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;
+interface IVertical { fun show(i: Int) } class Vertical( private val a: Int ) : IVertical { override fun show(i: Int) { println(&amp;#34;start called $i$a&amp;#34;) } } &amp;ndash;&amp;gt; Proguard/R8による最適化後 &amp;ndash;&amp;gt;
 public final class Vertical { ... public final void show(int i) { ... } } IVerticalインターフェースが見事に消されていることが分かります。
 また、インターフェースではなくabstractクラスの場合はR8の場合のみ上手くマージされました。
  R8: Vertical Merger Proguard: Vertical Merger  次に横方向のマージを紹介します。

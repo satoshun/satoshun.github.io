@@ -98,45 +98,45 @@ objectクラスにJvmStaticが …">
 <h2 id="objectクラスにjvmstaticが必須ではなくなった">objectクラスにJvmStaticが必須ではなくなった</h2>
 <p>2.25から入った変更です。</p>
 <h3 id="前">前</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">AppModule</span> {
-  @JvmStatic <span style="color:#75715e">// JvmStaticの指定が必須だった
-</span><span style="color:#75715e"></span>  @Provides
+  <span style="color:#a6e22e">@JvmStatic</span> <span style="color:#75715e">// JvmStaticの指定が必須だった
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideFuga</span>(): Fuga = Fuga()
 }
 </code></pre></div><h3 id="今">今</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">AppModule</span> {
-  @Provides
+  <span style="color:#a6e22e">@Provides</span>
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideFuga</span>(): Fuga = Fuga()
 }
 </code></pre></div><h2 id="qualifierを使うときにfieldの指定がいらなくなった">Qualifierを使うときに、fieldの指定がいらなくなった</h2>
 <p>これも2.25から入った変更です。</p>
 <h3 id="前-1">前</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Inject
-@field:HogeQualifier <span style="color:#75715e">// @field:の指定が必須だった
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Inject</span>
+<span style="color:#a6e22e">@field</span>:HogeQualifier <span style="color:#75715e">// @field:の指定が必須だった
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> namedObject: NamedObject
 </code></pre></div><h3 id="今-1">今</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Inject
-@HogeQualifier
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Inject</span>
+<span style="color:#a6e22e">@HogeQualifier</span>
 <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> namedObject: NamedObject
 </code></pre></div><h2 id="companion-objectにmoduleをつけなくて良くなった">companion objectにModuleをつけなくて良くなった</h2>
 <p>これは2.26から入った変更です。</p>
 <h3 id="前-2">前</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
-  @Module <span style="color:#75715e">// 必須だった
+  <span style="color:#a6e22e">@Module</span> <span style="color:#75715e">// 必須だった
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-    @JvmStatic <span style="color:#75715e">// 必須だった
-</span><span style="color:#75715e"></span>    @Provides
+    <span style="color:#a6e22e">@JvmStatic</span> <span style="color:#75715e">// 必須だった
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Provides</span>
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestHoge</span>(): TestHoge = TestHoge()
   }
 }
 </code></pre></div><h3 id="今-2">今</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
   <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-    @Provides
+    <span style="color:#a6e22e">@Provides</span>
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestHoge</span>(): TestHoge = TestHoge()
   }
 }

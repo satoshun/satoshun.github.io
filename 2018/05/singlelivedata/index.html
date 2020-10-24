@@ -95,17 +95,17 @@
     <p>LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。
 適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。</p>
 <p>定義は以下のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">singleLiveData</span>(): MutableLiveData&lt;T&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">singleLiveData</span>(): MutableLiveData&lt;T&gt; {
   <span style="color:#75715e">// skip用の初期値を入れておく
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> MutableLiveData&lt;T&gt;().also { it.value = <span style="color:#66d9ef">null</span> }
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> MutableLiveData&lt;T&gt;().also { <span style="color:#66d9ef">it</span>.value = <span style="color:#66d9ef">null</span> }
 }
 
-<span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">LiveData</span>&lt;T&gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&gt; Unit)) {
+<span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">LiveData</span>&lt;T&gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) <span style="color:#f92672">-&gt;</span> Unit)) {
   <span style="color:#75715e">// 最初の値は常にskipすることで、キャッシュを無視する
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> firstIgnore = AtomicBoolean(<span style="color:#66d9ef">true</span>)
   <span style="color:#66d9ef">this</span>.observe(owner, Observer {
-    <span style="color:#66d9ef">if</span> (firstIgnore.getAndSet(<span style="color:#66d9ef">false</span>)) <span style="color:#66d9ef">return</span>@Observer
-    observer(it)
+    <span style="color:#66d9ef">if</span> (firstIgnore.getAndSet(<span style="color:#66d9ef">false</span>)) <span style="color:#66d9ef">return</span><span style="color:#a6e22e">@Observer</span>
+    observer(<span style="color:#66d9ef">it</span>)
   })
 }
 </code></pre></div><p>使う時はこんな感じで使います。</p>
@@ -117,7 +117,7 @@
 <span style="color:#75715e">// TestActivity.kt
 </span><span style="color:#75715e"></span>testViewModel = ViewModelProviders.of(<span style="color:#66d9ef">this</span>).<span style="color:#66d9ef">get</span>(TestViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 testViewModel.errorEvent.observeSingle(activity) {
-  Log.d(<span style="color:#e6db74">&#34;one&#34;</span>, it.toString())
+  Log.d(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#66d9ef">it</span>.toString())
 }
 </code></pre></div><p>メリットはサブクラスを作らずに済むところです。</p>
 <h2 id="参考">参考</h2>

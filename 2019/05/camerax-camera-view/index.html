@@ -133,11 +133,11 @@ CameraViewはLifecycle-Aware Componentとなっています。非常に扱いや
 <p>次のように使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Image
 </span><span style="color:#75715e"></span>cameraView.captureMode = CameraView.CaptureMode.IMAGE
-cameraView.takePicture(...)
+cameraView.takePicture(<span style="color:#f92672">..</span>.)
 
 <span style="color:#75715e">// Video
 </span><span style="color:#75715e"></span>cameraView.captureMode = CameraView.CaptureMode.VIDEO
-cameraView.startRecording(...)
+cameraView.startRecording(<span style="color:#f92672">..</span>.)
 cameraView.stopRecording()
 </code></pre></div><h3 id="scaletypeの設定">ScaleTypeの設定</h3>
 <p>Scaleを設定することができます。</p>
@@ -169,7 +169,7 @@ cameraView.zoomLevel = <span style="color:#ae81ff">10f</span>
 </code></pre></div><p>また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。</p>
 <h3 id="focus">focus</h3>
 <p>指定した部分にfocusを合わせることができます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.focus(...)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">cameraView.focus(<span style="color:#f92672">..</span>.)
 </code></pre></div><h2 id="まとめ">まとめ</h2>
 <ul>
 <li>CameraViewは柔軟性がない代わりに、簡単にカメラの機能を使うことが出来る

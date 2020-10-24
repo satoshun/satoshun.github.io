@@ -99,7 +99,7 @@ stateメソッドを使うと値を監視する …">
 <p>まず、stateメソッドの紹介をします。</p>
 <p>stateメソッドを使うと値を監視することができ、値が変更されたときに自動で再構成（recomposition）してくれます。</p>
 <p>次のように、Viewの状態を表すのに便利に使えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Composable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyCheckbox</span>() {
   <span style="color:#75715e">// 初期値false
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">var</span> checked <span style="color:#66d9ef">by</span> state { <span style="color:#66d9ef">false</span> }
@@ -108,7 +108,7 @@ stateメソッドを使うと値を監視する …">
     checked = checked,
     onCheckedChange = {
       <span style="color:#75715e">// stateで定義した値を更新すると、自動でUIの再構成（recomposition)が走る
-</span><span style="color:#75715e"></span>      checked = it
+</span><span style="color:#75715e"></span>      checked = <span style="color:#66d9ef">it</span>
     }
   )
 }
@@ -118,12 +118,12 @@ stateメソッドを使うと値を監視する …">
 <p>次にModelです。Modelはアノテーションで定義されています。
 Modelアノテーションをつけたクラスのプロパティが監視対象になり、プロパティが更新されたときに自動で再構成してくれます。</p>
 <p>例えば、クリックされたカウントを保持するModelは次のように作ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Model
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Model</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Count</span>(
   <span style="color:#66d9ef">var</span> count: Int = <span style="color:#ae81ff">0</span>
 )
 
-@Composable
+<span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyText</span>() {
   <span style="color:#75715e">// Modelの定義。引数から渡すこともある
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> count = Count()
@@ -131,7 +131,7 @@ Modelアノテーションをつけたクラスのプロパティが監視対象
   Ripple(bounded = <span style="color:#66d9ef">false</span>) {
     Clickable(onClick = {
       <span style="color:#75715e">// Modelの値を更新すると、自動で再構成（recomposition)が走る
-</span><span style="color:#75715e"></span>      count.count += <span style="color:#ae81ff">1</span>
+</span><span style="color:#75715e"></span>      count.count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
     }) {
       Container {
         <span style="color:#75715e">// 構成、再構成が走るとtextが更新される

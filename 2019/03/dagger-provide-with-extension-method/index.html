@@ -94,15 +94,15 @@ class MainActivityModule { …">
     
     <p>Dagger2のちょっとしたtipsです。</p>
 <p>次の2つのメソッドは同じ振る舞いをします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Module
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
   <span style="color:#75715e">// 普通の書き方
-</span><span style="color:#75715e"></span>  @Provides <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainContractView</span>(activity: MainActivity): MainContract.View {
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainContractView</span>(activity: MainActivity): MainContract.View {
     <span style="color:#66d9ef">return</span> activity
   }
 
   <span style="color:#75715e">// 拡張関数を使った書き方
-</span><span style="color:#75715e"></span>  @Provides <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MainActivity</span>.provideMainContractView(): MainContract.View {
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MainActivity</span>.provideMainContractView(): MainContract.View {
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
   }
 }

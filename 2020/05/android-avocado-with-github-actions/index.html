@@ -100,39 +100,39 @@ avocadoを使うこと …">
 </code></pre></div><p>Vector Drawableによっては、結構最適化されます。</p>
 <h2 id="github-actionsに組み込む">GitHub Actionsに組み込む</h2>
 <p>1週間単位でavocadoを実行して、PRを作るGitHub Actionsになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">name</span>: avocado
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">name</span>: <span style="color:#ae81ff">avocado</span>
 
-<span style="color:#66d9ef">on</span>:
-  <span style="color:#66d9ef">schedule</span>:
-  - <span style="color:#66d9ef">cron</span>:  <span style="color:#e6db74">&#39;0 0 * * 0&#39;</span>
+<span style="color:#f92672">on</span>:
+  <span style="color:#f92672">schedule</span>:
+  - <span style="color:#f92672">cron</span>:  <span style="color:#e6db74">&#39;0 0 * * 0&#39;</span>
 
-<span style="color:#66d9ef">jobs</span>:
-  <span style="color:#66d9ef">build</span>:
-    <span style="color:#66d9ef">runs-on</span>: ubuntu-latest
+<span style="color:#f92672">jobs</span>:
+  <span style="color:#f92672">build</span>:
+    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
 
-    <span style="color:#66d9ef">steps</span>:
-    - <span style="color:#66d9ef">name</span>: Checkout
-      <span style="color:#66d9ef">uses</span>: actions/checkout@v2
+    <span style="color:#f92672">steps</span>:
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Checkout</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
 
-    - <span style="color:#66d9ef">name</span>: Setup node
-      <span style="color:#66d9ef">uses</span>: actions/setup-node@v1
-      <span style="color:#66d9ef">with</span>:
-        <span style="color:#66d9ef">node-version</span>: <span style="color:#e6db74">&#39;12&#39;</span>
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Setup node</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-node@v1</span>
+      <span style="color:#f92672">with</span>:
+        <span style="color:#f92672">node-version</span>: <span style="color:#e6db74">&#39;12&#39;</span>
 
-    - <span style="color:#66d9ef">name</span>: Setup avocado
-      <span style="color:#66d9ef">run</span>: npm install -g avocado
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Setup avocado</span>
+      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm install -g avocado</span>
 
-    - <span style="color:#66d9ef">name</span>: Run avocado
-      <span style="color:#66d9ef">run</span>: find . -type f -name <span style="color:#75715e">*.xml</span> | xargs grep <span style="color:#e6db74">&#34;&lt;/vector&gt;&#34;</span> -rl | avocado
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run avocado</span>
+      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">find . -type f -name *.xml | xargs grep &#34;&lt;/vector&gt;&#34; -rl | avocado</span>
 
-    - <span style="color:#66d9ef">name</span>: PR
-      <span style="color:#66d9ef">id</span>: cpr
-      <span style="color:#66d9ef">uses</span>: peter-evans/create-pull-request@v2
-      <span style="color:#66d9ef">with</span>:
-        <span style="color:#66d9ef">token</span>: ${{ secrets.GITHUB_TOKEN }}
-        <span style="color:#66d9ef">commit-message</span>: execute avocado
-        <span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#39;title&#39;</span>
-        <span style="color:#66d9ef">branch</span>: your_branch
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">PR</span>
+      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">cpr</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">peter-evans/create-pull-request@v2</span>
+      <span style="color:#f92672">with</span>:
+        <span style="color:#f92672">token</span>: <span style="color:#ae81ff">${{ secrets.GITHUB_TOKEN }}</span>
+        <span style="color:#f92672">commit-message</span>: <span style="color:#ae81ff">execute avocado</span>
+        <span style="color:#f92672">title</span>: <span style="color:#e6db74">&#39;title&#39;</span>
+        <span style="color:#f92672">branch</span>: <span style="color:#ae81ff">your_branch</span>
 </code></pre></div><p>Vector Drawableなファイル一覧を <code>find . -type f -name *.xml | xargs grep &quot;&lt;/vector&gt;&quot; -rl | avocado</code> で取得して（もっと効率の良い書き方がありそう)、差分があれば、<a href="https://github.com/peter-evans/create-pull-request">peter-evans/create-pull-request</a> でPRを作ります。
 また、週に1度実行するようにScheduleを指定しています。Scheduleの記法の確認には <a href="https://crontab.guru/#0_0_*_*_0">crontab guru</a> が便利です。</p>
 

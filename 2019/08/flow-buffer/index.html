@@ -112,17 +112,17 @@
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> f = flow {
   repeat(<span style="color:#ae81ff">100</span>) {
     delay(<span style="color:#ae81ff">1</span>)
-    emit(<span style="color:#e6db74">&#34;$it&#34;</span>)
+    emit(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
   }
 }
 
 <span style="color:#75715e">// observeする
 </span><span style="color:#75715e"></span>lifecycleScope.launch {
   f
-    .buffer(...) <span style="color:#960050;background-color:#1e0010">ここで</span>Buffer<span style="color:#960050;background-color:#1e0010">を指定する</span>
+    .buffer(<span style="color:#f92672">..</span>.) <span style="color:#960050;background-color:#1e0010">ここで</span>Buffer<span style="color:#960050;background-color:#1e0010">を指定する</span>
     .collect {
       delay(<span style="color:#ae81ff">100</span>)
-      Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
+      Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
     }
 }
 </code></pre></div><p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
@@ -137,7 +137,7 @@
   .buffer(Channel.UNLIMITED)
   .collect {
     delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
   }
 </code></pre></div><p>UNLIMITEDはBufferのサイズを無制限にします。</p>
 <p>Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。</p>
@@ -150,7 +150,7 @@
   .buffer(Channel.RENDEZVOUS)
   .collect {
     delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
   }
 </code></pre></div><p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
 <p>Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。</p>
@@ -163,7 +163,7 @@
   .buffer(Channel.CONFLATED) <span style="color:#75715e">// or conflate()
 </span><span style="color:#75715e"></span>  .collect {
     delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
   }
 </code></pre></div><p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
 <p>最新の値は取得できますが、古い値は削除されてしまいます。</p>
@@ -176,7 +176,7 @@
   .buffer(Channel.BUFFERED) <span style="color:#75715e">// or 100などの具体的な値
 </span><span style="color:#75715e"></span>  .collect {
     delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;$it&#34;</span>)
+    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
   }
 </code></pre></div><p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
 <p>バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。</p>

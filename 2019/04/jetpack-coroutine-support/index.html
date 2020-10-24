@@ -109,7 +109,7 @@ Activity Version …">
 <h3 id="activityの場合">Activityの場合</h3>
 <p>まずはActvityの例です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 拡張関数を定義しておく
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;T : ViewDataBinding&gt; <span style="color:#a6e22e">ComponentActivity</span>.bindView(): T =
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewDataBinding</span>&gt; <span style="color:#a6e22e">ComponentActivity</span>.bindView(): T =
   DataBindingUtil.bind(getContentView())<span style="color:#f92672">!!</span>
 
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Activity</span>.getContentView(): View =
@@ -123,7 +123,7 @@ Activity Version …">
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
     binding = bindView()
-    ...
+    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><p>また、Activityの場合に限り、by lazyと組み合わせることも可能です。</p>
@@ -132,13 +132,13 @@ Activity Version …">
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-    ...
+    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><h3 id="fragmentの場合">Fragmentの場合</h3>
 <p>次にFragmentの例になります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 拡張関数を定義しておく
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;T : ViewDataBinding&gt; <span style="color:#a6e22e">Fragment</span>.bindView(): T = DataBindingUtil.bind(view<span style="color:#f92672">!!</span>)<span style="color:#f92672">!!</span>
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewDataBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.bindView(): T = DataBindingUtil.bind(view<span style="color:#f92672">!!</span>)<span style="color:#f92672">!!</span>
 
 
 <span style="color:#75715e">// MainFragment.kt
@@ -147,7 +147,7 @@ Activity Version …">
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
     binding = bindView()
-    ...
+    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><p>Kotlinの拡張関数でやるなら、こんな感じになると思ってます。</p>

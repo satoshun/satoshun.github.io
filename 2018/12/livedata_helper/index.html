@@ -114,11 +114,11 @@ class MainViewModel {
 <h2 id="その1">その1</h2>
 <p>まずコードをのせます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel2</span> {
-  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(value: T) {
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(value: T) {
     postValue(value)
   }
 
-  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.setValue(value: T) {
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.setValue(value: T) {
     setValue(value)
   }
 }
@@ -162,11 +162,11 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <h2 id="その2">その2</h2>
 <p>こちらもまずコードをのせます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel3</span> {
-  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(value: T) {
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(value: T) {
     internalPostValue(value)
   }
 
-  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.setValue(value: T) {
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.setValue(value: T) {
     internalSetValue(value)
   }
 }
@@ -205,17 +205,17 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <h2 id="補足">補足</h2>
 <p>abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ViewModel2</span> {
-  <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(value: T) {
+  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(value: T) {
     <span style="color:#66d9ef">this</span>.value = value
   }
 
-  <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.postValue(value: T) {
+  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.postValue(value: T) {
     postValue(value)
   }
 }
 
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-  ...
+  <span style="color:#f92672">..</span>.
 
   <span style="color:#75715e">// compile error
 </span><span style="color:#75715e"></span>  <span style="color:#75715e">// viewModel.userName.setValue(&#34;&#34;)

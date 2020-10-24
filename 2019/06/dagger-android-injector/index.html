@@ -98,14 +98,14 @@
 <h3 id="appcomponent">AppComponent</h3>
 <p>AndroidSupportInjectionModuleを使っているなら、<code>AndroidInjectionModule</code>に置き換えます。
 今後は、<code>AndroidSupportInjectionModule</code>を使う必要はありません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Singleton
-@dagger.Component(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
+<span style="color:#a6e22e">@dagger</span>.Component(
   modules = [
     AndroidInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, <span style="color:#75715e">// AndroidInjectionModuleを使う
-</span><span style="color:#75715e"></span>    ...
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">..</span>.
   ]
 )
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> ...
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> <span style="color:#f92672">..</span>.
 </code></pre></div><h3 id="application">Application</h3>
 <p>Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを<code>HasAndroidInjector</code>に置き換えます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application(),
@@ -113,7 +113,7 @@
 </span><span style="color:#75715e"></span>  HasAndroidInjector {
 
   <span style="color:#75715e">// 型変数がAnyになる
-</span><span style="color:#75715e"></span>  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
 
   <span style="color:#75715e">// 返り値の型変数がAnyになる
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;Any&gt; {
@@ -128,11 +128,11 @@
   <span style="color:#75715e">// HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う
 </span><span style="color:#75715e"></span>  HasAndroidInjector {
 
-  @Inject <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
+  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     AndroidInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
-</span><span style="color:#75715e"></span>    ...
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">..</span>.
   }
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;Any&gt; {
@@ -140,12 +140,12 @@
   }
 }
 
----<span style="color:#960050;background-color:#1e0010">以下、</span>Fragment---
+<span style="color:#f92672">--</span>-<span style="color:#960050;background-color:#1e0010">以下、</span>Fragment<span style="color:#f92672">--</span>-
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
     AndroidSupportInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
-</span><span style="color:#75715e"></span>    ...
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><p>となります。従来の***Injectorが汎用的な<code>HasAndroidInjector</code>まとまりました😃</p>

@@ -117,29 +117,29 @@ limitations under the License.
 
 <h2 id="drawermenuなどを実装していく">Drawer、Menuなどを実装していく</h2>
 <p>Jetpack Composeでは、<code>Scaffold</code>関数を使うことで前述の画像のような、基本的な画面を作ることが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Composable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Scaffold</span>(
     scaffoldState: ScaffoldState = remember { ScaffoldState() },
-    topBar: @Composable (() -&gt; Unit)? = <span style="color:#66d9ef">null</span>,
-    bottomBar: @Composable (() -&gt; Unit)? = <span style="color:#66d9ef">null</span>,
-    floatingActionButton: @Composable (() -&gt; Unit)? = <span style="color:#66d9ef">null</span>,
+    topBar: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
+    bottomBar: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
+    floatingActionButton: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     isFloatingActionButtonDocked: Boolean = <span style="color:#66d9ef">false</span>,
-    drawerContent: @Composable (() -&gt; Unit)? = <span style="color:#66d9ef">null</span>,
+    drawerContent: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
     drawerShape: Shape = MaterialTheme.shapes.large,
     drawerElevation: Dp = DrawerConstants.DefaultElevation,
     backgroundColor: Color = MaterialTheme.colors.background,
-    bodyContent: @Composable (InnerPadding) -&gt; Unit
+    bodyContent: <span style="color:#a6e22e">@Composable</span> (InnerPadding) <span style="color:#f92672">-&gt;</span> Unit
 )
 </code></pre></div><p><code>Scaffold</code>関数の定義はこのようになっています。引数を見ると、topBar、bottomBarからAppbarを、floatingActionButtonからFloatingActionButton、drawerContentからDrawerの指定が出来ます。</p>
 <p>まずは、topBar引数から、上部にAppbarを設定してみます。Appbarを構築するために<code>TopAppBar</code>が定義されているので、これを使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Scaffold(
   topBar = {
     TopAppBar(
-      ...
+      <span style="color:#f92672">..</span>.
     )
   },
-  ...
+  <span style="color:#f92672">..</span>.
 )
 </code></pre></div><p><code>TopAppBar</code>関数を使うと、画面上部にAppbarをレイアウト出来ます。今回はタイトルを<code>title</code>引数から、ナビゲーションアイコンを<code>navigationIcon</code>引数から、アカウントアイコンを<code>actions</code>引数からそれぞれ設定します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">TopAppBar(

@@ -109,7 +109,7 @@ Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があ�
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> a: Int
 ) : IVertical {
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">show</span>(i: Int) {
-        println(<span style="color:#e6db74">&#34;start called $i $a&#34;</span>)
+        println(<span style="color:#e6db74">&#34;start called </span><span style="color:#e6db74">$i</span><span style="color:#e6db74"> </span><span style="color:#e6db74">$a</span><span style="color:#e6db74">&#34;</span>)
     }
 }
 </code></pre></div><p>&ndash;&gt; Proguard/R8による最適化後 &ndash;&gt;</p>
@@ -132,25 +132,25 @@ Class Mergingには縦方向（Vertical）と、横方向（Horizontal）があ�
 <p>例えばKotlinの複数のファイルで定義されたトップレベル関数を1つのクラスにまとめてくれます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ShowExt.kt
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.show1(i: Int) {
-    ...
+    <span style="color:#f92672">..</span>.
 }
 
 <span style="color:#75715e">// ShowExt2.kt
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.show2(i: Int) {
-    ...
+    <span style="color:#f92672">..</span>.
 }
 
---&gt; Proguard/R8<span style="color:#960050;background-color:#1e0010">による最適化後</span> --&gt;
+<span style="color:#f92672">--</span>&gt; Proguard/R8<span style="color:#960050;background-color:#1e0010">による最適化後</span> <span style="color:#f92672">--</span>&gt;
 
-<span style="color:#960050;background-color:#1e0010">```</span>java
+<span style="color:#960050;background-color:#1e0010">``</span><span style="color:#a6e22e">`java</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ShowExt2Kt</span> {
     <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void show1(int i) {
-        ...
+        <span style="color:#f92672">..</span>.
     }
 }
 
     <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void show2(int i) {
-        ...
+        <span style="color:#f92672">..</span>.
     }
 }
 </code></pre></div><p>1つのクラスにまとめられていることが分かります。</p>

@@ -4,26 +4,36 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2020-07-22T02:58:19+00:00</lastmod>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/2020/07/android-asynctask-deprecated/</loc>
-    <lastmod>2020-07-22T02:58:19+00:00</lastmod>
+    <loc>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</loc>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-07-22T02:58:19+00:00</lastmod>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/dagger/</loc>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-07-22T02:58:19+00:00</lastmod>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2020-10-24T13:19:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2020/07/android-asynctask-deprecated/</loc>
     <lastmod>2020-07-22T02:58:19+00:00</lastmod>
   </url>
   
@@ -49,11 +59,6 @@
   
   <url>
     <loc>https://satoshun.github.io/2020/06/dagger-hilt-generated-code/</loc>
-    <lastmod>2020-06-21T07:43:11+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/dagger/</loc>
     <lastmod>2020-06-21T07:43:11+00:00</lastmod>
   </url>
   

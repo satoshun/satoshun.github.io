@@ -102,9 +102,9 @@
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestLocation = registerForActivityResult(
     ActivityResultContracts.RequestPermission(),
     ACCESS_FINE_LOCATION
-  ) { isGranted -&gt;
+  ) { isGranted <span style="color:#f92672">-&gt;</span>
     <span style="color:#75715e">// Permissionの取得に成功したかどうか、Boolean値で返ってくる
-</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span>@AppActivity, <span style="color:#e6db74">&#34;isGranted $isGranted&#34;</span>, Toast.LENGTH_LONG).show()
+</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;isGranted </span><span style="color:#e6db74">$isGranted</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
   }
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
@@ -120,9 +120,9 @@
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestPermissions = registerForActivityResult(
     ActivityResultContracts.RequestMultiplePermissions(),
     arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE
-  ) { grants -&gt;
+  ) { grants <span style="color:#f92672">-&gt;</span>
     <span style="color:#75715e">// Permissionの取得に成功したかどうか、Map&lt;String, Boolean&gt;&gt;で返ってくる
-</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span>@AppActivity, <span style="color:#e6db74">&#34;grants $grants&#34;</span>, Toast.LENGTH_LONG).show()
+</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;grants </span><span style="color:#e6db74">$grants</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
   }
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {

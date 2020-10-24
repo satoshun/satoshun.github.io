@@ -103,13 +103,13 @@ Kotlinでは関数型がファーストクラ …">
     lambdaTest1 { println(<span style="color:#e6db74">&#34;Kotlin lambda1&#34;</span>) }
     lambdaTest1 { println(<span style="color:#e6db74">&#34;Kotlin lambda2&#34;</span>) }
     lambdaTest1 { println(<span style="color:#e6db74">&#34;Kotlin lambda3&#34;</span>) }
-    ...
+    <span style="color:#f92672">..</span>.
 }
 
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">lambdaTest1</span>(body: () -&gt; Unit) {
-    ...
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">lambdaTest1</span>(body: () <span style="color:#f92672">-&gt;</span> Unit) {
+    <span style="color:#f92672">..</span>.
     body()
-    ...
+    <span style="color:#f92672">..</span>.
 }
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// コンパイル後
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>

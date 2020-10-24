@@ -93,23 +93,23 @@ val a = A()
     
     <p>KotlinではJavaと異なり、コンストラクタ呼び出しの時に<code>new</code>キーワードが必要ありません。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>
-...
+<span style="color:#f92672">..</span>.
 <span style="color:#66d9ef">val</span> a = A()
 </code></pre></div><p>よって、次のように関数をコンストラクタのように使うことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Coroutine Jobの定義
-</span><span style="color:#75715e"></span>@Suppress(<span style="color:#e6db74">&#34;FunctionName&#34;</span>)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Suppress</span>(<span style="color:#e6db74">&#34;FunctionName&#34;</span>)
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Job</span>(parent: Job? = <span style="color:#66d9ef">null</span>): Job = JobImpl(parent)
-...
+<span style="color:#f92672">..</span>.
 <span style="color:#66d9ef">val</span> job = Job()
 </code></pre></div><p>また、次のようにcompanion object + operator invokeを使うことも出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ref: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutineCallAdapterFactory</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">constructor</span>() : CallAdapter.Factory() {
   <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-    @JvmStatic @JvmName(<span style="color:#e6db74">&#34;create&#34;</span>)
+    <span style="color:#a6e22e">@JvmStatic</span> <span style="color:#a6e22e">@JvmName</span>(<span style="color:#e6db74">&#34;create&#34;</span>)
     <span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">invoke</span>() = CoroutineCallAdapterFactory()
   }
 }
-...
+<span style="color:#f92672">..</span>.
 <span style="color:#66d9ef">val</span> factory = CoroutineCallAdapterFactory()
 </code></pre></div><h2 id="まとめ">まとめ</h2>
 <ul>

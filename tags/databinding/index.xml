@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 16 May 2019 00:33:48 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/databinding/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 16 May 2019 00:33:48 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/databinding/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Data Binding 3.5と3.6のまとめ/感想</title>
       <link>https://satoshun.github.io/2019/05/databinding-3dot5/</link>

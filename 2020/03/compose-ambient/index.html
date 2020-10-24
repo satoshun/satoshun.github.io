@@ -98,9 +98,9 @@
 <p>今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。</p>
 <h2 id="前提課題">前提・課題</h2>
 <p>一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Composable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>(someData: Data) {
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>これがシンプル かつ 分かりやすい方法です。
 しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。</p>
@@ -114,7 +114,7 @@
 <p>次に、これをコンポーネントから使ってみます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> exampleViewModelAmbient = ambientOf&lt;ExampleViewModel&gt;()
 
-@Composable
+<span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
   <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
 
@@ -123,10 +123,10 @@
   }
 }
 
-@Composable
+<span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>() {
   <span style="color:#66d9ef">val</span> viewModel = exampleViewModelAmbient.current
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>これで完了です。コードを説明してきます。</p>
 <hr>
@@ -139,12 +139,12 @@
 <p><code>ambientOf</code>で定義して、Providersで値をセットすることで、コンポーネントに値を渡すことが可能になります。</p>
 <h2 id="注意点">注意点</h2>
 <p>注意としては、Providersで囲っていない場合にエラーになる点です。例えば、次のように書くことは出来ません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Composable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
   <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
 
   Providers(exampleViewModelAmbient provides viewModel) {
-    ...
+    <span style="color:#f92672">..</span>.
   }
 
   <span style="color:#75715e">// ランタイムエラーになる!

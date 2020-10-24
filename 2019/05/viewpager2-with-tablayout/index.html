@@ -98,8 +98,8 @@
 <p>まず、<code>TabLayoutMediator</code>インスタンスを生成します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> viewPager: ViewPager2 = findViewById(R.id.viewpager)
 <span style="color:#66d9ef">val</span> tabLayout: TabLayout = findViewById(R.id.tab)
-<span style="color:#66d9ef">val</span> mediator = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int -&gt;
-  tab.text = <span style="color:#e6db74">&#34;test $position&#34;</span> <span style="color:#75715e">// タブにタイトルをセット
+<span style="color:#66d9ef">val</span> mediator = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int <span style="color:#f92672">-&gt;</span>
+  tab.text = <span style="color:#e6db74">&#34;test </span><span style="color:#e6db74">$position</span><span style="color:#e6db74">&#34;</span> <span style="color:#75715e">// タブにタイトルをセット
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>コンストラクタには、TabLayout、ViewPager2、OnConfigureTabCallbackを渡します。
 <code>OnConfigureTabCallback</code>は、tabとpositionを受け取り、tabに対して、タイトルをセットします。

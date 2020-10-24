@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 17 Mar 2020 09:33:04 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/di/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 17 Mar 2020 09:33:04 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/di/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dagger2: Dagger2.27の新しいエラーメッセージを少し試してみる</title>
       <link>https://satoshun.github.io/2020/03/dagger-improve-error-message/</link>

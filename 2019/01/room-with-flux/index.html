@@ -116,16 +116,16 @@
 <p>まずはActionをRoomのEntityとして定義します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorAction</span>
 
-@Entity(tableName = <span style="color:#e6db74">&#34;author1&#34;</span>)
+<span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author1&#34;</span>)
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author1</span>(
-  @PrimaryKey <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
   <span style="color:#66d9ef">val</span> age: Int
 ) : AuthorAction()
 
-@Entity(tableName = <span style="color:#e6db74">&#34;author2&#34;</span>)
+<span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author2&#34;</span>)
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author2</span>(
-  @PrimaryKey <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
   <span style="color:#66d9ef">val</span> age: Int
 ) : AuthorAction()

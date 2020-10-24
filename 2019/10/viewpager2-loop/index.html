@@ -110,7 +110,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 
 <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
   <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
-  ...
+  <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p><code>itemData</code>にはViewの生成に必要な実際のデータが入っています。<code>position % itemData.size</code>とindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。</p>
 <p>最終的な、RecyclerView.Adapterは次のようになります。（onCreateViewHolderメソッドは重要でないので、省略しています）</p>
@@ -120,11 +120,11 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
 
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = ...
+  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = <span style="color:#f92672">..</span>.
 
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
     <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
-    ...
+    <span style="color:#f92672">..</span>.
   }
 }
 </code></pre></div><p>最後に、ViewPager2のセットアップをします。</p>
@@ -137,7 +137,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 }
 
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mockAdapterData = (<span style="color:#ae81ff">0.</span>.<span style="color:#ae81ff">2</span>).map {
-  Data(title = (<span style="color:#e6db74">&#39;a&#39;</span> + it).toString())
+  Data(title = (<span style="color:#e6db74">&#39;a&#39;</span> + <span style="color:#66d9ef">it</span>).toString())
 }
 </code></pre></div><p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
 <p>これで完成です！複数のViewTypeを扱いたいときは、もう少し工夫が必要になると思いますが、基本はこれだけで動かすことが出来ます。</p>

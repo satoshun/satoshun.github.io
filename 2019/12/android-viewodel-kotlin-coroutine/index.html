@@ -112,7 +112,7 @@
 </code></pre></div><p>ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。
 このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。</p>
 <p>また、<code>viewModelScope</code>は、メインスレッド上で実行してくれるため、<code>LiveData.setValue</code>を使い、値を更新します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> userLiveData = MutableLiveData(...)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> userLiveData = MutableLiveData(<span style="color:#f92672">..</span>.)
 
 viewModelScope.launch {
     <span style="color:#66d9ef">val</span> user = userRepository.getUser() <span style="color:#75715e">// 適当なsuspend関数をコール
@@ -132,36 +132,36 @@ viewModelScope.launch {
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> retrofitService: UserApi) {
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>() : User {
         <span style="color:#66d9ef">val</span> user = retrofitService.getUser()
-        ...
+        <span style="color:#f92672">..</span>.
         <span style="color:#66d9ef">return</span> user
     }
 }
 </code></pre></div><p>これをViewModelからコールします。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     <span style="color:#66d9ef">val</span> user = userRepository.getUser()
-    ...
+    <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>これだけだと、ネットワークの調子が悪い時などに、例外が起きてしまうので、エラーハンドリングをする必要があります。</p>
 <p>ViewModel側でハンドリングするなら、try-catch、もしくは<code>runCatching</code>を使うのが良いと思います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     <span style="color:#66d9ef">try</span> {
         <span style="color:#66d9ef">val</span> user = userRepository.getUser()
-        ...
+        <span style="color:#f92672">..</span>.
     } <span style="color:#66d9ef">catch</span> (e: Exception) {
-        ...
+        <span style="color:#f92672">..</span>.
     }
 }
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     runCatching { userRepository.getUser() }
-        .onSuccess { ... }
-        .onFailure { ... }
+        .onSuccess { <span style="color:#f92672">..</span>. }
+        .onFailure { <span style="color:#f92672">..</span>. }
 }
 </code></pre></div><p>個人的には<code>runCatching</code>のほうが好きです。</p>
 <p>また、ViewModelで例外処理をするのではなく、Repository側で適当な型で包むパターンもあると思います。例えばNetWorkResultのようなクラスがあるとします。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NetWorkResult</span>&lt;T&gt; {
     <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Success</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) : NetWorkResult&lt;T&gt;()
     <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Error</span>(<span style="color:#66d9ef">val</span> exception: Exception) : NetWorkResult&lt;Nothing&gt;()
-    ...
+    <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>このクラスをRepository側の返り値として使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> retrofitService: UserApi) {
@@ -179,10 +179,10 @@ viewModelScope.launch {
 <p>また、<code>androidx.lifecycle:lifecycle-livedata-ktx</code>に含まれている、livedata builderを使う方法もあります。livedata builderを使うと次のように書くことが出来ます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> user = liveData&lt;User&gt; {
     runCatching { repository.getUser() }
-        .onSuccess { emit(it) }
-        .onFailure { ... }
+        .onSuccess { emit(<span style="color:#66d9ef">it</span>) }
+        .onFailure { <span style="color:#f92672">..</span>. }
 
-    ...
+    <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>非常にすっきりと書くことが出来ます！</p>
 <p>ここまでがsuspend関数の説明になります。次にFlowを返すAPIの話です。</p>
@@ -190,28 +190,28 @@ viewModelScope.launch {
 <p>Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものです。</p>
 <p>Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複で購読する心配がないためです。<code>SavedStateHandle</code>を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle) : ViewModel() {
-    init {
-        ...
+    <span style="color:#66d9ef">init</span> {
+        <span style="color:#f92672">..</span>.
     }
 }
 </code></pre></div><p>Flowの購読方法なんですが、<code>collect、collectLatest</code>もしくは、<code>launchIn</code>を使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(...) : ViewModel() {
-    init {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#f92672">..</span>.) : ViewModel() {
+    <span style="color:#66d9ef">init</span> {
         viewModelScope.launch {
             repository.getFlowStream()
-                .collect { ... }
+                .collect { <span style="color:#f92672">..</span>. }
         }
 
         repository.getFlowStream()
-            .onEach { ... }
+            .onEach { <span style="color:#f92672">..</span>. }
             .launchIn(viewModelScope)
     }
 }
 </code></pre></div><p>エラーや、完了イベントのハンドリングが必要な場合、<code>catch</code>、<code>onCompletion</code>メソッドを使います。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">repository.getFlowStream()
-    .onEach { ... }
-    .<span style="color:#66d9ef">catch</span> { ... }
-    .onCompletion { ... }
+    .onEach { <span style="color:#f92672">..</span>. }
+    .<span style="color:#66d9ef">catch</span> { <span style="color:#f92672">..</span>. }
+    .onCompletion { <span style="color:#f92672">..</span>. }
     .launchIn(viewModelScope)
 </code></pre></div><p>個人的にはネストが少なくなるので、<code>launchIn</code>の書き方のほうが好みです。</p>
 <h2 id="まとめ">まとめ</h2>

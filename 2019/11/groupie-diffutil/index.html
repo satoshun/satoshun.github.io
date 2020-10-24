@@ -136,7 +136,7 @@
 Itemのインスタンスが変わったらfalseを返し、Itemの内容が変わっても、同一インスタンスならtrueを返します。</p>
 <p>なので、基本的には<code>hasSameContentAs</code>ないし、<code>equals</code>メソッドをoverrideしたほうが良いです。</p>
 <p>Kotlinなら、data classで定義するのも手です。equalsを自動で実装してくれるからです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeItem</span>(model, id) : Item&lt;...&gt;(id) ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeItem</span>(model, id) : Item&lt;<span style="color:#f92672">..</span>.&gt;(id) <span style="color:#f92672">..</span>.
 </code></pre></div><hr>
 <p>最後に、<code>getChangePayload</code>メソッド。<code>getChangePayload</code>メソッドは、Itemの差分を計算して、payloadを求めます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getChangePayload</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> oldItemPosition<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> newItemPosition<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -201,7 +201,7 @@ data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span>(id: Long) : Item&lt;GroupieViewHolder&gt;(id) {
-  ...
+  <span style="color:#f92672">..</span>.
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getChangePayload</span>(newItem: Item&lt;*&gt;): Any? {
     <span style="color:#66d9ef">return</span> newItem.id <span style="color:#75715e">// 今回はサンプルなので適当な実装
 </span><span style="color:#75715e"></span>  }

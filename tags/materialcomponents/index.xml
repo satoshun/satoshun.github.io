@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 24 Dec 2019 00:40:05 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/materialcomponents/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 24 Dec 2019 00:40:05 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/materialcomponents/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Material Components: ShapeableImageViewで丸く切り抜かれた画像を表示する</title>
       <link>https://satoshun.github.io/2019/12/material-shapeable-image-view/</link>

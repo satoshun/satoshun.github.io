@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 15 May 2020 13:25:48 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/recyclerview/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 15 May 2020 13:25:48 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/recyclerview/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android: ConstraintLayoutの子にRecyclerViewを配置して、Match Constraintsを設定すると良くない挙動をする</title>
       <link>https://satoshun.github.io/2020/05/recyclerview-with-match-constraints/</link>
@@ -23,7 +19,7 @@
 &amp;lt;androidx.constraintlayout.widget.ConstraintLayout android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;wrap_content&amp;#34;&amp;gt; &amp;lt;androidx.recyclerview.widget.RecyclerView android:id=&amp;#34;@+id/recycler&amp;#34; android:layout_width=&amp;#34;0dp&amp;#34; android:layout_height=&amp;#34;wrap_content&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt; 今回の例では、LinearLayoutManagerをLayoutManagerとして使っています。他のLayoutManagerの場合、どういう挙動をするか分かりません。 また、ConstraintLayout 2.0.0-beta06、RecyclerView 1.1.0で試しています。
 どんな挙動をするか? このレイアウトはファーストビューのタイミングで、すべてのアイテムをバインドしようとします。
 例えば500個のRecyclerViewアイテムがあったときに、画面に収まるかどうかに関わらず500個のバインドが走ります。
-with(recycler) { // 横方向のLinearLayoutManager  layoutManager = LinearLayoutManager( this@ConstraintMatchConstraintsActivity, RecyclerView.HORIZONTAL, false ) // 500個のアイテムを生成  adapter = SampleAdapter().apply { submitList((0..500).map { &amp;#34;$index $it&amp;#34; }) } } private class SampleAdapter : ListAdapter&amp;lt;String, RecyclerView.ViewHolder&amp;gt;(...) { ... override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { println(getItem(position)) // ここが、0 ~ 500まで表示される  } } 500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</description>
+with(recycler) { // 横方向のLinearLayoutManager  layoutManager = LinearLayoutManager( this@ConstraintMatchConstraintsActivity, RecyclerView.HORIZONTAL, false ) // 500個のアイテムを生成  adapter = SampleAdapter().apply { submitList((0..500).map { &amp;#34;$index$it&amp;#34; }) } } private class SampleAdapter : ListAdapter&amp;lt;String, RecyclerView.ViewHolder&amp;gt;(...) { ... override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) { println(getItem(position)) // ここが、0 ~ 500まで表示される  } } 500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</description>
     </item>
     
     <item>

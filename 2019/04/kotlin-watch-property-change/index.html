@@ -94,31 +94,31 @@
     <p>オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。</p>
 <p>次が、この記事で紹介したいコードです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 1つのプロパティの変更を検知したい
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;S, A1&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(prop1: KProperty1&lt;S, A1&gt;): LiveData&lt;A1&gt; =
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">S</span>, <span style="color:#a6e22e">A1</span>&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(prop1: KProperty1&lt;S, A1&gt;): LiveData&lt;A1&gt; =
   <span style="color:#66d9ef">this</span>
-    .map { prop1.<span style="color:#66d9ef">get</span>(it) }
+    .map { prop1.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>) }
     .distinctUntilChanged()
 
 <span style="color:#75715e">// 2つのプロパティの変更を検知したい
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;S, A1, A2&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">S</span>, <span style="color:#a6e22e">A1</span>, <span style="color:#a6e22e">A2</span>&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(
   prop1: KProperty1&lt;S, A1&gt;,
   prop2: KProperty1&lt;S, A2&gt;
 ): LiveData&lt;Pair&lt;A1, A2&gt;&gt; =
   <span style="color:#66d9ef">this</span>
-    .map { prop1.<span style="color:#66d9ef">get</span>(it) to prop2.<span style="color:#66d9ef">get</span>(it) }
+    .map { prop1.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>) to prop2.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>) }
     .distinctUntilChanged()
 
 <span style="color:#75715e">// 3つのプロパティの変更を検知したい
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;S, A1, A2, A3&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">S</span>, <span style="color:#a6e22e">A1</span>, <span style="color:#a6e22e">A2</span>, <span style="color:#a6e22e">A3</span>&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(
   prop1: KProperty1&lt;S, A1&gt;,
   prop2: KProperty1&lt;S, A2&gt;,
   prop3: KProperty1&lt;S, A3&gt;
 ): LiveData&lt;Triple&lt;A1, A2, A3&gt;&gt; =
   <span style="color:#66d9ef">this</span>
-    .map { Triple(prop1.<span style="color:#66d9ef">get</span>(it), prop2.<span style="color:#66d9ef">get</span>(it), prop3.<span style="color:#66d9ef">get</span>(it)) }
+    .map { Triple(prop1.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>), prop2.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>), prop3.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>)) }
     .distinctUntilChanged()
 
-...
+<span style="color:#f92672">..</span>.
 </code></pre></div><p>KProperty1はKotlinが提供しているインターフェースで、プロパティの値を取得することが出来ます。
 それと、LiveData ktxに追加された<code>distinctUntilChanged</code>を組み合わせることで、汎用的に特定のプロパティの変更を検知することが可能です。</p>
 <p>この記事ではLiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。</p>
@@ -133,16 +133,16 @@
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> watchUserAge = user.watch(User<span style="color:#f92672">::</span>age)
 }
 
---- <span style="color:#960050;background-color:#1e0010">以下</span>main ---
+<span style="color:#f92672">--</span>- <span style="color:#960050;background-color:#1e0010">以下</span>main <span style="color:#f92672">--</span>-
 
 <span style="color:#66d9ef">val</span> presenter = Presenter()
 
 <span style="color:#75715e">// 監視
 </span><span style="color:#75715e"></span>presenter.watchUserName.observe(<span style="color:#66d9ef">this</span>) {
-  Log.d(<span style="color:#e6db74">&#34;watchUserName&#34;</span>, it)
+  Log.d(<span style="color:#e6db74">&#34;watchUserName&#34;</span>, <span style="color:#66d9ef">it</span>)
 }
 presenter.watchUserAge.observe(<span style="color:#66d9ef">this</span>) {
-  Log.d(<span style="color:#e6db74">&#34;watchUserAge&#34;</span>, it.toString())
+  Log.d(<span style="color:#e6db74">&#34;watchUserAge&#34;</span>, <span style="color:#66d9ef">it</span>.toString())
 }
 
 <span style="color:#75715e">// 適当にUserを更新

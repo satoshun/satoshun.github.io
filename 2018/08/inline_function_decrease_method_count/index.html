@@ -112,11 +112,11 @@ Inline Functionを使うと、関数がインライン化されるので、自�
 }
 </code></pre></div><p>こちらもメソッドカウントが1増えました。
 show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイルを見ると、inline hogeメソッドに対応したメソッドが生成されていることが分かりました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Metadata(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Metadata</span>(
     mv = {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>},
     bv = {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>},
     k = <span style="color:#ae81ff">2</span>,
-    d1 = {<span style="color:#e6db74">&#34;\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u00020\u0001H\u0086\b¨\u0006\u0002&#34;</span>},
+    d1 = {<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\u0000\b\n\u0000\n\u0002\u0010\u0002\n\u0000\u001a\t\u0010\u0000\u001a\u0002</span><span style="color:#e6db74">0</span><span style="color:#ae81ff">\u0001</span><span style="color:#e6db74">H</span><span style="color:#ae81ff">\u0086\b</span><span style="color:#e6db74">¨</span><span style="color:#ae81ff">\u0006\u0002</span><span style="color:#e6db74">&#34;</span>},
     d2 = {<span style="color:#e6db74">&#34;hoge&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;production sources for module app&#34;</span>}
 )
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityKt</span> {

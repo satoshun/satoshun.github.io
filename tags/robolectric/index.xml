@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 23 Feb 2019 02:47:59 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/robolectric/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 23 Feb 2019 02:47:59 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/robolectric/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Robolectric &#43; JetpackでActivityのonActivityResultメソッドをテストする</title>
       <link>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</link>

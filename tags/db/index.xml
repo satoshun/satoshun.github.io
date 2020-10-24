@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 18 Mar 2015 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/db/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 18 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/db/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>読んだ: 達人に学ぶDB設計 徹底指南書</title>
       <link>https://satoshun.github.io/2015/03/master_of_database/</link>

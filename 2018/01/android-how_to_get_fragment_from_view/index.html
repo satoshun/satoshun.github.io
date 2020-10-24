@@ -146,9 +146,9 @@
   <span style="color:#66d9ef">val</span> root = activity.findViewById&lt;View&gt;(android.R.id.content)
   <span style="color:#66d9ef">var</span> result: Fragment? = <span style="color:#66d9ef">null</span>
   <span style="color:#66d9ef">var</span> current = <span style="color:#66d9ef">this</span>
-  <span style="color:#66d9ef">while</span> (current != root) {
-    result = allFragments.firstOrNull { it.view == current }
-    <span style="color:#66d9ef">if</span> (result != <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">break</span>
+  <span style="color:#66d9ef">while</span> (current <span style="color:#f92672">!=</span> root) {
+    result = allFragments.firstOrNull { <span style="color:#66d9ef">it</span>.view <span style="color:#f92672">==</span> current }
+    <span style="color:#66d9ef">if</span> (result <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">break</span>
     current = current.parent <span style="color:#66d9ef">as</span>? View <span style="color:#f92672">?:</span> <span style="color:#66d9ef">break</span>
   }
   <span style="color:#66d9ef">return</span> result
@@ -157,9 +157,9 @@
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">findAllFragments</span>(
     fragments: List&lt;Fragment?&gt;?
 ): List&lt;Fragment&gt; {
-  <span style="color:#66d9ef">if</span> (fragments == <span style="color:#66d9ef">null</span> || fragments.isEmpty()) <span style="color:#66d9ef">return</span> emptyList()
-  <span style="color:#66d9ef">val</span> fragments = fragments.filter { it<span style="color:#f92672">?.</span>view != <span style="color:#66d9ef">null</span> }.filterNotNull()
-  <span style="color:#66d9ef">return</span> fragments + findAllFragments(fragments.map { it.childFragmentManager.fragments }.flatten())
+  <span style="color:#66d9ef">if</span> (fragments <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> fragments.isEmpty()) <span style="color:#66d9ef">return</span> emptyList()
+  <span style="color:#66d9ef">val</span> fragments = fragments.filter { <span style="color:#66d9ef">it</span><span style="color:#f92672">?.</span>view <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> }.filterNotNull()
+  <span style="color:#66d9ef">return</span> fragments + findAllFragments(fragments.map { <span style="color:#66d9ef">it</span>.childFragmentManager.fragments }.flatten())
 }
 </code></pre></div><p><a href="https://github.com/satoshun-example/GetViewFragmentSample">https://github.com/satoshun-example/GetViewFragmentSample</a></p>
 <h2 id="まとめ">まとめ</h2>

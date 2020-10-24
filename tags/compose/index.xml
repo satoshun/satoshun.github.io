@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 12 Jul 2020 05:14:48 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/compose/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 12 Jul 2020 05:14:48 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/compose/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jetpack Compose: IOSchedをJetpack Composeで書く part1</title>
       <link>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</link>

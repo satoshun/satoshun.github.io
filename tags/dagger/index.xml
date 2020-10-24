@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 21 Jun 2020 07:43:11 +0000</lastBuildDate>
-    
-	<atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 24 Oct 2020 13:19:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: 既存のDagger AndroidからHiltへの移行について</title>
+      <link>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</link>
+      <pubDate>Sat, 24 Oct 2020 13:19:26 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</guid>
+      <description>dagger hiltもalphaになって久しいので、既存のプロジェクトを徐々に置き換える方法を簡単なサンプルと共に説明します。
+より詳細な説明は公式のドキュメント https://dagger.dev/hilt/migration-guide を見ると良きです。
+既存の構成 既存ではdagger androidが使われていて、MainActivityとSubActivityがそれぞれ定義されているとします。そのうち、MainActivityをhiltに移行したいと思います。
+class App : DaggerApplication() { override fun androidInjector(): AndroidInjector&amp;lt;App&amp;gt; { return ... } } @Singleton @Component( modules = [ AndroidInjectionModule::class, MyActivityModule::class ] ) interface AppComponent : AndroidInjector&amp;lt;App&amp;gt; @Module( includes = [	... ] ) interface MyActivityModule { // 今回移行したいdaggerの定義  @ContributesAndroidInjector(modules = [MainFragmentModule::class]) fun contributeMainActivity(): MainActivity @ContributesAndroidInjector(modules = ...) fun contributeSubActivity(): SubActivity } まずは、AppComponentのhilt対応をします。まずhiltの依存をbuild.gradleに追加します。そして、HiltAndroidApp、EntryPoint、InstallInアノテーションを使って、次のように書き換えます。
+@HiltAndroidApp class App : DaggerApplication() { @EntryPoint @InstallIn(SingletonComponent::class) interface ApplicationInjector : AndroidInjector&amp;lt;App&amp;gt; override fun androidInjector(): AndroidInjector&amp;lt;Any&amp;gt; { return EntryPoints.</description>
+    </item>
     
     <item>
       <title>Android: Dagger HiltとDagger Androidの生成コードの違いについて</title>

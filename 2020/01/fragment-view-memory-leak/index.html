@@ -149,12 +149,12 @@ Use …">
 }
 
 <span style="color:#75715e">// ViewDataBinding.kt
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;T : ViewDataBinding&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewDataBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
   <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, property: KProperty&lt;*&gt;): T {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
       <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
       <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
-      <span style="color:#66d9ef">if</span> (binding == <span style="color:#66d9ef">null</span>) {
+      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
         binding = DataBindingUtil.bind(view)
         view.setTag(R.id.fragment_binding, binding)
       }
@@ -166,12 +166,12 @@ Use …">
 コンストラクタからIDを渡すことで、onCreateViewを省略することが出来ます。</p>
 <p>この例では、DataBindingを想定していますが、ViewBindingで使う場合には、リフレクションを用いるか、もしくはファクトリを渡す必要があります。</p>
 <p>リフレクションを使う場合は、次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;reified T : ViewBinding&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
   <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, property: KProperty&lt;*&gt;): T {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
       <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
       <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
-      <span style="color:#66d9ef">if</span> (binding == <span style="color:#66d9ef">null</span>) {
+      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
         <span style="color:#66d9ef">val</span> method = T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.getMethod(<span style="color:#e6db74">&#34;bind&#34;</span>, View<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
         binding = method.invoke(<span style="color:#66d9ef">null</span>, view) <span style="color:#66d9ef">as</span> T
         view.setTag(R.id.fragment_binding, binding)
