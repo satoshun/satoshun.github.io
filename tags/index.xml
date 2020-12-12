@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 24 Oct 2020 13:19:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Dec 2020 04:18:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sat, 24 Oct 2020 13:19:26 +0000</pubDate>
+      <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>build</title>
+      <link>https://satoshun.github.io/tags/build/</link>
+      <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>multimodule</title>
+      <link>https://satoshun.github.io/tags/multimodule/</link>
+      <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/multimodule/</guid>
       <description></description>
     </item>
     
@@ -257,15 +275,6 @@
       <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/groupie/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>multimodule</title>
-      <link>https://satoshun.github.io/tags/multimodule/</link>
-      <pubDate>Mon, 11 Nov 2019 00:50:18 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/multimodule/</guid>
       <description></description>
     </item>
     
@@ -536,15 +545,6 @@
       <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>build</title>
-      <link>https://satoshun.github.io/tags/build/</link>
-      <pubDate>Mon, 11 Feb 2019 01:40:29 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/build/</guid>
       <description></description>
     </item>
     

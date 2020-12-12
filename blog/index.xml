@@ -7,7 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 24 Oct 2020 13:19:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Dec 2020 04:18:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>マルチモジュール環境での、dummyモジュール導入によるビルドの高速化</title>
+      <link>https://satoshun.github.io/2020/12/multimodule_dummy_module/</link>
+      <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/12/multimodule_dummy_module/</guid>
+      <description>最初にまとめ 各モジュール間の結合度(publicなクラス、インターフェース)を低く保ち、settings.gradleを工夫することで、最小限のコードでdummyモジュールを導入できる。dummyモジュールのコード量は限りなく少ないので、ビルド時間の短縮につながる。
+サンプルは https://github.com/satoshun-android-example/GradleDummyProject にあります。少し本記事とモジュール名などが異なります。
+本題 プロジェクトの規模が大きくなると、ビルド時間は増加する傾向にあります。マルチモジュールによるアプローチは、差分ビルドを効率良く動作させることが出来ます。本記事では、dummyモジュールを差し込むことによるビルド時間の改善を紹介します。
+また、この記事では触れませんが、機能（画面）ごとにappモジュールを作るアプローチも良いと思います。
+dummyモジュールとは 例えば、注文を行うorderモジュールがあるとします。今回の開発では、その注文画面は使う必要がないとします。使う必要がないので、orderモジュールは一時的に削除しても良いことになります。しかし、単純にモジュールを削除してしまうと、何かしらのクラスで参照エラーになってしまうので、order-dummyモジュールを作り、参照エラーになってしまうクラスのみを置きます。具体的には、orderモジュールで定義されているpublicなクラス、またはインターフェースです。
+今回、orderモジュールには唯一Orderクラスのみがpublicとして定義されているとすると、次のように書きます。
+class Order { fun canOrder(): Boolean { ... } fun order() { ... } } class Order { fun canOrder(): Boolean { TODO(&amp;#34;dummy&amp;#34;) } fun order() { TODO(&amp;#34;dummy&amp;#34;) } } 必要に応じて、orderモジュール、order-dummyモジュールを切り替えることでビルド時間を短縮することが出来ます。
+どのようにモジュールを切り替えるか? settings.gradleとGradleプロパティを用います。
+まず、settings.gradleは次のようにします。
+if (properties[&amp;#34;dummyorder&amp;#34;]) { include &amp;#34;order&amp;#34; project(&amp;#39;:order&amp;#39;).projectDir = file(&amp;#39;dummyorder&amp;#39;) } else { include &amp;#39;:order&amp;#39; } dummyorderプロパティに、何かしらの値がセットされていたら、dummyorderモジュールを使う設定になります。
+dummyorderプロパティの設定はコマンドラインからは -P、Android StudioからはCommand-Line Optionsから指定します。
+  これで完了です。普段使わないモジュールをdummyに差し替えるテクニックでした。各モジュール間の結合度が低いなら、コード量少なくお手軽に導入することが出来ます。
+雑談 まだ、この機能をプロダクションに導入していないので、もし導入したら、どれくらいの効果があったかを追記します。効果がない可能性も微レ存です。</description>
+    </item>
+    
     <item>
       <title>Android: 既存のDagger AndroidからHiltへの移行について</title>
       <link>https://satoshun.github.io/2020/10/dagger-android-migrate-to-hilt/</link>
