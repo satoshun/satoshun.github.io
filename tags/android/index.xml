@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 12 Dec 2020 04:18:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Dec 2020 08:53:33 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: 公式でAssisted Injectがサポートされそう</title>
+      <link>https://satoshun.github.io/2020/12/dagger-official-assisted/</link>
+      <pubDate>Wed, 30 Dec 2020 08:53:33 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2020/12/dagger-official-assisted/</guid>
+      <description>Assisted Injectのコードが公式のDaggerに入ったそうです。
+https://twitter.com/JakeWharton/status/1344055984575160321
+まだリリースされていないんですが、軽く試してみました。
+サンプルコード 初期値を受け取りたい Counterクラスがあるとして、それをAssistedを使って定義してみます。
+class Counter @AssistedInject constructor( @Assisted private val initialValue: Int ) { val count = MutableStateFlow(initialValue) } @AssistedFactory interface CounterFactory { fun create(initialValue: Int): Counter } これで定義は完了です。FactoryクラスをAssistedFactoryアノテーションで、本体をAssistedInjectとAssistedアノテーションを使って定義します。 square/AssistedInject とは違い AssistedModule が必要なくなりました。
+そして次のように使います。
+@Inject lateinit var factory: CounterFactory val counter = factory.create(100) ... 定義した CounterFactoryをinjectして、 Counterインスタンスを生成しています。こちらはいつものDaggerの記法になります。
+まとめ ついに公式にAssisted Injectionが入ります:D
+サンプルコードは satoshun/daggersampleにあります。</description>
+    </item>
+    
     <item>
       <title>マルチモジュール環境での、dummyモジュール導入によるビルドの高速化</title>
       <link>https://satoshun.github.io/2020/12/multimodule_dummy_module/</link>
