@@ -4,7 +4,7 @@ title = "Android: 公式でAssisted Injectがサポートされそう"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Assisted Injectのコードが公式のDaggerに入ったそうです。
@@ -13,9 +13,9 @@ https://twitter.com/JakeWharton/status/1344055984575160321
 
 まだリリースされていないんですが、軽く試してみました。
 
-## サンプルとか
+## サンプルコード
 
-初期値を受け取りたい `Counter` をAssistedを使って定義してみます。
+初期値を受け取りたい `Counter`クラスがあるとして、それをAssistedを使って定義してみます。
 
 ```kotlin
 class Counter @AssistedInject constructor(
@@ -30,7 +30,8 @@ interface CounterFactory {
 }
 ```
 
-これで定義は完了です。[square/AssistedInject](https://github.com/square/AssistedInject)とは違い `AssistedModule` が必要なくなりました。
+これで定義は完了です。Factoryクラスを`AssistedFactory`アノテーションで、本体を`AssistedInject`と`Assisted`アノテーションを使って定義します。
+[square/AssistedInject](https://github.com/square/AssistedInject) とは違い `AssistedModule` が必要なくなりました。
 
 そして次のように使います。
 
