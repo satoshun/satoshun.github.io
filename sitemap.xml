@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/kotlin/</loc>
+    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2021/01/kotlin-object-extension-method/</loc>
+    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
     <lastmod>2020-12-30T08:53:33+00:00</lastmod>
   </url>
@@ -13,22 +38,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2020-12-30T08:53:33+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2020-12-30T08:53:33+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2020-12-30T08:53:33+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2020-12-30T08:53:33+00:00</lastmod>
   </url>
   
@@ -239,11 +249,6 @@
   
   <url>
     <loc>https://satoshun.github.io/tags/flow/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/kotlin/</loc>
     <lastmod>2020-01-13T11:47:10+00:00</lastmod>
   </url>
   
