@@ -4,26 +4,41 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/coroutine/</loc>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/flow/</loc>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/2021/01/kotlin-object-extension-method/</loc>
-    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+    <loc>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</loc>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/</loc>
-    <lastmod>2021-01-07T12:16:07+00:00</lastmod>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2021/01/kotlin-object-extension-method/</loc>
     <lastmod>2021-01-07T12:16:07+00:00</lastmod>
   </url>
   
@@ -240,16 +255,6 @@
   <url>
     <loc>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</loc>
     <lastmod>2020-01-18T14:14:14+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/coroutine/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/flow/</loc>
-    <lastmod>2020-01-13T11:47:10+00:00</lastmod>
   </url>
   
   <url>

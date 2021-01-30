@@ -7,7 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 07 Jan 2021 12:16:07 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Jan 2021 07:20:42 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kotlin: RxJava -&gt; Coroutineへの置き換えに便利なMigration.ktの紹介</title>
+      <link>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</link>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</guid>
+      <description>Kotlin Coroutineには Migration.kt が用意されており、RxJavaからCoroutineへの置き換えを手伝ってくれます。この記事では、どのように使うかを説明します。
+ 例として、次のRxJavaを使ったクラスがあるとします。
+import io.reactivex.Observable class TestRepository { fun getUser(): Observable&amp;lt;User&amp;gt; { ... } } これは、次のように使うことが出来ます。
+val disposble = repository.getUser() .subscribeOn(Schedulers.io()) .subscribe( { println(it) }, { println(it) } ) ... このコードを、Coroutineに置き換えていきます。
+まず、TestRepositoryクラスのRxJava部分をCoroutineのFlowにします。
+import kotlinx.coroutines.flow.Flow private class TestRepository { fun getUser(): Flow&amp;lt;User&amp;gt; { ... } } そうすると、使っている側のコードでコンパイルエラーになります。なぜなら、Flow自体には、subscribeOnなどの関数が直接実装されていないためです。
+しかし、Flowには拡張関数として、subscribeOnなどの関数が定義されています。なので、IDEの自動補完を使いimportすることで、一部、コンパイルエラーを解消することが出来ます。
+import kotlinx.coroutines.flow.Flow import kotlinx.coroutines.flow.subscribe import kotlinx.coroutines.flow.subscribeOn val disposble = repository.getUser() .subscribeOn(Schedulers.io()) .subscribe( { println(it) }, { println(it) } ) これで、置き換え完了かというと、そうではありません。実はsubscribeOnなどの関数は定義されてはいるものの、実際には使うことは出来ません。</description>
+    </item>
+    
     <item>
       <title>Kotlin: objectクラスで拡張関数をグループ化する</title>
       <link>https://satoshun.github.io/2021/01/kotlin-object-extension-method/</link>

@@ -7,11 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 07 Jan 2021 12:16:07 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Jan 2021 07:20:42 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>coroutine</title>
+      <link>https://satoshun.github.io/tags/coroutine/</link>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/coroutine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flow</title>
+      <link>https://satoshun.github.io/tags/flow/</link>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/flow/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>kotlin</title>
       <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Thu, 07 Jan 2021 12:16:07 +0000</pubDate>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
@@ -194,24 +212,6 @@
       <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/fragment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>coroutine</title>
-      <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/coroutine/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flow</title>
-      <link>https://satoshun.github.io/tags/flow/</link>
-      <pubDate>Mon, 13 Jan 2020 11:47:10 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/flow/</guid>
       <description></description>
     </item>
     
