@@ -1,6 +1,6 @@
 +++
 date = "Sat Jan 30 07:20:42 UTC 2021"
-title = "Kotlin: RxJava -> Coroutineへの置き換えに便利なMigration.ktの紹介"
+title = "Kotlin: RxJava -> Coroutineへの置き換えに使えるMigration.ktの紹介"
 tags = ["kotlin", "coroutine", "flow"]
 blogimport = true
 type = "post"

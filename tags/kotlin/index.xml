@@ -9,7 +9,7 @@
     <copyright>Sato Shun</copyright>
     <lastBuildDate>Sat, 30 Jan 2021 07:20:42 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Kotlin: RxJava -&gt; Coroutineへの置き換えに便利なMigration.ktの紹介</title>
+      <title>Kotlin: RxJava -&gt; Coroutineへの置き換えに使えるMigration.ktの紹介</title>
       <link>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</link>
       <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
       
