@@ -4,7 +4,32 @@
   
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/kmm/</loc>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/2021/02/kmm-cocoapods-external-source/</loc>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/kotlin/</loc>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
   </url>
   
   <url>
@@ -18,22 +43,7 @@
   </url>
   
   <url>
-    <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</loc>
-    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2021-01-30T07:20:42+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2021-01-30T07:20:42+00:00</lastmod>
   </url>
   

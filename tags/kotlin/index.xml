@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 30 Jan 2021 07:20:42 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Feb 2021 09:06:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>KMM: CocoaPodsのPrivate Spec Repoを使う</title>
+      <link>https://satoshun.github.io/2021/02/kmm-cocoapods-external-source/</link>
+      <pubDate>Sat, 20 Feb 2021 09:06:26 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/02/kmm-cocoapods-external-source/</guid>
+      <description>(この記事は、前提知識として、KMMにおけるCocoapodsの知識が必要です。)
+ KMMでは、CocoaPodsプラグインを使うと、podspecファイルを生成してくれます。このpodfileはローカルでは動かすことが出来るんですが、Private Spec Repoにアップロードするには、これを編集する必要があります。
+以下、編集したところを載せます。
+Pod::Spec.new do |spec| ... spec.source = { :git =&amp;gt; &amp;#34;https://github.com/satoshun-android-example/KMMExternalSourceCocoapods.git&amp;#34;, :tag =&amp;gt; &amp;#34;0.0.2&amp;#34; } ... spec.preserve_paths = &amp;#34;**/*.*&amp;#34; ... spec.script_phases = [ { :name =&amp;gt; &amp;#39;Build cocoapodsshared&amp;#39;, :execution_position =&amp;gt; :before_compile, :shell_path =&amp;gt; &amp;#39;/bin/sh&amp;#39;, :script =&amp;gt; &amp;lt;&amp;lt;-SCRIPT  set -ev REPO_ROOT=&amp;#34;$PODS_TARGET_SRCROOT&amp;#34; &amp;#34;$REPO_ROOT/gradlew&amp;#34; -p &amp;#34;$REPO_ROOT&amp;#34; :cocoapodsshared:syncFramework \ -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET \ -Pkotlin.native.cocoapods.configuration=$CONFIGURATION \ -Pkotlin.native.cocoapods.cflags=&amp;#34;$OTHER_CFLAGS&amp;#34; \ -Pkotlin.native.cocoapods.paths.headers=&amp;#34;$HEADER_SEARCH_PATHS&amp;#34; \ -Pkotlin.native.cocoapods.paths.frameworks=&amp;#34;$FRAMEWORK_SEARCH_PATHS&amp;#34; SCRIPT } ] 1. spec.source spec.sourceの、GitHubとtagを指定します
+2. spec.preserve_paths これを指定すると、sourceのコードを保持してくれます。
+3. spec.</description>
+    </item>
+    
     <item>
       <title>Kotlin: RxJava -&gt; Coroutineへの置き換えに使えるMigration.ktの紹介</title>
       <link>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</link>
