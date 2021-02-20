@@ -9,12 +9,6 @@ draft = false
 
 (この記事は、前提知識として、KMMにおけるCocoapodsの知識が必要です。)
 
-
-最初に、今回の記事で試した、サンプルプロジェクトを載せておきます。
-
-- https://github.com/satoshun-android-example/KMMExternalSourceCocoapods
-- https://github.com/satoshun-android-example/KMMCocoapodsSpecs
-
 ---
 
 KMMでは、CocoaPodsプラグインを使うと、podspecファイルを生成してくれます。このpodfileはローカルでは動かすことが出来るんですが、Private Spec Repoにアップロードするには、これを編集する必要があります。
@@ -47,18 +41,24 @@ Pod::Spec.new do |spec|
     ]
 ```
 
-1. spec.source
+### 1. spec.source
 
 spec.sourceの、GitHubとtagを指定します
 
-2. spec.preserve_paths
+### 2. spec.preserve_paths
 
 これを指定すると、sourceのコードを保持してくれます。
 
-3. spec.script_phases
+### 3. spec.script_phases
 
 gradlewのパスを調整する必要があります。
 
----
 
 私の環境だと、この3つを追記、編集すればPrivate Spec Repoを使うことが出来ました。
+
+## サンプルコード
+
+サンプルプロジェクトを載せておきます。
+
+- https://github.com/satoshun-android-example/KMMExternalSourceCocoapods
+- https://github.com/satoshun-android-example/KMMCocoapodsSpecs
