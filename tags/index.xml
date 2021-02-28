@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 20 Feb 2021 09:06:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Feb 2021 07:53:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sun, 28 Feb 2021 07:53:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://satoshun.github.io/tags/test/</link>
+      <pubDate>Sun, 28 Feb 2021 07:53:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/test/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>kmm</title>
       <link>https://satoshun.github.io/tags/kmm/</link>
@@ -41,15 +59,6 @@
       <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/flow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Wed, 30 Dec 2020 08:53:33 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
@@ -545,15 +554,6 @@
       <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/robolectric/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>https://satoshun.github.io/tags/test/</link>
-      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/test/</guid>
       <description></description>
     </item>
     
