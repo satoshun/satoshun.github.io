@@ -1,15 +1,15 @@
 +++
 date = "Sun Feb 28 07:53:27 UTC 2021"
-title = "Paparazziを使って、実機を使わずにsnapshotを取る"
+title = "Paparazziを使って、実機を使わずにスナップショットを取る"
 tags = ["android", "test"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-今回は、[Paparazzi](https://github.com/cashapp/paparazzi)の使い方について紹介します。
+今回は、[Paparazzi](https://github.com/cashapp/paparazzi) の使い方について紹介します。
 
-また、今回の記事のサンプルコードは [github/satoshun/paparazzi](https://github.com/satoshun-android-example/paparazzi)にあります。
+また、今回の記事のサンプルコードは [github/satoshun/paparazzi](https://github.com/satoshun-android-example/paparazzi) にあります。
 
 ## Paparazzi?
 
@@ -42,7 +42,7 @@ apply plugin: 'app.cash.paparazzi'
 
 これで準備は完了です。
 
-次に、サンプルのレイアウトファイルとして、`lib_item.xml` を準備したので、これをPaparazziを使ってスナップショットを取っていきます。
+次に、サンプルのレイアウトファイルとして、`lib_item.xml` を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。
 
 ```kotlin
 class LayoutTest {
@@ -57,7 +57,7 @@ class LayoutTest {
 }
 ```
 
-Paparazziには、Junit4 Ruleがあるので、それを使います。引数から、デバイスを指定します。今回は、Nexus5を指定しています。
+Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。
 
 次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。
 
