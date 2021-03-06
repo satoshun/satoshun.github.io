@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 20 Feb 2021 09:06:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Mar 2021 03:43:11 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kotlin: infixのサンプルコード紹介</title>
+      <link>https://satoshun.github.io/2021/03/kotlin-infix/</link>
+      <pubDate>Sat, 06 Mar 2021 03:43:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/03/kotlin-infix/</guid>
+      <description>Kotlinにはinfix記法がありますが、自分で定義して使ったことがないので、どのようなケースで有用なのかを知るために、 世の中のライブラリの使用例を紹介します。有名なライブラリが中心です。
+Kotlin本体 https://github.com/JetBrains/kotlin
+KotlinではPair、ビット演算などで使われています。
+// public infix fun &amp;lt;A, B&amp;gt; A.to(that: B): Pair&amp;lt;A, B&amp;gt;  10 to &amp;#34;hoge&amp;#34; // public inline infix fun Byte.and(other: Byte): Byte // public inline infix fun Byte.or(other: Byte): Byte  byte1 and byte2 byte1 or byte2 // public inline infix fun CharSequence.matches(regex: Regex): Boolean  &amp;#34;abc&amp;#34; matches Regex(&amp;#34;&amp;#34;) Gradleスクリプト 今までのGroovyバージョンと書き心地を揃えるために、infixを使っています。
+// infix fun PluginDependencySpec.version(version: String?): PluginDependencySpec  plugins { id(&amp;#34;com.jfrog.bintray&amp;#34;) version &amp;#34;0.4.1&amp;#34; } kotlinx.coroutine https://github.</description>
+    </item>
+    
     <item>
       <title>KMM: CocoaPodsのPrivate Spec Repoを使う</title>
       <link>https://satoshun.github.io/2021/02/kmm-cocoapods-external-source/</link>

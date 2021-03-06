@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 28 Feb 2021 07:53:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Mar 2021 03:43:11 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kotlin</title>
+      <link>https://satoshun.github.io/tags/kotlin/</link>
+      <pubDate>Sat, 06 Mar 2021 03:43:11 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
@@ -32,15 +41,6 @@
       <pubDate>Sat, 20 Feb 2021 09:06:26 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kmm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin</title>
-      <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Sat, 20 Feb 2021 09:06:26 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/kotlin/</guid>
       <description></description>
     </item>
     
