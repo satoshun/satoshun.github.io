@@ -1,15 +1,15 @@
 +++
-date = "Sun Mar 28 05:41:02 UTC 2021"
+date = "Sun Mar 28 06:48:44 UTC 2021"
 title = "Gradle: 新しいバージョン管理方法 Centralized dependency versionsの紹介"
 tags = ["gradle", "android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-Gradleの7.0-RC01に、Centralized dependency versionsという機能が入りました。まだ、experimentalな機能で、今後どうなるか分かりませんが、気になったので紹介します。
+Gradleの7.0-RC01に、Centralized dependency versionsという機能が入りました。まだ、experimentalな機能で今後どうなるか分かりませんが、気になったので紹介します。
 
-サンプルコードは [github/satoshun-android-example](https://github.com/satoshun-android-example/Template) にあります。
+この記事を書くのに使ったサンプルコードは [github/satoshun-android-example](https://github.com/satoshun-android-example/Template) にあります。
 
 ## Centralized dependency versionsが導入された背景
 
@@ -23,9 +23,9 @@ There are a number of ways to share dependency versions between projects in mult
 
 ## 簡単な使い方
 
-settings.gradleにgroovy(or Kotlin)で書く方法と、tomlファイルに記述する方法の2つの方法が提供されています。この記事ではtomlの方法を紹介します。
+`settings.gradle` にGroovy(or Kotlin)で書く方法と、tomlファイルに記述する方法が提供されています。この記事ではtomlでのやり方を紹介します。
 
-まず、最初に、gradle/ディレクトリ以下に、libs.versions.toml ファイルを作成します。次に、使うライブラリのバージョン等を記述します。
+まず、最初に、gradle/ ディレクトリ以下に、libs.versions.toml ファイルを作成します。そこに使うライブラリのバージョンを記述します。
 
 ```toml
 [versions]
@@ -35,9 +35,9 @@ kotlin = "1.4.31"
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 ```
 
-[versions]にバージョンを、[libraries]にライブラリの情報を記述します。
+[versions] にバージョンを、[libraries] にライブラリの情報を記述します。
 
-これで、定義は完了で build.gradle で使えるようになります。build.gradleからは、libs.xxx のように参照します。
+これで、定義は完了です。`build.gradle` から、libs.xxx のように参照出来るようになります。
 
 ```groovy
 dependencies {
@@ -61,9 +61,9 @@ kotlin-coroutine-ui = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-andro
 kotlin-android = ["kotlin-stdlib", "kotlin-coroutine-core", "kotlin-coroutine-ui"]
 ```
 
-[budnles]では、[libraries]で定義した、ライブラリを指定できます。
+[budnles] には、[libraries] で定義した、ライブラリを指定できます。
 
-build.gradleからは、libs.bundles.xxx のように参照します。
+`build.gradle` からは、libs.bundles.xxx のように参照します。
 
 ```groovy
 dependencies {
@@ -71,10 +71,10 @@ dependencies {
 }
 ```
 
-bundlesを使うことで、複数のライブラリの記述をシンプルにすることが出来ました。マルチモジュールなプロジェクトの場合、同じようなライブラリの依存になると思うので、その際に便利に使うことが出来ると思います。
+bundlesを使うことで、複数のライブラリの記述をシンプルにすることが出来ました。マルチモジュールなプロジェクトの場合、同じようなライブラリの依存になることが多いと思うので、その際に便利に使うことが出来ると思います。
 
 ## まとめ
 
-マルチモジュールなプロジェクトのバージョン管理方法に、新しいメカニズムが誕生しました。まだexperimentalなので、なんともいえないですが、bundlesなどの機能は便利なので、ゆるやかに移行していくのかなと思います。
+マルチモジュールなプロジェクトのバージョン管理方法に、新しいメカニズムが誕生しました。まだexperimentalなので、なんともいえないですが、bundlesは便利だなと思いました
 
 より詳しい使い方を知りたい人は、[公式のドキュメント](https://docs.gradle.org/7.0-rc-1/userguide/platforms.html#sub:central-declaration-of-dependencies) を見て下さい。
