@@ -1,17 +1,17 @@
 +++
 date = "Sun Mar 28 06:48:44 UTC 2021"
-title = "Gradle: 新しいバージョン管理方法 Centralized dependency versionsの紹介"
+title = "Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介"
 tags = ["gradle", "android"]
 blogimport = true
 type = "post"
 draft = false
 +++
 
-Gradleの7.0-RC01に、Centralized dependency versionsという機能が入りました。まだ、experimentalな機能で今後どうなるか分かりませんが、気になったので紹介します。
+Gradleの7.0-RC01に、Central declaration of dependenciesという機能が入りました。まだ、experimentalな機能で今後どうなるか分かりませんが、気になったので紹介します。
 
 この記事を書くのに使ったサンプルコードは [github/satoshun-android-example](https://github.com/satoshun-android-example/Template) にあります。
 
-## Centralized dependency versionsが導入された背景
+## Central declaration of dependenciesが導入された背景
 
 [Gradle 7.0 Release Notes](https://docs.gradle.org/7.0-rc-1/release-notes.html) に次のように書いてあります。
 
