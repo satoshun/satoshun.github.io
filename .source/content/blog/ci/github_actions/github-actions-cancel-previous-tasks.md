@@ -4,7 +4,7 @@ title = "GitHub Actions: 前のGitHub Actionの実行をキャンセルする"
 tags = ["ci", "githubactions"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Pushを複数回した場合などに、1つ前のGitHub Actionsの実行を止める方法の紹介です。
