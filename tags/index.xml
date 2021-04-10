@@ -7,7 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 03 Apr 2021 03:00:25 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Apr 2021 01:13:45 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>agp</title>
+      <link>https://satoshun.github.io/tags/agp/</link>
+      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/agp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ci</title>
       <link>https://satoshun.github.io/tags/ci/</link>
@@ -23,24 +50,6 @@
       <pubDate>Sat, 03 Apr 2021 03:00:25 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/githubactions/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 28 Mar 2021 06:48:44 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/android/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Sun, 28 Mar 2021 06:48:44 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
@@ -293,15 +302,6 @@
       <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/groupie/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>agp</title>
-      <link>https://satoshun.github.io/tags/agp/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/agp/</guid>
       <description></description>
     </item>
     

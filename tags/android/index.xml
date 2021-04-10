@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 28 Mar 2021 06:48:44 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Apr 2021 01:13:45 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: BuildConfigの生成をoffにする</title>
+      <link>https://satoshun.github.io/2021/04/android-buildconfig/</link>
+      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/04/android-buildconfig/</guid>
+      <description>buildFeaturesから、BuildConfigクラスの生成をするかどうかを設定できるようになりました。
+gradle.propertiesから設定できます。
+android.defaults.buildfeatures.buildconfig=false # defaultはtrue マルチモジュール構成のプロジェクトでは、基本的にはBuildConfigを生成しないと思うので、BuildConfigの生成のデフォルト設定をoffにしておくと良いと思います。
+モジュール単位で、生成をonにするには、build.gradleに次の記述をします。
+android { buildFeatures { buildConfig true } } buildFeaturesブロックから設定を与えることが出来ます。
+まとめ マルチモジュール構成のプロジェクトの場合は、coreモジュールやappモジュールのみonにして、他をoffにするのが良さそう</description>
+    </item>
+    
     <item>
       <title>Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介</title>
       <link>https://satoshun.github.io/2021/03/gradle-central-declaration-of-dependencies/</link>
