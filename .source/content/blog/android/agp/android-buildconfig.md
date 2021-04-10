@@ -4,7 +4,7 @@ title = "Android: BuildConfigの生成をoffにする"
 tags = ["android", "agp", "gradle"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 buildFeaturesから、BuildConfigクラスの生成をするかどうかを設定できるようになりました。
@@ -28,3 +28,7 @@ android {
 ```
 
 buildFeaturesブロックから設定を与えることが出来ます。
+
+## まとめ
+
+マルチモジュール構成のプロジェクトの場合は、coreモジュールやappモジュールのみonにして、他をoffにするのが良さそう
