@@ -18,13 +18,13 @@
 まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
 allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
 // @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
+新しいエラーログ  
+古いエラーログ  
  次に、複数Providesの指定をしてみます。
 @Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
-まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?</description>
+新しいエラーログ  
+古いエラーログ  
+まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?だったと思うので、これで改善してくれればとても嬉しい😃</description>
     </item>
     
     <item>

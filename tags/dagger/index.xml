@@ -67,13 +67,13 @@ Dagger Hiltの生成コード Dagger Hiltでは、@AndroidEntryPointを使うこ
 まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
 allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
 // @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
+新しいエラーログ  
+古いエラーログ  
  次に、複数Providesの指定をしてみます。
 @Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
-まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?</description>
+新しいエラーログ  
+古いエラーログ  
+まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?だったと思うので、これで改善してくれればとても嬉しい😃</description>
     </item>
     
     <item>
@@ -167,8 +167,8 @@ Component.Factoryとは? 実は、Component.FactoryでやれることはComponen
 また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。
 検証に用いたコードはsatoshun-android-example/DynamicFeatureDaggerExampleにあります😊
 前提知識 通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。
-    この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
-    そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
+   この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
+   そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
 ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。

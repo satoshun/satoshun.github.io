@@ -159,8 +159,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span> : Item&lt;GroupieViewHolder&gt;()
-</code></pre></div><figure>
-    <img src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250"/> 
+</code></pre></div><figure><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif" width="30%" height="250"/>
 </figure>
 
 <p>Itemが点滅しているのが分かります。これは、Idが毎回異なるので、<code>areItemsTheSame</code>がfalseを返すためです。この場合、Viewは再利用されません。</p>
@@ -172,8 +171,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 }
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BasicItem</span>(id: Long) : Item&lt;GroupieViewHolder&gt;(id)
-</code></pre></div><figure>
-    <img src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250"/> 
+</code></pre></div><figure><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif" width="30%" height="250"/>
 </figure>
 
 <p>この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、<code>areContentsTheSame</code>がfalseを返すためです。
@@ -187,8 +185,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 
 // dataクラスなのでequalsが実装される
 data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
-</code></pre><figure>
-    <img src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250"/> 
+</code></pre><figure><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif" width="30%" height="250"/>
 </figure>
 
 <p>この場合は、Itemが点滅していないのが分かります。これは、<code>areItemsTheSame</code>と<code>areContentsTheSame</code>がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、<code>areContentsTheSame</code>がtrueなので、Viewの中身を更新する必要がないためです。</p>
@@ -206,8 +203,7 @@ data class BasicItem(private val id: Long) : Item&lt;GroupieViewHolder&gt;(id)
     <span style="color:#66d9ef">return</span> newItem.id <span style="color:#75715e">// 今回はサンプルなので適当な実装
 </span><span style="color:#75715e"></span>  }
 }
-</code></pre></div><figure>
-    <img src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250"/> 
+</code></pre></div><figure><img src="/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif" width="30%" height="250"/>
 </figure>
 
 <p>この場合も、Itemが点滅していないのが分かります。これは、<code>areContentsTheSame</code>はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、<code>areContentsTheSame</code>がfalseなので、Viewの中身を更新する必要があるためです。</p>

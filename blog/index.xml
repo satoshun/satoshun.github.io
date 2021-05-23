@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 10 Apr 2021 01:13:45 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 May 2021 03:00:22 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JetBrains Toolbox Appのススメ</title>
+      <link>https://satoshun.github.io/2021/05/jetbrains-toolbox/</link>
+      <pubDate>Sun, 23 May 2021 03:00:22 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/05/jetbrains-toolbox/</guid>
+      <description>JeBbrains Toolbox App が便利なので、それの啓蒙ブログです。
+JetBrains Toolbox App? JetBrains製のIDEのバージョンを管理するアプリになります。Android開発の場合だと、stable版、beta版、canary版を別々に管理することが主な使い方になります。
+これで説明は終わりなのですが、設定しておくと便利な機能を紹介します。
+シェルコマンドの生成 ONにしておくと、シェルコマンドを生成をしてくれます。
+ 次のようにコマンドラインから、プロジェクトを開くことが出来ます。
+studio . git clone をした後などに、上記コマンドを入力することで、プロジェクトを簡単に開くことが出来ます。
+インストール先のフォルダを /Applications にする 下記のツイートにあったのですが、spotlightによるインデックスがいい感じになるそうです。
+https://twitter.com/kaushikgopal/status/1396210659847819264
+まとめ JetPack Composeやらなんやらで、beta、canaryなどの開発版を使うことも多くなると思うので、入れとくと幸せになります。</description>
+    </item>
+    
     <item>
       <title>Android: BuildConfigの生成をoffにする</title>
       <link>https://satoshun.github.io/2021/04/android-buildconfig/</link>
@@ -74,7 +91,7 @@ apply plugin: &amp;#39;app.cash.paparazzi&amp;#39; これで準備は完了で�
 次に、サンプルのレイアウトファイルとして、lib_item.xml を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。
 class LayoutTest { @get:Rule var paparazzi = Paparazzi(deviceConfig = DeviceConfig.NEXUS_5) @Test fun sample() { val launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(R.layout.lib_item) paparazzi.snapshot(view = launch) } } Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。
 次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。
-  実機を使わずに、スクリーンショットを取ることが出来ました。
+ 実機を使わずに、スクリーンショットを取ることが出来ました。
 まとめ 結構お手軽に使うことが出来ました。まだAPIが安定していない?そうなので、プロダクションに入れるのは時期尚早かもしれませんが、安定してきたら、試してみるのも良さそうです(こなみかん)</description>
     </item>
     
@@ -156,7 +173,7 @@ class Order { fun canOrder(): Boolean { ... } fun order() { ... } } class Order 
 まず、settings.gradleは次のようになります。
 if (properties[&amp;#34;dummyorder&amp;#34;]) { include &amp;#34;order&amp;#34; project(&amp;#39;:order&amp;#39;).projectDir = file(&amp;#39;dummyorder&amp;#39;) } else { include &amp;#39;:order&amp;#39; } dummyorderプロパティに、何かしらの値がセットされていたら、dummyorderモジュールを使う設定になります。
 dummyorderプロパティの設定はコマンドラインからは -P、Android StudioからはCommand-Line Optionsから指定します。
-  これで完了です。普段使わないモジュールをdummyに差し替えるテクニックでした。各モジュール間の結合度が低いなら、コード量少なくお手軽に導入することが出来ます。
+ これで完了です。普段使わないモジュールをdummyに差し替えるテクニックでした。各モジュール間の結合度が低いなら、コード量少なくお手軽に導入することが出来ます。
 雑談 まだ、この機能をプロダクションに導入していないので、もし導入したら、どれくらいの効果があったかを追記します。効果がない可能性も微レ存です。</description>
     </item>
     
@@ -239,8 +256,8 @@ Dagger Hiltの生成コード Dagger Hiltでは、@AndroidEntryPointを使うこ
       <description>おそらく 30.0.10 から、Freeformモードなるものがエミュレータで実行できるようになっていたので、それの紹介です。
 この記事では、Android Studio 4.2 Preview1を使っています。
 使い方 セットアップは簡単で、AVD Manager -&amp;gt; Create Virtual Device から、 13.5&amp;quot; Freeform を指定します。
-  動作例 Clockアプリで試してみました。次のgifアニメーション画像のように動作をします。
-  アプリを立ち上げた後に、簡単に画面サイズを変更することが出来ます。
+ 動作例 Clockアプリで試してみました。次のgifアニメーション画像のように動作をします。
+ アプリを立ち上げた後に、簡単に画面サイズを変更することが出来ます。
 まとめ 複数の端末サイズで確認したい時などに、便利なのかなと思いました（こなみかん）</description>
     </item>
     
@@ -304,14 +321,14 @@ JAVA_TOOL_OPTIONS: -Xmx5120m GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle
       
       <guid>https://satoshun.github.io/2020/04/constraintlayout-practical2/</guid>
       <description>今回の記事では次の4つのレイアウトを、ConstraintLayoutで組みたいと思います。
-  ポイントは以下の２つです。
+ ポイントは以下の２つです。
  各画像は、前の画像に被っている 各レイアウトは、4 or 3 or 2 or 1枚、いずれかの枚数を取る  上記で上げたポイントを中心に説明していきます。
 各画像は、前の画像に被っている View同士を被せる方法はいくつかあると思うんですが、今回はlayout_constraintStart_toStartOfとlayout_marginStartを使い表現します。
 まずに、1番左に配置するImageViewを定義します。
 &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image1&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;20dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; /&amp;gt; 1番左に配置したいので、Start_toStartOfにはparentを設定しています。
 次に、2番目に配置するImageViewを考えます。このImageViewは、1枚目のImageViewに被るように配置します。なので、この1枚目のViewのend(終端)に制約を合わせてしまうと上手く配置できません。 よって、1枚目のViewのstart(先端)に制約を合わせます。合わせてmarginStartも設定することで良い感じの配置が出来ます。
 &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image2&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image1&amp;#34; /&amp;gt; 3番目、4番目のViewにも同様の制約を設定してあげます。最終形は次のようになります。
-&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image1&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;20dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image2&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image1&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image3&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image2&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image4&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image3&amp;#34; /&amp;gt;   1枚目、2枚目、3枚目、4枚目がそれぞれ少しずつ被っているのが分かると思います。</description>
+&amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image1&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;20dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image2&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image1&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image3&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image2&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/image4&amp;#34; android:layout_width=&amp;#34;32dp&amp;#34; android:layout_height=&amp;#34;32dp&amp;#34; android:layout_marginStart=&amp;#34;24dp&amp;#34; android:layout_marginBottom=&amp;#34;12dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/image3&amp;#34; /&amp;gt;  1枚目、2枚目、3枚目、4枚目がそれぞれ少しずつ被っているのが分かると思います。</description>
     </item>
     
     <item>
@@ -321,13 +338,13 @@ JAVA_TOOL_OPTIONS: -Xmx5120m GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle
       
       <guid>https://satoshun.github.io/2020/04/constraintlayout-practical1/</guid>
       <description>今回の記事では次のレイアウトを、ConstraintLayoutで組みたいと思います。
-    ポイントは以下の3つです。
+   ポイントは以下の3つです。
  4つの画像を組み合わせて、1つの円形画像を作る部分 01/01の部分は右に、@your_idの部分はYour Nameの右に配置される Your Nameの部分の文字数が多いときに、&amp;hellip;で省略される  今回は、4つの画像を組み合わせる部分で、Material ComponentのShapeableImageViewを使っています。ShapeableImageViewの説明はここを見てください。
 上記で上げたポイントを中心に説明していきます。
 4つの画像を組み合わせて、1つの円形画像を作る部分 この部分は、Picasso、Glideなどの画像ライブラリに頼るパターンもあると思うんですが、今回はShapeableImageViewを使いたいと思います。
 4つのShapeableImageViewを使い、それぞれ「左上、右上、左下、右下」の部分が丸くなるShapeを定義します。 左上を丸くするShapeは次のように定義できます。
 &amp;lt;style name=&amp;#34;ShapeAppearanceOverlay.Example.TopLeft&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamilyTopLeft&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSizeTopLeft&amp;#34;&amp;gt;100%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; 右の画像が、上のShapeを指定した場合になります。
-  右上、左下、右下のShapeも同じように作ってあげます。そして、それら4つViewの制約を次のように作ってあげます。
+ 右上、左下、右下のShapeも同じように作ってあげます。そして、それら4つViewの制約を次のように作ってあげます。
 &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/top_left&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.TopLeft&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/top_right&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toEndOf=&amp;#34;@id/top_left&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;@id/top_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.TopRight&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/bottom_left&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;@id/top_left&amp;#34; app:layout_constraintTop_toBottomOf=&amp;#34;@id/top_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.Example.BottomLeft&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/bottom_right&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:scaleType=&amp;#34;centerCrop&amp;#34; app:layout_constraintStart_toEndOf=&amp;#34;@id/bottom_left&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;@id/bottom_left&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearanceOverlay.</description>
     </item>
     
@@ -341,13 +358,13 @@ JAVA_TOOL_OPTIONS: -Xmx5120m GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle
 まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
 allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
 // @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
+新しいエラーログ  
+古いエラーログ  
  次に、複数Providesの指定をしてみます。
 @Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
-新しいエラーログ   
-古いエラーログ   
-まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?</description>
+新しいエラーログ  
+古いエラーログ  
+まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?だったと思うので、これで改善してくれればとても嬉しい😃</description>
     </item>
     
     <item>
@@ -424,7 +441,7 @@ dependencies { implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:
 dependabot? 直接はBOMに関係ないんですけど、最近、dependabotが便利だと自分の中で話題になっていて、これはライブラリのアップデートを自動でやってくれるbotになります。
 例えば、こんな感じのPRを作ってくれます。
 Bump versions.retrofit from 2.7.0 to 2.7.1
-    それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D
+   それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D
 BOMとdependabotは相性いいぞ！！って書こうと思ったんですけど、変数の場合でもアップデートを検知してくれたので、特に関係なかったです😅
 とはいえ、わざわざ自前で変数定義する必要はなくなるので、BOMは便利です！
 まとめ  BOMはいいぞ〜 dependabotはいいぞ〜  </description>
@@ -471,19 +488,19 @@ objectクラスにJvmStaticが必須ではなくなった 2.25から入った変
       <description>fitsSystemWindowsについてマスターしつつあるので、つらつらと学んだことをまとめておきます。
 SystemUiVisibilityの詳細な設定については説明を割愛するのでご了承ください。
 そもそもfitsSystemWindowsとは? Android端末には、status bar、navigation barなどのSystem UIと総称されるViewがあります。 デフォルトでは、System UIにコンテンツの要素が被ることはありません。そこには制約があります。 しかし、SystemUiVisibilityの設定を変えることで、コンテンツの要素をSystem UIの裏側描くことが可能になります。
-    右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。
+   右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。
 ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?
-    右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。
+   右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。
 このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。
-&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;     見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
-    paddingTopと、paddingBottomに値が指定されていることが分かります。これはfitsSystemWindowsのデフォルトの振る舞いによるものです。
+&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;    見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
+   paddingTopと、paddingBottomに値が指定されていることが分かります。これはfitsSystemWindowsのデフォルトの振る舞いによるものです。
 fitsSystemWindowsはデフォルトで、paddingTopにstatus barの高さを、paddingBottomにnavigation barの高さを設定します。それにより、コンテンツがSystem UIに被らないようになります。
 まとめると「fitsSystemWindowsはSystem UIの高さに応じてpaddingに値をセットする」振る舞いをします。
 しかし、これはデフォルトの動作で、fitsSystemWindowsの動作を変更することが出来ます。
 AppBarLayoutはfitsSystemWindowsのデフォルトの動作を変更しているViewなので、AppBarLayoutにfitsSystemWindowsをつけた場合にどのように動作するかを見てみます。
 AppBarLayoutのfitsSystemWindowsの解釈 fitsSystemWindowsをAppBarLayoutに設定します。
-&amp;lt;LinearLayout&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;       見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
-    省略するのですが、fitsSystemWindowsを指定しない場合のAppBarLayoutの高さは154でした。上記の図の220という数字は 154(元の高さ) + 66(status barの高さ) = 220です。</description>
+&amp;lt;LinearLayout&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;     見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
+   省略するのですが、fitsSystemWindowsを指定しない場合のAppBarLayoutの高さは154でした。上記の図の220という数字は 154(元の高さ) + 66(status barの高さ) = 220です。</description>
     </item>
     
     <item>
@@ -542,10 +559,10 @@ material-components-android/1.2.0-alpha03
 ShapeableImageView? 名は体を表しており、shapeに対応したImageViewになります。shapeには丸やひし形などを設定することが可能です。
 さっそくいじっていきたいと思います。
 丸を設定してみる スタイルから定義する場合は、次のようにやります。
-&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.PILL&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/circle&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.PILL&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; /&amp;gt;   画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
+&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.PILL&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;rounded&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/circle&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.PILL&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; /&amp;gt;  画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。
 コードから設定する場合は、ShapeAppearanceModelを介して行います。
 val model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build() imageView.shapeAppearanceModel = model ひし形を設定してみる &amp;amp; strokeをつける スタイルから定義する場合は、次のようにやります。
-&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.Diamond&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/diamond&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.</description>
+&amp;lt;!-- スタイル定義 --&amp;gt; &amp;lt;style name=&amp;#34;ShapeAppearance.Example.Diamond&amp;#34; parent=&amp;#34;&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;cornerFamily&amp;#34;&amp;gt;cut&amp;lt;/item&amp;gt; &amp;lt;item name=&amp;#34;cornerSize&amp;#34;&amp;gt;50%&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; &amp;lt;!-- レイアウト --&amp;gt; &amp;lt;com.google.android.material.imageview.ShapeableImageView android:id=&amp;#34;@+id/diamond&amp;#34; android:layout_width=&amp;#34;200dp&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:layout_gravity=&amp;#34;center&amp;#34; android:layout_margin=&amp;#34;10dp&amp;#34; android:adjustViewBounds=&amp;#34;true&amp;#34; android:elevation=&amp;#34;4dp&amp;#34; app:shapeAppearanceOverlay=&amp;#34;@style/ShapeAppearance.Example.Diamond&amp;#34; app:srcCompat=&amp;#34;@drawable/img&amp;#34; app:strokeColor=&amp;#34;?</description>
     </item>
     
     <item>
@@ -615,7 +632,7 @@ Assign Author/Auto Assign Assign Author、Auto Assignは、自分にアサイン
       <guid>https://satoshun.github.io/2019/11/material-shape/</guid>
       <description>Shapeがmaterial androidの1.1.0-alpha01から実装されました。
 Shapeとは、こんなやつです。
-  参照: About shape
+ 参照: About shape
 この記事では、BottomSheetDialogとMaterialButtonを参考に、Shapeをどのように設定するかを説明します。
 より詳しい説明は公式ドキュメント/Shape.mdを参照してください。
 まずはテーマを設定する Theme.MaterialComponentsを使う必要があります。
@@ -691,9 +708,9 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
       <description>Android Studio: Debugging Tips n&#39; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
  テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
 まず、 Firebaseからクラッシュログをコピーします。
-   次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
-   そうすると、Android Studio上で、関数ジャンプが出来るようになります！
-  </description>
+  次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
+  そうすると、Android Studio上で、関数ジャンプが出来るようになります！
+ </description>
     </item>
     
     <item>
@@ -719,7 +736,7 @@ java.timeのAPIを呼び出してみる 29, 21のエミュレーターで次の�
       <description>ViewPager2で要素をループさせる方法の紹介です。いわゆる循環リストです。
 ViewPager2ではRecyclerViewを使うことが出来るので、RecyclerViewと同じような実装で実現することが出来ます。
 最終的にこんなのが作れます。（a、b、cの要素でループしている）
-  今回の検証に用いたコードは、satoshun/ViewPager2にあります😃
+ 今回の検証に用いたコードは、satoshun/ViewPager2にあります😃
 では、コードを説明していきます。今回は、1つのViewTypeを扱います。
 実際のコード まず、RecyclerView.Adapterのサイズを決めるgetItemCountメソッドの実装です。 限りなく大きい値、Int.MAX_VALUEを返します。
 override fun getItemCount(): Int = Int.MAX_VALUE 次に、onBindViewHolderメソッドを次のように実装します。
@@ -779,7 +796,7 @@ dependencies { api deps.okio api deps.kotlinStdlib compileOnly deps.android comp
       <guid>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</guid>
       <description>横のアイテムをチラ見せする画面をViewPager2で書けるよって話です。
 最終的にこんなのが作れます。
-  では、コードを説明していきます。
+ では、コードを説明していきます。
 1. 横のアイテムをチラ見せする まず、ViewPager2をLayout内に定義します。
 &amp;lt;androidx.viewpager2.widget.ViewPager2 android:id=&amp;#34;@+id/viewpager&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;200dp&amp;#34; android:orientation=&amp;#34;horizontal&amp;#34; /&amp;gt; 次に、横のアイテムをどれだけチラ見せるかを定義します。
 &amp;lt;dimen name=&amp;#34;offset&amp;#34;&amp;gt;32dp&amp;lt;/dimen&amp;gt; 次に、各アイテム間にどれだけのマージンをつけるかを定義します。
@@ -817,10 +834,10 @@ Consumer側で処理が終わってなくても値を送ります。その値は
       <description>androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。 androidx-releasesにそれぞれのリポジトリがあります。
 例えば、Appcompatのリリースを検知したかったら、次の画像のように、androidx-releases/appcompatのNotificationsのReleases Onlyをチェックします。
 
-  
+ 
 この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
 
-  
+ 
 まとめ  作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃  </description>
     </item>
     
@@ -911,9 +928,9 @@ CIの高速化 再ビルドが必要なモジュールのみテストをすれ�
 モジュール どのようにモジュール分けをするか?
 1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
  ライブラリモジュール  com.android.libraryを指定する   Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い      Plaidでは以下のようなモジュール構成にした。
-  dribbleと、designernewsがDynamic Featureモジュールになっている。
+ dribbleと、designernewsがDynamic Featureモジュールになっている。
 2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
-     Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入        こうすることで、UIがDAOの知識を知らずに済む</description>
+   Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入       こうすることで、UIがDAOの知識を知らずに済む</description>
     </item>
     
     <item>
@@ -980,8 +997,8 @@ mediator.attach() これで、ViewPager2 + TabLayoutを実現できます。と�
       
       <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
       <description>Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。 動画だとここらへんになります。
-改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます    Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る   リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される    Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった    新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
-  Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）
+改善系 ビルドの高速化!  20%くらいビルドが早くなった distributed build cache対応 Incremental annotation processing対応  android.databinding.incremental=true を設定にすると使えます    Android Studioとの連携強化!!  Live Class Generation  XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る   リファクタリング系  フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される    Errorメッセージの改善!!!  DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった   新規系 View Binding 簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。
+ Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）
 メリット  コンパイルが早くなる  Data Bindingより機能が少なくなるのでそれはそう   &amp;lt;layout&amp;gt;で囲う必要がなくなった  これ個人的には好きでなかったので嬉しい。ネストが減る    デメリット  &amp;lt;data&amp;gt;セクションがなくなる  モデルの値とViewのマッピングはコード側ですることになりそう   多分BindingAdapterは使えない  これもコード側ですることになりそう   双方向バインディングとか使えない  おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。</description>
     </item>
     
@@ -1072,10 +1089,11 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
       <description>ConstraintLayout 2.0.0-alphaからImageFilterViewクラスが追加されました。今まで、MotionLayoutと一緒に使うものだから、使い所限られそうだなぁ〜と思っていたのですが、単体でも使えそうだったので、その報告記事になります。
 この記事ではConstraintLayout 2.0.0-alpha4を使っています。
 角丸にする round属性から指定する事ができます。
-&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; /&amp;gt;   彩度 saturation属性から設定することが出来ます。
-&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:saturation=&amp;#34;0.1&amp;#34; /&amp;gt;   コントラスト contrast属性から設定することが出来ます。
-&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:contrast=&amp;#34;0.5&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; /&amp;gt;   暖色、寒色 warmth属性から、暖色、寒色？を設定することできます。
-&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:warmth=&amp;#34;2&amp;#34; /&amp;gt;    &amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:warmth=&amp;#34;0.5&amp;#34; /&amp;gt;   クロスフェード crossfade属性から設定することが出来ます。ただ、この属性はMotionLayoutと一緒に使うもので、単体では使わないと思います。</description>
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; /&amp;gt;  彩度 saturation属性から設定することが出来ます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:saturation=&amp;#34;0.1&amp;#34; /&amp;gt;  コントラスト contrast属性から設定することが出来ます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:contrast=&amp;#34;0.5&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; /&amp;gt;  暖色、寒色 warmth属性から、暖色、寒色？を設定することできます。
+&amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:warmth=&amp;#34;2&amp;#34; /&amp;gt;   &amp;lt;androidx.constraintlayout.utils.widget.ImageFilterView android:id=&amp;#34;@+id/image&amp;#34; android:layout_width=&amp;#34;100dp&amp;#34; android:layout_height=&amp;#34;100dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; app:round=&amp;#34;0.5dp&amp;#34; app:warmth=&amp;#34;0.5&amp;#34; /&amp;gt;  クロスフェード crossfade属性から設定することが出来ます。ただ、この属性はMotionLayoutと一緒に使うもので、単体では使わないと思います。
+まとめ  ImageFilterView、単体でも結構使いどころあるかも😃  </description>
     </item>
     
     <item>
@@ -1216,7 +1234,7 @@ class MainActivity : AppCompatActivity() { ... override fun onCreate(savedInstan
 Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
 また、今回の検証に用いたコードはsatoshun/MultiModuleNavigationComponentExampleにあります。
 モジュール構成について 細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。
-  各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。
+ 各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。
 このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。
 では、実装に入っていきます。今回はDagger2を使って実装をします。
 featureモジュール側の遷移用インターフェースの定義 前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。
@@ -1226,7 +1244,7 @@ interface MainModuleRouter { // sub1画面へ移動する  fun routeToSub1() } M
 class MainFragment : Fragment() { @Inject lateinit var moduleRouter: MainModuleRouter ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener { moduleRouter.routeToSub1() } } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
 次にこのインターフェースの実装をします。
 routerモジュール側の遷移用インターフェースの実装 今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。
-&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; .</description>
+&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; ... &amp;lt;/navigation&amp;gt; そして、これを用いて遷移用インターフェースを実装します。</description>
     </item>
     
     <item>
@@ -1237,9 +1255,9 @@ routerモジュール側の遷移用インターフェースの実装 今回は�
       <guid>https://satoshun.github.io/2019/02/multi-module-speedup/</guid>
       <description>マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）
 例えば、以下のモジュール構成を考えます。
-  頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。
+ 頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。
 そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。
-  途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。
+ 途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。
 ただし、いくつか条件があります。
 1. 中間モジュールで公開可能なものに限る 例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。
 中間モジュールのコードイメージとしては以下のようになります。
@@ -1350,8 +1368,8 @@ public final class Vertical { ... public final void show(int i) { ... } } IVerti
 また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。
 検証に用いたコードはsatoshun-android-example/DynamicFeatureDaggerExampleにあります😊
 前提知識 通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。 ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。
-    この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
-    そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
+   この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。
+   そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。
 ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。
@@ -1386,7 +1404,7 @@ class Test { public void main() { show(1, 10.0); String[] array = {&amp;#34;&amp
 サンプルコード: satoshun-android-example/MultiActivityRouterExample
 遷移専用のモジュールを作る まず依存関係の構築の原則に、Circular Dependency、循環依存を作り出してはいけないというものがあります。
 例えば、メイン画面とサブ画面の2画面があり、それらの画面は相互に行き来するとします。それらをメイン画面モジュール、サブ画面モジュールとして切り出すと次のようになります。
- メインではサブ画面が必要なのでサブモジュールに依存する サブではメイン画面が必要なのでメインモジュールに依存する      これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。 直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。
+ メインではサブ画面が必要なのでサブモジュールに依存する サブではメイン画面が必要なのでメインモジュールに依存する     これでは循環参照になり、依存関係が壊れてしまうので駄目です。そこでDIP、依存関係逆転の原則を用います。 直接Activityを参照しているのが問題なので、各画面に遷移できる遷移用のインターフェースを定義することで解決を目指します。
 そこで、
  メイン画面に遷移するメインルーターモジュール サブ画面に遷移するサブルーターモジュール  の2つのモジュールを作ります。
 メインルーターモジュールでは次の遷移専用インターフェースを定義します。
@@ -1799,7 +1817,7 @@ inline fun hoge() { println(&amp;#34;hogehoge&amp;#34;) } こちらもメソッ�
       <guid>https://satoshun.github.io/2018/07/constraintlayout-negative_margin/</guid>
       <description>ConstraintLayoutはネガティブマージンに対応していないため、少しテクニックを使う必要があります。 この記事ではSpaceを使ったネガティブマージンの実現について説明します。
 例 ネガティブマージンと同等の大きさを持ったSpaceを定義して、そこにConstraintを設定するだけです。
-&amp;lt;androidx.constraintlayout.widget.ConstraintLayout xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; xmlns:tools=&amp;#34;http://schemas.android.com/tools&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;match_parent&amp;#34; android:clipToPadding=&amp;#34;false&amp;#34; android:padding=&amp;#34;80dp&amp;#34;&amp;gt; &amp;lt;Space android:id=&amp;#34;@+id/negative&amp;#34; android:layout_width=&amp;#34;15dp&amp;#34; android:layout_height=&amp;#34;15dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;ImageView android:id=&amp;#34;@+id/icon&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:contentDescription=&amp;#34;icon&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;@id/negative&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;@id/negative&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;   簡単に説明すると、Spaceに15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。 上記の例だと、
+&amp;lt;androidx.constraintlayout.widget.ConstraintLayout xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; xmlns:tools=&amp;#34;http://schemas.android.com/tools&amp;#34; android:layout_width=&amp;#34;match_parent&amp;#34; android:layout_height=&amp;#34;match_parent&amp;#34; android:clipToPadding=&amp;#34;false&amp;#34; android:padding=&amp;#34;80dp&amp;#34;&amp;gt; &amp;lt;Space android:id=&amp;#34;@+id/negative&amp;#34; android:layout_width=&amp;#34;15dp&amp;#34; android:layout_height=&amp;#34;15dp&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;ImageView android:id=&amp;#34;@+id/icon&amp;#34; android:layout_width=&amp;#34;30dp&amp;#34; android:layout_height=&amp;#34;30dp&amp;#34; android:contentDescription=&amp;#34;icon&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;@id/negative&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;@id/negative&amp;#34; tools:src=&amp;#34;@tools:sample/avatars&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;  簡単に説明すると、Spaceに15pxを指定して、bottom, endに対してconstraintを指定することで、ネガティブマージンを達成しています。 上記の例だと、
  android:layout_marginStart=&amp;quot;-15px&amp;quot; android:layout_marginTop=&amp;quot;-15px&amp;quot;  と同等の振る舞いをしています。
 まとめ ConstraintLayoutではネイティブでネガティブマージンに対応していないため、Spaceを使った、ややテクニカルな方法で実現するのが良いと思われます。</description>
     </item>

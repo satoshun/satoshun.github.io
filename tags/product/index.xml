@@ -17,10 +17,10 @@
       <description>androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。 androidx-releasesにそれぞれのリポジトリがあります。
 例えば、Appcompatのリリースを検知したかったら、次の画像のように、androidx-releases/appcompatのNotificationsのReleases Onlyをチェックします。
 
-  
+ 
 この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
 
-  
+ 
 まとめ  作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃  </description>
     </item>
     

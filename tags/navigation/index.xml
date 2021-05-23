@@ -42,7 +42,7 @@
 Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
 また、今回の検証に用いたコードはsatoshun/MultiModuleNavigationComponentExampleにあります。
 モジュール構成について 細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。
-  各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。
+ 各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。
 このモジュール構成のポイントは、各featureモジュール内で自身が使う遷移インターフェースを定義し、appがそのインターフェースの実装を行う点です。このようにすることで、feature間で直接の依存を持つことを防ぐことができます。これは循環依存を避けるためです。
 では、実装に入っていきます。今回はDagger2を使って実装をします。
 featureモジュール側の遷移用インターフェースの定義 前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。
@@ -52,7 +52,7 @@ interface MainModuleRouter { // sub1画面へ移動する  fun routeToSub1() } M
 class MainFragment : Fragment() { @Inject lateinit var moduleRouter: MainModuleRouter ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener { moduleRouter.routeToSub1() } } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
 次にこのインターフェースの実装をします。
 routerモジュール側の遷移用インターフェースの実装 今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。
-&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; .</description>
+&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; ... &amp;lt;/navigation&amp;gt; そして、これを用いて遷移用インターフェースを実装します。</description>
     </item>
     
     <item>

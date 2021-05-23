@@ -132,8 +132,7 @@
   )
 </code></pre></div><p>これで、置き換え完了かというと、そうではありません。実はsubscribeOnなどの関数は定義されてはいるものの、実際には使うことは出来ません。</p>
 <p>では、何が嬉しいかというと、subscribeOn関数は、次のようなエラーメッセージを出力します。</p>
-<figure>
-    <img src="/blog/kotlin/coroutine/coroutine-subscribeon-message.png"/> 
+<figure><img src="/blog/kotlin/coroutine/coroutine-subscribeon-message.png"/>
 </figure>
 
 <p>Flowへの置き換えのヒントメッセージを出力してくれます。この場合だと、flowOnを使うことを提案しています。

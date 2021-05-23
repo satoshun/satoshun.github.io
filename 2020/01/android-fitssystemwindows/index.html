@@ -99,16 +99,14 @@ SystemUiVisibilityの詳細な設定につ …">
 デフォルトでは、System UIにコンテンツの要素が被ることはありません。そこには制約があります。
 しかし、SystemUiVisibilityの設定を変えることで、コンテンツの要素をSystem UIの裏側描くことが可能になります。</p>
 <hr>
-<figure>
-    <img src="/blog/android/ui/merge.png" width="600"/> 
+<figure><img src="/blog/android/ui/merge.png" width="600"/>
 </figure>
 
 <hr>
 <p>右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。</p>
 <p>ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?</p>
 <hr>
-<figure>
-    <img src="/blog/android/ui/merge2.png" width="600"/> 
+<figure><img src="/blog/android/ui/merge2.png" width="600"/>
 </figure>
 
 <hr>
@@ -119,15 +117,13 @@ SystemUiVisibilityの詳細な設定につ …">
   ...
 <span style="color:#f92672">&lt;/LinearLayout&gt;</span>
 </code></pre></div><hr>
-<figure>
-    <img src="/blog/android/ui/fits1.png" width="300"/> 
+<figure><img src="/blog/android/ui/fits1.png" width="300"/>
 </figure>
 
 <hr>
 <p>見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。</p>
 <hr>
-<figure>
-    <img src="/blog/android/ui/fits1-layoutinspector.png" width="300"/> 
+<figure><img src="/blog/android/ui/fits1-layoutinspector.png" width="300"/>
 </figure>
 
 <hr>
@@ -144,19 +140,16 @@ SystemUiVisibilityの詳細な設定につ …">
   ...
 <span style="color:#f92672">&lt;/LinearLayout&gt;</span>
 </code></pre></div><hr>
-<figure>
-    <img src="/blog/android/ui/fits1-appbarlayout.png" width="300"/> 
+<figure><img src="/blog/android/ui/fits1-appbarlayout.png" width="300"/>
 </figure>
 
-<figure>
-    <img src="/blog/android/ui/fits1-appbarlayout-layoutinspector.png" width="300"/> 
+<figure><img src="/blog/android/ui/fits1-appbarlayout-layoutinspector.png" width="300"/>
 </figure>
 
 <hr>
 <p>見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。</p>
 <hr>
-<figure>
-    <img src="/blog/android/ui/fits1-appbarlayout-layoutinspector2.png" width="300"/> 
+<figure><img src="/blog/android/ui/fits1-appbarlayout-layoutinspector2.png" width="300"/>
 </figure>
 
 <hr>

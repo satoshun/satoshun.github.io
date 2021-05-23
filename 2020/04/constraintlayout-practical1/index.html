@@ -25,13 +25,12 @@
   <meta property="twitter:description" content="今回の記事では次のレイアウトを、ConstraintLayoutで組みたいと思います。
 
 
-     
 
 
 
 ポイントは以下の3つです。
 
-4つの画像を組み合わ …">
+4つの画像を組み合わせて、1つの …">
   
 
   
@@ -100,8 +99,7 @@
     
     <p>今回の記事では次のレイアウトを、ConstraintLayoutで組みたいと思います。</p>
 <hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-1.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-1.png" width="400"/>
 </figure>
 
 <hr>
@@ -122,8 +120,7 @@
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopLeft&#34;</span><span style="color:#f92672">&gt;</span>100%<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 </code></pre></div><p>右の画像が、上のShapeを指定した場合になります。</p>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-2.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-2.png" width="400"/>
 </figure>
 
 <p>右上、左下、右下のShapeも同じように作ってあげます。そして、それら4つViewの制約を次のように作ってあげます。</p>
@@ -172,8 +169,7 @@
   <span style="color:#a6e22e">tools:src=</span><span style="color:#e6db74">&#34;@tools:sample/avatars&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><p>やっていることは単純で、4つのViewを<code>app:layout_constraintStart_toStartOf</code>などを使って適切な位置に配置しています。</p>
 <hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-3.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-3.png" width="400"/>
 </figure>
 
 <hr>
@@ -211,8 +207,7 @@
   <span style="color:#a6e22e">tools:text=</span><span style="color:#e6db74">&#34;your id&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><p>すると次のようになります。</p>
 <hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-4.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-4.png" width="400"/>
 </figure>
 
 <hr>
@@ -230,8 +225,7 @@
   <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
   <span style="color:#a6e22e">tools:text=</span><span style="color:#e6db74">&#34;TESTTESTTES&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-5.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-5.png" width="400"/>
 </figure>
 
 <hr>
@@ -240,8 +234,7 @@
 <p>次に、Your Nameの文字数が多い場合を考えていきます。</p>
 <p>現状のレイアウトだと、文字数が多い場合には次のように表示されます。</p>
 <hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-6.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-6.png" width="400"/>
 </figure>
 
 <hr>
@@ -261,8 +254,7 @@
   <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
   <span style="color:#a6e22e">tools:text=</span><span style="color:#e6db74">&#34;TESTTESTTES&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><hr>
-<figure>
-    <img src="/blog/android/jetpack/constraintlayout/constraint-practical-7.png" width="400"/> 
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical-7.png" width="400"/>
 </figure>
 
 <hr>

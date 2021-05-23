@@ -4,26 +4,25 @@
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-  <meta property="og:title" content="GitHub Actionsでエミュレータテストをする">
+  <meta property="og:title" content="JetBrains Toolbox Appのススメ">
   
     <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2019-12-12">
+    <meta property="article:published_time" content="2021-05-23">
   
   <meta property="og:description" content="">
-  <meta property="og:url" content="https://satoshun.github.io/2019/12/github-actions-emulator-test/">
+  <meta property="og:url" content="https://satoshun.github.io/2021/05/jetbrains-toolbox/">
   <meta property="og:site_name" content="stsnブログ">
   
   
-    <meta property="og:tags" content="ci">
-  
-    <meta property="og:tags" content="githubactions">
+    <meta property="og:tags" content="android">
   
 
-  <meta property="twitter:title" content="GitHub Actionsでエミュレータテストをする">
+  <meta property="twitter:title" content="JetBrains Toolbox Appのススメ">
 
   
-  <meta property="twitter:description" content="GitHub Actionsでエミュレータでテストを回したかったので調べてみました。
-結論、AutoDisposeでエミュレータでテストを行っていたので、それを …">
+  <meta property="twitter:description" content="JeBbrains Toolbox App が便利なので、それの啓蒙ブログです。
+JetBrains Toolbox App?
+JetBrains製のIDEの …">
   
 
   
@@ -33,7 +32,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title> GitHub Actionsでエミュレータテストをする  - stsnブログ </title>
+  <title> JetBrains Toolbox Appのススメ  - stsnブログ </title>
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -86,58 +85,33 @@
 
 <div class="content container">
   <div class="post">
-    <h1 class="post-title">GitHub Actionsでエミュレータテストをする</h1>
+    <h1 class="post-title">JetBrains Toolbox Appのススメ</h1>
     
-    <span class="post-date">Created at Thu, Dec 12, 2019</span>
+    <span class="post-date">Created at Sun, May 23, 2021</span>
     
-    <p>GitHub Actionsでエミュレータでテストを回したかったので調べてみました。</p>
-<p>結論、AutoDisposeでエミュレータでテストを行っていたので、それをアレンジする感じがいいと思います。詳しくは <a href="https://github.com/uber/AutoDispose/blob/master/.github/workflows/ci.yml">AutoDispose/ci.yml</a> を見てください。</p>
-<h2 id="エミュレータテストをするスクリプト">エミュレータテストをするスクリプト</h2>
-<p>特にキャッシュとかを考えないなら、以下のスクリプトで動きます。</p>
-<pre><code>name: CI
-
-on: [push, pull_request]
-
-jobs:
-  build:
-    name: JDK 1.8
-    runs-on: macOS-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Install JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.0.5
-      - name: Build project
-        run: ./gradlew assemble --stacktrace
-      - name: Run instrumentation tests
-        uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
-        with:
-          cmd: ./gradlew connectedCheck --stacktrace
-          api: 25
-          tag: default
-          abi: x86
-</code></pre><p><a href="https://github.com/Malinskiy/action-android">malinskiy/action-android</a>という、便利GitHub Actionがあるので、それを呼び出すだけでおｋです。</p>
-<p>あとは、<code>cmd: ./gradlew connectedCheck --stacktrace</code>みたいな感じで、自分のプロジェクトに適したテストコマンドをコールするだけでいけます。stacktraceを出しておくと、デバッグのときなどに便利です。</p>
-<p><a href="https://github.com/satoshun-kotlin-example/CoroutineCatalog/commit/0b8336d8ff2c7cc37510857c816e10c3ea31b295/checks?check_suite_id=355095099">結果</a> はこんな感じになります。</p>
-<figure><img src="/blog/ci/github_actions/github-result.png" width="600"/>
+    <p><a href="https://www.jetbrains.com/toolbox-app/">JeBbrains Toolbox App</a> が便利なので、それの啓蒙ブログです。</p>
+<h2 id="jetbrains-toolbox-app">JetBrains Toolbox App?</h2>
+<p>JetBrains製のIDEのバージョンを管理するアプリになります。Android開発の場合だと、stable版、beta版、canary版を別々に管理することが主な使い方になります。</p>
+<p>これで説明は終わりなのですが、設定しておくと便利な機能を紹介します。</p>
+<h2 id="シェルコマンドの生成">シェルコマンドの生成</h2>
+<p>ONにしておくと、シェルコマンドを生成をしてくれます。<br><br></p>
+<p><figure><img src="/blog/android/androidstudio/jetbrains-toolbox-shell-command.png" width="480"/>
 </figure>
-
+<br></p>
+<p>次のようにコマンドラインから、プロジェクトを開くことが出来ます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">studio .
+</code></pre></div><p>git clone をした後などに、上記コマンドを入力することで、プロジェクトを簡単に開くことが出来ます。</p>
+<h2 id="インストール先のフォルダを-applications-にする">インストール先のフォルダを <code>/Applications</code> にする</h2>
+<p>下記のツイートにあったのですが、spotlightによるインデックスがいい感じになるそうです。</p>
+<p><a href="https://twitter.com/kaushikgopal/status/1396210659847819264">https://twitter.com/kaushikgopal/status/1396210659847819264</a></p>
 <h2 id="まとめ">まとめ</h2>
-<ul>
-<li>GitHub Actionsはいいぞ〜</li>
-</ul>
+<p>JetPack Composeやらなんやらで、beta、canaryなどの開発版を使うことも多くなると思うので、入れとくと幸せになります。</p>
 
     <div class="mt30"></div>
     
       <ul class="article-post-tags">
         
-          <li><a href="/tags/ci">ci</a></li>
-        
-          <li><a href="/tags/githubactions">githubactions</a></li>
+          <li><a href="/tags/android">android</a></li>
         
       </ul>
     

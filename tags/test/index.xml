@@ -24,7 +24,7 @@ apply plugin: &amp;#39;app.cash.paparazzi&amp;#39; これで準備は完了で�
 次に、サンプルのレイアウトファイルとして、lib_item.xml を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。
 class LayoutTest { @get:Rule var paparazzi = Paparazzi(deviceConfig = DeviceConfig.NEXUS_5) @Test fun sample() { val launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(R.layout.lib_item) paparazzi.snapshot(view = launch) } } Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。
 次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。
-  実機を使わずに、スクリーンショットを取ることが出来ました。
+ 実機を使わずに、スクリーンショットを取ることが出来ました。
 まとめ 結構お手軽に使うことが出来ました。まだAPIが安定していない?そうなので、プロダクションに入れるのは時期尚早かもしれませんが、安定してきたら、試してみるのも良さそうです(こなみかん)</description>
     </item>
     

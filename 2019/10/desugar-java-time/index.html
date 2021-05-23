@@ -126,8 +126,7 @@ println(zoneOffset)
 </code></pre></div><h2 id="どのようにして実現しているか">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>
 <p>以下、apkの中身になります。</p>
-<figure>
-    <img src="/blog/android/agp/r8/desugar-time-apk.png" width="100%"/> 
+<figure><img src="/blog/android/agp/r8/desugar-time-apk.png" width="100%"/>
 </figure>
 
 <p><code>java.time</code> は <code>j$.time</code>に変換されていました。</p>
