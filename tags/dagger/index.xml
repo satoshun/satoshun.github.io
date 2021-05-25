@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 30 Dec 2020 08:53:33 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 May 2021 12:39:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: Dagger Hiltで推移的な依存を解決する</title>
+      <link>https://satoshun.github.io/2021/05/dagger-traversing-dependency-chain/</link>
+      <pubDate>Tue, 25 May 2021 12:39:26 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/05/dagger-traversing-dependency-chain/</guid>
+      <description>従来のDaggerだと、app(root)モジュールは、すべてのクラスパスが見えている必要がありました。
+例えば、
+|appモジュール| -&amp;gt; |dataモジュール| -&amp;gt; &amp;lt;retrofitライブラリ&amp;gt;
+のような関係だと、appモジュールでもretrofitライブラリが見えている必要があります。 なので、appモジュールに implementation retrofit を記述するか、もしくは、dataモジュールに api retrofit を記述する必要があります。
+Dagger Hiltの2.31以降に、この問題を解決する Classpath Aggregation が追加されたので、それを紹介します。
+Classpath Aggregation Classpath Aggregationを有効にするには、次の設定をGradleに記述します。
+hilt { enableExperimentalClasspathAggregation = true } これを追加することで、implementation から api にしなくても、コンパイルを成功させることが出来ます。
+便利なフラグですが、最新のv2.35だと、パフォーマンスに影響が出るので、規模が大きいプロジェクトの場合には注意して導入する必要があります。 今後、改善予定だそうです。
+参照  https://dagger.dev/hilt/gradle-setup#classpath-aggregation  </description>
+    </item>
+    
     <item>
       <title>Android: 公式でAssisted Injectがサポートされそう</title>
       <link>https://satoshun.github.io/2020/12/dagger-official-assisted/</link>
