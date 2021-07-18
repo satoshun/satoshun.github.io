@@ -4,16 +4,16 @@ title = "Testifyを使って、Jetpack Composeのスクリーンショットテ�
 tags = ["android", "test", "compose"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-(この記事は、ほぼ、[Testify](https://github.com/Shopify/android-testify])のREADMEに書いてあることをやっているだけです)
+(この記事は、ほぼ、[Testify](https://github.com/Shopify/android-testify]) のREADMEに書いてあることをやっているだけです)
 
-[Testify](https://github.com/Shopify/android-testify])を使って、Jetpack Composeのスクリーンショットテストをしてみます。
+[Testify](https://github.com/Shopify/android-testify]) を使って、Jetpack Composeのスクリーンショットテストをしてみます。
 
 ## セットアップ
 
-READMEに記してる通り、build.gradleに下記の設定を追加します。
+READMEに記してある通り、build.gradleに下記の設定を追加します。
 
 ```groovy
 dependencies {
@@ -27,7 +27,7 @@ apply plugin: 'com.shopify.testify'
 
 ## テストを書いてみる
 
-JUnit4ベースの`ScreenshotRule`と、`ScreenshotInstrumentation`アノテーションを使います。
+JUnit4ベースの`ScreenshotRule` と、`ScreenshotInstrumentation` アノテーションを使います。
 
 ```kotlin
 class AppActivityTest {
@@ -37,7 +37,7 @@ class AppActivityTest {
   @Test
   fun test() {
     rule.activity.runOnUiThread {
-      rule.activity.setContent { AppContent() } // AppContentは適当なComposeコンポーネント
+      rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント
     }
     Thread.sleep(500) // 一応
     rule.assertSame()
@@ -45,13 +45,15 @@ class AppActivityTest {
 }
 ```
 
-こんな感じでテストを記述できます。次にテストの実行をします。まず最初に、baseとなる画像を生成します。
+こんな感じでテストを記述できます。`ScreenshotRule` を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
+
+次にテストの実行をします。まず下準備として、baseとなる画像を生成します。
 
 ```
 ./gradlew screenshotRecord
 ```
 
-これでスクリーンショットがローカルにコピーされるので、Gitなどにコミットしておきます。
+これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。
 
 次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。
 
@@ -72,7 +74,7 @@ Time: 2.264
 OK (1 test)
 ```
 
-次に、AppContent関数の中身を変えて実行してみます。
+失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。
 
 ```
 ------------------------------------------------------------
@@ -93,7 +95,4 @@ com.shopify.testify.internal.exception.ScreenshotIsDifferentException:
 
 Jetpack Compose時代には、Layout時代に比べて、コンポーネントの生成に必要なパラメータが関数に明示的に切り出されていたり、
 関数の組み合わせによる、少し複雑なコンポーネントのテストがしやすくなると思います。
-そうなったときには、Testifyのようなローカルのみで完結させることが出来る、テストライブラリを試してみるのはいいのかもしれません。
-
-（また、他のテストライブラリは特に試していません。)
-
+そうなったときには、Testifyのようなローカルのみで完結させることが出来る、テストライブラリをとりあえず試してみるのはいいのかなと思いました。
