@@ -4,25 +4,28 @@
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-  <meta property="og:title" content="Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介">
+  <meta property="og:title" content="Testifyを使って、Jetpack Composeのスクリーンショットテストをする">
   
     <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2021-03-28">
+    <meta property="article:published_time" content="2021-07-18">
   
   <meta property="og:description" content="">
-  <meta property="og:url" content="https://satoshun.github.io/2021/03/gradle-central-declaration-of-dependencies/">
+  <meta property="og:url" content="https://satoshun.github.io/2021/07/android-testify-jetpack-compose/">
   <meta property="og:site_name" content="stsnブログ">
   
   
-    <meta property="og:tags" content="gradle">
-  
     <meta property="og:tags" content="android">
   
+    <meta property="og:tags" content="test">
+  
+    <meta property="og:tags" content="compose">
+  
 
-  <meta property="twitter:title" content="Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介">
+  <meta property="twitter:title" content="Testifyを使って、Jetpack Composeのスクリーンショットテストをする">
 
   
-  <meta property="twitter:description" content="Gradleの7.0-RC01に、Central declaration of dependenciesという機能が入りました。まだ、experimentalな …">
+  <meta property="twitter:description" content="(この記事は、ほぼ、Testify のREADMEに書いてあることをやっているだけです)
+Testify を使って、Jetpack Composeのスクリーンシ …">
   
 
   
@@ -32,7 +35,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title> Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介  - stsnブログ </title>
+  <title> Testifyを使って、Jetpack Composeのスクリーンショットテストをする  - stsnブログ </title>
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -85,58 +88,76 @@
 
 <div class="content container">
   <div class="post">
-    <h1 class="post-title">Gradle: 新しいバージョン管理方法 Central declaration of dependenciesの紹介</h1>
+    <h1 class="post-title">Testifyを使って、Jetpack Composeのスクリーンショットテストをする</h1>
     
-    <span class="post-date">Created at Sun, Mar 28, 2021</span>
+    <span class="post-date">Created at Sun, Jul 18, 2021</span>
     
-    <p>Gradleの7.0-RC01に、Central declaration of dependenciesという機能が入りました。まだ、experimentalな機能で今後どうなるか分かりませんが、気になったので紹介します。</p>
-<p>この記事を書くのに使ったサンプルコードは <a href="https://github.com/satoshun-android-example/Template">github/satoshun-android-example</a> にあります。</p>
-<h2 id="central-declaration-of-dependenciesが導入された背景">Central declaration of dependenciesが導入された背景</h2>
-<p><a href="https://docs.gradle.org/7.0-rc-1/release-notes.html">Gradle 7.0 Release Notes</a> に次のように書いてあります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">There are a number of ways to share dependency versions between projects in multi-project builds. For example, users can declare versions or dependency coordinates directly in build scripts (in the ext block), external files (e.g dependencies.gradle), in buildSrcor even dedicated plugins. There wasn’t, however, any standard mechanism to do this which would combine the advantages of each approach.
-</code></pre></div><p>既存のバージョン管理方法には、extを使う方法、buildSrcを使う方法などがありましたが、それらの利点を組み合わせた標準的な方法は無かったので、新しいバージョン管理方法を作った。ということらしいです。</p>
-<h2 id="簡単な使い方">簡単な使い方</h2>
-<p><code>settings.gradle</code> にGroovy(or Kotlin)で書く方法と、tomlファイルに記述する方法が提供されています。この記事ではtomlでのやり方を紹介します。</p>
-<p>まず、最初に、gradle/ ディレクトリ以下に、libs.versions.toml ファイルを作成します。そこに使うライブラリのバージョンを記述します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">versions</span>]
-<span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
-
-[<span style="color:#a6e22e">libraries</span>]
-<span style="color:#a6e22e">kotlin</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
-</code></pre></div><p>[versions] にバージョンを、[libraries] にライブラリの情報を記述します。</p>
-<p>これで、定義は完了です。<code>build.gradle</code> から、libs.xxx のように参照出来るようになります。</p>
+    <p>(この記事は、ほぼ、<a href="https://github.com/Shopify/android-testify%5D">Testify</a> のREADMEに書いてあることをやっているだけです)</p>
+<p><a href="https://github.com/Shopify/android-testify%5D">Testify</a> を使って、Jetpack Composeのスクリーンショットテストをしてみます。</p>
+<h2 id="セットアップ">セットアップ</h2>
+<p>READMEに記してある通り、build.gradleに下記の設定を追加します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">kotlin</span>
+  classpath <span style="color:#e6db74">&#34;com.shopify.testify:plugin:1.1.0-beta2&#34;</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>さらにCentralized dependency versionsでは、bundlesを使うことでライブラリをひとまとめにすることが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">versions</span>]
-<span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
-<span style="color:#a6e22e">kotlin_coroutine</span> = <span style="color:#e6db74">&#34;1.4.1&#34;</span>
 
-[<span style="color:#a6e22e">libraries</span>]
-<span style="color:#a6e22e">kotlin-stdlib</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
-<span style="color:#a6e22e">kotlin-coroutine-core</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
-<span style="color:#a6e22e">kotlin-coroutine-ui</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
+apply plugin: <span style="color:#e6db74">&#39;com.shopify.testify&#39;</span>
+</code></pre></div><p>これで完了です。</p>
+<h2 id="テストを書いてみる">テストを書いてみる</h2>
+<p>JUnit4ベースの<code>ScreenshotRule</code> と、<code>ScreenshotInstrumentation</code> アノテーションを使います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppActivityTest</span> {
+  <span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> rule = ScreenshotRule(TestActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
-[<span style="color:#a6e22e">bundles</span>]
-<span style="color:#a6e22e">kotlin-android</span> = [<span style="color:#e6db74">&#34;kotlin-stdlib&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-core&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-ui&#34;</span>]
-</code></pre></div><p>[budnles] には、[libraries] で定義した、ライブラリを指定できます。</p>
-<p><code>build.gradle</code> からは、libs.bundles.xxx のように参照します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">bundles</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinAndroid</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>bundlesを使うことで、複数のライブラリの記述をシンプルにすることが出来ました。マルチモジュールなプロジェクトの場合、同じようなライブラリの依存になることが多いと思うので、その際に便利に使うことが出来ると思います。</p>
+  <span style="color:#a6e22e">@ScreenshotInstrumentation</span>
+  <span style="color:#a6e22e">@Test</span>
+  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() {
+    rule.activity.runOnUiThread {
+      rule.activity.setContent { AppContent() } <span style="color:#75715e">// AppContent関数は適当なComposeコンポーネント
+</span><span style="color:#75715e"></span>    }
+    Thread.sleep(<span style="color:#ae81ff">500</span>) <span style="color:#75715e">// 一応
+</span><span style="color:#75715e"></span>    rule.assertSame()
+  }
+}
+</code></pre></div><p>こんな感じでテストを記述できます。<code>ScreenshotRule</code> を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。</p>
+<p>次にテストの実行をします。まず下準備として、baseとなる画像を生成します。</p>
+<pre><code>./gradlew screenshotRecord
+</code></pre><p>これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。</p>
+<p>次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。</p>
+<pre><code>./gradlew screenshotTest
+</code></pre><pre><code>------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:.
+
+Time: 2.264
+
+OK (1 test)
+</code></pre><p>失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。</p>
+<pre><code>------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:
+Error in test(com.github.satoshun.example.AppActivityTest):
+com.shopify.testify.internal.exception.ScreenshotIsDifferentException:
+...
+</code></pre><p>無事に失敗しました。</p>
 <h2 id="まとめ">まとめ</h2>
-<p>マルチモジュールなプロジェクトのバージョン管理方法に、新しいメカニズムが誕生しました。まだexperimentalなので、なんともいえないですが、bundlesは便利だなと思いました</p>
-<p>より詳しい使い方を知りたい人は、<a href="https://docs.gradle.org/7.0-rc-1/userguide/platforms.html#sub:central-declaration-of-dependencies">公式のドキュメント</a> を見て下さい。</p>
+<p>Jetpack Compose時代には、Layout時代に比べて、コンポーネントの生成に必要なパラメータが関数に明示的に切り出されていたり、
+関数の組み合わせによる、少し複雑なコンポーネントのテストがしやすくなると思います。
+そうなったときには、Testifyのようなローカルのみで完結させることが出来る、テストライブラリをとりあえず試してみるのはいいのかなと思いました。</p>
 
     <div class="mt30"></div>
     
       <ul class="article-post-tags">
         
-          <li><a href="/tags/gradle">gradle</a></li>
-        
           <li><a href="/tags/android">android</a></li>
+        
+          <li><a href="/tags/test">test</a></li>
+        
+          <li><a href="/tags/compose">compose</a></li>
         
       </ul>
     

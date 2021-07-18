@@ -150,7 +150,7 @@
         self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
         <span style="color:#66d9ef">return</span> self
 
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__next__</span>(self):
+    <span style="color:#66d9ef">def</span> __next__(self):
         <span style="color:#66d9ef">while</span> self<span style="color:#f92672">.</span>__i <span style="color:#f92672">&gt;=</span> self<span style="color:#f92672">.</span>index:
             self<span style="color:#f92672">.</span>index <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
             self<span style="color:#f92672">.</span>a, self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>b, self<span style="color:#f92672">.</span>a <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>b
@@ -161,8 +161,8 @@
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
     f <span style="color:#f92672">=</span> Fibonacci(<span style="color:#ae81ff">10</span>)
     <span style="color:#66d9ef">for</span> number <span style="color:#f92672">in</span> f:
-        <span style="color:#66d9ef">print</span>(number, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39; &#39;</span>)
-    <span style="color:#66d9ef">print</span>()
+        print(number, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39; &#39;</span>)
+    print()
 </code></pre></div><h2 id="bash">bash</h2>
 <p><code>$[]</code>でexpressionを表現しています. これ実装するまで知りませんでした.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e">#!/bin/bash

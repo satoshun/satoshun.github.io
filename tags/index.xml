@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 25 May 2021 12:39:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jul 2021 07:44:46 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Tue, 25 May 2021 12:39:26 +0000</pubDate>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>compose</title>
+      <link>https://satoshun.github.io/tags/compose/</link>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/compose/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://satoshun.github.io/tags/test/</link>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/test/</guid>
       <description></description>
     </item>
     
@@ -72,15 +90,6 @@
     </item>
     
     <item>
-      <title>test</title>
-      <link>https://satoshun.github.io/tags/test/</link>
-      <pubDate>Sun, 28 Feb 2021 07:53:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>kmm</title>
       <link>https://satoshun.github.io/tags/kmm/</link>
       <pubDate>Sat, 20 Feb 2021 09:06:26 +0000</pubDate>
@@ -122,15 +131,6 @@
       <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/multimodule/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>compose</title>
-      <link>https://satoshun.github.io/tags/compose/</link>
-      <pubDate>Sun, 12 Jul 2020 05:14:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/compose/</guid>
       <description></description>
     </item>
     

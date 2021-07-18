@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 25 May 2021 12:39:26 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jul 2021 07:44:46 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Testifyを使って、Jetpack Composeのスクリーンショットテストをする</title>
+      <link>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</link>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</guid>
+      <description>(この記事は、ほぼ、Testify のREADMEに書いてあることをやっているだけです)
+Testify を使って、Jetpack Composeのスクリーンショットテストをしてみます。
+セットアップ READMEに記してある通り、build.gradleに下記の設定を追加します。
+dependencies { classpath &amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34; } apply plugin: &amp;#39;com.shopify.testify&amp;#39; これで完了です。
+テストを書いてみる JUnit4ベースのScreenshotRule と、ScreenshotInstrumentation アノテーションを使います。
+class AppActivityTest { @get:Rule val rule = ScreenshotRule(TestActivity::class.java) @ScreenshotInstrumentation @Test fun test() { rule.activity.runOnUiThread { rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント  } Thread.sleep(500) // 一応  rule.assertSame() } } こんな感じでテストを記述できます。ScreenshotRule を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
+次にテストの実行をします。まず下準備として、baseとなる画像を生成します。
+./gradlew screenshotRecord これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。
+次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。
+./gradlew screenshotTest ------------------------------------------------------------ Run the Testify screenshot tests ------------------------------------------------------------ com.github.satoshun.example.AppActivityTest:. Time: 2.264 OK (1 test) 失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。</description>
+    </item>
+    
     <item>
       <title>Android: Dagger Hiltで推移的な依存を解決する</title>
       <link>https://satoshun.github.io/2021/05/dagger-traversing-dependency-chain/</link>
