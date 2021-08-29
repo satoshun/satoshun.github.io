@@ -111,7 +111,7 @@
 <p>例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。
 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。</p>
 <p>中間モジュールのコードイメージとしては以下のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createUserFragment</span>(userName: String, age: Int): Fragment {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createUserFragment</span>(userName: String, age: Int): Fragment {
   <span style="color:#66d9ef">return</span> UserFragment.createFragment(userName, age)
 }
 

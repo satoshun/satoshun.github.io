@@ -92,7 +92,7 @@ class A&lt;T&gt;(val value: T) {
     
     <p>Kotlinの拡張関数の話です。</p>
 <p>以下のクラスがあったとします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">isNull</span>(): Boolean {
     <span style="color:#66d9ef">return</span> value <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>
   }
@@ -103,7 +103,7 @@ class A&lt;T&gt;(val value: T) {
   a1.isNull()
 }
 </code></pre></div><p>このとき、<code>a1.isNull()</code>の結果は自明です。なぜなら<code>A&lt;Int&gt;</code>で宣言している時点でnonNullが確定しているためです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
   <span style="color:#66d9ef">val</span> a2: A&lt;Int?&gt; = <span style="color:#f92672">..</span>.
   a2.isNull()
 }
@@ -111,7 +111,7 @@ class A&lt;T&gt;(val value: T) {
 なぜなら<code>A&lt;Int?&gt;</code>でジェネリック型を宣言しているので、nullableな値が入ってくる可能性があるためです。</p>
 <p>この2つの例から、<code>a1.isNull()</code>はそもそもnonNullなので<code>isNull()</code>メソッドをコールできないほうが良いのではないか？という考えが浮かびます。</p>
 <p>Kotlinの拡張関数を使うことで達成できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T)
 
 <span style="color:#75715e">// nullableのときにコールできるようにする
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">Any</span>&gt; <span style="color:#a6e22e">A</span>&lt;T?&gt;.isNull(): Boolean {

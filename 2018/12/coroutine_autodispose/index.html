@@ -96,7 +96,7 @@
     <p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
 <h2 id="continuationinterceptorとは">ContinuationInterceptorとは?</h2>
 <p>ContinuationInterceptorは次のようなインターフェースです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * Marks coroutine context element that intercepts coroutine continuations.
 </span><span style="color:#75715e"> * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
 </span><span style="color:#75715e"> * intercepts all coroutine continuations with [interceptContinuation] invocations.
@@ -108,7 +108,7 @@
   <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleContinuationInterceptor</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleContinuationInterceptor</span>(
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
 ) : ContinuationInterceptor {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> key: CoroutineContext.Key&lt;*&gt;
@@ -159,7 +159,7 @@
 <p>フルコードは<a href="https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt">ここに</a>あります。</p>
 <h2 id="使い方">使い方</h2>
 <p>使い方は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
   CoroutineScope {
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job = Job()

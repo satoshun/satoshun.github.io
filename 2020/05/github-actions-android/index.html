@@ -102,7 +102,7 @@ org.gradle. …">
 <li>7Gメモリの2 CPU</li>
 </ul>
 <h2 id="こんな感じが良さそう">こんな感じが良さそう</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
@@ -158,11 +158,11 @@ android<span style="color:#f92672">.</span><span style="color:#a6e22e">lifecycle
 <h2 id="参考プロジェクト">参考プロジェクト</h2>
 <h3 id="insetterライブラリ">insetterライブラリ</h3>
 <p><a href="https://github.com/chrisbanes/insetter/tree/master/.github">https://github.com/chrisbanes/insetter/tree/master/.github</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">JAVA_TOOL_OPTIONS</span>: -<span style="color:#ae81ff">Xmx5120m</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">JAVA_TOOL_OPTIONS</span>: -<span style="color:#ae81ff">Xmx5120m</span>
 <span style="color:#f92672">GRADLE_OPTS</span>: -<span style="color:#ae81ff">Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process</span>
 </code></pre></div><h3 id="catchupアプリ">Catchupアプリ</h3>
 <p><a href="https://github.com/ZacSweers/CatchUp/tree/master/.github">https://github.com/ZacSweers/CatchUp/tree/master/.github</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
 org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>

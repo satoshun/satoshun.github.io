@@ -102,7 +102,7 @@
 例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)</p>
 <h2 id="rxjavaとともに">RxJavaとともに</h2>
 <p>RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@NonNull</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@NonNull</span>
 <span style="color:#a6e22e">@Override</span> <span style="color:#66d9ef">public</span> Observable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 <span style="color:#66d9ef">return</span> localDataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span>id<span style="color:#f92672">)</span>
         <span style="color:#f92672">.</span><span style="color:#a6e22e">onErrorResumeNext</span><span style="color:#f92672">(</span>remoteDataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span>id<span style="color:#f92672">))</span>

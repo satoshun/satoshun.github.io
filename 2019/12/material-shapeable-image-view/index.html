@@ -100,7 +100,7 @@
 <p>さっそくいじっていきたいと思います。</p>
 <h2 id="丸を設定してみる">丸を設定してみる</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.PILL&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
@@ -122,11 +122,11 @@
 
 <p>画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。</p>
 <p>コードから設定する場合は、ShapeAppearanceModelを介して行います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
 imageView.shapeAppearanceModel = model
 </code></pre></div><h2 id="ひし形を設定してみる--strokeをつける">ひし形を設定してみる &amp; strokeをつける</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.Diamond&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>

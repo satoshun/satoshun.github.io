@@ -94,7 +94,7 @@
     
     <p>Navigation Component + Toolbarのデフォルトの挙動をカスタマイズしたかったので、その周辺のコードを読んでみたメモブログになります。</p>
 <p>この記事のコードは、次のライセンスに従います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">/*
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">/*
  * Copyright 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
@@ -116,20 +116,20 @@
 </ul>
 <h2 id="前提基本">前提/基本</h2>
 <p>NavigationにActionbarを紐付けるのは、次のようにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> navController = findNavController(R.id.nav_host_fragment)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> navController = findNavController(R.id.nav_host_fragment)
 <span style="color:#66d9ef">val</span> configuration = AppBarConfiguration(navController.graph)
 setupActionBarWithNavController(navController, configuration)
 </code></pre></div><p>これが、どんな感じで、処理されていくかを見ていきます。</p>
 <h2 id="appbarconfigurationクラス">AppBarConfigurationクラス</h2>
 <p>naivgation graphなどの情報から、AppBarがどのように振る舞うかを決めるクラスです。
 ここでは、navigate upが失敗した時のハンドリング、DrawerLayoutを設定できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">AppBarConfiguration.Builder
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">AppBarConfiguration.Builder
     setDrawerLayout
     setFallbackOnNavigateUpListener
     build
 </code></pre></div><p>登録した<code>FallbackOnNavigateUpListener</code>が、どこで発火するかを、コードを読んで確認します。</p>
 <p>FallbackOnNavigateUpListenerのドキュメントを読むと、navigateUpに失敗した時と書いてあるので、navigateUpメソッドを見に行きます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
         <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     DrawerLayout drawerLayout <span style="color:#f92672">=</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerLayout</span><span style="color:#f92672">();</span>
     NavDestination currentDestination <span style="color:#f92672">=</span> navController<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentDestination</span><span style="color:#f92672">();</span>
@@ -153,7 +153,7 @@ setupActionBarWithNavController(navController, configuration)
 <h2 id="setupactionbarwithnavcontrollerメソッド">setupActionBarWithNavControllerメソッド</h2>
 <p>次に、setupActionBarWithNavControllerメソッドを見ていきます。</p>
 <p>このメソッドの中身は、次のようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">fun AppCompatActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">fun AppCompatActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span>
     navController<span style="color:#f92672">:</span> NavController<span style="color:#f92672">,</span>
     configuration<span style="color:#f92672">:</span> AppBarConfiguration <span style="color:#f92672">=</span> AppBarConfiguration<span style="color:#f92672">(</span>navController<span style="color:#f92672">.</span><span style="color:#a6e22e">graph</span><span style="color:#f92672">)</span>
 <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -170,7 +170,7 @@ setupActionBarWithNavController(navController, configuration)
 <code>addOnDestinationChangedListener</code>は、destinationが変わった時に発火するコールバックなので、ページが切り替わったタイミングなどで<code>ActionBarOnDestinationChangedListener</code>が発火することが分かります。</p>
 <hr>
 <p>次に、<code>ActionBarOnDestinationChangedListener</code>の中身は、以下のようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActionBarOnDestinationChangedListener</span> <span style="color:#66d9ef">extends</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActionBarOnDestinationChangedListener</span> <span style="color:#66d9ef">extends</span>
         AbstractAppBarOnDestinationChangedListener <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AppCompatActivity mActivity<span style="color:#f92672">;</span>
 
@@ -206,7 +206,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 <hr>
 <p>次に、基底クラスの<code>AbstractAppBarOnDestinationChangedListener</code>を見ていきます。</p>
 <p><code>AbstractAppBarOnDestinationChangedListener</code>は長いので、重要な部分だけを抜粋します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAppBarOnDestinationChangedListener</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAppBarOnDestinationChangedListener</span>
         <span style="color:#66d9ef">implements</span> NavController<span style="color:#f92672">.</span><span style="color:#a6e22e">OnDestinationChangedListener</span> <span style="color:#f92672">{</span>
  　　<span style="color:#f92672">...</span>
 
@@ -284,7 +284,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 <h2 id="以上を踏まえてtoolbarの挙動を変えるには">以上を踏まえて、Toolbarの挙動を変えるには</h2>
 <p>独自に、<code>NavController.OnDestinationChangedListener</code>を実装すれば良いことが分かります。</p>
 <p>例えば、タイトルの一番最後に動的に文字を追加したい場合は、次のようにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">var</span> suffix = <span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#75715e">// この値は動的に変わるものとする
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">var</span> suffix = <span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#75715e">// この値は動的に変わるものとする
 </span><span style="color:#75715e"></span>
 navController.addOnDestinationChangedListener { _, _, _ <span style="color:#f92672">-&gt;</span>
     <span style="color:#75715e">// ここで文字を追加してあげる

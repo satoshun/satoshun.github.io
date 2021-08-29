@@ -96,7 +96,7 @@
     
     <p>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。</p>
 <p>この記事のソースコードは全て、下記のライセンスに従います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">/*
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">/*
  * Copyright 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
@@ -114,7 +114,7 @@
 </code></pre></div><h2 id="まずsavedstate本体のコード">まずsavedstate本体のコード</h2>
 <p>主な登場クラスは以下です。</p>
 <h3 id="savedstateregistrysavedstateprovider">SavedStateRegistry.SavedStateProvider</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * This interface marks a component that contributes to saved state.
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SavedStateProvider</span> <span style="color:#f92672">{</span>
@@ -129,7 +129,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>onSaveInstanceState</code>のタイミングでコールされ、<code>outState</code>に追加で、保存したい値をBundle型で返却します。</p>
 <h3 id="savedstateregistry">SavedStateRegistry</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * An interface for plugging components that consumes and contributes to the saved state.
 </span><span style="color:#75715e"> *
 </span><span style="color:#75715e"> * &lt;p&gt;This objects lifetime is bound to the lifecycle of owning component: when activity or
@@ -148,7 +148,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>先程のSavedStateProviderを<code>registerSavedStateProvider</code>メソッドを通して集約し、<code>performRestore</code>、<code>performSave</code>によって、savedStateから読み込み、outStateに保存します。</p>
 <h3 id="savedstateregistryowner">SavedStateRegistryOwner</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * A scope that owns {@link SavedStateRegistry}
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SavedStateRegistryOwner</span> <span style="color:#66d9ef">extends</span> LifecycleOwner <span style="color:#f92672">{</span>
@@ -162,7 +162,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>SavedStateRegistryOwnerは先程の<code>SavedStateRegistry</code>のOwnerになります。これは、<code>ComponentActivity</code>や<code>Fragment</code>が実装しています。LifecycleOwner、Lifecycleのような実装です。</p>
 <h3 id="savedstateregistrycontroller">SavedStateRegistryController</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * An API for {@link SavedStateRegistryOwner} implementations to control {@link SavedStateRegistry}.
 </span><span style="color:#75715e"> * &lt;p&gt;
 </span><span style="color:#75715e"> * {@code SavedStateRegistryOwner} should call {@link #performRestore(Bundle)} to restore state of
@@ -183,7 +183,7 @@
 <h3 id="1-viewmodelを生成する">1. ViewModelを生成する</h3>
 <p>ViewModelとSavedStateを一緒に扱い時は、<code>SavedStateVMFactory</code>を使います。
 これは、ViewModelインスタンスに<code>SavedStateHandle</code>インスタンスを渡すために必要なFactoryです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> vm = ViewModelProvider(<span style="color:#66d9ef">this</span>, SavedStateVMFactory(<span style="color:#66d9ef">this</span>))
     .<span style="color:#66d9ef">get</span>(MyViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </code></pre></div><p>こう書くことで、MyViewModelで<code>SavedStateHandle</code>を受け取ることが出来ます。</p>
@@ -198,7 +198,7 @@
 <li><code>SavedStateRegistry</code>に、SavedStateHandleで保持しているSavedStateProviderを登録する</li>
 </ul>
 <h3 id="2-componentactivityonsaveinstancestate">2. <code>ComponentActivity#onSaveInstanceState</code></h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ComponentActivity</span> <span style="color:#f92672">...</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ComponentActivity</span> <span style="color:#f92672">...</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> SavedStateRegistryController mSavedStateRegistryController <span style="color:#f92672">=</span>
             SavedStateRegistryController<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
 
@@ -209,7 +209,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>まずは、SavedStateRegistryControllerに、<code>outState</code>に保存を頼みます。</p>
 <h3 id="3-savedstateregistrycontrollerperformsave">3. <code>SavedStateRegistryController#performSave</code></h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistryController</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistryController</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> SavedStateRegistry mRegistry<span style="color:#f92672">;</span>
 
     <span style="color:#f92672">...</span>
@@ -220,7 +220,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>SavedStateRegistry</code>に処理を委譲します。</p>
 <h3 id="4-savedstateregistryperformsave">4. <code>SavedStateRegistry#performSave</code></h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistry</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateRegistry</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> SafeIterableMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> SavedStateProvider<span style="color:#f92672">&gt;</span> mComponents <span style="color:#f92672">=</span>
             <span style="color:#66d9ef">new</span> SafeIterableMap<span style="color:#f92672">&lt;&gt;();</span>
     <span style="color:#66d9ef">private</span> Bundle mRestoredState<span style="color:#f92672">;</span>
@@ -244,7 +244,7 @@
 <h3 id="5-savedstatehandleのsavedstateproviderの実装">5. SavedStateHandleの<code>SavedStateProvider</code>の実装</h3>
 <p>実際に保存される内容を決めるのはSavedStateHandleのSavedStateProviderの実装/中身になります。</p>
 <p>実装は次のようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> mRegular<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> mRegular<span style="color:#f92672">;</span>
 
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String VALUES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;values&#34;</span><span style="color:#f92672">;</span>
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String KEYS <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;keys&#34;</span><span style="color:#f92672">;</span>

@@ -108,7 +108,7 @@ Web APIとは何か
 <h2 id="レスポンスデータの設計">レスポンスデータの設計</h2>
 <p>一般的にWEBブラウザに対して返すレスポンスデータはHTMLですが, APIに対してはJSON, XMLが主流です(他にも多々あります). 大きなブレイクするーが無い限りは, JSONに対応しておけば問題無いと思います.
 具体的なレスポンスデータの中身なのですが, 出来る限りシンプルにかつ, クライアントが求めているであろうデータを返すようにします. バックグラウンド側(DBの設計など)を, レスポンスデータに反映させるのではなくて, あくまでクライアントが使いやすい形に整形してあげます. 例えば, GET http://localhost/users/2 は, ユーザIDが2のユーザ情報を取得することが期待されますが, このサービスが, ブログシステムだとすると, このユーザが投稿したブログのリストも一緒に返してあげれば使いやすいのではないかと推測できます(あくまで例です).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
     <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
     <span style="color:#f92672">&#34;blogs&#34;</span>: [
@@ -119,7 +119,7 @@ Web APIとは何か
     ]
 }
 </code></pre></div><p>しかし, データが大きくなると負荷が大きくなってしまうのでやりすぎには注意が必要です. また, データ構造は出来る限りシンプルにしたほうが望ましいと思います. 上記のJSONの例で言うと, 下のような設計にすることも考えられます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#f92672">&#34;user&#34;</span>: {
         <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
         <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,

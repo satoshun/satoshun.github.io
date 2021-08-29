@@ -93,14 +93,14 @@ $ …">
     
     <p>サクッとローカルにサーバを立てるためのコマンドを紹介します.
 Python2系が入っていれば, 下記コマンドでローカルにサーバを立てることが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python -m CGIHTTPServer
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python -m CGIHTTPServer
 Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">8000</span> ...
 </code></pre></div><p>ブラウザで, <code>http://localhost:8000</code>にアクセス出来るようになりました.</p>
 <p>ちょっとコマンドが長いので, 僕は, 上記コマンドをaliasに登録しています.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">alias ser<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;python -m CGIHTTPServer&#39;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">alias ser<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;python -m CGIHTTPServer&#39;</span>
 </code></pre></div><p>これで, <code>ser</code>でサーバが立つようになりました.</p>
 <p>ちなみに, デフォルトではポート8000でサーバが立つのですが, 指定することも出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ser <span style="color:#ae81ff">10000</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ser <span style="color:#ae81ff">10000</span>
 Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">10000</span> ...
 </code></pre></div><p>これで, いつでも簡単に<code>ser</code>でローカルにサーバを立てることが出来るようになりました.</p>
 

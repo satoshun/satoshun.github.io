@@ -94,16 +94,16 @@ Sublime Textのプロジェクトをterminalで管理するためのコマンド
 <p>結構便利だと思うので，使ってくれたら嬉しいです． <a href="https://github.com/satoshun/subpro">https://github.com/satoshun/subpro</a></p>
 <h3 id="インストール">インストール</h3>
 <p>homebrewでインストール出来ます．</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew tap satoshun/commands
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew tap satoshun/commands
 $ brew install subpro
 $ brew install subpro-completion
 </code></pre></div><p>.bashrcに下のコードを追加してください．</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">`</span>brew --prefix<span style="color:#e6db74">`</span>/etc/bash_completion.d/subpro_completion <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">`</span>brew --prefix<span style="color:#e6db74">`</span>/etc/bash_completion.d/subpro_completion <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
     source <span style="color:#e6db74">`</span>brew --prefix<span style="color:#e6db74">`</span>/etc/bash_completion.d/subpro_completion
 <span style="color:#66d9ef">fi</span>
 </code></pre></div><h3 id="使い方">使い方</h3>
 <h4 id="プロジェクト作成">プロジェクト作成</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
 subpro create <span style="color:#f92672">[</span>group<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>プロジェクトのディレクトリ<span style="color:#f92672">]</span>
 
 <span style="color:#75715e"># 例</span>
@@ -112,20 +112,20 @@ martini
 $ subpro create golang martini
 <span style="color:#75715e">## create martini project into golang directory and open project.</span>
 </code></pre></div><h4 id="作成したプロジェクトを開く">作成したプロジェクトを開く</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
 subpro <span style="color:#f92672">[</span>プロジェクト名<span style="color:#f92672">]</span>
 
 <span style="color:#75715e"># 例</span>
 $ subpro martini
 <span style="color:#75715e">## open martini project with sublime text</span>
 </code></pre></div><h4 id="プロジェクト一覧">プロジェクト一覧</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 例</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 例</span>
 $ subpro <span style="color:#f92672">[</span>tab<span style="color:#f92672">]</span>
 Display all <span style="color:#ae81ff">131</span> possibilities? <span style="color:#f92672">(</span>y or n<span style="color:#f92672">)</span>
 Amalgam                                 beaker                                  ghost                                   roboguice
 Android-Universal-Image-Loader          bitcoin                                 gist_css                                routes
 </code></pre></div><h4 id="プロジェクトを削除">プロジェクトを削除</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 基本構文</span>
 subpro delete <span style="color:#f92672">[</span>プロジェクト名<span style="color:#f92672">]</span>
 
 <span style="color:#75715e"># 例</span>

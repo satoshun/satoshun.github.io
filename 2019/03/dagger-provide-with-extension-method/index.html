@@ -94,7 +94,7 @@ class MainActivityModule { …">
     
     <p>Dagger2のちょっとしたtipsです。</p>
 <p>次の2つのメソッドは同じ振る舞いをします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
   <span style="color:#75715e">// 普通の書き方
 </span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainContractView</span>(activity: MainActivity): MainContract.View {
@@ -107,7 +107,7 @@ class MainActivityModule { …">
   }
 }
 </code></pre></div><p>なぜなら、拡張関数はコンパイルされると次のように解釈されるためです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">...</span>
    <span style="color:#a6e22e">@Provides</span>
    <span style="color:#a6e22e">@NotNull</span>
    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> MainContract<span style="color:#f92672">.</span><span style="color:#a6e22e">View</span> <span style="color:#a6e22e">provideMainContractView</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NotNull</span> MainActivity $receiver<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>

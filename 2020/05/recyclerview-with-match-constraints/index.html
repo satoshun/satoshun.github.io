@@ -94,7 +94,7 @@
     
     <p>備忘録です。</p>
 <p>次のようなレイアウトは良くないぞという話です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span><span style="color:#f92672">&gt;</span>
 
@@ -111,7 +111,7 @@
 <h2 id="どんな挙動をするか">どんな挙動をするか?</h2>
 <p>このレイアウトはファーストビューのタイミングで、<strong>すべてのアイテム</strong>をバインドしようとします。</p>
 <p>例えば500個のRecyclerViewアイテムがあったときに、画面に収まるかどうかに関わらず500個のバインドが走ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(recycler) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(recycler) {
   <span style="color:#75715e">// 横方向のLinearLayoutManager
 </span><span style="color:#75715e"></span>  layoutManager = LinearLayoutManager(
     <span style="color:#66d9ef">this</span><span style="color:#a6e22e">@ConstraintMatchConstraintsActivity</span>,
@@ -134,14 +134,14 @@
 </code></pre></div><p>500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</p>
 <h2 id="なんでか">なんでか?</h2>
 <p>LinearLayoutManagerでは、内部で<code>mInfinite</code> っていうフィールドを持っていて、これは次の関数によって生成されます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">resolveIsInfinite</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">resolveIsInfinite</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">return</span> mOrientationHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getMode</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> View<span style="color:#f92672">.</span><span style="color:#a6e22e">MeasureSpec</span><span style="color:#f92672">.</span><span style="color:#a6e22e">UNSPECIFIED</span>
       <span style="color:#f92672">&amp;&amp;</span> mOrientationHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getEnd</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">;</span>
   <span style="color:#f92672">}</span>
 </code></pre></div><p>細かいところまで追えてないのですが、今回のレイアウトの場合、上記の関数がtrueを返していました。</p>
 <p>この値がtrueだと、どういうことが起こるかっていうと、RecyclerViewにアイテムを詰めるタイミングで一気に全部アイテムを詰めようと試みます。
 具体的には、次のコードになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">(</span>RecyclerView<span style="color:#f92672">.</span><span style="color:#a6e22e">Recycler</span> recycler<span style="color:#f92672">,</span> LayoutState layoutState<span style="color:#f92672">,</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">(</span>RecyclerView<span style="color:#f92672">.</span><span style="color:#a6e22e">Recycler</span> recycler<span style="color:#f92672">,</span> LayoutState layoutState<span style="color:#f92672">,</span>
     RecyclerView<span style="color:#f92672">.</span><span style="color:#a6e22e">State</span> state<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> stopOnFocusable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
   <span style="color:#f92672">...</span>
   <span style="color:#75715e">// mInfintieがtrueなので、このwhileが最後まで行くことが可能になる
@@ -157,7 +157,7 @@
 <li>ConstraintLayoutをRecyclerViewの親にしない</li>
 <li>wrap_contentを使う</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span><span style="color:#f92672">&gt;</span>
 
@@ -171,7 +171,7 @@
 </code></pre></div><ol start="3">
 <li>match_parentを使う</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span><span style="color:#f92672">&gt;</span>
 

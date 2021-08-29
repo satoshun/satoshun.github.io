@@ -96,7 +96,7 @@
     <p><a href="https://github.com/google/dagger/releases/tag/dagger-2.27">Dagger 2.27でエラーメッセージ</a>の改善が入っていたので、軽く試してみました。試してみた系の記事になります。</p>
 <h2 id="まず有効にする">まず有効にする</h2>
 <p>この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">allprojects <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">allprojects <span style="color:#f92672">{</span>
   afterEvaluate <span style="color:#f92672">{</span>
     extensions<span style="color:#f92672">.</span><span style="color:#a6e22e">findByName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;kapt&#34;</span><span style="color:#f92672">)?.</span><span style="color:#a6e22e">arguments</span> <span style="color:#f92672">{</span>
       arg<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dagger.experimentalDaggerErrorMessages&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;enabled&#34;</span><span style="color:#f92672">)</span>
@@ -105,7 +105,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="適当にエラーを出してみる">適当にエラーを出してみる</h2>
 <p>まずは、Providesの指定を外してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// @Provides &lt;-- エラーを出したいのでコメントアウト
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// @Provides &lt;-- エラーを出したいのでコメントアウト
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
 <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> testObject: TestObject
@@ -120,7 +120,7 @@
 </a></p>
 <hr>
 <p>次に、複数Providesの指定をしてみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Provides</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Provides</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideTestObject</span>(): TestObject = TestObject()
 
 <span style="color:#a6e22e">@Provides</span>

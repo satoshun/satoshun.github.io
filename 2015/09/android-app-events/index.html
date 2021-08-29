@@ -115,7 +115,7 @@ HTTPを介してイベントのデー …">
 <p>connpass, Atnd, Zusaarの3つのAPIを使うことにしました. <a href="http://square.github.io/retrofit/">Retrofit</a>でAPIを定義し,
 JSONのパースには<a href="https://github.com/google/gson">Gson</a>, データの処理には<a href="https://github.com/ReactiveX/RxJava">RxJava</a>を使いました.</p>
 <p>例えば, connpass APIは以下のように定義しました.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/** Get data from Conpass  */</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/** Get data from Conpass  */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Connpass</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/v1/event&#34;</span><span style="color:#f92672">)</span>
     Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>
@@ -131,7 +131,7 @@ Retrofitを使うと, このようにinterfaceとして, APIを定義するこ�
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10</a>)</p>
 <p>次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
 今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>
   connpass<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()),</span>
   atnd<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()),</span>
   zusaar<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()))</span>
@@ -144,7 +144,7 @@ AngularJSのデータバインディングをイメージして貰えると良�
 書くコード量が減り, とても便利なライブラリでした. (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml</a>)</p>
 <p>また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
 ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventAdapter</span> <span style="color:#66d9ef">extends</span> BaseAdapter <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventAdapter</span> <span style="color:#66d9ef">extends</span> BaseAdapter <span style="color:#f92672">{</span>
     <span style="color:#75715e">/*
 </span><span style="color:#75715e">      .. ....
 </span><span style="color:#75715e">     */</span>

@@ -100,18 +100,18 @@ SavedStateを使う場合、ViewModel …">
     <p>ViewModel + SavedStateでDaggerを使う方法を考えてみました。</p>
 <h2 id="前提知識課題">前提知識・課題</h2>
 <p>SavedStateを使う場合、ViewModelに<code>SavedStateHandle</code>インスタンスを渡さなければいけません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle
 ) : ViewModel() {
     <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>SavedStateHandleインスタンスを作るために、<code>SavedStateVMFactory</code>もしくは、<code>AbstractSavedStateVMFactory</code>を使う必要があります。</p>
 <p>生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// thisはFragmentActivity
 </span><span style="color:#75715e"></span>ViewModelProvider(<span style="color:#66d9ef">this</span>, MyViewModel(<span style="color:#66d9ef">this</span>))
   .<span style="color:#66d9ef">get</span>(MyViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </code></pre></div><p>コンストラクタの引数がSavedStateHandle以外にもあるなら、<code>AbstractSavedStateVMFactory</code>を拡張します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestViewModel</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestViewModel</span>(
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle,
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> name: String
 ) : ViewModel()
@@ -137,7 +137,7 @@ SavedStateを使う場合、ViewModel …">
 <h2 id="daggerでどのように使うか">Daggerでどのように使うか?</h2>
 <p>以下いろいろと書いていきます。クラス名は適当です。また、このサンプルはFragmentActivity + 初期値がintent.extras固定となります。Fragmentの場合はFragmentに置き換える必要があります</p>
 <h3 id="1-abstractsavedstatevmfactoryを生成するクラスを定義する">1. AbstractSavedStateVMFactoryを生成するクラスを定義する</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateViewModel2</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateViewModel2</span>(
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> dummy: Dummy,
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle
 ) : ViewModel() {
@@ -165,7 +165,7 @@ SavedStateを使う場合、ViewModel …">
 }
 </code></pre></div><p>一番シンプルな方法だと思います。<code>AbstractSavedStateVMFactory</code>を作るためのFactory（FactoryのFactory）を作り、それに<code>@Inject</code>をつけます。</p>
 <h3 id="2-1の方法に加えfragmentactivityをbinds-or-providesする">2. 1の方法に加え、FragmentActivityをBinds or Providesする</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Binds</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Binds</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fragmentActivity</span>(activity: MainActivity): FragmentActivity
 
 or
@@ -203,7 +203,7 @@ or
 </code></pre></div><p>FragmentActivityがInject可能になったので直接AbstractSavedStateVMFactoryが生成可能になりました😃</p>
 <h3 id="3-assistedinjectを使う">3. AssistedInjectを使う</h3>
 <p>SavedStateHandleがDaggerで解決しにくい値なので、<a href="https://github.com/square/AssistedInject">square/AssistedInject</a>を使うことで解決を試みます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateViewModel3</span> <span style="color:#a6e22e">@AssistedInject</span> <span style="color:#66d9ef">constructor</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SavedStateViewModel3</span> <span style="color:#a6e22e">@AssistedInject</span> <span style="color:#66d9ef">constructor</span>(
   <span style="color:#a6e22e">@Assisted</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle,
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> dummy: Dummy
 ) : ViewModel() {
@@ -251,7 +251,7 @@ or
 </code></pre></div><p>こんな感じになります。FragmentActivityをInject可能にすれば、もう少しいい感じに書けると思います。最終的なコード量は1、2のパターンに比べかなり減ると思います。</p>
 <h3 id="4-assistedinject--multibindsを使う">4. AssistedInject + multibindsを使う</h3>
 <p>DaggerでViewModelのインスタンスを生成するときに、multibindsを使うパターンがよく使われているので、SavedStateの場合も考えてみました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@MustBeDocumented</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@MustBeDocumented</span>
 <span style="color:#a6e22e">@Target</span>(
   AnnotationTarget.FUNCTION,
   AnnotationTarget.PROPERTY_GETTER

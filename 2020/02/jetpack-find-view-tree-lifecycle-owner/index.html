@@ -97,7 +97,7 @@
 SNAPSHOTの使い方は、<a href="http://rahulrav.com/blog/using_snapshot_builds.html">Using AndroidX Snapshot Builds</a>を参考にしました。</p>
 <h2 id="使い方">使い方</h2>
 <p>関数の定義と使い方になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 関数の定義
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 関数の定義
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.findViewTreeLifecycleOwner(): LifecycleOwner?
 
 
@@ -112,7 +112,7 @@ SNAPSHOTの使い方は、<a href="http://rahulrav.com/blog/using_snapshot_build
 Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。</p>
 <h2 id="内部実装">内部実装</h2>
 <p>シンプルな作りになっており、ViewのタグにActivityやFragmentのLifecycleOwnerを登録しています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewTreeLifecycleOwner</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewTreeLifecycleOwner</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> LifecycleOwner lifecycleOwner<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     view<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">view_tree_lifecycle_owner</span><span style="color:#f92672">,</span> lifecycleOwner<span style="color:#f92672">);</span>
   <span style="color:#f92672">}</span>
@@ -127,7 +127,7 @@ Fragmentのライフサイクルが取得出来るので、適切なライフサ
 具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。</p>
 <p>ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。
 現状だと、AppCompatActivityの継承の場合は手動でLifecycleOwnerを登録する必要があります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
   <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
   <span style="color:#f92672">..</span>.
   ViewTreeLifecycleOwner.<span style="color:#66d9ef">set</span>(window.decorView, <span style="color:#66d9ef">this</span>)

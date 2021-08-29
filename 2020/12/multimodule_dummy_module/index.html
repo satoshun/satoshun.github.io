@@ -101,11 +101,11 @@
 <h2 id="dummyモジュールとは">dummyモジュールとは</h2>
 <p>例えば、注文を行うorderモジュールがあるとします。今回の開発では、その注文画面は使う必要がないとします。使う必要がないので、orderモジュールは一時的に削除しても良いことになります。しかし、単純にモジュールを削除してしまうと、何かしらの参照エラーになってしまうので、order-dummyモジュールを作り、参照エラーになるクラスを実装します。具体的には、orderモジュールで定義されているpublicなクラス、インターフェースです。</p>
 <p>今回、orderモジュールには唯一Orderクラスのみがpublicとして定義されているとすると、次のように書きます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">canOrder</span>(): Boolean { <span style="color:#f92672">..</span>. }
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">order</span>() { <span style="color:#f92672">..</span>. }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">canOrder</span>(): Boolean { TODO(<span style="color:#e6db74">&#34;dummy&#34;</span>) }
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">order</span>() { TODO(<span style="color:#e6db74">&#34;dummy&#34;</span>) }
 }
@@ -113,7 +113,7 @@
 <h2 id="どのようにモジュールを切り替えるか">どのようにモジュールを切り替えるか?</h2>
 <p>settings.gradleとGradleプロパティを用います。</p>
 <p>まず、settings.gradleは次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>properties<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;dummyorder&#34;</span><span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>properties<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;dummyorder&#34;</span><span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
   include <span style="color:#e6db74">&#34;order&#34;</span>
   project<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;:order&#39;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">projectDir</span> <span style="color:#f92672">=</span> file<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;dummyorder&#39;</span><span style="color:#f92672">)</span>
 <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>

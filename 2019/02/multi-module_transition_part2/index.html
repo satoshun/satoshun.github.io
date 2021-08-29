@@ -110,13 +110,13 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 <h2 id="featureモジュール側の遷移用インターフェースの定義">featureモジュール側の遷移用インターフェースの定義</h2>
 <p>前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。</p>
 <p>main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
   <span style="color:#75715e">// sub1画面へ移動する
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>()
 }
 </code></pre></div><p>Mainモジュール用のインターフェースなので、<code>MainModuleRouter</code>という名前にし、sub1画面へ遷移するためのメソッドを定義しています。</p>
 <p>そしてこのインターフェースを、MainFragmentで使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
   <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> moduleRouter: MainModuleRouter
 
   <span style="color:#f92672">..</span>.
@@ -133,7 +133,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 <p>次にこのインターフェースの実装をします。</p>
 <h2 id="routerモジュール側の遷移用インターフェースの実装">routerモジュール側の遷移用インターフェースの実装</h2>
 <p>今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
   <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_graph&#34;</span>
   <span style="color:#a6e22e">app:startDestination=</span><span style="color:#e6db74">&#34;@id/nav_main_frag&#34;</span><span style="color:#f92672">&gt;</span>
@@ -150,7 +150,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
   ...
 <span style="color:#f92672">&lt;/navigation&gt;</span>
 </code></pre></div><p>そして、これを用いて遷移用インターフェースを実装します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainModuleRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainModuleRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> controller: NavController
 ) : MainModuleRouter {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>() {

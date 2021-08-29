@@ -99,7 +99,7 @@
 <h2 id="例">例</h2>
 <p>例があった方が分かり易いので, 簡単なサンプルプログラムです.</p>
 <p>まずは, Null Objectを使わない場合になります.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
     <span style="color:#66d9ef">def</span> __init__(self, id):
         self<span style="color:#f92672">.</span>id <span style="color:#f92672">=</span> id
 
@@ -120,7 +120,7 @@ student <span style="color:#f92672">=</span> Student<span style="color:#f92672">
     print(<span style="color:#e6db74">&#39;not student&#39;</span>)
 
 </code></pre></div><p>次にNull objectパターンを使い, <code>if student is not None:</code> を除去します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
     <span style="color:#66d9ef">def</span> __init__(self, id):
         self<span style="color:#f92672">.</span>id <span style="color:#f92672">=</span> id
 
@@ -151,7 +151,7 @@ student <span style="color:#f92672">=</span> Student<span style="color:#f92672">
     student<span style="color:#f92672">.</span>show()
 </code></pre></div><p>NullStudentクラスを定義し, <code>is_null</code>メソッドでTrueを返すようにすることで, Nullの処理を委譲しまう.</p>
 <p>しかし, これだけだと旨味が少ないので, ポリモーフィズムを使ってさらに書き換えてみます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(object):
     <span style="color:#66d9ef">def</span> __init__(self, id):
         self<span style="color:#f92672">.</span>id <span style="color:#f92672">=</span> id
 

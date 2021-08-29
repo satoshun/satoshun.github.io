@@ -93,37 +93,37 @@
 <h3 id="kotlin本体">Kotlin本体</h3>
 <p><a href="https://github.com/JetBrains/kotlin">https://github.com/JetBrains/kotlin</a></p>
 <p>KotlinではPair、ビット演算などで使われています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public infix fun &lt;A, B&gt; A.to(that: B): Pair&lt;A, B&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public infix fun &lt;A, B&gt; A.to(that: B): Pair&lt;A, B&gt;
 </span><span style="color:#75715e"></span>
 <span style="color:#ae81ff">10</span> to <span style="color:#e6db74">&#34;hoge&#34;</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public inline infix fun Byte.and(other: Byte): Byte
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public inline infix fun Byte.and(other: Byte): Byte
 </span><span style="color:#75715e">// public inline infix fun Byte.or(other: Byte): Byte
 </span><span style="color:#75715e"></span>
 byte1 and byte2
 byte1 or byte2
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public inline infix fun CharSequence.matches(regex: Regex): Boolean
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public inline infix fun CharSequence.matches(regex: Regex): Boolean
 </span><span style="color:#75715e"></span>
 <span style="color:#e6db74">&#34;abc&#34;</span> matches Regex(<span style="color:#e6db74">&#34;&#34;</span>)
 </code></pre></div><h3 id="gradleスクリプト">Gradleスクリプト</h3>
 <p>今までのGroovyバージョンと書き心地を揃えるために、infixを使っています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun PluginDependencySpec.version(version: String?): PluginDependencySpec
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun PluginDependencySpec.version(version: String?): PluginDependencySpec
 </span><span style="color:#75715e"></span>
 plugins {
   id(<span style="color:#e6db74">&#34;com.jfrog.bintray&#34;</span>) version <span style="color:#e6db74">&#34;0.4.1&#34;</span>
 }
 </code></pre></div><h3 id="kotlinxcoroutine">kotlinx.coroutine</h3>
 <p><a href="https://github.com/Kotlin/kotlinx.coroutines">https://github.com/Kotlin/kotlinx.coroutines</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public infix fun &lt;E, R&gt; ReceiveChannel&lt;E&gt;.zip(other: ReceiveChannel&lt;R&gt;): ReceiveChannel&lt;Pair&lt;E, R&gt;&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// public infix fun &lt;E, R&gt; ReceiveChannel&lt;E&gt;.zip(other: ReceiveChannel&lt;R&gt;): ReceiveChannel&lt;Pair&lt;E, R&gt;&gt;
 </span><span style="color:#75715e"></span>
 channel1 zip channel2
 </code></pre></div><h3 id="koin">koin</h3>
 <p><a href="https://github.com/InsertKoinIO/koin">https://github.com/InsertKoinIO/koin</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun &lt;T&gt; BeanDefinition&lt;T&gt;.bind(clazz: KClass&lt;*&gt;): BeanDefinition&lt;T&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun &lt;T&gt; BeanDefinition&lt;T&gt;.bind(clazz: KClass&lt;*&gt;): BeanDefinition&lt;T&gt;
 </span><span style="color:#75715e"></span>
 single&lt;Context&gt; { androidContext } bind Application<span style="color:#f92672">::</span>classe
 </code></pre></div><h3 id="mockk">mockk</h3>
 <p><a href="https://mockk.io/">https://mockk.io/</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun Any.invoke(name: String)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun Any.invoke(name: String)
 </span><span style="color:#75715e">// infix fun withArguments(args: List&lt;Any?&gt;)
 </span><span style="color:#75715e">// infix fun andThen(returnValue: T)
 </span><span style="color:#75715e"></span>
@@ -131,7 +131,7 @@ verify { mock invoke <span style="color:#e6db74">&#34;fn&#34;</span> withArgumen
 every { doIt() } returns <span style="color:#ae81ff">6</span> andThen <span style="color:#ae81ff">7</span>
 </code></pre></div><h3 id="kotest">kotest</h3>
 <p><a href="https://github.com/kotest/kotest">https://github.com/kotest/kotest</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun String?.shouldNotHaveLength(length: Int): String?
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// infix fun String?.shouldNotHaveLength(length: Int): String?
 </span><span style="color:#75715e">// infix fun String?.shouldHaveMinLength(length: Int): String?
 </span><span style="color:#75715e"></span>
 <span style="color:#e6db74">&#34;hello&#34;</span> shouldNotHaveLength <span style="color:#ae81ff">3</span>

@@ -96,7 +96,7 @@
 <h2 id="単一のpermissonを要求する">単一のPermissonを要求する</h2>
 <p>新しく追加された <code>registerForActivityResult</code> 拡張関数に、<code>ActivityResultContracts.RequestPermission()</code>を指定することで、単一のPermissionを要求することが出来ます。</p>
 <p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>が欲しい時は、次のように書くことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity() {
 
   <span style="color:#75715e">// 定義側
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestLocation = registerForActivityResult(
@@ -115,7 +115,7 @@
 </code></pre></div><h2 id="複数のpermissonを要求する">複数のPermissonを要求する</h2>
 <p>複数の場合は、<code>ActivityResultContracts.RequestMultiplePermissions()</code>を指定します。</p>
 <p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>、<code>android.permission.READ_EXTERNAL_STORAGE</code>が欲しい時は、次のように書くことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity(R.layout.app_act) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity(R.layout.app_act) {
   <span style="color:#75715e">// 定義側
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestPermissions = registerForActivityResult(
     ActivityResultContracts.RequestMultiplePermissions(),

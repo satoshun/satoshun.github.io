@@ -116,7 +116,7 @@
 <p>Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.</p>
 <p>やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.</p>
 <p>Makefile</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">get</span><span style="color:#f92672">:</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">get</span><span style="color:#f92672">:</span>
   go get -v
 
 <span style="color:#a6e22e">build-amd64</span><span style="color:#f92672">:</span> get
@@ -143,7 +143,7 @@
   sudo: yes
   supervisorctl: name={{ project_name }} state=restarted
 </code></pre><p>ちなみに, supervisor confファイルは以下のようにしています.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#66d9ef">[program:{{ project_name }}]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#66d9ef">[program:{{ project_name }}]</span>
 <span style="color:#a6e22e">user</span><span style="color:#f92672">=</span><span style="color:#e6db74">{{ user }}</span>
 <span style="color:#a6e22e">command</span><span style="color:#f92672">=</span><span style="color:#e6db74">{{ go_bin }}/{{ project_name }}</span>
 <span style="color:#a6e22e">autostart</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
@@ -159,7 +159,7 @@
 <h3 id="a-namecaution1a注意1"><a name="caution1"></a>注意1</h3>
 <p>HomebrewでGoをクロスプラットフォームにビルド出来るようにするには,
 &ndash;cross-compile-allオプションを付けてあげます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install go --cross-compile-all
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install go --cross-compile-all
 </code></pre></div>
     <div class="mt30"></div>
     

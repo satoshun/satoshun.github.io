@@ -94,17 +94,17 @@ class MainViewModel {
     <span class="post-date">Updated at Sun, Dec 2, 2018</span>
     
     <p>LiveDataの値を更新したい時、<code>MutableLiveData</code>を使うのが一般的だと思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> {
     <span style="color:#66d9ef">val</span> hoge = MutableLiveData&lt;Int&gt;()
 }
 </code></pre></div><p>この書き方だと、外のクラスから値を更新することが可能です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> viewModel = MainViewModel()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> viewModel = MainViewModel()
 
 <span style="color:#75715e">// ok
 </span><span style="color:#75715e"></span>viewModel.hoge.postValue(<span style="color:#ae81ff">10000</span>)
 </code></pre></div><p>外のクラスからは更新出来ないようにするためには<code>LiveData</code>に型変換する必要があります。</p>
 <p>例えば次のように書きます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> _hoge = MutableLiveData&lt;Int&gt;()
     <span style="color:#66d9ef">val</span> hoge: LiveData&lt;Int&gt; = _hoge <span style="color:#75715e">// ここでLiveDataに型変換
 </span><span style="color:#75715e"></span>}
@@ -113,7 +113,7 @@ class MainViewModel {
 なので、それの解決策を以下で紹介します。</p>
 <h2 id="その1">その1</h2>
 <p>まずコードをのせます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel2</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel2</span> {
   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(value: T) {
     postValue(value)
   }
@@ -122,7 +122,7 @@ class MainViewModel {
     setValue(value)
   }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ViewModel2と同じパッケージに定義
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// ViewModel2と同じパッケージに定義
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModelLiveData2</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">extends</span> LiveData<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
   <span style="color:#a6e22e">@Override</span>
   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postValue</span><span style="color:#f92672">(</span>T value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -135,7 +135,7 @@ class MainViewModel {
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>が定義になります。次に使い方です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel2</span> : ViewModel2() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel2</span> : ViewModel2() {
   <span style="color:#66d9ef">val</span> userName = ViewModelLiveData2&lt;String&gt;()
 
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
@@ -161,7 +161,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <p>protectedメソッドが同一パッケージ内からアクセスすることが出来ることを利用したコードになります。</p>
 <h2 id="その2">その2</h2>
 <p>こちらもまずコードをのせます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel3</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel3</span> {
   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(value: T) {
     internalPostValue(value)
   }
@@ -170,7 +170,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
     internalSetValue(value)
   }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt; : LiveData&lt;T&gt;() {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt; : LiveData&lt;T&gt;() {
   <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">internalPostValue</span>(value: T) {
     postValue(value)
   }
@@ -180,7 +180,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
   }
 }
 </code></pre></div><p>が定義になります。次に使い方です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel3</span> : ViewModel3() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel3</span> : ViewModel3() {
   <span style="color:#66d9ef">val</span> userName = ViewModelLiveData3&lt;String&gt;()
 
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
@@ -204,7 +204,7 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <p><code>viewModel.userName.setValue(&quot;&quot;)</code>とクラス外からsetValueメソッドをコールしようとするとコンパイルエラーになります。</p>
 <h2 id="補足">補足</h2>
 <p>abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ViewModel2</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ViewModel2</span> {
   <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(value: T) {
     <span style="color:#66d9ef">this</span>.value = value
   }

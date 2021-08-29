@@ -104,7 +104,7 @@ Dagger AndroidはActivityごとに専用のSubcomponentが作 …">
 <h2 id="dagger-androidの生成コード">Dagger Androidの生成コード</h2>
 <p>Dagger Androidでは、<code>@ContributesAndroidInjector</code>を使うことで、ActivityのSubcomponentを自動生成してくれます。</p>
 <p>例えば、<code>MainActivity</code>を指定すると、次のようなコードが生成されます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Module</span><span style="color:#f92672">(</span>subcomponents <span style="color:#f92672">=</span> MainActivityModule_ContributeMainActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">MainActivitySubcomponent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Module</span><span style="color:#f92672">(</span>subcomponents <span style="color:#f92672">=</span> MainActivityModule_ContributeMainActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">MainActivitySubcomponent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule_ContributeMainActivity</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">MainActivityModule_ContributeMainActivity</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
 
@@ -117,13 +117,13 @@ Dagger AndroidはActivityごとに専用のSubcomponentが作 …">
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>このSubcomponentは、<code>MainActivity</code>専用に作られていることが分かります。<code>MainActivity</code>専用に作っているので、このSubcomponent配下では、MainActivityを直接injectすることが可能です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainCounter</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainActivity: MainActivity) {<span style="color:#f92672">..</span>.}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainCounter</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainActivity: MainActivity) {<span style="color:#f92672">..</span>.}
 </code></pre></div><p>このMainCounterを他のActivityに対してinjectしようとすると、エラーが出ます。これが、専用のSubcomponentをActivity毎に独立で作るメリットです。</p>
 <p>次に、Dagger Hiltを見てみます。</p>
 <h2 id="dagger-hiltの生成コード">Dagger Hiltの生成コード</h2>
 <p>Dagger Hiltでは、<code>@AndroidEntryPoint</code>を使うことで、ActivityのSubcomponentを自動生成してくれます。</p>
 <p>例えば、<code>MainActivity</code>と、<code>SubActivity</code>を指定すると、次のようなコードが生成されます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Subcomponent</span><span style="color:#f92672">(</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Subcomponent</span><span style="color:#f92672">(</span>
     modules <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
         FragmentCBuilderModule<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>
         ViewCBuilderModule<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>
@@ -149,10 +149,10 @@ Dagger AndroidはActivityごとに専用のSubcomponentが作 …">
 <p>ただ、Dagger Androidと比較したときに、1つのSubcomponentになったことで、<code>MainCounter</code>のようなクラスを作りにくくなりました。
 なぜなら、Subcomponentを共通化したことにより、<code>MainActivity</code>などの専用のActivityを直接inject出来ないためです。</p>
 <p>例えばDagger Hiltでは次のコードは違法です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 違法
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 違法
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainCounter</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainActivity: MainActivity) {<span style="color:#f92672">..</span>.}
 </code></pre></div><p>ただ、抜け道もあり、型変換を行うことで回避出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#a6e22e">@InstallIn</span>(ActivityComponent<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">MainActivityModule</span> {
   <span style="color:#a6e22e">@Provides</span>

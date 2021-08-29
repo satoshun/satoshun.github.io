@@ -103,7 +103,7 @@
 <p>また、サンプルコードは <a href="https://github.com/satoshun-android-example/Tests">satoshun-android-example/Tests</a>にあるので、参考してください😊</p>
 <h3 id="1-viewmodelstoreを使う">1. ViewModelStoreを使う</h3>
 <p><code>ViewModelProviders.of(activity).get(class)</code>からViewModelを取得したときに、取得したViewModelは<a href="https://developer.android.com/reference/androidx/lifecycle/ViewModelStore">ViewModelStore</a>にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseViewModelTest</span> {
   <span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> activityRule = ActivityTestRule(FragmentActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
@@ -117,7 +117,7 @@
 <h3 id="2-instrumentationcallactivityondestroyを使う">2. Instrumentation.callActivityOnDestroyを使う</h3>
 <p><code>Instrumentation</code>クラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。
 <code>Instrumentation</code>は<code>InstrumentationRegistry</code>クラスから取得することができ、次のように書くことで、<code>onDestroy</code>をコールすることができます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel 2`</span>() {
   <span style="color:#75715e">// onDestroyがコールされViewModelが開放される
 </span><span style="color:#75715e"></span>  InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity)
@@ -126,7 +126,7 @@
 <p><em>以下追記</em></p>
 <h3 id="3-activityscenarioを使う">3. ActivityScenarioを使う</h3>
 <p>新しく追加されたActivityScenarioを使うとよりすっきりと<code>onDestroy</code>を表現することが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`dispose a coroutine when finished lifecycle of ViewModel 3`</span>() {
   <span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(FragmentActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   <span style="color:#f92672">..</span>.

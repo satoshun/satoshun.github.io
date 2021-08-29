@@ -90,7 +90,7 @@
     
     <p>最近firebase ktxを使っていて、良い書き方だと思ったので紹介します。</p>
 <p>まず、firebase-ktxの一部コードを抜粋。より詳しいコードは <a href="https://github.com/firebase/firebase-android-sdk/blob/master/firebase-common/ktx/src/main/kotlin/com/google/firebase/ktx/Firebase.kt">firebase-common/Firebase.kt</a> を見てください。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">package</span> com.google.firebase.ktx
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">package</span> com.google.firebase.ktx
 
 <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Firebase</span>
 
@@ -100,7 +100,7 @@
 <span style="color:#f92672">..</span>.
 </code></pre></div><p>このコードは、トップに空の <code>object Firebase</code>を定義し、そこに <code>app</code> 拡張関数を生やしています。</p>
 <p>さらに、firebase-remoteconfig-ktx 等でも、<code>object Firebase</code> に対して、拡張関数を生やしています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">package</span> com.google.firebase.remoteconfig.ktx
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">package</span> com.google.firebase.remoteconfig.ktx
 
 <span style="color:#66d9ef">val</span> Firebase.remoteConfig: FirebaseRemoteConfig
     <span style="color:#66d9ef">get</span>() = FirebaseRemoteConfig.getInstance()

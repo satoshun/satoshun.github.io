@@ -97,7 +97,7 @@ Shadow DOMとは?
 <h2 id="shadow-domの誕生背景">Shadow DOMの誕生背景</h2>
 <p>なぜShadow DOMが出てきたかについて説明します.</p>
 <p>CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">hoge</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">hoge</span> {
   <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">30</span><span style="color:#66d9ef">px</span>;
 }
 </code></pre></div><p>と書くと, <code>hoge</code>をclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分で<code>hoge</code>クラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます.
@@ -105,7 +105,7 @@ Shadow DOMとは?
 <p>フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.</p>
 <h2 id="使い方">使い方</h2>
 <p>Shadow DOMを作るには<code>createShadowRoot</code>APIを使います. 以下, Shadow DOM版Hello Worldです.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;shadow&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;shadow&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
 
   &lt;<span style="color:#f92672">script</span>&gt;
   <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">insertShadow</span>() {
@@ -117,7 +117,7 @@ Shadow DOMとは?
   &lt;/<span style="color:#f92672">script</span>&gt;
 </code></pre></div><p>Shadow DOMが挿入され, Hello Worldと表示されます.</p>
 <p>上の例ではShadow DOMの良さが全く現れていないので, もう1つ例をあげます. Shadow DOMは, templateと組み合わせることでより強力に使うことが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hello1&#34;</span>&gt;Hello world1&lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hello1&#34;</span>&gt;Hello world1&lt;/<span style="color:#f92672">div</span>&gt;
   &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hello2&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
   &lt;<span style="color:#f92672">template</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;templateHello&#34;</span>&gt;
     <span style="color:#75715e">&lt;!-- ここのスタイルは, 外部に影響を与えない! --&gt;</span>

@@ -95,7 +95,7 @@ KMMでは、CocoaPodsプラグインを使うと、podspecファイルを …">
 <hr>
 <p>KMMでは、CocoaPodsプラグインを使うと、podspecファイルを生成してくれます。このpodfileはローカルでは動かすことが出来るんですが、Private Spec Repoにアップロードするには、これを編集する必要があります。</p>
 <p>以下、編集したところを載せます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">Pod</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Spec</span><span style="color:#f92672">.</span>new <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>spec<span style="color:#f92672">|</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">Pod</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Spec</span><span style="color:#f92672">.</span>new <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>spec<span style="color:#f92672">|</span>
     <span style="color:#f92672">...</span>
     spec<span style="color:#f92672">.</span>source                   <span style="color:#f92672">=</span> { <span style="color:#e6db74">:git</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;https://github.com/satoshun-android-example/KMMExternalSourceCocoapods.git&#34;</span>, <span style="color:#e6db74">:tag</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;0.0.2&#34;</span> }
     <span style="color:#f92672">...</span>

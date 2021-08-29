@@ -93,7 +93,7 @@
 <p>具体的には, <code>SwipeRefreshLayout</code>を使って実装します. 以下でコードで説明していきます.</p>
 <h2 id="xml側の記述">XML側の記述</h2>
 <p>ListViewに覆いかぶさるように定義します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;android.support.v4.widget.SwipeRefreshLayout</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;android.support.v4.widget.SwipeRefreshLayout</span>
     <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/refresh&#34;</span>
     <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
     <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span> <span style="color:#f92672">&gt;</span>
@@ -108,7 +108,7 @@
 <h2 id="activity側の記述">Activity側の記述</h2>
 <p>Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.</p>
 <p>実装例です. <code>setOnRefreshListener</code>でListenerを登録します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
 <span style="color:#66d9ef">private</span> SwipeRefreshLayout mSwipe<span style="color:#f92672">;</span>
 
 <span style="color:#a6e22e">@Override</span>
@@ -129,7 +129,7 @@
 <h2 id="アニメーションの色を変える">アニメーションの色を変える</h2>
 <p>上のバーに出てくるアニメーションの色を変えることが出来ます.</p>
 <p><code>setColorScheme</code>を使います.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setColorScheme</span><span style="color:#f92672">(</span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_blue_bright</span><span style="color:#f92672">,</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setColorScheme</span><span style="color:#f92672">(</span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_blue_bright</span><span style="color:#f92672">,</span>
     android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_green_light</span><span style="color:#f92672">,</span>
     android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_orange_light</span><span style="color:#f92672">,</span>
     android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_red_light</span><span style="color:#f92672">);</span>

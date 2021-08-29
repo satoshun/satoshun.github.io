@@ -97,7 +97,7 @@
 <h2 id="componentfactoryとは">Component.Factoryとは?</h2>
 <p>実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。</p>
 <p>例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Factoryを使う場合
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Factoryを使う場合
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
   <span style="color:#66d9ef">val</span> presenter: ArticlePresenter
@@ -140,7 +140,7 @@ Builderはセッターメソッドを使ってフィールドの状態を変え�
 <h2 id="ユースケース">ユースケース</h2>
 <p>次に、Factoryのユースケースを考えます。そもそもこの機能は <a href="https://github.com/google/dagger/issues/935">Feature request: factory method in components for assisted injection</a> を解決したいモチベーションがあります。</p>
 <p>例えば、次のコードをDaggerで解決したい。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticlePresenter</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ArticlePresenter</span> <span style="color:#f92672">{</span>
 	<span style="color:#f92672">...</span>
 	ArticlePresenter<span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> articleId<span style="color:#f92672">,</span> ArticleService articleService<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 		<span style="color:#f92672">...</span>
@@ -154,7 +154,7 @@ Builderはセッターメソッドを使ってフィールドの状態を変え�
 <p>のどちらかを使っていました。これに、今回のdagger.Factoryが加わりました。
 dagger.Factoryを使うと、このコードを解決することが出来ます！</p>
 <p>ただし、現状のdagger.Factoryだと多くのボイラープレートコードが必要です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
   <span style="color:#66d9ef">val</span> presenter: ArticlePresenter
 

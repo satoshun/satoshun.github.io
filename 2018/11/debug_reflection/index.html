@@ -104,12 +104,12 @@ moshi-codegenと同等の機能を提供してくれます。
 ただし、moshi-reflectionは内部でリフレクションを使っているため、実行時のパフォーマンスには優れていません。あくまでデバッグ用、という立ち位置だと思います。</p>
 <p>デバッグ時にmoshi-reflectionを使い、リリース時にmoshi-codegenを使うことで、ビルド速度と実効速度の天秤を勝ち取ることが出来ます。</p>
 <p>具体的には、デバッグ時、リリース時に<code>build.gradle</code>で指定するライブラリを、Moshiに登録するAdapterを変更します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// bulid.gradle
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// bulid.gradle
 </span><span style="color:#75715e"></span>
 implementation <span style="color:#e6db74">&#34;com.squareup.moshi:moshi:1.8.0&#34;</span>
 debugImplementation <span style="color:#e6db74">&#34;com.squareup.moshi:moshi-kotlin:1.8.0&#34;</span>
 kaptRelease <span style="color:#e6db74">&#34;com.squareup.moshi:moshi-kotlin-codegen:1.8.0&#34;</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// debug時
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// debug時
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createMoshiBuilder</span>() = Moshi.Builder()
     .add(KotlinJsonAdapterFactory()) <span style="color:#75715e">// KotlinJsonAdapterFactoryを指定する
 </span><span style="color:#75715e"></span>    .build()
@@ -126,7 +126,7 @@ Daggerリフレクションでは、必要最低限のクラスはアノテー�
 しかし、かなりの数のクラスを作成しないようになっています。</p>
 <p>具体的なコードは、以下のようになります。
 Mavenにアップデートされていないので、SdkSearchからソースコードをコピーして使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">implementation <span style="color:#e6db74">&#34;com.google.dagger:dagger:2.18&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">implementation <span style="color:#e6db74">&#34;com.google.dagger:dagger:2.18&#34;</span>
 debugImplementation <span style="color:#a6e22e">project</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;:dagger-reflect:reflect&#39;</span><span style="color:#f92672">)</span> <span style="color:#75715e">// SdkSearchからコピー
 </span><span style="color:#75715e"></span>kaptDebug <span style="color:#a6e22e">project</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;:dagger-reflect:reflect-compiler&#39;</span><span style="color:#f92672">)</span> <span style="color:#75715e">// SdkSearchからコピー
 </span><span style="color:#75715e"></span>kaptRelease <span style="color:#e6db74">&#34;com.google.dagger:dagger-compiler:2.18&#34;</span>

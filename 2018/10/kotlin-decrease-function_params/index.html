@@ -89,7 +89,7 @@ fun hoge(a: String) { …">
     <span class="post-date">Created at Tue, Oct 16, 2018</span>
     
     <p>Kotlinでは拡張関数が定義されており、拡張関数を使うことで1つ関数のパラメータを省略できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>(a: String) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>(a: String) {
   println(a)
 }
 
@@ -99,7 +99,7 @@ fun hoge(a: String) { …">
   println(<span style="color:#66d9ef">this</span>)
 }
 </code></pre></div><p>次に、インターフェース（クラス）内で拡張関数を定義することで、さらに1つの関数のパラメータを省略できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">User</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">User</span>
 
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>(a: String, b: User) {
   println(a)
@@ -115,7 +115,7 @@ fun hoge(a: String) { …">
   }
 }
 </code></pre></div><p>さらに、reified type parameterを使うことで、関数のパラメータを省略できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">hoge</span>(a: String, b: User, c: Class&lt;T&gt;) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">hoge</span>(a: String, b: User, c: Class&lt;T&gt;) {
   println(a)
   println(b)
   println(c)

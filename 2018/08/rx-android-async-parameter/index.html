@@ -99,10 +99,10 @@
 <a href="https://github.com/satoshun-android-example/RxAndroidExample">https://github.com/satoshun-android-example/RxAndroidExample</a></p>
 <p>サンプルプロジェクトをかいつまんで説明します。</p>
 <p>まず2つのスケジューラを作成し、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">false</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">false</span>)
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">true</span>)
 </code></pre></div><p>作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// asyncがfalseの場合
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// asyncがfalseの場合
 </span><span style="color:#75715e"></span>Observable
     .fromCallable { System.currentTimeMillis() }
     .delay(index, TimeUnit.MILLISECONDS)
@@ -138,7 +138,7 @@ main=129927ms, async=125824ms
 <li>サンプルコードで検証した結果、async=trueでパフォーマンスの向上が得られそう</li>
 <li>導入は以下のコードを追加するだけなので、とても簡単</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">RxAndroidPlugins.setInitMainThreadSchedulerHandler {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">RxAndroidPlugins.setInitMainThreadSchedulerHandler {
     AndroidSchedulers.from(Looper.getMainLooper(), <span style="color:#66d9ef">true</span>)
 }
 </code></pre></div>

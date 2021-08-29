@@ -96,12 +96,12 @@ ResultはSuccess T | Failure …">
 <p>Resultは<code>Success T | Failure Throwable</code>の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。</p>
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <p>使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> i: Result&lt;Int&gt; = Result.success(<span style="color:#ae81ff">10</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> i: Result&lt;Int&gt; = Result.success(<span style="color:#ae81ff">10</span>)
 <span style="color:#66d9ef">val</span> t: Result&lt;Int&gt; = Result.failure(IOException())
 </code></pre></div><p>また、<code>runCatching</code>関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> a = runCatching { doSomeThing() }
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> a = runCatching { doSomeThing() }
 </code></pre></div><p>Resultに対する操作は以下のようにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// successに対して操作
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// successに対して操作
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> i = Result.success(<span style="color:#ae81ff">10</span>)
 i.getOrNull() <span style="color:#75715e">// 10
 </span><span style="color:#75715e"></span>i.isSuccess <span style="color:#75715e">// true
@@ -121,7 +121,7 @@ t.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="c
 </span><span style="color:#75715e"></span>t.getOrThrow() <span style="color:#75715e">// throw IOException
 </span></code></pre></div><p>値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。</p>
 <p>また、Resultを使うことで、functionalっぽく書くことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">try</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">try</span> {
     <span style="color:#66d9ef">val</span> data = doSomethingSync()
     processData(<span style="color:#66d9ef">data</span>)
 } <span style="color:#66d9ef">catch</span>(e: Throwable) {

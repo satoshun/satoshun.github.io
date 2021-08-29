@@ -93,7 +93,7 @@
     
     <p>オブジェクト自身の変更ではなく、対象のオブジェクトが持つプロパティの変更を汎用的に検知する方法の紹介です。</p>
 <p>次が、この記事で紹介したいコードです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 1つのプロパティの変更を検知したい
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 1つのプロパティの変更を検知したい
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">S</span>, <span style="color:#a6e22e">A1</span>&gt; <span style="color:#a6e22e">LiveData</span>&lt;S&gt;.watch(prop1: KProperty1&lt;S, A1&gt;): LiveData&lt;A1&gt; =
   <span style="color:#66d9ef">this</span>
     .map { prop1.<span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">it</span>) }
@@ -124,7 +124,7 @@
 <p>この記事ではLiveDataを使いましたが、RxJavaやCoroutineでも同じような感じで書けると思います。</p>
 <hr>
 <p>次にサンプルコードです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Presenter</span>(initializeUser: User = User(name = <span style="color:#e6db74">&#34;init&#34;</span>, age = <span style="color:#ae81ff">0</span>)) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Presenter</span>(initializeUser: User = User(name = <span style="color:#e6db74">&#34;init&#34;</span>, age = <span style="color:#ae81ff">0</span>)) {
   <span style="color:#66d9ef">val</span> user = MutableLiveData&lt;User&gt;(initializeUser)
 
   <span style="color:#75715e">// nameの変更を検知する

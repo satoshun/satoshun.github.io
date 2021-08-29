@@ -112,7 +112,7 @@ SystemUiVisibilityの詳細な設定につ …">
 <hr>
 <p>右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。</p>
 <p>このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayout</span> <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayout</span> <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;com.google.android.material.appbar.AppBarLayout</span> <span style="color:#f92672">/&gt;</span>
   ...
 <span style="color:#f92672">&lt;/LinearLayout&gt;</span>
@@ -134,7 +134,7 @@ SystemUiVisibilityの詳細な設定につ …">
 <p>AppBarLayoutはfitsSystemWindowsのデフォルトの動作を変更しているViewなので、AppBarLayoutにfitsSystemWindowsをつけた場合にどのように動作するかを見てみます。</p>
 <h2 id="appbarlayoutのfitssystemwindowsの解釈">AppBarLayoutのfitsSystemWindowsの解釈</h2>
 <p>fitsSystemWindowsをAppBarLayoutに設定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayout&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayout&gt;</span>
   <span style="color:#f92672">&lt;com.google.android.material.appbar.AppBarLayout</span>
     <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
   ...
@@ -161,7 +161,7 @@ SystemUiVisibilityの詳細な設定につ …">
 <p>View.setOnApplyWindowInsetsListenerから、OnApplyWindowInsetsListenerを設定しておくと、デフォルトのfitsSystemWindowsの振る舞いではなく、設定したOnApplyWindowInsetsListenerのほうがコールバックされます。</p>
 <p>OnApplyWindowInsetsListenerには、WindowInsetsが渡ってきます。この中にはSystem UIのサイズと、WindowInsetsが消費されたかどうかを表すフラグがあります。</p>
 <p>例えば、status barの2倍のサイズのpaddingTopを設定して、これ以降のViewにSystem WindowInsetsを渡したくないときは次のようにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">binding.appbar.setOnApplyWindowInsetsListener { v, insets <span style="color:#f92672">-&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">binding.appbar.setOnApplyWindowInsetsListener { v, insets <span style="color:#f92672">-&gt;</span>
   binding.appbar.updatePadding(top = insets.systemWindowInsetTop * <span style="color:#ae81ff">2</span>)
   insets.consumeSystemWindowInsets()
 }
@@ -170,7 +170,7 @@ SystemUiVisibilityの詳細な設定につ …">
 <h2 id="個人的なハマりどころ">個人的なハマりどころ</h2>
 <h3 id="fitssystemwindowsは複数つけても意味がない">fitsSystemWindowsは複数つけても意味がない</h3>
 <p>これはデフォルトの場合の挙動なのですが、fitsSystemWindowsはWindowInsetsを消費するので、一度でも使ってしまうとそれ以降のViewに対して影響を与えません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayou</span> <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;LinearLayou</span> <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;ImageView</span> <span style="color:#a6e22e">android:fitsSystemWindows=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
   ...
 <span style="color:#f92672">&lt;/LinearLayout&gt;</span>

@@ -113,7 +113,7 @@ Shapeとは、こんなやつです。
 <li>Theme.MaterialComponents.DayNight</li>
 </ul>
 <p>などをテーマに指定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
 ...
 </code></pre></div><p>こんな感じです。</p>
 <p>準備は終わったので、BottomSheetDialogにShapeを適用してみます。</p>
@@ -127,7 +127,7 @@ Shapeとは、こんなやつです。
 <h3 id="shapeappearancelargecomponentを指定する">shapeAppearanceLargeComponentを指定する</h3>
 <p>デフォルトだとBottomSheetDialogのスタイルとして、<code>@style/Widget.MaterialComponents.BottomSheet.Modal</code>を使うようになっています。</p>
 <p>このスタイルの定義は、次のようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet.Modal&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span><span style="color:#f92672">&gt;</span>
 ...
 
 <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.BottomSheet&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.Design.BottomSheet.Modal&#34;</span><span style="color:#f92672">&gt;</span>
@@ -138,7 +138,7 @@ Shapeとは、こんなやつです。
 </code></pre></div><p>shapeAppearanceに、<code>?attr/shapeAppearanceLargeComponent</code>が使われています。<code>shapeAppearance</code>は、Shapeの設定を流し込む部分です。
 なので、これを変えればBottomSheetDialogのShapeを変える事ができます。</p>
 <p>たとえば、次のように設定してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#75715e">&lt;!-- ?attr/shapeAppearanceLargeComponentの設定 --&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceLargeComponent&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearance.Sample.LargeComponent<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
@@ -154,7 +154,7 @@ Shapeとは、こんなやつです。
 </figure>
 
 <p><code>cornerFamily</code>にはcut以外にも、roundedを取ることが出来ます。roundedを指定すると次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.LargeComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Sample.LargeComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
 
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>36dp<span style="color:#f92672">&lt;/item&gt;</span>
@@ -165,7 +165,7 @@ Shapeとは、こんなやつです。
 <p><code>shapeAppearanceLargeComponent</code>を指定することは、BottomSheetDialog以外の、他のコンポーネントにも影響が出るので、注意してください。</p>
 <h3 id="bottomsheetdialogthemeを指定する">bottomSheetDialogThemeを指定する</h3>
 <p><code>bottomSheetDialogTheme</code>から、BottomSheetDialogのShapeの設定を変えることも出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
   ...
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;bottomSheetDialogTheme&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeCustomBottomSheetDialog<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
@@ -198,13 +198,13 @@ Shapeとは、こんなやつです。
 <h3 id="shapeappearancesmallcomponentを指定する">shapeAppearanceSmallComponentを指定する</h3>
 <p><code>MaterialButton</code>は、デフォルトでは<code>Widget.MaterialComponents.Button</code>スタイルを使うようになっています。</p>
 <p>これは、次のように定義されています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.Button&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.AppCompat.Button&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Widget.MaterialComponents.Button&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Widget.AppCompat.Button&#34;</span><span style="color:#f92672">&gt;</span>
   ...
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearance&#34;</span><span style="color:#f92672">&gt;</span>?attr/shapeAppearanceSmallComponent<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 </code></pre></div><p>shapeAppearanceに、<code>?attr/shapeAppearanceSmallComponent</code>が使われています。先程と同様に、これを指定することで、Shapeの振る舞いを変えることが出来ます。</p>
 <p>次のように設定してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;AppTheme&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;Theme.MaterialComponents.DayNight&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceSmallComponent&#34;</span><span style="color:#f92672">&gt;</span>@style/ShapeAppearance.Sample.SmallComponent<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
 
@@ -219,7 +219,7 @@ Shapeとは、こんなやつです。
 
 <h3 id="xmlから直接指定する">XMLから直接指定する</h3>
 <p>次のように、直接XMLから指定することも出来ます。XMLから直接指定する場合は、<code>shapeAppearanceOverlay</code>から指定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay.Sample.MediumComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;shapeAppearanceOverlay.Sample.MediumComponent&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
 
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>16dp<span style="color:#f92672">&lt;/item&gt;</span>

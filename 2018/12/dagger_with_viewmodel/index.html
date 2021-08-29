@@ -97,7 +97,7 @@
 <h2 id="基本編">基本編</h2>
 <p>一緒にDagger + ViewModelを使うのはツラミがあります。それは、ViewModelのインスタンス生成は<code>ViewModelProvider</code>を介して行う必要があるためです。</p>
 <p>例えば、次のコードは間違っています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#f92672">..</span>.): ViewModel()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#f92672">..</span>.): ViewModel()
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> {
     <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> viewModel: MainViewModel
@@ -105,7 +105,7 @@
     <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>この書き方だとMainViewModelはDagger内で自動的にインスタンス生成されてしまうので、ViewModelProviderを介してくれません。よって次のように書く必要があります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(<span style="color:#f92672">..</span>.): ViewModel()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(<span style="color:#f92672">..</span>.): ViewModel()
 
 <span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
@@ -124,7 +124,7 @@
 </code></pre></div><p><code>@Provides</code>を使いインスタンス生成の方法を明示的に記述します。これで、ViewModelProviderを介してMainViewModelインスタンスを生成をすることが出来ます。</p>
 <p>また、ViewModelを直接注入せずに、<code>ViewModelProvider.Factory</code>を注入し、ViewModelのインスタンス生成はActivity（or Fragment）に任せる方法があります。
 このパターンのときは、activity-ktx（or fragment-ktx）に追加された拡張関数と組み合わせるといい感じに書けます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(<span style="color:#f92672">..</span>.): ViewModel()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span>(<span style="color:#f92672">..</span>.): ViewModel()
 or
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainViewModel</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#f92672">..</span>.): ViewModel()
 

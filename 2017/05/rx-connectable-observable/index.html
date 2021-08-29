@@ -112,7 +112,7 @@ Connectable …">
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <p>同じデータを必要としているObserverがあるとします.
 これを単純に書くと以下のようになります.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Obervable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUsers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> Observalbe<span style="color:#f92672">.</span><span style="color:#a6e22e">just</span><span style="color:#f92672">(</span>User1<span style="color:#f92672">,</span> User2<span style="color:#f92672">,</span> User3<span style="color:#f92672">);}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Obervable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUsers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> Observalbe<span style="color:#f92672">.</span><span style="color:#a6e22e">just</span><span style="color:#f92672">(</span>User1<span style="color:#f92672">,</span> User2<span style="color:#f92672">,</span> User3<span style="color:#f92672">);}</span>
 
 Obervable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> getUsers<span style="color:#f92672">();</span>
 users<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>o1<span style="color:#f92672">);</span>
@@ -121,7 +121,7 @@ users<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</
 </code></pre></div><p>これだと, subscribeされるたびに新しいStreamが作られてしまいます.
 上の例だと3つの独立したObservableが作成されてしまい, 非常に効率が悪いです.</p>
 <p>Connectable Observableを使うことで, 1つのStreamからsubscribeすることが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ConnectableObservable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> getUsers<span style="color:#f92672">().</span><span style="color:#a6e22e">publish</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ConnectableObservable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> getUsers<span style="color:#f92672">().</span><span style="color:#a6e22e">publish</span><span style="color:#f92672">();</span>
 users<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>o1<span style="color:#f92672">);</span>
 users<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>o2<span style="color:#f92672">);</span>
 users<span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>o3<span style="color:#f92672">);</span>

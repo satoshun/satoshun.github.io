@@ -100,7 +100,7 @@ MVPはテスタブルであることが1つのウリとなっていますが, �
 </ul>
 <h2 id="今回-テスト書きたい箇所">今回, テスト書きたい箇所</h2>
 <p>今回は, <code>MainPresenter</code>クラスをテストします.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainPresenter</span> <span style="color:#66d9ef">implements</span> MainContract<span style="color:#f92672">.</span><span style="color:#a6e22e">Presenter</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainPresenter</span> <span style="color:#66d9ef">implements</span> MainContract<span style="color:#f92672">.</span><span style="color:#a6e22e">Presenter</span> <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@NonNull</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> UserDataSource dataSource<span style="color:#f92672">;</span>
@@ -132,7 +132,7 @@ MVPはテスタブルであることが1つのウリとなっていますが, �
         <span style="color:#f92672">});</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainContract</span> <span style="color:#f92672">{</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainContract</span> <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">View</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showUser</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> User user<span style="color:#f92672">);</span>
@@ -148,7 +148,7 @@ MVPはテスタブルであることが1つのウリとなっていますが, �
         <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDataSource</span> <span style="color:#f92672">{</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDataSource</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Callback</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onUserLoaded</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> User user<span style="color:#f92672">);</span>
 
@@ -162,7 +162,7 @@ MVPはテスタブルであることが1つのウリとなっていますが, �
 <p>今回の場合, <code>UserPresenter#start</code>がコールされた時, <code>UserDataSource</code>からデータを非同期に取得し, <code>View</code>に値を返すクラスとなっています.</p>
 <h2 id="非同期なapiをどうユニットテストで表現するか">非同期なAPIをどうユニットテストで表現するか</h2>
 <p>僕の言語能力では説明が難しいので, 最初にテストコードを紹介します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainPresenterTest</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainPresenterTest</span> <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Rule</span>
     <span style="color:#66d9ef">public</span> MockitoRule mockitoRule <span style="color:#f92672">=</span> MockitoJUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">rule</span><span style="color:#f92672">();</span>

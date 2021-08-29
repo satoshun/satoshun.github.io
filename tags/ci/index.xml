@@ -7,7 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 03 Apr 2021 03:00:25 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/ci/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 13:18:37 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/ci/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub Actions: Composite Run Stepsの簡単な使い方</title>
+      <link>https://satoshun.github.io/2021/08/github-actions-composite-run-steps/</link>
+      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/08/github-actions-composite-run-steps/</guid>
+      <description>Composite Run Stepsを使うと、GitHub Actionsでactionを再利用する事ができます。
+この記事では、同一リポジトリ内で使い回すパターンの、Composite Run Stepsについて紹介します。
+最終的には、こんな感じになります
+ composite run stepの定義側 composite run stepを使う側  ローカルcomposite run stepsの定義 今回は、Java11のセットアップをする、setup-java ステップを作ってみたいと思います。
+最初に、次のパスにaction.ymlを作ります。
+.github/actions/setup-java/action.yml
+action.ymlは次のようになります。
+name: &amp;#39;Java Setup&amp;#39; description: &amp;#39;Installs Java&amp;#39; runs: using: &amp;#39;composite&amp;#39; steps: - name: Install Java 11 uses: actions/setup-java@v2 with: distribution: &amp;#39;adopt&amp;#39; java-version: &amp;#39;11&amp;#39; 今回は1つのstepしか使っていませんが、stepsには複数stepを定義することが出来るので、処理を1箇所にまとめることが可能です。
+setup-javaをworkflowから使う 次に、定義したsetup-javaを使ってみます。
+jobs: build: runs-on: ubuntu-latest steps: - name: Checkout uses: actions/checkout@v2 - name: Setup Java uses: ./.github/actions/setup-java ... usesでパスを指定するだけです。これで、stepを再利用することが出来ます。
+まとめ Composite Run Stepsを使うことで、複数のstepをまとめ、再利用が可能になります。同じようなstepを記述しているworkflowが多い場合は導入すると幸せになると思います。</description>
+    </item>
+    
     <item>
       <title>GitHub Actions: 前のGitHub Actionの実行をキャンセルする</title>
       <link>https://satoshun.github.io/2021/04/github-actions-cancel-previous-tasks/</link>

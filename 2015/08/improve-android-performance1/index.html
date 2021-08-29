@@ -90,7 +90,7 @@
     
     <p>enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.</p>
 <p>列挙型としてのenumは, 以下のように書くことが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">enum</span> Month <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">enum</span> Month <span style="color:#f92672">{</span>
     JANUARY<span style="color:#f92672">,</span> FEBRUARY<span style="color:#f92672">,</span> MARCH<span style="color:#f92672">,</span> APRIL<span style="color:#f92672">,</span> MAY<span style="color:#f92672">,</span> JUNE<span style="color:#f92672">,</span>
     JULY<span style="color:#f92672">,</span> AUGUST<span style="color:#f92672">,</span> SEPTEMBER<span style="color:#f92672">,</span> OCTOBER<span style="color:#f92672">,</span> NOVEMBER<span style="color:#f92672">,</span> DECEMBER
 <span style="color:#f92672">}</span>
@@ -100,7 +100,7 @@
     <span style="color:#75715e">////
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>また, enumではなく定数を使うとしたら以下のように書くことが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
 <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FEBRUARY <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
 <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MARCH <span style="color:#f92672">=</span> 3<span style="color:#f92672">;</span>
 <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> APRIL <span style="color:#f92672">=</span> 4<span style="color:#f92672">;</span>
@@ -116,7 +116,7 @@
 <p>しかし, enumは, 定数を使うバージョンと比較すると, apkサイズが大きくなってしまうデメリットがあります. Androidではメモリリソースはとても貴重なため, enumを使うのは極力避けたほうが良いです.</p>
 <p>Androidでは, IntDef(StringDef) annotationを使うことで, type-safeに定数を使うことが出来ます.</p>
 <p>上記のMonthのコードをIntDef annotationを使い, 書き換えてみます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Monthに代入することが出来る定数を宣言
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Monthに代入することが出来る定数を宣言
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@IntDef</span><span style="color:#f92672">({</span>JANUARY<span style="color:#f92672">,</span> FEBRUARY<span style="color:#f92672">,</span> MARCH<span style="color:#f92672">,</span> APRIL<span style="color:#f92672">,</span> <span style="color:#f92672">...})</span>
 <span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Month <span style="color:#f92672">{};</span>

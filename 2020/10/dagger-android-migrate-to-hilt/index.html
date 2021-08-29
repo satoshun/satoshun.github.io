@@ -94,7 +94,7 @@
 <p>より詳細な説明は公式のドキュメント <a href="https://dagger.dev/hilt/migration-guide">https://dagger.dev/hilt/migration-guide</a> を見ると良きです。</p>
 <h2 id="既存の構成">既存の構成</h2>
 <p>既存ではdagger androidが使われていて、MainActivityとSubActivityがそれぞれ定義されているとします。そのうち、MainActivityをhiltに移行したいと思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : DaggerApplication() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : DaggerApplication() {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;App&gt; {
     <span style="color:#66d9ef">return</span> <span style="color:#f92672">..</span>.
   }
@@ -122,7 +122,7 @@
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">contributeSubActivity</span>(): SubActivity
 }
 </code></pre></div><p>まずは、AppComponentのhilt対応をします。まずhiltの依存を<code>build.gradle</code>に追加します。そして、HiltAndroidApp、EntryPoint、InstallInアノテーションを使って、次のように書き換えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@HiltAndroidApp</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@HiltAndroidApp</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : DaggerApplication() {
   <span style="color:#a6e22e">@EntryPoint</span>
   <span style="color:#a6e22e">@InstallIn</span>(SingletonComponent<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
@@ -143,7 +143,7 @@
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span>
 </code></pre></div><p>ここでは、androidInjectorは残しておきます。これは、hilt移行前のDagger androidを使ったActivityで引き続き使われるためです。</p>
 <p>次に、MainFragmentを置き換えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : DaggerFragment(R.layout.main_frag)
 
 <span style="color:#960050;background-color:#1e0010">↓↓↓</span>
@@ -153,7 +153,7 @@
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment(R.layout.main_frag)
 </code></pre></div><p>DaggerFragmentの継承、もしくはそれに類するものを除去して、AndroidEntryPointアノテーションを指定します。</p>
 <p>次にMainActivityとMainActivityModuleを置き換えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : DaggerAppCompatActivity(R.layout.main_act)
 
 <span style="color:#960050;background-color:#1e0010">↓↓↓</span>
@@ -161,7 +161,7 @@
 <span style="color:#75715e">// after
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@AndroidEntryPoint</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity(R.layout.main_act)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> { <span style="color:#f92672">..</span>. }
 
@@ -172,7 +172,7 @@
 <span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> { <span style="color:#f92672">..</span>. }
 </code></pre></div><p>これらの定義が終わったら、最初のMyActivityModuleからMainActivity周りの指定を取り除きます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// before
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Module</span>(
   includes = [	<span style="color:#f92672">..</span>.  ]
 )

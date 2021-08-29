@@ -108,7 +108,7 @@
 <h2 id="各画像は前の画像に被っている">各画像は、前の画像に被っている</h2>
 <p>View同士を被せる方法はいくつかあると思うんですが、今回は<code>layout_constraintStart_toStartOf</code>と<code>layout_marginStart</code>を使い表現します。</p>
 <p>まずに、1番左に配置するImageViewを定義します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
@@ -119,7 +119,7 @@
 </code></pre></div><p>1番左に配置したいので、<code>Start_toStartOf</code>にはparentを設定しています。</p>
 <p>次に、2番目に配置するImageViewを考えます。このImageViewは、1枚目のImageViewに被るように配置します。なので、この1枚目のViewのend(終端)に制約を合わせてしまうと上手く配置できません。
 よって、1枚目のViewのstart(先端)に制約を合わせます。合わせてmarginStartも設定することで良い感じの配置が出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image2&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
@@ -128,7 +128,7 @@
   <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
   <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image1&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><p>3番目、4番目のViewにも同様の制約を設定してあげます。最終形は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
@@ -172,7 +172,7 @@
 <p>画像の枚数が変動するパターンを考えてみます。4つのレイアウトをそれぞれ個別に作ってもいいんですが、今回は1つのレイアウトで表現しようと思います。
 今回の場合、<code>layout_goneMarginStart</code>を使うといい感じに出来ます。</p>
 <p>前のレイアウトに対して、次のように<code>layout_goneMarginStart</code>を追加してあげます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/image1&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;32dp&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;32dp&#34;</span>

@@ -106,7 +106,7 @@ notifyDataSetChangedメソッドを叩いても, データがUIに反映され�
 <h2 id="fragmentstatepageradapterを使う">FragmentStatePagerAdapterを使う</h2>
 <p>FragmentPagerAdapterでなくて, FragmentStatePagerAdapterを使えばUIにデータが反映されました.</p>
 <p>以下, 実装例になります. まずは, ダメパターンです. FragmentPagerAdapterクラスを使い, Activityでデータを受け取ったら, refreshメソッドを叩くようになっています.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentPagerAdapter <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentPagerAdapter <span style="color:#f92672">{</span>
     <span style="color:#f92672">...</span>
     <span style="color:#f92672">...</span>
 
@@ -116,7 +116,7 @@ notifyDataSetChangedメソッドを叩いても, データがUIに反映され�
 <span style="color:#f92672">}</span>
 </code></pre></div><p>FragmentPagerAdapterがスーパークラスになっているため, notifyDataSetChangedを何度叩いても, Fragmentが再生成されることはありません. つまり, データを更新した後にUIにデータが反映されません.</p>
 <p>次にOKパターンです. FragmentStatePagerAdapterを使い, getItemPositionをOverrideするのがポイントです.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentStatePagerAdapter <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PagerAdapter</span> <span style="color:#66d9ef">extends</span> FragmentStatePagerAdapter <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Fragment<span style="color:#f92672">&gt;</span> mFragments<span style="color:#f92672">;</span>
 
     <span style="color:#f92672">...</span>

@@ -101,7 +101,7 @@
 <p>この記事では、ユニットテストで<code>Activity.onActivityResult</code>のテストをどこまでandroid testのように書けるかを検証します。</p>
 <h2 id="テスト対象コード">テスト対象コード</h2>
 <p>まず最初に、テスト対象コードは次のようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
   <span style="color:#f92672">..</span>.
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#f92672">..</span>.
@@ -130,7 +130,7 @@
     }
   }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sub2Activity</span> : AppCompatActivity() {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sub2Activity</span> : AppCompatActivity() {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
     <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
     setContentView(R.layout.sub_act)
@@ -147,7 +147,7 @@
 <p>では、テストを書いていきます。</p>
 <h2 id="テストコード">テストコード</h2>
 <p>以下が、今回書いたテストコードになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(AndroidJUnit4<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityTest</span> {
   <span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
@@ -202,15 +202,15 @@
   }
 }
 </code></pre></div><p>上から順番に重要な部分を説明していきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </code></pre></div><p>これは、Espresso-Intentsを使うときに必要なルールです。<code>Intens.intended</code>、<code>intending</code>を使うために必要なルールになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 scenario.onActivity {
     <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
 }
 </code></pre></div><p>ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
 ボタンがクリックされると、Sub2Activityで<code>setResult</code>が発火するようになっています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> result = scenario.result
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> result = scenario.result
 assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
 
 <span style="color:#66d9ef">val</span> bundleSubject = IntentSubject.assertThat(result.resultData).extras()
@@ -218,7 +218,7 @@ bundleSubject.integer(<span style="color:#e6db74">&#34;test&#34;</span>).isEqual
 </code></pre></div><p>ActivityScenarioでは、ActivityResultクラスから結果を取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらの値をTruthを使いチェックします。この場合、<code>setResult</code>で、resultcodeに<code>Activity.RESULT_OK</code>が、resultdataにはキー名<code>test</code>、値10がセットされていることを確認してします。</p>
 <p>ここまでで、Sub2ActivityのsetResultで正しい値をセットしていることがテスト出来ます。</p>
 <p>では次に、MainActivityで上記の値を受け取れることをテストしていきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Intents
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Intents
   .intending(
     IntentMatchers.hasComponent(
       ComponentName(
@@ -230,7 +230,7 @@ bundleSubject.integer(<span style="color:#e6db74">&#34;test&#34;</span>).isEqual
   .respondWith(result)
 </code></pre></div><p><code>Intents.intending</code>はマッチしたIntentが発行されたときに、onActivityResultに結果を返すAPIになります。
 MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 main.onActivity {
   <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
 
@@ -250,7 +250,7 @@ main.onActivity {
 2つのActivityに関連するonActivityResultのテストが無事に出来ました！！</p>
 <h2 id="補足">補足</h2>
 <p>Espressoにはご存知、clickをするためのAPIがあるのですが、うまく動きませんでした。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// not working!!
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// not working!!
 </span><span style="color:#75715e"></span>Espresso
   .onView(ViewMatchers.withId(R.id.button))
   .perform(ViewActions.click())

@@ -101,7 +101,7 @@ java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/an
 </code></pre><p>d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。</p>
 <pre><code>$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
 </code></pre><p>例えば次のJavaコードを逆アセンブルしてみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
         show<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> 10<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
         String<span style="color:#f92672">[]</span> array <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">};</span>

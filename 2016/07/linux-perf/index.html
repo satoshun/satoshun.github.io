@@ -94,7 +94,7 @@ CPU利用率, 高負荷なプロセスの特定の仕方について説明しま
 <p>CPU利用率, 高負荷なプロセスの特定の仕方について説明します.</p>
 <h2 id="0-lscpu">0. lscpu</h2>
 <p>システムのコア数,マシンのスペックを最初に調べます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# lscpu
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# lscpu
 Architecture:          x86_64
 CPU op-mode<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:        32-bit, 64-bit
 Byte Order:            Little Endian
@@ -123,14 +123,14 @@ Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca 
 <h2 id="1-uptime">1. uptime</h2>
 <p>次に, 何はともあれ<code>uptime</code>です. ロードアベレージを出力します.</p>
 <p>ロードアベレージの値で, ざっくりとシステム全体の負荷を調べることが出来ます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# uptime
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# uptime
  10:28:54 up <span style="color:#ae81ff">25</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.41, 0.87, 0.59
 </code></pre></div><p>一般的には, CPUのコア数前後が基準となります.
 この値が大きい場合は, CPU or メモリ or etcに, 高負荷なポイントがあります.</p>
 <h2 id="2-mpstat">2. mpstat</h2>
 <p>システム全体のCPU利用率を<code>mpstat</code>コマンドで調べます.</p>
 <p>個別のコアごとの利用率を出力する <code>-P ALL</code> オプションをつけて実行します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# mpstat -P ALL
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# mpstat -P ALL
 Linux 4.4.0-21-generic <span style="color:#f92672">(</span>vagrant<span style="color:#f92672">)</span>  07/17/2016  _x86_64_  <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> CPU<span style="color:#f92672">)</span>
 
 10:27:44 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
@@ -143,7 +143,7 @@ Linux 4.4.0-21-generic <span style="color:#f92672">(</span>vagrant<span style="c
 また, iowaitが発生していないことから, CPUドリブンなプロセスということも分かります.</p>
 <h2 id="3-top">3. top</h2>
 <p>次に, どのプロセスがCPUを専有しているのかを<code>top</code>コマンドで調べます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">top - 10:46:54 up <span style="color:#ae81ff">43</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.99, 0.67, 0.48
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">top - 10:46:54 up <span style="color:#ae81ff">43</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.99, 0.67, 0.48
 Tasks: <span style="color:#ae81ff">148</span> total,   <span style="color:#ae81ff">2</span> running, <span style="color:#ae81ff">146</span> sleeping,   <span style="color:#ae81ff">0</span> stopped,   <span style="color:#ae81ff">0</span> zombie
 %Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  7.4 us, 17.7 sy,  0.0 ni, 74.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 KiB Mem :  <span style="color:#ae81ff">4046448</span> total,  <span style="color:#ae81ff">3670180</span> free,    <span style="color:#ae81ff">98452</span> used,   <span style="color:#ae81ff">277816</span> buff/cache
@@ -162,7 +162,7 @@ KiB Swap:  <span style="color:#ae81ff">1048572</span> total,  <span style="color
 これで, 負荷が高いプロセスを特定できました.</p>
 <h2 id="4-strace">4. strace</h2>
 <p>次に, 特定したプロセスがどういったシステムコールを使っているのかを<code>strace</code>コマンドで調べます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">2682</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">2682</span>
 strace: Process <span style="color:#ae81ff">1376</span> attached
 write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
 read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
@@ -176,7 +176,7 @@ write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\
 ...
 </code></pre></div><p>ddコマンドは, read, writeシステムコールを繰り返していることが分かります.</p>
 <p>余談ですが, nginxのworkerプロセスをstraceすると, 以下の出力をします.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">1118</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">1118</span>
 strace: Process <span style="color:#ae81ff">1118</span> attached
 epoll_wait<span style="color:#f92672">(</span>9,
 <span style="color:#f92672">[{</span>EPOLLIN, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871416, u64<span style="color:#f92672">=</span>140064191361272<span style="color:#f92672">}}]</span>, 512, -1<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
@@ -217,9 +217,9 @@ epoll_wait<span style="color:#f92672">(</span>9,
 <h2 id="5-perf">5. perf</h2>
 <p>最後に, <code>perf</code>コマンドを使って, プロセスのCPU利用率のグラフを見ます.</p>
 <p>まず, pidを指定して, プロファイルを作成します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">perf record -F <span style="color:#ae81ff">99</span> -p <span style="color:#ae81ff">2682</span> -a -g -- sleep <span style="color:#ae81ff">10</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">perf record -F <span style="color:#ae81ff">99</span> -p <span style="color:#ae81ff">2682</span> -a -g -- sleep <span style="color:#ae81ff">10</span>
 </code></pre></div><p>そして, プロファイリングの結果を出力します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# perf report --stdio
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# perf report --stdio
 no symbols found in /bin/dd, maybe install a debug package?
 <span style="color:#75715e"># To display the perf.data header info, please use --header/--header-only options.</span>
 <span style="color:#75715e">#</span>

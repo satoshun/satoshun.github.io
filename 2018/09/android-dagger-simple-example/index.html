@@ -92,12 +92,12 @@
     
     <p>みなさんこんにちは</p>
 <p>今回はDaggerの話をします。Dagger + Kotlinの1つ気になる点として<code>@Inject lateinit var</code> になってしまうところがあると思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> {
     <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> hoge: Hoge
 }
 </code></pre></div><p>これをなんとか出来ないかなと思って考えてみました。</p>
 <p>結論から言うと最終形はこのようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> hoge: Hoge <span style="color:#66d9ef">by</span> inject()
 }
 </code></pre></div><p>private valになりました。これをどのように実現したかについて説明してきます。ちなみにですが、これはプロダクションに耐えれるようなコードではありません。ご了承ください。</p>
@@ -106,7 +106,7 @@
 詳しくは<a href="https://google.github.io/dagger/multibindings.html">ドキュメント</a>を見てください。</p>
 <p>サンプルコードで説明していきます。</p>
 <p>まずはIntoMapを使い、MapへのバインドをModuleに定義していきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HogeModule</span> {
     <span style="color:#a6e22e">@Binds</span> <span style="color:#a6e22e">@IntoMap</span> <span style="color:#a6e22e">@ClassKey</span>(Hoge1<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>) <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindHoge1</span>(hoge: Hoge1): Any
     <span style="color:#a6e22e">@Binds</span> <span style="color:#a6e22e">@IntoMap</span> <span style="color:#a6e22e">@ClassKey</span>(Hoge2<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>) <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindHoge2</span>(hoge: Hoge2): Any
@@ -121,12 +121,12 @@
 <span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassKey</span>(<span style="color:#66d9ef">val</span> value: KClass&lt;<span style="color:#66d9ef">out</span> Any&gt;)
 </code></pre></div><p>Mapには当然、valueに対応するkeyが必要になります。DaggerではMapKeyを使うことで、valueとkeyを紐づけることが出来ます。</p>
 <p>作ったModuleをComponentに組み込みます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>(modules = [HogeModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Component</span>(modules = [HogeModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>])
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> {
     <span style="color:#66d9ef">val</span> values: Map&lt;Class&lt;<span style="color:#66d9ef">out</span> Any&gt;, <span style="color:#a6e22e">@JvmSuppressWildcards</span> Provider&lt;Any&gt;&gt;
 }
 </code></pre></div><p>そして、ApplicationでAppComponentを生成します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application() {
     <span style="color:#66d9ef">val</span> values: Map&lt;Class&lt;<span style="color:#66d9ef">out</span> Any&gt;, <span style="color:#a6e22e">@JvmSuppressWildcards</span> Provider&lt;Any&gt;&gt; <span style="color:#66d9ef">by</span> lazy {
     DaggerAppComponent.builder().build().values
     }
@@ -134,10 +134,10 @@
     <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">get</span>(): T = values[T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java]<span style="color:#f92672">!!</span>.<span style="color:#66d9ef">get</span>() <span style="color:#66d9ef">as</span> T
 }
 </code></pre></div><p>そして、Activity用に拡張関数を定義して、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Activity</span>.inject() = lazy { <span style="color:#66d9ef">get</span>&lt;T&gt;() }
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Activity</span>.inject() = lazy { <span style="color:#66d9ef">get</span>&lt;T&gt;() }
 
 </code></pre></div><p>完成です!</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> hoge: Hoge <span style="color:#66d9ef">by</span> inject()
 }
 </code></pre></div><h2 id="まとめ">まとめ</h2>

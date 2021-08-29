@@ -96,7 +96,7 @@ Testify を使って、Jetpack Composeのスクリーンシ …">
 <p><a href="https://github.com/Shopify/android-testify%5D">Testify</a> を使って、Jetpack Composeのスクリーンショットテストをしてみます。</p>
 <h2 id="セットアップ">セットアップ</h2>
 <p>READMEに記してある通り、build.gradleに下記の設定を追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
   classpath <span style="color:#e6db74">&#34;com.shopify.testify:plugin:1.1.0-beta2&#34;</span>
 <span style="color:#f92672">}</span>
 
@@ -104,7 +104,7 @@ apply plugin: <span style="color:#e6db74">&#39;com.shopify.testify&#39;</span>
 </code></pre></div><p>これで完了です。</p>
 <h2 id="テストを書いてみる">テストを書いてみる</h2>
 <p>JUnit4ベースの<code>ScreenshotRule</code> と、<code>ScreenshotInstrumentation</code> アノテーションを使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppActivityTest</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppActivityTest</span> {
   <span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> rule = ScreenshotRule(TestActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 
   <span style="color:#a6e22e">@ScreenshotInstrumentation</span>

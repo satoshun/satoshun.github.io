@@ -110,7 +110,7 @@
 <li>後処理(teardown)</li>
 </ol>
 <p>これだと分かりにくいので, コードで説明すると,</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeTest</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeTest</span> <span style="color:#f92672">{</span>
   List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> lists<span style="color:#f92672">;</span>
 
   <span style="color:#a6e22e">@Before</span>
@@ -143,7 +143,7 @@
 <p>では, どのような情報を含めれば良いのか? それを次の例で説明していきます.</p>
 <h2 id="やや複雑な例">やや複雑な例</h2>
 <p><code>Request</code>クラスの内容に応じて, HTTPでデータを取ってくる<code>HTTPConnection</code>クラスを考えます.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HTTPConnectionTest</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HTTPConnectionTest</span> <span style="color:#f92672">{</span>
   HTTPConnection httpConnection<span style="color:#f92672">;</span>
 
   <span style="color:#a6e22e">@Before</span>
@@ -176,7 +176,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上記テストで問題なのは, <code>execute</code>で正常, 異常の2つのことをテストしている所です.
 一般的に, 1つのテストケースでは, 1つのことをテストすべきなので, 修正します.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// 事前準備(setup)
 </span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
@@ -201,7 +201,7 @@
 <p>前述の例では, <code>execute_ok</code>, <code>execute_ng</code>の2つのテストメソッドを作成しました.
 この2つのテストメソッドは, executeメソッドの, 正常, 異常系をテストしていることは伝わります.
 しかし, <strong>どういう条件下でこの振る舞いをするか</strong>の情報が抜けています. よって, その情報を付与する必要があります.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">  <span style="color:#a6e22e">@Test</span>
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok_200URL</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// 事前準備(setup)
 </span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>

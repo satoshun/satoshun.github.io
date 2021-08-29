@@ -104,7 +104,7 @@
 </ul>
 <h2 id="viewmodelscopeとは">viewModelScopeとは?</h2>
 <p><code>androidx.lifecycle:lifecycle-viewmodel-ktx</code>ライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * [CoroutineScope] tied to this [ViewModel].
 </span><span style="color:#75715e"> * This scope will be canceled when ViewModel will be cleared, i.e [ViewModel.onCleared] is called
 </span><span style="color:#75715e"> */</span>
@@ -112,7 +112,7 @@
 </code></pre></div><p>ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。
 このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。</p>
 <p>また、<code>viewModelScope</code>は、メインスレッド上で実行してくれるため、<code>LiveData.setValue</code>を使い、値を更新します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> userLiveData = MutableLiveData(<span style="color:#f92672">..</span>.)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> userLiveData = MutableLiveData(<span style="color:#f92672">..</span>.)
 
 viewModelScope.launch {
     <span style="color:#66d9ef">val</span> user = userRepository.getUser() <span style="color:#75715e">// 適当なsuspend関数をコール
@@ -125,7 +125,7 @@ viewModelScope.launch {
 <p>ネットワークコールなどのAPIは、suspendで表現することになると思います。
 また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。</p>
 <p>なので、Repository層での定義は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserApi</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserApi</span> {
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(): User
 }
 
@@ -137,13 +137,13 @@ viewModelScope.launch {
     }
 }
 </code></pre></div><p>これをViewModelからコールします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     <span style="color:#66d9ef">val</span> user = userRepository.getUser()
     <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>これだけだと、ネットワークの調子が悪い時などに、例外が起きてしまうので、エラーハンドリングをする必要があります。</p>
 <p>ViewModel側でハンドリングするなら、try-catch、もしくは<code>runCatching</code>を使うのが良いと思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     <span style="color:#66d9ef">try</span> {
         <span style="color:#66d9ef">val</span> user = userRepository.getUser()
         <span style="color:#f92672">..</span>.
@@ -151,20 +151,20 @@ viewModelScope.launch {
         <span style="color:#f92672">..</span>.
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     runCatching { userRepository.getUser() }
         .onSuccess { <span style="color:#f92672">..</span>. }
         .onFailure { <span style="color:#f92672">..</span>. }
 }
 </code></pre></div><p>個人的には<code>runCatching</code>のほうが好きです。</p>
 <p>また、ViewModelで例外処理をするのではなく、Repository側で適当な型で包むパターンもあると思います。例えばNetWorkResultのようなクラスがあるとします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NetWorkResult</span>&lt;T&gt; {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NetWorkResult</span>&lt;T&gt; {
     <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Success</span>&lt;T&gt;(<span style="color:#66d9ef">val</span> value: T) : NetWorkResult&lt;T&gt;()
     <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Error</span>(<span style="color:#66d9ef">val</span> exception: Exception) : NetWorkResult&lt;Nothing&gt;()
     <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>このクラスをRepository側の返り値として使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> retrofitService: UserApi) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserRepository</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> retrofitService: UserApi) {
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>() : NetWorkResult&lt;User&gt; {
         <span style="color:#66d9ef">try</span> {
             <span style="color:#66d9ef">val</span> user = retrofitService.getUser()
@@ -177,7 +177,7 @@ viewModelScope.launch {
 </code></pre></div><p>こうすることで、ViewModel側では、try-catchを使わなくて良くなり、try-catchの代わりにwhen式を使うことになります。</p>
 <hr>
 <p>また、<code>androidx.lifecycle:lifecycle-livedata-ktx</code>に含まれている、livedata builderを使う方法もあります。livedata builderを使うと次のように書くことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> user = liveData&lt;User&gt; {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> user = liveData&lt;User&gt; {
     runCatching { repository.getUser() }
         .onSuccess { emit(<span style="color:#66d9ef">it</span>) }
         .onFailure { <span style="color:#f92672">..</span>. }
@@ -189,13 +189,13 @@ viewModelScope.launch {
 <h2 id="flowをコール購読するとき">Flowをコール/購読するとき</h2>
 <p>Flow APIは、複数の値を流すストリームを表現することが出来ます。RxJavaで言うところのObservableとか、Flowableのようなものです。</p>
 <p>Flowを購読するタイミングは、ViewModelのinitブロックが良いと思います。重複で購読する心配がないためです。<code>SavedStateHandle</code>を組み合わせることで、多くの場合、initブロックで初期化を行うことが出来ると思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle) : ViewModel() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> state: SavedStateHandle) : ViewModel() {
     <span style="color:#66d9ef">init</span> {
         <span style="color:#f92672">..</span>.
     }
 }
 </code></pre></div><p>Flowの購読方法なんですが、<code>collect、collectLatest</code>もしくは、<code>launchIn</code>を使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#f92672">..</span>.) : ViewModel() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span>(<span style="color:#f92672">..</span>.) : ViewModel() {
     <span style="color:#66d9ef">init</span> {
         viewModelScope.launch {
             repository.getFlowStream()
@@ -208,7 +208,7 @@ viewModelScope.launch {
     }
 }
 </code></pre></div><p>エラーや、完了イベントのハンドリングが必要な場合、<code>catch</code>、<code>onCompletion</code>メソッドを使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">repository.getFlowStream()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">repository.getFlowStream()
     .onEach { <span style="color:#f92672">..</span>. }
     .<span style="color:#66d9ef">catch</span> { <span style="color:#f92672">..</span>. }
     .onCompletion { <span style="color:#f92672">..</span>. }

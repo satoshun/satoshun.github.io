@@ -104,12 +104,12 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 </ul>
 <p>とします。</p>
 <p>まず最初にUserScopeを定義します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Scope</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Scope</span>
 <span style="color:#a6e22e">@MustBeDocumented</span>
 <span style="color:#a6e22e">@Retention</span>(AnnotationRetention.RUNTIME)
 <span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserScope</span>
 </code></pre></div><p>次にUserSubcomponentを作ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@UserScope</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@UserScope</span>
 <span style="color:#a6e22e">@Subcomponent</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserSubcomponent</span> {
   <span style="color:#a6e22e">@Subcomponent</span>.Builder
@@ -122,7 +122,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 </code></pre></div><p>ここでは、UserSubcomponentに<code>UserScope</code>スコープを持たせています。
 このように書くことで、SubcomponentとScopeを結びつけることが出来ます。</p>
 <p>次にAppComponentを作ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
 <span style="color:#a6e22e">@Component</span>(
     modules = [
       AndroidSupportInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>
@@ -156,7 +156,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 <h2 id="mainactivityuserscopedactivityをusersubcomponentに従わせる">MainActivity、UserScopedActivityをUserSubcomponentに従わせる</h2>
 <p>MainActivity、UserScopedActivityを<code>UserSubcomponent</code>に定義することで、MainActivity、UserScopedActivityを<code>UserScope</code>に従わせることが出来ます。
 なぜなら、<code>UserSubcomponent</code>は<code>UserScope</code>に紐付いているためです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// UserSubcomponent.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// UserSubcomponent.kt
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@UserScope</span>
 <span style="color:#a6e22e">@Subcomponent</span>(modules = [
   MainActivityModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>,
@@ -187,7 +187,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 </code></pre></div><h2 id="nouserscopedactivityはuserscopeに従わない">NoUserScopedActivityはUserScopeに従わない</h2>
 <p>NoUserScopedActivityを<code>AppComponent</code>に定義することで、NoUserScopedActivityで<code>UserScope</code>を使っていたらコンパイルエラーにすることが出来ます。
 <code>AppComponent</code>は<code>UserScope</code>に紐付いていないためです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// AppComponent.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// AppComponent.kt
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Singleton</span>
 <span style="color:#a6e22e">@Component</span>(
     modules = [
@@ -217,13 +217,13 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 }
 </code></pre></div><p>これで、定義は完了です。実際に正しく動くかを確認してみます。
 適当に<code>UserScope</code>に従う<code>UserManager</code>を定義します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// UserManager.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// UserManager.kt
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@UserScope</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserManager</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() {
   <span style="color:#66d9ef">var</span> value = <span style="color:#ae81ff">100</span>
 }
 </code></pre></div><p>これは<code>UserScope</code>に従うので、MainActivity、UserScopedActivityには期待通り同一インスタンスが<code>Inject</code>できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// MainActivity.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// MainActivity.kt
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
 
   <span style="color:#75715e">// ok
@@ -240,7 +240,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
   <span style="color:#f92672">..</span>.
 }
 </code></pre></div><p>しかし、NoUserScopedActivityに<code>Inject</code>しようとするとコンパイルエラーになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// NoUserScopedActivity.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// NoUserScopedActivity.kt
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NoUserScopedActivity</span> : AppCompatActivity() {
 
   <span style="color:#75715e">//  下のコメントアウトを取るとコンパイルエラー
@@ -255,7 +255,7 @@ Androidでは、すべてのActivityで共通のインスタンスを使うに�
 <p>が達成できました。</p>
 <h2 id="余談">余談</h2>
 <p>そもそも、<code>ContributesAndroidInjector</code>定義時に、<code>UserScope</code>スコープを付与してあげればいいんじゃないかと思うかもしれません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// MainActivityModule.kt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// MainActivityModule.kt
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Module</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainActivityModule</span> {
   <span style="color:#a6e22e">@UserScope</span>

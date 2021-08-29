@@ -96,7 +96,7 @@
 <p>この記事はRxJava2のsubscribeOnとの挙動の違いを見ていきたいと思います。</p>
 <h2 id="動かしてみる">動かしてみる</h2>
 <p>まずは、Flowから。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">withContext(Dispatchers.Main) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">withContext(Dispatchers.Main) {
   flowOf(<span style="color:#ae81ff">1</span>)
     .map {
       <span style="color:#75715e">// Dispatchers.Defaultで動く
@@ -116,7 +116,7 @@
 }
 </code></pre></div><p>flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。</p>
 <p>次にRxJavaです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Single
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Single
   .just(<span style="color:#ae81ff">1</span>)
   .map {
     <span style="color:#75715e">// Schedulers.io上で動く

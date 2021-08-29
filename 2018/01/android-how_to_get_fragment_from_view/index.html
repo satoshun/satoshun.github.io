@@ -90,7 +90,7 @@
     
     <p>ViewがどのFragmentに属しているかを取得する方法の紹介になります。
 前々からtag、id以外の仕組みで取得出来ないかなと考えていたら、GlideでViewからFragmentを取得するコードがありました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Nullable</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Nullable</span>
 <span style="color:#66d9ef">private</span> Fragment <span style="color:#a6e22e">findSupportFragment</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View target<span style="color:#f92672">,</span> <span style="color:#a6e22e">@NonNull</span> FragmentActivity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
   tempViewToSupportFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
   findAllSupportFragmentsWithViews<span style="color:#f92672">(</span>
@@ -139,7 +139,7 @@
 </ol>
 <p>という流れになっています。</p>
 <p>Glideのコードは効率的なコードなのでやや複雑ですが、Kotlinで効率性を考えずにに書くなら以下のようにも書けます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.findAttachFragment(): Fragment? {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">View</span>.findAttachFragment(): Fragment? {
   <span style="color:#66d9ef">val</span> activity = context <span style="color:#66d9ef">as</span>? FragmentActivity <span style="color:#f92672">?:</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>
   <span style="color:#66d9ef">val</span> allFragments = findAllFragments(activity.supportFragmentManager.fragments)
 

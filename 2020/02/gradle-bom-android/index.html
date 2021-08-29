@@ -96,7 +96,7 @@
 <h2 id="bom">BOM?</h2>
 <p><a href="https://docs.gradle.org/5.0/userguide/managing_transitive_dependencies.html#sec:bom_import">BOM</a>を使うことで、 複数のライブラリのバージョンを省略することが出来ます。</p>
 <p>ドキュメントの例にはspring-bootが挙げられています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
   <span style="color:#75715e">// import a BOM
 </span><span style="color:#75715e"></span>  implementation <span style="color:#a6e22e">platform</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&#39;</span><span style="color:#f92672">)</span>
 
@@ -112,7 +112,7 @@
 <li><a href="https://firebase.google.com/docs/android/setup#firebase-bom">Firebase</a></li>
 </ul>
 <p>例えば、OkHttpならこんな感じで書けます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
    implementation <span style="color:#a6e22e">platform</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.squareup.okhttp3:okhttp-bom:4.4.0&#34;</span><span style="color:#f92672">)</span>
    implementation <span style="color:#e6db74">&#34;com.squareup.okhttp3:okhttp&#34;</span>
    implementation <span style="color:#e6db74">&#34;com.squareup.okhttp3:logging-interceptor&#34;</span>

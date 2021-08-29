@@ -101,7 +101,7 @@
 <p>この記事では、この<code>RestrictTo</code>アノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。</p>
 <p>また、Android Studio 3.5.0-beta05で検証しました。</p>
 <p>この記事内に出てくるRestrictTo関連のコードは以下のライセンスに従います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
 </span><span style="color:#75715e"> * Copyright (C) 2016 The Android Open Source Project
 </span><span style="color:#75715e"> *
 </span><span style="color:#75715e"> * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
@@ -119,7 +119,7 @@
 </code></pre></div><p>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</p>
 <h2 id="scopeの一覧">Scopeの一覧</h2>
 <p>RestrictToの定義は以下のようになっています。（コメント等は削除してます。）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
     Scope<span style="color:#f92672">[]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">();</span>
 
     <span style="color:#66d9ef">enum</span> Scope <span style="color:#f92672">{</span>
@@ -135,7 +135,7 @@
 </code></pre></div><p>GROUP_IDはdeprecatedとのことなので、それ以外のLIBRARY、 LIBRARY_GROUP、 LIBRARY_GROUP_PREFIX、 TESTS、 SUBCLASSESの挙動について見ていきます。</p>
 <h2 id="各スコープについて">各スコープについて</h2>
 <p>次のように説明があります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e">  * Restrict usage to code within the same library (e.g. the same
 </span><span style="color:#75715e">  * gradle group ID and artifact ID).
 </span><span style="color:#75715e">  */</span>
@@ -177,7 +177,7 @@ SUBCLASSES<span style="color:#f92672">,</span>
 <p>次から、実際の挙動を見ていきます。</p>
 <h2 id="同一モジュール内">同一モジュール内</h2>
 <p>最初に、呼び出される側の定義です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
   <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
@@ -196,14 +196,14 @@ SUBCLASSES<span style="color:#f92672">,</span>
 </code></pre></div><p>適当にスコープをつけたメソッドを定義しただけです。</p>
 <p>次に呼び出し側です。</p>
 <p>まずは、アプリケーションコードから呼び出してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// NG
 </span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// NG
 </span></code></pre></div><p>SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いので、納得出来ます。</p>
 <p>次に、テストコードから呼び出しになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge.library() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// OK
@@ -215,7 +215,7 @@ SUBCLASSES<span style="color:#f92672">,</span>
 <pre><code>include ':app'
 include ':lib1'
 </code></pre><p>まず、lib1に次のクラスを定義します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge2</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge2</span> {
   <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 
@@ -232,7 +232,7 @@ include ':lib1'
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 }
 </code></pre></div><p>次に、appモジュールからアクセスしてみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge2.library() <span style="color:#75715e">// OK
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Hoge2.library() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge2.libraryGroup() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge2.libraryGroupPrefix() <span style="color:#75715e">// OK
 </span><span style="color:#75715e"></span>Hoge2.subclasses() <span style="color:#75715e">// NG
@@ -241,7 +241,7 @@ include ':lib1'
 <h2 id="サードパーティライブラリの場合">サードパーティライブラリの場合</h2>
 <p>androidx内で定義されているスコープが付いたクラスに、appモジュールからアクセスしてみます。</p>
 <p>まずは、ライブラリモジュール内の定義から。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ContentFrameLayout</span> <span style="color:#66d9ef">extends</span> FrameLayout
 
 <span style="color:#f92672">---</span>
@@ -256,7 +256,7 @@ include ':lib1'
 <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>
 </code></pre></div><p>次に、appから呼び出してみます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ContentFrameLayout(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// NG
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ContentFrameLayout(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// NG
 </span><span style="color:#75715e"></span>MediaItem.Builder().build() <span style="color:#75715e">// NG
 </span><span style="color:#75715e"></span>DrawableWrapper(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// OK
 </span></code></pre></div><p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。

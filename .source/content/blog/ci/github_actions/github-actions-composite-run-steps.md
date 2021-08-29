@@ -4,7 +4,7 @@ title = "GitHub Actions: Composite Run Stepsの簡単な使い方"
 tags = ["ci", "githubactions", "android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Composite Run Stepsを使うと、GitHub Actionsでactionを再利用する事ができます。

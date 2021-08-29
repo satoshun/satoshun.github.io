@@ -93,7 +93,7 @@
 <h2 id="さっそくコードから">さっそくコードから</h2>
 <p>Kotlinで汎用的なカリー化のコードをどのように書けば良いのだろうと? 調べていたらとても良いコードがありました。
 ここでは3つの引数を取る関数をカリー化する例を紹介します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">P1</span>, <span style="color:#a6e22e">P2</span>, <span style="color:#a6e22e">P3</span>, <span style="color:#a6e22e">R</span>&gt; <span style="color:#960050;background-color:#1e0010">((</span><span style="color:#a6e22e">P1</span>, P2, P3) <span style="color:#f92672">-&gt;</span> R).curried(): (P1) <span style="color:#f92672">-&gt;</span> (P2) <span style="color:#f92672">-&gt;</span> (P3) <span style="color:#f92672">-&gt;</span> R {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">P1</span>, <span style="color:#a6e22e">P2</span>, <span style="color:#a6e22e">P3</span>, <span style="color:#a6e22e">R</span>&gt; <span style="color:#960050;background-color:#1e0010">((</span><span style="color:#a6e22e">P1</span>, P2, P3) <span style="color:#f92672">-&gt;</span> R).curried(): (P1) <span style="color:#f92672">-&gt;</span> (P2) <span style="color:#f92672">-&gt;</span> (P3) <span style="color:#f92672">-&gt;</span> R {
 	<span style="color:#66d9ef">return</span> { p1: P1 <span style="color:#f92672">-&gt;</span> { p2: P2 <span style="color:#f92672">-&gt;</span> { p3: P3 <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">this</span>(p1, p2, p3) } } }
 }
 </code></pre></div><p>(ここから一部抜粋 :pray: : <a href="https://github.com/MarioAriasC/funKTionale/blob/master/funktionale-currying/src/main/kotlin/org/funktionale/currying/namespace.kt">https://github.com/MarioAriasC/funKTionale/blob/master/funktionale-currying/src/main/kotlin/org/funktionale/currying/namespace.kt</a>)</p>
@@ -101,7 +101,7 @@
 <h2 id="コードの説明">コードの説明</h2>
 <p>最初にこのコードを見たときに返り値の <code>(P1) -&gt; (P2) -&gt; (P3) -&gt; R </code> ってなんだろう? と思いました。
 これは実装の動作で説明すると</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>(a: Int, b: String, c: Float) : String {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>(a: Int, b: String, c: Float) : String {
 	<span style="color:#66d9ef">return</span> a.toString() + b + c.toString()
 }
 

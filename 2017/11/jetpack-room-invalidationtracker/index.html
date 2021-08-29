@@ -97,14 +97,14 @@
 <h2 id="前置き前提知識">前置き/前提知識</h2>
 <p><a href="https://developer.android.com/topic/libraries/architecture/room.html#db-migration">Room</a>はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。</p>
 <p>RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> {
     <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUsers</span>(): Flowable&lt;List&lt;User&gt;&gt;
 }
 </code></pre></div><p>返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。</p>
 <p>そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// クライアント側のコード
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// クライアント側のコード
 </span><span style="color:#75715e"></span>userDao.getUsers()
   .subscribeOn(Schedulers.io)
   .subscribe {
@@ -122,12 +122,12 @@
 <p>というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。</p>
 <h3 id="invalidationtrackerstarttrackingtableメソッドによりtriggerを生成する">InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する</h3>
 <p>最初に各テーブルのバージョンを管理する <code>room_table_modification_log</code>が生成されます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TABLE</span> room_table_modification_log (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TABLE</span> room_table_modification_log (
     <span style="color:#66d9ef">version</span> INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
     table_id INTEGER
 )
 </code></pre></div><p>このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TRIGGER</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> room_table_modification_trigger_users_UPDATE <span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> users
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TRIGGER</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> room_table_modification_trigger_users_UPDATE <span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> users
 <span style="color:#66d9ef">BEGIN</span>
     <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> room_table_modification_log <span style="color:#66d9ef">VALUES</span> (<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">0</span>); <span style="color:#f92672">#</span> <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">は</span>table_id
 <span style="color:#66d9ef">END</span>

@@ -97,7 +97,7 @@
 <p>このライブラリの機能に、<a href="https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing#Safe-args">safeargs</a>というものがあります。これが便利で、最初はこの機能だけを使うのもいいのでは? と思っているのでその紹介です。</p>
 <h2 id="safeargsを使ってみる">safeargsを使ってみる</h2>
 <p>一般的にFragmentに適当な値を渡すときは<code>Bundle</code>を通して渡します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 呼び出し側
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 呼び出し側
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> bundle = Bundle()
 bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="color:#ae81ff">10</span>)
 
@@ -106,7 +106,7 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
 </code></pre></div><p>これの問題点としては、typesafeで無いところです。例えばリファクタリングなどで、片方の文字列を<code>&quot;step2&quot;</code>にしてしまうと、ランタイムエラーになります。</p>
 <p>これを解決にするためにNavigationではsafe argsという機能を提供しています。
 これは、DataBindingのように、クラスを生成することでtypesafeを実現します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
             <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
             <span style="color:#a6e22e">xmlns:tools=</span><span style="color:#e6db74">&#34;http://schemas.android.com/tools&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;fragment</span>
@@ -120,7 +120,7 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
   <span style="color:#f92672">&lt;/fragment&gt;</span>
 <span style="color:#f92672">&lt;/navigation&gt;</span>
 </code></pre></div><p>とnavigationを記述すると、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragmentArgs</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragmentArgs</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
 
   <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">HogeFragmentArgs</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
@@ -171,7 +171,7 @@ bundle.putInt(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="co
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上記のクラスが生成されます。これを使うことでtypesafeを実現出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 呼び出し側
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// 呼び出し側
 </span><span style="color:#75715e"></span>HogeFragmentArgs.Builder()
     .setStep(<span style="color:#ae81ff">10</span>)
     .build()

@@ -94,7 +94,7 @@
     <p>Kotlin Coroutineには <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/e16eb9d315cbee42bcadb438a8d62b10f65a9aa4/kotlinx-coroutines-core/common/src/flow/Migration.kt">Migration.kt</a> が用意されており、RxJavaからCoroutineへの置き換えを手伝ってくれます。この記事では、どのように使うかを説明します。</p>
 <hr>
 <p>例として、次のRxJavaを使ったクラスがあるとします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> io.reactivex.Observable
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> io.reactivex.Observable
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestRepository</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(): Observable&lt;User&gt; {
@@ -102,7 +102,7 @@
   }
 }
 </code></pre></div><p>これは、次のように使うことが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> disposble = repository.getUser()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> disposble = repository.getUser()
   .subscribeOn(Schedulers.io())
   .subscribe(
     { println(<span style="color:#66d9ef">it</span>) },
@@ -111,7 +111,7 @@
 <span style="color:#f92672">..</span>.
 </code></pre></div><p>このコードを、Coroutineに置き換えていきます。</p>
 <p>まず、TestRepositoryクラスのRxJava部分をCoroutineのFlowにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.Flow
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.Flow
 
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestRepository</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(): Flow&lt;User&gt; {
@@ -120,7 +120,7 @@
 }
 </code></pre></div><p>そうすると、使っている側のコードでコンパイルエラーになります。なぜなら、Flow自体には、subscribeOnなどの関数が直接実装されていないためです。</p>
 <p>しかし、Flowには拡張関数として、subscribeOnなどの関数が定義されています。なので、IDEの自動補完を使いimportすることで、一部、コンパイルエラーを解消することが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.Flow
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.Flow
 <span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.subscribe
 <span style="color:#66d9ef">import</span> kotlinx.coroutines.flow.subscribeOn
 

@@ -100,7 +100,7 @@ Upgrade OkHttp 3 to Kotlin and call it OkHttp …">
 <p>Kotlinの標準ライブラリに、<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/check-not-null.html">checkNotNull</a>があります。
 これは、値がnullなら<code>IllegalStateException</code>例外を投げるものです。</p>
 <p>以下のコードは同じ意味を持ちます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> state = someState <span style="color:#f92672">?:</span> <span style="color:#66d9ef">throw</span> IllegalStateException(<span style="color:#e6db74">&#34;State must be set beforehand&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> state = someState <span style="color:#f92672">?:</span> <span style="color:#66d9ef">throw</span> IllegalStateException(<span style="color:#e6db74">&#34;State must be set beforehand&#34;</span>)
 
 <span style="color:#66d9ef">val</span> state = checkNotNull(someState) { <span style="color:#e6db74">&#34;State must be set beforehand&#34;</span> }
 </code></pre></div><p>ただ、<code>no preference myself</code>と言っている通り、使うかどうかはプロジェクトで分かれそうです。
@@ -121,7 +121,7 @@ Upgrade OkHttp 3 to Kotlin and call it OkHttp …">
 <h2 id="プロパティ--getjvmnameはより慣用的">プロパティ + get:JvmNameはより慣用的</h2>
 <p><a href="https://github.com/square/okhttp/pull/4745#discussion_r266697339">property + @getJvmName(&ldquo;size&rdquo;) seems more idiomatic</a></p>
 <p>単純かつ副作用がない関数はプロパティのほうがKotlinっぽいです。さらに、<code>@get:JvmName</code>を使うことで、Javaからスムーズに使うことが出来ます、</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">size</span>(): Int = encodedNames.size
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">size</span>(): Int = encodedNames.size
 
 <span style="color:#a6e22e">@get</span>:JvmName(<span style="color:#e6db74">&#34;size&#34;</span>)
 <span style="color:#66d9ef">val</span> size <span style="color:#66d9ef">get</span>(): Int = encodedNames.size

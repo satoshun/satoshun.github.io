@@ -112,7 +112,7 @@
 <p><a href="https://developer.android.com/studio/build/gradle-tips.html#configure-project-wide-properties">Androidの公式ドキュメント: Configure project-wide properties</a>で紹介されている方法です。
 extにバージョンを定義します。</p>
 <p>例えば、<a href="https://square.github.io/okhttp/">OkHttp</a>では、次のように定義しています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">buildscript <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">buildscript <span style="color:#f92672">{</span>
   ext<span style="color:#f92672">.</span><span style="color:#a6e22e">versions</span> <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
       <span style="color:#e6db74">&#39;animalSniffer&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;1.17&#39;</span><span style="color:#f92672">,</span>
       <span style="color:#e6db74">&#39;assertj&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;3.11.0&#39;</span><span style="color:#f92672">,</span>
@@ -130,7 +130,7 @@ extにバージョンを定義します。</p>
   <span style="color:#f92672">...</span>
 </code></pre></div><p>extプロパティにライブラリのバージョンをセットします。</p>
 <p>そして、次のように使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
   api deps<span style="color:#f92672">.</span><span style="color:#a6e22e">okio</span>
   api deps<span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinStdlib</span>
   compileOnly deps<span style="color:#f92672">.</span><span style="color:#a6e22e">android</span>
@@ -154,7 +154,7 @@ extにバージョンを定義します。</p>
 <h2 id="2-buildsrc--kotlin">2. buildSrc + Kotlin</h2>
 <p>buildSrc以下にKotlinファイルを定義し、バージョンを管理することも出来ます。</p>
 <p>例えば、<a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencies/Dependencies.kt">androidx: Dependencies.kt</a>では、次のように定義しています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> ANDROID_GRADLE_PLUGIN = <span style="color:#e6db74">&#34;com.android.tools.build:gradle:3.4.2&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> ANDROID_GRADLE_PLUGIN = <span style="color:#e6db74">&#34;com.android.tools.build:gradle:3.4.2&#34;</span>
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> ANDROIDX_TEST_CORE = <span style="color:#e6db74">&#34;androidx.test:core:1.1.0&#34;</span>
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> ANDROIDX_TEST_EXT_JUNIT = <span style="color:#e6db74">&#34;androidx.test.ext:junit:1.1.0&#34;</span>
 <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> ANDROIDX_TEST_EXT_KTX = <span style="color:#e6db74">&#34;androidx.test.ext:junit-ktx:1.1.0&#34;</span>
@@ -164,7 +164,7 @@ extにバージョンを定義します。</p>
 <span style="color:#f92672">..</span>.
 </code></pre></div><p>Kotlinの定数として定義しています。</p>
 <p>そして、次のように使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
     api<span style="color:#f92672">(</span>KOTLIN_STDLIB<span style="color:#f92672">)</span>
     androidTestImplementation<span style="color:#f92672">(</span>JUNIT<span style="color:#f92672">)</span>
     androidTestImplementation<span style="color:#f92672">(</span>TRUTH<span style="color:#f92672">)</span>

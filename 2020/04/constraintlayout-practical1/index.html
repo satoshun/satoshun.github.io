@@ -115,7 +115,7 @@
 <p>この部分は、Picasso、Glideなどの画像ライブラリに頼るパターンもあると思うんですが、今回はShapeableImageViewを使いたいと思います。</p>
 <p>4つのShapeableImageViewを使い、それぞれ「左上、右上、左下、右下」の部分が丸くなるShapeを定義します。
 左上を丸くするShapeは次のように定義できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearanceOverlay.Example.TopLeft&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearanceOverlay.Example.TopLeft&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamilyTopLeft&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
   <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSizeTopLeft&#34;</span><span style="color:#f92672">&gt;</span>100%<span style="color:#f92672">&lt;/item&gt;</span>
 <span style="color:#f92672">&lt;/style&gt;</span>
@@ -124,7 +124,7 @@
 </figure>
 
 <p>右上、左下、右下のShapeも同じように作ってあげます。そして、それら4つViewの制約を次のように作ってあげます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/top_left&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;30dp&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;30dp&#34;</span>
@@ -176,14 +176,14 @@
 <p>これで4つの画像を組み合わせて、円形の画像を表現するところまで出来ました。</p>
 <h1 id="0101の部分は右にyour_idの部分はyour-nameの右に配置される">01/01の部分は右に、@your_idの部分はYour Nameの右に配置される</h1>
 <p>01/01の部分は右に固定なので、<code>app:layout_constraintEnd_toEndOf=&quot;parent&quot;</code>を指定すれば良さそうです</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/date&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
   <span style="color:#a6e22e">android:layout_marginEnd=</span><span style="color:#e6db74">&#34;16dp&#34;</span>
   <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 </code></pre></div><p>次にYour Nameは一番左に、@your_idはそれの右に配置します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/name&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
@@ -212,7 +212,7 @@
 
 <hr>
 <p>Your Nameと、@your_idが真ん中に寄ってしまったので、<code>app:layout_constraintHorizontal_chainStyle</code>を指定して、左寄せにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/name&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
@@ -240,7 +240,7 @@
 <hr>
 <p>wrap_contentの場合、制約を超えて枠をはみ出してしまうためです。</p>
 <p>これを解決するために、<code>app:layout_constrainedWidth</code>を使います。これを使うと、制約を超えないwrap_contentを定義できます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;TextView</span>
   <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/name&#34;</span>
   <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
   <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>

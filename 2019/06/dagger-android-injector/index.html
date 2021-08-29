@@ -98,7 +98,7 @@
 <h3 id="appcomponent">AppComponent</h3>
 <p>AndroidSupportInjectionModuleを使っているなら、<code>AndroidInjectionModule</code>に置き換えます。
 今後は、<code>AndroidSupportInjectionModule</code>を使う必要はありません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Singleton</span>
 <span style="color:#a6e22e">@dagger</span>.Component(
   modules = [
     AndroidInjectionModule<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, <span style="color:#75715e">// AndroidInjectionModuleを使う
@@ -108,7 +108,7 @@
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">AppComponent</span> <span style="color:#f92672">..</span>.
 </code></pre></div><h3 id="application">Application</h3>
 <p>Applicationで実装している、HasActivityInjector、HasServiceInjectorなどのHasxxxInjectorを<code>HasAndroidInjector</code>に置き換えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application(),
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> : Application(),
   <span style="color:#75715e">// HasAndroidInjectorのみでおｋ
 </span><span style="color:#75715e"></span>  HasAndroidInjector {
 
@@ -124,7 +124,7 @@
 </code></pre></div><p>今まではActivity用、Fragment用、Service用などのクラスごとに<code>DispatchingAndroidInjector</code>がありましたが、それが1つの<code>DispatchingAndroidInjector&lt;Any&gt;</code>まとまりました。</p>
 <h2 id="activity-fragment">Activity, Fragment</h2>
 <p>HasSupportFragmentInjectorなどのInjectorは、<code>HasAndroidInjector</code>に置き換えます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity(),
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity(),
   <span style="color:#75715e">// HasSupportFragmentInjectorの代わりに、HasAndroidInjectorを使う
 </span><span style="color:#75715e"></span>  HasAndroidInjector {
 
@@ -156,7 +156,7 @@
 <p>今後、androidxのサポートを柔軟に対応するために必要だった変更のようです。</p>
 <h2 id="daggerapplicationやdaggerappcompatactivitydaggersupportfragmentなどを使っている場合">DaggerApplicationや、DaggerAppCompatActivity、DaggerSupportFragmentなどを使っている場合</h2>
 <p>2.23では、これらの基底クラスで<code>HasAndroidInjector</code>を使っているので特に対応は必要ありません。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HasAndroidInjectorを使う実装に置き換わっている
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// HasAndroidInjectorを使う実装に置き換わっている
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">@Beta</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DaggerApplication</span> <span style="color:#66d9ef">extends</span> Application <span style="color:#66d9ef">implements</span> HasAndroidInjector <span style="color:#f92672">{</span>
   <span style="color:#f92672">...</span>

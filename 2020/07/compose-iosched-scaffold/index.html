@@ -116,7 +116,7 @@ limitations under the License.
 
 <h2 id="drawermenuなどを実装していく">Drawer、Menuなどを実装していく</h2>
 <p>Jetpack Composeでは、<code>Scaffold</code>関数を使うことで前述の画像のような、基本的な画面を作ることが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Scaffold</span>(
     scaffoldState: ScaffoldState = remember { ScaffoldState() },
     topBar: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
@@ -132,7 +132,7 @@ limitations under the License.
 )
 </code></pre></div><p><code>Scaffold</code>関数の定義はこのようになっています。引数を見ると、topBar、bottomBarからAppbarを、floatingActionButtonからFloatingActionButton、drawerContentからDrawerの指定が出来ます。</p>
 <p>まずは、topBar引数から、上部にAppbarを設定してみます。Appbarを構築するために<code>TopAppBar</code>が定義されているので、これを使います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Scaffold(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Scaffold(
   topBar = {
     TopAppBar(
       <span style="color:#f92672">..</span>.
@@ -141,7 +141,7 @@ limitations under the License.
   <span style="color:#f92672">..</span>.
 )
 </code></pre></div><p><code>TopAppBar</code>関数を使うと、画面上部にAppbarをレイアウト出来ます。今回はタイトルを<code>title</code>引数から、ナビゲーションアイコンを<code>navigationIcon</code>引数から、アカウントアイコンを<code>actions</code>引数からそれぞれ設定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">TopAppBar(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">TopAppBar(
   title = { Text(text = <span style="color:#e6db74">&#34;Home&#34;</span>) },
   navigationIcon = {
     IconButton(onClick = { TODO() }) {
@@ -162,14 +162,14 @@ limitations under the License.
   backgroundColor = Color.White
 )
 </code></pre></div><p>まずは<code>title</code>引数から見ていきます。<code>title</code>では、<code>Text</code>関数に文字列Homeを指定します。<code>Text</code>はTextViewのようなものです。文字列を表示する事が出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Text(text = <span style="color:#e6db74">&#34;Home&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Text(text = <span style="color:#e6db74">&#34;Home&#34;</span>)
 </code></pre></div><p>次に、<code>navigationIcon</code>引数。ここでは、メニューアイコンを出力したいので、<code>IconButton</code>関数と<code>Icon</code>関数を使います。<code>IconButton</code>はonClickからのクリックハンドリングや、レイアウトを調整してくれる機能があります。
 <code>IconButton</code>関数と<code>Icon</code>関数を組み合わせることで、いい感じにアイコンを表示することが出来ます。また、Iconの引数に指定している<code>Icons.Filled.Menu</code>はJetpack Compose materialライブラリ側で定義されているアイコンです。基本的なアイコンはライブラリ側で定義されており、今回はそれを使っています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">IconButton(onClick = { TODO() }) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">IconButton(onClick = { TODO() }) {
   Icon(Icons.Filled.Menu)
 }
 </code></pre></div><p>次に、<code>actions</code>引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、<code>Icon</code>と<code>IconButton</code>を組み合わせて使います。また、IOSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、<code>defaultWidth</code>と<code>defaultHeight</code>から設定できます。今回は<code>36.dp</code>を設定します。次に、色の変更は<code>tint</code>からします。今回は<code>Color(0xFF1A73E8)</code>を指定し、青っぽい色に設定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">IconButton(onClick = { TODO() }) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">IconButton(onClick = { TODO() }) {
   Icon(
     Icons.Outlined.AccountCircle.copy(
       defaultWidth = <span style="color:#ae81ff">36.</span>dp,

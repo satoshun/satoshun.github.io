@@ -130,11 +130,11 @@
 </ul>
 <p>の2つのモジュールを作ります。</p>
 <p>メインルーターモジュールでは次の遷移専用インターフェースを定義します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainRouter</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainRouter</span> {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent
 }
 </code></pre></div><p>そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() : MainRouter {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() : MainRouter {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToMain</span>(context: Context): Intent {
     <span style="color:#66d9ef">return</span> Intent(context, MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
   }
@@ -147,7 +147,7 @@
   <span style="color:#a6e22e">@Binds</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">bindMainRouter</span>(impl: MainRouterImpl): MainRouter
 }
 </code></pre></div><p>これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SubActivity</span> : AppCompatActivity() {
   <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> router: MainRouter
 
   <span style="color:#f92672">..</span>.
@@ -161,11 +161,11 @@
 <p>これで、相互に遷移する画面だとしても循環参照になることなく解決することが出来ます😃</p>
 <h2 id="補足">補足</h2>
 <p>いちいちルーターモジュールを作るのがめんどうなのであれば、共通のRouterインターフェースを作る方法もあります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Router</span>&lt;T&gt; {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Router</span>&lt;T&gt; {
   <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: T): Intent
 }
 </code></pre></div><p>実装は次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#f92672">--</span>-<span style="color:#960050;background-color:#1e0010">実装</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#f92672">--</span>-<span style="color:#960050;background-color:#1e0010">実装</span>
 
 <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainRouter2Impl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>() : Router&lt;Unit&gt; {
   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">route</span>(context: Context, params: Unit): Intent {

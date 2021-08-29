@@ -103,11 +103,11 @@
 <p>ドキュメントのbenefitにあるサンプルを取り上げ説明します。
 <a href="http://google.github.io/truth/benefits">http://google.github.io/truth/benefits</a></p>
 <p>まず従来のJUnitスタイルを使って書きます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Optional<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> middleName <span style="color:#f92672">=</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getMiddleName</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Optional<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> middleName <span style="color:#f92672">=</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getMiddleName</span><span style="color:#f92672">();</span>
 assertFalse<span style="color:#f92672">(</span>middleName<span style="color:#f92672">.</span><span style="color:#a6e22e">isPresent</span><span style="color:#f92672">());</span>
 </code></pre></div><p>assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）</p>
 <p>これがTruthを使うと次のようになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Optional<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> middleName <span style="color:#f92672">=</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getMiddleName</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Optional<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> middleName <span style="color:#f92672">=</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getMiddleName</span><span style="color:#f92672">();</span>
 assertThat<span style="color:#f92672">(</span>middleName<span style="color:#f92672">).</span><span style="color:#a6e22e">isAbsent</span><span style="color:#f92672">();</span>
 </code></pre></div><p>assertThatはTruthに定義されているメソッドです。<code>middleName</code>がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。</p>
 <p>上記の<code>isAbsent</code>はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。
@@ -115,11 +115,11 @@ assertThat<span style="color:#f92672">(</span>middleName<span style="color:#f926
 <h2 id="失敗メッセージがわかりやすい">失敗メッセージがわかりやすい</h2>
 <p>こちらもbenefitにあるサンプルを取り上げます。</p>
 <p>まずは従来にJUnitスタイルから。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertTrue<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">));</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertTrue<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">));</span>
 </code></pre></div><p>この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。
 失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。</p>
 <p>次にTruthスタイルです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertThat<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">).</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">assertThat<span style="color:#f92672">(</span>googleColors<span style="color:#f92672">).</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>PINK<span style="color:#f92672">);</span>
 </code></pre></div><p><code>&lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&gt; should have contained &lt;PINK&gt;</code> のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。</p>
 <p>以上がTruthのメリットになります。</p>
 <h2 id="補足">補足</h2>

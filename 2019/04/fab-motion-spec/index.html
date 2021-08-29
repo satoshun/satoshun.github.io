@@ -109,7 +109,7 @@ MotionSpecを使うことで、次のアニメーション属性をカスタマ�
 <p>デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。</p>
 <p>FloatingActionButton用のXMLはソースコードを読んでいくと、<code>design_fab_show_motion_spec.xml</code>と<code>design_fab_hide_motion_spec.xml</code>で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。</p>
 <p>まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている<code>design_fab_show_motion_spec.xml</code>の中身になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 <span style="color:#75715e">&lt;!--
 </span><span style="color:#75715e">    Copyright 2017 The Android Open Source Project
 </span><span style="color:#75715e">
@@ -145,7 +145,7 @@ MotionSpecを使うことで、次のアニメーション属性をカスタマ�
 <span style="color:#f92672">&lt;/set&gt;</span>
 </code></pre></div><p>今回は、アニメーションを長くして、アイコンをバウンドしたいとします。
 それは、durationを長くして、interpolatorに<code>@android:anim/bounce_interpolator</code>を指定すれば良いです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 <span style="color:#f92672">&lt;set</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span><span style="color:#f92672">&gt;</span>
   <span style="color:#f92672">&lt;objectAnimator</span>
     <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
@@ -167,7 +167,7 @@ MotionSpecを使うことで、次のアニメーション属性をカスタマ�
 <span style="color:#f92672">&lt;/set&gt;</span>
 </code></pre></div><p>これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。</p>
 <p>次に、これをViewにセットします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">fab.showMotionSpec = MotionSpec.createFromResource(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">fab.showMotionSpec = MotionSpec.createFromResource(
     <span style="color:#66d9ef">this</span>,
     R.animator.fab_show_motion_spec
 )
