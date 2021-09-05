@@ -4,18 +4,18 @@ title = "KMMでアクセス修飾子をつけるとobjcヘッダーファイル�
 tags = ["kmm", "kotlin"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 KMMで作ったライブラリはobjcヘッダーを生成し、それを介してSwift(Xcode)側から読み込むことが出来ます。
 
-Kotlin側では、極力internalとか、private等のアクセス修飾子をつけることで、objcヘッダーを小さくすることが出来ます。
+Kotlin側で、internalとか、private等のアクセス修飾子をつけることで、objcヘッダーを小さくすることが出来ます。
 
 ## つけない場合
 
 ktorのHttpClientを例にして説明します。
 
-アクセス修飾子をつけない場合は、次のようなヘッダーファイルを生成します。
+コンストラクタにアクセス修飾子をつけない、次のようなクラスがあるとします。
 
 ```kotlin
 import io.ktor.client.HttpClient
@@ -25,7 +25,11 @@ class Test1(
 )
 ```
 
+これは、次のようなヘッダーファイルを生成します。(一部省略)
+
 ```text
+...
+
 public class Test1 : KotlinBase {
     public init(httpClient: Ktor_client_coreHttpClient)
 }
@@ -44,13 +48,14 @@ public class Ktor_client_coreHttpClient : KotlinBase, Kotlinx_coroutines_coreCor
 ...
 ```
 
-HttpClientに関連したクラスをobjcヘッダーに公開するので、objcヘッダーがとても大きくなります。
-2143行のobjcヘッダーになっていました。
+HttpClientに関連したクラスをobjcヘッダーに公開しています。
+ktorは大きいライブラリなので、objcヘッダーがとても大きくなります。
+
+最終的に、2143行のobjcヘッダーになっていました。
 
 ## つける場合
 
-次に、アクセス修飾子をつけてみます。次のようなヘッダーファイルを生成します。
-
+次に、アクセス修飾子をつけてみます。
 
 ```kotlin
 import io.ktor.client.HttpClient
@@ -60,13 +65,18 @@ class Test2 internal constructor(
 )
 ```
 
+これは次のようなヘッダーファイルを生成します。
+
 ```text
+...
+
 public class Test2 : KotlinBase {
 }
 ```
 
 internalをつけたので、HttpClientに関連したクラスをobjcヘッダーに公開せずに済みます。
-112行のobjcヘッダーになっていました。
+
+最終的に、112行のobjcヘッダーになっていました。つけない場合に比べると差は歴然です。
 
 ## まとめ
 
