@@ -105,7 +105,7 @@ GitHubでソー …">
 <li>ghostプロセスの再起動(supervisorctl restart ghost)</li>
 </ul>
 <p>Playbookは以下になります.</p>
-<pre><code>---
+<pre tabindex="0"><code>---
 - hosts: all
   user: &quot;{{ user }}&quot;
   tasks:
@@ -115,22 +115,22 @@ GitHubでソー …">
 </code></pre><p>各タスクについて説明していきます.</p>
 <h3 id="git-pullする">Git pullする</h3>
 <p>Gitモジュールがあるので, それを使います.</p>
-<pre><code>- name: Update Git repository
+<pre tabindex="0"><code>- name: Update Git repository
   git: repo=&lt;git url&gt; dest=&lt;path to project&gt;
 </code></pre><h3 id="npm-moduleの更新">npm moduleの更新</h3>
 <p>npmモジュールがあるので, それを使います.</p>
-<pre><code>- name: Update npm module
+<pre tabindex="0"><code>- name: Update npm module
   npm: path=&lt;path to project&gt;
 </code></pre><h3 id="gruntの実行">gruntの実行</h3>
 <p>commandモジュールを使います.</p>
-<pre><code>- name: Run grunt init
+<pre tabindex="0"><code>- name: Run grunt init
   command: &quot;grunt init chdir=&lt;path to project&gt;&quot;
 
 - name: Run grunt prod
   command: &quot;grunt prod chdir=&lt;path to project&gt;&quot;
 </code></pre><h3 id="ghost再起動">Ghost再起動</h3>
 <p>supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.</p>
-<pre><code>- name: Restart Ghost
+<pre tabindex="0"><code>- name: Restart Ghost
   sudo: yes
   supervisorctl: name=ghost state=restarted
 </code></pre>

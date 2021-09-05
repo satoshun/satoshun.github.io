@@ -93,7 +93,7 @@
 本記事では<code>3.4.0-alpha07</code>で試しました。</p>
 <p>まず現状の問題点として、ライブラリモジュールのRクラスのサイズが大きくなる課題があります。それは、ライブラリのRクラスは依存関係にあるRクラスがどんどんマージされていくためです。
 それを解決するために<code>namespacedRClass</code>が追加されました。使い方は簡単で、次の記述を<code>gradle.properties</code>に追加するだけです。</p>
-<pre><code>android.namespacedRClass=true
+<pre tabindex="0"><code>android.namespacedRClass=true
 </code></pre><p>では、これからこのフラグがtrueとfalseでどのようにRクラスの内容が変わるか見ていきます。
 例として、appcompatに依存しているライブラリモジュールを用意します。</p>
 <p>まずは、<code>namespacedRClass=false</code>の時のRクラスです。</p>

@@ -99,7 +99,7 @@
 <p>Dagger Hiltの2.31以降に、この問題を解決する Classpath Aggregation が追加されたので、それを紹介します。</p>
 <h2 id="classpath-aggregation">Classpath Aggregation</h2>
 <p>Classpath Aggregationを有効にするには、次の設定をGradleに記述します。</p>
-<pre><code>hilt {
+<pre tabindex="0"><code>hilt {
   enableExperimentalClasspathAggregation = true
 }
 </code></pre><p>これを追加することで、<code>implementation</code> から <code>api</code> にしなくても、コンパイルを成功させることが出来ます。</p>

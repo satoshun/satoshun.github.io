@@ -177,7 +177,7 @@ Itemのインスタンスが変わったらfalseを返し、Itemの内容が変�
 <p>この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、<code>areContentsTheSame</code>がfalseを返すためです。
 <code>areContentsTheSame</code>がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。</p>
 <h3 id="同じid--インスタンスを毎回生成する--equalsを実装してtrueを返す">同じid &amp;&amp; インスタンスを毎回生成する &amp;&amp; equalsを実装して、trueを返す</h3>
-<pre><code>class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
+<pre tabindex="0"><code>class Adapter : GroupAdapter&lt;GroupieViewHolder&gt;() {
   fun update() {
     update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;&amp; idは固定
   }

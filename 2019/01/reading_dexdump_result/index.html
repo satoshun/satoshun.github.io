@@ -96,10 +96,10 @@
 逆アセンブルしたファイルを読みたかったのでそれのメモです。</p>
 <p>内容はまとまっていません。自分用のメモレベルの記事になります。</p>
 <p>dexファイルをコマンドから作るにはjavacとd8コマンドを使います。d8コマンドは <a href="https://r8.googlesource.com/r8">https://r8.googlesource.com/r8</a> の手順通りにビルドします。</p>
-<pre><code>javac *.java // or kotlinc *.kt
+<pre tabindex="0"><code>javac *.java // or kotlinc *.kt
 java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/android.jar --release *.class
 </code></pre><p>d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。</p>
-<pre><code>$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
+<pre tabindex="0"><code>$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
 </code></pre><p>例えば次のJavaコードを逆アセンブルしてみます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
@@ -142,7 +142,7 @@ java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/an
         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hover&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><pre><code>Processing 'classes.dex'...
+</code></pre></div><pre tabindex="0"><code>Processing 'classes.dex'...
 Opened 'classes.dex', DEX version '035'
 Class #0            -
   Class descriptor  : 'LTest;' // クラス名Test

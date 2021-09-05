@@ -111,13 +111,13 @@ Non-Null型にnullを代入しようとしているからです。</p>
 </span><span style="color:#75715e"></span>println(d.length) <span style="color:#75715e">// ここで例外が投げられる
 </span></code></pre></div><p>なぜこのような挙動になるのかを説明します。まず <code>castNull()</code>メソッドに定義されたジェネリック型Tは<code>Any?</code>をupperに持ちます。
 Kotlinはジェネリックを使い、かつNullable型をupperに持つとき、nullかどうかのチェックをしません。これはバイトコードを見れば分かります。</p>
-<pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+<pre tabindex="0"><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 CHECKCAST java/lang/Object
 </code></pre><p><code>CHECKCAST</code>しかしておらず、nullかどうかのチェックをしていません。
 なので、<code>val d: String = castNull()</code>ではnullチェックがされないため例外が投げられず、実際にメソッドをコールする<code>println(d.length)</code>のタイミングで例外が投げられます。</p>
 <p>Non-Null型である<code>String</code>にnullを代入することが出来ました。</p>
 <p>次に、<code>fun &lt;T: Any&gt; castNull(): T = null as T</code>と、Non-Null型をupperにした場合のバイトコードは次になります。</p>
-<pre><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
+<pre tabindex="0"><code>GETSTATIC sample/SampleTestsJVMKt.a : Ljava/lang/String;
 DUP
 IFNONNULL L1
 NEW kotlin/TypeCastException

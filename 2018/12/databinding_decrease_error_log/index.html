@@ -100,7 +100,7 @@
 <p>まずどのようなエラーログが出力されるかを見ていきます。
 適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。</p>
 <p>まずはData Binding 3.2.1から。</p>
-<pre><code>&gt; Task :app:kaptGenerateStubsDebugKotlin
+<pre tabindex="0"><code>&gt; Task :app:kaptGenerateStubsDebugKotlin
 e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol
   protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,
                              ^
@@ -114,7 +114,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 ...
 </code></pre><p>Data Binding周りのエラーログが無限に出ます。悲しい😂</p>
 <p>次に3.4.0-alpha07です。</p>
-<pre><code>&gt; Task :app:kaptGenerateStubsDebugKotlin
+<pre tabindex="0"><code>&gt; Task :app:kaptGenerateStubsDebugKotlin
 e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation
 @error.NonExistentClass()
 </code></pre><p>ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃</p>
@@ -150,7 +150,7 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 <p>AGPのアップデートは気軽に出来ないので、
 Data Bindingのバージョンだけをアップデートしようと思ったんですが、エラーが出てしまい出来ませんでした。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">kapt <span style="color:#e6db74">&#34;androidx.databinding:databinding-compiler:3.4.0-alpha07&#34;</span>
-</code></pre></div><pre><code>ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
+</code></pre></div><pre tabindex="0"><code>ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
 </code></pre><p>AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>

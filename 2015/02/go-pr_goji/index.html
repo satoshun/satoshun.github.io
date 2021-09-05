@@ -100,7 +100,7 @@
 <h2 id="switch-type-assertion">switch type assertion</h2>
 <p>1つ目は, switch type assertionについてです.
 switch文の冒頭にある, type assertionの結果を使うようにしました.</p>
-<pre><code>--- a/web/pattern.go
+<pre tabindex="0"><code>--- a/web/pattern.go
 +++ b/web/pattern.go
 @@ -32,13 +32,13 @@ type Pattern interface {
  }
@@ -124,7 +124,7 @@ switch文の冒頭にある, type assertionの結果を使うようにしまし�
 <h2 id="range-syntax">range syntax</h2>
 <p>次は, range syntaxです.
 s.patsはsliceになっており, 最初はlenで実装していましたが, rangeを使ったほうがスッキリするじゃないかと思いPRしました.</p>
-<pre><code>-       for i := 0; i &lt; len(s.pats); i++ {
+<pre tabindex="0"><code>-       for i := 0; i &lt; len(s.pats); i++ {
 +       for i, pat := range s.pats {
                 sli := s.literals[i]
                 if !strings.HasPrefix(path, sli) {

@@ -95,7 +95,7 @@ gist: …">
 <p>にソースコードがあります.</p>
 <h2 id="nil-pointer-receiver">nil pointer receiver</h2>
 <p>nilについて. 下のコードを見てください.</p>
-<pre><code>package main
+<pre tabindex="0"><code>package main
 
 import &quot;fmt&quot;
 
@@ -116,7 +116,7 @@ func main() {
 </code></pre></div><p>ちゃんと実行できました. Goではnilにも型情報があるので, nilの場合でもPointer receiverの場合は実行できるのです!
 この機能を使えば, Pointer receiverの中でnilの場合に処理を変えることが可能です. 覚えておくと便利だと思います.</p>
 <p>ちなみに, Value receiverの場合はエラーが出ます.</p>
-<pre><code>package main
+<pre tabindex="0"><code>package main
 
 import &quot;fmt&quot;
 

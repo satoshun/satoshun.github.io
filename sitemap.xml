@@ -2,10 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2021-08-29T13:18:37+00:00</lastmod>
-  </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/kmm/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2021/09/kmm-export-objc-header/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/kotlin/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
     <lastmod>2021-08-29T13:18:37+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/ci/</loc>
@@ -15,12 +30,6 @@
     <lastmod>2021-08-29T13:18:37+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/githubactions/</loc>
-    <lastmod>2021-08-29T13:18:37+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2021-08-29T13:18:37+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2021-08-29T13:18:37+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/compose/</loc>
@@ -56,17 +65,11 @@
     <loc>https://satoshun.github.io/2021/03/gradle-central-declaration-of-dependencies/</loc>
     <lastmod>2021-03-28T06:48:44+00:00</lastmod>
   </url><url>
-    <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2021-03-06T03:43:11+00:00</lastmod>
-  </url><url>
     <loc>https://satoshun.github.io/2021/03/kotlin-infix/</loc>
     <lastmod>2021-03-06T03:43:11+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/02/paparazzi-snapshot-testing/</loc>
     <lastmod>2021-02-28T07:53:27+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/kmm/</loc>
-    <lastmod>2021-02-20T09:06:26+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/02/kmm-cocoapods-external-source/</loc>
     <lastmod>2021-02-20T09:06:26+00:00</lastmod>

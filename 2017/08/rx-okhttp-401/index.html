@@ -104,7 +104,7 @@
 <p>などがあるかなと(OkHttp、RxJavaを使うことを前提とする)</p>
 <p>このブログではOkHttpのAuthenticatorを使う方法で401の処理をいい感じにしたいと思います。</p>
 <p>またrefresh tokenは非同期、APIリクエストが必要であるとします。擬似コードはこんな感じです。</p>
-<pre><code>fun refreshToken(): Observable&lt;String&gt; {
+<pre tabindex="0"><code>fun refreshToken(): Observable&lt;String&gt; {
   return Observable.just(Credentials.basic(&quot;sato&quot;, &quot;passwordhoge&quot;))
       .doOnNext { println(&quot;GET credential: $it&quot;) } // Log出力
       .delay(2000, TimeUnit.MILLISECONDS)

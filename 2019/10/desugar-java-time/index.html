@@ -131,7 +131,7 @@ println(zoneOffset)
 
 <p><code>java.time</code> は <code>j$.time</code>に変換されていました。</p>
 <p>また、<code>Date#toInstant</code>など、既存クラスに新しく追加された<code>date.time</code>のAPIも使えます。R8のコードを読んだところ、おそらく次のAPIが対応しています。</p>
-<pre><code>&quot;retarget_lib_member&quot;: {
+<pre tabindex="0"><code>&quot;retarget_lib_member&quot;: {
   &quot;java.util.Calendar#toInstant&quot;: &quot;java.util.DesugarCalendar&quot;,
   &quot;java.util.Date#from&quot;: &quot;java.util.DesugarDate&quot;,
   &quot;java.util.Date#toInstant&quot;: &quot;java.util.DesugarDate&quot;,

@@ -119,11 +119,11 @@ apply plugin: <span style="color:#e6db74">&#39;com.shopify.testify&#39;</span>
 }
 </code></pre></div><p>こんな感じでテストを記述できます。<code>ScreenshotRule</code> を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。</p>
 <p>次にテストの実行をします。まず下準備として、baseとなる画像を生成します。</p>
-<pre><code>./gradlew screenshotRecord
+<pre tabindex="0"><code>./gradlew screenshotRecord
 </code></pre><p>これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。</p>
 <p>次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。</p>
-<pre><code>./gradlew screenshotTest
-</code></pre><pre><code>------------------------------------------------------------
+<pre tabindex="0"><code>./gradlew screenshotTest
+</code></pre><pre tabindex="0"><code>------------------------------------------------------------
 Run the Testify screenshot tests
 ------------------------------------------------------------
 
@@ -134,7 +134,7 @@ Time: 2.264
 
 OK (1 test)
 </code></pre><p>失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。</p>
-<pre><code>------------------------------------------------------------
+<pre tabindex="0"><code>------------------------------------------------------------
 Run the Testify screenshot tests
 ------------------------------------------------------------
 

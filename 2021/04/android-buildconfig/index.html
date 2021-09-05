@@ -94,7 +94,7 @@ gradle.propertiesから設定できま …">
     
     <p>buildFeaturesから、BuildConfigクラスの生成をするかどうかを設定できるようになりました。</p>
 <p><code>gradle.properties</code>から設定できます。</p>
-<pre><code>android.defaults.buildfeatures.buildconfig=false # defaultはtrue
+<pre tabindex="0"><code>android.defaults.buildfeatures.buildconfig=false # defaultはtrue
 </code></pre><p>マルチモジュール構成のプロジェクトでは、基本的にはBuildConfigを生成しないと思うので、BuildConfigの生成のデフォルト設定をoffにしておくと良いと思います。</p>
 <p>モジュール単位で、生成をonにするには、<code>build.gradle</code>に次の記述をします。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">android <span style="color:#f92672">{</span>

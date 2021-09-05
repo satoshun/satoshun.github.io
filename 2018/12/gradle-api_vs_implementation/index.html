@@ -98,7 +98,7 @@ GradleでcompileがDeprecatedにな …">
 <p>Dagger2でもcompileをimplementationに置き換えるPRが出されました。https://github.com/google/dagger/pull/1130</p>
 <p>内容が興味深かったのでまとめてみようと思います。</p>
 <p>まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。</p>
-<pre><code>// Add Dagger dependencies
+<pre tabindex="0"><code>// Add Dagger dependencies
 dependencies {
   - compile 'com.google.dagger:dagger:2.x'
   + implementation 'com.google.dagger:dagger:2.x'
@@ -120,7 +120,7 @@ Daggerをライブラリで使ったときに、そのライブラリ内ではCo
 なので、結局このライブラリを依存に持つようなモジュールはLazy、Providerを使うことになるので、最終的にDaggerに依存することが確定しているなら、implementationではなく、apiで指定したほうが良いのではという話です。ただし、プロジェクトのモジュール構成によってはimplementationのほうがふさわしい場合もあるので、その場合はimplementationに置き換えることが期待されています。</p>
 <p>最終的なこの議論の着地として、implementationを使うかapiを使うかはプロジェクトに強く依存するのでどちらが正しいかはない。そのため、今回置き換えたいcompileはapiとほぼ同等の意味を持つので、置き換えるならapiのほうがふさわしいんじゃないか、今までと同じ動作をするので安全じゃないかという感じでまとまりました。</p>
 <p>現状の差分は以下です。</p>
-<pre><code>-  compile 'com.google.dagger:dagger:2.x'
+<pre tabindex="0"><code>-  compile 'com.google.dagger:dagger:2.x'
 +  api 'com.google.dagger:dagger:2.x'
   annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
 }

@@ -187,7 +187,7 @@ Builderパターンだと名前付きメソッドで値を指定出来るので,
 <h2 id="早期リターンパターンearly-return-pattern">早期リターンパターン(early return pattern)</h2>
 <p>早期リターンパターンは, <strong>メソッドの先頭</strong> で, 何もせずにメソッドを終了するか, 例外をスローするパターンです.</p>
 <p><a href="https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519">https://github.com/square/picasso/blob/d35058278cff55874d133cfd63286dd0f1ff0d50/picasso/src/main/java/com/squareup/picasso/RequestCreator.java#L519</a></p>
-<pre><code>public void into(Target target) {
+<pre tabindex="0"><code>public void into(Target target) {
   long started = System.nanoTime();
 
   // こっから例外などの判定

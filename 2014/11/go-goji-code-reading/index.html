@@ -150,17 +150,17 @@ Pattern, *regexp.Regexp, stringの3パターンに対応しています.</p>
   }
 }
 </code></pre></div><p>こんな感じです. 上から順番に見ていきます.</p>
-<pre><code>var wildcard bool
+<pre tabindex="0"><code>var wildcard bool
 if strings.HasSuffix(s, &quot;/*&quot;) {
   s = s[:len(s)-1]
   wildcard = true
 }
 </code></pre><p>ここでは, <code>/*</code>で終わる場合, 末尾の<code>*</code>を取り除いて, wildcardをtrueにしています.
 Goでは, 初期値が与えられないと0値で初期化されるので <code>var wildcard bool</code>の辞典ではfalseになります.</p>
-<pre><code>matches := patternRe.FindAllStringSubmatchIndex(s, -1)
+<pre tabindex="0"><code>matches := patternRe.FindAllStringSubmatchIndex(s, -1)
 </code></pre><p><code>FindAllStringSubmatchIndex</code>は, <code>FindStringSubmatchIndex</code>の全文マッチ版になっています. <code>FindStringSubmatchIndex</code>は, 一致する一番左のテキストのindexのペアと, subexpression(部分式)のindexのペアを返してくれます.</p>
 <p>例えば, 下の例だと<code>[1 5 2 4]</code>が返されます.</p>
-<pre><code>reg := regexp.MustCompile(&quot;h(og)e&quot;)
+<pre tabindex="0"><code>reg := regexp.MustCompile(&quot;h(og)e&quot;)
 fmt.Println(reg.FindStringSubmatchIndex(&quot;ahogea&quot;))
 </code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">pats</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">string</span>, len(<span style="color:#a6e22e">matches</span>))
 <span style="color:#a6e22e">breaks</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, len(<span style="color:#a6e22e">matches</span>))

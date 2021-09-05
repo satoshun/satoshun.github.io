@@ -131,7 +131,7 @@
 ) : AuthorAction()
 </code></pre></div><p>Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、<code>@PrimaryKey(autoGenerate = true)</code>を使っても良いと思います。</p>
 <p>次にDaoを定義します。これはFluxでいうところのDispatcherになります。</p>
-<pre><code>@Dao
+<pre tabindex="0"><code>@Dao
 interface AuthorDispatcher {
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)

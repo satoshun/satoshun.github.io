@@ -99,7 +99,7 @@
 </ul>
 <p>実際のPlaybookは以下のようになります.</p>
 <p>deploy.yml</p>
-<pre><code>---
+<pre tabindex="0"><code>---
 - hosts: local
   connection: local
   tasks:
@@ -122,14 +122,14 @@
 <span style="color:#a6e22e">build-amd64</span><span style="color:#f92672">:</span> get
   GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span>amd64 go build .
 </code></pre></div><p>build.yml</p>
-<pre><code>---
+<pre tabindex="0"><code>---
 - name: build src
   command: make build-amd64 chdir={{ local_home }}
 </code></pre><p>local_homeは変数で, Makefileがあるディレクトリを定義しています.</p>
 <h2 id="バイナリをデプロイ">バイナリをデプロイ</h2>
 <p>ファイルをサーバーにコピーする時は, copyモジュールを使います.</p>
 <p>update_binary.yml</p>
-<pre><code>---
+<pre tabindex="0"><code>---
 - name: update binary
   copy:
     src={{ local_home }}/{{ project_name }}
@@ -138,7 +138,7 @@
 <h2 id="アプリのリスタート">アプリのリスタート</h2>
 <p>supervisorctlモジュールを使います.</p>
 <p>restart.yml</p>
-<pre><code>---
+<pre tabindex="0"><code>---
 - name: restart binary
   sudo: yes
   supervisorctl: name={{ project_name }} state=restarted
