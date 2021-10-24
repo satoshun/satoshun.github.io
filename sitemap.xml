@@ -3,21 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
+    <lastmod>2021-10-24T07:59:14+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/kotlin/</loc>
+    <lastmod>2021-10-24T07:59:14+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2021/10/kotlin-local-function-redable/</loc>
+    <lastmod>2021-10-24T07:59:14+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2021-10-24T07:59:14+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-10-24T07:59:14+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/kmm/</loc>
     <lastmod>2021-09-05T03:00:44+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/09/kmm-export-objc-header/</loc>
-    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2021-09-05T03:00:44+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2021-09-05T03:00:44+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/android/</loc>
