@@ -1,13 +1,13 @@
 +++
-date = "Sat Oct 30 08:58:01 UTC 2021"
+date = "Sun Oct 31 02:23:47 UTC 2021"
 title = "Kotlin: functional interfaceを使うと、少し効率が良いコードが生成される"
 tags = ["kotlin"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
-Kotlinでは、SAM変換を使うために、functional interfaceが用意されています。
+Kotlinでは、functional interfaceを使うことで、SAM変換が行えるようになります。
 
 ```kotlin
 // ----- normal interface -----
@@ -30,7 +30,7 @@ fun interface IntPredicate2 {
 val isEven = IntPredicate2 { it % 2 == 0 }
 ```
 
-この functional interfaceを使うと、生成されるコードが少し効率良くなります。
+functional interfaceを使うと簡潔にコードを書け、さらに生成されるコードが少し効率良くなります。
 具体的には、インスタンスが一度しか作られません。
 
 具体例を上げて説明します。
@@ -72,6 +72,8 @@ fun a(value: Int) {
   println(calculate.hashCode())
 }
 ```
+
+なので、毎回効率の良いコードが作られるわけではありません。
 
 ## 参考
 
