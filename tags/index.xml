@@ -7,7 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 31 Oct 2021 02:23:47 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Nov 2021 01:58:16 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>android</title>
+      <link>https://satoshun.github.io/tags/android/</link>
+      <pubDate>Sun, 14 Nov 2021 01:58:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>build</title>
+      <link>https://satoshun.github.io/tags/build/</link>
+      <pubDate>Sun, 14 Nov 2021 01:58:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Sun, 14 Nov 2021 01:58:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>kotlin</title>
       <link>https://satoshun.github.io/tags/kotlin/</link>
@@ -23,15 +50,6 @@
       <pubDate>Sun, 05 Sep 2021 03:00:44 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kmm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
     
@@ -90,15 +108,6 @@
     </item>
     
     <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>coroutine</title>
       <link>https://satoshun.github.io/tags/coroutine/</link>
       <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
@@ -113,15 +122,6 @@
       <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/flow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>build</title>
-      <link>https://satoshun.github.io/tags/build/</link>
-      <pubDate>Sat, 12 Dec 2020 04:18:00 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/build/</guid>
       <description></description>
     </item>
     

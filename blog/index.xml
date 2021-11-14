@@ -7,7 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 31 Oct 2021 02:23:47 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Nov 2021 01:58:16 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: non-transitive Rの導入と、ビルド時間の変化について</title>
+      <link>https://satoshun.github.io/2021/11/android-non-transitive-r/</link>
+      <pubDate>Sun, 14 Nov 2021 01:58:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2021/11/android-non-transitive-r/</guid>
+      <description>non-transitive Rというオプションがあり、これを有効にすると、マルチモジュールなプロジェクトでのビルド時間の改善が期待できます。
+この記事では、non-transitive R対応の仕方と、どれくらいビルド時間が向上したかについて紹介したいと思います。
+non transitive R対応の仕方 比較的新しいAndroid Studio（4.2以降?）を使っているなら、Refactor機能から変換することが出来ます。
+Refactor &amp;gt; Migrate to Non-transitive R Classes.
+この機能を使うと、各モジュールのRファイル参照が、フルパッケージ名参照に置換されます。
+擬似コードだとこんな感じです。
+// before import jp.hoge.sample.R class HogeFragment(R.layout.hoge_layout) { } // after class HogeFragment(jp.hoge.sample.R.layout.hoge_layout) { } non-transitve Rを有効にすると、各モジュールで、Rファイルのマージ?のようなタスクが行われなくなり、Rの参照先が変わるためです。
+動作自体は上記のコードでも問題なく出来ます。ただ、フルパッケージ指定が気になるなら、import aliasまたは、typealiasを使うことで解決できます。
+擬似コードだとこんな感じです。
+// import alias import jp.hoge.sample.R as SampleR class HogeFragment(SampleR.layout.hoge_layout) { } // typealias typealias SampleRLayout = jp.hoge.sample.R.layout class HogeFragment(SampleRLayout.hoge_layout) { } non-transitive R対応はこれで完了です。
+どれくらい速度向上があったか? 前提として、CI上で計測したので、ローカル環境とは異なります。
+計測には、Gradle-Profilerを使い、applicationモジュールのファイルが変更された時の、インクリメンタルビルド時間の変化について、計10回反復し測定しました。
+結果、おおよそ20%程度の速度向上が見られました。R参照がフルパッケージになるなど、多少不便な点はありますが、十分に導入する価値があると感じました。
+まとめ マルチモジュールな環境で、大きなプロジェクトなら導入するのを検討するのが良いと感じました。 また、Refactor機能が賢いので、導入にもそう手間は掛からないと思います。</description>
+    </item>
+    
     <item>
       <title>Kotlin: functional interfaceを使うと、少し効率が良いコードが生成される</title>
       <link>https://satoshun.github.io/2021/10/kotlin-fun-interface-generate-code/</link>

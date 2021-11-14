@@ -2,19 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2021/11/android-non-transitive-r/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2021-10-31T02:23:47+00:00</lastmod>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/build/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/gradle/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2021-11-14T01:58:16+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
     <lastmod>2021-10-31T02:23:47+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/10/kotlin-fun-interface-generate-code/</loc>
-    <lastmod>2021-10-31T02:23:47+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2021-10-31T02:23:47+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2021-10-31T02:23:47+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/10/kotlin-local-function-redable/</loc>
@@ -25,9 +37,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2021/09/kmm-export-objc-header/</loc>
     <lastmod>2021-09-05T03:00:44+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2021-08-29T13:18:37+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/ci/</loc>
     <lastmod>2021-08-29T13:18:37+00:00</lastmod>
@@ -62,9 +71,6 @@
     <loc>https://satoshun.github.io/2021/04/android-buildconfig/</loc>
     <lastmod>2021-04-10T01:13:45+00:00</lastmod>
   </url><url>
-    <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2021-04-10T01:13:45+00:00</lastmod>
-  </url><url>
     <loc>https://satoshun.github.io/2021/04/github-actions-cancel-previous-tasks/</loc>
     <lastmod>2021-04-03T03:00:25+00:00</lastmod>
   </url><url>
@@ -94,9 +100,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2020/12/dagger-official-assisted/</loc>
     <lastmod>2020-12-30T08:53:33+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/build/</loc>
-    <lastmod>2020-12-12T04:18:00+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/multimodule/</loc>
     <lastmod>2020-12-12T04:18:00+00:00</lastmod>
