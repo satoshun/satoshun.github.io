@@ -138,7 +138,7 @@ class TestViewModel( private val state: SavedStateHandle, private val name: Stri
     </item>
     
     <item>
-      <title>Dagger 2.22にFactoryクラスが導入されました</title>
+      <title>Dagger 2.22にFactoryクラスが導入されました</title>
       <link>https://satoshun.github.io/2019/04/dagger-component-factory/</link>
       <pubDate>Sun, 07 Apr 2019 06:04:22 +0000</pubDate>
       

@@ -612,7 +612,7 @@ DiffCallbackクラスの実装を見ていく まずはareItemsTheSameメソッ�
 isSameAsメソッドは次の定義になっています。
 public boolean isSameAs(Item other) { if (getViewType() != other.getViewType()) { return false; } return getId() == other.getId(); } ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。
 Idは、Itemクラスのコンストラクタから与えることが出来ます。
-protected Item(long id) { this.id = id; } なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。 例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。
+protected Item(long id) { this.id = id; } なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。 例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。
  次に、areContentsTheSameメソッド。areContentsTheSameメソッドは、このItemの内容が同じかどうかを判定します。
 @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) { Item oldItem = GroupUtils.</description>
     </item>
@@ -973,7 +973,7 @@ wrapModeでは、どのようにViewを並べるかを指定でき、3種類のm
     </item>
     
     <item>
-      <title>Dagger 2.22にFactoryクラスが導入されました</title>
+      <title>Dagger 2.22にFactoryクラスが導入されました</title>
       <link>https://satoshun.github.io/2019/04/dagger-component-factory/</link>
       <pubDate>Sun, 07 Apr 2019 06:04:22 +0000</pubDate>
       
@@ -1081,7 +1081,7 @@ class MainActivity : AppCompatActivity() { ... override fun onCreate(savedInstan
       
       <guid>https://satoshun.github.io/2019/02/multi-module_transition_part2/</guid>
       <description>マルチモジュール遷移方法Part2です。Part1はここになります😌
-Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
+Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
 また、今回の検証に用いたコードはsatoshun/MultiModuleNavigationComponentExampleにあります。
 モジュール構成について 細かい実装に入る前に、全体的なモジュール構成を説明します。今回はappモジュールがトップにあり、2つのfeatureモジュールがあるとします。
  各featureモジュールでは遷移用インターフェースを持っており、それを用いて他のfeature画面へ遷移をします。遷移用インターフェースの実装はapp内のrouterモジュールで行います。

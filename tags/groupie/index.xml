@@ -23,7 +23,7 @@ DiffCallbackクラスの実装を見ていく まずはareItemsTheSameメソッ�
 isSameAsメソッドは次の定義になっています。
 public boolean isSameAs(Item other) { if (getViewType() != other.getViewType()) { return false; } return getId() == other.getId(); } ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。
 Idは、Itemクラスのコンストラクタから与えることが出来ます。
-protected Item(long id) { this.id = id; } なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。 例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。
+protected Item(long id) { this.id = id; } なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。 例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。
  次に、areContentsTheSameメソッド。areContentsTheSameメソッドは、このItemの内容が同じかどうかを判定します。
 @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) { Item oldItem = GroupUtils.</description>
     </item>
