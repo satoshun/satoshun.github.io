@@ -1,6 +1,6 @@
 +++
 date = "Sun Apr  7 06:04:22 UTC 2019"
-title = "Dagger 2.22にFactoryクラスが導入されました"
+title = "Dagger 2.22にFactoryクラスが導入されました"
 tags = ["android", "dagger", "factory", "di"]
 blogimport = true
 type = "post"
