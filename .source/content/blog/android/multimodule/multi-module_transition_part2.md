@@ -9,7 +9,7 @@ thumbnail = "https://bit.ly/2Edzj6l"
 
 マルチモジュール遷移方法Part2です。[Part1](https://satoshun.github.io/2018/12/multi-module_transition_part1/)はここになります😌
 
-Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
+Part2では、Navigation Componentを使うパターンを考えてみます。今回はDynamic Feature(DFM)には触れません。いわゆる一般的なライブラリモジュールでの遷移になります。
 
 また、今回の検証に用いたコードは[satoshun/MultiModuleNavigationComponentExample](https://github.com/satoshun-android-example/MultiModuleNavigationComponentExample)にあります。
 
