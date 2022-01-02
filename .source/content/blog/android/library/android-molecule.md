@@ -4,7 +4,7 @@ title = "moleculeライブラリで感動したところ"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 [molecule](https://github.com/cashapp/molecule)は、Cash App(Square)社が公開したライブラリです。
