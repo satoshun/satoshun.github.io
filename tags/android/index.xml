@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 14 Nov 2021 01:58:16 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Jan 2022 08:53:09 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>moleculeライブラリで感動したところ</title>
+      <link>https://satoshun.github.io/2022/01/android-molecule/</link>
+      <pubDate>Sun, 02 Jan 2022 08:53:09 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/01/android-molecule/</guid>
+      <description>moleculeは、Cash App(Square)社が公開したライブラリです。
+このライブラリを使うかどうかは置いておいて、良いな、面白いなと思ったところをつらつらと述べたいと思います。
+Coroutine(RxJava)などの複雑なオペレーターを覚えなくて済む 複雑な画面になると、複数のデータソース(Flowなど)をcombineLatest等のオペレータで束ねて、処理を書くことをすると思います。 しかし、データソースが増えると、どんどんエラーハンドリングなどが複雑になり、スケールしない印象があります。
+これを、moleculeでは命令型コードで書くことができ、データソースが増えてもスケールしてコードを書くことが出来ます。
+RxJavaに傾倒していたときに感じていたのですが、いろいろなオペレーターがあるのは便利ではあるんですが、複雑になりやすいというか、誤用しがちなので、そういうのを防ぐことが出来ます。
+Jetpack Composeのエコシステムに乗っている点 おそらく、このmoleculeのような機能を実現しようとすると、KSPなどのアノテーションプロセッシング的なことをする必要があります。 そうなると、
+ メンテナ目線: 実装、メンテにコストがかかる ユーザ目線: 学習コストが高くつく  などのデメリットがあります。
+それを、Jetpack Composeという、Android開発者であれば、いつかは勉強しなければならない、導入するであろう機能を使って、実現しており、このデメリットを回避しています。
+一番メンテしやすいコードは、コードを書かないこと、みたいな言葉があったような気がするんですが、それを体現した実装だと思います。
+まとめ 実現したい機能に対して、極力コードを書かなくて済む方法を考える大切さを感じました（小並感）</description>
+    </item>
+    
     <item>
       <title>Android: non-transitive Rの導入と、ビルド時間の変化について</title>
       <link>https://satoshun.github.io/2021/11/android-non-transitive-r/</link>
