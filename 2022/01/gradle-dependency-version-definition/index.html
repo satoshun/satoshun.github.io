@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta property="og:title" content="Gradle: 様々なバージョン管理の方法">
+  
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2022-01-25">
+  
+  <meta property="og:description" content="">
+  <meta property="og:url" content="https://satoshun.github.io/2022/01/gradle-dependency-version-definition/">
+  <meta property="og:site_name" content="stsnブログ">
+  
+  
+    <meta property="og:tags" content="gradle">
+  
+    <meta property="og:tags" content="android">
+  
+
+  <meta property="twitter:title" content="Gradle: 様々なバージョン管理の方法">
+
+  
+  <meta property="twitter:description" content="Android開発では、Gradleを使ってビルド環境を構築します。その中で、バージョンを管理する必要があります。
+Gradleでは、いろいろなバージョンの管理 …">
+  
+
+  
+  <meta property="twitter:image" content="https://bit.ly/2S8StSM">
+  
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Gradle: 様々なバージョン管理の方法  - stsnブログ </title>
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+
+  <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ['Raleway']
+      }
+    });
+  </script>
+
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/agate.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/groovy.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body class="theme-dark">
+
+<section class="site-nav">
+  <header class="container">
+    <nav id="navigation">
+      <a href="/" class="home">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/presentation">Presentation</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+</section>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Gradle: 様々なバージョン管理の方法</h1>
+    
+    <span class="post-date">Created at Tue, Jan 25, 2022</span>
+    
+    <p>Android開発では、Gradleを使ってビルド環境を構築します。その中で、バージョンを管理する必要があります。
+Gradleでは、いろいろなバージョンの管理方法があるので、色々と紹介したいと思います。</p>
+<h2 id="1-バージョン管理しない管理方法">1. バージョン管理しない管理方法</h2>
+<p>パワー系の管理方法です。
+小規模なプロジェクトや、個人プロジェクトなどは、シングルモジュールな構成であったりと、そもそもバージョンを管理する必要がない場合があります。</p>
+<p>具体的には、build.gradle(.kts)にベタ書きします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+  implementation <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+  <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。</p>
+<h2 id="2-dependenciesgradleに定義する">2. dependencies.gradleに定義する</h2>
+<p>dependencies.gradleファイルを定義し、そこでバージョンを管理する方法です。
+ファイル名はなんでもいいのですが、dependencies.gradleという命名が多いような気がします。</p>
+<p>具体的には、dependencies.gradleに依存を定義し、それをbuild.gradleで読み込んで使います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// dependencies.gradle
+</span><span style="color:#75715e"></span>ext <span style="color:#f92672">{</span>
+  material <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+  <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
+</span><span style="color:#75715e"></span>apply from: rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">file</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;dependencies.gradle&#39;</span><span style="color:#f92672">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// app/build.gradle
+</span><span style="color:#75715e"></span>dependencies <span style="color:#f92672">{</span>
+  implementation rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">ext</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinStdlib</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding/tree/version-one">https://github.com/JakeWharton/RxBinding/tree/version-one</a></p>
+<p>また、わざわざdependencies.gradleにファイルを分けないで、build.gradleに直接書くことも出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
+</span><span style="color:#75715e"></span>buildscript <span style="color:#f92672">{</span>
+  ext<span style="color:#f92672">.</span><span style="color:#a6e22e">versions</span> <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+    <span style="color:#e6db74">&#34;material&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+  <span style="color:#f92672">]</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding">https://github.com/JakeWharton/RxBinding</a></p>
+<h2 id="3-buildsrcを使う">3. buildSrcを使う</h2>
+<p>buildSrcディレクトリを使い、バージョンの管理をする方法です。
+GradleではbuildSrcは特別なディレクトリになっており、ビルド実行時に自動で中身を読み込みます。</p>
+<p>具体的には、次のようになります。今回は、kotlinでバージョンを管理してみます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// buildSrc/src/main/java/Dep.kt
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">package</span> hoge.dependencies
+
+<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Dep</span> {
+  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> Material = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+  <span style="color:#f92672">..</span>.
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// app/build.gradle
+</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> hoge.dependencies.Dep
+
+dependencies <span style="color:#f92672">{</span>
+  implementation Dep<span style="color:#f92672">.</span><span style="color:#a6e22e">Material</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>参考コード</p>
+<ul>
+<li><a href="https://github.com/DroidKaigi/conference-app-2021/">https://github.com/DroidKaigi/conference-app-2021/</a></li>
+<li><a href="https://github.com/androidx/androidx">https://github.com/androidx/androidx</a></li>
+</ul>
+<h2 id="4-version-catalogを使う">4. version catalogを使う</h2>
+<p>Gradleの比較的新しいバージョンで使うことが出来ます。
+<code>gradle/libs.versions.toml</code> でtoml形式でバージョンを管理します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># gradle/libs.versions.toml</span>
+
+[<span style="color:#a6e22e">libraries</span>]
+<span style="color:#a6e22e">material</span> = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+...
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// settings.gradle
+</span><span style="color:#75715e"></span><span style="color:#f92672">...</span>
+enableFeaturePreview<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;VERSION_CATALOGS&#34;</span><span style="color:#f92672">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
+  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">material</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>version catalogでは、バージョン管理をする上で必要であろう機能が色々と提供されており、バージョン管理をいい感じにすることが出来ます。</p>
+<p>参考コード: <a href="https://github.com/chrisbanes/tivi">https://github.com/chrisbanes/tivi</a></p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回、dependencies.gradle、buildSrc、version catalogを使って管理する方法を紹介しました。
+結局どれがいいのっていう話ですが、Gradleが提供しているversion catalogが普及するんじゃないかなと思っています。
+また、個人的にもversion catalogを良いと思っています。</p>
+<p>しかし、version catalogによるバージョン管理は、Dependabotが対応していないなど、プロジェクトによっては導入が難しかったりするので、ケースバイケースだとは思います。</p>
+
+    <div class="mt30"></div>
+    
+      <ul class="article-post-tags">
+        
+          <li><a href="/tags/gradle">gradle</a></li>
+        
+          <li><a href="/tags/android">android</a></li>
+        
+      </ul>
+    
+    <footer>
+      <address class="address__post">
+       <img class="icon__post" src="https://bit.ly/2S8StSM" />
+       <p>
+        Written by <strong><a rel="author" href="https://twitter.com/stsn_jp" title="Sato Shun" target="_blank">Sato Shun</a></strong><br>
+        <span style="display:inline-block; margin-bottom: 4px;" class="muted">あんどろいどでぃべろっぱぁー🍎</span><br>
+        <a style="margin-right: 4px;" rel="twitter-link" href="https://twitter.com/stsn_jp">
+        <img style="display:inline;" width="28" height="28" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDQ4IDQ4IiBpZD0iTGF5ZXJfMSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNDggNDgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjI0IiBjeT0iMjQiIGZpbGw9IiMxQ0I3RUIiIHI9IjI0Ii8+PGc+PGc+PHBhdGggZD0iTTM2LjgsMTUuNGMtMC45LDAuNS0yLDAuOC0zLDAuOWMxLjEtMC43LDEuOS0xLjgsMi4zLTMuMWMtMSwwLjYtMi4xLDEuMS0zLjQsMS40Yy0xLTEuMS0yLjMtMS44LTMuOC0xLjggICAgYy0yLjksMC01LjMsMi41LTUuMyw1LjdjMCwwLjQsMCwwLjksMC4xLDEuM2MtNC40LTAuMi04LjMtMi41LTEwLjktNS45Yy0wLjUsMC44LTAuNywxLjgtMC43LDIuOWMwLDIsMC45LDMuNywyLjMsNC43ICAgIGMtMC45LDAtMS43LTAuMy0yLjQtMC43YzAsMCwwLDAuMSwwLDAuMWMwLDIuNywxLjgsNSw0LjIsNS42Yy0wLjQsMC4xLTAuOSwwLjItMS40LDAuMmMtMC4zLDAtMC43LDAtMS0wLjEgICAgYzAuNywyLjMsMi42LDMuOSw0LjksMy45Yy0xLjgsMS41LTQuMSwyLjQtNi41LDIuNGMtMC40LDAtMC44LDAtMS4zLTAuMWMyLjMsMS42LDUuMSwyLjYsOC4xLDIuNmM5LjcsMCwxNS04LjYsMTUtMTYuMSAgICBjMC0wLjIsMC0wLjUsMC0wLjdDMzUuMiwxNy42LDM2LjEsMTYuNiwzNi44LDE1LjR6IiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvZz48L3N2Zz4=" />
+        </a>
+        <a rel="github-link" href="https://github.com/satoshun">
+          <img style="display:inline;" width="32" height="32" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGhlaWdodD0iNjdweCIgaWQ9IkxheWVyXzEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgNjcgNjciIHdpZHRoPSI2N3B4IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNMjAuNTQzLDM0LjU2OGMtMC4wNTQsMCwwLjU5MiwxLjM2NywwLjYxLDEuMzY3ICBjMS40MSwyLjUxNiw0LjEyOCw0LjA4LDguNzEzLDQuNTE0Yy0wLjY1NCwwLjQ4OC0xLjQ0LDEuNDE0LTEuNTQ5LDIuNDg0Yy0wLjgyMywwLjUyMy0yLjQ3OCwwLjY5Ni0zLjc2NCwwLjI5NyAgYy0xLjgwMy0wLjU1OS0yLjQ5My00LjA2Ni01LjE5Mi0zLjU2NmMtMC41ODQsMC4xMDctMC40NjgsMC40ODYsMC4wMzcsMC44MDljMC44MjMsMC41MjMsMS41OTcsMS4xNzgsMi4xOTQsMi41NzEgIGMwLjQ1OSwxLjA3LDEuNDIzLDIuOTgxLDQuNDczLDIuOTgxYzEuMjEsMCwyLjA1OC0wLjE0MywyLjA1OC0wLjE0M3MwLjAyMywyLjczMSwwLjAyMywzLjc5M2MwLDEuMjI1LTEuNjgyLDEuNTctMS42ODIsMi4xNTkgIGMwLDAuMjMzLDAuNTU3LDAuMjU1LDEuMDA0LDAuMjU1YzAuODg0LDAsMi43MjMtMC43MjUsMi43MjMtMS45OThjMC0xLjAxMSwwLjAxNy00LjQxLDAuMDE3LTUuMDA2YzAtMS4zLDAuNzA5LTEuNzEyLDAuNzA5LTEuNzEyICBzMC4wODgsNi45NC0wLjE2OSw3Ljg3MmMtMC4zMDIsMS4wOTQtMC44NDcsMC45MzktMC44NDcsMS40MjdjMCwwLjcyNiwyLjIxNCwwLjE3OSwyLjk0OC0xLjQxNmMwLjU2Ny0xLjIzOSwwLjMxOS04LjA1LDAuMzE5LTguMDUgIGwwLjYwNS0wLjAxMmMwLDAsMC4wMzQsMy4xMTcsMC4wMTMsNC41NDJjLTAuMDIxLDEuNDc2LTAuMTIzLDMuMzQyLDAuNzY5LDQuMjIyYzAuNTg2LDAuNTc5LDIuNDg0LDEuNTk0LDIuNDg0LDAuNjY2ICBjMC0wLjUzOS0xLjA0LTAuOTgyLTEuMDQtMi40NDF2LTYuNzE1YzAuODMxLDAsMC43MDYsMi4yMDgsMC43MDYsMi4yMDhsMC4wNjEsNC4xMDNjMCwwLTAuMTg0LDEuNDk0LDEuNjQ1LDIuMTE5ICBjMC42NDUsMC4yMjMsMi4wMjUsMC4yODMsMi4wOS0wLjA5YzAuMDY1LTAuMzczLTEuNjYyLTAuOTI4LTEuNjc4LTIuMDg0Yy0wLjAxLTAuNzA3LDAuMDMyLTEuMTE5LDAuMDMyLTQuMTg3ICBjMC0zLjA2OC0wLjQxOS00LjIwMi0xLjg4LTUuMTA2YzQuNTA4LTAuNDU1LDcuMjk5LTEuNTUxLDguNjU4LTQuNDg2YzAuMTA2LDAuMDAzLDAuNTU1LTEuMzcxLDAuNDk2LTEuMzcxICBjMC4zMDUtMS4xMDgsMC40Ny0yLjQxOSwwLjUwMi0zLjk3MWMtMC4wMDgtNC4yMS0yLjA1OC01LjY5OS0yLjQ1MS02LjM5OGMwLjU4LTMuMTg3LTAuMDk4LTQuNjM3LTAuNDEyLTUuMTM1ICBjLTEuMTYyLTAuNDA2LTQuMDQxLDEuMDQ1LTUuNjE1LDIuMDY3Yy0yLjU2NC0wLjczNy03Ljk4Ni0wLjY2Ni0xMC4wMTksMC4xOWMtMy43NTEtMi42MzktNS43MzYtMi4yMzUtNS43MzYtMi4yMzUgIHMtMS4yODMsMi4yNTktMC4zMzksNS41NjVjLTEuMjM0LDEuNTQ2LTIuMTU0LDIuNjQtMi4xNTQsNS41MzlDMTkuOTA2LDMxLjgzLDIwLjEwMiwzMy4yOTIsMjAuNTQzLDM0LjU2OHogTTMzLDY0ICBDMTYuNDMyLDY0LDMsNTAuNTY4LDMsMzRDMywxNy40MzEsMTYuNDMyLDQsMzMsNHMzMCwxMy40MzEsMzAsMzBDNjMsNTAuNTY4LDQ5LjU2OCw2NCwzMyw2NHoiIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMTAxMDE7Ii8+PC9zdmc+" />
+        </a>
+       </p>
+      </address>
+    </footer>
+
+    <div class="social">
+  <div style="margin-right:15px; display: inline-block;">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical">Tweet</a>
+  </div>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+  </div>
+  <div class="mb15"></div>
+</div>
+</body>
+</html>

@@ -7,7 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 02 Jan 2022 08:53:09 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jan 2022 12:53:58 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gradle: 様々なバージョン管理の方法</title>
+      <link>https://satoshun.github.io/2022/01/gradle-dependency-version-definition/</link>
+      <pubDate>Tue, 25 Jan 2022 12:53:58 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/01/gradle-dependency-version-definition/</guid>
+      <description>Android開発では、Gradleを使ってビルド環境を構築します。その中で、バージョンを管理する必要があります。 Gradleでは、いろいろなバージョンの管理方法があるので、色々と紹介したいと思います。
+1. バージョン管理しない管理方法 パワー系の管理方法です。 小規模なプロジェクトや、個人プロジェクトなどは、シングルモジュールな構成であったりと、そもそもバージョンを管理する必要がない場合があります。
+具体的には、build.gradle(.kts)にベタ書きします。
+dependencies { implementation &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ... } バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。
+2. dependencies.gradleに定義する dependencies.gradleファイルを定義し、そこでバージョンを管理する方法です。 ファイル名はなんでもいいのですが、dependencies.gradleという命名が多いような気がします。
+具体的には、dependencies.gradleに依存を定義し、それをbuild.gradleで読み込んで使います。
+// dependencies.gradle ext { material = &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ... } // build.gradle apply from: rootProject.file(&amp;#39;dependencies.gradle&amp;#39;) // app/build.gradle dependencies { implementation rootProject.ext.kotlinStdlib } 参考コード: https://github.com/JakeWharton/RxBinding/tree/version-one
+また、わざわざdependencies.gradleにファイルを分けないで、build.gradleに直接書くことも出来ます。
+// build.gradle buildscript { ext.versions = [ &amp;#34;material&amp;#34;: &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ] } 参考コード: https://github.com/JakeWharton/RxBinding
+3. buildSrcを使う buildSrcディレクトリを使い、バージョンの管理をする方法です。 GradleではbuildSrcは特別なディレクトリになっており、ビルド実行時に自動で中身を読み込みます。
+具体的には、次のようになります。今回は、kotlinでバージョンを管理してみます。
+// buildSrc/src/main/java/Dep.kt package hoge.dependencies object Dep { const val Material = &amp;#34;com.</description>
+    </item>
+    
     <item>
       <title>moleculeライブラリで感動したところ</title>
       <link>https://satoshun.github.io/2022/01/android-molecule/</link>
