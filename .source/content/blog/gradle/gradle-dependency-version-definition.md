@@ -1,6 +1,6 @@
 +++
 date = "Mon Jan 24 12:59:44 UTC 2022"
-title = "Gradle: バージョン管理の様々な方法"
+title = "Gradle: 様々なバージョン管理の方法"
 tags = ["gradle", "android"]
 blogimport = true
 type = "post"
@@ -29,7 +29,7 @@ dependencies {
 
 ## 2. dependencies.gradleに定義する
 
-dependencies.gradleファイルを定義し、そこで依存を管理する方法です。
+dependencies.gradleファイルを定義し、そこでバージョンを管理する方法です。
 ファイル名はなんでもいいのですが、dependencies.gradleという命名が多いような気がします。
 
 具体的は、dependencies.gradleに依存を定義し、それをbuild.gradleで読み込んで使います。
@@ -54,7 +54,8 @@ dependencies {
 }
 ```
 
-参考: https://github.com/JakeWharton/RxBinding/tree/version-one
+参考
+- https://github.com/JakeWharton/RxBinding/tree/version-one
 
 また、わざわざdependencies.gradleに分けないで、build.gradleに直接バージョン定義を書くことも出来ます。
 
@@ -68,4 +69,61 @@ buildscript {
 
 ## 3. buildSrcを使う
 
+buildSrcディレクトリ内で、バージョンの管理をする方法です。
+GradleにとってbuildSrcは特別なディレクトリになっており、実行時に自動で中身を読み込みます。
+
+今回の例では、kotlinでバージョンを管理してみます。
+
+```kotlin
+// buildSrc/src/main/java/Dep.kt
+package hoge.dependencies
+
+object Dep {
+  const val Material = "com.google.android.material:material:1.4.0"
+  ...
+}
+```
+
+```groovy
+// app/build.gradle
+import hoge.dependencies.Dep
+
+dependencies {
+  implementation Dep.Material
+}
+```
+
+参考
+- https://github.com/DroidKaigi/conference-app-2021/
+- https://github.com/androidx/androidx
+
 ## 4. version catalogを使う
+
+Gradleの比較的新しいバージョンで使うことが出来ます。
+`gradle/libs.versions.toml` でtoml形式でバージョンを管理します。
+
+```toml
+# gradle/libs.versions.toml
+
+[libraries]
+material = "com.google.android.material:material:1.4.0"
+...
+```
+
+```groovy
+// settings.gradle
+...
+enableFeaturePreview("VERSION_CATALOGS")
+```
+
+```groovy
+dependencies {
+  implementation libs.material
+}
+```
+
+version catalogでは、バージョン管理をする上で必要であろう機能が最初から提供されています。
+
+参考
+- https://github.com/chrisbanes/tivi
+
