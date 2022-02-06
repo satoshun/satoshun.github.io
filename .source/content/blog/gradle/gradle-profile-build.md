@@ -1,10 +1,10 @@
 +++
-date = "Sun Feb  6 01:54:55 UTC 2022"
+date = "Sun Feb  6 03:39:04 UTC 2022"
 title = "Gradle Profilerを使って、ビルドを最適化する"
 tags = ["gradle", "android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 開発を高速化するために、ビルド速度を改善することは重要です。
@@ -14,13 +14,13 @@ Gradleの設定を見直すことで、ビルド速度を改善できる可能�
 
 ## Gradle Profilerとは?
 
-[Gradle Profiler](https://github.com/gradle/gradle-profiler)は、Gradleのプロファイリング、ベンチマークを計測してくれるツールです。
+[Gradle Profiler](https://github.com/gradle/gradle-profiler) は、Gradleのプロファイリング、ベンチマークを計測してくれるツールです。
 
-Gradle Profilerを使うことで、最適なGradleの設定を見つけることが出来ます。
+Gradle Profilerを使うことで、最適なGradleの設定を見つけだすことが出来ます。
 
 ## 良さそうな設定を見つける 
 
-まず、最初にシナリオファイルを作成します。これは、Gradle Profilerが読み込むファイルで、記述したシナリオ通りに実行してくれます。
+まず、最初にシナリオファイルを作成します。これは、Gradle Profilerを実行する際に必要なファイルで、記述したシナリオ通りに実行してくれます。
 
 今回は、次のようなシナリオを作りました。
 
@@ -53,12 +53,13 @@ gradle-profiler --benchmark --project-dir . --scenario-file scenarios.txt
 
 ---
 
-{{< figure src="/blog/gradle/gradle_profiler_scenario1.png" width="300">}}
+{{< figure src="/blog/gradle/gradle_profiler_scenario1.png" width="800">}}
 
 ---
 
-僕の環境 + サンプルプロジェクトの場合、2GB、2workerよりも4GB、4workerで設定したほうが良さそうなことが分かります。
+この結果から、僕の環境 + このプロジェクトの場合、2GB、2workerよりも4GB、4workerで設定したほうが良さそうなことが分かります。
 
+このようにして、Gradle Profilerを使うことで、自分の環境において、最適そうな設定を探すことが出来ます。
 
 ## まとめ
 
