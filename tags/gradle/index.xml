@@ -7,7 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 25 Jan 2022 12:53:58 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Feb 2022 03:39:04 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gradle Profilerを使って、ビルドを最適化する</title>
+      <link>https://satoshun.github.io/2022/02/gradle-profile-build/</link>
+      <pubDate>Sun, 06 Feb 2022 03:39:04 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/02/gradle-profile-build/</guid>
+      <description>開発を高速化するために、ビルド速度を改善することは重要です。 Gradleの設定を見直すことで、ビルド速度を改善できる可能性があります。
+この記事では、Gradle Profilerを使って、自分の環境において最適そうな設定を見つける方法を紹介します。
+Gradle Profilerとは? Gradle Profiler は、Gradleのプロファイリング、ベンチマークを計測してくれるツールです。
+Gradle Profilerを使うことで、最適なGradleの設定を見つけだすことが出来ます。
+良さそうな設定を見つける まず、最初にシナリオファイルを作成します。これは、Gradle Profilerを実行する際に必要なファイルで、記述したシナリオ通りに実行してくれます。
+今回は、次のようなシナリオを作りました。
+# scenario.txt clean_build_2gb_2workers { tasks = [&amp;#34;:app:assembleDebug&amp;#34;] gradle-args = [&amp;#34;--max-workers=2&amp;#34;] jvm-args = [&amp;#34;-Xmx2048m&amp;#34;] cleanup-tasks = [&amp;#34;clean&amp;#34;] } clean_build_4gb_4workers { tasks = [&amp;#34;:app:assembleDebug&amp;#34;] gradle-args = [&amp;#34;--max-workers=4&amp;#34;] jvm-args = [&amp;#34;-Xmx4096m&amp;#34;] cleanup-tasks = [&amp;#34;clean&amp;#34;] } このシナリオでは、worker数と、メモリの値をそれぞれ設定しています。
+このシナリオは、Gradle Profilerコマンドを使って、次のように実行できます。
+gradle-profiler --benchmark --project-dir . --scenario-file scenarios.txt これを実行すると、ビルドにどれくらい時間が掛かったかの出力してくれます。
+   この結果から、僕の環境 + このプロジェクトの場合、2GB、2workerよりも4GB、4workerで設定したほうが良さそうなことが分かります。
+このようにして、Gradle Profilerを使うことで、自分の環境において、最適そうな設定を探すことが出来ます。
+まとめ 今回は、Gradle Profilerを使って、ビルドの高速化をする方法を紹介しました。 今回は単純なシナリオを使いましたが、他にもGCの設定を変えるとか、細かい設定があると思うので、そこのあたりもシナリオに入れて計測してみると良いと思います。
+また、シナリオの実行にはめちゃくちゃ時間が掛かるので、夜とか、パソコンを触らない時間に実行すると良いと思います😃</description>
+    </item>
+    
     <item>
       <title>Gradle: 様々なバージョン管理の方法</title>
       <link>https://satoshun.github.io/2022/01/gradle-dependency-version-definition/</link>
