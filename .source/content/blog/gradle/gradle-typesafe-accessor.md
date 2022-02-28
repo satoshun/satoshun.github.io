@@ -4,7 +4,7 @@ title = "Gradle: Typesafe project dependencies"
 tags = ["gradle", "android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Type-safe project dependenciesの紹介ブログです。Gradle 7.4で試しています。
