@@ -16,12 +16,12 @@
       <guid>https://satoshun.github.io/2021/01/coroutine-migration-from-rxjava/</guid>
       <description>Kotlin Coroutineには Migration.kt が用意されており、RxJavaからCoroutineへの置き換えを手伝ってくれます。この記事では、どのように使うかを説明します。
  例として、次のRxJavaを使ったクラスがあるとします。
-import io.reactivex.Observable class TestRepository { fun getUser(): Observable&amp;lt;User&amp;gt; { ... } } これは、次のように使うことが出来ます。
-val disposble = repository.getUser() .subscribeOn(Schedulers.io()) .subscribe( { println(it) }, { println(it) } ) ... このコードを、Coroutineに置き換えていきます。
+import io.reactivex.Observable  class TestRepository {  fun getUser(): Observable&amp;lt;User&amp;gt; {  ...  } } これは、次のように使うことが出来ます。
+val disposble = repository.getUser()  .subscribeOn(Schedulers.io())  .subscribe(  { println(it) },  { println(it) }  ) ... このコードを、Coroutineに置き換えていきます。
 まず、TestRepositoryクラスのRxJava部分をCoroutineのFlowにします。
-import kotlinx.coroutines.flow.Flow private class TestRepository { fun getUser(): Flow&amp;lt;User&amp;gt; { ... } } そうすると、使っている側のコードでコンパイルエラーになります。なぜなら、Flow自体には、subscribeOnなどの関数が直接実装されていないためです。
+import kotlinx.coroutines.flow.Flow  private class TestRepository {  fun getUser(): Flow&amp;lt;User&amp;gt; {  ...  } } そうすると、使っている側のコードでコンパイルエラーになります。なぜなら、Flow自体には、subscribeOnなどの関数が直接実装されていないためです。
 しかし、Flowには拡張関数として、subscribeOnなどの関数が定義されています。なので、IDEの自動補完を使いimportすることで、一部、コンパイルエラーを解消することが出来ます。
-import kotlinx.coroutines.flow.Flow import kotlinx.coroutines.flow.subscribe import kotlinx.coroutines.flow.subscribeOn val disposble = repository.getUser() .subscribeOn(Schedulers.io()) .subscribe( { println(it) }, { println(it) } ) これで、置き換え完了かというと、そうではありません。実はsubscribeOnなどの関数は定義されてはいるものの、実際には使うことは出来ません。</description>
+import kotlinx.coroutines.flow.Flow import kotlinx.coroutines.flow.subscribe import kotlinx.coroutines.flow.subscribeOn  val disposble = repository.</description>
     </item>
     
     <item>
@@ -33,12 +33,9 @@ import kotlinx.coroutines.flow.Flow import kotlinx.coroutines.flow.subscribe imp
       <description>CoroutineのFlowにはflowOnオペレータが定義されており、実行コンテキストを変更することが出来ます。
 この記事はRxJava2のsubscribeOnとの挙動の違いを見ていきたいと思います。
 動かしてみる まずは、Flowから。
-withContext(Dispatchers.Main) { flowOf(1) .map { // Dispatchers.Defaultで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .flowOn(Dispatchers.Default) .map { // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .collect { // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) } } flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。
+withContext(Dispatchers.Main) {  flowOf(1)  .map {  // Dispatchers.Defaultで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;)  it  }  .flowOn(Dispatchers.Default)  .map {  // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;)  it  }  .collect {  // Dispatchers.Mainで動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;)  } } flowOnの上部（upstream)では、Dispatchers.Defaultで動き、下部（downstream)では、flowOnの影響を受けていないことが分かります。flowOnはdownstreamに影響しないため、このような動作になります。
 次にRxJavaです。
-Single .just(1) .map { // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .subscribeOn(Schedulers.io()) .map { // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) it } .subscribe({ // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;) }) {} RxJavaではsubscribeOnは、特に途中でスケジューラーの変更が無い限り同一のスレッドで動作します。 なので、subscribeOn(Schedulers.io())を設定すると、下部（downstream)でもSchedulers.io上で実行されます。
-FlowのflowOnを、RxJavaのsubscribeOnと同じ感覚で実装すると、間違ってしまうので注意が必要です。
-ただ、Flowのmapなどのオペレーターはsuspend関数を取るので、基本的にはスレッドを意識しなくても良いはずです。
-まとめ  flowOnとRxJavaのsubscribeOn、動作がそれぞれ異なるので注意が必要  </description>
+Single  .just(1)  .map {  // Schedulers.io上で動く  println(&amp;#34;${Thread.currentThread()}&amp;#34;)  it  }  .subscribeOn(Schedulers.io())  .map {  // Schedulers.io上で動く  println(&amp;#34;${Thread.</description>
     </item>
     
     <item>
@@ -54,9 +51,8 @@ MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを�
  viewModelScopeとは? suspend関数をコールするとき Flowをコール/購読するとき  viewModelScopeとは? androidx.lifecycle:lifecycle-viewmodel-ktxライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。
 /** * [CoroutineScope] tied to this [ViewModel]. * This scope will be canceled when ViewModel will be cleared, i.e [ViewModel.onCleared] is called */ val ViewModel.viewModelScope: CoroutineScope ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。 このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。
 また、viewModelScopeは、メインスレッド上で実行してくれるため、LiveData.setValueを使い、値を更新します。
-val userLiveData = MutableLiveData(...) viewModelScope.launch { val user = userRepository.getUser() // 適当なsuspend関数をコール  userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う  // userLiveData.postValues(user) } viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
-suspend関数をコールするとき ネットワークコールなどのAPIは、suspendで表現することになると思います。 また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。
-なので、Repository層での定義は次のようになります。</description>
+val userLiveData = MutableLiveData(...)  viewModelScope.launch {  val user = userRepository.getUser() // 適当なsuspend関数をコール   userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う  // userLiveData.postValues(user) } viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
+suspend関数をコールするとき ネットワークコールなどのAPIは、suspendで表現することになると思います。 また、Retrofitでは2.</description>
     </item>
     
     <item>
@@ -68,13 +64,11 @@ suspend関数をコールするとき ネットワークコールなどのAPIは
       <description>CoroutineのFlowにはBufferを指定することができます。Bufferの指定によってどのように動作が変わるかを試してみました。
 この記事は、少しFlowを触ったことあるぞ！って言う人向けになります。また、検証はCoroutine 1.3.0-RCで行っております。
 Bufferの種類 Bufferの種類は5つあります。
- UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする    検証コード // flowストリームの作成 val f = flow { repeat(100) { delay(1) emit(&amp;#34;$it&amp;#34;) } } // observeする lifecycleScope.launch { f .buffer(...) ここでBufferを指定する .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } } このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
+ UNLIMITED RENDEZVOUS CONFLATED BUFFERED 50、100などの、具体的な値  実質、BUFFEREDと同じ挙動をする    検証コード // flowストリームの作成 val f = flow {  repeat(100) {  delay(1)  emit(&amp;#34;$it&amp;#34;)  } }  // observeする lifecycleScope.launch {  f  .buffer(...) ここでBufferを指定する  .collect {  delay(100)  Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;)  } } このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約delay(1)かかります。なので、処理に約1msかかります。
 次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerではdelay(100)しているので、処理に約100msかかります。
 これは、次の関係を作り出しています
  Consumerの処理時間 &amp;gt; Producerの処理時間  この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。
-UNLIMITED f .buffer(Channel.UNLIMITED) .collect { delay(100) Log.d(&amp;#34;t4&amp;#34;, &amp;#34;$it&amp;#34;) } UNLIMITEDはBufferのサイズを無制限にします。
-Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。
- Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく Consumer: すべての値を順番通りに受け取ることが出来る  RENDEZVOUS f .</description>
+UNLIMITED f  .buffer(Channel.UNLIMITED)  .collect {  delay(100)  Log.</description>
     </item>
     
     <item>
@@ -85,7 +79,7 @@ Consumer側で処理が終わってなくても値を送ります。その値は
       <guid>https://satoshun.github.io/2019/07/retrofit-coroutine-return-type/</guid>
       <description>psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのままT の使い分け所感のCoroutineバージョンの記事となります。
 上記の記事に書いてある、Rxとは違い、Result型は用意されていないので、Response型で包むか、生で値ｗ受け取るかのどちらかが基本となります。
-interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; } Retrofitの2.6.0で、挙動の違いを確認しました。
+interface HogeService {  suspend fun getHoge(): Hoge  or  suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; } Retrofitの2.6.0で、挙動の違いを確認しました。
     生 Response     200 成功 成功   404 例外 成功   ネットワークに繋がっていない 例外 例外   シリアライズが出来ない（型がおかしい） 例外 例外     生の場合、HTTPのstatus Code的に失敗とされるものは例外になる Response型で包めば、HTTPのstatus Code的に失敗だとしても例外が発生しない  っていう感じの挙動になります。
 どっちを使えばいいの? サーバがエラーコードを返してきた時に、特別な振る舞いをしたいエンドポイントってあると思うので、そういうときはResponseで包んであげて、それ以外は生でいいんじゃない？って思ってます（小並感</description>
     </item>
@@ -97,11 +91,11 @@ interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Re
       
       <guid>https://satoshun.github.io/2019/03/coroutine-catalog-zip/</guid>
       <description>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。
-launch { val task1 = async { MainService.task1() } val task2 = async { MainService.task2() } println(&amp;#34;${task1.await()}\n${task2.await()}&amp;#34;) } asyncで包むことで、並列に処理をすることができます。
+launch {  val task1 = async { MainService.task1() }  val task2 = async { MainService.task2() }   println(&amp;#34;${task1.await()}\n${task2.await()}&amp;#34;) } asyncで包むことで、並列に処理をすることができます。
 次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元でrunCatchingを使います。
-launch { val task1 = async { runCatching { MainService.task1() } } val task2 = async { runCatching { MainService.task2() } } val result1 = task1.await() val result2 = task2.await() println(&amp;#34;$result1\n&amp;#34; + &amp;#34;$result2\n&amp;#34;) } runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
+launch {  val task1 = async { runCatching { MainService.task1() } }  val task2 = async { runCatching { MainService.task2() } }   val result1 = task1.await()  val result2 = task2.await()  println(&amp;#34;$result1\n&amp;#34; + &amp;#34;$result2\n&amp;#34;) } runCatchingを使うことで、呼び出し先で例外が起こったとしても、処理を継続することが出来ます。
  また、次のように書くことは出来ません。
-launch { val task1 = async { MainService.task1() } val task2 = async { MainService.</description>
+launch {  val task1 = async { MainService.</description>
     </item>
     
     <item>
@@ -116,8 +110,8 @@ Lifecycle
 // Lifecycleに従うCoroutineScopeの生成 val Lifecycle.coroutineScope: CoroutineScope LifecycleOwner
 // LifecycleOwnerに従うCoroutineScopeの生成 val LifecycleOwner.lifecycleScope: CoroutineScope ViewModel
 // ViewModelに従うCoroutineScopeの生成 val ViewModel.viewModelScope: CoroutineScope WorkManager
-abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) : ListenableWorker(appContext, params) { // suspendメソッドで定義された  abstract suspend fun doWork(): Result } Room
-// Dao内でsuspendメソッドが使える @Dao interface HogesDao { @Insert suspend fun add(hoge: Hoge) @Query(&amp;#34;SELECT * FROM hoge WHERE id = :id&amp;#34;) suspend fun get(id: String): Hoge .</description>
+abstract class CoroutineWorker(  appContext: Context,  params: WorkerParameters ) : ListenableWorker(appContext, params) {  // suspendメソッドで定義された  abstract suspend fun doWork(): Result } Room
+// Dao内でsuspendメソッドが使える @Dao interface HogesDao {  @Insert  suspend fun add(hoge: Hoge)   @Query(&amp;#34;SELECT * FROM hoge WHERE id = :id&amp;#34;)  suspend fun get(id: String): Hoge   .</description>
     </item>
     
     <item>
@@ -128,8 +122,8 @@ abstract class CoroutineWorker( appContext: Context, params: WorkerParameters ) 
       <guid>https://satoshun.github.io/2018/12/coroutine_autodispose/</guid>
       <description>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいきそうです。
 ContinuationInterceptorとは? ContinuationInterceptorは次のようなインターフェースです。
-/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;#34;1.3&amp;#34;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... } interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
-class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.Key&amp;lt;*&amp;gt; get() = ContinuationInterceptor override fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; { // ContinuationからJobを取得  val job = continuation.</description>
+/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;#34;1.3&amp;#34;) public interface ContinuationInterceptor : CoroutineContext.Element {  public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt;  public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;)  ... } interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
+class LifecycleContinuationInterceptor(  private val lifecycle: Lifecycle ) : ContinuationInterceptor {  override val key: CoroutineContext.</description>
     </item>
     
     <item>

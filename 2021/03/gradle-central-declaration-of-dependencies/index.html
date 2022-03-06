@@ -91,39 +91,39 @@
 <p>この記事を書くのに使ったサンプルコードは <a href="https://github.com/satoshun-android-example/Template">github/satoshun-android-example</a> にあります。</p>
 <h2 id="central-declaration-of-dependenciesが導入された背景">Central declaration of dependenciesが導入された背景</h2>
 <p><a href="https://docs.gradle.org/7.0-rc-1/release-notes.html">Gradle 7.0 Release Notes</a> に次のように書いてあります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">There are a number of ways to share dependency versions between projects in multi-project builds. For example, users can declare versions or dependency coordinates directly in build scripts (in the ext block), external files (e.g dependencies.gradle), in buildSrcor even dedicated plugins. There wasn’t, however, any standard mechanism to do this which would combine the advantages of each approach.
-</code></pre></div><p>既存のバージョン管理方法には、extを使う方法、buildSrcを使う方法などがありましたが、それらの利点を組み合わせた標準的な方法は無かったので、新しいバージョン管理方法を作った。ということらしいです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>There are a number of ways to share dependency versions between projects in multi-project builds. For example, users can declare versions or dependency coordinates directly in build scripts (in the ext block), external files (e.g dependencies.gradle), in buildSrcor even dedicated plugins. There wasn’t, however, any standard mechanism to do this which would combine the advantages of each approach.
+</span></span></code></pre></div><p>既存のバージョン管理方法には、extを使う方法、buildSrcを使う方法などがありましたが、それらの利点を組み合わせた標準的な方法は無かったので、新しいバージョン管理方法を作った。ということらしいです。</p>
 <h2 id="簡単な使い方">簡単な使い方</h2>
 <p><code>settings.gradle</code> にGroovy(or Kotlin)で書く方法と、tomlファイルに記述する方法が提供されています。この記事ではtomlでのやり方を紹介します。</p>
 <p>まず、最初に、gradle/ ディレクトリ以下に、libs.versions.toml ファイルを作成します。そこに使うライブラリのバージョンを記述します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">versions</span>]
-<span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
-
-[<span style="color:#a6e22e">libraries</span>]
-<span style="color:#a6e22e">kotlin</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
-</code></pre></div><p>[versions] にバージョンを、[libraries] にライブラリの情報を記述します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">versions</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">libraries</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
+</span></span></code></pre></div><p>[versions] にバージョンを、[libraries] にライブラリの情報を記述します。</p>
 <p>これで、定義は完了です。<code>build.gradle</code> から、libs.xxx のように参照出来るようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">kotlin</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>さらにCentralized dependency versionsでは、bundlesを使うことでライブラリをひとまとめにすることが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">versions</span>]
-<span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
-<span style="color:#a6e22e">kotlin_coroutine</span> = <span style="color:#e6db74">&#34;1.4.1&#34;</span>
-
-[<span style="color:#a6e22e">libraries</span>]
-<span style="color:#a6e22e">kotlin-stdlib</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
-<span style="color:#a6e22e">kotlin-coroutine-core</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
-<span style="color:#a6e22e">kotlin-coroutine-ui</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
-
-[<span style="color:#a6e22e">bundles</span>]
-<span style="color:#a6e22e">kotlin-android</span> = [<span style="color:#e6db74">&#34;kotlin-stdlib&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-core&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-ui&#34;</span>]
-</code></pre></div><p>[budnles] には、[libraries] で定義した、ライブラリを指定できます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">kotlin</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>さらにCentralized dependency versionsでは、bundlesを使うことでライブラリをひとまとめにすることが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">versions</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin</span> = <span style="color:#e6db74">&#34;1.4.31&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin_coroutine</span> = <span style="color:#e6db74">&#34;1.4.1&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">libraries</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin-stdlib</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlin:kotlin-stdlib&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin&#34;</span> }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin-coroutine-core</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin-coroutine-ui</span> = { <span style="color:#a6e22e">module</span> = <span style="color:#e6db74">&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android&#34;</span>, <span style="color:#a6e22e">version</span>.<span style="color:#a6e22e">ref</span> = <span style="color:#e6db74">&#34;kotlin_coroutine&#34;</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">bundles</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">kotlin-android</span> = [<span style="color:#e6db74">&#34;kotlin-stdlib&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-core&#34;</span>, <span style="color:#e6db74">&#34;kotlin-coroutine-ui&#34;</span>]
+</span></span></code></pre></div><p>[budnles] には、[libraries] で定義した、ライブラリを指定できます。</p>
 <p><code>build.gradle</code> からは、libs.bundles.xxx のように参照します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">bundles</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinAndroid</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>bundlesを使うことで、複数のライブラリの記述をシンプルにすることが出来ました。マルチモジュールなプロジェクトの場合、同じようなライブラリの依存になることが多いと思うので、その際に便利に使うことが出来ると思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">bundles</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinAndroid</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>bundlesを使うことで、複数のライブラリの記述をシンプルにすることが出来ました。マルチモジュールなプロジェクトの場合、同じようなライブラリの依存になることが多いと思うので、その際に便利に使うことが出来ると思います。</p>
 <h2 id="まとめ">まとめ</h2>
 <p>マルチモジュールなプロジェクトのバージョン管理方法に、新しいメカニズムが誕生しました。まだexperimentalなので、なんともいえないですが、bundlesは便利だなと思いました</p>
 <p>より詳しい使い方を知りたい人は、<a href="https://docs.gradle.org/7.0-rc-1/userguide/platforms.html#sub:central-declaration-of-dependencies">公式のドキュメント</a> を見て下さい。</p>

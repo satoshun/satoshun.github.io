@@ -98,15 +98,15 @@ GradleでcompileがDeprecatedにな …">
 <p>まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。</p>
 <pre tabindex="0"><code>// Add Dagger dependencies
 dependencies {
-  - compile 'com.google.dagger:dagger:2.x'
-  + implementation 'com.google.dagger:dagger:2.x'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
+  - compile &#39;com.google.dagger:dagger:2.x&#39;
+  + implementation &#39;com.google.dagger:dagger:2.x&#39;
+  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
 }
 
-- compile 'com.google.dagger:dagger-android:2.x'
-- compile 'com.google.dagger:dagger-android-support:2.x' // if you use the support libraries
-+ implementation 'com.google.dagger:dagger-android:2.x'
-+ implementation 'com.google.dagger:dagger-android-support:2.x' // if you use the support libraries
+- compile &#39;com.google.dagger:dagger-android:2.x&#39;
+- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
++ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
++ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
 </code></pre><p>ここでjakeさんが</p>
 <blockquote>
 <p>I think this one is somewhat debatable, but you&rsquo;re likely to mark it as implementation in every module that contains the compiler so it&rsquo;s probably a non-problem.</p>
@@ -118,17 +118,17 @@ Daggerをライブラリで使ったときに、そのライブラリ内ではCo
 なので、結局このライブラリを依存に持つようなモジュールはLazy、Providerを使うことになるので、最終的にDaggerに依存することが確定しているなら、implementationではなく、apiで指定したほうが良いのではという話です。ただし、プロジェクトのモジュール構成によってはimplementationのほうがふさわしい場合もあるので、その場合はimplementationに置き換えることが期待されています。</p>
 <p>最終的なこの議論の着地として、implementationを使うかapiを使うかはプロジェクトに強く依存するのでどちらが正しいかはない。そのため、今回置き換えたいcompileはapiとほぼ同等の意味を持つので、置き換えるならapiのほうがふさわしいんじゃないか、今までと同じ動作をするので安全じゃないかという感じでまとまりました。</p>
 <p>現状の差分は以下です。</p>
-<pre tabindex="0"><code>-  compile 'com.google.dagger:dagger:2.x'
-+  api 'com.google.dagger:dagger:2.x'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
+<pre tabindex="0"><code>-  compile &#39;com.google.dagger:dagger:2.x&#39;
++  api &#39;com.google.dagger:dagger:2.x&#39;
+  annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39;
 }
 
 + For more information on api vs implementation please see https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration?utm_source=android-studio#new_configurations
 
-- compile 'com.google.dagger:dagger-android:2.x'
-- compile 'com.google.dagger:dagger-android-support:2.x' // if you use the support libraries
-+ implementation 'com.google.dagger:dagger-android:2.x'
-+ implementation 'com.google.dagger:dagger-android-support:2.x' // if you use the support libraries
+- compile &#39;com.google.dagger:dagger-android:2.x&#39;
+- compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
++ implementation &#39;com.google.dagger:dagger-android:2.x&#39;
++ implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries
 </code></pre><p>dagger-androidがimplementationのままなのは、こちらにはLazyやProviderなどのクライアントライブラリが使うであろうAPIが含まれていないためだと思います。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>

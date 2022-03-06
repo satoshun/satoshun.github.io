@@ -98,8 +98,8 @@ AsyncTask was intended to enable proper and …">
 <p>この状態は、AsyncTaskを正しく使った場合は起こらないと認識しています。AsyncTaskには、RxJavaはKotlin Coroutineと同様に、タスクをcancelするためのメソッドがあります。このメソッドを <code>onDestory</code> などの適切なタイミングでコールしてあげればリーク、クラッシュを防ぐごとが出来ます。この問題は、他のフレームワークでも同様に起こるので、AsyncTaskの問題というよりは、非同期プログラミングの問題なのかなと思っています。ただ、Coroutineにはstructured concurrency、RxJavaにはRxAutoDisposeがあるなど、これらのミスが起きにくい環境にはなっています。</p>
 <h3 id="3つのgenerics型がしんどかった">3つのgenerics型がしんどかった</h3>
 <p>AsyncTaskのクラス宣言は次のようになっています。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AsyncTask</span><span style="color:#f92672">&lt;</span>Params<span style="color:#f92672">,</span> Progress<span style="color:#f92672">,</span> Result<span style="color:#f92672">&gt;</span>
-</code></pre></div><p>個人的には、3つのgenerics型が何となく難しいと感じていました。当時を思い返すと、よく順番が分からなくなっていた気がします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AsyncTask</span><span style="color:#f92672">&lt;</span>Params<span style="color:#f92672">,</span> Progress<span style="color:#f92672">,</span> Result<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>個人的には、3つのgenerics型が何となく難しいと感じていました。当時を思い返すと、よく順番が分からなくなっていた気がします。</p>
 <h3 id="rxjavaなどの他のエコシステムが栄えた">RxJavaなどの他のエコシステムが栄えた</h3>
 <p>AsyncTaskとかLoaderとかそこらへんのが難しいなぁとなっているところに、RxJavaのようなイケてるフレームワークが出てきて、銀の弾丸だぞっていう感じで広告されたことで、一気に端に追いやられてしまったのかなと思っています。他には、RxJavaはJava8のラムダ式と相性が良い、当時retrolambdaが流行っていたなどの理由もあると思います。</p>
 

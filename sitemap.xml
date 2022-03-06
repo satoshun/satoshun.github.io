@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2022-02-27T11:42:50+00:00</lastmod>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2022-02-27T11:42:50+00:00</lastmod>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/compose/</loc>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/jetpack/</loc>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</loc>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
     <lastmod>2022-02-27T11:42:50+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/02/gradle-typesafe-accessor/</loc>
-    <lastmod>2022-02-27T11:42:50+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2022-02-27T11:42:50+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2022-02-27T11:42:50+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/02/gradle-profile-build/</loc>
@@ -61,9 +70,6 @@
   </url><url>
     <loc>https://satoshun.github.io/tags/githubactions/</loc>
     <lastmod>2021-08-29T13:18:37+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/compose/</loc>
-    <lastmod>2021-07-18T07:44:46+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/test/</loc>
     <lastmod>2021-07-18T07:44:46+00:00</lastmod>
@@ -124,9 +130,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2020/07/android-asynctask-deprecated/</loc>
     <lastmod>2020-07-22T02:58:19+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/jetpack/</loc>
-    <lastmod>2020-07-12T05:14:48+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</loc>
     <lastmod>2020-07-12T05:14:48+00:00</lastmod>

@@ -94,98 +94,98 @@
     <p>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、<code>ContinuationInterceptor</code>を使えば上手くいきそうです。</p>
 <h2 id="continuationinterceptorとは">ContinuationInterceptorとは?</h2>
 <p>ContinuationInterceptorは次のようなインターフェースです。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">/**
-</span><span style="color:#75715e"> * Marks coroutine context element that intercepts coroutine continuations.
-</span><span style="color:#75715e"> * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
-</span><span style="color:#75715e"> * intercepts all coroutine continuations with [interceptContinuation] invocations.
-</span><span style="color:#75715e"> */</span>
-<span style="color:#a6e22e">@SinceKotlin</span>(<span style="color:#e6db74">&#34;1.3&#34;</span>)
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ContinuationInterceptor</span> : CoroutineContext.Element {
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt;
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">releaseInterceptedContinuation</span>(continuation: Continuation&lt;*&gt;)
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleContinuationInterceptor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
-) : ContinuationInterceptor {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> key: CoroutineContext.Key&lt;*&gt;
-    <span style="color:#66d9ef">get</span>() = ContinuationInterceptor
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; {
-    <span style="color:#75715e">// ContinuationからJobを取得
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> job = continuation.context[Job]
-    <span style="color:#66d9ef">if</span> (job <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-      lifecycle.addJob(job)
-    }
-    <span style="color:#66d9ef">return</span> continuation
-  }
-}
-
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">LifecycleOwner</span>.addJob(job: Job) {
-  lifecycle.addJob(job)
-}
-
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Lifecycle</span>.addJob(job: Job) {
-  <span style="color:#66d9ef">val</span> state = <span style="color:#66d9ef">this</span>.currentState
-  <span style="color:#66d9ef">val</span> event = <span style="color:#66d9ef">when</span> (state) {
-      <span style="color:#f92672">..</span>.
-  }
-  <span style="color:#66d9ef">val</span> observer = LifecycleJobObserver(job, event, <span style="color:#66d9ef">this</span>)
-  <span style="color:#66d9ef">this</span>.addObserver(observer)
-  job.invokeOnCompletion(observer)
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleJobObserver</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job,
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> event: Lifecycle.Event,
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
-) : LifecycleObserver, CompletionHandler {
-  <span style="color:#a6e22e">@OnLifecycleEvent</span>(Lifecycle.Event.ON_ANY)
-  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onEvent</span>(owner: LifecycleOwner, event: Lifecycle.Event) {
-    <span style="color:#66d9ef">if</span> (event <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span>.event) {
-      owner.lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
-      job.cancel()
-    }
-  }
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">invoke</span>(cause: Throwable?) {
-    lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
-  }
-}
-</code></pre></div><p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Marks coroutine context element that intercepts coroutine continuations.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * intercepts all coroutine continuations with [interceptContinuation] invocations.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SinceKotlin</span>(<span style="color:#e6db74">&#34;1.3&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ContinuationInterceptor</span> : CoroutineContext.Element {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">releaseInterceptedContinuation</span>(continuation: Continuation&lt;*&gt;)
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>interceptContinuation</code>からContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleContinuationInterceptor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
+</span></span><span style="display:flex;"><span>) : ContinuationInterceptor {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> key: CoroutineContext.Key&lt;*&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">get</span>() = ContinuationInterceptor
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">interceptContinuation</span>(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ContinuationからJobを取得
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> job = continuation.context[Job]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (job <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      lifecycle.addJob(job)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> continuation
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">LifecycleOwner</span>.addJob(job: Job) {
+</span></span><span style="display:flex;"><span>  lifecycle.addJob(job)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Lifecycle</span>.addJob(job: Job) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> state = <span style="color:#66d9ef">this</span>.currentState
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> event = <span style="color:#66d9ef">when</span> (state) {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> observer = LifecycleJobObserver(job, event, <span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span>.addObserver(observer)
+</span></span><span style="display:flex;"><span>  job.invokeOnCompletion(observer)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleJobObserver</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> event: Lifecycle.Event,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> lifecycle: Lifecycle
+</span></span><span style="display:flex;"><span>) : LifecycleObserver, CompletionHandler {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@OnLifecycleEvent</span>(Lifecycle.Event.ON_ANY)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onEvent</span>(owner: LifecycleOwner, event: Lifecycle.Event) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (event <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span>.event) {
+</span></span><span style="display:flex;"><span>      owner.lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>      job.cancel()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">invoke</span>(cause: Throwable?) {
+</span></span><span style="display:flex;"><span>    lifecycle.removeObserver(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これで、Android Lifecycleと協調して動くContinuationInterceptorが出来ました。</p>
 <p>フルコードは<a href="https://github.com/satoshun-android-example/AutoDisposeExample/blob/master/autodispose/src/main/java/com/github/satoshun/coroutine/autodispose/lifecycle/LifecycleContinuationInterceptor.kt">ここに</a>あります。</p>
 <h2 id="使い方">使い方</h2>
 <p>使い方は次のようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
-  CoroutineScope {
-
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job = Job()
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> coroutineContext <span style="color:#66d9ef">get</span>() = job +
-      Dispatchers.Main +
-      LifecycleContinuationInterceptor(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここでInterceptorを登録
-</span><span style="color:#75715e"></span>}
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : BaseActivity() {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-
-    <span style="color:#75715e">// onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
-</span><span style="color:#75715e"></span>    launch {
-      <span style="color:#f92672">..</span>.
-    }
-  }
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onResume</span>() {
-    <span style="color:#66d9ef">super</span>.onResume()
-
-    <span style="color:#75715e">// onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
-</span><span style="color:#75715e"></span>    launch {
-      <span style="color:#f92672">..</span>.
-    }
-  }
-}
-</code></pre></div><p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaseActivity</span> : AppCompatActivity(),
+</span></span><span style="display:flex;"><span>  CoroutineScope {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job = Job()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> coroutineContext <span style="color:#66d9ef">get</span>() = job +
+</span></span><span style="display:flex;"><span>      Dispatchers.Main +
+</span></span><span style="display:flex;"><span>      LifecycleContinuationInterceptor(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここでInterceptorを登録
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : BaseActivity() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// onCreateでlaunchしているので、onDestroyで自動的にキャンセルされる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    launch {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onResume</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onResume()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// onResumeでlaunchしているので、onPauseで自動的にキャンセルされる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    launch {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>となります。<a href="https://github.com/uber/AutoDispose">Rx-AutoDispose</a>のように実行したタイミングに応じて、キャンセルする場所を自動的に登録してくれます!!</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>もっと良い書き方が出来るか模索しているので、より適したAPI等を知っている人がいれば教えてくれると嬉しいです😊😊😊</li>

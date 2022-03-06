@@ -107,73 +107,73 @@ MotionSpecを使うことで、次のアニメーション属性をカスタマ�
 <p>デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。</p>
 <p>FloatingActionButton用のXMLはソースコードを読んでいくと、<code>design_fab_show_motion_spec.xml</code>と<code>design_fab_hide_motion_spec.xml</code>で定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。</p>
 <p>まずはshow用のMotionSpecを変更していきます。以下がデフォルトで定義されている<code>design_fab_show_motion_spec.xml</code>の中身になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span style="color:#75715e">&lt;!--
-</span><span style="color:#75715e">    Copyright 2017 The Android Open Source Project
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
-</span><span style="color:#75715e">    you may not use this file except in compliance with the License.
-</span><span style="color:#75715e">    You may obtain a copy of the License at
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">        http://www.apache.org/licenses/LICENSE-2.0
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    Unless required by applicable law or agreed to in writing, software
-</span><span style="color:#75715e">    distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
-</span><span style="color:#75715e">    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-</span><span style="color:#75715e">    See the License for the specific language governing permissions and
-</span><span style="color:#75715e">    limitations under the License.
-</span><span style="color:#75715e">--&gt;</span>
-
-<span style="color:#f92672">&lt;set</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;objectAnimator</span>
-      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;opacity&#34;</span>
-      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
-      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;200&#34;</span>
-      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_linear_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;objectAnimator</span>
-      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;scale&#34;</span>
-      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
-      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;200&#34;</span>
-      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_linear_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;objectAnimator</span>
-      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;iconScale&#34;</span>
-      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
-      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;0&#34;</span>
-      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_fast_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/set&gt;</span>
-</code></pre></div><p>今回は、アニメーションを長くして、アイコンをバウンドしたいとします。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!--
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    Copyright 2017 The Android Open Source Project
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    you may not use this file except in compliance with the License.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    You may obtain a copy of the License at
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        http://www.apache.org/licenses/LICENSE-2.0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    Unless required by applicable law or agreed to in writing, software
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    See the License for the specific language governing permissions and
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    limitations under the License.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;set</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;opacity&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;200&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_linear_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;scale&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;200&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_linear_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;iconScale&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@interpolator/mtrl_fast_out_slow_in&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/set&gt;</span>
+</span></span></code></pre></div><p>今回は、アニメーションを長くして、アイコンをバウンドしたいとします。
 それは、durationを長くして、interpolatorに<code>@android:anim/bounce_interpolator</code>を指定すれば良いです。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;set</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;objectAnimator</span>
-    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
-    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
-    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;opacity&#34;</span>
-    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-  <span style="color:#f92672">&lt;objectAnimator</span>
-    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
-    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
-    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;scale&#34;</span>
-    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-  <span style="color:#f92672">&lt;objectAnimator</span>
-    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
-    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
-    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;iconScale&#34;</span>
-    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/set&gt;</span>
-</code></pre></div><p>これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;set</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;opacity&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;scale&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;objectAnimator</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:interpolator=</span><span style="color:#e6db74">&#34;@android:anim/bounce_interpolator&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:propertyName=</span><span style="color:#e6db74">&#34;iconScale&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:startOffset=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/set&gt;</span>
+</span></span></code></pre></div><p>これでshow用のMotionSpecが完成しました。hideでも同じようにXMLを定義してあげます。</p>
 <p>次に、これをViewにセットします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">fab.showMotionSpec = MotionSpec.createFromResource(
-    <span style="color:#66d9ef">this</span>,
-    R.animator.fab_show_motion_spec
-)
-fab.hideMotionSpec = MotionSpec.createFromResource(
-    <span style="color:#66d9ef">this</span>,
-    R.animator.fab_hide_motion_spec
-)
-</code></pre></div><p>最終的な、アニメーションはこんな感じになります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>fab.showMotionSpec = MotionSpec.createFromResource(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>,
+</span></span><span style="display:flex;"><span>    R.animator.fab_show_motion_spec
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>fab.hideMotionSpec = MotionSpec.createFromResource(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>,
+</span></span><span style="display:flex;"><span>    R.animator.fab_hide_motion_spec
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>最終的な、アニメーションはこんな感じになります。</p>
 <figure><img src="https://lh3.googleusercontent.com/7iMReht6cMrOlVErQmTAHUTkcsk8GG76aQR1hwVEA_TCnOtrAgCOEoJU8SH6bhzdMcEOv6Z-pWU=w246-h437-no" width="400"/>
 </figure>
 

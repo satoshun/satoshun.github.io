@@ -20,13 +20,11 @@
 また、この記事では触れませんが、機能（画面）ごとにappモジュールを作るアプローチも良いと思います。
 dummyモジュールとは 例えば、注文を行うorderモジュールがあるとします。今回の開発では、その注文画面は使う必要がないとします。使う必要がないので、orderモジュールは一時的に削除しても良いことになります。しかし、単純にモジュールを削除してしまうと、何かしらの参照エラーになってしまうので、order-dummyモジュールを作り、参照エラーになるクラスを実装します。具体的には、orderモジュールで定義されているpublicなクラス、インターフェースです。
 今回、orderモジュールには唯一Orderクラスのみがpublicとして定義されているとすると、次のように書きます。
-class Order { fun canOrder(): Boolean { ... } fun order() { ... } } class Order { fun canOrder(): Boolean { TODO(&amp;#34;dummy&amp;#34;) } fun order() { TODO(&amp;#34;dummy&amp;#34;) } } 必要に応じて、orderモジュール、order-dummyモジュールを切り替えることでビルド時間を短縮することが出来ます。
+class Order {  fun canOrder(): Boolean { ... }  fun order() { ... } } class Order {  fun canOrder(): Boolean { TODO(&amp;#34;dummy&amp;#34;) }  fun order() { TODO(&amp;#34;dummy&amp;#34;) } } 必要に応じて、orderモジュール、order-dummyモジュールを切り替えることでビルド時間を短縮することが出来ます。
 どのようにモジュールを切り替えるか? settings.gradleとGradleプロパティを用います。
 まず、settings.gradleは次のようになります。
-if (properties[&amp;#34;dummyorder&amp;#34;]) { include &amp;#34;order&amp;#34; project(&amp;#39;:order&amp;#39;).projectDir = file(&amp;#39;dummyorder&amp;#39;) } else { include &amp;#39;:order&amp;#39; } dummyorderプロパティに、何かしらの値がセットされていたら、dummyorderモジュールを使う設定になります。
-dummyorderプロパティの設定はコマンドラインからは -P、Android StudioからはCommand-Line Optionsから指定します。
- これで完了です。普段使わないモジュールをdummyに差し替えるテクニックでした。各モジュール間の結合度が低いなら、コード量少なくお手軽に導入することが出来ます。
-雑談 まだ、この機能をプロダクションに導入していないので、もし導入したら、どれくらいの効果があったかを追記します。効果がない可能性も微レ存です。</description>
+if (properties[&amp;#34;dummyorder&amp;#34;]) {  include &amp;#34;order&amp;#34;  project(&amp;#39;:order&amp;#39;).projectDir = file(&amp;#39;dummyorder&amp;#39;) } else {  include &amp;#39;:order&amp;#39; } dummyorderプロパティに、何かしらの値がセットされていたら、dummyorderモジュールを使う設定になります。
+dummyorderプロパティの設定はコマンドラインからは -P、Android StudioからはCommand-Line Optionsから指定します。</description>
     </item>
     
     <item>
@@ -40,12 +38,12 @@ dummyorderプロパティの設定はコマンドラインからは -P、Android
  Android マルチモジュール: ライブラリのバージョン管理について  今回は、マルチモジュール環境における、Gradle周りの便利であろう設定について、次の4つを紹介します。
  モジュール内のリソース名にルールを持たせる BuildConfigを作らない モジュール内でProGuard/R8の設定をする Rファイルを小さく保つ  モジュール内のリソース名にルールを持たせる resourcePrefixは、リソース名のプレフィックスにルールを設けるプロパティです。
 例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）はhome_から始まる必要があります。
-// build.gradle android { ... resourcePrefix &amp;#39;home_&amp;#39; } // strings.xml &amp;lt;resource&amp;gt; // home_から始まる必要がある  &amp;lt;string name=&amp;#34;home_app_name&amp;#34;&amp;gt;適当な文字列&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt; これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
+// build.gradle android {  ...  resourcePrefix &amp;#39;home_&amp;#39; }  // strings.xml &amp;lt;resource&amp;gt;  // home_から始まる必要がある  &amp;lt;string name=&amp;#34;home_app_name&amp;#34;&amp;gt;適当な文字列&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt; これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
 BuildConfigを作らない モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、uber/AudoDisposeでは、次のように設定しています。
-// build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
+// build.gradle project.android {  libraryVariants.all {  it.generateBuildConfigProvider.configure {  it.enabled = false  }  } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
 例えば、次のように使います。
-// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class * implements com.</description>
+// build.gradle android {  defaultConfig {  consumerProguardFiles &amp;#39;consumer-rules.</description>
     </item>
     
     <item>
@@ -61,10 +59,7 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
 変数の定義方法には、直接記述する方法を除くと、大きく2つの方法があります。
 1. Gradleのextraプロパティを使う Androidの公式ドキュメント: Configure project-wide propertiesで紹介されている方法です。 extにバージョンを定義します。
 例えば、OkHttpでは、次のように定義しています。
-buildscript { ext.versions = [ &amp;#39;animalSniffer&amp;#39;: &amp;#39;1.17&amp;#39;, &amp;#39;assertj&amp;#39;: &amp;#39;3.11.0&amp;#39;, &amp;#39;bouncycastle&amp;#39;: &amp;#39;1.62&amp;#39;, &amp;#39;brotli&amp;#39;: &amp;#39;0.1.2&amp;#39;, ... ext.deps = [ &amp;#39;picocli&amp;#39;: &amp;#34;info.picocli:picocli:${versions.picocli}&amp;#34;, &amp;#39;android&amp;#39;: &amp;#34;org.robolectric:android-all:9-robolectric-4913185-2&amp;#34;, &amp;#39;animalSniffer&amp;#39;: &amp;#34;org.codehaus.mojo:animal-sniffer-annotations:${versions.animalSniffer}&amp;#34;, &amp;#39;assertj&amp;#39;: &amp;#34;org.assertj:assertj-core:${versions.assertj}&amp;#34;, &amp;#39;bouncycastle&amp;#39;: &amp;#34;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&amp;#34;, &amp;#39;brotli&amp;#39;: &amp;#34;org.brotli:dec:${versions.brotli}&amp;#34;, ... extプロパティにライブラリのバージョンをセットします。
-そして、次のように使います。
-dependencies { api deps.okio api deps.kotlinStdlib compileOnly deps.android compileOnly deps.conscrypt ... メリット、デメリットをまとめると次になります。
- メリット  Androidの公式ドキュメントで紹介されている方法 ノウハウが多い Android StudioのProject Structureが使える (Project Structureについては最後に紹介します)   デメリット  IDEによるコード補完が効かない    2.</description>
+buildscript {  ext.versions = [  &amp;#39;animalSniffer&amp;#39;: &amp;#39;1.17&amp;#39;,  &amp;#39;assertj&amp;#39;: &amp;#39;3.11.0&amp;#39;,  &amp;#39;bouncycastle&amp;#39;: &amp;#39;1.62&amp;#39;,  &amp;#39;brotli&amp;#39;: &amp;#39;0.1.2&amp;#39;,  ...   ext.deps = [  &amp;#39;picocli&amp;#39;: &amp;#34;info.picocli:picocli:${versions.picocli}&amp;#34;,  &amp;#39;android&amp;#39;: &amp;#34;org.robolectric:android-all:9-robolectric-4913185-2&amp;#34;,  &amp;#39;animalSniffer&amp;#39;: &amp;#34;org.codehaus.mojo:animal-sniffer-annotations:${versions.animalSniffer}&amp;#34;,  &amp;#39;assertj&amp;#39;: &amp;#34;org.assertj:assertj-core:${versions.assertj}&amp;#34;,  &amp;#39;bouncycastle&amp;#39;: &amp;#34;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&amp;#34;,  &amp;#39;brotli&amp;#39;: &amp;#34;org.brotli:dec:${versions.brotli}&amp;#34;,  ... extプロパティにライブラリのバージョンをセットします。</description>
     </item>
     
     <item>
@@ -82,12 +77,12 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 では、実装に入っていきます。今回はDagger2を使って実装をします。
 featureモジュール側の遷移用インターフェースの定義 前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。
 main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。
-interface MainModuleRouter { // sub1画面へ移動する  fun routeToSub1() } Mainモジュール用のインターフェースなので、MainModuleRouterという名前にし、sub1画面へ遷移するためのメソッドを定義しています。
+interface MainModuleRouter {  // sub1画面へ移動する  fun routeToSub1() } Mainモジュール用のインターフェースなので、MainModuleRouterという名前にし、sub1画面へ遷移するためのメソッドを定義しています。
 そしてこのインターフェースを、MainFragmentで使います。
-class MainFragment : Fragment() { @Inject lateinit var moduleRouter: MainModuleRouter ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener { moduleRouter.routeToSub1() } } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
+class MainFragment : Fragment() {  @Inject lateinit var moduleRouter: MainModuleRouter   ...   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)   view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener {  moduleRouter.routeToSub1()  }  } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
 次にこのインターフェースの実装をします。
 routerモジュール側の遷移用インターフェースの実装 今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。
-&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; ... &amp;lt;/navigation&amp;gt; そして、これを用いて遷移用インターフェースを実装します。</description>
+&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;  xmlns:app=&amp;#34;http://schemas.</description>
     </item>
     
     <item>
@@ -104,7 +99,7 @@ routerモジュール側の遷移用インターフェースの実装 今回は�
 ただし、いくつか条件があります。
 1. 中間モジュールで公開可能なものに限る 例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。
 中間モジュールのコードイメージとしては以下のようになります。
-fun createUserFragment(userName: String, age: Int): Fragment { return UserFragment.createFragment(userName, age) } fun createUserIntent(context: Context): Intent { return Intent(context, UserActivity::class.java) } UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。
+fun createUserFragment(userName: String, age: Int): Fragment {  return UserFragment.createFragment(userName, age) }  fun createUserIntent(context: Context): Intent {  return Intent(context, UserActivity::class.java) } UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。
 2. implementationで依存を定義する apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。
 3. Dagger2使ってると多分無理 Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。
 詳しくはDagger/#970にあります。
@@ -128,7 +123,7 @@ fun createUserFragment(userName: String, age: Int): Fragment { return UserFragme
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。
 最初に、SubActivityをDaggerApplicationのように振る舞わさせるためにModuleRootActivityクラスを定義します。 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。
-abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.</description>
+abstract class ModuleRootActivity : AppCompatActivity(),  HasModuleInjector {  @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;   private lateinit var injector: ModuleActivityInjector   override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
     
     <item>
@@ -148,8 +143,8 @@ abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @In
 そこで、
  メイン画面に遷移するメインルーターモジュール サブ画面に遷移するサブルーターモジュール  の2つのモジュールを作ります。
 メインルーターモジュールでは次の遷移専用インターフェースを定義します。
-interface MainRouter { fun routeToMain(context: Context): Intent } そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。
-internal class MainRouterImpl @Inject constructor() : MainRouter { override fun routeToMain(context: Context): Intent { return Intent(context, MainActivity::class.java) } } --- @Module internal interface MainActivityModule { @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter } これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</description>
+interface MainRouter {  fun routeToMain(context: Context): Intent } そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。
+internal class MainRouterImpl @Inject constructor() : MainRouter {  override fun routeToMain(context: Context): Intent {  return Intent(context, MainActivity::class.java)  } }  ---  @Module internal interface MainActivityModule {  @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter } これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</description>
     </item>
     
   </channel>

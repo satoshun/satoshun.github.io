@@ -87,51 +87,51 @@
     <span class="post-date">Created at Sun, Oct 31, 2021</span>
     
     <p>Kotlinでは、functional interfaceを使うことで、SAM変換が行えるようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ----- normal interface -----
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IntPredicate</span> {
-  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean
-}
-
-<span style="color:#66d9ef">val</span> isEven = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">IntPredicate</span> {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean {
-    <span style="color:#66d9ef">return</span> i % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
-  }
-}
-
-
-<span style="color:#75715e">// ----- use functional interface -----
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">interface</span> IntPredicate2 {
-  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean
-}
-
-<span style="color:#66d9ef">val</span> isEven = IntPredicate2 { <span style="color:#66d9ef">it</span> % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> }
-</code></pre></div><p>functional interfaceを使うと簡潔にコードを書け、さらに生成されるコードが少し効率良くなります。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// ----- normal interface -----
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IntPredicate</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> isEven = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">IntPredicate</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> i % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ----- use functional interface -----
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">interface</span> IntPredicate2 {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> isEven = IntPredicate2 { <span style="color:#66d9ef">it</span> % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> }
+</span></span></code></pre></div><p>functional interfaceを使うと簡潔にコードを書け、さらに生成されるコードが少し効率良くなります。
 具体的には、インスタンスが一度しか作られません。</p>
 <p>具体例を上げて説明します。
 次のコードはメソッドを呼び出すたびに、インスタンスが生成されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>() {
-  <span style="color:#66d9ef">val</span> isEven = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">IntPredicate</span> {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean {
-      <span style="color:#66d9ef">return</span> i % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
-    }
-  }
-  println(isEven.hashCode())
-}
-</code></pre></div><p>次のコードは、
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> isEven = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">IntPredicate</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(i: Int): Boolean {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> i % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  println(isEven.hashCode())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>次のコードは、
 何回メソッドを呼び出しても、同一のインスタンスが使用されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>() {
-  <span style="color:#66d9ef">val</span> isEven = IntPredicate2 { <span style="color:#66d9ef">it</span> % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> }
-  println(isEven.hashCode())
-}
-</code></pre></div><p>functional interfaceを使うと、インスタンスの生成が抑制でき、少し効率が良くなります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> isEven = IntPredicate2 { <span style="color:#66d9ef">it</span> % <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> }
+</span></span><span style="display:flex;"><span>  println(isEven.hashCode())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>functional interfaceを使うと、インスタンスの生成が抑制でき、少し効率が良くなります。</p>
 <h2 id="余談">余談</h2>
 <p>状態（スコープ）を持つfunctional interfaceの場合には、同一のインスタンスを使わずに、
 毎回インスタンスが生成されます。具体的には次のようなコードです。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>(value: Int) {
-  <span style="color:#66d9ef">val</span> calculate = IntPredicate2 { (<span style="color:#66d9ef">it</span> + value) * <span style="color:#ae81ff">2</span> }
-  println(calculate.hashCode())
-}
-</code></pre></div><p>なので、毎回効率の良いコードが作られるわけではありません。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">a</span>(value: Int) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> calculate = IntPredicate2 { (<span style="color:#66d9ef">it</span> + value) * <span style="color:#ae81ff">2</span> }
+</span></span><span style="display:flex;"><span>  println(calculate.hashCode())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>なので、毎回効率の良いコードが作られるわけではありません。</p>
 <h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://kotlinlang.org/docs/fun-interfaces.html">https://kotlinlang.org/docs/fun-interfaces.html</a></li>

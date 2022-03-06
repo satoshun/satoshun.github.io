@@ -113,46 +113,46 @@
 </ul>
 <p>ここで重要なのは、<code>onDestroy</code>が呼ばれることなく、複数回<code>onCreateView</code>が呼ばれる可能性がある点です。</p>
 <p>例えば、次のコードは間違っている可能性があります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
-    <span style="color:#f92672">..</span>.
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
-        <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
-        viewModel.<span style="color:#66d9ef">data</span>.observe(<span style="color:#66d9ef">this</span>, Observer {
-            <span style="color:#f92672">..</span>.
-        })
-    }
-}
-</code></pre></div><p>なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
+</span></span><span style="display:flex;"><span>        viewModel.<span style="color:#66d9ef">data</span>.observe(<span style="color:#66d9ef">this</span>, Observer {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。
 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。</p>
 <p>前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。
 よって、FragmentにはView用のLifecycleが用意されています。それが、<code>Fragment#getViewLifecycle</code>です。</p>
 <p>前述のコードは次のように書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
-    <span style="color:#f92672">..</span>.
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
-        <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
-        <span style="color:#75715e">// ViewのLifecycleOwnerを渡す
-</span><span style="color:#75715e"></span>        viewModel.<span style="color:#66d9ef">data</span>.observe(viewLifecycleOwner, Observer {
-            <span style="color:#f92672">..</span>.
-        })
-    }
-}
-</code></pre></div><p>このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span>: Fragment() {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ViewのLifecycleOwnerを渡す
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        viewModel.<span style="color:#66d9ef">data</span>.observe(viewLifecycleOwner, Observer {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</p>
 <h2 id="補足1">補足1</h2>
 <p>Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。
 それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。</p>
 <h2 id="補足2">補足2</h2>
 <p>Observerの重複登録問題はattach/detachを繰り返す場合におこります。
 サンプルコードは次のようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
-    delay(<span style="color:#ae81ff">3000</span>)
-    supportFragmentManager.commitNow {
-        <span style="color:#66d9ef">if</span> (fragment.isDetached) attach(fragment)
-        <span style="color:#66d9ef">else</span> detach(fragment)
-　  }
-}
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">3000</span>)
+</span></span><span style="display:flex;"><span>    supportFragmentManager.commitNow {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (fragment.isDetached) attach(fragment)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> detach(fragment)
+</span></span><span style="display:flex;"><span>　  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
     <div class="mt30"></div>
     
       <ul class="article-post-tags">

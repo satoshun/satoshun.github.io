@@ -19,11 +19,11 @@
 doOnNextLayout これは、指定したViewがレイアウトされたときに実行されます。 なので、measure、layoutの後にコールバックされます。
 注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。
 doOnLayout doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。
-inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) { if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) { action(this) } else { doOnNextLayout { action(it) } } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
+inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) {  if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) {  action(this)  } else {  doOnNextLayout {  action(it)  }  } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
 doOnNextLayoutと違うところは、goneでもコールされる点なのかなと思います。 Viewがgoneの場合、doOnNextLayoutはコールされないですが、doOnPreDrawではコールされます。
 コルーチンと一緒に使う chrisbanes/tiviが凄く参考になります。
 PreDrawをCoroutineと協調して動くようにしたいなら、次のようになります。
-/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License.</description>
+/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.</description>
     </item>
     
   </channel>

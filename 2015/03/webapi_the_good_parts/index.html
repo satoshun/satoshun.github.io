@@ -106,30 +106,30 @@ Web APIとは何か
 <h2 id="レスポンスデータの設計">レスポンスデータの設計</h2>
 <p>一般的にWEBブラウザに対して返すレスポンスデータはHTMLですが, APIに対してはJSON, XMLが主流です(他にも多々あります). 大きなブレイクするーが無い限りは, JSONに対応しておけば問題無いと思います.
 具体的なレスポンスデータの中身なのですが, 出来る限りシンプルにかつ, クライアントが求めているであろうデータを返すようにします. バックグラウンド側(DBの設計など)を, レスポンスデータに反映させるのではなくて, あくまでクライアントが使いやすい形に整形してあげます. 例えば, GET http://localhost/users/2 は, ユーザIDが2のユーザ情報を取得することが期待されますが, このサービスが, ブログシステムだとすると, このユーザが投稿したブログのリストも一緒に返してあげれば使いやすいのではないかと推測できます(あくまで例です).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
-    <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
-    <span style="color:#f92672">&#34;blogs&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
-            <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
-        }
-    ]
-}
-</code></pre></div><p>しかし, データが大きくなると負荷が大きくなってしまうのでやりすぎには注意が必要です. また, データ構造は出来る限りシンプルにしたほうが望ましいと思います. 上記のJSONの例で言うと, 下のような設計にすることも考えられます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;user&#34;</span>: {
-        <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
-        <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
-        <span style="color:#f92672">&#34;blogs&#34;</span>: [
-            {
-                <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
-                <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
-            }
-        ]
-    }
-}
-</code></pre></div><p>key: userでユーザ固有の情報を囲いました. このようにしたほうが, userの情報ということを示せるので良いように見えます. しかし, GET http://localhost/users/2 にアクセスしている時点で, userデータを取得しようとしていることは明白なので, 今回の場合は少し冗長なように見えます.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;blogs&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>しかし, データが大きくなると負荷が大きくなってしまうのでやりすぎには注意が必要です. また, データ構造は出来る限りシンプルにしたほうが望ましいと思います. 上記のJSONの例で言うと, 下のような設計にすることも考えられます.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;user&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;hoge&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;blogs&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;ぷりぷりー&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>key: userでユーザ固有の情報を囲いました. このようにしたほうが, userの情報ということを示せるので良いように見えます. しかし, GET http://localhost/users/2 にアクセスしている時点で, userデータを取得しようとしていることは明白なので, 今回の場合は少し冗長なように見えます.</p>
 <h2 id="httpの仕様を最大限利用する">HTTPの仕様を最大限利用する</h2>
 <p>ステータスコードを正しく使うことが重要です. ステータスコードは正常系の2xx系, リダイレクト系の3xx系, クライアント側に起因するエラーの4xx系, サーバ側に起因するエラーの5xx系に分けることが出来ます. 正しく処理されていないのに, 2xx系を返してしまうとクライアントに誤解を与えてしまうので, 正しいステータスコードを返す必要があります.</p>
 <p>Cacheの機能を上手に使うと, クライアントは無駄な通信を減らすことができ, ユーザに良い体験をさせることが出来ます. また, リクエストの数が少なくなるため, サーバの負荷を下げることが出来ます. しかし, Cacheの時間を長く設定してしまうと, データのリアルタイム性がなくなってしまうので, エンドポイントの性質に応じて指定する必要があります.</p>

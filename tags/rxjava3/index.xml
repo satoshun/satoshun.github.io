@@ -19,7 +19,7 @@ RxJava2との差異 READMEから README.md
 RxJava2 との差分は以下のようになっています。
  fixed API mistakes and many limits of RxJava 2  RxJava2のいくつかのAPIのミス、制限を直している   intended to be a replacement for RxJava 2 with relatively few binary incompatible changes  APIに多少の変更があり、バイナリ互換がない   test and diagnostic support via test schedulers, test consumers and plugin hooks  テストのサポートの充実    3.x different docsから 3.x different docs
 asメソッドとtoメソッド toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。
-// Obsevable.java public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter) // Single.</description>
+// Obsevable.java public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter)  // Single.</description>
     </item>
     
   </channel>

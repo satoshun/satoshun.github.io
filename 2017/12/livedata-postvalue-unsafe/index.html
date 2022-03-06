@@ -103,18 +103,18 @@ RxJavaのSubject …">
 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。</p>
 <h2 id="実装詳細">実装詳細</h2>
 <p>LiveDataのpostValueのコードは以下のようになっています(v1.0.0)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postValue</span><span style="color:#f92672">(</span>T value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">boolean</span> postTask<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mDataLock<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        postTask <span style="color:#f92672">=</span> mPendingData <span style="color:#f92672">==</span> NOT_SET<span style="color:#f92672">;</span>
-        mPendingData <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>postTask<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    ArchTaskExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">postToMainThread</span><span style="color:#f92672">(</span>mPostValueRunnable<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>postValueメソッドでは</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">postValue</span><span style="color:#f92672">(</span>T value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> postTask<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">synchronized</span> <span style="color:#f92672">(</span>mDataLock<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        postTask <span style="color:#f92672">=</span> mPendingData <span style="color:#f92672">==</span> NOT_SET<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        mPendingData <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>postTask<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    ArchTaskExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">postToMainThread</span><span style="color:#f92672">(</span>mPostValueRunnable<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>postValueメソッドでは</p>
 <ol start="2">
 <li>
 <ol>

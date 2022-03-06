@@ -94,41 +94,41 @@
 <h2 id="単一のpermissonを要求する">単一のPermissonを要求する</h2>
 <p>新しく追加された <code>registerForActivityResult</code> 拡張関数に、<code>ActivityResultContracts.RequestPermission()</code>を指定することで、単一のPermissionを要求することが出来ます。</p>
 <p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>が欲しい時は、次のように書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity() {
-
-  <span style="color:#75715e">// 定義側
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestLocation = registerForActivityResult(
-    ActivityResultContracts.RequestPermission(),
-    ACCESS_FINE_LOCATION
-  ) { isGranted <span style="color:#f92672">-&gt;</span>
-    <span style="color:#75715e">// Permissionの取得に成功したかどうか、Boolean値で返ってくる
-</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;isGranted </span><span style="color:#e6db74">$isGranted</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
-  }
-
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
-    <span style="color:#75715e">// 呼び出し側
-</span><span style="color:#75715e"></span>    requestLocation.launch(Unit)
-  }
-}
-</code></pre></div><h2 id="複数のpermissonを要求する">複数のPermissonを要求する</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 定義側
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestLocation = registerForActivityResult(
+</span></span><span style="display:flex;"><span>    ActivityResultContracts.RequestPermission(),
+</span></span><span style="display:flex;"><span>    ACCESS_FINE_LOCATION
+</span></span><span style="display:flex;"><span>  ) { isGranted <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Permissionの取得に成功したかどうか、Boolean値で返ってくる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;isGranted </span><span style="color:#e6db74">$isGranted</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 呼び出し側
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    requestLocation.launch(Unit)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="複数のpermissonを要求する">複数のPermissonを要求する</h2>
 <p>複数の場合は、<code>ActivityResultContracts.RequestMultiplePermissions()</code>を指定します。</p>
 <p>例えば、<code>android.permission.ACCESS_FINE_LOCATION</code>、<code>android.permission.READ_EXTERNAL_STORAGE</code>が欲しい時は、次のように書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity(R.layout.app_act) {
-  <span style="color:#75715e">// 定義側
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestPermissions = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions(),
-    arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE
-  ) { grants <span style="color:#f92672">-&gt;</span>
-    <span style="color:#75715e">// Permissionの取得に成功したかどうか、Map&lt;String, Boolean&gt;&gt;で返ってくる
-</span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;grants </span><span style="color:#e6db74">$grants</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
-  }
-
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
-    <span style="color:#75715e">// 呼び出し側
-</span><span style="color:#75715e"></span>    requestPermissions.launch(Unit)
-  }
-}
-</code></pre></div><h2 id="まとめ">まとめ</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeActivity</span> : AppCompatActivity(R.layout.app_act) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 定義側
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> requestPermissions = registerForActivityResult(
+</span></span><span style="display:flex;"><span>    ActivityResultContracts.RequestMultiplePermissions(),
+</span></span><span style="display:flex;"><span>    arrayOf(ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE
+</span></span><span style="display:flex;"><span>  ) { grants <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Permissionの取得に成功したかどうか、Map&lt;String, Boolean&gt;&gt;で返ってくる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@AppActivity</span>, <span style="color:#e6db74">&#34;grants </span><span style="color:#e6db74">$grants</span><span style="color:#e6db74">&#34;</span>, Toast.LENGTH_LONG).show()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hoge</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 呼び出し側
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    requestPermissions.launch(Unit)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>ActivityResultContract便利〜</p>
 
     <div class="mt30"></div>

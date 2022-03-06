@@ -19,10 +19,8 @@ Use view binding in fragments
 Fragment自体のライフサイクルのほうが、FragmentのViewのライフサイクルより長いので、FragmentでBindingの参照を保持するとリークしてしまうためです。
 この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。
 1. onDestoryViewで解放する 公式ドキュメントに載っている方法です。
-// onCreatedViewで初期化 private var _binding: ResultProfileBinding? = null private val binding get() = _binding!! override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? { _binding = ResultProfileBinding.inflate(inflater, container, false) val view = binding.root return view } override fun onDestroyView() { _binding = null } onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。
-2. AACサンプルで使っているAutoClearedValueを使う takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。
- DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました https://t.co/IUNmeQLzfB
-&amp;mdash; takahirom (@new_runnable) January 17, 2020   次のように使います。</description>
+// onCreatedViewで初期化 private var _binding: ResultProfileBinding? = null private val binding get() = _binding!!  override fun onCreateView(  inflater: LayoutInflater,  container: ViewGroup?,  savedInstanceState: Bundle? ): View? {  _binding = ResultProfileBinding.inflate(inflater, container, false)  val view = binding.root  return view }  override fun onDestroyView() {  _binding = null } onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。
+2. AACサンプルで使っているAutoClearedValueを使う takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。</description>
     </item>
     
     <item>
@@ -35,10 +33,10 @@ Fragment自体のライフサイクルのほうが、FragmentのViewのライフ
 まず、Fragmentのおおまかなライフサイクルは次のようになっています。
  onAttach onCreate  onCreateView onViewCreated  &amp;hellip;   onDestoryView   onDestroy onDetach  ここで重要なのは、onDestroyが呼ばれることなく、複数回onCreateViewが呼ばれる可能性がある点です。
 例えば、次のコードは間違っている可能性があります。
-class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) viewModel.data.observe(this, Observer { ... }) } } なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
+class MainFragment: Fragment() {  ...  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)  viewModel.data.observe(this, Observer {  ...  })  } } なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
 前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。 よって、FragmentにはView用のLifecycleが用意されています。それが、Fragment#getViewLifecycleです。
 前述のコードは次のように書くことが出来ます。
-class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) // ViewのLifecycleOwnerを渡す  viewModel.data.observe(viewLifecycleOwner, Observer { ... }) } } このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！</description>
+class MainFragment: Fragment() {  ...  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)  // ViewのLifecycleOwnerを渡す  viewModel.</description>
     </item>
     
   </channel>

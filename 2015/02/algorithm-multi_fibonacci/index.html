@@ -103,120 +103,120 @@
 <h2 id="go">Go</h2>
 <p><code>type fibonacci int</code>で, int型にfibonacci用の関数を生やしました.
 せっかくなので, goroutineも使ってみました.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
-
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">fibonacci</span> <span style="color:#66d9ef">int</span>
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">self</span> <span style="color:#a6e22e">fibonacci</span>) <span style="color:#a6e22e">value</span>() <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span> {
-  <span style="color:#a6e22e">ch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">1</span>)
-  <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>
-  <span style="color:#a6e22e">index</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
-  <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">ch</span>)
-    <span style="color:#66d9ef">for</span> {
-      <span style="color:#66d9ef">if</span> int(<span style="color:#a6e22e">self</span>) &lt; <span style="color:#a6e22e">index</span> {
-        <span style="color:#66d9ef">break</span>
-      }
-      <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> = <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>
-      <span style="color:#a6e22e">index</span><span style="color:#f92672">++</span>
-      <span style="color:#a6e22e">ch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">a</span>
-    }
-  }()
-
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ch</span>
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#a6e22e">fibonacci</span>
-  <span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">10</span>
-  <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">value</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d &#34;</span>, <span style="color:#a6e22e">v</span>)
-  }
-  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
-}
-</code></pre></div><h2 id="python">Python</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">fibonacci</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">self</span> <span style="color:#a6e22e">fibonacci</span>) <span style="color:#a6e22e">value</span>() <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">index</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">ch</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> int(<span style="color:#a6e22e">self</span>) &lt; <span style="color:#a6e22e">index</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> = <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">index</span><span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">ch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">a</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ch</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#a6e22e">fibonacci</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">value</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d &#34;</span>, <span style="color:#a6e22e">v</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="python">Python</h2>
 <p>iteratorを定義して, 実装しました.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fibonacci</span>(object):
-    <span style="color:#66d9ef">def</span> __init__(self, i):
-        self<span style="color:#f92672">.</span>__i <span style="color:#f92672">=</span> i
-        self<span style="color:#f92672">.</span>index <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-
-    <span style="color:#66d9ef">def</span> __iter__(self):
-        self<span style="color:#f92672">.</span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-        self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-        <span style="color:#66d9ef">return</span> self
-
-    <span style="color:#66d9ef">def</span> __next__(self):
-        <span style="color:#66d9ef">while</span> self<span style="color:#f92672">.</span>__i <span style="color:#f92672">&gt;=</span> self<span style="color:#f92672">.</span>index:
-            self<span style="color:#f92672">.</span>index <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-            self<span style="color:#f92672">.</span>a, self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>b, self<span style="color:#f92672">.</span>a <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>b
-            <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>a
-        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">StopIteration</span>()
-
-
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
-    f <span style="color:#f92672">=</span> Fibonacci(<span style="color:#ae81ff">10</span>)
-    <span style="color:#66d9ef">for</span> number <span style="color:#f92672">in</span> f:
-        print(number, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39; &#39;</span>)
-    print()
-</code></pre></div><h2 id="bash">bash</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fibonacci</span>(object):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, i):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>__i <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>index <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __iter__(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __next__(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> self<span style="color:#f92672">.</span>__i <span style="color:#f92672">&gt;=</span> self<span style="color:#f92672">.</span>index:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>index <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>a, self<span style="color:#f92672">.</span>b <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>b, self<span style="color:#f92672">.</span>a <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>b
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>a
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">StopIteration</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    f <span style="color:#f92672">=</span> Fibonacci(<span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> number <span style="color:#f92672">in</span> f:
+</span></span><span style="display:flex;"><span>        print(number, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#39; &#39;</span>)
+</span></span><span style="display:flex;"><span>    print()
+</span></span></code></pre></div><h2 id="bash">bash</h2>
 <p><code>$[]</code>でexpressionを表現しています. これ実装するまで知りませんでした.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">function</span> fib<span style="color:#f92672">()</span>
-<span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> $1 in
-        0<span style="color:#f92672">)</span> echo <span style="color:#ae81ff">0</span> ;;
-        <span style="color:#f92672">[</span>1-2<span style="color:#f92672">])</span> echo <span style="color:#ae81ff">1</span> ;;
-        *<span style="color:#f92672">)</span> echo $<span style="color:#f92672">[</span><span style="color:#e6db74">`</span>fib $<span style="color:#f92672">[</span>$1-1<span style="color:#f92672">]</span><span style="color:#e6db74">`</span> + <span style="color:#e6db74">`</span>fib $<span style="color:#f92672">[</span>$1-2<span style="color:#f92672">]</span><span style="color:#e6db74">`</span><span style="color:#f92672">]</span> ;;
-    <span style="color:#66d9ef">esac</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
-    fib $i
-<span style="color:#66d9ef">done</span>
-</code></pre></div><h2 id="javascript">JavaScript</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> fib<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> $1 in
+</span></span><span style="display:flex;"><span>        0<span style="color:#f92672">)</span> echo <span style="color:#ae81ff">0</span> ;;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>1-2<span style="color:#f92672">])</span> echo <span style="color:#ae81ff">1</span> ;;
+</span></span><span style="display:flex;"><span>        *<span style="color:#f92672">)</span> echo $<span style="color:#f92672">[</span><span style="color:#e6db74">`</span>fib $<span style="color:#f92672">[</span>$1-1<span style="color:#f92672">]</span><span style="color:#e6db74">`</span> + <span style="color:#e6db74">`</span>fib $<span style="color:#f92672">[</span>$1-2<span style="color:#f92672">]</span><span style="color:#e6db74">`</span><span style="color:#f92672">]</span> ;;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">esac</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    fib $i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="javascript">JavaScript</h2>
 <p>単純な再起で実装しました.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">i</span>) {
-  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span>) {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">:</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">i</span>);
-  }(<span style="color:#a6e22e">i</span>);
-}
-
-<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
-  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">i</span>));
-}
-</code></pre></div><h2 id="java">Java</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">i</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">inner</span>(<span style="color:#a6e22e">i</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">:</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">i</span>);
+</span></span><span style="display:flex;"><span>  }(<span style="color:#a6e22e">i</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">i</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="java">Java</h2>
 <p>Java8のstreamを使って実装しました. filter非常に便利.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.util.*<span style="color:#f92672">;</span>
-
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fibonacci</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fibonacci<span style="color:#f92672">(</span>10<span style="color:#f92672">));</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fibonacci<span style="color:#f92672">(</span>20<span style="color:#f92672">));</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fibonacci</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> data <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{{</span>
-            add<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>1<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>1<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>2<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>3<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}};</span>
-
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 4<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            data<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
-                data
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>nn <span style="color:#f92672">-&gt;</span> nn <span style="color:#f92672">&gt;=</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>data<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()-</span>2<span style="color:#f92672">))</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">mapToInt</span><span style="color:#f92672">(</span>nn <span style="color:#f92672">-&gt;</span> nn<span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">sum</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>n<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h2 id="まとめ">まとめ</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.*<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fibonacci</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fibonacci<span style="color:#f92672">(</span>10<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>fibonacci<span style="color:#f92672">(</span>20<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fibonacci</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> data <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{{</span>
+</span></span><span style="display:flex;"><span>            add<span style="color:#f92672">(</span>0<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>1<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>1<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>2<span style="color:#f92672">);</span> add<span style="color:#f92672">(</span>3<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 4<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            data<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>                data
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>nn <span style="color:#f92672">-&gt;</span> nn <span style="color:#f92672">&gt;=</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>data<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()-</span>2<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">mapToInt</span><span style="color:#f92672">(</span>nn <span style="color:#f92672">-&gt;</span> nn<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">sum</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>n<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>fibonacciの計算には向かないけど, Java8のstreamが便利でした. Javaも進化しているんだなと.</p>
 
     <div class="mt30"></div>

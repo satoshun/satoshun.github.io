@@ -93,30 +93,30 @@ KMMでは、CocoaPodsプラグインを使うと、podspecファイルを …">
 <hr>
 <p>KMMでは、CocoaPodsプラグインを使うと、podspecファイルを生成してくれます。このpodfileはローカルでは動かすことが出来るんですが、Private Spec Repoにアップロードするには、これを編集する必要があります。</p>
 <p>以下、編集したところを載せます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">Pod</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Spec</span><span style="color:#f92672">.</span>new <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>spec<span style="color:#f92672">|</span>
-    <span style="color:#f92672">...</span>
-    spec<span style="color:#f92672">.</span>source                   <span style="color:#f92672">=</span> { <span style="color:#e6db74">:git</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;https://github.com/satoshun-android-example/KMMExternalSourceCocoapods.git&#34;</span>, <span style="color:#e6db74">:tag</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;0.0.2&#34;</span> }
-    <span style="color:#f92672">...</span>
-    spec<span style="color:#f92672">.</span>preserve_paths           <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;**/*.*&#34;</span>
-    <span style="color:#f92672">...</span>
-    spec<span style="color:#f92672">.</span>script_phases <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
-        {
-            <span style="color:#e6db74">:name</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Build cocoapodsshared&#39;</span>,
-            <span style="color:#e6db74">:execution_position</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">:before_compile</span>,
-            <span style="color:#e6db74">:shell_path</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;/bin/sh&#39;</span>,
-            <span style="color:#e6db74">:script</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&lt;&lt;-SCRIPT
-</span><span style="color:#e6db74"></span>                set <span style="color:#f92672">-</span>ev
-                <span style="color:#66d9ef">REPO_ROOT</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$PODS_TARGET_SRCROOT&#34;</span>
-                <span style="color:#e6db74">&#34;$REPO_ROOT/gradlew&#34;</span> <span style="color:#f92672">-</span>p <span style="color:#e6db74">&#34;$REPO_ROOT&#34;</span> <span style="color:#e6db74">:cocoapodsshared:syncFramework</span> \
-                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>target<span style="color:#f92672">=</span>$KOTLIN_TARGET \
-                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>configuration<span style="color:#f92672">=</span>$CONFIGURATION \
-                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>cflags<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$OTHER_CFLAGS&#34;</span> \
-                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>paths<span style="color:#f92672">.</span>headers<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$HEADER_SEARCH_PATHS&#34;</span> \
-                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>paths<span style="color:#f92672">.</span>frameworks<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$FRAMEWORK_SEARCH_PATHS&#34;</span>
-            <span style="color:#66d9ef">SCRIPT</span>
-        }
-    <span style="color:#f92672">]</span>
-</code></pre></div><h3 id="1-specsource">1. spec.source</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#66d9ef">Pod</span><span style="color:#f92672">::</span><span style="color:#66d9ef">Spec</span><span style="color:#f92672">.</span>new <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>spec<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    spec<span style="color:#f92672">.</span>source                   <span style="color:#f92672">=</span> { <span style="color:#e6db74">:git</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;https://github.com/satoshun-android-example/KMMExternalSourceCocoapods.git&#34;</span>, <span style="color:#e6db74">:tag</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#34;0.0.2&#34;</span> }
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    spec<span style="color:#f92672">.</span>preserve_paths           <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;**/*.*&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    spec<span style="color:#f92672">.</span>script_phases <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:name</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Build cocoapodsshared&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:execution_position</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">:before_compile</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:shell_path</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;/bin/sh&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">:script</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&lt;&lt;-SCRIPT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>                set <span style="color:#f92672">-</span>ev
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">REPO_ROOT</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$PODS_TARGET_SRCROOT&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;$REPO_ROOT/gradlew&#34;</span> <span style="color:#f92672">-</span>p <span style="color:#e6db74">&#34;$REPO_ROOT&#34;</span> <span style="color:#e6db74">:cocoapodsshared:syncFramework</span> \
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>target<span style="color:#f92672">=</span>$KOTLIN_TARGET \
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>configuration<span style="color:#f92672">=</span>$CONFIGURATION \
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>cflags<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$OTHER_CFLAGS&#34;</span> \
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>paths<span style="color:#f92672">.</span>headers<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$HEADER_SEARCH_PATHS&#34;</span> \
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">-</span><span style="color:#66d9ef">Pkotlin</span><span style="color:#f92672">.</span>native<span style="color:#f92672">.</span>cocoapods<span style="color:#f92672">.</span>paths<span style="color:#f92672">.</span>frameworks<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$FRAMEWORK_SEARCH_PATHS&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">SCRIPT</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>
+</span></span></code></pre></div><h3 id="1-specsource">1. spec.source</h3>
 <p>spec.sourceの、GitHubとtagを指定します</p>
 <h3 id="2-specpreserve_paths">2. spec.preserve_paths</h3>
 <p>これを指定すると、sourceのコードを保持してくれます。</p>

@@ -19,11 +19,11 @@
 doOnNextLayout これは、指定したViewがレイアウトされたときに実行されます。 なので、measure、layoutの後にコールバックされます。
 注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。
 doOnLayout doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。
-inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) { if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) { action(this) } else { doOnNextLayout { action(it) } } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
+inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) {  if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) {  action(this)  } else {  doOnNextLayout {  action(it)  }  } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
 doOnNextLayoutと違うところは、goneでもコールされる点なのかなと思います。 Viewがgoneの場合、doOnNextLayoutはコールされないですが、doOnPreDrawではコールされます。
 コルーチンと一緒に使う chrisbanes/tiviが凄く参考になります。
 PreDrawをCoroutineと協調して動くようにしたいなら、次のようになります。
-/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License.</description>
+/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.</description>
     </item>
     
     <item>
@@ -39,14 +39,14 @@ SystemUiVisibilityの詳細な設定については説明を割愛するので�
 ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?
    右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。
 このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。
-&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;    見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
+&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt;  &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt;  ... &amp;lt;/LinearLayout&amp;gt;    見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
    paddingTopと、paddingBottomに値が指定されていることが分かります。これはfitsSystemWindowsのデフォルトの振る舞いによるものです。
 fitsSystemWindowsはデフォルトで、paddingTopにstatus barの高さを、paddingBottomにnavigation barの高さを設定します。それにより、コンテンツがSystem UIに被らないようになります。
 まとめると「fitsSystemWindowsはSystem UIの高さに応じてpaddingに値をセットする」振る舞いをします。
 しかし、これはデフォルトの動作で、fitsSystemWindowsの動作を変更することが出来ます。
 AppBarLayoutはfitsSystemWindowsのデフォルトの動作を変更しているViewなので、AppBarLayoutにfitsSystemWindowsをつけた場合にどのように動作するかを見てみます。
 AppBarLayoutのfitsSystemWindowsの解釈 fitsSystemWindowsをAppBarLayoutに設定します。
-&amp;lt;LinearLayout&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt;     見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
+&amp;lt;LinearLayout&amp;gt;  &amp;lt;com.google.android.material.appbar.AppBarLayout  android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt;  ... &amp;lt;/LinearLayout&amp;gt;     見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
    省略するのですが、fitsSystemWindowsを指定しない場合のAppBarLayoutの高さは154でした。上記の図の220という数字は 154(元の高さ) + 66(status barの高さ) = 220です。</description>
     </item>
     

@@ -99,35 +99,35 @@
 <p>以下、<del>2019年3月10日</del> 2019年3月11日の調査結果になります。
 また、これらは、supportライブラリのリポジトリから取ってきたので、現在リリースされているかどうかは不明です。</p>
 <p>Lifecycle</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Lifecycleに従うCoroutineScopeの生成
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> Lifecycle.coroutineScope: CoroutineScope
-</code></pre></div><p>LifecycleOwner</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// LifecycleOwnerに従うCoroutineScopeの生成
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> LifecycleOwner.lifecycleScope: CoroutineScope
-</code></pre></div><p>ViewModel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ViewModelに従うCoroutineScopeの生成
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> ViewModel.viewModelScope: CoroutineScope
-</code></pre></div><p>WorkManager</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutineWorker</span>(
-  appContext: Context,
-  params: WorkerParameters
-) : ListenableWorker(appContext, params) {
-  <span style="color:#75715e">// suspendメソッドで定義された
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">doWork</span>(): Result
-}
-</code></pre></div><p>Room</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Dao内でsuspendメソッドが使える
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">@Dao</span>
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HogesDao</span> {
-  <span style="color:#a6e22e">@Insert</span>
-  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">add</span>(hoge: Hoge)
-
-  <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM hoge WHERE id = :id&#34;</span>)
-  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">get</span>(id: String): Hoge
-
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><h2 id="まとめ">まとめ</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// Lifecycleに従うCoroutineScopeの生成
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> Lifecycle.coroutineScope: CoroutineScope
+</span></span></code></pre></div><p>LifecycleOwner</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// LifecycleOwnerに従うCoroutineScopeの生成
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> LifecycleOwner.lifecycleScope: CoroutineScope
+</span></span></code></pre></div><p>ViewModel</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// ViewModelに従うCoroutineScopeの生成
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> ViewModel.viewModelScope: CoroutineScope
+</span></span></code></pre></div><p>WorkManager</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutineWorker</span>(
+</span></span><span style="display:flex;"><span>  appContext: Context,
+</span></span><span style="display:flex;"><span>  params: WorkerParameters
+</span></span><span style="display:flex;"><span>) : ListenableWorker(appContext, params) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// suspendメソッドで定義された
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">doWork</span>(): Result
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Room</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// Dao内でsuspendメソッドが使える
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">@Dao</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HogesDao</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Insert</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">add</span>(hoge: Hoge)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM hoge WHERE id = :id&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">get</span>(id: String): Hoge
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Lifecycle、LifecycleOwner、ViewModelはそれらのライフサイクルに従う、CoroutineScopeの生成が出来る</li>
 <li>WorkManagerのdoWorkがsuspendメソッドになった

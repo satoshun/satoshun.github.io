@@ -94,17 +94,17 @@
 <h2 id="使い方">使い方</h2>
 <p>新しく追加された<a href="https://github.com/material-components/material-components-android/blob/67e4489293290853de83ef1b00205058ae25fa8e/lib/java/com/google/android/material/tabs/TabLayoutMediator.java">TabLayoutMediator</a>を使います。</p>
 <p>まず、<code>TabLayoutMediator</code>インスタンスを生成します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> viewPager: ViewPager2 = findViewById(R.id.viewpager)
-<span style="color:#66d9ef">val</span> tabLayout: TabLayout = findViewById(R.id.tab)
-<span style="color:#66d9ef">val</span> mediator = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int <span style="color:#f92672">-&gt;</span>
-  tab.text = <span style="color:#e6db74">&#34;test </span><span style="color:#e6db74">$position</span><span style="color:#e6db74">&#34;</span> <span style="color:#75715e">// タブにタイトルをセット
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>コンストラクタには、TabLayout、ViewPager2、OnConfigureTabCallbackを渡します。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> viewPager: ViewPager2 = findViewById(R.id.viewpager)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> tabLayout: TabLayout = findViewById(R.id.tab)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> mediator = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>  tab.text = <span style="color:#e6db74">&#34;test </span><span style="color:#e6db74">$position</span><span style="color:#e6db74">&#34;</span> <span style="color:#75715e">// タブにタイトルをセット
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>コンストラクタには、TabLayout、ViewPager2、OnConfigureTabCallbackを渡します。
 <code>OnConfigureTabCallback</code>は、tabとpositionを受け取り、tabに対して、タイトルをセットします。
 ViewPagerのPageAdapterとは違い、RecyclerViewのAdapterからはタイトルを取得できないので、このような変更になったと思われます。</p>
 <p>最後に<code>attach</code>関数を呼び出します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">mediator.attach()
-</code></pre></div><p>これで、ViewPager2 + TabLayoutを実現できます。とても簡単！！</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>mediator.attach()
+</span></span></code></pre></div><p>これで、ViewPager2 + TabLayoutを実現できます。とても簡単！！</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>ViewPager2もエコシステムが整いつつある😊</li>

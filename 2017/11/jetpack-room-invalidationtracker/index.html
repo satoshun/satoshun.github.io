@@ -95,20 +95,20 @@
 <h2 id="前置き前提知識">前置き/前提知識</h2>
 <p><a href="https://developer.android.com/topic/libraries/architecture/room.html#db-migration">Room</a>はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。</p>
 <p>RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> {
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUsers</span>(): Flowable&lt;List&lt;User&gt;&gt;
-}
-</code></pre></div><p>返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Dao</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">UserDao</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM users&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUsers</span>(): Flowable&lt;List&lt;User&gt;&gt;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。</p>
 <p>そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// クライアント側のコード
-</span><span style="color:#75715e"></span>userDao.getUsers()
-  .subscribeOn(Schedulers.io)
-  .subscribe {
-     println(<span style="color:#66d9ef">it</span>) <span style="color:#75715e">// ここが対象のテーブルが変更されるたびに評価される。
-</span><span style="color:#75715e"></span>  }
-</code></pre></div><p>テーブルの変更検知はRoomの内部クラスの<code>InvalidationTracker</code>クラスで行っています。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// クライアント側のコード
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>userDao.getUsers()
+</span></span><span style="display:flex;"><span>  .subscribeOn(Schedulers.io)
+</span></span><span style="display:flex;"><span>  .subscribe {
+</span></span><span style="display:flex;"><span>     println(<span style="color:#66d9ef">it</span>) <span style="color:#75715e">// ここが対象のテーブルが変更されるたびに評価される。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span></code></pre></div><p>テーブルの変更検知はRoomの内部クラスの<code>InvalidationTracker</code>クラスで行っています。
 これから<code>InvalidationTracker</code>の内部実装を見ていきます。</p>
 <h2 id="invalidationtrackerの流れ">InvalidationTrackerの流れ</h2>
 <ol>
@@ -120,16 +120,16 @@
 <p>というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。</p>
 <h3 id="invalidationtrackerstarttrackingtableメソッドによりtriggerを生成する">InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する</h3>
 <p>最初に各テーブルのバージョンを管理する <code>room_table_modification_log</code>が生成されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TABLE</span> room_table_modification_log (
-    <span style="color:#66d9ef">version</span> INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
-    table_id INTEGER
-)
-</code></pre></div><p>このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TRIGGER</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> room_table_modification_trigger_users_UPDATE <span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> users
-<span style="color:#66d9ef">BEGIN</span>
-    <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> room_table_modification_log <span style="color:#66d9ef">VALUES</span> (<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">0</span>); <span style="color:#f92672">#</span> <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">は</span>table_id
-<span style="color:#66d9ef">END</span>
-</code></pre></div><p>これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリ<code>INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); </code>は <code>room_table_modification_log</code>テーブルに最新のid + 1のrowを追加/更新するものになります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TABLE</span> room_table_modification_log (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">version</span> INTEGER <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> AUTOINCREMENT,
+</span></span><span style="display:flex;"><span>    table_id INTEGER
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> TEMP <span style="color:#66d9ef">TRIGGER</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> room_table_modification_trigger_users_UPDATE <span style="color:#66d9ef">AFTER</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> users
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> room_table_modification_log <span style="color:#66d9ef">VALUES</span> (<span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">0</span>); <span style="color:#f92672">#</span> <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">は</span>table_id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
+</span></span></code></pre></div><p>これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリ<code>INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); </code>は <code>room_table_modification_log</code>テーブルに最新のid + 1のrowを追加/更新するものになります。</p>
 <p>上のTriggerはUPDATEですが、その他にDELETE、INSERT用のTriggerも実行されます。これらのTriggerによりテーブルの変更(Update, Insert, Delete)を検知し、前回のversionを新しいものに更新します。</p>
 <h3 id="roomdataendtransactionのタイミングで各テーブルが更新されたかを確認する">RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認する</h3>
 <p>Triggerによりversionを更新できたので、次にその更新したテーブルを前回の状態と比較し、差分があるなら発火してあげる必要があります。それは <code>RoomData#endTransaction</code>のタイミングで行っています。</p>

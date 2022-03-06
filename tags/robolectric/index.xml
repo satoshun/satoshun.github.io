@@ -17,7 +17,7 @@
       <description>Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。 まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、AndroidJUnit4ランナーが使えるなど、かなりの部分が共通化出来ます。
 この記事では、ユニットテストでActivity.onActivityResultのテストをどこまでandroid testのように書けるかを検証します。
 テスト対象コード まず最初に、テスト対象コードは次のようになっています。
-class MainActivity : AppCompatActivity() { ... override fun onCreate(savedInstanceState: Bundle?) { ... button.setOnClickListener { startActivityForResult( Intent(this, Sub2Activity::class.java).apply { putExtra(&amp;#34;fuga&amp;#34;, &amp;#34;hoge&amp;#34;) }, 1 ) } } override fun onActivityResult( requestCode: Int, resultCode: Int, data: Intent? ) { super.onActivityResult(requestCode, resultCode, data) if (requestCode == 1) { if (resultCode == Activity.RESULT_OK) { val value = data!!.getIntExtra(&amp;#34;test&amp;#34;, -1) button.text = value.toString() } } } } class Sub2Activity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?</description>
+class MainActivity : AppCompatActivity() {  ...  override fun onCreate(savedInstanceState: Bundle?) {  ...   button.setOnClickListener {  startActivityForResult(  Intent(this, Sub2Activity::class.java).apply {  putExtra(&amp;#34;fuga&amp;#34;, &amp;#34;hoge&amp;#34;)  },  1  )  }  }   override fun onActivityResult(  requestCode: Int,  resultCode: Int,  data: Intent?  ) {  super.onActivityResult(requestCode, resultCode, data)  if (requestCode == 1) {  if (resultCode == Activity.</description>
     </item>
     
   </channel>

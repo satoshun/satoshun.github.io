@@ -93,35 +93,35 @@
 <p>環境は <code>com.android.tools.build:gradle:4.0.0-alpha01</code>になります。</p>
 <h2 id="セットアップ">セットアップ</h2>
 <p>build.gradleに、coreLibraryDesugaringEnabledを追加します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">compileOptions <span style="color:#f92672">{</span>
-  sourceCompatibility JavaVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_1_8</span>
-  targetCompatibility JavaVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_1_8</span>
-
-  coreLibraryDesugaringEnabled <span style="color:#66d9ef">true</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>これで完了です。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>compileOptions <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  sourceCompatibility JavaVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_1_8</span>
+</span></span><span style="display:flex;"><span>  targetCompatibility JavaVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_1_8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  coreLibraryDesugaringEnabled <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>これで完了です。</p>
 <h2 id="javatimeのapiを呼び出してみる">java.timeのAPIを呼び出してみる</h2>
 <p>29, 21のエミュレーターで次のコードを試したところ、クラッシュすることなく、無事に実行することが出来ました！</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// Instant API
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> date = Date()
-<span style="color:#66d9ef">val</span> instant = date.toInstant()
-binding.instant.text = instant.epochSecond.toString()
-
-<span style="color:#75715e">// ZoneId API
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneId = ZoneId.systemDefault()
-binding.zoneId.text = zoneId.id
-println(instant.atZone(zoneId).dayOfMonth)
-println(instant.atZone(zoneId).month)
-
-<span style="color:#75715e">// LocalDate API
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> now = LocalDate.now()
-binding.localDate.text = now.dayOfMonth.toString()
-println(now.dayOfMonth)
-
-<span style="color:#75715e">// ZoneOffset API
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = ZoneOffset.ofHours(<span style="color:#ae81ff">10</span>)
-println(zoneOffset)
-</code></pre></div><h2 id="どのようにして実現しているか">どのようにして実現しているか？</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// Instant API
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> date = Date()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> instant = date.toInstant()
+</span></span><span style="display:flex;"><span>binding.instant.text = instant.epochSecond.toString()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ZoneId API
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneId = ZoneId.systemDefault()
+</span></span><span style="display:flex;"><span>binding.zoneId.text = zoneId.id
+</span></span><span style="display:flex;"><span>println(instant.atZone(zoneId).dayOfMonth)
+</span></span><span style="display:flex;"><span>println(instant.atZone(zoneId).month)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// LocalDate API
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> now = LocalDate.now()
+</span></span><span style="display:flex;"><span>binding.localDate.text = now.dayOfMonth.toString()
+</span></span><span style="display:flex;"><span>println(now.dayOfMonth)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ZoneOffset API
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = ZoneOffset.ofHours(<span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>println(zoneOffset)
+</span></span></code></pre></div><h2 id="どのようにして実現しているか">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>
 <p>以下、apkの中身になります。</p>
 <figure><img src="/blog/android/agp/r8/desugar-time-apk.png" width="100%"/>
@@ -129,12 +129,12 @@ println(zoneOffset)
 
 <p><code>java.time</code> は <code>j$.time</code>に変換されていました。</p>
 <p>また、<code>Date#toInstant</code>など、既存クラスに新しく追加された<code>date.time</code>のAPIも使えます。R8のコードを読んだところ、おそらく次のAPIが対応しています。</p>
-<pre tabindex="0"><code>&quot;retarget_lib_member&quot;: {
-  &quot;java.util.Calendar#toInstant&quot;: &quot;java.util.DesugarCalendar&quot;,
-  &quot;java.util.Date#from&quot;: &quot;java.util.DesugarDate&quot;,
-  &quot;java.util.Date#toInstant&quot;: &quot;java.util.DesugarDate&quot;,
-  &quot;java.util.GregorianCalendar#from&quot;: &quot;java.util.DesugarGregorianCalendar&quot;,
-  &quot;java.util.GregorianCalendar#toZonedDateTime&quot;: &quot;java.util.DesugarGregorianCalendar&quot;
+<pre tabindex="0"><code>&#34;retarget_lib_member&#34;: {
+  &#34;java.util.Calendar#toInstant&#34;: &#34;java.util.DesugarCalendar&#34;,
+  &#34;java.util.Date#from&#34;: &#34;java.util.DesugarDate&#34;,
+  &#34;java.util.Date#toInstant&#34;: &#34;java.util.DesugarDate&#34;,
+  &#34;java.util.GregorianCalendar#from&#34;: &#34;java.util.DesugarGregorianCalendar&#34;,
+  &#34;java.util.GregorianCalendar#toZonedDateTime&#34;: &#34;java.util.DesugarGregorianCalendar&#34;
 },
 </code></pre><p>このあたりのAPIが使えるのは便利そうです。</p>
 <h2 id="threetenabpへの置き換え">ThreeTenABPへの置き換え</h2>

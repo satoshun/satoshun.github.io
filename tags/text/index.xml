@@ -17,8 +17,8 @@
       <description>従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。
 それが、material-component 1.1.0-alpha08にMaterialTextViewが爆誕し、lineHeightがTextAppearanceから指定出来るようになりました🎉
 使い方 まずはstyleを定義します。
-&amp;lt;style name=&amp;#34;TextAppearance.LineHeight&amp;#34;&amp;gt; &amp;lt;item name=&amp;#34;lineHeight&amp;#34;&amp;gt;20sp&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; 次に、TextViewから指定します。
-&amp;lt;TextView android:layout_width=&amp;#34;wrap_content&amp;#34; android:layout_height=&amp;#34;wrap_content&amp;#34; android:text=&amp;#34;テスト&amp;#34; android:textAppearance=&amp;#34;@style/TextAppearance.LineHeight&amp;#34; /&amp;gt; これで完了です😃
+&amp;lt;style name=&amp;#34;TextAppearance.LineHeight&amp;#34;&amp;gt;  &amp;lt;item name=&amp;#34;lineHeight&amp;#34;&amp;gt;20sp&amp;lt;/item&amp;gt; &amp;lt;/style&amp;gt; 次に、TextViewから指定します。
+&amp;lt;TextView  android:layout_width=&amp;#34;wrap_content&amp;#34;  android:layout_height=&amp;#34;wrap_content&amp;#34;  android:text=&amp;#34;テスト&amp;#34;  android:textAppearance=&amp;#34;@style/TextAppearance.LineHeight&amp;#34; /&amp;gt; これで完了です😃
 MaterialTextViewをXMLから直接指定してもいいのですが、AppCompatActivityを使っていれば、自動的にMaterialTextViewがinflateされるようになっています。 詳しくはMaterialComponentsViewInflater.javaをご覧下さい。
 まとめ  material-component 1.1.0-alpha08にアップデートすると、自動的にMaterialTextViewが使われ、TextAppearanceからlineHeightが指定できる😃  </description>
     </item>

@@ -98,21 +98,21 @@ Gradleの設定を見直すことで、ビルド速度を改善できる可能�
 <h2 id="良さそうな設定を見つける">良さそうな設定を見つける</h2>
 <p>まず、最初にシナリオファイルを作成します。これは、Gradle Profilerを実行する際に必要なファイルで、記述したシナリオ通りに実行してくれます。</p>
 <p>今回は、次のようなシナリオを作りました。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt"># scenario.txt
-clean_build_2gb_2workers {
-    tasks = [&#34;:app:assembleDebug&#34;]
-    gradle-args = [&#34;--max-workers=2&#34;]
-    jvm-args = [&#34;-Xmx2048m&#34;]
-    cleanup-tasks = [&#34;clean&#34;]
-}
-
-clean_build_4gb_4workers {
-    tasks = [&#34;:app:assembleDebug&#34;]
-    gradle-args = [&#34;--max-workers=4&#34;]
-    jvm-args = [&#34;-Xmx4096m&#34;]
-    cleanup-tasks = [&#34;clean&#34;]
-}
-</code></pre></div><p>このシナリオでは、worker数と、メモリの値をそれぞれ設定しています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span># scenario.txt
+</span></span><span style="display:flex;"><span>clean_build_2gb_2workers {
+</span></span><span style="display:flex;"><span>    tasks = [&#34;:app:assembleDebug&#34;]
+</span></span><span style="display:flex;"><span>    gradle-args = [&#34;--max-workers=2&#34;]
+</span></span><span style="display:flex;"><span>    jvm-args = [&#34;-Xmx2048m&#34;]
+</span></span><span style="display:flex;"><span>    cleanup-tasks = [&#34;clean&#34;]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>clean_build_4gb_4workers {
+</span></span><span style="display:flex;"><span>    tasks = [&#34;:app:assembleDebug&#34;]
+</span></span><span style="display:flex;"><span>    gradle-args = [&#34;--max-workers=4&#34;]
+</span></span><span style="display:flex;"><span>    jvm-args = [&#34;-Xmx4096m&#34;]
+</span></span><span style="display:flex;"><span>    cleanup-tasks = [&#34;clean&#34;]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>このシナリオでは、worker数と、メモリの値をそれぞれ設定しています。</p>
 <p>このシナリオは、Gradle Profilerコマンドを使って、次のように実行できます。</p>
 <pre tabindex="0"><code>gradle-profiler --benchmark --project-dir . --scenario-file scenarios.txt
 </code></pre><p>これを実行すると、ビルドにどれくらい時間が掛かったかの出力してくれます。</p>

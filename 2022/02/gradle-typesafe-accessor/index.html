@@ -90,23 +90,23 @@ Gradleでマルチモジュールプロジェクトを …">
     
     <p>Type-safe project dependenciesの紹介ブログです。Gradle 7.4で試しています。</p>
 <p>Gradleでマルチモジュールプロジェクトを構成すると、例えば、プロジェクトlibAへの依存は、次のようにう書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// app/build.gradle.kts
-</span><span style="color:#75715e"></span>
-dependencies {
-  implementation(project(<span style="color:#e6db74">&#34;:libA&#34;</span>))
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>この際に、projectで指定している <code>:libA</code> の部分は文字列なのでtypesafeではなく、補完などが効きにくいです。(最近のIntelliJ、Android Studioだと補完が効いたりします)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// app/build.gradle.kts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>  implementation(project(<span style="color:#e6db74">&#34;:libA&#34;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>この際に、projectで指定している <code>:libA</code> の部分は文字列なのでtypesafeではなく、補完などが効きにくいです。(最近のIntelliJ、Android Studioだと補完が効いたりします)</p>
 <p>ここで、今回紹介する Type-safe project dependenciesを使うと、次のように書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// settings.gradle
-</span><span style="color:#75715e"></span>enableFeaturePreview<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;TYPESAFE_PROJECT_ACCESSORS&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// app/build.gradle.kts
-</span><span style="color:#75715e"></span>
-dependencies {
-  implementation(projects.libA)
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>projectsから、プロジェクトlibA参照出来るようになり、補完がいい感じに効きます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// settings.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>enableFeaturePreview<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;TYPESAFE_PROJECT_ACCESSORS&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// app/build.gradle.kts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>  implementation(projects.libA)
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>projectsから、プロジェクトlibA参照出来るようになり、補完がいい感じに効きます。</p>
 <h2 id="まとめ">まとめ</h2>
 <p>Gradle 7.4段階では、まだFeature Previewですが、ktsと相性が良い技術になっています。
 ktsを入れているようなプロジェクトの場合は、導入を検討するのも良いかもしれません。</p>

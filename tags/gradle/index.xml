@@ -16,9 +16,9 @@
       <guid>https://satoshun.github.io/2022/02/gradle-typesafe-accessor/</guid>
       <description>Type-safe project dependenciesの紹介ブログです。Gradle 7.4で試しています。
 Gradleでマルチモジュールプロジェクトを構成すると、例えば、プロジェクトlibAへの依存は、次のようにう書くことが出来ます。
-// app/build.gradle.kts  dependencies { implementation(project(&amp;#34;:libA&amp;#34;)) ... } この際に、projectで指定している :libA の部分は文字列なのでtypesafeではなく、補完などが効きにくいです。(最近のIntelliJ、Android Studioだと補完が効いたりします)
+// app/build.gradle.kts  dependencies {  implementation(project(&amp;#34;:libA&amp;#34;))  ... } この際に、projectで指定している :libA の部分は文字列なのでtypesafeではなく、補完などが効きにくいです。(最近のIntelliJ、Android Studioだと補完が効いたりします)
 ここで、今回紹介する Type-safe project dependenciesを使うと、次のように書くことが出来ます。
-// settings.gradle enableFeaturePreview(&amp;#34;TYPESAFE_PROJECT_ACCESSORS&amp;#34;) // app/build.gradle.kts  dependencies { implementation(projects.libA) ... } projectsから、プロジェクトlibA参照出来るようになり、補完がいい感じに効きます。
+// settings.gradle enableFeaturePreview(&amp;#34;TYPESAFE_PROJECT_ACCESSORS&amp;#34;) // app/build.gradle.kts  dependencies {  implementation(projects.libA)  ... } projectsから、プロジェクトlibA参照出来るようになり、補完がいい感じに効きます。
 まとめ Gradle 7.4段階では、まだFeature Previewですが、ktsと相性が良い技術になっています。 ktsを入れているようなプロジェクトの場合は、導入を検討するのも良いかもしれません。
 参考  https://docs.gradle.org/7.4/userguide/declaring_dependencies.html#sec:type-safe-project-accessors  </description>
     </item>
@@ -35,13 +35,10 @@ Gradle Profilerとは? Gradle Profiler は、Gradleのプロファイリング�
 Gradle Profilerを使うことで、最適なGradleの設定を見つけだすことが出来ます。
 良さそうな設定を見つける まず、最初にシナリオファイルを作成します。これは、Gradle Profilerを実行する際に必要なファイルで、記述したシナリオ通りに実行してくれます。
 今回は、次のようなシナリオを作りました。
-# scenario.txt clean_build_2gb_2workers { tasks = [&amp;#34;:app:assembleDebug&amp;#34;] gradle-args = [&amp;#34;--max-workers=2&amp;#34;] jvm-args = [&amp;#34;-Xmx2048m&amp;#34;] cleanup-tasks = [&amp;#34;clean&amp;#34;] } clean_build_4gb_4workers { tasks = [&amp;#34;:app:assembleDebug&amp;#34;] gradle-args = [&amp;#34;--max-workers=4&amp;#34;] jvm-args = [&amp;#34;-Xmx4096m&amp;#34;] cleanup-tasks = [&amp;#34;clean&amp;#34;] } このシナリオでは、worker数と、メモリの値をそれぞれ設定しています。
+# scenario.txt clean_build_2gb_2workers {  tasks = [&amp;#34;:app:assembleDebug&amp;#34;]  gradle-args = [&amp;#34;--max-workers=2&amp;#34;]  jvm-args = [&amp;#34;-Xmx2048m&amp;#34;]  cleanup-tasks = [&amp;#34;clean&amp;#34;] }  clean_build_4gb_4workers {  tasks = [&amp;#34;:app:assembleDebug&amp;#34;]  gradle-args = [&amp;#34;--max-workers=4&amp;#34;]  jvm-args = [&amp;#34;-Xmx4096m&amp;#34;]  cleanup-tasks = [&amp;#34;clean&amp;#34;] } このシナリオでは、worker数と、メモリの値をそれぞれ設定しています。
 このシナリオは、Gradle Profilerコマンドを使って、次のように実行できます。
 gradle-profiler --benchmark --project-dir . --scenario-file scenarios.txt これを実行すると、ビルドにどれくらい時間が掛かったかの出力してくれます。
-   この結果から、僕の環境 + このプロジェクトの場合、2GB、2workerよりも4GB、4workerで設定したほうが良さそうなことが分かります。
-このようにして、Gradle Profilerを使うことで、自分の環境において、最適そうな設定を探すことが出来ます。
-まとめ 今回は、Gradle Profilerを使って、ビルドの高速化をする方法を紹介しました。 今回は単純なシナリオを使いましたが、他にもGCの設定を変えるとか、細かい設定があると思うので、そこのあたりもシナリオに入れて計測してみると良いと思います。
-また、シナリオの実行にはめちゃくちゃ時間が掛かるので、夜とか、パソコンを触らない時間に実行すると良いと思います😃</description>
+   この結果から、僕の環境 + このプロジェクトの場合、2GB、2workerよりも4GB、4workerで設定したほうが良さそうなことが分かります。</description>
     </item>
     
     <item>
@@ -53,15 +50,15 @@ gradle-profiler --benchmark --project-dir . --scenario-file scenarios.txt これ
       <description>Android開発では、Gradleを使ってビルド環境を構築します。その中で、バージョンを管理する必要があります。 Gradleでは、いろいろなバージョンの管理方法があるので、色々と紹介したいと思います。
 1. バージョン管理しない管理方法 パワー系の管理方法です。 小規模なプロジェクトや、個人プロジェクトなどは、シングルモジュールな構成であったりと、そもそもバージョンを管理する必要がない場合があります。
 具体的には、build.gradle(.kts)にベタ書きします。
-dependencies { implementation &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ... } バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。
+dependencies {  implementation &amp;#34;com.google.android.material:material:1.4.0&amp;#34;  ... } バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。
 2. dependencies.gradleに定義する dependencies.gradleファイルを定義し、そこでバージョンを管理する方法です。 ファイル名はなんでもいいのですが、dependencies.gradleという命名が多いような気がします。
 具体的には、dependencies.gradleに依存を定義し、それをbuild.gradleで読み込んで使います。
-// dependencies.gradle ext { material = &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ... } // build.gradle apply from: rootProject.file(&amp;#39;dependencies.gradle&amp;#39;) // app/build.gradle dependencies { implementation rootProject.ext.kotlinStdlib } 参考コード: https://github.com/JakeWharton/RxBinding/tree/version-one
+// dependencies.gradle ext {  material = &amp;#34;com.google.android.material:material:1.4.0&amp;#34;  ... } // build.gradle apply from: rootProject.file(&amp;#39;dependencies.gradle&amp;#39;) // app/build.gradle dependencies {  implementation rootProject.ext.kotlinStdlib } 参考コード: https://github.com/JakeWharton/RxBinding/tree/version-one
 また、わざわざdependencies.gradleにファイルを分けないで、build.gradleに直接書くことも出来ます。
-// build.gradle buildscript { ext.versions = [ &amp;#34;material&amp;#34;: &amp;#34;com.google.android.material:material:1.4.0&amp;#34; ] } 参考コード: https://github.com/JakeWharton/RxBinding
+// build.gradle buildscript {  ext.versions = [  &amp;#34;material&amp;#34;: &amp;#34;com.google.android.material:material:1.4.0&amp;#34;  ] } 参考コード: https://github.com/JakeWharton/RxBinding
 3. buildSrcを使う buildSrcディレクトリを使い、バージョンの管理をする方法です。 GradleではbuildSrcは特別なディレクトリになっており、ビルド実行時に自動で中身を読み込みます。
 具体的には、次のようになります。今回は、kotlinでバージョンを管理してみます。
-// buildSrc/src/main/java/Dep.kt package hoge.dependencies object Dep { const val Material = &amp;#34;com.</description>
+// buildSrc/src/main/java/Dep.</description>
     </item>
     
     <item>
@@ -76,10 +73,10 @@ non transitive R対応の仕方 比較的新しいAndroid Studio（4.2以降?）
 Refactor &amp;gt; Migrate to Non-transitive R Classes.
 この機能を使うと、各モジュールのRファイル参照が、フルパッケージ名参照に置換されます。
 擬似コードだとこんな感じです。
-// before import jp.hoge.sample.R class HogeFragment(R.layout.hoge_layout) { } // after class HogeFragment(jp.hoge.sample.R.layout.hoge_layout) { } non-transitve Rを有効にすると、各モジュールで、Rファイルのマージ?のようなタスクが行われなくなり、Rの参照先が変わるためです。
+// before import jp.hoge.sample.R  class HogeFragment(R.layout.hoge_layout) { }  // after class HogeFragment(jp.hoge.sample.R.layout.hoge_layout) { } non-transitve Rを有効にすると、各モジュールで、Rファイルのマージ?のようなタスクが行われなくなり、Rの参照先が変わるためです。
 動作自体は上記のコードでも問題なく出来ます。ただ、フルパッケージ指定が気になるなら、import aliasまたは、typealiasを使うことで解決できます。
 擬似コードだとこんな感じです。
-// import alias import jp.hoge.sample.R as SampleR class HogeFragment(SampleR.layout.hoge_layout) { } // typealias typealias SampleRLayout = jp.hoge.sample.R.layout class HogeFragment(SampleRLayout.hoge_layout) { } non-transitive R対応はこれで完了です。
+// import alias import jp.hoge.sample.R as SampleR  class HogeFragment(SampleR.layout.hoge_layout) { }  // typealias typealias SampleRLayout = jp.hoge.sample.R.layout  class HogeFragment(SampleRLayout.hoge_layout) { } non-transitive R対応はこれで完了です。
 どれくらい速度向上があったか? 前提として、CI上で計測したので、ローカル環境とは異なります。
 計測には、Gradle-Profilerを使い、applicationモジュールのファイルが変更された時の、インクリメンタルビルド時間の変化について、計10回反復し測定しました。
 結果、おおよそ20%程度の速度向上が見られました。R参照がフルパッケージになるなど、多少不便な点はありますが、十分に導入する価値があると感じました。
@@ -96,7 +93,7 @@ Refactor &amp;gt; Migrate to Non-transitive R Classes.
 gradle.propertiesから設定できます。
 android.defaults.buildfeatures.buildconfig=false # defaultはtrue マルチモジュール構成のプロジェクトでは、基本的にはBuildConfigを生成しないと思うので、BuildConfigの生成のデフォルト設定をoffにしておくと良いと思います。
 モジュール単位で、生成をonにするには、build.gradleに次の記述をします。
-android { buildFeatures { buildConfig true } } buildFeaturesブロックから設定を与えることが出来ます。
+android {  buildFeatures {  buildConfig true  } } buildFeaturesブロックから設定を与えることが出来ます。
 まとめ マルチモジュール構成のプロジェクトの場合は、coreモジュールやappモジュールのみonにして、他をoffにするのが良さそう</description>
     </item>
     
@@ -122,17 +119,14 @@ There are a number of ways to share dependency versions between projects in mult
 ついでにdependabotの話もちょっとします。
 BOM? BOMを使うことで、 複数のライブラリのバージョンを省略することが出来ます。
 ドキュメントの例にはspring-bootが挙げられています。
-dependencies { // import a BOM  implementation platform(&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;) // define dependencies without versions  implementation &amp;#39;com.google.code.gson:gson&amp;#39; implementation &amp;#39;dom4j:dom4j&amp;#39; } gson、dom4jのバージョンを省略していることが分かると思います。
+dependencies {  // import a BOM  implementation platform(&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;)   // define dependencies without versions  implementation &amp;#39;com.google.code.gson:gson&amp;#39;  implementation &amp;#39;dom4j:dom4j&amp;#39; } gson、dom4jのバージョンを省略していることが分かると思います。
 Androidでよく使うライブラリでBOMに対応しているライブラリには、例えば次があります。
  OkHttp Kotlin Coroutine Firebase  例えば、OkHttpならこんな感じで書けます。
-dependencies { implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:4.4.0&amp;#34;) implementation &amp;#34;com.squareup.okhttp3:okhttp&amp;#34; implementation &amp;#34;com.squareup.okhttp3:logging-interceptor&amp;#34; } BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
+dependencies {  implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:4.4.0&amp;#34;)  implementation &amp;#34;com.squareup.okhttp3:okhttp&amp;#34;  implementation &amp;#34;com.squareup.okhttp3:logging-interceptor&amp;#34; } BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
 dependabot? 直接はBOMに関係ないんですけど、最近、dependabotが便利だと自分の中で話題になっていて、これはライブラリのアップデートを自動でやってくれるbotになります。
 例えば、こんな感じのPRを作ってくれます。
 Bump versions.retrofit from 2.7.0 to 2.7.1
-   それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D
-BOMとdependabotは相性いいぞ！！って書こうと思ったんですけど、変数の場合でもアップデートを検知してくれたので、特に関係なかったです😅
-とはいえ、わざわざ自前で変数定義する必要はなくなるので、BOMは便利です！
-まとめ  BOMはいいぞ〜 dependabotはいいぞ〜  </description>
+   それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D</description>
     </item>
     
     <item>
@@ -146,12 +140,12 @@ BOMとdependabotは相性いいぞ！！って書こうと思ったんですけ�
  Android マルチモジュール: ライブラリのバージョン管理について  今回は、マルチモジュール環境における、Gradle周りの便利であろう設定について、次の4つを紹介します。
  モジュール内のリソース名にルールを持たせる BuildConfigを作らない モジュール内でProGuard/R8の設定をする Rファイルを小さく保つ  モジュール内のリソース名にルールを持たせる resourcePrefixは、リソース名のプレフィックスにルールを設けるプロパティです。
 例えば、次のように書くと、このモジュール内のリソース（レイアウト、Drawable、Stringなど）はhome_から始まる必要があります。
-// build.gradle android { ... resourcePrefix &amp;#39;home_&amp;#39; } // strings.xml &amp;lt;resource&amp;gt; // home_から始まる必要がある  &amp;lt;string name=&amp;#34;home_app_name&amp;#34;&amp;gt;適当な文字列&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt; これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
+// build.gradle android {  ...  resourcePrefix &amp;#39;home_&amp;#39; }  // strings.xml &amp;lt;resource&amp;gt;  // home_から始まる必要がある  &amp;lt;string name=&amp;#34;home_app_name&amp;#34;&amp;gt;適当な文字列&amp;lt;/string&amp;gt; &amp;lt;/resource&amp;gt; これを定義することで、名前のコンフリクトを防ぐことが出来ます。また、名前からリソースがどのモジュールで定義されているかを推測すること出来ます。
 BuildConfigを作らない モジュールのBuildConfigの生成を無効にすることが出来ます。例えば、uber/AudoDisposeでは、次のように設定しています。
-// build.gradle project.android { libraryVariants.all { it.generateBuildConfigProvider.configure { it.enabled = false } } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
+// build.gradle project.android {  libraryVariants.all {  it.generateBuildConfigProvider.configure {  it.enabled = false  }  } } モジュールで、BuildConfigが必要になることは稀なので、基本つけておくと良いと思います。
 モジュール内でProGuard/R8の設定をする consumerProguardFilesを使うことで、モジュールのProguard/R8の設定を定義することが出来ます。
 例えば、次のように使います。
-// build.gradle android { defaultConfig { consumerProguardFiles &amp;#39;consumer-rules.pro&amp;#39; } } // consumer-rules.pro -keep class * implements com.</description>
+// build.gradle android {  defaultConfig {  consumerProguardFiles &amp;#39;consumer-rules.</description>
     </item>
     
     <item>
@@ -167,10 +161,7 @@ BuildConfigを作らない モジュールのBuildConfigの生成を無効にす
 変数の定義方法には、直接記述する方法を除くと、大きく2つの方法があります。
 1. Gradleのextraプロパティを使う Androidの公式ドキュメント: Configure project-wide propertiesで紹介されている方法です。 extにバージョンを定義します。
 例えば、OkHttpでは、次のように定義しています。
-buildscript { ext.versions = [ &amp;#39;animalSniffer&amp;#39;: &amp;#39;1.17&amp;#39;, &amp;#39;assertj&amp;#39;: &amp;#39;3.11.0&amp;#39;, &amp;#39;bouncycastle&amp;#39;: &amp;#39;1.62&amp;#39;, &amp;#39;brotli&amp;#39;: &amp;#39;0.1.2&amp;#39;, ... ext.deps = [ &amp;#39;picocli&amp;#39;: &amp;#34;info.picocli:picocli:${versions.picocli}&amp;#34;, &amp;#39;android&amp;#39;: &amp;#34;org.robolectric:android-all:9-robolectric-4913185-2&amp;#34;, &amp;#39;animalSniffer&amp;#39;: &amp;#34;org.codehaus.mojo:animal-sniffer-annotations:${versions.animalSniffer}&amp;#34;, &amp;#39;assertj&amp;#39;: &amp;#34;org.assertj:assertj-core:${versions.assertj}&amp;#34;, &amp;#39;bouncycastle&amp;#39;: &amp;#34;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&amp;#34;, &amp;#39;brotli&amp;#39;: &amp;#34;org.brotli:dec:${versions.brotli}&amp;#34;, ... extプロパティにライブラリのバージョンをセットします。
-そして、次のように使います。
-dependencies { api deps.okio api deps.kotlinStdlib compileOnly deps.android compileOnly deps.conscrypt ... メリット、デメリットをまとめると次になります。
- メリット  Androidの公式ドキュメントで紹介されている方法 ノウハウが多い Android StudioのProject Structureが使える (Project Structureについては最後に紹介します)   デメリット  IDEによるコード補完が効かない    2.</description>
+buildscript {  ext.versions = [  &amp;#39;animalSniffer&amp;#39;: &amp;#39;1.17&amp;#39;,  &amp;#39;assertj&amp;#39;: &amp;#39;3.11.0&amp;#39;,  &amp;#39;bouncycastle&amp;#39;: &amp;#39;1.62&amp;#39;,  &amp;#39;brotli&amp;#39;: &amp;#39;0.1.2&amp;#39;,  ...   ext.deps = [  &amp;#39;picocli&amp;#39;: &amp;#34;info.picocli:picocli:${versions.picocli}&amp;#34;,  &amp;#39;android&amp;#39;: &amp;#34;org.robolectric:android-all:9-robolectric-4913185-2&amp;#34;,  &amp;#39;animalSniffer&amp;#39;: &amp;#34;org.codehaus.mojo:animal-sniffer-annotations:${versions.animalSniffer}&amp;#34;,  &amp;#39;assertj&amp;#39;: &amp;#34;org.assertj:assertj-core:${versions.assertj}&amp;#34;,  &amp;#39;bouncycastle&amp;#39;: &amp;#34;org.bouncycastle:bcprov-jdk15on:${versions.bouncycastle}&amp;#34;,  &amp;#39;brotli&amp;#39;: &amp;#34;org.brotli:dec:${versions.brotli}&amp;#34;,  ... extプロパティにライブラリのバージョンをセットします。</description>
     </item>
     
     <item>
@@ -188,12 +179,12 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 では、実装に入っていきます。今回はDagger2を使って実装をします。
 featureモジュール側の遷移用インターフェースの定義 前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。
 main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。
-interface MainModuleRouter { // sub1画面へ移動する  fun routeToSub1() } Mainモジュール用のインターフェースなので、MainModuleRouterという名前にし、sub1画面へ遷移するためのメソッドを定義しています。
+interface MainModuleRouter {  // sub1画面へ移動する  fun routeToSub1() } Mainモジュール用のインターフェースなので、MainModuleRouterという名前にし、sub1画面へ遷移するためのメソッドを定義しています。
 そしてこのインターフェースを、MainFragmentで使います。
-class MainFragment : Fragment() { @Inject lateinit var moduleRouter: MainModuleRouter ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener { moduleRouter.routeToSub1() } } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
+class MainFragment : Fragment() {  @Inject lateinit var moduleRouter: MainModuleRouter   ...   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)   view.findViewById&amp;lt;View&amp;gt;(R.id.route).setOnClickListener {  moduleRouter.routeToSub1()  }  } } これでfeatureモジュールでの遷移用インターフェースの定義は完了です。
 次にこのインターフェースの実装をします。
 routerモジュール側の遷移用インターフェースの実装 今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。
-&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34; xmlns:app=&amp;#34;http://schemas.android.com/apk/res-auto&amp;#34; android:id=&amp;#34;@+id/nav_graph&amp;#34; app:startDestination=&amp;#34;@id/nav_main_frag&amp;#34;&amp;gt; &amp;lt;fragment android:id=&amp;#34;@+id/nav_main_frag&amp;#34; android:name=&amp;#34;com.github.satoshun.example.feature.main.MainFragment&amp;#34;&amp;gt; &amp;lt;action android:id=&amp;#34;@+id/main_to_sub1&amp;#34; app:destination=&amp;#34;@id/nav_sub1_frag&amp;#34; /&amp;gt; &amp;lt;/fragment&amp;gt; ... &amp;lt;/navigation&amp;gt; そして、これを用いて遷移用インターフェースを実装します。</description>
+&amp;lt;navigation xmlns:android=&amp;#34;http://schemas.android.com/apk/res/android&amp;#34;  xmlns:app=&amp;#34;http://schemas.</description>
     </item>
     
     <item>
@@ -210,7 +201,7 @@ routerモジュール側の遷移用インターフェースの実装 今回は�
 ただし、いくつか条件があります。
 1. 中間モジュールで公開可能なものに限る 例えばサブ1でSubActivityを公開していて、これを直接appから参照している場合は駄目です。 これをSubActivityとしてではなく、Activityとして参照できるなら大丈夫です。サブ1モジュールで定義されているクラスがappモジュールから見れないための制約です。
 中間モジュールのコードイメージとしては以下のようになります。
-fun createUserFragment(userName: String, age: Int): Fragment { return UserFragment.createFragment(userName, age) } fun createUserIntent(context: Context): Intent { return Intent(context, UserActivity::class.java) } UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。
+fun createUserFragment(userName: String, age: Int): Fragment {  return UserFragment.createFragment(userName, age) }  fun createUserIntent(context: Context): Intent {  return Intent(context, UserActivity::class.java) } UserActivity、UserFragmentが公開されていないことが分かります。Androidのいわゆるfeatureモジュールでは、Activity、Fragmentを公開する場合が多いと思うので、その場合には有効に使うことができます。
 2. implementationで依存を定義する apiを使うと、依存が推移するため再ビルドが行われてしまうためです。implementationで依存を記述する必要があります。
 3. Dagger2使ってると多分無理 Dagger2では、解決する依存をAppComponentで知っている必要があります。上記の構成だと、appでAppComponentを持つことになるので、appからsub1、sub2が見えていないと最終的にDagger2で解決できません。なので、中間モジュールで、appからsubの依存が見えなくなるこのパターンは使えません。
 詳しくはDagger/#970にあります。
@@ -234,7 +225,7 @@ fun createUserFragment(userName: String, age: Int): Fragment { return UserFragme
 実装 Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。 実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。
 では、実装を始めます。
 最初に、SubActivityをDaggerApplicationのように振る舞わさせるためにModuleRootActivityクラスを定義します。 それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。
-abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt; private lateinit var injector: ModuleActivityInjector override fun onCreate(savedInstanceState: Bundle?) { injector = moduleComponent.</description>
+abstract class ModuleRootActivity : AppCompatActivity(),  HasModuleInjector {  @Inject lateinit var fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;   private lateinit var injector: ModuleActivityInjector   override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
     
     <item>
@@ -254,8 +245,8 @@ abstract class ModuleRootActivity : AppCompatActivity(), HasModuleInjector { @In
 そこで、
  メイン画面に遷移するメインルーターモジュール サブ画面に遷移するサブルーターモジュール  の2つのモジュールを作ります。
 メインルーターモジュールでは次の遷移専用インターフェースを定義します。
-interface MainRouter { fun routeToMain(context: Context): Intent } そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。
-internal class MainRouterImpl @Inject constructor() : MainRouter { override fun routeToMain(context: Context): Intent { return Intent(context, MainActivity::class.java) } } --- @Module internal interface MainActivityModule { @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter } これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</description>
+interface MainRouter {  fun routeToMain(context: Context): Intent } そして、メインモジュールで実装します。また、今回はDaggerを使って依存を解決します。
+internal class MainRouterImpl @Inject constructor() : MainRouter {  override fun routeToMain(context: Context): Intent {  return Intent(context, MainActivity::class.java)  } }  ---  @Module internal interface MainActivityModule {  @Binds fun bindMainRouter(impl: MainRouterImpl): MainRouter } これで、使う側であるサブ画面は、メインモジュールに依存するのではなく、メインルーターモジュールに依存し遷移することが出来ます。</description>
     </item>
     
     <item>
@@ -268,9 +259,9 @@ internal class MainRouterImpl @Inject constructor() : MainRouter { override fun 
 従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に Matching repositories to dependencies が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）
 まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、cloudflareのSDKを依存関係に入れることを目指します。 また、今回の検証にはGradle 5.1-rc-1を使いました。サンプルコードはここにあります
 まずは従来の書き方です。
-// topのbuild.gradle allprojects { repositories { ... maven { url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34; } } } --- // projectのbuild.gradle dependencies { ... implementation &amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34; } これだと全てのライブラリに対して、repositoriesで指定したhttps://storage.googleapis.com/cloudflare-maven/public/へチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対してはダウンロード制限をかけたいところです。
+// topのbuild.gradle allprojects {  repositories {  ...   maven {  url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34;  }  } }  ---  // projectのbuild.gradle dependencies {  ...   implementation &amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34; } これだと全てのライブラリに対して、repositoriesで指定したhttps://storage.googleapis.com/cloudflare-maven/public/へチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対してはダウンロード制限をかけたいところです。
 次に新機能を使った書き方です。
-// topのbuild.gradle allprojects { repositories { ... maven { url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34; content { // group idがcom.cloudflareのライブラリだけこのURLが有効になる  includeGroup &amp;#34;com.cloudflare&amp;#34; } } } } --- // projectのbuild.gradleは一緒 dependencies { ... implementation &amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34; } 新しくcontentブロックが追加されました。ここで、このURLがどのライブラリで有効になって欲しいかを記述することが出来ます。今回のURLはcom.</description>
+// topのbuild.gradle allprojects {  repositories {  ...   maven {  url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34;  content {  // group idがcom.</description>
     </item>
     
     <item>
@@ -284,7 +275,7 @@ GradleでcompileがDeprecatedになり、implementationまたはapiを使うこ�
 Dagger2でもcompileをimplementationに置き換えるPRが出されました。https://github.com/google/dagger/pull/1130
 内容が興味深かったのでまとめてみようと思います。
 まず最初のPRは次の差分になっていました。compileをimplementationに置き換えています。
-// Add Dagger dependencies dependencies { - compile &#39;com.google.dagger:dagger:2.x&#39; + implementation &#39;com.google.dagger:dagger:2.x&#39; annotationProcessor &#39;com.google.dagger:dagger-compiler:2.x&#39; } - compile &#39;com.google.dagger:dagger-android:2.x&#39; - compile &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries + implementation &#39;com.google.dagger:dagger-android:2.x&#39; + implementation &#39;com.google.dagger:dagger-android-support:2.x&#39; // if you use the support libraries ここでjakeさんが
+// Add Dagger dependencies dependencies { - compile &amp;#39;com.google.dagger:dagger:2.x&amp;#39; + implementation &amp;#39;com.google.dagger:dagger:2.x&amp;#39; annotationProcessor &amp;#39;com.google.dagger:dagger-compiler:2.x&amp;#39; } - compile &amp;#39;com.google.dagger:dagger-android:2.x&amp;#39; - compile &amp;#39;com.google.dagger:dagger-android-support:2.x&amp;#39; // if you use the support libraries + implementation &amp;#39;com.google.dagger:dagger-android:2.x&amp;#39; + implementation &amp;#39;com.google.dagger:dagger-android-support:2.x&amp;#39; // if you use the support libraries ここでjakeさんが
  I think this one is somewhat debatable, but you&amp;rsquo;re likely to mark it as implementation in every module that contains the compiler so it&amp;rsquo;s probably a non-problem.</description>
     </item>
     

@@ -92,25 +92,25 @@ RxJavaでは, Disposableか …">
     
     <p>非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.</p>
 <p>RxJavaでは, Disposableからキャンセルの処理を行います.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Disposable d<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    d <span style="color:#f92672">=</span> myObservable
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>a <span style="color:#f92672">-&gt;</span> b<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPause</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    d<span style="color:#f92672">.</span><span style="color:#a6e22e">dispose</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Disposable d<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    d <span style="color:#f92672">=</span> myObservable
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>a <span style="color:#f92672">-&gt;</span> b<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onPause</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    d<span style="color:#f92672">.</span><span style="color:#a6e22e">dispose</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.</p>
 <p><a href="https://github.com/uber/AutoDispose">AutoDispose</a>を使うことで, コード離れすぎ問題を解決することが出来ます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    myObservable
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ObservableScoper<span style="color:#f92672">&lt;&gt;(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">))</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>このような感じで, ストリームの定義の中にAutoDisposeが提供している<code>Scoper</code>を埋め込むことで自動的に<code>dispose</code>してくれます.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    myObservable
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ObservableScoper<span style="color:#f92672">&lt;&gt;(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>このような感じで, ストリームの定義の中にAutoDisposeが提供している<code>Scoper</code>を埋め込むことで自動的に<code>dispose</code>してくれます.</p>
 <p>また, <code>Scoper</code>は, カスタムで柔軟に定義することが出来ます. 例えば,</p>
 <ul>
 <li>Activityのライフサイクル</li>
@@ -123,19 +123,19 @@ RxJavaでは, Disposableか …">
 <p>とはいえ, そもそも<code>Scope</code>をストリームに埋め込むのを忘れる問題があります(だって人間だもの)</p>
 <p>そこで, Googleが出した<a href="http://errorprone.info/">Error Prone</a>を組み合わせることで埋め込むのを忘れる問題を解決出来ます.</p>
 <p>Error ProneはJavaの間違った使い方を教えてくれる <code>Linter</code>のようなものです. これを使うと,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    myObservable
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>a <span style="color:#f92672">-&gt;</span> b<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>と, <code>Scope</code>の指定を忘れた時に, エラーを出力してくれます.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    myObservable
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>a <span style="color:#f92672">-&gt;</span> b<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>と, <code>Scope</code>の指定を忘れた時に, エラーを出力してくれます.
 なぜかというと, RxJava2は <code>@CheckReturnValue</code>が返り値についているため, それをError Proneが検知してくれるためです.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    myObservable
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ObservableScoper<span style="color:#f92672">&lt;&gt;(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">))</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>と書くと, <code>@CheckReturnValue</code>が返り値についていない <code>Disposable</code>が返されるようになるので, 返り値をチェックしなくてもError Proneに引っかかることはなくなります.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    myObservable
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ObservableScoper<span style="color:#f92672">&lt;&gt;(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>と書くと, <code>@CheckReturnValue</code>が返り値についていない <code>Disposable</code>が返されるようになるので, 返り値をチェックしなくてもError Proneに引っかかることはなくなります.</p>
 <p>RxJavaの<code>dispose</code>忘れはついやってしまいがちですが, AutoDispose + Error Proneを組み合わせることで機械的に防ぐことが出来ます!</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>

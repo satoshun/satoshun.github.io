@@ -36,7 +36,7 @@ RxAndroid’s New Async API
 サンプルプロジェクトをかいつまんで説明します。
 まず2つのスケジューラを作成し、
 private val mainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), false) private val asyncMainScheduler = AndroidSchedulers.from(Looper.getMainLooper(), true) 作ったスケジューラを使ったストリームで実行完了時間に差が出るかを試してみました。
-// asyncがfalseの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(mainScheduler) .subscribe(...) // asyncがtrueの場合 Observable .fromCallable { System.currentTimeMillis() } .delay(index, TimeUnit.MILLISECONDS) .observeOn(asyncMainScheduler) .subscribe(...) フルコードは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt
+// asyncがfalseの場合 Observable  .fromCallable { System.currentTimeMillis() }  .delay(index, TimeUnit.MILLISECONDS)  .observeOn(mainScheduler)  .subscribe(...)  // asyncがtrueの場合 Observable  .fromCallable { System.currentTimeMillis() }  .delay(index, TimeUnit.MILLISECONDS)  .observeOn(asyncMainScheduler)  .subscribe(...) フルコードは以下になります。 https://github.com/satoshun-android-example/RxAndroidExample/blob/master/app/src/main/java/com/github/satoshun/example/rxandroidexample/MainActivity.kt
 結果は、以下のようになりました。
 // API27 エミュレータ main=130988ms, async=126713ms　// forで500回ループさせた実行時間の総和 main=130857ms, async=126582ms main=131401ms, async=126909ms main=130763ms, async=126504ms main=132758ms, async=127972ms // API21 エミュレータ main=129869ms, async=125795ms main=130050ms, async=125888ms main=129935ms, async=125853ms main=129908ms, async=125838ms main=129927ms, async=125824ms asyncがtrueの場合、明らかに実行完了時間が短くなりました。導入するメリットがありそうです。</description>
     </item>

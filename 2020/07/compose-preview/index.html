@@ -94,37 +94,37 @@ Previewアノテー …">
 <h2 id="previewアノテーションについて">Previewアノテーションについて</h2>
 <p>Jetpack Composeでは、<code>@Preview</code>を使うことでプレビューを表示することが出来ます。</p>
 <p>例えば、TestScreenのプレビューは次のように定義することが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">TestScreen</span>(
-  user: User,
-  count: Int
-) {
-  <span style="color:#f92672">..</span>.
-}
-
-<span style="color:#a6e22e">@Preview</span>(<span style="color:#e6db74">&#34;test screen&#34;</span>)
-<span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">PreviewTestScreen</span>() {
-  TestScreen(user = User(id = <span style="color:#e6db74">&#34;1&#34;</span>, name = <span style="color:#e6db74">&#34;tom&#34;</span>), count = <span style="color:#ae81ff">10</span>)
-}
-</code></pre></div><p>ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、<code>@Preview</code>を複数定義することですが、<code>@PreviewParameter</code>を使うことでよりスマートに書くことが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">TestScreen</span>(
+</span></span><span style="display:flex;"><span>  user: User,
+</span></span><span style="display:flex;"><span>  count: Int
+</span></span><span style="display:flex;"><span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Preview</span>(<span style="color:#e6db74">&#34;test screen&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">PreviewTestScreen</span>() {
+</span></span><span style="display:flex;"><span>  TestScreen(user = User(id = <span style="color:#e6db74">&#34;1&#34;</span>, name = <span style="color:#e6db74">&#34;tom&#34;</span>), count = <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、<code>@Preview</code>を複数定義することですが、<code>@PreviewParameter</code>を使うことでよりスマートに書くことが出来ます。</p>
 <p>具体的には、次のように書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PreviewUserProvider</span> : PreviewParameterProvider&lt;User&gt; {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> values: Sequence&lt;User&gt;
-    <span style="color:#66d9ef">get</span>() = sequenceOf(
-      User(id = <span style="color:#e6db74">&#34;1&#34;</span>, name = <span style="color:#e6db74">&#34;tom&#34;</span>),
-      User(id = <span style="color:#e6db74">&#34;2&#34;</span>, name = <span style="color:#e6db74">&#34;スズキ&#34;</span>)
-    )
-}
-
-<span style="color:#a6e22e">@Preview</span>(<span style="color:#e6db74">&#34;test screen parameter&#34;</span>)
-<span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">PreviewParameterTestScreen</span>(
-  <span style="color:#a6e22e">@PreviewParameter</span>(PreviewUserProvider<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>) user: User
-) {
-  TestScreen(user = user, count = <span style="color:#ae81ff">10</span>)
-}
-</code></pre></div><p>最初に、<code>PreviewParameterProvider</code>インターフェースを実装します。<code>PreviewParameterProvider</code>では、プレビューしたいインスタンス（パラメータ）を定義してあげます。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PreviewUserProvider</span> : PreviewParameterProvider&lt;User&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> values: Sequence&lt;User&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">get</span>() = sequenceOf(
+</span></span><span style="display:flex;"><span>      User(id = <span style="color:#e6db74">&#34;1&#34;</span>, name = <span style="color:#e6db74">&#34;tom&#34;</span>),
+</span></span><span style="display:flex;"><span>      User(id = <span style="color:#e6db74">&#34;2&#34;</span>, name = <span style="color:#e6db74">&#34;スズキ&#34;</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Preview</span>(<span style="color:#e6db74">&#34;test screen parameter&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">PreviewParameterTestScreen</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@PreviewParameter</span>(PreviewUserProvider<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>) user: User
+</span></span><span style="display:flex;"><span>) {
+</span></span><span style="display:flex;"><span>  TestScreen(user = user, count = <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>最初に、<code>PreviewParameterProvider</code>インターフェースを実装します。<code>PreviewParameterProvider</code>では、プレビューしたいインスタンス（パラメータ）を定義してあげます。
 実装したクラスを <code>@PreviewParameter(PreviewUserProvider::class)</code> と指定することで、プレビューを複数出すことが出来ます。</p>
 <p>これで、様々なパラメータでプレビューを出すことが出来ました。</p>
 <h2 id="まとめ">まとめ</h2>

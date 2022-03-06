@@ -18,17 +18,14 @@
 ついでにdependabotの話もちょっとします。
 BOM? BOMを使うことで、 複数のライブラリのバージョンを省略することが出来ます。
 ドキュメントの例にはspring-bootが挙げられています。
-dependencies { // import a BOM  implementation platform(&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;) // define dependencies without versions  implementation &amp;#39;com.google.code.gson:gson&amp;#39; implementation &amp;#39;dom4j:dom4j&amp;#39; } gson、dom4jのバージョンを省略していることが分かると思います。
+dependencies {  // import a BOM  implementation platform(&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;)   // define dependencies without versions  implementation &amp;#39;com.google.code.gson:gson&amp;#39;  implementation &amp;#39;dom4j:dom4j&amp;#39; } gson、dom4jのバージョンを省略していることが分かると思います。
 Androidでよく使うライブラリでBOMに対応しているライブラリには、例えば次があります。
  OkHttp Kotlin Coroutine Firebase  例えば、OkHttpならこんな感じで書けます。
-dependencies { implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:4.4.0&amp;#34;) implementation &amp;#34;com.squareup.okhttp3:okhttp&amp;#34; implementation &amp;#34;com.squareup.okhttp3:logging-interceptor&amp;#34; } BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
+dependencies {  implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:4.4.0&amp;#34;)  implementation &amp;#34;com.squareup.okhttp3:okhttp&amp;#34;  implementation &amp;#34;com.squareup.okhttp3:logging-interceptor&amp;#34; } BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
 dependabot? 直接はBOMに関係ないんですけど、最近、dependabotが便利だと自分の中で話題になっていて、これはライブラリのアップデートを自動でやってくれるbotになります。
 例えば、こんな感じのPRを作ってくれます。
 Bump versions.retrofit from 2.7.0 to 2.7.1
-   それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D
-BOMとdependabotは相性いいぞ！！って書こうと思ったんですけど、変数の場合でもアップデートを検知してくれたので、特に関係なかったです😅
-とはいえ、わざわざ自前で変数定義する必要はなくなるので、BOMは便利です！
-まとめ  BOMはいいぞ〜 dependabotはいいぞ〜  </description>
+   それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D</description>
     </item>
     
   </channel>

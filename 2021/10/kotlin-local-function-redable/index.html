@@ -87,33 +87,33 @@ suspend fun getUser(userId: String): User { …">
     <span class="post-date">Created at Sun, Oct 24, 2021</span>
     
     <p>Kotlinには、ローカルスコープで関数を作る機能があります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userId: String): User {
-  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUserFromRemote</span>(): User {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">..</span>.
-  }
-
-  <span style="color:#66d9ef">val</span> user = getUserFromRemote()
-  <span style="color:#66d9ef">if</span> (user.isInvalid) <span style="color:#66d9ef">throw</span> <span style="color:#f92672">..</span>.
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userId: String): User {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUserFromRemote</span>(): User {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> user = getUserFromRemote()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (user.isInvalid) <span style="color:#66d9ef">throw</span> <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
 <p>いわゆる説明変数の代わりにローカル関数を使えば、いい感じになるケースがあるのではと思っています。</p>
 <p>説明変数バージョン</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userName: String): User {
-  <span style="color:#66d9ef">val</span> nickName = userName.split(<span style="color:#f92672">..</span>.)
-  <span style="color:#66d9ef">if</span> (nickName <span style="color:#f92672">==</span> userName) <span style="color:#f92672">..</span>.
-  <span style="color:#66d9ef">else</span> <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>ローカル関数バージョン</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userName: String): User {
-  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getNickName</span>(): String {
-    <span style="color:#66d9ef">return</span> userName.split(<span style="color:#f92672">..</span>.)
-  }
-
-  <span style="color:#66d9ef">if</span> (getNickName() <span style="color:#f92672">==</span> userName) <span style="color:#f92672">..</span>.
-  <span style="color:#66d9ef">else</span> <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>ローカル関数を使うメリットとしては、処理がlazyになる、必要になったタイミングで処理が行われる点と、
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userName: String): User {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> nickName = userName.split(<span style="color:#f92672">..</span>.)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (nickName <span style="color:#f92672">==</span> userName) <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>ローカル関数バージョン</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>(userName: String): User {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getNickName</span>(): String {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> userName.split(<span style="color:#f92672">..</span>.)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (getNickName() <span style="color:#f92672">==</span> userName) <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>ローカル関数を使うメリットとしては、処理がlazyになる、必要になったタイミングで処理が行われる点と、
 ロジックをより適切な場所に切り出すヒントになる点だと思います。</p>
 <p>ロジックをより適切な場所に切り出すヒントというのは、ローカル関数として定義するということは、ロジックないし、何かしらのめんどうな処理を持っていることを意味するので、
 説明変数のバージョンに比べ、より適切な場所があるのではという匂いを出すことが出来ると思います。(諸説あり。主観入ってます)</p>

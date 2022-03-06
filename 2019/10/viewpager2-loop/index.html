@@ -101,42 +101,42 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 <h2 id="実際のコード">実際のコード</h2>
 <p>まず、<code>RecyclerView.Adapter</code>のサイズを決める<code>getItemCount</code>メソッドの実装です。
 限りなく大きい値、<code>Int.MAX_VALUE</code>を返します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
-</code></pre></div><p>次に、<code>onBindViewHolder</code>メソッドを次のように実装します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
-
-<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
-  <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p><code>itemData</code>にはViewの生成に必要な実際のデータが入っています。<code>position % itemData.size</code>とindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
+</span></span></code></pre></div><p>次に、<code>onBindViewHolder</code>メソッドを次のように実装します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>itemData</code>にはViewの生成に必要な実際のデータが入っています。<code>position % itemData.size</code>とindexを取ることで、ループ中のどこの位置にいるかを特定することが出来ます。</p>
 <p>最終的な、RecyclerView.Adapterは次のようになります。（onCreateViewHolderメソッドは重要でないので、省略しています）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteAdapter</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
-) : RecyclerView.Adapter&lt;InfiniteViewHolder&gt;() {
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = <span style="color:#f92672">..</span>.
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
-    <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
-    <span style="color:#f92672">..</span>.
-  }
-}
-</code></pre></div><p>最後に、ViewPager2のセットアップをします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">with(binding.viewpager) {
-  <span style="color:#66d9ef">val</span> infiniteAdapter = InfiniteAdapter(itemData = mockAdapterData)
-  adapter = infiniteAdapter
-  <span style="color:#66d9ef">val</span> center = Int.MAX_VALUE / <span style="color:#ae81ff">2</span>
-  <span style="color:#66d9ef">val</span> start = center - (center % mockAdapterData.size)
-  setCurrentItem(start, <span style="color:#66d9ef">false</span>)
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mockAdapterData = (<span style="color:#ae81ff">0.</span>.<span style="color:#ae81ff">2</span>).map {
-  Data(title = (<span style="color:#e6db74">&#39;a&#39;</span> + <span style="color:#66d9ef">it</span>).toString())
-}
-</code></pre></div><p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteAdapter</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
+</span></span><span style="display:flex;"><span>) : RecyclerView.Adapter&lt;InfiniteViewHolder&gt;() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBindViewHolder</span>(holder: InfiniteViewHolder, position: Int) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> data = itemData[position % itemData.size]
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>最後に、ViewPager2のセットアップをします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>with(binding.viewpager) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> infiniteAdapter = InfiniteAdapter(itemData = mockAdapterData)
+</span></span><span style="display:flex;"><span>  adapter = infiniteAdapter
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> center = Int.MAX_VALUE / <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> start = center - (center % mockAdapterData.size)
+</span></span><span style="display:flex;"><span>  setCurrentItem(start, <span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> mockAdapterData = (<span style="color:#ae81ff">0.</span>.<span style="color:#ae81ff">2</span>).map {
+</span></span><span style="display:flex;"><span>  Data(title = (<span style="color:#e6db74">&#39;a&#39;</span> + <span style="color:#66d9ef">it</span>).toString())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>setCurrentItem</code>には、中心をセットしてあげます。そうすることで、初期状態でも左にスクロールすることが出来ます。</p>
 <p>これで完成です！複数のViewTypeを扱いたいときは、もう少し工夫が必要になると思いますが、基本はこれだけで動かすことが出来ます。</p>
 <h2 id="注意点">注意点</h2>
 <ul>

@@ -16,15 +16,14 @@
       <guid>https://satoshun.github.io/2020/03/dagger-improve-error-message/</guid>
       <description>Dagger 2.27でエラーメッセージの改善が入っていたので、軽く試してみました。試してみた系の記事になります。
 まず有効にする この機能はexperimentalなので、明示的に有効にする必要があります。kaptを使っているなら、次のように有効にします。
-allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments { arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;) } } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
-// @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
+allprojects {  afterEvaluate {  extensions.findByName(&amp;#34;kapt&amp;#34;)?.arguments {  arg(&amp;#34;dagger.experimentalDaggerErrorMessages&amp;#34;, &amp;#34;enabled&amp;#34;)  }  } } 適当にエラーを出してみる まずは、Providesの指定を外してみます。
+// @Provides &amp;lt;-- エラーを出したいのでコメントアウト fun provideTestObject(): TestObject = TestObject()  @Inject lateinit var testObject: TestObject すると、次のようになります。
 新しいエラーログ  
 古いエラーログ  
  次に、複数Providesの指定をしてみます。
-@Provides fun provideTestObject(): TestObject = TestObject() @Provides fun provideTestObject2(): TestObject = TestObject() @Inject lateinit var testObject: TestObject すると、次のようになります。
+@Provides fun provideTestObject(): TestObject = TestObject()  @Provides fun provideTestObject2(): TestObject = TestObject()  @Inject lateinit var testObject: TestObject すると、次のようになります。
 新しいエラーログ  
-古いエラーログ  
-まとめ 全部のエラーを見たわけではないので分からないですが、手元で軽くエラーを出して見た感じだと、見やすくなったかなと思います。 Daggerのエラーメッセージは難しいことで有名?だったと思うので、これで改善してくれればとても嬉しい😃</description>
+古いエラーログ</description>
     </item>
     
     <item>
@@ -36,9 +35,9 @@ allprojects { afterEvaluate { extensions.findByName(&amp;#34;kapt&amp;#34;)?.arg
       <description>Daggerの2.25から少しずつKotlin向けの対応が入っています。
 この記事ではそれらについて紹介していきます。
 objectクラスにJvmStaticが必須ではなくなった 2.25から入った変更です。
-前 @Module object AppModule { @JvmStatic // JvmStaticの指定が必須だった  @Provides fun provideFuga(): Fuga = Fuga() } 今 @Module object AppModule { @Provides fun provideFuga(): Fuga = Fuga() } Qualifierを使うときに、fieldの指定がいらなくなった これも2.25から入った変更です。
+前 @Module object AppModule {  @JvmStatic // JvmStaticの指定が必須だった  @Provides  fun provideFuga(): Fuga = Fuga() } 今 @Module object AppModule {  @Provides  fun provideFuga(): Fuga = Fuga() } Qualifierを使うときに、fieldの指定がいらなくなった これも2.25から入った変更です。
 前 @Inject @field:HogeQualifier // @field:の指定が必須だった lateinit var namedObject: NamedObject 今 @Inject @HogeQualifier lateinit var namedObject: NamedObject companion objectにModuleをつけなくて良くなった これは2.26から入った変更です。
-前 @Module interface MainActivityModule { @Module // 必須だった  companion object { @JvmStatic // 必須だった  @Provides fun provideTestHoge(): TestHoge = TestHoge() } } 今 @Module interface MainActivityModule { companion object { @Provides fun provideTestHoge(): TestHoge = TestHoge() } } まとめ ハマりがちだった部分が少しずつ解消されていく😊</description>
+前 @Module interface MainActivityModule {  @Module // 必須だった  companion object {  @JvmStatic // 必須だった  @Provides  fun provideTestHoge(): TestHoge = TestHoge()  } } 今 @Module interface MainActivityModule {  companion object {  @Provides  fun provideTestHoge(): TestHoge = TestHoge()  } } まとめ ハマりがちだった部分が少しずつ解消されていく😊</description>
     </item>
     
     <item>
@@ -50,7 +49,7 @@ objectクラスにJvmStaticが必須ではなくなった 2.25から入った変
       <description>Dagger 2.22からComponent.Factoryクラスが導入されました。この記事では、簡単な使い方とユースケースを見ていきたいと思います。
 Component.Factoryとは? 実は、Component.FactoryでやれることはComponent.Builderクラスとほぼ変わりません。
 例えば、次のArticlePresenterインスタンスを生成する2つのコードは本質的にやっていることは同等です。
-// Factoryを使う場合 @Component interface AppComponent { val presenter: ArticlePresenter @Component.Factory interface Factory { fun create( @BindsInstance id: Long ): AppComponent } } val component = DaggerAppComponent .factory() .create(50) val presenter = component.presentere --- // Builderを使う場合 @Component interface AppComponent { val presenter: ArticlePresenter @Component.Builder interface Builder { @BindsInstance fun bindId(id: Long): Builder fun build(): AppComponent } } val component = DaggerAppComponent .builder() .bindId(50) .build() val presenter = component.</description>
+// Factoryを使う場合 @Component interface AppComponent {  val presenter: ArticlePresenter   @Component.Factory  interface Factory {  fun create(  @BindsInstance id: Long  ): AppComponent  } }  val component = DaggerAppComponent  .factory()  .create(50) val presenter = component.presentere  ---  // Builderを使う場合 @Component interface AppComponent {  val presenter: ArticlePresenter   @Component.Builder  interface Builder {  @BindsInstance fun bindId(id: Long): Builder  fun build(): AppComponent  } }  val component = DaggerAppComponent  .</description>
     </item>
     
   </channel>

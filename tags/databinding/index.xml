@@ -28,11 +28,10 @@
       <guid>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</guid>
       <description>JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。
  Activity Version 1.0.0-alpha06 Fragment Version 1.1.0-alpha06  これは、次のように使うことが出来ます。
-class MainActivity : AppCompatActivity(R.layout.main_act) class MainFragment : Fragment(R.layout.main_frag) Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。
+class MainActivity : AppCompatActivity(R.layout.main_act)  class MainFragment : Fragment(R.layout.main_frag) Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。
 ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。
 Activityの場合 まずはActvityの例です。
-// 拡張関数を定義しておく fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T = DataBindingUtil.bind(getContentView())!! private fun Activity.getContentView(): View = findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0] // MainActivity.kt class MainActivity : AppCompatActivity(R.layout.main_act) { private lateinit var binding: MainActBinding override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) binding = bindView() ... } } また、Activityの場合に限り、by lazyと組み合わせることも可能です。
-class MainActivity : AppCompatActivity(R.layout.main_act) { private val binding by lazy { bindView&amp;lt;MainActBinding&amp;gt;() } override fun onCreate(savedInstanceState: Bundle?</description>
+// 拡張関数を定義しておく fun &amp;lt;T : ViewDataBinding&amp;gt; ComponentActivity.bindView(): T =  DataBindingUtil.bind(getContentView())!!  private fun Activity.getContentView(): View =  findViewById&amp;lt;ViewGroup&amp;gt;(android.R.id.content)[0]   // MainActivity.kt class MainActivity : AppCompatActivity(R.layout.main_act) {  private lateinit var binding: MainActBinding   override fun onCreate(savedInstanceState: Bundle?) {  super.onCreate(savedInstanceState)  binding = bindView()  .</description>
     </item>
     
     <item>
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity(R.layout.main_act) { private val binding 
       <description>問題 Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。
 理由としては、Data Bindingの生成が失敗すると、MainActivityBindingみたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。 デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)
 解決法 全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです
-kapt { javacOptions { option(&amp;#34;-Xmaxerrs&amp;#34;, 5000) } } これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。
+kapt {  javacOptions {  option(&amp;#34;-Xmaxerrs&amp;#34;, 5000)  } } これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。
 これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。
 before(一部ログ修正しています)
 ... // 長いエラーログ ... ... symbol: class DataBindingComponent location: class ActivityMainBinding e: ActivityMainBinding.java:91: error: cannot find symbol @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) { ^ symbol: class DataBindingComponent location: class ActivityMainBinding e: ActivityMainBinding.java:102: error: cannot find symbol @Nullable DataBindingComponent component) { ^ symbol: class DataBindingComponent location: class ActivityMainBinding :app:kaptProductDebugKotlin FAILED after</description>

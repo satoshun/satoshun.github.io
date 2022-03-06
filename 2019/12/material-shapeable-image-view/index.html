@@ -98,52 +98,52 @@
 <p>さっそくいじっていきたいと思います。</p>
 <h2 id="丸を設定してみる">丸を設定してみる</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
-<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.PILL&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
-  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
-<span style="color:#f92672">&lt;/style&gt;</span>
-
-<span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
-<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
-  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/circle&#34;</span>
-  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
-  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
-  <span style="color:#a6e22e">android:layout_gravity=</span><span style="color:#e6db74">&#34;center&#34;</span>
-  <span style="color:#a6e22e">android:layout_margin=</span><span style="color:#e6db74">&#34;10dp&#34;</span>
-  <span style="color:#a6e22e">android:adjustViewBounds=</span><span style="color:#e6db74">&#34;true&#34;</span>
-  <span style="color:#a6e22e">android:elevation=</span><span style="color:#e6db74">&#34;4dp&#34;</span>
-  <span style="color:#a6e22e">app:shapeAppearanceOverlay=</span><span style="color:#e6db74">&#34;@style/ShapeAppearance.Example.PILL&#34;</span>
-  <span style="color:#a6e22e">app:srcCompat=</span><span style="color:#e6db74">&#34;@drawable/img&#34;</span> <span style="color:#f92672">/&gt;</span>
-</code></pre></div><figure><img src="/blog/android/material-components/shapeable-circle.png" width="300"/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.PILL&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>rounded<span style="color:#f92672">&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/style&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/circle&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_gravity=</span><span style="color:#e6db74">&#34;center&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_margin=</span><span style="color:#e6db74">&#34;10dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:adjustViewBounds=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:elevation=</span><span style="color:#e6db74">&#34;4dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:shapeAppearanceOverlay=</span><span style="color:#e6db74">&#34;@style/ShapeAppearance.Example.PILL&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:srcCompat=</span><span style="color:#e6db74">&#34;@drawable/img&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><figure><img src="/blog/android/material-components/shapeable-circle.png" width="300"/>
 </figure>
 
 <p>画像が丸くなっていることが分かると思います。cornerSizeを50%指定すると、ちょうど丸のshapeになります。</p>
 <p>コードから設定する場合は、ShapeAppearanceModelを介して行います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
-imageView.shapeAppearanceModel = model
-</code></pre></div><h2 id="ひし形を設定してみる--strokeをつける">ひし形を設定してみる &amp; strokeをつける</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> model = ShapeAppearanceModel.builder().setAllCornerSizes(ShapeAppearanceModel.PILL).build()
+</span></span><span style="display:flex;"><span>imageView.shapeAppearanceModel = model
+</span></span></code></pre></div><h2 id="ひし形を設定してみる--strokeをつける">ひし形を設定してみる &amp; strokeをつける</h2>
 <p>スタイルから定義する場合は、次のようにやります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
-<span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.Diamond&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
-  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
-<span style="color:#f92672">&lt;/style&gt;</span>
-
-<span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
-<span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
-  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/diamond&#34;</span>
-  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
-  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
-  <span style="color:#a6e22e">android:layout_gravity=</span><span style="color:#e6db74">&#34;center&#34;</span>
-  <span style="color:#a6e22e">android:layout_margin=</span><span style="color:#e6db74">&#34;10dp&#34;</span>
-  <span style="color:#a6e22e">android:adjustViewBounds=</span><span style="color:#e6db74">&#34;true&#34;</span>
-  <span style="color:#a6e22e">android:elevation=</span><span style="color:#e6db74">&#34;4dp&#34;</span>
-  <span style="color:#a6e22e">app:shapeAppearanceOverlay=</span><span style="color:#e6db74">&#34;@style/ShapeAppearance.Example.Diamond&#34;</span>
-  <span style="color:#a6e22e">app:srcCompat=</span><span style="color:#e6db74">&#34;@drawable/img&#34;</span>
-  <span style="color:#a6e22e">app:strokeColor=</span><span style="color:#e6db74">&#34;?attr/colorSecondary&#34;</span>
-  <span style="color:#a6e22e">app:strokeWidth=</span><span style="color:#e6db74">&#34;2dp&#34;</span> <span style="color:#f92672">/&gt;</span>
-</code></pre></div><figure><img src="/blog/android/material-components/shapeable-diamond.png" width="300"/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- スタイル定義 --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ShapeAppearance.Example.Diamond&#34;</span> <span style="color:#a6e22e">parent=</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerFamily&#34;</span><span style="color:#f92672">&gt;</span>cut<span style="color:#f92672">&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;item</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;cornerSize&#34;</span><span style="color:#f92672">&gt;</span>50%<span style="color:#f92672">&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/style&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- レイアウト --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;com.google.android.material.imageview.ShapeableImageView</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/diamond&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_gravity=</span><span style="color:#e6db74">&#34;center&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_margin=</span><span style="color:#e6db74">&#34;10dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:adjustViewBounds=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:elevation=</span><span style="color:#e6db74">&#34;4dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:shapeAppearanceOverlay=</span><span style="color:#e6db74">&#34;@style/ShapeAppearance.Example.Diamond&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:srcCompat=</span><span style="color:#e6db74">&#34;@drawable/img&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:strokeColor=</span><span style="color:#e6db74">&#34;?attr/colorSecondary&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:strokeWidth=</span><span style="color:#e6db74">&#34;2dp&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><figure><img src="/blog/android/material-components/shapeable-diamond.png" width="300"/>
 </figure>
 
 <p>先ほどと同様に、cornerSizeには50%を指定します。また、cornerFamilyにcutを指定することで、ひし形を作れます。</p>

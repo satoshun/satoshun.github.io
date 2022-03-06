@@ -98,86 +98,86 @@ Use …">
 <p>この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。</p>
 <h2 id="1-ondestoryviewで解放する">1. onDestoryViewで解放する</h2>
 <p>公式ドキュメントに載っている方法です。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// onCreatedViewで初期化
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> _binding: ResultProfileBinding? = <span style="color:#66d9ef">null</span>
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding <span style="color:#66d9ef">get</span>() = _binding<span style="color:#f92672">!!</span>
-
-<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-): View? {
-  _binding = ResultProfileBinding.inflate(inflater, container, <span style="color:#66d9ef">false</span>)
-  <span style="color:#66d9ef">val</span> view = binding.root
-  <span style="color:#66d9ef">return</span> view
-}
-
-<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDestroyView</span>() {
-  _binding = <span style="color:#66d9ef">null</span>
-}
-</code></pre></div><p>onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// onCreatedViewで初期化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> _binding: ResultProfileBinding? = <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding <span style="color:#66d9ef">get</span>() = _binding<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
+</span></span><span style="display:flex;"><span>    inflater: LayoutInflater,
+</span></span><span style="display:flex;"><span>    container: ViewGroup?,
+</span></span><span style="display:flex;"><span>    savedInstanceState: Bundle?
+</span></span><span style="display:flex;"><span>): View? {
+</span></span><span style="display:flex;"><span>  _binding = ResultProfileBinding.inflate(inflater, container, <span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> view = binding.root
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> view
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDestroyView</span>() {
+</span></span><span style="display:flex;"><span>  _binding = <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。</p>
 <h2 id="2-aacサンプルで使っているautoclearedvalueを使う">2. AACサンプルで使っているAutoClearedValueを使う</h2>
 <p>takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。</p>
 <hr>
 <blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="ja" dir="ltr">DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました <a href="https://t.co/IUNmeQLzfB">https://t.co/IUNmeQLzfB</a></p>&mdash; takahirom (@new_runnable) <a href="https://twitter.com/new_runnable/status/1217980925008465920?ref_src=twsrc%5Etfw">January 17, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <hr>
 <p>次のように使います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// onCreatedViewで初期化する
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> binding <span style="color:#66d9ef">by</span> autoCleared&lt;RepoFragmentBinding&gt;()
-<span style="color:#66d9ef">var</span> adapter <span style="color:#66d9ef">by</span> autoCleared&lt;RepoFragmentAdapter&gt;()
-</code></pre></div><p>AutoClearedValueは、<code>viewLifecycleOwnerLiveData</code>を購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// onCreatedViewで初期化する
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> binding <span style="color:#66d9ef">by</span> autoCleared&lt;RepoFragmentBinding&gt;()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> adapter <span style="color:#66d9ef">by</span> autoCleared&lt;RepoFragmentAdapter&gt;()
+</span></span></code></pre></div><p>AutoClearedValueは、<code>viewLifecycleOwnerLiveData</code>を購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。</p>
 <p>詳細な実装は<a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt">AutoClearedValue.kt</a>を見てください。</p>
 <h2 id="3-databinding-ktxを使う">3. DataBinding-Ktxを使う</h2>
 <p><a href="https://github.com/wada811/DataBinding-ktx">DataBinding-ktx</a>を使うことで、valで定義することが可能になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: ViewBindingFragmentBinding <span style="color:#66d9ef">by</span> viewBinding()
-
-<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
-  inflater: LayoutInflater,
-  container: ViewGroup?,
-  savedInstanceState: Bundle?
-): View? {
-  <span style="color:#66d9ef">return</span> binding.root
-}
-</code></pre></div><p>内部で、リフレクションを用いており、ViewBindingの場合でも<code>binding.root</code>とbindingにアクセスするだけで、自動的にBindingインスタンスを生成してくれます。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: ViewBindingFragmentBinding <span style="color:#66d9ef">by</span> viewBinding()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
+</span></span><span style="display:flex;"><span>  inflater: LayoutInflater,
+</span></span><span style="display:flex;"><span>  container: ViewGroup?,
+</span></span><span style="display:flex;"><span>  savedInstanceState: Bundle?
+</span></span><span style="display:flex;"><span>): View? {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> binding.root
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>内部で、リフレクションを用いており、ViewBindingの場合でも<code>binding.root</code>とbindingにアクセスするだけで、自動的にBindingインスタンスを生成してくれます。
 また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。</p>
 <h2 id="4-viewsettag-gettagを使った実装を使う">4. View.setTag, getTagを使った実装を使う</h2>
 <p>自動的に解放する部分の実装の話なんですが、setTag、getTagを使った実装でも参照を解放することが可能です。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment(R.layout.main_frag2) {
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: MainFrag2Binding <span style="color:#66d9ef">by</span> viewBinding()
-}
-
-<span style="color:#75715e">// ViewDataBinding.kt
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewDataBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
-  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
-      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
-      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
-      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-        binding = DataBindingUtil.bind(view)
-        view.setTag(R.id.fragment_binding, binding)
-      }
-      <span style="color:#66d9ef">return</span> binding<span style="color:#f92672">!!</span>
-    }
-  }
-</code></pre></div><p><a href="https://gist.github.com/satoshun/0185c4231983016f6afa4d8f8c423cd9">Gist/サンプルコード</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment(R.layout.main_frag2) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: MainFrag2Binding <span style="color:#66d9ef">by</span> viewBinding()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ViewDataBinding.kt
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewDataBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        binding = DataBindingUtil.bind(view)
+</span></span><span style="display:flex;"><span>        view.setTag(R.id.fragment_binding, binding)
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> binding<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p><a href="https://gist.github.com/satoshun/0185c4231983016f6afa4d8f8c423cd9">Gist/サンプルコード</a></p>
 <p>viewLifecycleOwnerLiveDataを使わないパターンの実装になります。また、このコードではFragmentのコンストラクタからレイアウトIDを渡すことを想定しています。
 コンストラクタからIDを渡すことで、onCreateViewを省略することが出来ます。</p>
 <p>この例では、DataBindingを想定していますが、ViewBindingで使う場合には、リフレクションを用いるか、もしくはファクトリを渡す必要があります。</p>
 <p>リフレクションを使う場合は、次のようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
-  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
-      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
-      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
-      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-        <span style="color:#66d9ef">val</span> method = T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.getMethod(<span style="color:#e6db74">&#34;bind&#34;</span>, View<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-        binding = method.invoke(<span style="color:#66d9ef">null</span>, view) <span style="color:#66d9ef">as</span> T
-        view.setTag(R.id.fragment_binding, binding)
-      }
-      <span style="color:#66d9ef">return</span> binding
-    }
-  }
-</code></pre></div><h2 id="個人的な感想">個人的な感想</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">ViewBinding</span>&gt; <span style="color:#a6e22e">Fragment</span>.viewBinding(): ReadOnlyProperty&lt;Fragment, T&gt; =
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> method = T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.getMethod(<span style="color:#e6db74">&#34;bind&#34;</span>, View<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>        binding = method.invoke(<span style="color:#66d9ef">null</span>, view) <span style="color:#66d9ef">as</span> T
+</span></span><span style="display:flex;"><span>        view.setTag(R.id.fragment_binding, binding)
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> binding
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><h2 id="個人的な感想">個人的な感想</h2>
 <p>AACサンプルで使っているAutoClearedValueを使うのが良いのではと思っています。なぜかっていうと、RecyclerView.AdapterなどのBinding以外でも使うことが出来るからです。より汎用的だと思います。</p>
 <p>とはいえ、bindingを保持する変数をvalにしたいよねって話であったり、コンストラクタからレイアウトID渡したいよねっていう話があると思うので、そのときは3、4の方法を参考にするのが良いと思います。</p>
 <h2 id="まとめ">まとめ</h2>

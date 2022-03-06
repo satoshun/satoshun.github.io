@@ -96,45 +96,45 @@
 <p><a href="https://github.com/satoshun-android-example/ConstructorInjectionExample">サンプルコードはここに</a>あります。</p>
 <h2 id="fragmentfactory">FragmentFactory</h2>
 <p>Fragmentに依存関係を注入する時、普通にやると以下のコードになると思います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
-  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> userHandler: UserHandler
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>これをコンストラクタインジェクションにしたい。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler
-) : Fragment() {
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p><code>androidx.fragment:fragment:1.1.0-alpha01</code>から、FragmentFactoryが追加されました!!
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> userHandler: UserHandler
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これをコンストラクタインジェクションにしたい。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler
+</span></span><span style="display:flex;"><span>) : Fragment() {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>androidx.fragment:fragment:1.1.0-alpha01</code>から、FragmentFactoryが追加されました!!
 これを使うことでコンストラクタインジェクションが可能になります。</p>
 <p>MainFragmentインスタンスを生成する<code>FragmentFactory</code>を作成します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragmentFactory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> fragment: Provider&lt;MainFragment&gt;
-) : FragmentFactory() {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiate</span>(
-    classLoader: ClassLoader,
-    className: String,
-    args: Bundle?
-  ): Fragment {
-    <span style="color:#66d9ef">if</span> (className <span style="color:#f92672">==</span> MainFragment<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
-      <span style="color:#66d9ef">return</span> fragment.<span style="color:#66d9ef">get</span>()
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span>.instantiate(classLoader, className, args)
-  }
-}
-</code></pre></div><p><code>FragmentFactory.instantiate</code>をoverrideし、そこでMainFragmentのインスタンスを生成します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragmentFactory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> fragment: Provider&lt;MainFragment&gt;
+</span></span><span style="display:flex;"><span>) : FragmentFactory() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiate</span>(
+</span></span><span style="display:flex;"><span>    classLoader: ClassLoader,
+</span></span><span style="display:flex;"><span>    className: String,
+</span></span><span style="display:flex;"><span>    args: Bundle?
+</span></span><span style="display:flex;"><span>  ): Fragment {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (className <span style="color:#f92672">==</span> MainFragment<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> fragment.<span style="color:#66d9ef">get</span>()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span>.instantiate(classLoader, className, args)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>FragmentFactory.instantiate</code>をoverrideし、そこでMainFragmentのインスタンスを生成します。</p>
 <p>最後に、作成した<code>MainFragmentFactory</code>をActivityの<code>FragmentManager</code>に登録します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
-  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentFactory: MainFragmentFactory
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
-    supportFragmentManager.fragmentFactory = fragmentFactory
-
-    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-    <span style="color:#f92672">..</span>.
-</code></pre></div><p><code>SupportFragmentManager.fragmentFactory</code>に登録します。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentFactory: MainFragmentFactory
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    supportFragmentManager.fragmentFactory = fragmentFactory
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span></code></pre></div><p><code>SupportFragmentManager.fragmentFactory</code>に登録します。
 これで、Fragmentが生成されるとき<code>MainFragmentFactory</code>がフックされます。</p>
 <p><code>SupportFragmentManager.fragmentFactory</code>にFactoryを登録するタイミングは<code>super.onCreate(savedInstanceState)</code>の前が良いと思います。
 それは<code>super.onCreate</code>のタイミングで以前のFragmentが復元されるためです。
@@ -142,93 +142,93 @@
 <h2 id="layoutinflaterfactory">LayoutInflater.Factory</h2>
 <p>次にViewです。<code>LayoutInflater.Factory</code>が定義されています。
 これを使うことでカスタムのコンストラクタを持ったViewを定義することが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTextView</span>(
-  context: Context,
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler
-) : TextView(context) {
-  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Factory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler) {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">create</span>(context: Context): MainTextView {
-      <span style="color:#66d9ef">return</span> MainTextView(context, userHandler)
-    }
-  }
-}
-</code></pre></div><p>カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTextView</span>(
+</span></span><span style="display:flex;"><span>  context: Context,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler
+</span></span><span style="display:flex;"><span>) : TextView(context) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Factory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> userHandler: UserHandler) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">create</span>(context: Context): MainTextView {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> MainTextView(context, userHandler)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
 <code>LayoutInflater.Factory</code>を使うことで、インスタンスを生成できるようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainLayoutInflaterFactory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> factory: MainTextView.Factory
-) : LayoutInflater.Factory {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(name: String, context: Context, attrs: AttributeSet?): View? {
-    <span style="color:#66d9ef">if</span> (name <span style="color:#f92672">==</span> MainTextView<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
-      <span style="color:#66d9ef">return</span> factory.create(context)
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>
-  }
-}
-</code></pre></div><p><code>LayoutInflater.Factory.onCreateView</code>をoverrideし、<code>MainTextView</code>インスタンスを生成します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainLayoutInflaterFactory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> factory: MainTextView.Factory
+</span></span><span style="display:flex;"><span>) : LayoutInflater.Factory {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(name: String, context: Context, attrs: AttributeSet?): View? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (name <span style="color:#f92672">==</span> MainTextView<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> factory.create(context)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>LayoutInflater.Factory.onCreateView</code>をoverrideし、<code>MainTextView</code>インスタンスを生成します。</p>
 <p>最後に、作成した<code>MainLayoutInflaterFactory</code>をActivityの<code>layoutInflater.factory</code>に登録します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> layoutInflaterFactory: MainLayoutInflaterFactory
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
-    layoutInflater.factory = layoutInflaterFactory
-
-    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-    <span style="color:#f92672">..</span>.
-</code></pre></div><p>Activityの<code>LayoutInflater.factory</code>に登録します。登録するタイミングはsetContentViewの前が良いと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> layoutInflaterFactory: MainLayoutInflaterFactory
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    layoutInflater.factory = layoutInflaterFactory
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span></code></pre></div><p>Activityの<code>LayoutInflater.factory</code>に登録します。登録するタイミングはsetContentViewの前が良いと思います。</p>
 <h2 id="appcomponentfactory">AppComponentFactory</h2>
 <p>次にActivityです。
 Activityに依存関係を注入する時、普通にやると以下のコードになると思います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : Activity() {
-  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> presenter: UserPresenter
-  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> analytics: Analytics
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>これをコンストラクタインジェクションにしたい。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> presenter: UserPresenter,
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> analytics: Analytics
-): Activity() {
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>しかし、この書き方はうまくいきません。なぜならActivityインスタンスはシステム側で自動的に生成されるためです。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : Activity() {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> presenter: UserPresenter
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> analytics: Analytics
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これをコンストラクタインジェクションにしたい。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> presenter: UserPresenter,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> analytics: Analytics
+</span></span><span style="display:flex;"><span>): Activity() {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>しかし、この書き方はうまくいきません。なぜならActivityインスタンスはシステム側で自動的に生成されるためです。
 カスタム定義のコンストラクタだと、システム側でインスタンスを生成することが出来ません。</p>
 <p>これを解決するべく、API28からAppComponentFactoryというクラスが追加されました!!</p>
 <p>MainActivityインスタンスを生成する<code>AppComponentFactory</code>を作成します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Suppress</span>(<span style="color:#e6db74">&#34;unused&#34;</span>)
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainAppComponentFactory</span> : AppComponentFactory() {
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> application: App
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiateActivityCompat</span>(
-    cl: ClassLoader,
-    className: String,
-    intent: Intent?
-  ): Activity {
-    <span style="color:#66d9ef">if</span> (className <span style="color:#f92672">==</span> MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
-      <span style="color:#66d9ef">return</span> application.appComponent.mainActivity
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span>.instantiateActivityCompat(cl, className, intent)
-  }
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiateApplicationCompat</span>(cl: ClassLoader, className: String): Application {
-    application = <span style="color:#66d9ef">super</span>.instantiateApplicationCompat(cl, className) <span style="color:#66d9ef">as</span> App
-    <span style="color:#66d9ef">return</span> application
-  }
-}
-</code></pre></div><p>次にAndroidマニフェストに<code>MainAppComponentFactory</code>を登録します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">...
-  <span style="color:#f92672">&lt;application</span>
-    <span style="color:#a6e22e">android:allowBackup=</span><span style="color:#e6db74">&#34;true&#34;</span>
-    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.App&#34;</span>
-    <span style="color:#a6e22e">android:appComponentFactory=</span><span style="color:#e6db74">&#34;com.github.satoshun.example.sample.MainAppComponentFactory&#34;</span>
-    <span style="color:#a6e22e">android:icon=</span><span style="color:#e6db74">&#34;@mipmap/ic_launcher&#34;</span>
-    <span style="color:#a6e22e">android:label=</span><span style="color:#e6db74">&#34;@string/app_name&#34;</span>
-    <span style="color:#a6e22e">android:roundIcon=</span><span style="color:#e6db74">&#34;@mipmap/ic_launcher_round&#34;</span>
-    <span style="color:#a6e22e">android:supportsRtl=</span><span style="color:#e6db74">&#34;true&#34;</span>
-    <span style="color:#a6e22e">android:theme=</span><span style="color:#e6db74">&#34;@style/AppTheme&#34;</span>
-    <span style="color:#a6e22e">tools:replace=</span><span style="color:#e6db74">&#34;android:appComponentFactory&#34;</span><span style="color:#f92672">&gt;</span>
-    ...
-</code></pre></div><p><code>AppComponentFactory.instantiateActivityCompat</code>をoverrideし、<code>MainActivity</code>インスタンスを生成します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Suppress</span>(<span style="color:#e6db74">&#34;unused&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainAppComponentFactory</span> : AppComponentFactory() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> application: App
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiateActivityCompat</span>(
+</span></span><span style="display:flex;"><span>    cl: ClassLoader,
+</span></span><span style="display:flex;"><span>    className: String,
+</span></span><span style="display:flex;"><span>    intent: Intent?
+</span></span><span style="display:flex;"><span>  ): Activity {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (className <span style="color:#f92672">==</span> MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> application.appComponent.mainActivity
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span>.instantiateActivityCompat(cl, className, intent)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">instantiateApplicationCompat</span>(cl: ClassLoader, className: String): Application {
+</span></span><span style="display:flex;"><span>    application = <span style="color:#66d9ef">super</span>.instantiateApplicationCompat(cl, className) <span style="color:#66d9ef">as</span> App
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> application
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>次にAndroidマニフェストに<code>MainAppComponentFactory</code>を登録します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;application</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:allowBackup=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.App&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:appComponentFactory=</span><span style="color:#e6db74">&#34;com.github.satoshun.example.sample.MainAppComponentFactory&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:icon=</span><span style="color:#e6db74">&#34;@mipmap/ic_launcher&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:label=</span><span style="color:#e6db74">&#34;@string/app_name&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:roundIcon=</span><span style="color:#e6db74">&#34;@mipmap/ic_launcher_round&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:supportsRtl=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:theme=</span><span style="color:#e6db74">&#34;@style/AppTheme&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tools:replace=</span><span style="color:#e6db74">&#34;android:appComponentFactory&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span></code></pre></div><p><code>AppComponentFactory.instantiateActivityCompat</code>をoverrideし、<code>MainActivity</code>インスタンスを生成します。</p>
 <p>これで、カスタムのコンストラクタを持ったActivityインスタンスを生成することが出来ます!!</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>

@@ -97,12 +97,12 @@ immutableなので, primitive(int, floatなど)な値と同等に扱うことが
 <li>プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来ることが多い</li>
 </ul>
 <p>1, 2つ目は理解できると思うので, 「プログラムの途中でオブジェクトの特徴が変わることがないため, プログラムをreadableに保つことが出来る」をJavaのコードをあげて説明します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Calendar <span style="color:#a6e22e">getYesterday</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    Calendar rightnow <span style="color:#f92672">=</span> Calendar<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span> <span style="color:#75715e">// ここの時点ではrightnowは, 今の時間を示している
-</span><span style="color:#75715e"></span>    rightnow<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Calendar<span style="color:#f92672">.</span><span style="color:#a6e22e">DATE</span><span style="color:#f92672">,</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">);</span> <span style="color:#75715e">// ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> rightnow<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, <code>rightnow.add(Calendar.DATE, -1)</code>を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Calendar <span style="color:#a6e22e">getYesterday</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    Calendar rightnow <span style="color:#f92672">=</span> Calendar<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span> <span style="color:#75715e">// ここの時点ではrightnowは, 今の時間を示している
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    rightnow<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Calendar<span style="color:#f92672">.</span><span style="color:#a6e22e">DATE</span><span style="color:#f92672">,</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">);</span> <span style="color:#75715e">// ここの時点ではrightnowは, 昨日を示している. 変数名rightnowは相応しくない
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> rightnow<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>上記コードは, 変数rightnowを定義した段階では, 相応しい変数名なのですが, <code>rightnow.add(Calendar.DATE, -1)</code>を実行した段階で, 相応しくない変数名に変わります. これは, Calendarインスタンスが, mutableなためです. このようなコードは混乱を招きます.
 オブジェクトは初期化したら, セッターなどで値は変更しないほうが, コードをreadableに保つことができ, バグを防ぐことが出来ます.</p>
 <h2 id="indentityキーを持たないメリット">indentityキーを持たないメリット</h2>
 <p>Value Objectは, 名前の通り, Value(値)に注目しているパターンです. 量などの属性値が重要であり, identityキーには注目していないため, 除去しています. 逆に, identityキーに注目しているパターンのことを, エンティティ(Entity)と言います. identityキーが重要かどうかで, パターンが変わってくるので, 慣れが必要そうです.</p>

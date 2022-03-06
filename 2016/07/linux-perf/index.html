@@ -92,117 +92,117 @@ CPU利用率, 高負荷なプロセスの特定の仕方について説明しま
 <p>CPU利用率, 高負荷なプロセスの特定の仕方について説明します.</p>
 <h2 id="0-lscpu">0. lscpu</h2>
 <p>システムのコア数,マシンのスペックを最初に調べます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# lscpu
-Architecture:          x86_64
-CPU op-mode<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:        32-bit, 64-bit
-Byte Order:            Little Endian
-CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:                <span style="color:#ae81ff">4</span>
-On-line CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> list:   0-3
-Thread<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> per core:    <span style="color:#ae81ff">1</span>
-Core<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> per socket:    <span style="color:#ae81ff">4</span>
-Socket<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:             <span style="color:#ae81ff">1</span>
-NUMA node<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:          <span style="color:#ae81ff">1</span>
-Vendor ID:             GenuineIntel
-CPU family:            <span style="color:#ae81ff">6</span>
-Model:                 <span style="color:#ae81ff">69</span>
-Model name:            Intel<span style="color:#f92672">(</span>R<span style="color:#f92672">)</span> Core<span style="color:#f92672">(</span>TM<span style="color:#f92672">)</span> i7-4650U CPU @ 1.70GHz
-Stepping:              <span style="color:#ae81ff">1</span>
-CPU MHz:               2300.000
-BogoMIPS:              4600.00
-Hypervisor vendor:     KVM
-Virtualization type:   full
-L1d cache:             32K
-L1i cache:             32K
-L2 cache:              256K
-L3 cache:              4096K
-NUMA node0 CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:     0-3
-Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm
-</code></pre></div><p>コア数は4, Core i7ということが分かります.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# lscpu
+</span></span><span style="display:flex;"><span>Architecture:          x86_64
+</span></span><span style="display:flex;"><span>CPU op-mode<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:        32-bit, 64-bit
+</span></span><span style="display:flex;"><span>Byte Order:            Little Endian
+</span></span><span style="display:flex;"><span>CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:                <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>On-line CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> list:   0-3
+</span></span><span style="display:flex;"><span>Thread<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> per core:    <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Core<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> per socket:    <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>Socket<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:             <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>NUMA node<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:          <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Vendor ID:             GenuineIntel
+</span></span><span style="display:flex;"><span>CPU family:            <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>Model:                 <span style="color:#ae81ff">69</span>
+</span></span><span style="display:flex;"><span>Model name:            Intel<span style="color:#f92672">(</span>R<span style="color:#f92672">)</span> Core<span style="color:#f92672">(</span>TM<span style="color:#f92672">)</span> i7-4650U CPU @ 1.70GHz
+</span></span><span style="display:flex;"><span>Stepping:              <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>CPU MHz:               2300.000
+</span></span><span style="display:flex;"><span>BogoMIPS:              4600.00
+</span></span><span style="display:flex;"><span>Hypervisor vendor:     KVM
+</span></span><span style="display:flex;"><span>Virtualization type:   full
+</span></span><span style="display:flex;"><span>L1d cache:             32K
+</span></span><span style="display:flex;"><span>L1i cache:             32K
+</span></span><span style="display:flex;"><span>L2 cache:              256K
+</span></span><span style="display:flex;"><span>L3 cache:              4096K
+</span></span><span style="display:flex;"><span>NUMA node0 CPU<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:     0-3
+</span></span><span style="display:flex;"><span>Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm
+</span></span></code></pre></div><p>コア数は4, Core i7ということが分かります.</p>
 <h2 id="1-uptime">1. uptime</h2>
 <p>次に, 何はともあれ<code>uptime</code>です. ロードアベレージを出力します.</p>
 <p>ロードアベレージの値で, ざっくりとシステム全体の負荷を調べることが出来ます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# uptime
- 10:28:54 up <span style="color:#ae81ff">25</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.41, 0.87, 0.59
-</code></pre></div><p>一般的には, CPUのコア数前後が基準となります.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# uptime
+</span></span><span style="display:flex;"><span> 10:28:54 up <span style="color:#ae81ff">25</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.41, 0.87, 0.59
+</span></span></code></pre></div><p>一般的には, CPUのコア数前後が基準となります.
 この値が大きい場合は, CPU or メモリ or etcに, 高負荷なポイントがあります.</p>
 <h2 id="2-mpstat">2. mpstat</h2>
 <p>システム全体のCPU利用率を<code>mpstat</code>コマンドで調べます.</p>
 <p>個別のコアごとの利用率を出力する <code>-P ALL</code> オプションをつけて実行します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# mpstat -P ALL
-Linux 4.4.0-21-generic <span style="color:#f92672">(</span>vagrant<span style="color:#f92672">)</span>  07/17/2016  _x86_64_  <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> CPU<span style="color:#f92672">)</span>
-
-10:27:44 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-10:27:45 AM  all    6.50    0.00   18.25    0.00    0.00    0.00    0.00    0.00    0.00   75.25
-10:27:45 AM    <span style="color:#ae81ff">0</span>    0.00    0.00    0.98    0.00    0.00    0.00    0.00    0.00    0.00   99.02
-10:27:45 AM    <span style="color:#ae81ff">1</span>    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-10:27:45 AM    <span style="color:#ae81ff">2</span>    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
-10:27:45 AM    <span style="color:#ae81ff">3</span>   25.25    0.00   74.75    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-</code></pre></div><p>この出力から, 1つのコアに処理が集中していることが分かります.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# mpstat -P ALL
+</span></span><span style="display:flex;"><span>Linux 4.4.0-21-generic <span style="color:#f92672">(</span>vagrant<span style="color:#f92672">)</span>  07/17/2016  _x86_64_  <span style="color:#f92672">(</span><span style="color:#ae81ff">4</span> CPU<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>10:27:44 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+</span></span><span style="display:flex;"><span>10:27:45 AM  all    6.50    0.00   18.25    0.00    0.00    0.00    0.00    0.00    0.00   75.25
+</span></span><span style="display:flex;"><span>10:27:45 AM    <span style="color:#ae81ff">0</span>    0.00    0.00    0.98    0.00    0.00    0.00    0.00    0.00    0.00   99.02
+</span></span><span style="display:flex;"><span>10:27:45 AM    <span style="color:#ae81ff">1</span>    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+</span></span><span style="display:flex;"><span>10:27:45 AM    <span style="color:#ae81ff">2</span>    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+</span></span><span style="display:flex;"><span>10:27:45 AM    <span style="color:#ae81ff">3</span>   25.25    0.00   74.75    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+</span></span></code></pre></div><p>この出力から, 1つのコアに処理が集中していることが分かります.
 また, iowaitが発生していないことから, CPUドリブンなプロセスということも分かります.</p>
 <h2 id="3-top">3. top</h2>
 <p>次に, どのプロセスがCPUを専有しているのかを<code>top</code>コマンドで調べます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">top - 10:46:54 up <span style="color:#ae81ff">43</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.99, 0.67, 0.48
-Tasks: <span style="color:#ae81ff">148</span> total,   <span style="color:#ae81ff">2</span> running, <span style="color:#ae81ff">146</span> sleeping,   <span style="color:#ae81ff">0</span> stopped,   <span style="color:#ae81ff">0</span> zombie
-%Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  7.4 us, 17.7 sy,  0.0 ni, 74.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-KiB Mem :  <span style="color:#ae81ff">4046448</span> total,  <span style="color:#ae81ff">3670180</span> free,    <span style="color:#ae81ff">98452</span> used,   <span style="color:#ae81ff">277816</span> buff/cache
-KiB Swap:  <span style="color:#ae81ff">1048572</span> total,  <span style="color:#ae81ff">1048572</span> free,        <span style="color:#ae81ff">0</span> used.  <span style="color:#ae81ff">3895064</span> avail Mem
-
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
- <span style="color:#ae81ff">2682</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">7620</span>    <span style="color:#ae81ff">692</span>    <span style="color:#ae81ff">616</span> R  99.7  0.0   4:38.47 dd
- <span style="color:#ae81ff">2195</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">101016</span>  <span style="color:#ae81ff">32260</span>   <span style="color:#ae81ff">9380</span> S   2.3  0.8   0:43.51 glances
- <span style="color:#ae81ff">1019</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">409164</span>  <span style="color:#ae81ff">35092</span>  <span style="color:#ae81ff">21860</span> S   0.3  0.9   0:01.99 docker
- <span style="color:#ae81ff">1123</span> www-data  <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">125416</span>   <span style="color:#ae81ff">3148</span>   <span style="color:#ae81ff">1552</span> S   0.3  0.1   0:00.20 nginx
- <span style="color:#ae81ff">1367</span> vagrant   <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">95464</span>   <span style="color:#ae81ff">5128</span>   <span style="color:#ae81ff">4180</span> S   0.3  0.1   0:01.71 sshd
-    <span style="color:#ae81ff">1</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">37968</span>   <span style="color:#ae81ff">6040</span>   <span style="color:#ae81ff">4008</span> S   0.0  0.1   0:01.96 systemd
-    <span style="color:#ae81ff">2</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> S   0.0  0.0   0:00.00 kthreadd
-...
-</code></pre></div><p>pid 2682の<code>dd</code>コマンドがCPUを専有していることが分かります.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>top - 10:46:54 up <span style="color:#ae81ff">43</span> min,  <span style="color:#ae81ff">2</span> users,  load average: 0.99, 0.67, 0.48
+</span></span><span style="display:flex;"><span>Tasks: <span style="color:#ae81ff">148</span> total,   <span style="color:#ae81ff">2</span> running, <span style="color:#ae81ff">146</span> sleeping,   <span style="color:#ae81ff">0</span> stopped,   <span style="color:#ae81ff">0</span> zombie
+</span></span><span style="display:flex;"><span>%Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  7.4 us, 17.7 sy,  0.0 ni, 74.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+</span></span><span style="display:flex;"><span>KiB Mem :  <span style="color:#ae81ff">4046448</span> total,  <span style="color:#ae81ff">3670180</span> free,    <span style="color:#ae81ff">98452</span> used,   <span style="color:#ae81ff">277816</span> buff/cache
+</span></span><span style="display:flex;"><span>KiB Swap:  <span style="color:#ae81ff">1048572</span> total,  <span style="color:#ae81ff">1048572</span> free,        <span style="color:#ae81ff">0</span> used.  <span style="color:#ae81ff">3895064</span> avail Mem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2682</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">7620</span>    <span style="color:#ae81ff">692</span>    <span style="color:#ae81ff">616</span> R  99.7  0.0   4:38.47 dd
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2195</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">101016</span>  <span style="color:#ae81ff">32260</span>   <span style="color:#ae81ff">9380</span> S   2.3  0.8   0:43.51 glances
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1019</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">409164</span>  <span style="color:#ae81ff">35092</span>  <span style="color:#ae81ff">21860</span> S   0.3  0.9   0:01.99 docker
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1123</span> www-data  <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">125416</span>   <span style="color:#ae81ff">3148</span>   <span style="color:#ae81ff">1552</span> S   0.3  0.1   0:00.20 nginx
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1367</span> vagrant   <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">95464</span>   <span style="color:#ae81ff">5128</span>   <span style="color:#ae81ff">4180</span> S   0.3  0.1   0:01.71 sshd
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">1</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">37968</span>   <span style="color:#ae81ff">6040</span>   <span style="color:#ae81ff">4008</span> S   0.0  0.1   0:01.96 systemd
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">2</span> root      <span style="color:#ae81ff">20</span>   <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> S   0.0  0.0   0:00.00 kthreadd
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>pid 2682の<code>dd</code>コマンドがCPUを専有していることが分かります.
 これで, 負荷が高いプロセスを特定できました.</p>
 <h2 id="4-strace">4. strace</h2>
 <p>次に, 特定したプロセスがどういったシステムコールを使っているのかを<code>strace</code>コマンドで調べます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">2682</span>
-strace: Process <span style="color:#ae81ff">1376</span> attached
-write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-...
-</code></pre></div><p>ddコマンドは, read, writeシステムコールを繰り返していることが分かります.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# strace -p <span style="color:#ae81ff">2682</span>
+</span></span><span style="display:flex;"><span>strace: Process <span style="color:#ae81ff">1376</span> attached
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>read<span style="color:#f92672">(</span>0, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>1, <span style="color:#e6db74">&#34;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&#34;</span>..., 512<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>ddコマンドは, read, writeシステムコールを繰り返していることが分かります.</p>
 <p>余談ですが, nginxのworkerプロセスをstraceすると, 以下の出力をします.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# strace -p <span style="color:#ae81ff">1118</span>
-strace: Process <span style="color:#ae81ff">1118</span> attached
-epoll_wait<span style="color:#f92672">(</span>9,
-<span style="color:#f92672">[{</span>EPOLLIN, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871416, u64<span style="color:#f92672">=</span>140064191361272<span style="color:#f92672">}}]</span>, 512, -1<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-accept4<span style="color:#f92672">(</span>7, <span style="color:#f92672">{</span>sa_family<span style="color:#f92672">=</span>AF_INET6, sin6_port<span style="color:#f92672">=</span>htons<span style="color:#f92672">(</span>43248<span style="color:#f92672">)</span>, inet_pton<span style="color:#f92672">(</span>AF_INET6, <span style="color:#e6db74">&#34;::1&#34;</span>, &amp;sin6_addr<span style="color:#f92672">)</span>, sin6_flowinfo<span style="color:#f92672">=</span>0, sin6_scope_id<span style="color:#f92672">=</span>0<span style="color:#f92672">}</span>, <span style="color:#f92672">[</span>28<span style="color:#f92672">]</span>, SOCK_NONBLOCK<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">13</span>
-epoll_ctl<span style="color:#f92672">(</span>9, EPOLL_CTL_ADD, 13, <span style="color:#f92672">{</span>EPOLLIN|EPOLLRDHUP|EPOLLET, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-epoll_wait<span style="color:#f92672">(</span>9, <span style="color:#f92672">[{</span>EPOLLIN, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}}]</span>, 512, 60000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-recvfrom<span style="color:#f92672">(</span>13, <span style="color:#e6db74">&#34;GET / HTTP/1.1\r\nHost: localhost\r&#34;</span>..., 1024, 0, NULL, NULL<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">73</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.html&#34;</span>, 0x7fffe02ba480<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 ENOENT <span style="color:#f92672">(</span>No such file or directory<span style="color:#f92672">)</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.htm&#34;</span>, 0x7fffe02ba480<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 ENOENT <span style="color:#f92672">(</span>No such file or directory<span style="color:#f92672">)</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-open<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, O_RDONLY|O_NONBLOCK<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>
-fstat<span style="color:#f92672">(</span>14, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-setsockopt<span style="color:#f92672">(</span>13, SOL_TCP, TCP_CORK, <span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>, 4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-writev<span style="color:#f92672">(</span>13, <span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;HTTP/1.1 200 OK\r\nServer: nginx/1&#34;</span>..., 247<span style="color:#f92672">}]</span>, 1<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">247</span>
-sendfile<span style="color:#f92672">(</span>13, 14, <span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">[</span>612<span style="color:#f92672">]</span>, 612<span style="color:#f92672">)</span>     <span style="color:#f92672">=</span> <span style="color:#ae81ff">612</span>
-write<span style="color:#f92672">(</span>4, <span style="color:#e6db74">&#34;::1 - - [17/Jul/2016:11:27:21 +0&#34;</span>..., 80<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
-close<span style="color:#f92672">(</span>14<span style="color:#f92672">)</span>                               <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-setsockopt<span style="color:#f92672">(</span>13, SOL_TCP, TCP_CORK, <span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>, 4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-recvfrom<span style="color:#f92672">(</span>13, 0x55583aa2a770, 1024, 0, NULL, NULL<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 EAGAIN <span style="color:#f92672">(</span>Resource temporarily unavailable<span style="color:#f92672">)</span>
-epoll_wait<span style="color:#f92672">(</span>9, <span style="color:#f92672">[{</span>EPOLLIN|EPOLLRDHUP, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}}]</span>, 512, 65000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-recvfrom<span style="color:#f92672">(</span>13, <span style="color:#e6db74">&#34;&#34;</span>, 1024, 0, NULL, NULL<span style="color:#f92672">)</span>   <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-close<span style="color:#f92672">(</span>13<span style="color:#f92672">)</span>                               <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-epoll_wait<span style="color:#f92672">(</span>9,
-</code></pre></div><p>ざっくりと,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# strace -p <span style="color:#ae81ff">1118</span>
+</span></span><span style="display:flex;"><span>strace: Process <span style="color:#ae81ff">1118</span> attached
+</span></span><span style="display:flex;"><span>epoll_wait<span style="color:#f92672">(</span>9,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[{</span>EPOLLIN, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871416, u64<span style="color:#f92672">=</span>140064191361272<span style="color:#f92672">}}]</span>, 512, -1<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>accept4<span style="color:#f92672">(</span>7, <span style="color:#f92672">{</span>sa_family<span style="color:#f92672">=</span>AF_INET6, sin6_port<span style="color:#f92672">=</span>htons<span style="color:#f92672">(</span>43248<span style="color:#f92672">)</span>, inet_pton<span style="color:#f92672">(</span>AF_INET6, <span style="color:#e6db74">&#34;::1&#34;</span>, &amp;sin6_addr<span style="color:#f92672">)</span>, sin6_flowinfo<span style="color:#f92672">=</span>0, sin6_scope_id<span style="color:#f92672">=</span>0<span style="color:#f92672">}</span>, <span style="color:#f92672">[</span>28<span style="color:#f92672">]</span>, SOCK_NONBLOCK<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">13</span>
+</span></span><span style="display:flex;"><span>epoll_ctl<span style="color:#f92672">(</span>9, EPOLL_CTL_ADD, 13, <span style="color:#f92672">{</span>EPOLLIN|EPOLLRDHUP|EPOLLET, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>epoll_wait<span style="color:#f92672">(</span>9, <span style="color:#f92672">[{</span>EPOLLIN, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}}]</span>, 512, 60000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>recvfrom<span style="color:#f92672">(</span>13, <span style="color:#e6db74">&#34;GET / HTTP/1.1\r\nHost: localhost\r&#34;</span>..., 1024, 0, NULL, NULL<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">73</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.html&#34;</span>, 0x7fffe02ba480<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 ENOENT <span style="color:#f92672">(</span>No such file or directory<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFDIR|0755, st_size<span style="color:#f92672">=</span>4096, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.htm&#34;</span>, 0x7fffe02ba480<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 ENOENT <span style="color:#f92672">(</span>No such file or directory<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>stat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>open<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/var/www/html/index.nginx-debian.html&#34;</span>, O_RDONLY|O_NONBLOCK<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>
+</span></span><span style="display:flex;"><span>fstat<span style="color:#f92672">(</span>14, <span style="color:#f92672">{</span>st_mode<span style="color:#f92672">=</span>S_IFREG|0644, st_size<span style="color:#f92672">=</span>612, ...<span style="color:#f92672">})</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>setsockopt<span style="color:#f92672">(</span>13, SOL_TCP, TCP_CORK, <span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>, 4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>writev<span style="color:#f92672">(</span>13, <span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;HTTP/1.1 200 OK\r\nServer: nginx/1&#34;</span>..., 247<span style="color:#f92672">}]</span>, 1<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">247</span>
+</span></span><span style="display:flex;"><span>sendfile<span style="color:#f92672">(</span>13, 14, <span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">[</span>612<span style="color:#f92672">]</span>, 612<span style="color:#f92672">)</span>     <span style="color:#f92672">=</span> <span style="color:#ae81ff">612</span>
+</span></span><span style="display:flex;"><span>write<span style="color:#f92672">(</span>4, <span style="color:#e6db74">&#34;::1 - - [17/Jul/2016:11:27:21 +0&#34;</span>..., 80<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>close<span style="color:#f92672">(</span>14<span style="color:#f92672">)</span>                               <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>setsockopt<span style="color:#f92672">(</span>13, SOL_TCP, TCP_CORK, <span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>, 4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>recvfrom<span style="color:#f92672">(</span>13, 0x55583aa2a770, 1024, 0, NULL, NULL<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> -1 EAGAIN <span style="color:#f92672">(</span>Resource temporarily unavailable<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>epoll_wait<span style="color:#f92672">(</span>9, <span style="color:#f92672">[{</span>EPOLLIN|EPOLLRDHUP, <span style="color:#f92672">{</span>u32<span style="color:#f92672">=</span>1012871880, u64<span style="color:#f92672">=</span>140064191361736<span style="color:#f92672">}}]</span>, 512, 65000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>recvfrom<span style="color:#f92672">(</span>13, <span style="color:#e6db74">&#34;&#34;</span>, 1024, 0, NULL, NULL<span style="color:#f92672">)</span>   <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>close<span style="color:#f92672">(</span>13<span style="color:#f92672">)</span>                               <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>epoll_wait<span style="color:#f92672">(</span>9,
+</span></span></code></pre></div><p>ざっくりと,</p>
 <ol>
 <li>accept4でリクエストをacceptする</li>
 <li>recvfromで, リクエストの中身を取得する</li>
@@ -215,59 +215,59 @@ epoll_wait<span style="color:#f92672">(</span>9,
 <h2 id="5-perf">5. perf</h2>
 <p>最後に, <code>perf</code>コマンドを使って, プロセスのCPU利用率のグラフを見ます.</p>
 <p>まず, pidを指定して, プロファイルを作成します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">perf record -F <span style="color:#ae81ff">99</span> -p <span style="color:#ae81ff">2682</span> -a -g -- sleep <span style="color:#ae81ff">10</span>
-</code></pre></div><p>そして, プロファイリングの結果を出力します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@vagrant:~# perf report --stdio
-no symbols found in /bin/dd, maybe install a debug package?
-<span style="color:#75715e"># To display the perf.data header info, please use --header/--header-only options.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># Total Lost Samples: 0</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># Samples: 985  of event &#39;cpu-clock&#39;</span>
-<span style="color:#75715e"># Event count (approx.): 9949494850</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># Children      Self  Command  Shared Object      Symbol</span>
-<span style="color:#75715e"># ........  ........  .......  .................  .................................</span>
-<span style="color:#75715e">#</span>
-    59.80%     0.30%  dd       <span style="color:#f92672">[</span>kernel.kallsyms<span style="color:#f92672">]</span>  <span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> entry_SYSCALL_64_fastpath
-                 |
-                 |--59.49%-- entry_SYSCALL_64_fastpath
-                 |          |
-                 |          |--39.59%-- sys_read
-                 |          |          |
-                 |          |          |--34.72%-- vfs_read
-                 |          |          |          |
-                 |          |          |          |--19.29%-- __vfs_read
-                 |          |          |          |          |
-                 |          |          |          |          |--17.87%-- new_sync_read
-                 |          |          |          |          |          |
-                 |          |          |          |          |          |--14.72%-- read_iter_zero
-                 |          |          |          |          |          |          |
-                 |          |          |          |          |          |          |--12.49%-- iov_iter_zero
-                 |          |          |          |          |          |          |          |
-                 |          |          |          |          |          |          |           --10.05%-- __clear_user
-                 |          |          |          |          |          |          |
-                 |          |          |          |          |          |          |--0.91%-- __clear_user
-                 |          |          |          |          |          |          |
-                 |          |          |          |          |          |           --0.10%-- apic_timer_interrupt
-                 |          |          |          |          |          |                     smp_apic_timer_interrupt
-                 |          |          |          |          |          |                     irq_exit
-                 |          |          |          |          |          |                     __do_softirq
-                 |          |          |          |          |          |
-                 |          |          |          |          |          |--0.30%-- iov_iter_zero
-                 |          |          |          |          |          |
-                 |          |          |          |          |          |--0.30%-- iov_iter_init
-                 |          |          |          |          |          |
-                 |          |          |          |          |           --0.20%-- _cond_resched
-                 |          |          |          |          |
-                 |          |          |          |          |--0.91%-- read_iter_zero
-                 |          |          |          |          |
-                 |          |          |          |           --0.20%-- iov_iter_init
-                 |          |          |          |
-                 |          |          |          |--10.56%-- rw_verify_area
-...
-</code></pre></div><p><code>perf</code>コマンドを使うことで, より詳細なプロセスの内容が分かります.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>perf record -F <span style="color:#ae81ff">99</span> -p <span style="color:#ae81ff">2682</span> -a -g -- sleep <span style="color:#ae81ff">10</span>
+</span></span></code></pre></div><p>そして, プロファイリングの結果を出力します.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@vagrant:~# perf report --stdio
+</span></span><span style="display:flex;"><span>no symbols found in /bin/dd, maybe install a debug package?
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># To display the perf.data header info, please use --header/--header-only options.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Total Lost Samples: 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Samples: 985  of event &#39;cpu-clock&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Event count (approx.): 9949494850</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Children      Self  Command  Shared Object      Symbol</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ........  ........  .......  .................  .................................</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>    59.80%     0.30%  dd       <span style="color:#f92672">[</span>kernel.kallsyms<span style="color:#f92672">]</span>  <span style="color:#f92672">[</span>k<span style="color:#f92672">]</span> entry_SYSCALL_64_fastpath
+</span></span><span style="display:flex;"><span>                 |
+</span></span><span style="display:flex;"><span>                 |--59.49%-- entry_SYSCALL_64_fastpath
+</span></span><span style="display:flex;"><span>                 |          |
+</span></span><span style="display:flex;"><span>                 |          |--39.59%-- sys_read
+</span></span><span style="display:flex;"><span>                 |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |--34.72%-- vfs_read
+</span></span><span style="display:flex;"><span>                 |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |--19.29%-- __vfs_read
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |--17.87%-- new_sync_read
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |--14.72%-- read_iter_zero
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |--12.49%-- iov_iter_zero
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |           --10.05%-- __clear_user
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |--0.91%-- __clear_user
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |           --0.10%-- apic_timer_interrupt
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |                     smp_apic_timer_interrupt
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |                     irq_exit
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |                     __do_softirq
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |--0.30%-- iov_iter_zero
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |--0.30%-- iov_iter_init
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |           --0.20%-- _cond_resched
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |--0.91%-- read_iter_zero
+</span></span><span style="display:flex;"><span>                 |          |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |           --0.20%-- iov_iter_init
+</span></span><span style="display:flex;"><span>                 |          |          |          |
+</span></span><span style="display:flex;"><span>                 |          |          |          |--10.56%-- rw_verify_area
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><code>perf</code>コマンドを使うことで, より詳細なプロセスの内容が分かります.</p>
 <h2 id="その他">その他</h2>
 <ul>
 <li>htop: topのいい感じ版</li>

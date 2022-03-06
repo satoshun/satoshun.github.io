@@ -96,37 +96,37 @@
 <p>今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。</p>
 <h2 id="前提課題">前提・課題</h2>
 <p>一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>(someData: Data) {
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>これがシンプル かつ 分かりやすい方法です。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>(someData: Data) {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これがシンプル かつ 分かりやすい方法です。
 しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。</p>
 <p>ここで、Ambientを使うとすっきりと書くことが出来ます。</p>
 <h2 id="ambientを使う">Ambientを使う</h2>
 <p>まず、最初にAmbientの定義をします。Ambientの定義は<code>ambientOf</code>メソッドから行えます。</p>
 <p>今回は例として、ExampleViewModelをAmbientで定義して、コンポーネントから使用します。</p>
 <p>まず、定義を行います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> exampleViewModelAmbient = ambientOf&lt;ExampleViewModel&gt;()
-</code></pre></div><p>これで定義は完了です。<code>ambientOf</code>メソッドを呼び出すだけです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> exampleViewModelAmbient = ambientOf&lt;ExampleViewModel&gt;()
+</span></span></code></pre></div><p>これで定義は完了です。<code>ambientOf</code>メソッドを呼び出すだけです。</p>
 <p>次に、これをコンポーネントから使ってみます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> exampleViewModelAmbient = ambientOf&lt;ExampleViewModel&gt;()
-
-<span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
-  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
-
-  Providers(exampleViewModelAmbient provides viewModel) {
-    MyView()
-  }
-}
-
-<span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>() {
-  <span style="color:#66d9ef">val</span> viewModel = exampleViewModelAmbient.current
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><p>これで完了です。コードを説明してきます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> exampleViewModelAmbient = ambientOf&lt;ExampleViewModel&gt;()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Providers(exampleViewModelAmbient provides viewModel) {
+</span></span><span style="display:flex;"><span>    MyView()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MyView</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> viewModel = exampleViewModelAmbient.current
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これで完了です。コードを説明してきます。</p>
 <hr>
 <p><code>Providers(exampleViewModelAmbient provides viewModel)</code></p>
 <p>Ambientに対して値を注入しています。この場合、定義した<code>exampleViewModelAmbient</code>に、ExampleViewModelのインスタンスを注入、セットしています。</p>
@@ -137,33 +137,33 @@
 <p><code>ambientOf</code>で定義して、Providersで値をセットすることで、コンポーネントに値を渡すことが可能になります。</p>
 <h2 id="注意点">注意点</h2>
 <p>注意としては、Providersで囲っていない場合にエラーになる点です。例えば、次のように書くことは出来ません。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Composable</span>
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
-  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
-
-  Providers(exampleViewModelAmbient provides viewModel) {
-    <span style="color:#f92672">..</span>.
-  }
-
-  <span style="color:#75715e">// ランタイムエラーになる!
-</span><span style="color:#75715e"></span>  MyView()
-}
-</code></pre></div><p>直感的な挙動だと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Composable</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Providers(exampleViewModelAmbient provides viewModel) {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ランタイムエラーになる!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  MyView()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>直感的な挙動だと思います。</p>
 <hr>
 <p>また、複数のProvidersで囲った場合は、直近のProvidersが有効になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
-  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
-
-  Providers(exampleViewModelAmbient provides viewModel) {
-
-    <span style="color:#66d9ef">val</span> viewModel2 = ExampleViewModel()
-    Providers(exampleViewModelAmbient provides viewModel2) {
-      <span style="color:#75715e">// viewModel2が渡される
-</span><span style="color:#75715e"></span>      MyView()
-    }
-  }
-}
-</code></pre></div><h2 id="まとめ">まとめ</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">ExampleApp</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> viewModel = ExampleViewModel()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Providers(exampleViewModelAmbient provides viewModel) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> viewModel2 = ExampleViewModel()
+</span></span><span style="display:flex;"><span>    Providers(exampleViewModelAmbient provides viewModel2) {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// viewModel2が渡される
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      MyView()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Ambientを使うことで、多くの中間コンポーネントがある場合に楽が出来る
 <ul>

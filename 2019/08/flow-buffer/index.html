@@ -106,24 +106,24 @@
 </li>
 </ul>
 <h2 id="検証コード">検証コード</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// flowストリームの作成
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> f = flow {
-  repeat(<span style="color:#ae81ff">100</span>) {
-    delay(<span style="color:#ae81ff">1</span>)
-    emit(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-  }
-}
-
-<span style="color:#75715e">// observeする
-</span><span style="color:#75715e"></span>lifecycleScope.launch {
-  f
-    .buffer(<span style="color:#f92672">..</span>.) ここでBufferを指定する
-    .collect {
-      delay(<span style="color:#ae81ff">100</span>)
-      Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-    }
-}
-</code></pre></div><p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// flowストリームの作成
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> f = flow {
+</span></span><span style="display:flex;"><span>  repeat(<span style="color:#ae81ff">100</span>) {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    emit(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// observeする
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>lifecycleScope.launch {
+</span></span><span style="display:flex;"><span>  f
+</span></span><span style="display:flex;"><span>    .buffer(<span style="color:#f92672">..</span>.) ここでBufferを指定する
+</span></span><span style="display:flex;"><span>    .collect {
+</span></span><span style="display:flex;"><span>      delay(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>      Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>このコードは、まず最初に、flowメソッドを使って、Flowストリームを作ります。これをこの記事ではProducer（生産者）と呼びます。このProducerは1つの値を送るのに約<code>delay(1)</code>かかります。なので、処理に約1msかかります。</p>
 <p>次に、作ったflowをobserveします。observeする側をConsumer（消費者）と呼びます。Consumerでは<code>delay(100)</code>しているので、処理に約100msかかります。</p>
 <p>これは、次の関係を作り出しています</p>
 <ul>
@@ -131,52 +131,52 @@
 </ul>
 <p>この状態で、Bufferを指定したらどのように挙動が変わるかを見ていきます。</p>
 <h3 id="unlimited">UNLIMITED</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
-  .buffer(Channel.UNLIMITED)
-  .collect {
-    delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-  }
-</code></pre></div><p>UNLIMITEDはBufferのサイズを無制限にします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>f
+</span></span><span style="display:flex;"><span>  .buffer(Channel.UNLIMITED)
+</span></span><span style="display:flex;"><span>  .collect {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>UNLIMITEDはBufferのサイズを無制限にします。</p>
 <p>Consumer側で処理が終わってなくても値を送ります。その値は、Consumerが現在のタスクをしていたら、flowの内部で一旦保存されます。そして、Consumerの現在のタスクが完了したら、内部で保存したデータが1つずつ流れてきます。</p>
 <ul>
 <li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュに保存されていく</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
 <h3 id="rendezvous">RENDEZVOUS</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
-  .buffer(Channel.RENDEZVOUS)
-  .collect {
-    delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-  }
-</code></pre></div><p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>f
+</span></span><span style="display:flex;"><span>  .buffer(Channel.RENDEZVOUS)
+</span></span><span style="display:flex;"><span>  .collect {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>RENDEZVOUSは協調的に動かすためのBufferです。</p>
 <p>Consumer側が処理出来るタイミングで、値を送ってきます。Consumserが現在のタスクをしていたら、一時停止します。</p>
 <ul>
 <li>Producer: Consumerが空いていることを確認して値を流してくる</li>
 <li>Consumer: すべての値を順番通りに受け取ることが出来る</li>
 </ul>
 <h3 id="conflated">CONFLATED</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
-  .buffer(Channel.CONFLATED) <span style="color:#75715e">// or conflate()
-</span><span style="color:#75715e"></span>  .collect {
-    delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-  }
-</code></pre></div><p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>f
+</span></span><span style="display:flex;"><span>  .buffer(Channel.CONFLATED) <span style="color:#75715e">// or conflate()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  .collect {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>CONFLATEDはBufferに値が溜まっていたら、その値を上書きするBufferです。</p>
 <p>最新の値は取得できますが、古い値は削除されてしまいます。</p>
 <ul>
 <li>Producer: Consumerの状態に関わらず、値を流してくる。Consumerの処理が終わっていないときは、内部キャッシュを上書きする</li>
 <li>Consumer: 処理に時間がかかる場合は途中の値を失う。</li>
 </ul>
 <h3 id="buffered">BUFFERED</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">f
-  .buffer(Channel.BUFFERED) <span style="color:#75715e">// or 100などの具体的な値
-</span><span style="color:#75715e"></span>  .collect {
-    delay(<span style="color:#ae81ff">100</span>)
-    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
-  }
-</code></pre></div><p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>f
+</span></span><span style="display:flex;"><span>  .buffer(Channel.BUFFERED) <span style="color:#75715e">// or 100などの具体的な値
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  .collect {
+</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>    Log.d(<span style="color:#e6db74">&#34;t4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>BUFFEREDは最大16個までキャッシュすることが出来るBufferです。</p>
 <p>バッファが満杯になったら、バッファの値が消費されるまで、Producerは一時停止します。</p>
 <ul>
 <li>Producer: Bufferの限界に達したら一時停止する。限界に達するまでは値を流し続ける</li>

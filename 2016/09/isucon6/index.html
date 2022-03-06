@@ -109,8 +109,8 @@
 <p>そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.</p>
 <h2 id="12時くらいの段階">12時くらいの段階</h2>
 <p>テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">re</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">MustCompile</span>(<span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">keywords</span>, <span style="color:#e6db74">&#34;|&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>)
-</code></pre></div><p>keywordsは7,000以上なのでここが明らかにボトルネック.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">re</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">MustCompile</span>(<span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">keywords</span>, <span style="color:#e6db74">&#34;|&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>)
+</span></span></code></pre></div><p>keywordsは7,000以上なのでここが明らかにボトルネック.</p>
 <p>そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.</p>
 <p>その結果 <code>Aho Corasick</code> というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで <code>Aho Corasick</code> のライブラリがないかを死ぬ気でググる.</p>
 <p>その結果, <a href="https://github.com/anknown/ahocorasick">https://github.com/anknown/ahocorasick</a> を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.</p>
@@ -168,8 +168,8 @@
 <p>そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.</p>
 <h2 id="12時くらいの段階-1">12時くらいの段階</h2>
 <p>テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">re</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">MustCompile</span>(<span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">keywords</span>, <span style="color:#e6db74">&#34;|&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>)
-</code></pre></div><p>keywordsは7,000以上なのでここが明らかにボトルネック.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">re</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">MustCompile</span>(<span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">keywords</span>, <span style="color:#e6db74">&#34;|&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>)
+</span></span></code></pre></div><p>keywordsは7,000以上なのでここが明らかにボトルネック.</p>
 <p>そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.</p>
 <p>その結果 <code>Aho Corasick</code> というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで <code>Aho Corasick</code> のライブラリがないかを死ぬ気でググる.</p>
 <p>その結果, <a href="https://github.com/anknown/ahocorasick">https://github.com/anknown/ahocorasick</a> を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.</p>

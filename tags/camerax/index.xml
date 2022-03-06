@@ -17,14 +17,13 @@
       <description>CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。
 内部の実装であったり、細かい部分はpsideさんの「CameraXのコードがきたので気合い入れて読んでみた」が詳しいです。
 環境構築 CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。
- androidx { name = &amp;quot;Jetpack Camera View Library&amp;quot; - publish = false + publish = true mavenVersion = LibraryVersions.CAMERA mavenGroup = LibraryGroups.CAMERA inceptionYear = &amp;quot;2019&amp;quot; } 使い方 CameraViewは普通のViewのように使うことができます。
-&amp;lt;androidx.constraintlayout.widget.ConstraintLayout ...&amp;gt; &amp;lt;androidx.camera.view.CameraView android:layout_width=&amp;#34;0dp&amp;#34; android:layout_height=&amp;#34;0dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt; 次に初期化をします。
+ androidx { name = &amp;#34;Jetpack Camera View Library&amp;#34; - publish = false + publish = true mavenVersion = LibraryVersions.CAMERA mavenGroup = LibraryGroups.CAMERA inceptionYear = &amp;#34;2019&amp;#34; } 使い方 CameraViewは普通のViewのように使うことができます。
+&amp;lt;androidx.constraintlayout.widget.ConstraintLayout  ...&amp;gt;   &amp;lt;androidx.camera.view.CameraView  android:layout_width=&amp;#34;0dp&amp;#34;  android:layout_height=&amp;#34;0dp&amp;#34;  app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34;  app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34;  app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34;  app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt; 次に初期化をします。
 cameraView.bindToLifecycle(this) // thisはLifecycleOwner LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。 CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。
 これだけでカメラ機能が使えるようになります！とても簡単！!
 以下、CameraViewで現状使えるAPIについて紹介します。
 CameraViewで使えるAPI達 モードの変更 CameraViewでは次の3つのモードがあります。
- Image: 写真を取る Video: ビデオを取る Mixed: 両方。ただし、動かない端末もあるらしい  次のように使います。
-// Image cameraView.captureMode = CameraView.CaptureMode.IMAGE cameraView.</description>
+ Image: 写真を取る Video: ビデオを取る Mixed: 両方。ただし、動かない端末もあるらしい  次のように使います。</description>
     </item>
     
   </channel>

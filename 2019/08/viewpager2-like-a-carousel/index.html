@@ -103,52 +103,52 @@
 <p>では、コードを説明していきます。</p>
 <h2 id="1-横のアイテムをチラ見せする">1. 横のアイテムをチラ見せする</h2>
 <p>まず、ViewPager2をLayout内に定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;androidx.viewpager2.widget.ViewPager2</span>
-  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/viewpager&#34;</span>
-  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
-  <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
-  <span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>次に、横のアイテムをどれだけチラ見せるかを定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dimen</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;offset&#34;</span><span style="color:#f92672">&gt;</span>32dp<span style="color:#f92672">&lt;/dimen&gt;</span>
-</code></pre></div><p>次に、各アイテム間にどれだけのマージンをつけるかを定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dimen</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;page_margin&#34;</span><span style="color:#f92672">&gt;</span>16dp<span style="color:#f92672">&lt;/dimen&gt;</span>
-</code></pre></div><p>次に、ViewPager2内で使うレイアウトのトップレベルのViewにmarginLeft、Rightをセットします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;com.google.android.material.card.MaterialCardView</span>
-  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-  <span style="color:#a6e22e">android:layout_marginLeft=</span><span style="color:#e6db74">&#34;48dp&#34;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">これは、offset</span> <span style="color:#960050;background-color:#1e0010">+</span> <span style="color:#960050;background-color:#1e0010">page_marginの値</span>
-  <span style="color:#a6e22e">android:layout_marginRight=</span><span style="color:#e6db74">&#34;48dp&#34;</span>
-  <span style="color:#a6e22e">app:cardCornerRadius=</span><span style="color:#e6db74">&#34;16dp&#34;</span><span style="color:#f92672">&gt;</span>
-  ...
-</code></pre></div><p>marginには前で定義したoffset、page_marginを足し合わせたものを指定します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;androidx.viewpager2.widget.ViewPager2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/viewpager&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;200dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;horizontal&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>次に、横のアイテムをどれだけチラ見せるかを定義します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dimen</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;offset&#34;</span><span style="color:#f92672">&gt;</span>32dp<span style="color:#f92672">&lt;/dimen&gt;</span>
+</span></span></code></pre></div><p>次に、各アイテム間にどれだけのマージンをつけるかを定義します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dimen</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;page_margin&#34;</span><span style="color:#f92672">&gt;</span>16dp<span style="color:#f92672">&lt;/dimen&gt;</span>
+</span></span></code></pre></div><p>次に、ViewPager2内で使うレイアウトのトップレベルのViewにmarginLeft、Rightをセットします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;com.google.android.material.card.MaterialCardView</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_marginLeft=</span><span style="color:#e6db74">&#34;48dp&#34;</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">これは、offset</span> <span style="color:#960050;background-color:#1e0010">+</span> <span style="color:#960050;background-color:#1e0010">page_marginの値</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_marginRight=</span><span style="color:#e6db74">&#34;48dp&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:cardCornerRadius=</span><span style="color:#e6db74">&#34;16dp&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  ...
+</span></span></code></pre></div><p>marginには前で定義したoffset、page_marginを足し合わせたものを指定します。</p>
 <p>そして、最後に<code>PageTransformer</code>を設定します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewpager.offscreenPageLimit = <span style="color:#ae81ff">2</span> <span style="color:#75715e">// これは左右のアイテムを描画するために必要
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">val</span> pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin)
-<span style="color:#66d9ef">val</span> offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset)
-viewpager.setPageTransformer { page, position <span style="color:#f92672">-&gt;</span>
-  <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
-  page.translationX = -offset
-}
-</code></pre></div><p>PageTransformerはスクロールに応じてコールバックされる関数になります。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>viewpager.offscreenPageLimit = <span style="color:#ae81ff">2</span> <span style="color:#75715e">// これは左右のアイテムを描画するために必要
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset)
+</span></span><span style="display:flex;"><span>viewpager.setPageTransformer { page, position <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
+</span></span><span style="display:flex;"><span>  page.translationX = -offset
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>PageTransformerはスクロールに応じてコールバックされる関数になります。
 この中で、<code>translationX</code>をpositionの値に応じて動かすことで、左右のアイテムのチラ見せを実現出来ます。</p>
 <h2 id="2-さらにscaleも変更する">2. さらにScaleも変更する</h2>
 <p>前述したチラ見せPageTransformerに加え、Scale用のPageTransformerも作ります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewpager.setPageTransformer(CompositePageTransformer().apply {
-  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
-    <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
-    page.translationX = -offset
-  }
-
-  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
-    <span style="color:#75715e">// 6は適当な値です
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scale = <span style="color:#ae81ff">1</span> - (abs(position) / <span style="color:#ae81ff">6</span>)
-    page.scaleX = scale
-    page.scaleY = scale
-  }
-})
-</code></pre></div><p><code>CompositePageTransformer</code>を使うことで、複数のPageTransformerをセットすることが出来ます。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>viewpager.setPageTransformer(CompositePageTransformer().apply {
+</span></span><span style="display:flex;"><span>  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
+</span></span><span style="display:flex;"><span>    page.translationX = -offset
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  addTransformer { page, position <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 6は適当な値です
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scale = <span style="color:#ae81ff">1</span> - (abs(position) / <span style="color:#ae81ff">6</span>)
+</span></span><span style="display:flex;"><span>    page.scaleX = scale
+</span></span><span style="display:flex;"><span>    page.scaleY = scale
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p><code>CompositePageTransformer</code>を使うことで、複数のPageTransformerをセットすることが出来ます。
 前で作ったチラ見せPageTransformerに加え、新しくScale用のPageTransformerを定義します。</p>
 <p>Scale用のPageTransformer内では、<code>scale</code>の値をpositionの値に応じて動かすことで、Scaleアニメーションを実現出来ます。</p>
 <h2 id="まとめ">まとめ</h2>

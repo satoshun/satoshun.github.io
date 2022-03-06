@@ -92,180 +92,180 @@
     
     <p>Navigation Component + Toolbarのデフォルトの挙動をカスタマイズしたかったので、その周辺のコードを読んでみたメモブログになります。</p>
 <p>この記事のコードは、次のライセンスに従います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">/*
- * Copyright 2018 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-</code></pre></div><h2 id="2行で">2行で</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/*
+</span></span><span style="display:flex;"><span> * Copyright 2018 The Android Open Source Project
+</span></span><span style="display:flex;"><span> *
+</span></span><span style="display:flex;"><span> * Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+</span></span><span style="display:flex;"><span> * you may not use this file except in compliance with the License.
+</span></span><span style="display:flex;"><span> * You may obtain a copy of the License at
+</span></span><span style="display:flex;"><span> *
+</span></span><span style="display:flex;"><span> *      http://www.apache.org/licenses/LICENSE-2.0
+</span></span><span style="display:flex;"><span> *
+</span></span><span style="display:flex;"><span> * Unless required by applicable law or agreed to in writing, software
+</span></span><span style="display:flex;"><span> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+</span></span><span style="display:flex;"><span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span></span><span style="display:flex;"><span> * See the License for the specific language governing permissions and
+</span></span><span style="display:flex;"><span> * limitations under the License.
+</span></span><span style="display:flex;"><span> */
+</span></span></code></pre></div><h2 id="2行で">2行で</h2>
 <ul>
 <li>OnDestinationChangedListenerから、Toolbar(ActionBar)をいじっている</li>
 <li>ということは、OnDestinationChangedListenerをカスタマイズすれば、挙動をいじれる</li>
 </ul>
 <h2 id="前提基本">前提/基本</h2>
 <p>NavigationにActionbarを紐付けるのは、次のようにします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> navController = findNavController(R.id.nav_host_fragment)
-<span style="color:#66d9ef">val</span> configuration = AppBarConfiguration(navController.graph)
-setupActionBarWithNavController(navController, configuration)
-</code></pre></div><p>これが、どんな感じで、処理されていくかを見ていきます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> navController = findNavController(R.id.nav_host_fragment)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> configuration = AppBarConfiguration(navController.graph)
+</span></span><span style="display:flex;"><span>setupActionBarWithNavController(navController, configuration)
+</span></span></code></pre></div><p>これが、どんな感じで、処理されていくかを見ていきます。</p>
 <h2 id="appbarconfigurationクラス">AppBarConfigurationクラス</h2>
 <p>naivgation graphなどの情報から、AppBarがどのように振る舞うかを決めるクラスです。
 ここでは、navigate upが失敗した時のハンドリング、DrawerLayoutを設定できます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">AppBarConfiguration.Builder
-    setDrawerLayout
-    setFallbackOnNavigateUpListener
-    build
-</code></pre></div><p>登録した<code>FallbackOnNavigateUpListener</code>が、どこで発火するかを、コードを読んで確認します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>AppBarConfiguration.Builder
+</span></span><span style="display:flex;"><span>    setDrawerLayout
+</span></span><span style="display:flex;"><span>    setFallbackOnNavigateUpListener
+</span></span><span style="display:flex;"><span>    build
+</span></span></code></pre></div><p>登録した<code>FallbackOnNavigateUpListener</code>が、どこで発火するかを、コードを読んで確認します。</p>
 <p>FallbackOnNavigateUpListenerのドキュメントを読むと、navigateUpに失敗した時と書いてあるので、navigateUpメソッドを見に行きます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
-        <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    DrawerLayout drawerLayout <span style="color:#f92672">=</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerLayout</span><span style="color:#f92672">();</span>
-    NavDestination currentDestination <span style="color:#f92672">=</span> navController<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentDestination</span><span style="color:#f92672">();</span>
-    Set<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> topLevelDestinations <span style="color:#f92672">=</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getTopLevelDestinations</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> currentDestination <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>
-        <span style="color:#f92672">&amp;&amp;</span> matchDestinations<span style="color:#f92672">(</span>currentDestination<span style="color:#f92672">,</span> topLevelDestinations<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-        drawerLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">openDrawer</span><span style="color:#f92672">(</span>GravityCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">START</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>navController<span style="color:#f92672">.</span><span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#75715e">// ここで発火する
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getFallbackOnNavigateUpListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getFallbackOnNavigateUpListener</span><span style="color:#f92672">().</span><span style="color:#a6e22e">onNavigateUp</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>navController.navigateUpがfalseを返すときに、<code>configuration.getFallbackOnNavigateUpListener().onNavigateUp()</code>が実行され、登録しておいたコールバックが発火します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    DrawerLayout drawerLayout <span style="color:#f92672">=</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerLayout</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    NavDestination currentDestination <span style="color:#f92672">=</span> navController<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentDestination</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> topLevelDestinations <span style="color:#f92672">=</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getTopLevelDestinations</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> currentDestination <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;&amp;</span> matchDestinations<span style="color:#f92672">(</span>currentDestination<span style="color:#f92672">,</span> topLevelDestinations<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        drawerLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">openDrawer</span><span style="color:#f92672">(</span>GravityCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">START</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>navController<span style="color:#f92672">.</span><span style="color:#a6e22e">navigateUp</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ここで発火する
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getFallbackOnNavigateUpListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> configuration<span style="color:#f92672">.</span><span style="color:#a6e22e">getFallbackOnNavigateUpListener</span><span style="color:#f92672">().</span><span style="color:#a6e22e">onNavigateUp</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>navController.navigateUpがfalseを返すときに、<code>configuration.getFallbackOnNavigateUpListener().onNavigateUp()</code>が実行され、登録しておいたコールバックが発火します。</p>
 <h2 id="setupactionbarwithnavcontrollerメソッド">setupActionBarWithNavControllerメソッド</h2>
 <p>次に、setupActionBarWithNavControllerメソッドを見ていきます。</p>
 <p>このメソッドの中身は、次のようになっています。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">fun AppCompatActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span>
-    navController<span style="color:#f92672">:</span> NavController<span style="color:#f92672">,</span>
-    configuration<span style="color:#f92672">:</span> AppBarConfiguration <span style="color:#f92672">=</span> AppBarConfiguration<span style="color:#f92672">(</span>navController<span style="color:#f92672">.</span><span style="color:#a6e22e">graph</span><span style="color:#f92672">)</span>
-<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    NavigationUI<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> navController<span style="color:#f92672">,</span> configuration<span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> AppCompatActivity activity<span style="color:#f92672">,</span>
-    <span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
-    <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    navController<span style="color:#f92672">.</span><span style="color:#a6e22e">addOnDestinationChangedListener</span><span style="color:#f92672">(</span>
-        <span style="color:#66d9ef">new</span> ActionBarOnDestinationChangedListener<span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> configuration<span style="color:#f92672">));</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><code>addOnDestinationChangedListener</code>から、<code>ActionBarOnDestinationChangedListener</code>を設定しています。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>fun AppCompatActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>    navController<span style="color:#f92672">:</span> NavController<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>    configuration<span style="color:#f92672">:</span> AppBarConfiguration <span style="color:#f92672">=</span> AppBarConfiguration<span style="color:#f92672">(</span>navController<span style="color:#f92672">.</span><span style="color:#a6e22e">graph</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    NavigationUI<span style="color:#f92672">.</span><span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> navController<span style="color:#f92672">,</span> configuration<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setupActionBarWithNavController</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> AppCompatActivity activity<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NonNull</span> NavController navController<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    navController<span style="color:#f92672">.</span><span style="color:#a6e22e">addOnDestinationChangedListener</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> ActionBarOnDestinationChangedListener<span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> configuration<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><code>addOnDestinationChangedListener</code>から、<code>ActionBarOnDestinationChangedListener</code>を設定しています。
 <code>addOnDestinationChangedListener</code>は、destinationが変わった時に発火するコールバックなので、ページが切り替わったタイミングなどで<code>ActionBarOnDestinationChangedListener</code>が発火することが分かります。</p>
 <hr>
 <p>次に、<code>ActionBarOnDestinationChangedListener</code>の中身は、以下のようになっています。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActionBarOnDestinationChangedListener</span> <span style="color:#66d9ef">extends</span>
-        AbstractAppBarOnDestinationChangedListener <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AppCompatActivity mActivity<span style="color:#f92672">;</span>
-
-    ActionBarOnDestinationChangedListener<span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> AppCompatActivity activity<span style="color:#f92672">,</span>
-            <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerToggleDelegate</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getActionBarThemedContext</span><span style="color:#f92672">(),</span> configuration<span style="color:#f92672">);</span>
-        mActivity <span style="color:#f92672">=</span> activity<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>CharSequence title<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ActionBar actionBar <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getSupportActionBar</span><span style="color:#f92672">();</span>
-        actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNavigationIcon</span><span style="color:#f92672">(</span>Drawable icon<span style="color:#f92672">,</span>
-            <span style="color:#a6e22e">@StringRes</span> <span style="color:#66d9ef">int</span> contentDescription<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ActionBar actionBar <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getSupportActionBar</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>icon <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setDisplayHomeAsUpEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setDisplayHomeAsUpEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
-            ActionBarDrawerToggle<span style="color:#f92672">.</span><span style="color:#a6e22e">Delegate</span> delegate <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerToggleDelegate</span><span style="color:#f92672">();</span>
-            delegate<span style="color:#f92672">.</span><span style="color:#a6e22e">setActionBarUpIndicator</span><span style="color:#f92672">(</span>icon<span style="color:#f92672">,</span> contentDescription<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>AbstractAppBarOnDestinationChangedListenerクラスを継承しており、setTitle、setNavigationメソッドがそれぞれ実装されています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActionBarOnDestinationChangedListener</span> <span style="color:#66d9ef">extends</span>
+</span></span><span style="display:flex;"><span>        AbstractAppBarOnDestinationChangedListener <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> AppCompatActivity mActivity<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ActionBarOnDestinationChangedListener<span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> AppCompatActivity activity<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@NonNull</span> AppBarConfiguration configuration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerToggleDelegate</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getActionBarThemedContext</span><span style="color:#f92672">(),</span> configuration<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        mActivity <span style="color:#f92672">=</span> activity<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>CharSequence title<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ActionBar actionBar <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getSupportActionBar</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNavigationIcon</span><span style="color:#f92672">(</span>Drawable icon<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@StringRes</span> <span style="color:#66d9ef">int</span> contentDescription<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ActionBar actionBar <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getSupportActionBar</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>icon <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setDisplayHomeAsUpEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            actionBar<span style="color:#f92672">.</span><span style="color:#a6e22e">setDisplayHomeAsUpEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            ActionBarDrawerToggle<span style="color:#f92672">.</span><span style="color:#a6e22e">Delegate</span> delegate <span style="color:#f92672">=</span> mActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getDrawerToggleDelegate</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            delegate<span style="color:#f92672">.</span><span style="color:#a6e22e">setActionBarUpIndicator</span><span style="color:#f92672">(</span>icon<span style="color:#f92672">,</span> contentDescription<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>AbstractAppBarOnDestinationChangedListenerクラスを継承しており、setTitle、setNavigationメソッドがそれぞれ実装されています。</p>
 <p>まず、setTitleメソッドで、actionBarにタイトルをセットしています。</p>
 <p>次に、setNavigationIconメソッドでは、引数のiconがnullなら、<code>setDisplayHomeAsUpEnabled</code>がfalseになり、
 iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、upボタンが表示されます。</p>
 <hr>
 <p>次に、基底クラスの<code>AbstractAppBarOnDestinationChangedListener</code>を見ていきます。</p>
 <p><code>AbstractAppBarOnDestinationChangedListener</code>は長いので、重要な部分だけを抜粋します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAppBarOnDestinationChangedListener</span>
-        <span style="color:#66d9ef">implements</span> NavController<span style="color:#f92672">.</span><span style="color:#a6e22e">OnDestinationChangedListener</span> <span style="color:#f92672">{</span>
- 　　<span style="color:#f92672">...</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onDestinationChanged</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController controller<span style="color:#f92672">,</span>
-            <span style="color:#a6e22e">@NonNull</span> NavDestination destination<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Bundle arguments<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">...</span>
-        CharSequence label <span style="color:#f92672">=</span> destination<span style="color:#f92672">.</span><span style="color:#a6e22e">getLabel</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>TextUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>label<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            <span style="color:#75715e">// Fill in the data pattern with the args to build a valid URI
-</span><span style="color:#75715e"></span>            StringBuffer title <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">();</span>
-            Pattern fillInPattern <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\{(.+?)\\}&#34;</span><span style="color:#f92672">);</span>
-            Matcher matcher <span style="color:#f92672">=</span> fillInPattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>label<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                String argName <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>arguments <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>argName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                    matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">appendReplacement</span><span style="color:#f92672">(</span>title<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
-                    <span style="color:#75715e">//noinspection ConstantConditions
-</span><span style="color:#75715e"></span>                    title<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>argName<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Could not find &#34;</span> <span style="color:#f92672">+</span> argName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; in &#34;</span>
-                            <span style="color:#f92672">+</span> arguments <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; to fill label &#34;</span> <span style="color:#f92672">+</span> label<span style="color:#f92672">);</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span>
-            matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">appendTail</span><span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
-            setTitle<span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">boolean</span> isTopLevelDestination <span style="color:#f92672">=</span> NavigationUI<span style="color:#f92672">.</span><span style="color:#a6e22e">matchDestinations</span><span style="color:#f92672">(</span>destination<span style="color:#f92672">,</span>
-                mTopLevelDestinations<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            setNavigationIcon<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            setActionBarUpIndicator<span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setActionBarUpIndicator</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> showAsDrawerIndicator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">boolean</span> animate <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mArrowDrawable <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            mArrowDrawable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DrawerArrowDrawable<span style="color:#f92672">(</span>mContext<span style="color:#f92672">);</span>
-            <span style="color:#75715e">// We&#39;re setting the initial state, so skip the animation
-</span><span style="color:#75715e"></span>            animate <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        setNavigationIcon<span style="color:#f92672">(</span>mArrowDrawable<span style="color:#f92672">,</span> showAsDrawerIndicator
-                <span style="color:#f92672">?</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_open_drawer_description</span>
-                <span style="color:#f92672">:</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_navigate_up_description</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">float</span> endValue <span style="color:#f92672">=</span> showAsDrawerIndicator <span style="color:#f92672">?</span> 0f <span style="color:#f92672">:</span> 1f<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>animate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">float</span> startValue <span style="color:#f92672">=</span> mArrowDrawable<span style="color:#f92672">.</span><span style="color:#a6e22e">getProgress</span><span style="color:#f92672">();</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mAnimator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                mAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-            mAnimator <span style="color:#f92672">=</span> ObjectAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">ofFloat</span><span style="color:#f92672">(</span>mArrowDrawable<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;progress&#34;</span><span style="color:#f92672">,</span>
-                    startValue<span style="color:#f92672">,</span> endValue<span style="color:#f92672">);</span>
-            mAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            mArrowDrawable<span style="color:#f92672">.</span><span style="color:#a6e22e">setProgress</span><span style="color:#f92672">(</span>endValue<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAppBarOnDestinationChangedListener</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">implements</span> NavController<span style="color:#f92672">.</span><span style="color:#a6e22e">OnDestinationChangedListener</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span> 　　<span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onDestinationChanged</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController controller<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@NonNull</span> NavDestination destination<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Bundle arguments<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>        CharSequence label <span style="color:#f92672">=</span> destination<span style="color:#f92672">.</span><span style="color:#a6e22e">getLabel</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>TextUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>label<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Fill in the data pattern with the args to build a valid URI
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            StringBuffer title <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuffer<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            Pattern fillInPattern <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\{(.+?)\\}&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            Matcher matcher <span style="color:#f92672">=</span> fillInPattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>label<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                String argName <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>arguments <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>argName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">appendReplacement</span><span style="color:#f92672">(</span>title<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//noinspection ConstantConditions
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    title<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>argName<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Could not find &#34;</span> <span style="color:#f92672">+</span> argName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; in &#34;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">+</span> arguments <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; to fill label &#34;</span> <span style="color:#f92672">+</span> label<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">appendTail</span><span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            setTitle<span style="color:#f92672">(</span>title<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> isTopLevelDestination <span style="color:#f92672">=</span> NavigationUI<span style="color:#f92672">.</span><span style="color:#a6e22e">matchDestinations</span><span style="color:#f92672">(</span>destination<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>                mTopLevelDestinations<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            setNavigationIcon<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            setActionBarUpIndicator<span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setActionBarUpIndicator</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> showAsDrawerIndicator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> animate <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mArrowDrawable <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            mArrowDrawable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DrawerArrowDrawable<span style="color:#f92672">(</span>mContext<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// We&#39;re setting the initial state, so skip the animation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            animate <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        setNavigationIcon<span style="color:#f92672">(</span>mArrowDrawable<span style="color:#f92672">,</span> showAsDrawerIndicator
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">?</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_open_drawer_description</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">:</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_navigate_up_description</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> endValue <span style="color:#f92672">=</span> showAsDrawerIndicator <span style="color:#f92672">?</span> 0f <span style="color:#f92672">:</span> 1f<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>animate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> startValue <span style="color:#f92672">=</span> mArrowDrawable<span style="color:#f92672">.</span><span style="color:#a6e22e">getProgress</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mAnimator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                mAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            mAnimator <span style="color:#f92672">=</span> ObjectAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">ofFloat</span><span style="color:#f92672">(</span>mArrowDrawable<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;progress&#34;</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>                    startValue<span style="color:#f92672">,</span> endValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            mAnimator<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            mArrowDrawable<span style="color:#f92672">.</span><span style="color:#a6e22e">setProgress</span><span style="color:#f92672">(</span>endValue<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ol>
 <li>destinationが変わったら、onDestinationChangedメソッドからコールバックされる</li>
 <li>設定したlabelから、Actionbarのタイトルを変更する
 <ul>
@@ -282,13 +282,13 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 <h2 id="以上を踏まえてtoolbarの挙動を変えるには">以上を踏まえて、Toolbarの挙動を変えるには</h2>
 <p>独自に、<code>NavController.OnDestinationChangedListener</code>を実装すれば良いことが分かります。</p>
 <p>例えば、タイトルの一番最後に動的に文字を追加したい場合は、次のようにします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">var</span> suffix = <span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#75715e">// この値は動的に変わるものとする
-</span><span style="color:#75715e"></span>
-navController.addOnDestinationChangedListener { _, _, _ <span style="color:#f92672">-&gt;</span>
-    <span style="color:#75715e">// ここで文字を追加してあげる
-</span><span style="color:#75715e"></span>    supportActionBar<span style="color:#f92672">?.</span>title = <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${supportActionBar?.title}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">$suffix</span><span style="color:#e6db74">&#34;</span>
-}
-</code></pre></div><h2 id="まとめ-2行で">まとめ: 2行で</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> suffix = <span style="color:#e6db74">&#34;suffix&#34;</span> <span style="color:#75715e">// この値は動的に変わるものとする
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>navController.addOnDestinationChangedListener { _, _, _ <span style="color:#f92672">-&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ここで文字を追加してあげる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    supportActionBar<span style="color:#f92672">?.</span>title = <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${supportActionBar?.title}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">$suffix</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="まとめ-2行で">まとめ: 2行で</h2>
 <ul>
 <li>OnDestinationChangedListenerから、Toolbar(ActionBar)をいじっている</li>
 <li>OnDestinationChangedListenerをカスタマイズすれば、挙動をいじれる</li>

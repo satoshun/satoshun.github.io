@@ -90,10 +90,10 @@
     <p>Kotlinではtypealiasと呼ばれる、既存のタイプに対して別名をつける機能があります。
 <a href="https://kotlinlang.org/docs/reference/type-aliases.html">https://kotlinlang.org/docs/reference/type-aliases.html</a></p>
 <p>典型的な使い方として、下のような複雑な型に名前をつけると可読性が高くなります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">typealias</span> MyHandler = (Int, String, Any) <span style="color:#f92672">-&gt;</span> Unit
-</code></pre></div><p>さらにtypealiasは、アノテーションをつけることも出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">typealias</span> NonWildcardList&lt;T&gt; = List&lt;<span style="color:#a6e22e">@JvmSuppressWildcards</span> T&gt;
-</code></pre></div><p><code>JvmSuppressWildcards</code>はDagger(<a href="https://github.com/google/dagger/issues/668">参考リンク</a>)やretrofit(<a href="https://github.com/square/retrofit/issues/1805">参考リンク</a>)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">typealias</span> MyHandler = (Int, String, Any) <span style="color:#f92672">-&gt;</span> Unit
+</span></span></code></pre></div><p>さらにtypealiasは、アノテーションをつけることも出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">typealias</span> NonWildcardList&lt;T&gt; = List&lt;<span style="color:#a6e22e">@JvmSuppressWildcards</span> T&gt;
+</span></span></code></pre></div><p><code>JvmSuppressWildcards</code>はDagger(<a href="https://github.com/google/dagger/issues/668">参考リンク</a>)やretrofit(<a href="https://github.com/square/retrofit/issues/1805">参考リンク</a>)を使っていると、使わざるをえないケースがあるので、typealiasで定義していおけば可読性高く、楽することが出来ます。</p>
 
     <div class="mt30"></div>
     

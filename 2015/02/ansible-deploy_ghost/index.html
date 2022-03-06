@@ -105,7 +105,7 @@ GitHubでソー …">
 <p>Playbookは以下になります.</p>
 <pre tabindex="0"><code>---
 - hosts: all
-  user: &quot;{{ user }}&quot;
+  user: &#34;{{ user }}&#34;
   tasks:
     - include: update_source.yml
     - include: update_package.yml
@@ -122,10 +122,10 @@ GitHubでソー …">
 </code></pre><h3 id="gruntの実行">gruntの実行</h3>
 <p>commandモジュールを使います.</p>
 <pre tabindex="0"><code>- name: Run grunt init
-  command: &quot;grunt init chdir=&lt;path to project&gt;&quot;
+  command: &#34;grunt init chdir=&lt;path to project&gt;&#34;
 
 - name: Run grunt prod
-  command: &quot;grunt prod chdir=&lt;path to project&gt;&quot;
+  command: &#34;grunt prod chdir=&lt;path to project&gt;&#34;
 </code></pre><h3 id="ghost再起動">Ghost再起動</h3>
 <p>supervisorで管理しているので, supervisorctlモジュールを使い再起動を行います.</p>
 <pre tabindex="0"><code>- name: Restart Ghost

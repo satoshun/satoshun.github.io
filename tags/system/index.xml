@@ -20,7 +20,7 @@ GitHubでソース管理 CSS, HTMLを少し弄りたいので, Ghostをforkし, 
 このリポジトリを, デプロイしていきます.
 デプロイ時の手順 サーバで以下のタスクを行います.
  Gitリポジトリを最新の状態にする(git pull origin master) npm moduleの更新(npm install) gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod) ghostプロセスの再起動(supervisorctl restart ghost)  Playbookは以下になります.
---- - hosts: all user: &amp;quot;{{ user }}&amp;quot; tasks: - include: update_source.yml - include: update_package.yml - include: restart.yml 各タスクについて説明していきます.
+--- - hosts: all user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_source.yml - include: update_package.yml - include: restart.yml 各タスクについて説明していきます.
 Git pullする Gitモジュールがあるので, それを使います.
 - name: Update Git repository git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt; npm moduleの更新 npmモジュールがあるので, それを使います.</description>
     </item>

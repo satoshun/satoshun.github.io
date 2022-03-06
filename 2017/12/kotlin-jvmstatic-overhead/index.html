@@ -89,56 +89,56 @@ class Fuga {
     <span class="post-date">Created at Sun, Dec 17, 2017</span>
     
     <p>下に説明のための簡単なKotlinのコードを載せます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fuga</span> {
-  <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fuga1</span>() {
-      println(<span style="color:#e6db74">&#34;fuga1&#34;</span>)
-    }
-
-    <span style="color:#a6e22e">@JvmStatic</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fuga2</span>() {
-      println(<span style="color:#e6db74">&#34;fuga2&#34;</span>)
-    }
-  }
-}
-</code></pre></div><p>これをJavaに変換すると、</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fuga</span> <span style="color:#f92672">{</span>
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Fuga<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span> Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Fuga<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span><span style="color:#f92672">((</span>DefaultConstructorMarker<span style="color:#f92672">)</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-
-   <span style="color:#a6e22e">@JvmStatic</span>
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-      Companion<span style="color:#f92672">.</span><span style="color:#a6e22e">fuga2</span><span style="color:#f92672">();</span>
-   <span style="color:#f92672">}</span>
-
-   <span style="color:#a6e22e">@Metadata</span><span style="color:#f92672">(</span>
-      mv <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 9<span style="color:#f92672">},</span>
-      bv <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 2<span style="color:#f92672">},</span>
-      k <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span>
-      d1 <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004J\b\u0010\u0005\u001a\u00020\u0004H\u0007¨\u0006\u0006&#34;</span><span style="color:#f92672">},</span>
-      d2 <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;Lcom/github/satoshun/reactivex/cache/Fuga$Companion;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;()V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;fuga1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;fuga2&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;production sources for module rx-kotlin-cache_main&#34;</span><span style="color:#f92672">}</span>
-   <span style="color:#f92672">)</span>
-   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
-      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-         String var1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fuga1&#34;</span><span style="color:#f92672">;</span>
-         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
-      <span style="color:#f92672">}</span>
-
-      <span style="color:#a6e22e">@JvmStatic</span>
-      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-         String var1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fuga2&#34;</span><span style="color:#f92672">;</span>
-         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
-      <span style="color:#f92672">}</span>
-
-      <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-      <span style="color:#f92672">}</span>
-
-      <span style="color:#75715e">// $FF: synthetic method
-</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">(</span>DefaultConstructorMarker $constructor_marker<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-         <span style="color:#66d9ef">this</span><span style="color:#f92672">();</span>
-      <span style="color:#f92672">}</span>
-   <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>メソッドfuga2が2つあることが分かります。1つは実際のfuga2へのProxyになっており、JvmStaticをつけると1つ冗長なメソッドが作成されることが分かります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fuga</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fuga1</span>() {
+</span></span><span style="display:flex;"><span>      println(<span style="color:#e6db74">&#34;fuga1&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@JvmStatic</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fuga2</span>() {
+</span></span><span style="display:flex;"><span>      println(<span style="color:#e6db74">&#34;fuga2&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これをJavaに変換すると、</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fuga</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Fuga<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span> Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Fuga<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span><span style="color:#f92672">((</span>DefaultConstructorMarker<span style="color:#f92672">)</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">@JvmStatic</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      Companion<span style="color:#f92672">.</span><span style="color:#a6e22e">fuga2</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">@Metadata</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>      mv <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 9<span style="color:#f92672">},</span>
+</span></span><span style="display:flex;"><span>      bv <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>1<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 2<span style="color:#f92672">},</span>
+</span></span><span style="display:flex;"><span>      k <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>      d1 <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004J\b\u0010\u0005\u001a\u00020\u0004H\u0007¨\u0006\u0006&#34;</span><span style="color:#f92672">},</span>
+</span></span><span style="display:flex;"><span>      d2 <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;Lcom/github/satoshun/reactivex/cache/Fuga$Companion;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;()V&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;fuga1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;fuga2&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;production sources for module rx-kotlin-cache_main&#34;</span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         String var1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fuga1&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@JvmStatic</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fuga2</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         String var1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;fuga2&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// $FF: synthetic method
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">(</span>DefaultConstructorMarker $constructor_marker<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">this</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>メソッドfuga2が2つあることが分かります。1つは実際のfuga2へのProxyになっており、JvmStaticをつけると1つ冗長なメソッドが作成されることが分かります。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>JvmStaticをつけると冗長なメソッドが作られることがある</li>

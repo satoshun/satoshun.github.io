@@ -30,11 +30,10 @@ $ ser 10000 Serving HTTP on 0.0.0.0 port 10000 ... これで, いつでも簡単
       <guid>https://satoshun.github.io/2015/04/python-beautiful/</guid>
       <description>Pythonライクな書き方について紹介します. Part1です.
 for文関連 indexを使いたいとき Bad: range, lenを使う
-names = [&amp;#39;TDN&amp;#39;, &amp;#39;suzuki&amp;#39;, &amp;#39;tom&amp;#39;] for i in range(len(names)): print i, names[i] Good: enumerateを使う
-for i, name in enumerate(names): print i, name 2つのコレクションを扱うとき Bad: indexを使ってアクセスする
-names = [&amp;#39;TDN&amp;#39;, &amp;#39;suzuki&amp;#39;, &amp;#39;tom&amp;#39;] ages = [12, 19, 11] for i in range(min(len(names), len(ages))): print names[i], ages[i] Good: 組み込み関数zipを使う
-for name, age in zip(names, ages): print name, age dictionaryでkey, valueを使う Bad: keyでアクセス, valueを取得する
-persons = {&amp;#39;TDN&amp;#39;: 12, &amp;#39;tanaka&amp;#39;: 24, &amp;#39;nakata&amp;#39;: 11} for k in persons: print k, persons[k] Good: itemsメソッドを使う</description>
+names = [&amp;#39;TDN&amp;#39;, &amp;#39;suzuki&amp;#39;, &amp;#39;tom&amp;#39;] for i in range(len(names)):  print i, names[i] Good: enumerateを使う
+for i, name in enumerate(names):  print i, name 2つのコレクションを扱うとき Bad: indexを使ってアクセスする
+names = [&amp;#39;TDN&amp;#39;, &amp;#39;suzuki&amp;#39;, &amp;#39;tom&amp;#39;] ages = [12, 19, 11]  for i in range(min(len(names), len(ages))):  print names[i], ages[i] Good: 組み込み関数zipを使う
+for name, age in zip(names, ages):  print name, age dictionaryでkey, valueを使う Bad: keyでアクセス, valueを取得する</description>
     </item>
     
     <item>
@@ -48,7 +47,7 @@ persons = {&amp;#39;TDN&amp;#39;: 12, &amp;#39;tanaka&amp;#39;: 24, &amp;#39;nak
 $ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... 僕は, 上記コマンドをaliasに登録しています.
 alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
 ちなみに, Portを指定することも出来ます.
-$ ser Serving HTTP on 0.0.0.0 port 8000 ... $ ser 8001 Serving HTTP on 0.0.0.0 port 8001 ... 簡単にローカルサーバを立てることが出来るようになりました.</description>
+$ ser Serving HTTP on 0.0.0.0 port 8000 ...  $ ser 8001 Serving HTTP on 0.0.0.0 port 8001 ... 簡単にローカルサーバを立てることが出来るようになりました.</description>
     </item>
     
     <item>
@@ -61,8 +60,7 @@ $ ser Serving HTTP on 0.0.0.0 port 8000 ... $ ser 8001 Serving HTTP on 0.0.0.0 p
 このパターンのメリットは, if (obj == null) のような面倒臭い記述を除去出来るところです. また, ポリモーフィズムにより, nullの時の処理をObjectに委譲することが出来ます. (nullの時の処理を, Objectに持たせることが出来るパターン)
 例 例があった方が分かり易いので, 簡単なサンプルプログラムです.
 まずは, Null Objectを使わない場合になります.
-class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&amp;#39;id:{}&amp;#39;.format(self.id)) student = Student.get_student(1) if student is not None: student.show() else: print(&amp;#39;not student&amp;#39;) 次にNull objectパターンを使い, if student is not None: を除去します.
-class Student(object): def __init__(self, id): self.id = id @staticmethod def get_student(id): if id &amp;lt;= 10: return Student(id) return NullStudent(id) def show(self): print(&amp;#39;id:{}&amp;#39;.</description>
+class Student(object):  def __init__(self, id):  self.id = id   @staticmethod  def get_student(id):  if id &amp;lt;= 10:  return Student(id)  return NullStudent(id)   def show(self):  print(&amp;#39;id:{}&amp;#39;.format(self.id))   student = Student.get_student(1) if student is not None:  student.show() else:  print(&amp;#39;not student&amp;#39;) 次にNull objectパターンを使い, if student is not None: を除去します.</description>
     </item>
     
     <item>
@@ -74,7 +72,7 @@ class Student(object): def __init__(self, id): self.id = id @staticmethod def ge
       <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
-package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
+package main  import &amp;#34;fmt&amp;#34;  type fibonacci int  func (self fibonacci) value() chan int {  ch := make(chan int, 1)  a, b := 0, 1  index := 0  go func() {  defer close(ch)  for {  if int(self) &amp;lt; index {  break  }  a, b = b, a+b  index++  ch &amp;lt;- a  }  }()   return ch }  func main() {  var i fibonacci  i = 10  for v := range i.</description>
     </item>
     
   </channel>

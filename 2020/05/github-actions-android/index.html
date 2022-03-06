@@ -100,20 +100,20 @@ org.gradle. …">
 <li>7Gメモリの2 CPU</li>
 </ul>
 <h2 id="こんな感じが良さそう">こんな感じが良さそう</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
-
-kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">compiler</span><span style="color:#f92672">.</span><span style="color:#a6e22e">execution</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategy</span><span style="color:#f92672">=</span><span style="color:#66d9ef">in</span><span style="color:#f92672">-</span>process
-
-kapt<span style="color:#f92672">.</span><span style="color:#a6e22e">use</span><span style="color:#f92672">.</span><span style="color:#a6e22e">worker</span><span style="color:#f92672">.</span><span style="color:#a6e22e">api</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-kapt<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">.</span><span style="color:#a6e22e">apt</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-
-android<span style="color:#f92672">.</span><span style="color:#a6e22e">databinding</span><span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-android<span style="color:#f92672">.</span><span style="color:#a6e22e">lifecycleProcessor</span><span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">compiler</span><span style="color:#f92672">.</span><span style="color:#a6e22e">execution</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategy</span><span style="color:#f92672">=</span><span style="color:#66d9ef">in</span><span style="color:#f92672">-</span>process
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kapt<span style="color:#f92672">.</span><span style="color:#a6e22e">use</span><span style="color:#f92672">.</span><span style="color:#a6e22e">worker</span><span style="color:#f92672">.</span><span style="color:#a6e22e">api</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>kapt<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">.</span><span style="color:#a6e22e">apt</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">databinding</span><span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">lifecycleProcessor</span><span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span></code></pre></div><ul>
 <li>CatchUpアプリを参考にして、上の設定をCI実行時に <code>~/gradle/gradle.properites</code> に配置するようにした
 <ul>
 <li>プロジェクト直下の <code>gradle.properties</code> より優先度が高いのでそうした</li>
@@ -156,18 +156,18 @@ android<span style="color:#f92672">.</span><span style="color:#a6e22e">lifecycle
 <h2 id="参考プロジェクト">参考プロジェクト</h2>
 <h3 id="insetterライブラリ">insetterライブラリ</h3>
 <p><a href="https://github.com/chrisbanes/insetter/tree/master/.github">https://github.com/chrisbanes/insetter/tree/master/.github</a></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">JAVA_TOOL_OPTIONS</span>: -<span style="color:#ae81ff">Xmx5120m</span>
-<span style="color:#f92672">GRADLE_OPTS</span>: -<span style="color:#ae81ff">Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process</span>
-</code></pre></div><h3 id="catchupアプリ">Catchupアプリ</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">JAVA_TOOL_OPTIONS</span>: -<span style="color:#ae81ff">Xmx5120m</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">GRADLE_OPTS</span>: -<span style="color:#ae81ff">Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process</span>
+</span></span></code></pre></div><h3 id="catchupアプリ">Catchupアプリ</h3>
 <p><a href="https://github.com/ZacSweers/CatchUp/tree/master/.github">https://github.com/ZacSweers/CatchUp/tree/master/.github</a></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
-org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
-
-kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
-kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">compiler</span><span style="color:#f92672">.</span><span style="color:#a6e22e">execution</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategy</span><span style="color:#f92672">=</span><span style="color:#66d9ef">in</span><span style="color:#f92672">-</span>process
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">daemon</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">parallel</span><span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jvmargs</span><span style="color:#f92672">=-</span>Xmx5120m
+</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">gradle</span><span style="color:#f92672">.</span><span style="color:#a6e22e">workers</span><span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">incremental</span><span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>kotlin<span style="color:#f92672">.</span><span style="color:#a6e22e">compiler</span><span style="color:#f92672">.</span><span style="color:#a6e22e">execution</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategy</span><span style="color:#f92672">=</span><span style="color:#66d9ef">in</span><span style="color:#f92672">-</span>process
+</span></span></code></pre></div>
     <div class="mt30"></div>
     
       <ul class="article-post-tags">

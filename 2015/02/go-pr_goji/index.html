@@ -116,8 +116,8 @@ switch文の冒頭にある, type assertionの結果を使うようにしまし�
 -               return parseStringPattern(p.(string))
 +               return parseStringPattern(v)
         default:
-                log.Fatalf(&quot;Unknown pattern type %v. Expected a web.Pattern, &quot;+
-                        &quot;regexp.Regexp, or a string.&quot;, p)
+                log.Fatalf(&#34;Unknown pattern type %v. Expected a web.Pattern, &#34;+
+                        &#34;regexp.Regexp, or a string.&#34;, p)
 </code></pre><p>こちらのほうが, caseの中で個別にtype assertionをする必要がないので, 良いと思います.</p>
 <h2 id="range-syntax">range syntax</h2>
 <p>次は, range syntaxです.

@@ -91,29 +91,29 @@
     <p><a href="https://github.com/square/retrofit/blob/master/CHANGELOG.md#version-250-2018-11-18">Retrofit 2.5.0</a>からカスタムアノテーションが使えるようになったので、それの紹介です。</p>
 <p>例をあげて説明します。特定のリクエストのヘッダーに認証情報を付与したいとします。</p>
 <p>まず最初にアノテーションを定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequireAuth</span>
-</code></pre></div><p>次に、上記で定義したアノテーションを使い、Apiを定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ApiService</span> {
-  <span style="color:#a6e22e">@RequireAuth</span>
-  <span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;login&#34;</span>)
-  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(: retrofit2.Call&lt;Unit&gt;
-}
-</code></pre></div><p>次に、<code>RequireAuth</code>を処理するための<code>okhttp3.Interceptor</code>を定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthInterceptor</span> : Interceptor {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">intercept</span>(chain: Interceptor.Chain): Response {
-    <span style="color:#66d9ef">var</span> request = chain.request()
-
-    <span style="color:#66d9ef">val</span> invocation = request.tag(Invocation<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-    <span style="color:#66d9ef">val</span> authAnnotation = invocation<span style="color:#f92672">?.</span>method()<span style="color:#f92672">?.</span>getAnnotation(RequireAuth<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-    <span style="color:#66d9ef">if</span> (authAnnotation <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-      request = request
-        .newBuilder()
-        .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic AAAAA&#34;</span>).build()
-    }
-    <span style="color:#66d9ef">return</span> chain.proceed(request)
-  }
-}
-</code></pre></div><p>ここでのポイントは、<code>val invocation = request.tag(Invocation::class.java)</code>です。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequireAuth</span>
+</span></span></code></pre></div><p>次に、上記で定義したアノテーションを使い、Apiを定義します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ApiService</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RequireAuth</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;login&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(: retrofit2.Call&lt;Unit&gt;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>次に、<code>RequireAuth</code>を処理するための<code>okhttp3.Interceptor</code>を定義します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthInterceptor</span> : Interceptor {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">intercept</span>(chain: Interceptor.Chain): Response {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> request = chain.request()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> invocation = request.tag(Invocation<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> authAnnotation = invocation<span style="color:#f92672">?.</span>method()<span style="color:#f92672">?.</span>getAnnotation(RequireAuth<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (authAnnotation <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      request = request
+</span></span><span style="display:flex;"><span>        .newBuilder()
+</span></span><span style="display:flex;"><span>        .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic AAAAA&#34;</span>).build()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chain.proceed(request)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>ここでのポイントは、<code>val invocation = request.tag(Invocation::class.java)</code>です。
 Retrofit 2.5.0から<code>Invocation</code>が追加され、<code>Request</code>から<code>Invocation</code>が取得できるようになりました。
 <code>Invocation</code>には、処理している<code>Request</code>の<code>java.lang.reflect.Method</code>が格納されており、
 そこからアノテーションの情報を取得することができます。</p>
@@ -121,29 +121,29 @@ Retrofit 2.5.0から<code>Invocation</code>が追加され、<code>Request</code
 メソッドに<code>RequireAuth</code>アノテーションが付与されているかどうかを知ることが出来ます。
 <code>RequireAuth</code>アノテーションがついていれば、<code>Request</code>のヘッダーに認証情報を追加します。</p>
 <p>最後に、上記の<code>Interceptor</code>をOkHttpクライアントに付与します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> client = OkHttpClient.Builder()
-    .addInterceptor(AuthInterceptor())
-    .build()
-</code></pre></div><p>これでRetrofitでカスタムアノテーションを使うことが出来ます!!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> client = OkHttpClient.Builder()
+</span></span><span style="display:flex;"><span>    .addInterceptor(AuthInterceptor())
+</span></span><span style="display:flex;"><span>    .build()
+</span></span></code></pre></div><p>これでRetrofitでカスタムアノテーションを使うことが出来ます!!</p>
 <h2 id="invocation以前の場合">Invocation以前の場合</h2>
 <p>Invocation以前は、<code>Headers</code>を使い認証情報を付与するテクニックがありました。
 詳しくは<a href="https://speakerdeck.com/jakewharton/making-retrofit-work-for-you-ohio-devfest-2016?slide=39">Making Retrofit Work For You</a>にあります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Headers</span>(<span style="color:#e6db74">&#34;Auth: true&#34;</span>)
-<span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;useheaderlogin&#34;</span>)
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(): retrofit2.Call&lt;Unit&gt;
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Auth2Interceptor</span> : Interceptor {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">intercept</span>(chain: Interceptor.Chain): Response {
-    <span style="color:#66d9ef">var</span> request = chain.request()
-
-    <span style="color:#66d9ef">if</span> (request.header(<span style="color:#e6db74">&#34;Auth&#34;</span>) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-      request = request
-        .newBuilder()
-        .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic BBBBB&#34;</span>).build()
-    }
-    <span style="color:#66d9ef">return</span> chain.proceed(request)
-  }
-}
-</code></pre></div><p>このコードでも動くのですが、カスタムアノテーションを定義するやり方のほうが意味が伝わりやすいと思うので、よりよいと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Headers</span>(<span style="color:#e6db74">&#34;Auth: true&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;useheaderlogin&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">login</span>(): retrofit2.Call&lt;Unit&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Auth2Interceptor</span> : Interceptor {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">intercept</span>(chain: Interceptor.Chain): Response {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> request = chain.request()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (request.header(<span style="color:#e6db74">&#34;Auth&#34;</span>) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      request = request
+</span></span><span style="display:flex;"><span>        .newBuilder()
+</span></span><span style="display:flex;"><span>        .addHeader(<span style="color:#e6db74">&#34;Authorization&#34;</span>, <span style="color:#e6db74">&#34;Basic BBBBB&#34;</span>).build()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chain.proceed(request)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>このコードでも動くのですが、カスタムアノテーションを定義するやり方のほうが意味が伝わりやすいと思うので、よりよいと思います。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>Retrofit 2.5.0でInvocationが追加されてカスタムアノテーションが使えるようになりました

@@ -93,46 +93,46 @@ Kotlin側で、internalと …">
 <h2 id="つけない場合">つけない場合</h2>
 <p>ktorのHttpClientを例にして説明します。</p>
 <p>コンストラクタにアクセス修飾子をつけない、次のようなクラスがあるとします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> io.ktor.client.HttpClient
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test1</span>(
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> httpClient: HttpClient
-)
-</code></pre></div><p>これは、次のようなヘッダーファイルを生成します。(一部省略)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
-
-public class Test1 : KotlinBase {
-    public init(httpClient: Ktor_client_coreHttpClient)
-}
-
-
-public protocol Ktor_ioCloseable {
-
-
-    func close()
-}
-
-public class Ktor_client_coreHttpClient : KotlinBase, Kotlinx_coroutines_coreCoroutineScope, Ktor_ioCloseable {
-    ...
-}
-
-...
-</code></pre></div><p>HttpClientに関連したクラスをobjcヘッダーに公開しています。
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> io.ktor.client.HttpClient
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test1</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> httpClient: HttpClient
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>これは、次のようなヘッダーファイルを生成します。(一部省略)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>public class Test1 : KotlinBase {
+</span></span><span style="display:flex;"><span>    public init(httpClient: Ktor_client_coreHttpClient)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>public protocol Ktor_ioCloseable {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    func close()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>public class Ktor_client_coreHttpClient : KotlinBase, Kotlinx_coroutines_coreCoroutineScope, Ktor_ioCloseable {
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>HttpClientに関連したクラスをobjcヘッダーに公開しています。
 ktorは大きいライブラリなので、objcヘッダーがとても大きくなります。</p>
 <p>最終的に、2143行のobjcヘッダーになっていました。</p>
 <h2 id="つける場合">つける場合</h2>
 <p>次に、アクセス修飾子をつけてみます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> io.ktor.client.HttpClient
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test2</span> <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">constructor</span>(
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> httpClient: HttpClient
-)
-</code></pre></div><p>これは次のようなヘッダーファイルを生成します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
-
-public class Test2 : KotlinBase {
-}
-</code></pre></div><p>internalをつけたので、HttpClientに関連したクラスをobjcヘッダーに公開せずに済みます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> io.ktor.client.HttpClient
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test2</span> <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> httpClient: HttpClient
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>これは次のようなヘッダーファイルを生成します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>public class Test2 : KotlinBase {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>internalをつけたので、HttpClientに関連したクラスをobjcヘッダーに公開せずに済みます。</p>
 <p>最終的に、112行のobjcヘッダーになっていました。つけない場合に比べると差は歴然です。</p>
 <h2 id="まとめ">まとめ</h2>
 <p>internalとか、privateとかをつけて、Swift側から見れないようにすると、objcヘッダーファイルが小さくなって少し幸せになります。</p>

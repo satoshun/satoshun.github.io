@@ -98,20 +98,20 @@
 <p>ライブラリ側の設定はこれで完了です。</p>
 <h2 id="使う側の設定">使う側の設定</h2>
 <p>AGP3.3.0にアップデートするだけで使えます。META-INF/ProGuardはRetrofitの2.5.0から入っているので、まずはMETA-INFが入っていない、2.4.0でビルドをしてみます。</p>
-<pre tabindex="0"><code>implementation &quot;com.squareup.retrofit2:retrofit:2.4.0&quot;
+<pre tabindex="0"><code>implementation &#34;com.squareup.retrofit2:retrofit:2.4.0&#34;
 
 &gt; ./gradlew installRelease
 ...
 Warning: there were 267 unresolved references to classes or interfaces.
          You may need to add missing library jars or update their versions.
          If your code works fine without the missing classes, you can suppress
-         the warnings with '-dontwarn' options.
+         the warnings with &#39;-dontwarn&#39; options.
          (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedclass)
 Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.
 Thread(Tasks limiter_2): destruction
 </code></pre><p>失敗しました😂</p>
 <p>次にMETA-INFが入った2.5.0でビルドをします。</p>
-<pre tabindex="0"><code>implementation &quot;com.squareup.retrofit2:retrofit:2.5.0&quot;
+<pre tabindex="0"><code>implementation &#34;com.squareup.retrofit2:retrofit:2.5.0&#34;
 
 &gt; ./gradlew installRelease
 ...

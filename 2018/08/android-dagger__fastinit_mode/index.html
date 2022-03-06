@@ -93,23 +93,23 @@
 <p>確認に使用した端末はAndroid8系のGalaxyと、Android7系のXperiaの計2台になります。</p>
 <h2 id="確認に使用したシェルスクリプト">確認に使用したシェルスクリプト</h2>
 <p>adb shellコマンドから起動時間を調べるコマンドです。計11回startup timeを確認する事ができます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>
-<span style="color:#66d9ef">do</span>
-    adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &gt;&gt; hoge.txt
-    sleep <span style="color:#ae81ff">10</span>
-<span style="color:#66d9ef">done</span>
-</code></pre></div><p>下記を参考にしました。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    adb shell am start -S -W jp.hoge/.ui.main.MainActivity -c android.intent.category.LAUNCHER -a android.intent.action.MAIN &gt;&gt; hoge.txt
+</span></span><span style="display:flex;"><span>    sleep <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>下記を参考にしました。</p>
 <ul>
 <li><a href="https://developer.android.com/topic/performance/vitals/launch-time">https://developer.android.com/topic/performance/vitals/launch-time</a></li>
 </ul>
 <h2 id="fastinit有効の場合">fastInit有効の場合</h2>
 <p>下記をbuild.gradleに追加します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">kapt <span style="color:#f92672">{</span>
-    javacOptions <span style="color:#f92672">{</span>
-        option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-Adagger.fastInit=enabled&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>結果:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>kapt <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    javacOptions <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;-Adagger.fastInit=enabled&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>結果:</p>
 <pre tabindex="0"><code>平均: 1609ms
 </code></pre><h2 id="fastinit無効の場合">fastInit無効の場合</h2>
 <p>結果:</p>

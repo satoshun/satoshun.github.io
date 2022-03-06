@@ -16,7 +16,7 @@
       <guid>https://satoshun.github.io/2019/07/retrofit-coroutine-return-type/</guid>
       <description>psideさんの、Retrofit2でRxJavaを使う時の Result, Response, そのままT の使い分け所感のCoroutineバージョンの記事となります。
 上記の記事に書いてある、Rxとは違い、Result型は用意されていないので、Response型で包むか、生で値ｗ受け取るかのどちらかが基本となります。
-interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; } Retrofitの2.6.0で、挙動の違いを確認しました。
+interface HogeService {  suspend fun getHoge(): Hoge  or  suspend fun getHoge(): Response&amp;lt;Hoge&amp;gt; } Retrofitの2.6.0で、挙動の違いを確認しました。
     生 Response     200 成功 成功   404 例外 成功   ネットワークに繋がっていない 例外 例外   シリアライズが出来ない（型がおかしい） 例外 例外     生の場合、HTTPのstatus Code的に失敗とされるものは例外になる Response型で包めば、HTTPのstatus Code的に失敗だとしても例外が発生しない  っていう感じの挙動になります。
 どっちを使えばいいの? サーバがエラーコードを返してきた時に、特別な振る舞いをしたいエンドポイントってあると思うので、そういうときはResponseで包んであげて、それ以外は生でいいんじゃない？って思ってます（小並感</description>
     </item>
@@ -31,9 +31,8 @@ interface HogeService { suspend fun getHoge(): Hoge or suspend fun getHoge(): Re
 例をあげて説明します。特定のリクエストのヘッダーに認証情報を付与したいとします。
 まず最初にアノテーションを定義します。
 annotation class RequireAuth 次に、上記で定義したアノテーションを使い、Apiを定義します。
-interface ApiService { @RequireAuth @GET(&amp;#34;login&amp;#34;) fun login(: retrofit2.Call&amp;lt;Unit&amp;gt; } 次に、RequireAuthを処理するためのokhttp3.Interceptorを定義します。
-class AuthInterceptor : Interceptor { override fun intercept(chain: Interceptor.Chain): Response { var request = chain.request() val invocation = request.tag(Invocation::class.java) val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java) if (authAnnotation != null) { request = request .newBuilder() .addHeader(&amp;#34;Authorization&amp;#34;, &amp;#34;Basic AAAAA&amp;#34;).build() } return chain.proceed(request) } } ここでのポイントは、val invocation = request.tag(Invocation::class.java)です。 Retrofit 2.5.0からInvocationが追加され、RequestからInvocationが取得できるようになりました。 Invocationには、処理しているRequestのjava.lang.reflect.Methodが格納されており、 そこからアノテーションの情報を取得することができます。
-val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java)で、 メソッドにRequireAuthアノテーションが付与されているかどうかを知ることが出来ます。 RequireAuthアノテーションがついていれば、Requestのヘッダーに認証情報を追加します。</description>
+interface ApiService {  @RequireAuth  @GET(&amp;#34;login&amp;#34;)  fun login(: retrofit2.Call&amp;lt;Unit&amp;gt; } 次に、RequireAuthを処理するためのokhttp3.Interceptorを定義します。
+class AuthInterceptor : Interceptor {  override fun intercept(chain: Interceptor.Chain): Response {  var request = chain.request()   val invocation = request.tag(Invocation::class.java)  val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java)  if (authAnnotation != null) {  request = request  .newBuilder()  .addHeader(&amp;#34;Authorization&amp;#34;, &amp;#34;Basic AAAAA&amp;#34;).build()  }  return chain.proceed(request)  } } ここでのポイントは、val invocation = request.</description>
     </item>
     
     <item>
@@ -52,7 +51,7 @@ DI, Dagger2の基本について知りたい方は, Part1を見て下さい.
 Debug専用のViewを作る u2020では, Debug専用のView DebugAppContainerがあります. Debug専用のView はこんな感じです. Debugビルドの時は, このContainerをinjectしています.
 DebugAppContainerは簡単にいえば, DrawerLayoutを1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.
 Mockモードの定義 u2020ではMockモードがあり, Mockデータを表示機能があります.
-public final class DebugDataModule { .</description>
+public final class DebugDataModule {  .</description>
     </item>
     
   </channel>

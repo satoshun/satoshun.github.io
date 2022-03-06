@@ -94,53 +94,53 @@ Gradleでは、いろいろなバージョンの管理方法があるので、�
 <p>パワー系の管理方法です。
 小規模なプロジェクトや、個人プロジェクトなどは、シングルモジュールな構成であったりと、そもそもバージョンを管理する必要がない場合があります。</p>
 <p>具体的には、build.gradle(.kts)にベタ書きします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
-  <span style="color:#f92672">...</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>バージョン管理をしない、バージョン管理方法です。これだと、マルチモジュール環境などで、辛くなるので進化させる必要があります。</p>
 <h2 id="2-dependenciesgradleに定義する">2. dependencies.gradleに定義する</h2>
 <p>dependencies.gradleファイルを定義し、そこでバージョンを管理する方法です。
 ファイル名はなんでもいいのですが、dependencies.gradleという命名が多いような気がします。</p>
 <p>具体的には、dependencies.gradleに依存を定義し、それをbuild.gradleで読み込んで使います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// dependencies.gradle
-</span><span style="color:#75715e"></span>ext <span style="color:#f92672">{</span>
-  material <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
-  <span style="color:#f92672">...</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
-</span><span style="color:#75715e"></span>apply from: rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">file</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;dependencies.gradle&#39;</span><span style="color:#f92672">)</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// app/build.gradle
-</span><span style="color:#75715e"></span>dependencies <span style="color:#f92672">{</span>
-  implementation rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">ext</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinStdlib</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding/tree/version-one">https://github.com/JakeWharton/RxBinding/tree/version-one</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// dependencies.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ext <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  material <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// build.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>apply from: rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">file</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;dependencies.gradle&#39;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// app/build.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation rootProject<span style="color:#f92672">.</span><span style="color:#a6e22e">ext</span><span style="color:#f92672">.</span><span style="color:#a6e22e">kotlinStdlib</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding/tree/version-one">https://github.com/JakeWharton/RxBinding/tree/version-one</a></p>
 <p>また、わざわざdependencies.gradleにファイルを分けないで、build.gradleに直接書くことも出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// build.gradle
-</span><span style="color:#75715e"></span>buildscript <span style="color:#f92672">{</span>
-  ext<span style="color:#f92672">.</span><span style="color:#a6e22e">versions</span> <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
-    <span style="color:#e6db74">&#34;material&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
-  <span style="color:#f92672">]</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding">https://github.com/JakeWharton/RxBinding</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// build.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>buildscript <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  ext<span style="color:#f92672">.</span><span style="color:#a6e22e">versions</span> <span style="color:#f92672">=</span> <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;material&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>参考コード: <a href="https://github.com/JakeWharton/RxBinding">https://github.com/JakeWharton/RxBinding</a></p>
 <h2 id="3-buildsrcを使う">3. buildSrcを使う</h2>
 <p>buildSrcディレクトリを使い、バージョンの管理をする方法です。
 GradleではbuildSrcは特別なディレクトリになっており、ビルド実行時に自動で中身を読み込みます。</p>
 <p>具体的には、次のようになります。今回は、kotlinでバージョンを管理してみます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// buildSrc/src/main/java/Dep.kt
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">package</span> hoge.dependencies
-
-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Dep</span> {
-  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> Material = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
-  <span style="color:#f92672">..</span>.
-}
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// app/build.gradle
-</span><span style="color:#75715e"></span><span style="color:#f92672">import</span> hoge.dependencies.Dep
-
-dependencies <span style="color:#f92672">{</span>
-  implementation Dep<span style="color:#f92672">.</span><span style="color:#a6e22e">Material</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>参考コード</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// buildSrc/src/main/java/Dep.kt
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">package</span> hoge.dependencies
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Dep</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> Material = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// app/build.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">import</span> hoge.dependencies.Dep
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation Dep<span style="color:#f92672">.</span><span style="color:#a6e22e">Material</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>参考コード</p>
 <ul>
 <li><a href="https://github.com/DroidKaigi/conference-app-2021/">https://github.com/DroidKaigi/conference-app-2021/</a></li>
 <li><a href="https://github.com/androidx/androidx">https://github.com/androidx/androidx</a></li>
@@ -148,18 +148,18 @@ dependencies <span style="color:#f92672">{</span>
 <h2 id="4-version-catalogを使う">4. version catalogを使う</h2>
 <p>Gradleの比較的新しいバージョンで使うことが出来ます。
 <code>gradle/libs.versions.toml</code> でtoml形式でバージョンを管理します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># gradle/libs.versions.toml</span>
-
-[<span style="color:#a6e22e">libraries</span>]
-<span style="color:#a6e22e">material</span> = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
-...
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy"><span style="color:#75715e">// settings.gradle
-</span><span style="color:#75715e"></span><span style="color:#f92672">...</span>
-enableFeaturePreview<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;VERSION_CATALOGS&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">dependencies <span style="color:#f92672">{</span>
-  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">material</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>version catalogでは、バージョン管理をする上で必要であろう機能が色々と提供されており、バージョン管理をいい感じにすることが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e"># gradle/libs.versions.toml</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">libraries</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">material</span> = <span style="color:#e6db74">&#34;com.google.android.material:material:1.4.0&#34;</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#75715e">// settings.gradle
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>enableFeaturePreview<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;VERSION_CATALOGS&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>dependencies <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  implementation libs<span style="color:#f92672">.</span><span style="color:#a6e22e">material</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>version catalogでは、バージョン管理をする上で必要であろう機能が色々と提供されており、バージョン管理をいい感じにすることが出来ます。</p>
 <p>参考コード: <a href="https://github.com/chrisbanes/tivi">https://github.com/chrisbanes/tivi</a></p>
 <h2 id="まとめ">まとめ</h2>
 <p>今回、dependencies.gradle、buildSrc、version catalogを使って管理する方法を紹介しました。

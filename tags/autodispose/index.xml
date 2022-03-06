@@ -16,16 +16,14 @@
       <guid>https://satoshun.github.io/2017/05/rx-autodispose/</guid>
       <description>非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.
 RxJavaでは, Disposableからキャンセルの処理を行います.
-Disposable d; public void onCreate() { d = myObservable .map(a -&amp;gt; b) .subscribe(); } public void onPause() { d.dispose(); } このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.
+Disposable d;  public void onCreate() {  d = myObservable  .map(a -&amp;gt; b)  .subscribe(); }  public void onPause() {  d.dispose(); } このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.
 AutoDisposeを使うことで, コード離れすぎ問題を解決することが出来ます.
-public void onCreate() { myObservable .to(new ObservableScoper&amp;lt;&amp;gt;(this)) .subscribe(); } このような感じで, ストリームの定義の中にAutoDisposeが提供しているScoperを埋め込むことで自動的にdisposeしてくれます.
+public void onCreate() {  myObservable  .to(new ObservableScoper&amp;lt;&amp;gt;(this))  .subscribe(); } このような感じで, ストリームの定義の中にAutoDisposeが提供しているScoperを埋め込むことで自動的にdisposeしてくれます.
 また, Scoperは, カスタムで柔軟に定義することが出来ます. 例えば,
  Activityのライフサイクル Fragmentのライフサイクル RecyclerViewのライフサイクル  など, こちら側で実装することが出来ます(実装の手間は少し掛かります)
 これで, Disposableをマニュアルで呼び出すことから解放されます!
 Error Proneと組み合わせると最強 とはいえ, そもそもScopeをストリームに埋め込むのを忘れる問題があります(だって人間だもの)
-そこで, Googleが出したError Proneを組み合わせることで埋め込むのを忘れる問題を解決出来ます.
-Error ProneはJavaの間違った使い方を教えてくれる Linterのようなものです. これを使うと,
-public void onCreate() { myObservable .</description>
+そこで, Googleが出したError Proneを組み合わせることで埋め込むのを忘れる問題を解決出来ます.</description>
     </item>
     
   </channel>

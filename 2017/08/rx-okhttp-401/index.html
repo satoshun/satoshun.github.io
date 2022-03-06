@@ -103,8 +103,8 @@
 <p>このブログではOkHttpのAuthenticatorを使う方法で401の処理をいい感じにしたいと思います。</p>
 <p>またrefresh tokenは非同期、APIリクエストが必要であるとします。擬似コードはこんな感じです。</p>
 <pre tabindex="0"><code>fun refreshToken(): Observable&lt;String&gt; {
-  return Observable.just(Credentials.basic(&quot;sato&quot;, &quot;passwordhoge&quot;))
-      .doOnNext { println(&quot;GET credential: $it&quot;) } // Log出力
+  return Observable.just(Credentials.basic(&#34;sato&#34;, &#34;passwordhoge&#34;))
+      .doOnNext { println(&#34;GET credential: $it&#34;) } // Log出力
       .delay(2000, TimeUnit.MILLISECONDS)
 }
 </code></pre><p>時間が掛かるんだなあくらいに思って下さい。</p>
@@ -115,23 +115,23 @@
 並列にリクエストが行われるとしたら、マルチスレッドからコールされるのでsynchorizeなどの制御をする必要があり、めっちゃムズい。</p>
 <h2 id="rxjavaを使ってみる">RxJavaを使ってみる</h2>
 <p>上記の縛りをRxJavaのpublish + refCountを使うとめっちゃいい感じに表現できます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> authenticator: Authenticator = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">Authenticator</span> {
-
-  <span style="color:#75715e">// ここがポイント。publishとrefCountを使う。
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> tokenStream = refreshToken().publish().refCount()
-
-  <span style="color:#75715e">// これだと駄目
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// private val tokenStream = refreshToken()
-</span><span style="color:#75715e"></span>
-  <span style="color:#75715e">// ここは並列に呼ばれる
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">authenticate</span>(route: Route, response: Response): Request? {
-    <span style="color:#66d9ef">val</span> credential = tokenStream.blockingFirst()
-    <span style="color:#66d9ef">return</span> response.request().newBuilder()
-        .header(<span style="color:#e6db74">&#34;Authorization&#34;</span>, credential)
-        .build()
-  }
-}
-</code></pre></div><p>これだけです。synchronizeもフラグも出てこないコードになります。それでいて、並列に401リクエスト(authenticateメソッド)が呼ばれてもrefresh tokenリクエストは1つしか呼ばれません。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> authenticator: Authenticator = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">Authenticator</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ここがポイント。publishとrefCountを使う。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> tokenStream = refreshToken().publish().refCount()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// これだと駄目
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// private val tokenStream = refreshToken()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ここは並列に呼ばれる
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">authenticate</span>(route: Route, response: Response): Request? {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> credential = tokenStream.blockingFirst()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response.request().newBuilder()
+</span></span><span style="display:flex;"><span>        .header(<span style="color:#e6db74">&#34;Authorization&#34;</span>, credential)
+</span></span><span style="display:flex;"><span>        .build()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これだけです。synchronizeもフラグも出てこないコードになります。それでいて、並列に401リクエスト(authenticateメソッド)が呼ばれてもrefresh tokenリクエストは1つしか呼ばれません。</p>
 <h2 id="なんでか">なんでか?</h2>
 <p><code>publish</code> はConnectableObservableを作り出すオペレータです。Connectableは複数のObserverで同じデータを受け取るための機能です。<code>publish</code>を使うことで共通のデータが使え、今回の場合でいうと最初の1回だけ refresh tokenリクエストを送り、後続はそのリクエストを投げているObservableを見ることになります。これだけでは不十分で <code>refCount</code>などのConnectableObservable専用のオペレータを組み合わせる必要があります。</p>
 <p><code>refCount</code>は全てのObserverがdisposeされたら初期化され、少なくとも1つのObserverがいるときは後続は再利用するオペレータです。なので今回の場合には、少なくとも1つの401があるときはrefresh tokenを投げてくれるので上手く動作します。</p>

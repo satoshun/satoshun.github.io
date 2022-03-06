@@ -108,55 +108,55 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 <h2 id="featureモジュール側の遷移用インターフェースの定義">featureモジュール側の遷移用インターフェースの定義</h2>
 <p>前述の図の通り、各featureモジュール内で遷移用のインターフェースを定義します。ここでは、featureモジュール内で使用するインターフェースを定義します。</p>
 <p>main画面からsub1画面に移動したいとします。次のようなインターフェース定義になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
-  <span style="color:#75715e">// sub1画面へ移動する
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>()
-}
-</code></pre></div><p>Mainモジュール用のインターフェースなので、<code>MainModuleRouter</code>という名前にし、sub1画面へ遷移するためのメソッドを定義しています。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MainModuleRouter</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// sub1画面へ移動する
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Mainモジュール用のインターフェースなので、<code>MainModuleRouter</code>という名前にし、sub1画面へ遷移するためのメソッドを定義しています。</p>
 <p>そしてこのインターフェースを、MainFragmentで使います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
-  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> moduleRouter: MainModuleRouter
-
-  <span style="color:#f92672">..</span>.
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
-    <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
-
-    view.findViewById&lt;View&gt;(R.id.route).setOnClickListener {
-      moduleRouter.routeToSub1()
-    }
-  }
-}
-</code></pre></div><p>これでfeatureモジュールでの遷移用インターフェースの定義は完了です。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> moduleRouter: MainModuleRouter
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">..</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    view.findViewById&lt;View&gt;(R.id.route).setOnClickListener {
+</span></span><span style="display:flex;"><span>      moduleRouter.routeToSub1()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これでfeatureモジュールでの遷移用インターフェースの定義は完了です。</p>
 <p>次にこのインターフェースの実装をします。</p>
 <h2 id="routerモジュール側の遷移用インターフェースの実装">routerモジュール側の遷移用インターフェースの実装</h2>
 <p>今回は、遷移用インタフェースの実装をrouterモジュールで行います。まずは、Navigation Componentを用いて、Graphを作ります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
-  <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
-  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_graph&#34;</span>
-  <span style="color:#a6e22e">app:startDestination=</span><span style="color:#e6db74">&#34;@id/nav_main_frag&#34;</span><span style="color:#f92672">&gt;</span>
-
-  <span style="color:#f92672">&lt;fragment</span>
-    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_main_frag&#34;</span>
-    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;com.github.satoshun.example.feature.main.MainFragment&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;action</span>
-      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/main_to_sub1&#34;</span>
-      <span style="color:#a6e22e">app:destination=</span><span style="color:#e6db74">&#34;@id/nav_sub1_frag&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/fragment&gt;</span>
-
-  ...
-<span style="color:#f92672">&lt;/navigation&gt;</span>
-</code></pre></div><p>そして、これを用いて遷移用インターフェースを実装します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainModuleRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> controller: NavController
-) : MainModuleRouter {
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>() {
-    <span style="color:#75715e">// NavComponentで自動生成されるコードを用いて遷移
-</span><span style="color:#75715e"></span>    controller.navigate(MainFragmentDirections.mainToSub1())
-  }
-}
-</code></pre></div><p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;navigation</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_graph&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:startDestination=</span><span style="color:#e6db74">&#34;@id/nav_main_frag&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;fragment</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/nav_main_frag&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;com.github.satoshun.example.feature.main.MainFragment&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;action</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/main_to_sub1&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">app:destination=</span><span style="color:#e6db74">&#34;@id/nav_sub1_frag&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fragment&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/navigation&gt;</span>
+</span></span></code></pre></div><p>そして、これを用いて遷移用インターフェースを実装します。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainModuleRouterImpl</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> controller: NavController
+</span></span><span style="display:flex;"><span>) : MainModuleRouter {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// NavComponentで自動生成されるコードを用いて遷移
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    controller.navigate(MainFragmentDirections.mainToSub1())
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>
 <p>あとはDaggerで配るだけです。Daggerで配る部分はサンプルコードを見ていただけたらと思います。サンプルでは、Dagger Androidを用いています。</p>
 <h2 id="メモ">メモ</h2>
 <h3 id="routerモジュールをわざわざ作る必要はないかも">routerモジュールをわざわざ作る必要はないかも</h3>

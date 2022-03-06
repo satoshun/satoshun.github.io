@@ -100,10 +100,10 @@
 <h2 id="room-in-memory">Room in memory?</h2>
 <p>Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。</p>
 <p>使い方は次のようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Room
-  .inMemoryDatabaseBuilder(context, MyDatabase<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-  .build()
-</code></pre></div><p>in memoryを使う理由としては、</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Room
+</span></span><span style="display:flex;"><span>  .inMemoryDatabaseBuilder(context, MyDatabase<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>  .build()
+</span></span></code></pre></div><p>in memoryを使う理由としては、</p>
 <ul>
 <li>ディスパッチするアクションを永続化する必要はないだろう</li>
 <li>マイグレーションが必要ない</li>
@@ -112,22 +112,22 @@
 <h2 id="実装に入っていく">実装に入っていく</h2>
 <p>では、実装の説明をしていきます。</p>
 <p>まずはActionをRoomのEntityとして定義します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorAction</span>
-
-<span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author1&#34;</span>)
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author1</span>(
-  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
-  <span style="color:#66d9ef">val</span> age: Int
-) : AuthorAction()
-
-<span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author2&#34;</span>)
-<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author2</span>(
-  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
-  <span style="color:#66d9ef">val</span> age: Int
-) : AuthorAction()
-</code></pre></div><p>Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、<code>@PrimaryKey(autoGenerate = true)</code>を使っても良いと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorAction</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author1&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author1</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> age: Int
+</span></span><span style="display:flex;"><span>) : AuthorAction()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;author2&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Author2</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@PrimaryKey</span> <span style="color:#66d9ef">val</span> _id: Long = <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// always 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> name: String,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> age: Int
+</span></span><span style="display:flex;"><span>) : AuthorAction()
+</span></span></code></pre></div><p>Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、<code>@PrimaryKey(autoGenerate = true)</code>を使っても良いと思います。</p>
 <p>次にDaoを定義します。これはFluxでいうところのDispatcherになります。</p>
 <pre tabindex="0"><code>@Dao
 interface AuthorDispatcher {
@@ -135,17 +135,17 @@ interface AuthorDispatcher {
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)
 
   // Storeに相当する
-  @Query(&quot;select * FROM author1 WHERE _id = 0&quot;)
+  @Query(&#34;select * FROM author1 WHERE _id = 0&#34;)
   fun author(): LiveData&lt;Author1?&gt;
 
   // Storeに相当する
   @Query(
-    &quot;&quot;&quot;
+    &#34;&#34;&#34;
     select author1.name as name1, author2.name as name2
     FROM author1
      INNER JOIN author2
     WHERE author1._id = 0 AND author2._id = 0
-    &quot;&quot;&quot;
+    &#34;&#34;&#34;
   )
   fun mappedAuthor(): LiveData&lt;MappedAuthor?&gt;
 }

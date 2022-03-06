@@ -94,44 +94,44 @@ ResultはSuccess T | Failure …">
 <p>Resultは<code>Success T | Failure Throwable</code>の2状態のいずれかを表現出来ます。成功状態のときはSuccessを、失敗状態のときはFailureを内包します。</p>
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <p>使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> i: Result&lt;Int&gt; = Result.success(<span style="color:#ae81ff">10</span>)
-<span style="color:#66d9ef">val</span> t: Result&lt;Int&gt; = Result.failure(IOException())
-</code></pre></div><p>また、<code>runCatching</code>関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> a = runCatching { doSomeThing() }
-</code></pre></div><p>Resultに対する操作は以下のようにします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// successに対して操作
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> i = Result.success(<span style="color:#ae81ff">10</span>)
-i.getOrNull() <span style="color:#75715e">// 10
-</span><span style="color:#75715e"></span>i.isSuccess <span style="color:#75715e">// true
-</span><span style="color:#75715e"></span>i.exceptionOrNull() <span style="color:#75715e">// null
-</span><span style="color:#75715e"></span>i.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// 100
-</span><span style="color:#75715e"></span>i.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
-i.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 10
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// failureに対して操作
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> t = Result.failure(IOException())
-t.getOrNull() <span style="color:#75715e">// null
-</span><span style="color:#75715e"></span>t.isFailure <span style="color:#75715e">// true
-</span><span style="color:#75715e"></span>t.exceptionOrNull() <span style="color:#75715e">// IOException
-</span><span style="color:#75715e"></span>t.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// null
-</span><span style="color:#75715e"></span>t.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
-t.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 1111
-</span><span style="color:#75715e"></span>t.getOrThrow() <span style="color:#75715e">// throw IOException
-</span></code></pre></div><p>値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> i: Result&lt;Int&gt; = Result.success(<span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> t: Result&lt;Int&gt; = Result.failure(IOException())
+</span></span></code></pre></div><p>また、<code>runCatching</code>関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> a = runCatching { doSomeThing() }
+</span></span></code></pre></div><p>Resultに対する操作は以下のようにします。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// successに対して操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> i = Result.success(<span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>i.getOrNull() <span style="color:#75715e">// 10
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>i.isSuccess <span style="color:#75715e">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>i.exceptionOrNull() <span style="color:#75715e">// null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>i.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// 100
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>i.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
+</span></span><span style="display:flex;"><span>i.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 10
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// failureに対して操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> t = Result.failure(IOException())
+</span></span><span style="display:flex;"><span>t.getOrNull() <span style="color:#75715e">// null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>t.isFailure <span style="color:#75715e">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>t.exceptionOrNull() <span style="color:#75715e">// IOException
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>t.map { <span style="color:#ae81ff">10</span> * <span style="color:#ae81ff">10</span> }.getOrNull() <span style="color:#75715e">// null
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>t.onSuccess { println(<span style="color:#e6db74">&#34;success&#34;</span>) }.onFailure { println(<span style="color:#e6db74">&#34;failure&#34;</span>) }
+</span></span><span style="display:flex;"><span>t.recover { <span style="color:#ae81ff">1111</span> }.getOrNull() <span style="color:#75715e">// 1111
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>t.getOrThrow() <span style="color:#75715e">// throw IOException
+</span></span></span></code></pre></div><p>値successに対しての操作と、failureに対しての操作をそれぞれすることが出来ます。</p>
 <p>また、Resultを使うことで、functionalっぽく書くことが出来ます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">try</span> {
-    <span style="color:#66d9ef">val</span> data = doSomethingSync()
-    processData(<span style="color:#66d9ef">data</span>)
-} <span style="color:#66d9ef">catch</span>(e: Throwable) {
-    showErrorDialog(e)
-}
-
-<span style="color:#f92672">--</span>&gt;
-
-runCatching { doSomethingSync() }
-    .onFailure { showErrorDialog(<span style="color:#66d9ef">it</span>) }
-    .onSuccess { processData(<span style="color:#66d9ef">it</span>) }
-</code></pre></div><p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> data = doSomethingSync()
+</span></span><span style="display:flex;"><span>    processData(<span style="color:#66d9ef">data</span>)
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">catch</span>(e: Throwable) {
+</span></span><span style="display:flex;"><span>    showErrorDialog(e)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>runCatching { doSomethingSync() }
+</span></span><span style="display:flex;"><span>    .onFailure { showErrorDialog(<span style="color:#66d9ef">it</span>) }
+</span></span><span style="display:flex;"><span>    .onSuccess { processData(<span style="color:#66d9ef">it</span>) }
+</span></span></code></pre></div><p>クライアント側から見たときは、functionalっぽく書ける点がメリットだと思います。</p>
 <h2 id="補足">補足</h2>
 <h3 id="resultは戻り値として返せない">Resultは戻り値として返せない</h3>
 <p>これは、Resultのユースケースから外さないための制約です。なぜなら、Resultはその関数内で処理すべき例外であり、関数の呼び出し側で処理させるべきではないためです。

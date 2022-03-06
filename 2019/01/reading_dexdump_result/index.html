@@ -99,60 +99,60 @@ java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/an
 </code></pre><p>d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。</p>
 <pre tabindex="0"><code>$ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex
 </code></pre><p>例えば次のJavaコードを逆アセンブルしてみます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        show<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> 10<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
-        String<span style="color:#f92672">[]</span> array <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">};</span>
-        toggle<span style="color:#f92672">(</span>array<span style="color:#f92672">);</span>
-        fade<span style="color:#f92672">();</span>
-        drag<span style="color:#f92672">();</span>
-        hide<span style="color:#f92672">();</span>
-        click<span style="color:#f92672">();</span>
-        hover<span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> a<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> d<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>a<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;showed&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">toggle</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;toggle&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fade</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fade&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">drag</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;drag&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hide</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hide&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">click</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;click&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hover</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hover&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><pre tabindex="0"><code>Processing 'classes.dex'...
-Opened 'classes.dex', DEX version '035'
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        show<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> 10<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#f92672">[]</span> array <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        toggle<span style="color:#f92672">(</span>array<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        fade<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        drag<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        hide<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        click<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        hover<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> a<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> d<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>a<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;showed&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">toggle</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;toggle&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fade</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fade&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">drag</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;drag&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hide</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hide&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">click</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;click&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hover</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hover&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><pre tabindex="0"><code>Processing &#39;classes.dex&#39;...
+Opened &#39;classes.dex&#39;, DEX version &#39;035&#39;
 Class #0            -
-  Class descriptor  : 'LTest;' // クラス名Test
+  Class descriptor  : &#39;LTest;&#39; // クラス名Test
   Access flags      : 0x0000 () // パッケージプライベート
-  Superclass        : 'Ljava/lang/Object;' // スーパークラスがObject
+  Superclass        : &#39;Ljava/lang/Object;&#39; // スーパークラスがObject
   Interfaces        - // インターフェースを持たない
   Static fields     - // Staticフィールドを持たない
   Instance fields   - // インスタンスフィールドを持たない
   Direct methods    -
     #0              : (in LTest;)
-      name          : '&lt;init&gt;' // コンストラクタを示す
-      type          : '()V' // 引数なし/戻り値なし
+      name          : &#39;&lt;init&gt;&#39; // コンストラクタを示す
+      type          : &#39;()V&#39; // 引数なし/戻り値なし
       access        : 0x10000 (CONSTRUCTOR)
       code          -
       registers     : 1
@@ -169,8 +169,8 @@ Class #0            -
         0x0000 - 0x0004 reg=0 this LTest;
 
     #1              : (in LTest;)
-      name          : 'click'
-      type          : '()V'
+      name          : &#39;click&#39;
+      type          : &#39;()V&#39;
       access        : 0x0009 (PUBLIC STATIC)
       code          -
       registers     : 2
@@ -179,7 +179,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 0001fc:                                        |[0001fc] Test.click:()V
 00020c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000210: 1a01 0f00                              |0002: const-string v1, &quot;click&quot; // string@000f
+000210: 1a01 0f00                              |0002: const-string v1, &#34;click&#34; // string@000f
 000214: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00021a: 0e00                                   |0007: return-void
       catches       : (none)
@@ -188,8 +188,8 @@ Class #0            -
       locals        :
 
     #2              : (in LTest;)
-      name          : 'hide'
-      type          : '()V'
+      name          : &#39;hide&#39;
+      type          : &#39;()V&#39;
       access        : 0x0002 (PRIVATE)
       code          -
       registers     : 3
@@ -198,7 +198,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 00025c:                                        |[00025c] Test.hide:()V
 00026c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000270: 1a01 1200                              |0002: const-string v1, &quot;hide&quot; // string@0012
+000270: 1a01 1200                              |0002: const-string v1, &#34;hide&#34; // string@0012
 000274: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00027a: 0e00                                   |0007: return-void
       catches       : (none)
@@ -208,8 +208,8 @@ Class #0            -
         0x0000 - 0x0008 reg=2 this LTest;
 
     #3              : (in LTest;)
-      name          : 'hover'
-      type          : '()V'
+      name          : &#39;hover&#39;
+      type          : &#39;()V&#39;
       access        : 0x0008 (STATIC)
       code          -
       registers     : 2
@@ -218,7 +218,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 00027c:                                        |[00027c] Test.hover:()V
 00028c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000290: 1a01 1300                              |0002: const-string v1, &quot;hover&quot; // string@0013
+000290: 1a01 1300                              |0002: const-string v1, &#34;hover&#34; // string@0013
 000294: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00029a: 0e00                                   |0007: return-void
       catches       : (none)
@@ -228,8 +228,8 @@ Class #0            -
 
   Virtual methods   -
     #0              : (in LTest;)
-      name          : 'drag'
-      type          : '()V'
+      name          : &#39;drag&#39;
+      type          : &#39;()V&#39;
       access        : 0x0014 (PROTECTED FINAL)
       code          -
       registers     : 3
@@ -238,7 +238,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 00021c:                                        |[00021c] Test.drag:()V
 00022c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000230: 1a01 1000                              |0002: const-string v1, &quot;drag&quot; // string@0010
+000230: 1a01 1000                              |0002: const-string v1, &#34;drag&#34; // string@0010
 000234: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00023a: 0e00                                   |0007: return-void
       catches       : (none)
@@ -248,8 +248,8 @@ Class #0            -
         0x0000 - 0x0008 reg=2 this LTest;
 
     #1              : (in LTest;)
-      name          : 'fade'
-      type          : '()V'
+      name          : &#39;fade&#39;
+      type          : &#39;()V&#39;
       access        : 0x0004 (PROTECTED)
       code          -
       registers     : 3
@@ -258,7 +258,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 00023c:                                        |[00023c] Test.fade:()V
 00024c: 6200 0000                              |0000: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000250: 1a01 1100                              |0002: const-string v1, &quot;fade&quot; // string@0011
+000250: 1a01 1100                              |0002: const-string v1, &#34;fade&#34; // string@0011
 000254: 6e20 0a00 1000                         |0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00025a: 0e00                                   |0007: return-void
       catches       : (none)
@@ -268,8 +268,8 @@ Class #0            -
         0x0000 - 0x0008 reg=2 this LTest;
 
     #2              : (in LTest;)
-      name          : 'main'
-      type          : '()V'
+      name          : &#39;main&#39;
+      type          : &#39;()V&#39;
       access        : 0x0001 (PUBLIC)
       code          -
       registers     : 4
@@ -282,7 +282,7 @@ Class #0            -
 0002b2: 6e40 0700 0321                         |0003: invoke-virtual {v3, v0, v1, v2}, LTest;.show:(ID)Ljava/lang/String; // method@0007
 0002b8: 2300 0800                              |0006: new-array v0, v0, [Ljava/lang/String; // type@0008
 0002bc: 1201                                   |0008: const/4 v1, #int 0 // #0
-0002be: 1a02 0000                              |0009: const-string v2, &quot;&quot; // string@0000
+0002be: 1a02 0000                              |0009: const-string v2, &#34;&#34; // string@0000
 0002c2: 4d02 0001                              |000b: aput-object v2, v0, v1
 0002c6: 6e20 0800 0300                         |000d: invoke-virtual {v3, v0}, LTest;.toggle:([Ljava/lang/String;)V // method@0008
 0002cc: 6e10 0300 0300                         |0010: invoke-virtual {v3}, LTest;.fade:()V // method@0003
@@ -305,8 +305,8 @@ Class #0            -
         0x0000 - 0x0020 reg=3 this LTest;
 
     #3              : (in LTest;)
-      name          : 'show'
-      type          : '(ID)Ljava/lang/String;'
+      name          : &#39;show&#39;
+      type          : &#39;(ID)Ljava/lang/String;&#39;
       access        : 0x0001 (PUBLIC)
       code          -
       registers     : 4
@@ -316,7 +316,7 @@ Class #0            -
 0001c4:                                        |[0001c4] Test.show:(ID)Ljava/lang/String;
 0001d4: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 0001d8: 6e20 0900 1200                         |0002: invoke-virtual {v2, v1}, Ljava/io/PrintStream;.println:(I)V // method@0009
-0001de: 1a01 1800                              |0005: const-string v1, &quot;showed&quot; // string@0018
+0001de: 1a01 1800                              |0005: const-string v1, &#34;showed&#34; // string@0018
 0001e2: 1101                                   |0007: return-object v1
       catches       : (none)
       positions     :
@@ -325,8 +325,8 @@ Class #0            -
         0x0000 - 0x0008 reg=0 this LTest;
 
     #4              : (in LTest;)
-      name          : 'toggle'
-      type          : '([Ljava/lang/String;)V'
+      name          : &#39;toggle&#39;
+      type          : &#39;([Ljava/lang/String;)V&#39;
       access        : 0x0000 ()
       code          -
       registers     : 3
@@ -335,7 +335,7 @@ Class #0            -
       insns size    : 8 16-bit code units
 0002ec:                                        |[0002ec] Test.toggle:([Ljava/lang/String;)V
 0002fc: 6202 0000                              |0000: sget-object v2, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
-000300: 1a00 1900                              |0002: const-string v0, &quot;toggle&quot; // string@0019
+000300: 1a00 1900                              |0002: const-string v0, &#34;toggle&#34; // string@0019
 000304: 6e20 0a00 0200                         |0004: invoke-virtual {v2, v0}, Ljava/io/PrintStream;.println:(Ljava/lang/String;)V // method@000a
 00030a: 0e00                                   |0007: return-void
       catches       : (none)
