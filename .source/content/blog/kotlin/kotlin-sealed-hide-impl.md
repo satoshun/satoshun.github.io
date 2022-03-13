@@ -1,10 +1,10 @@
 +++
-date = "Tue Mar 19 12:07:37 UTC 2019"
+date = "Sun Mar 13 03:33:43 UTC 2022"
 title = "Kotlin: Sealed class(interface)で実装を隠す"
 tags = ["kotlin"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 ライブラリを作る時など、クライアントから実装を隠したいケースはままあります。
@@ -19,8 +19,9 @@ fun createCameraController(): CameraController {
 }
 ```
 
-この場合、実装であるCameraControllerが参照できます。
-これを隠すために、例えば次のようにします。
+この場合、実装であるCameraControllerが参照されています。
+
+例えば次のようにして、実装を隠してみます。
 
 ```kotlin
 interface CameraController { ... }
@@ -46,4 +47,6 @@ fun createCameraController(): CameraController {
 }
 ```
 
-sealedの第一用途として、when式における網羅性(exhaustive)が挙げられますが、実装を隠したい + 実装をクライアント側で作って欲しくない場合にも使うことが出来ます。
+実装をクライアント側で作って欲しくない場合には、interfaceやabstract classの代わりに、sealed classを使えば達成できます。
+
+ライブラリ開発などで、実装を見せたくないが、ライブラリ側でしか実装しないようなインターフェースの場合に、使うことができるテクニックです。
