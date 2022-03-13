@@ -2,10 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
-  </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/kotlin/</loc>
+    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2022/03/kotlin-sealed-hide-impl/</loc>
+    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
     <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/compose/</loc>
@@ -15,12 +27,6 @@
     <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</loc>
-    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
@@ -46,9 +52,6 @@
   </url><url>
     <loc>https://satoshun.github.io/tags/build/</loc>
     <lastmod>2021-11-14T01:58:16+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/kotlin/</loc>
-    <lastmod>2021-10-31T02:23:47+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2021/10/kotlin-fun-interface-generate-code/</loc>
     <lastmod>2021-10-31T02:23:47+00:00</lastmod>

@@ -7,7 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 06 Mar 2022 12:12:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 13 Mar 2022 03:33:43 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kotlin: Sealed class(interface)で実装を隠す</title>
+      <link>https://satoshun.github.io/2022/03/kotlin-sealed-hide-impl/</link>
+      <pubDate>Sun, 13 Mar 2022 03:33:43 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/03/kotlin-sealed-hide-impl/</guid>
+      <description>ライブラリを作る時など、クライアントから実装を隠したいケースはままあります。
+例えば、次のコードの実装を隠してみます。
+class CameraController(...)  fun createCameraController(): CameraController {  ... } この場合、実装であるCameraControllerが参照されています。
+例えば次のようにして、実装を隠してみます。
+interface CameraController { ... }  internal class CameraControllerImpl(...): CameraController  fun createCameraController(): CameraController {  ... } これで実装を隠すことが出来ました。
+さらにKotlinでは、ここから先に進めて、sealedを使うことで、外で実装を作ることを禁止することが出来ます。
+sealed interface CameraController { ... }  internal class CameraControllerImpl(...): CameraController  fun createCameraController(): CameraController {  ... } 実装をクライアント側で作って欲しくない場合には、interfaceやabstract classの代わりに、sealed classを使えば達成できます。
+ライブラリ開発などで、実装を見せたくないが、ライブラリ側でしか実装しないようなインターフェースの場合に、使うことができるテクニックです。</description>
+    </item>
+    
     <item>
       <title>Jetpack Compose: debugInspectorInfoを使って、デバッグを少し楽にする</title>
       <link>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</link>
