@@ -7,7 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 06 Mar 2022 12:12:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 Apr 2022 07:10:16 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: Gradle Build Scanで、マルチモジュール環境のビルド改善</title>
+      <link>https://satoshun.github.io/2022/04/gradle-buildperformance-scan/</link>
+      <pubDate>Sun, 10 Apr 2022 07:10:16 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/04/gradle-buildperformance-scan/</guid>
+      <description>GradleにはBuild Scanという機能があり、これを使うことで、プロジェクトのビルドの全体像を知ることが出来ます。
+使い方は簡単で --scan を指定するだけです。
+./gradlew assembleDebug --scan これで、GradleのBuild Scanをしてくれます。 今回はこれをヒントにして、モジュール間の依存を見直すことで、ビルドの改善をしてみます。
+左タブのTimelineから、全体的なビルドの確認をすることが出来ます。
+Timelineでは、どのような順番でmoduleのビルドが行われたかを確認することが出来ます。 時間が掛かっているモジュール（クリティカルパス）を改善すれば、全体のビルドを改善することが期待できます。
+Timelineでは、どのモジュールがクリティカルパスになっているかを検索することが出来ます。
+クリティカルパス検索をすると、次の画像のように、クリティカルなタスク（モジュール）に色が付きます。
+これで、クリティカルパスとなっているモジュールを知ることが出来ます。
+次に、このクリティカルなモジュールの改善を考えます。大きく2つの方法があると思います。
+ モジュール自体のサイズを小さくする → このモジュールで管理するクラス数を減らす ビルドするタイミングを早くする → 他のモジュールへの依存を減らす  1.に関しては、それはそうという感じなので、2について説明します。
+例えば、A &amp;lt;- B &amp;lt;- C のような依存構成になっているときに、Bがクリティカルであるとします。 このときに、BがAに依存しないように変更することで、Bのビルドタイミングを早めることができ、全体のビルドが改善されることが期待できます。 「BがAに依存しないように変更できる」、また、「その変更によってモジュールの責務が崩れない」ことが前提となりますが、無駄な他モジュールへの依存を無くすだけでも、ビルドの改善が出来る場合があります。
+まとめ こんな感じで、Gradle Scanを使い、ちょこちょことTimelineのクリティカルパスを改善することで、ビルド時間の改善が期待出来ます。</description>
+    </item>
+    
     <item>
       <title>Jetpack Compose: debugInspectorInfoを使って、デバッグを少し楽にする</title>
       <link>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</link>

@@ -2,23 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2022/04/gradle-buildperformance-scan/</loc>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+  </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/gradle/</loc>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
     <lastmod>2022-03-13T03:33:43+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/03/kotlin-sealed-hide-impl/</loc>
     <lastmod>2022-03-13T03:33:43+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
-    <lastmod>2022-03-13T03:33:43+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2022-03-06T12:12:41+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/compose/</loc>
     <lastmod>2022-03-06T12:12:41+00:00</lastmod>
@@ -28,9 +34,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</loc>
     <lastmod>2022-03-06T12:12:41+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2022-02-27T11:42:50+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/02/gradle-typesafe-accessor/</loc>
     <lastmod>2022-02-27T11:42:50+00:00</lastmod>
