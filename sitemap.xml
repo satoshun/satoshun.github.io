@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/dagger/</loc>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2022/04/dagger-binds-extension-method/</loc>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/04/gradle-buildperformance-scan/</loc>
     <lastmod>2022-04-10T07:10:16+00:00</lastmod>
   </url><url>
-    <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
-  </url><url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2022-04-10T07:10:16+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2022-04-10T07:10:16+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/kotlin/</loc>
@@ -43,9 +49,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2022/01/gradle-dependency-version-definition/</loc>
     <lastmod>2022-01-25T12:53:58+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/dagger/</loc>
-    <lastmod>2022-01-02T08:53:09+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/01/android-molecule/</loc>
     <lastmod>2022-01-02T08:53:09+00:00</lastmod>

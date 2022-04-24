@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 02 Jan 2022 08:53:09 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Apr 2022 06:16:34 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dagger/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dagger2: 拡張関数を使い、@Bindsの定義をシンプルにする</title>
+      <link>https://satoshun.github.io/2022/04/dagger-binds-extension-method/</link>
+      <pubDate>Sun, 24 Apr 2022 06:16:34 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/04/dagger-binds-extension-method/</guid>
+      <description>Dagger2のtipsです。
+Dagger2では、Bindsアノテーションを使うことで、キャストした型をバインディングすることが出来ます。 例えば、次のように使います。
+@Module interface AppModule {  @Binds fun bindHoge(impl: HogeImpl): Hoge } このときに、拡張関数を使うことで、少しシンプルに書くことが出来ます。
+@Module interface AppModule {  @Binds fun HogeImpl.bindHoge(): Hoge } 同様に、拡張プロパティを使うことも出来ます。
+@Module interface AppModule {  @get:Binds val HogeImpl.bindHoge: Hoge } 拡張関数を使うと、コード量が減り、シンプルになるのでおすすめです。</description>
+    </item>
+    
     <item>
       <title>moleculeライブラリで感動したところ</title>
       <link>https://satoshun.github.io/2022/01/android-molecule/</link>
