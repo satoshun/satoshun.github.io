@@ -1,15 +1,15 @@
 +++
 date = "Sun Apr 24 06:16:34 UTC 2022"
-title = "Dagger2: 拡張関数を使い、@Bindsアノテーションを使った定義をシンプルにする"
+title = "Dagger2: 拡張関数を使い、@Bindsの定義をシンプルにする"
 tags = ["android", "dagger"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Dagger2のtipsです。
 
-Dagger2では、@Bindsアノテーションを使うことで、キャストした型をバインディングすることが出来ます。
+Dagger2では、`Binds`アノテーションを使うことで、キャストした型をバインディングすることが出来ます。
 例えば、次のように使います。
 
 ```kotlin
