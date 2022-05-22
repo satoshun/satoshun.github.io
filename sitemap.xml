@@ -3,21 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
-    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/development/</loc>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/multimodule/</loc>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2022/05/android-improve-development-multimodule/</loc>
+    <lastmod>2022-05-22T12:53:30+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/dagger/</loc>
     <lastmod>2022-04-24T06:16:34+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/04/dagger-binds-extension-method/</loc>
-    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2022-04-24T06:16:34+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2022-04-24T06:16:34+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2022/04/gradle-buildperformance-scan/</loc>
@@ -127,9 +136,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2020/12/dagger-official-assisted/</loc>
     <lastmod>2020-12-30T08:53:33+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/multimodule/</loc>
-    <lastmod>2020-12-12T04:18:00+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2020/12/multimodule_dummy_module/</loc>
     <lastmod>2020-12-12T04:18:00+00:00</lastmod>

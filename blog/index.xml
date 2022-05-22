@@ -7,7 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 24 Apr 2022 06:16:34 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 May 2022 12:53:30 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>マルチモジュール環境の開発改善について雑談</title>
+      <link>https://satoshun.github.io/2022/05/android-improve-development-multimodule/</link>
+      <pubDate>Sun, 22 May 2022 12:53:30 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/05/android-improve-development-multimodule/</guid>
+      <description>この記事では、昨今のマルチモジュール環境の開発改善について雑談をします。この記事は文章がまとまってないです。（いつかもう少しいい感じにまとめます）
+大きいプロジェクトの場合、マルチモジュールプロジェクトに移行するケースは多いと思います。歴史とともに機能が増えていき、どうしてもビルド時間の増加、IDEのパフォーマンス低下などが発生します。
+どう頑張っても、app全体のビルド時間の短縮には限界があります。そこで、機能単位でもアプリを作れるようにすることで、改善を試みます。 機能単位と言っても、すべての機能ごとにアプリを作れるようにする必要はなくて、開発が活発な機能に絞って作れるようにしておくと良いです。新機能であったり、コア機能などが該当します。
+ここで、どのように機能単位のアプリを作るのかって話なんですが、Dagger Hiltを使っているなら、DaggerのDIの解決さえ出来れば、機能アプリを作ることが出来ます。DIをどのように解決するかって話なんですが、既存のapplicationモジュールから、Dagger DI部分を切り出したapplication-diモジュールを作って、それを機能アプリから参照すれば、ほぼ解決出来ると思います。どうしても解決できないクラスは、MockHogeHogeみたいにして、機能アプリ内のモジュールで解決してあげれば良いです。
+機能モジュールを作ることで、ビルド時間は短縮出来ますが、IDEのインデックス時間などは改善されません。そこでさらに、focusを組み合わせることで、IDEのパフォーマンス改善が期待できます。 focusの使い方は、下記のリンクを参考にしてください。
+ https://dropbox.tech/mobile/introducing-focus-a-new-open-source-gradle-plugin https://github.com/dropbox/focus  例えば、機能が20個のプロジェクトの場合に、focusを使うことで、19個の機能モジュールの読み込みを制限することが出来ます。実際にはデータモジュール等、機能モジュール以外のモジュールもあるので、そう単純な話ではないんですが、それでもかなりのモジュールの読み込みを削減が期待できます。
+大規模なプロジェクトの場合、機能ごとにアプリを作れるようにする + focusを使うことで開発環境の改善が期待できるので、検討して見るのも良いと思います。</description>
+    </item>
+    
     <item>
       <title>Dagger2: 拡張関数を使い、@Bindsの定義をシンプルにする</title>
       <link>https://satoshun.github.io/2022/04/dagger-binds-extension-method/</link>
