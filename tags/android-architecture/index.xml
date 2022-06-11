@@ -17,16 +17,17 @@
       <description>以下の動画のまとめです。
 Build a Modular Android App Architecture (Google I/O&#39;19)
 なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
- 人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
- 何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
+人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効 保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
+何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
 CIの高速化 再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる
- androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい）  APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
+androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい） APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
 モジュール どのようにモジュール分けをするか?
 1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
- ライブラリモジュール  com.android.libraryを指定する   Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い      Plaidでは以下のようなモジュール構成にした。
- dribbleと、designernewsがDynamic Featureモジュールになっている。
+ライブラリモジュール com.android.libraryを指定する Dynamic Featureモジュール onDemand trueとfalseがある Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い Plaidでは以下のようなモジュール構成にした。
+dribbleと、designernewsがDynamic Featureモジュールになっている。
 2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
-   Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入       こうすることで、UIがDAOの知識を知らずに済む</description>
+Web Servicesの知識はUIはいらないので、implementationを指定する そうすることで、UIがDTOやRetrofitの知識を知らないですむ Entitiesの知識はUIが必要なので、apiを指定する ただし、この場合、DAOsの知識までUIが知ってしまうので微妙 そこでCommon Value Objectsの導入 こうすることで、UIがDAOの知識を知らずに済む
+Fakes for tests モックよりも優れた方法 fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる （モックはその場、その場で作られがちという意味？） Featureモジュールの利点 カプセル化 Dynamic Delivery Layerごとに分ける利点 サードパーティライブラリの依存を独立 構造をもたらす Dynamic Deliveryの課題 Featureモジュール間のNavigationをどうするか?</description>
     </item>
     
     <item>
@@ -36,14 +37,15 @@ CIの高速化 再ビルドが必要なモジュールのみテストをすれ�
       
       <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
       <description>雑多なことを書いただけのブログになります。内容はあまりないよう〜。
- MvRxはAirbnbが開発をしているOSSフレームワークです。
+MvRxはAirbnbが開発をしているOSSフレームワークです。
 特徴としては
- Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている  AACをRxJavaであったり、便利関数、クラス群で補佐している感じ   多くの部分でReactのAPIを参考にしてる  State、renderなど   Epoxyと相性が良い  一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る   ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う  副作用がない（減らしたい）    ボイラープレートなコードを減らすことが期待できます😃
+Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている AACをRxJavaであったり、便利関数、クラス群で補佐している感じ 多くの部分でReactのAPIを参考にしてる State、renderなど Epoxyと相性が良い 一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う 副作用がない（減らしたい） ボイラープレートなコードを減らすことが期待できます😃
 個人的に気になった部分、好きなとこ StateでView状態を管理するところ Stateを定義することのメリットは以下かなと思ってます。
- Stateを見れば、Viewの構成要素が分かる  MVPアーキテクチャのViewインターフェースのような役割を果たす   状態の管理が楽  Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い  MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる     Viewからロジックを取ることが出来る  もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる    Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
- Uninitialized Loading Success Fail  の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
+Stateを見れば、Viewの構成要素が分かる MVPアーキテクチャのViewインターフェースのような役割を果たす 状態の管理が楽 Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる Viewからロジックを取ることが出来る もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
+Uninitialized Loading Success Fail の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
 プロジェクトに、Asyncだけ取り入れるのもアリだと思います。
-Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う</description>
+Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う
+invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも やっぱりSingle Eventの取り扱いって大変なんやなって とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない 参考 Tivi プロジェクトも大きく、Coroutineなども使っている これ見れば、なんとなく肌感は分かると思います </description>
     </item>
     
   </channel>

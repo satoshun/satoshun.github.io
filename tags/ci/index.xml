@@ -17,13 +17,15 @@
       <description>Composite Run Stepsを使うと、GitHub Actionsでactionを再利用する事ができます。
 この記事では、同一リポジトリ内で使い回すパターンの、Composite Run Stepsについて紹介します。
 最終的には、こんな感じになります
- composite run stepの定義側 composite run stepを使う側  ローカルcomposite run stepsの定義 今回は、Java11のセットアップをする、setup-java ステップを作ってみたいと思います。
+composite run stepの定義側 composite run stepを使う側 ローカルcomposite run stepsの定義 今回は、Java11のセットアップをする、setup-java ステップを作ってみたいと思います。
 最初に、次のパスにaction.ymlを作ります。
 .github/actions/setup-java/action.yml
 action.ymlは次のようになります。
-name: &amp;#39;Java Setup&amp;#39; description: &amp;#39;Installs Java&amp;#39;  runs:  using: &amp;#39;composite&amp;#39;  steps:  - name: Install Java 11  uses: actions/setup-java@v2  with:  distribution: &amp;#39;adopt&amp;#39;  java-version: &amp;#39;11&amp;#39; 今回は1つのstepしか使っていませんが、stepsには複数stepを定義することが出来るので、処理を1箇所にまとめることが可能です。
+name: &amp;#39;Java Setup&amp;#39; description: &amp;#39;Installs Java&amp;#39; runs: using: &amp;#39;composite&amp;#39; steps: - name: Install Java 11 uses: actions/setup-java@v2 with: distribution: &amp;#39;adopt&amp;#39; java-version: &amp;#39;11&amp;#39; 今回は1つのstepしか使っていませんが、stepsには複数stepを定義することが出来るので、処理を1箇所にまとめることが可能です。
 setup-javaをworkflowから使う 次に、定義したsetup-javaを使ってみます。
-jobs:  build:  runs-on: ubuntu-latest   steps:  - name: Checkout  uses: actions/checkout@v2   - name: Setup Java  uses: .</description>
+jobs: build: runs-on: ubuntu-latest steps: - name: Checkout uses: actions/checkout@v2 - name: Setup Java uses: ./.github/actions/setup-java ... usesでパスを指定するだけです。これで、stepを再利用することが出来ます。
+まとめ Composite Run Stepsを使うことで、複数のstepをまとめ、再利用が可能になります。同じようなstepを記述しているworkflowが多い場合は導入すると幸せになると思います。
+参考 GitHub Actions: Composite Run Steps </description>
     </item>
     
     <item>
@@ -34,7 +36,7 @@ jobs:  build:  runs-on: ubuntu-latest   steps:  - name: Checkout  uses: actions/
       <guid>https://satoshun.github.io/2021/04/github-actions-cancel-previous-tasks/</guid>
       <description>Pushを複数回した場合などに、1つ前のGitHub Actionsの実行を止める方法の紹介です。
 styfle/cancel-workflow-actionを使うことで実現できます。 READMEにも書いてあるのですが、以下のstepを追加するだけです。
-steps: - name: Cancel Previous Runs  uses: styfle/cancel-workflow-action@0.8.0  with:  access_token: ${{ github.token }} GitHub Actionsは従量課金なので、上記のキャンセルをやっておくと、多少の節約になると思います。</description>
+steps: - name: Cancel Previous Runs uses: styfle/cancel-workflow-action@0.8.0 with: access_token: ${{ github.token }} GitHub Actionsは従量課金なので、上記のキャンセルをやっておくと、多少の節約になると思います。</description>
     </item>
     
     <item>
@@ -47,7 +49,7 @@ steps: - name: Cancel Previous Runs  uses: styfle/cancel-workflow-action@0.8.0  
 🥑avocado🥑? avocadoを使うことで、Vector Drawableを最適化することができます。使い方は簡単です。
 avocado [file name] Vector Drawableによっては、結構最適化されます。
 GitHub Actionsに組み込む 1週間単位でavocadoを実行して、PRを作るGitHub Actionsになります。
-name: avocado  on:  schedule:  - cron: &amp;#39;0 0 * * 0&amp;#39;  jobs:  build:  runs-on: ubuntu-latest   steps:  - name: Checkout  uses: actions/checkout@v2   - name: Setup node  uses: actions/setup-node@v1  with:  node-version: &amp;#39;12&amp;#39;   - name: Setup avocado  run: npm install -g avocado   - name: Run avocado  run: find .</description>
+name: avocado on: schedule: - cron: &amp;#39;0 0 * * 0&amp;#39; jobs: build: runs-on: ubuntu-latest steps: - name: Checkout uses: actions/checkout@v2 - name: Setup node uses: actions/setup-node@v1 with: node-version: &amp;#39;12&amp;#39; - name: Setup avocado run: npm install -g avocado - name: Run avocado run: find . -type f -name *.xml | xargs grep &amp;#34;&amp;lt;/vector&amp;gt;&amp;#34; -rl | avocado - name: PR id: cpr uses: peter-evans/create-pull-request@v2 with: token: ${{ secrets.</description>
     </item>
     
     <item>
@@ -57,8 +59,9 @@ name: avocado  on:  schedule:  - cron: &amp;#39;0 0 * * 0&amp;#39;  jobs:  build
       
       <guid>https://satoshun.github.io/2020/05/github-actions-android/</guid>
       <description>GitHub Actionのスペック
- 7Gメモリの2 CPU  こんな感じが良さそう org.gradle.daemon=false org.gradle.parallel=true org.gradle.jvmargs=-Xmx5120m org.gradle.workers.max=2  kotlin.incremental=false kotlin.compiler.execution.strategy=in-process  kapt.use.worker.api=false kapt.incremental.apt=false  android.databinding.incremental=false android.lifecycleProcessor.incremental=false  CatchUpアプリを参考にして、上の設定をCI実行時に ~/gradle/gradle.properites に配置するようにした  プロジェクト直下の gradle.properties より優先度が高いのでそうした   kaptの設定はいらないかもしれない  worker使わないほうが安定するんじゃないかなーと思って、falseにしてみた   incremental系は、全部offで良いと思っている  考慮したほうが良さそうなプロパティ  org.gradle.jvmarg  Xmx -XX:MaxPermSize -XX:+HeapDumpOnOutOfMemoryError   org.gradle.daemon org.gradle.parallel org.gradle.workers.max org.gradle.caching org.gradle.configureondemand kotlin.incremental kotlin.compiler.execution.strategy kotlin.parallel.tasks.in.project kapt.use.worker.api kapt.incremental.apt プロジェクト固有のやつ  android.databinding.incremental android.lifecycleProcessor.incremental=false firebasePerformanceInstrumentationEnabled    参考プロジェクト insetterライブラリ https://github.com/chrisbanes/insetter/tree/master/.github
-JAVA_TOOL_OPTIONS: -Xmx5120m GRADLE_OPTS: -Dorg.</description>
+7Gメモリの2 CPU こんな感じが良さそう org.gradle.daemon=false org.gradle.parallel=true org.gradle.jvmargs=-Xmx5120m org.gradle.workers.max=2 kotlin.incremental=false kotlin.compiler.execution.strategy=in-process kapt.use.worker.api=false kapt.incremental.apt=false android.databinding.incremental=false android.lifecycleProcessor.incremental=false CatchUpアプリを参考にして、上の設定をCI実行時に ~/gradle/gradle.properites に配置するようにした プロジェクト直下の gradle.properties より優先度が高いのでそうした kaptの設定はいらないかもしれない worker使わないほうが安定するんじゃないかなーと思って、falseにしてみた incremental系は、全部offで良いと思っている 考慮したほうが良さそうなプロパティ org.gradle.jvmarg Xmx -XX:MaxPermSize -XX:+HeapDumpOnOutOfMemoryError org.gradle.daemon org.gradle.parallel org.gradle.workers.max org.gradle.caching org.gradle.configureondemand kotlin.incremental kotlin.compiler.execution.strategy kotlin.parallel.tasks.in.project kapt.use.worker.api kapt.incremental.apt プロジェクト固有のやつ android.databinding.incremental android.lifecycleProcessor.incremental=false firebasePerformanceInstrumentationEnabled 参考プロジェクト insetterライブラリ https://github.com/chrisbanes/insetter/tree/master/.github
+JAVA_TOOL_OPTIONS: -Xmx5120m GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process Catchupアプリ https://github.com/ZacSweers/CatchUp/tree/master/.github
+org.gradle.daemon=false org.gradle.parallel=true org.gradle.jvmargs=-Xmx5120m org.gradle.workers.max=2 kotlin.incremental=false kotlin.compiler.execution.strategy=in-process </description>
     </item>
     
     <item>
@@ -88,7 +91,7 @@ First Interaction First Interactionは、初めてPRを出した人に、定型�
 「はじめてのPRありがとうございます🙏ここ見といてね」みたいなメッセージを出して使ってます。
 Assign Author/Auto Assign Assign Author、Auto Assignは、自分にアサインしたり、均等にレビュワーを指定する事ができます。
 レビューワーを分散させたかったので、使ってます。これ系のactionは他にもあるので、いろいろ調べるのも楽しそう。
-まとめ  GitHub Actionsはいいぞ〜  </description>
+まとめ GitHub Actionsはいいぞ〜 </description>
     </item>
     
   </channel>

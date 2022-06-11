@@ -19,7 +19,7 @@
 dexファイルをコマンドから作るにはjavacとd8コマンドを使います。d8コマンドは https://r8.googlesource.com/r8 の手順通りにビルドします。
 javac *.java // or kotlinc *.kt java -jar $R8_HOME/build/libs/d8.jar --lib $ANDROID_HOME/platforms/android-28/android.jar --release *.class d8コマンドで出来たdexファイルをdexdumpで逆アセンブルします。
 $ANDROID_HOME/build-tools/28.0.3/dexdump -d classes.dex 例えば次のJavaコードを逆アセンブルしてみます。
-class Test {  public void main() {  show(1, 10.0);  String[] array = {&amp;#34;&amp;#34;};  toggle(array);  fade();  drag();  hide();  click();  hover();  }   public String show(int a, double d) {  System.out.println(a);  return &amp;#34;showed&amp;#34;;  }   void toggle(String[] args) {  System.</description>
+class Test { public void main() { show(1, 10.0); String[] array = {&amp;#34;&amp;#34;}; toggle(array); fade(); drag(); hide(); click(); hover(); } public String show(int a, double d) { System.out.println(a); return &amp;#34;showed&amp;#34;; } void toggle(String[] args) { System.out.println(&amp;#34;toggle&amp;#34;); } protected void fade() { System.out.println(&amp;#34;fade&amp;#34;); } final protected void drag() { System.</description>
     </item>
     
   </channel>

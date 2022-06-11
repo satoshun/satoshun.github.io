@@ -17,16 +17,17 @@
       <description>以下の動画のまとめです。
 Build a Modular Android App Architecture (Google I/O&#39;19)
 なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
- 人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効  保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
- 何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち  ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
+人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効 保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
+何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
 CIの高速化 再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる
- androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい）  APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
+androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい） APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
 モジュール どのようにモジュール分けをするか?
 1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
- ライブラリモジュール  com.android.libraryを指定する   Dynamic Featureモジュール  onDemand trueとfalseがある  Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い      Plaidでは以下のようなモジュール構成にした。
- dribbleと、designernewsがDynamic Featureモジュールになっている。
+ライブラリモジュール com.android.libraryを指定する Dynamic Featureモジュール onDemand trueとfalseがある Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い Plaidでは以下のようなモジュール構成にした。
+dribbleと、designernewsがDynamic Featureモジュールになっている。
 2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
-   Web Servicesの知識はUIはいらないので、implementationを指定する  そうすることで、UIがDTOやRetrofitの知識を知らないですむ   Entitiesの知識はUIが必要なので、apiを指定する  ただし、この場合、DAOsの知識までUIが知ってしまうので微妙  そこでCommon Value Objectsの導入       こうすることで、UIがDAOの知識を知らずに済む</description>
+Web Servicesの知識はUIはいらないので、implementationを指定する そうすることで、UIがDTOやRetrofitの知識を知らないですむ Entitiesの知識はUIが必要なので、apiを指定する ただし、この場合、DAOsの知識までUIが知ってしまうので微妙 そこでCommon Value Objectsの導入 こうすることで、UIがDAOの知識を知らずに済む
+Fakes for tests モックよりも優れた方法 fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる （モックはその場、その場で作られがちという意味？） Featureモジュールの利点 カプセル化 Dynamic Delivery Layerごとに分ける利点 サードパーティライブラリの依存を独立 構造をもたらす Dynamic Deliveryの課題 Featureモジュール間のNavigationをどうするか?</description>
     </item>
     
     <item>
@@ -36,14 +37,15 @@ CIの高速化 再ビルドが必要なモジュールのみテストをすれ�
       
       <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
       <description>雑多なことを書いただけのブログになります。内容はあまりないよう〜。
- MvRxはAirbnbが開発をしているOSSフレームワークです。
+MvRxはAirbnbが開発をしているOSSフレームワークです。
 特徴としては
- Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている  AACをRxJavaであったり、便利関数、クラス群で補佐している感じ   多くの部分でReactのAPIを参考にしてる  State、renderなど   Epoxyと相性が良い  一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る   ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う  副作用がない（減らしたい）    ボイラープレートなコードを減らすことが期待できます😃
+Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている AACをRxJavaであったり、便利関数、クラス群で補佐している感じ 多くの部分でReactのAPIを参考にしてる State、renderなど Epoxyと相性が良い 一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う 副作用がない（減らしたい） ボイラープレートなコードを減らすことが期待できます😃
 個人的に気になった部分、好きなとこ StateでView状態を管理するところ Stateを定義することのメリットは以下かなと思ってます。
- Stateを見れば、Viewの構成要素が分かる  MVPアーキテクチャのViewインターフェースのような役割を果たす   状態の管理が楽  Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い  MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる     Viewからロジックを取ることが出来る  もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる    Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
- Uninitialized Loading Success Fail  の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
+Stateを見れば、Viewの構成要素が分かる MVPアーキテクチャのViewインターフェースのような役割を果たす 状態の管理が楽 Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる Viewからロジックを取ることが出来る もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
+Uninitialized Loading Success Fail の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
 プロジェクトに、Asyncだけ取り入れるのもアリだと思います。
-Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う</description>
+Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う
+invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも やっぱりSingle Eventの取り扱いって大変なんやなって とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない 参考 Tivi プロジェクトも大きく、Coroutineなども使っている これ見れば、なんとなく肌感は分かると思います </description>
     </item>
     
     <item>
@@ -57,11 +59,11 @@ Single Eventの処理をどうするのか State内で保持すると、毎回�
 また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。
 Room in memory? Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。
 使い方は次のようになります。
-Room  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)  .build() in memoryを使う理由としては、
- ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない  になります。
+Room .inMemoryDatabaseBuilder(context, MyDatabase::class.java) .build() in memoryを使う理由としては、
+ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない になります。
 実装に入っていく では、実装の説明をしていきます。
 まずはActionをRoomのEntityとして定義します。
-sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction()  @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
+sealed class AuthorAction @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
     </item>
     
     <item>
@@ -72,11 +74,11 @@ sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data c
       <guid>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</guid>
       <description>オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。
 継承とコンポジションはトレードオフ
- 継承は自動的にaメッセージを委譲する  便利だが依存関係は強い 親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する   継承は階層構造を生み出す  ポリモーフィズムを実現する これまた便利だが依存関係は強い   コンポジションは自動的に委譲しない  必要に応じて集約クラスで操る必要がある 依存は継承より少ない    単一責任について
- あたりまえだけど守らないといけない  無駄な責務があると再利用できない   達成することで再利用可能な素晴らしいクラスが出来る 責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す  ダックタイピング
- ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る ロールを満たすことにより要件を満たす 実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂  依存関係について
- 依存関係の向きを考えるのは大切  例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い  さらに進めるとDI，コンストラクタの外から注入する     依存関係逆転の法則  低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成  domain層などの他の層に依存したくない層で有効      柔軟なインターフェース
- オブジェクトを信じるようなインターフェース  どのようにするかではなく、何をするかをメソッド名にする。宣言的に   安定していなければいけない  </description>
+継承は自動的にaメッセージを委譲する 便利だが依存関係は強い 親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する 継承は階層構造を生み出す ポリモーフィズムを実現する これまた便利だが依存関係は強い コンポジションは自動的に委譲しない 必要に応じて集約クラスで操る必要がある 依存は継承より少ない 単一責任について
+あたりまえだけど守らないといけない 無駄な責務があると再利用できない 達成することで再利用可能な素晴らしいクラスが出来る 責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す ダックタイピング
+ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る ロールを満たすことにより要件を満たす 実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂 依存関係について
+依存関係の向きを考えるのは大切 例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い さらに進めるとDI，コンストラクタの外から注入する 依存関係逆転の法則 低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成 domain層などの他の層に依存したくない層で有効 柔軟なインターフェース
+オブジェクトを信じるようなインターフェース どのようにするかではなく、何をするかをメソッド名にする。宣言的に 安定していなければいけない </description>
     </item>
     
     <item>
@@ -87,7 +89,7 @@ sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data c
       <guid>https://satoshun.github.io/2018/03/android-architecture-started/</guid>
       <description>Androidアプリ設計パターン入門を読んだのでざっくりと感想。
 https://peaks.cc/books/architecture_patterns
-感想  MVP  PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう  PresenterでView、Modelが何を出来るかを知らなければならない   Contractみたいなインタフェースを切るのは好き  それを見ただけで何をそのページでやっているのかが掴めるので   PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう   MVVM  個人的にはMVPより好き  ViewModelがViewの参照を持たなくて良いので少しスッキリする  ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等     Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う  DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう     Flux  単一方向データフローは凄い良いと思う  単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴   ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い FluxもAACとの相性は良いと思う   負債の話  負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った   メモ  データ層の抽象化に関してはRepository的なものを作るで良さそう データ側はRx、UI側に反映する時はLiveDataが良さそう    </description>
+感想 MVP PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう PresenterでView、Modelが何を出来るかを知らなければならない Contractみたいなインタフェースを切るのは好き それを見ただけで何をそのページでやっているのかが掴めるので PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう MVVM 個人的にはMVPより好き ViewModelがViewの参照を持たなくて良いので少しスッキリする ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等 Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう Flux 単一方向データフローは凄い良いと思う 単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴 ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い FluxもAACとの相性は良いと思う 負債の話 負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った メモ データ層の抽象化に関してはRepository的なものを作るで良さそう データ側はRx、UI側に反映する時はLiveDataが良さそう </description>
     </item>
     
     <item>
@@ -101,7 +103,8 @@ Repository層とは? data層を抽象する層. Repositoryではアプリのキ�
 具体的には, Repositoryは, remote dataオブジェクトと, local dataオブジェクトの2つのオブジェクトに依存するようにし, どこにキャッシュされるかはlocal dataオブジェクトに従う. こうすることで, Repositoryはどこにデータが保存されているかを気にしなくて良い. あくまでRepositoryはどこのdataオブジェクトからデータを取ってくるのかを決定する.
 また, Repositoryは基本的にApplicationのライフサイクルに連動し, SingletonでActivity間でデータの共有を効率的に行える. 例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)
 RxJavaとともに RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.
-@NonNull @Override public Observable&amp;lt;User&amp;gt; getUser(int id) { return localDataSource.getUser(id)  .onErrorResumeNext(remoteDataSource.getUser(id))  .doOnNext(new Action1&amp;lt;User&amp;gt;() {  @Override public void call(User user) {  localDataSource.saveUser(user);  }  })  .subscribeOn(Schedulers.io())  .observeOn(AndroidSchedulers.mainThread()); } 上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります. クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.</description>
+@NonNull @Override public Observable&amp;lt;User&amp;gt; getUser(int id) { return localDataSource.getUser(id) .onErrorResumeNext(remoteDataSource.getUser(id)) .doOnNext(new Action1&amp;lt;User&amp;gt;() { @Override public void call(User user) { localDataSource.saveUser(user); } }) .subscribeOn(Schedulers.io()) .observeOn(AndroidSchedulers.mainThread()); } 上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります. クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.
+まとめ ざっくりと書きました. キャッシュの抽象化(Repository層) + RxJavaは非常に強力で, とても良いパターンだと思っています. クライアント(ContrllerやPresenter)のコードもきれいになり, またActivity間のデータの共有もスムーズに行うことができるので(最悪キャッシュがリリースされていてもRemoteから取得してくれる), Androidの開発に向いているパターンでもあると思います.</description>
     </item>
     
   </channel>

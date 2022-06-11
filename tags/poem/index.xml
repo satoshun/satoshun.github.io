@@ -32,7 +32,7 @@ to be continued.</description>
 問題 Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。
 val userName = dataSource.getUserName() 型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。
 Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。
-まとめ  ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする  </description>
+まとめ ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする </description>
     </item>
     
     <item>
@@ -43,8 +43,9 @@ Kotlinにおいて型宣言を書くことはコメントを書くことに等�
       <guid>https://satoshun.github.io/2018/04/about_writing_comment/</guid>
       <description>ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。
 例えば以下のようなActivityがあるとします。
-class HogeActivity : Activity() {  ...  ...   private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {  return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)  } } これを見た時、「なんで loginCount &amp;lt;= 100にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。
-class HogeActivity : Activity() {  private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() {  // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない  return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100)  } } 「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。</description>
+class HogeActivity : Activity() { ... ... private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } } これを見た時、「なんで loginCount &amp;lt;= 100にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。
+class HogeActivity : Activity() { private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } } 「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。
+ただ、自分の考えでは上記のコードは根本的に間違っていると思っていて、そもそもActivityでコメントが必要なほど複雑なことをしているのが問題だと思います。 なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。なんでも出来る層でいろいろやってしまうと、 いわゆるfat activity問題が起こってしまいます。</description>
     </item>
     
   </channel>

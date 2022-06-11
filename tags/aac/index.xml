@@ -16,8 +16,9 @@
       <guid>https://satoshun.github.io/2018/05/singlelivedata/</guid>
       <description>LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。 適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。
 定義は以下のようになります。
-fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; {  // skip用の初期値を入れておく  return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null } }  fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) {  // 最初の値は常にskipすることで、キャッシュを無視する  val firstIgnore = AtomicBoolean(true)  this.observe(owner, Observer {  if (firstIgnore.getAndSet(false)) return@Observer  observer(it)  }) } 使う時はこんな感じで使います。
-// TestViewModel.kt class TestViewModel: ViewModel() {  val errorEvent = singleLiveData&amp;lt;String&amp;gt;() }  // TestActivity.kt testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java) testViewModel.</description>
+fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; { // skip用の初期値を入れておく return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null } } fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) { // 最初の値は常にskipすることで、キャッシュを無視する val firstIgnore = AtomicBoolean(true) this.observe(owner, Observer { if (firstIgnore.getAndSet(false)) return@Observer observer(it) }) } 使う時はこんな感じで使います。
+// TestViewModel.kt class TestViewModel: ViewModel() { val errorEvent = singleLiveData&amp;lt;String&amp;gt;() } // TestActivity.kt testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java) testViewModel.errorEvent.observeSingle(activity) { Log.d(&amp;#34;one&amp;#34;, it.toString()) } メリットはサブクラスを作らずに済むところです。
+参考 https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java https://medium.com/@star_zero/singleliveevent-livedata-with-multi-observers-384e17c60a16 </description>
     </item>
     
   </channel>

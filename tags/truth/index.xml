@@ -16,7 +16,7 @@
       <guid>https://satoshun.github.io/2018/12/truth_getting_started/</guid>
       <description>TruthはGoogleが開発をしているテストアサーションライブラリです。
 従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。
- readableにアサーションが書ける デフォルトの失敗メッセージがわかりやすい  それぞれについて説明していきます。
+readableにアサーションが書ける デフォルトの失敗メッセージがわかりやすい それぞれについて説明していきます。
 readableにアサーションが書ける ドキュメントのbenefitにあるサンプルを取り上げ説明します。 http://google.github.io/truth/benefits
 まず従来のJUnitスタイルを使って書きます。
 Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName(); assertFalse(middleName.isPresent()); assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）
@@ -33,7 +33,8 @@ assertThat(googleColors).contains(PINK); &amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN
 hasComponent hasComponentClass hasComponentPackage hasPackage hasAction hasNoAction hasData hasType extras categories hasFlags Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。
 AssertJとの比較 これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison
 現状の主だった差分は次のようになっています。
- Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある TruthはChainスタイルで書くことを想定していない  これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない    多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。</description>
+Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある TruthはChainスタイルで書くことを想定していない これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない 多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。
+まとめ Truthを使うと失敗メッセージがわかりやすくなる、便利!</description>
     </item>
     
   </channel>

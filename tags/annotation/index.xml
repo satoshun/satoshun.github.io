@@ -15,8 +15,8 @@
       
       <guid>https://satoshun.github.io/2019/07/jetpack-annotation-restrict-to/</guid>
       <description>androidx.annotation:annotationには、RestrictToアノテーションクラスが定義されています。 このアノテーションは次の用途を持ちます。
- Denotes that the annotated element should only be accessed from within a specific scope (as defined by Scope).
- 指定したScope以外からのアクセスを制限するアノテーションです。
+Denotes that the annotated element should only be accessed from within a specific scope (as defined by Scope).
+指定したScope以外からのアクセスを制限するアノテーションです。
 この記事では、このRestrictToアノテーションがついたクラスに様々な場所からアクセスしたときに、どのようにIDE上で警告が出るかについて見ていきます。
 また、Android Studio 3.5.0-beta05で検証しました。
 この記事内に出てくるRestrictTo関連のコードは以下のライセンスに従います。

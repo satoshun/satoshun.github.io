@@ -16,12 +16,15 @@
       <guid>https://satoshun.github.io/2018/12/view_lifecycle/</guid>
       <description>この記事ではFragmentでLiveDataにObserverを登録するときはFragment#getViewLifecycleを使うと良いという話をします。
 まず、Fragmentのおおまかなライフサイクルは次のようになっています。
- onAttach onCreate  onCreateView onViewCreated  &amp;hellip;   onDestoryView   onDestroy onDetach  ここで重要なのは、onDestroyが呼ばれることなく、複数回onCreateViewが呼ばれる可能性がある点です。
+onAttach onCreate onCreateView onViewCreated &amp;hellip; onDestoryView onDestroy onDetach ここで重要なのは、onDestroyが呼ばれることなく、複数回onCreateViewが呼ばれる可能性がある点です。
 例えば、次のコードは間違っている可能性があります。
-class MainFragment: Fragment() {  ...  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)  viewModel.data.observe(this, Observer {  ...  })  } } なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
+class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) viewModel.data.observe(this, Observer { ... }) } } なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。 このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。 しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。
 前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。 よって、FragmentにはView用のLifecycleが用意されています。それが、Fragment#getViewLifecycleです。
 前述のコードは次のように書くことが出来ます。
-class MainFragment: Fragment() {  ...  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {  super.onViewCreated(view, savedInstanceState)  // ViewのLifecycleOwnerを渡す  viewModel.</description>
+class MainFragment: Fragment() { ... override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState) // ViewのLifecycleOwnerを渡す viewModel.data.observe(viewLifecycleOwner, Observer { ... }) } } このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！
+補足1 Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。 それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。
+補足2 Observerの重複登録問題はattach/detachを繰り返す場合におこります。 サンプルコードは次のようになります。
+while (true) { delay(3000) supportFragmentManager.</description>
     </item>
     
     <item>
@@ -31,13 +34,13 @@ class MainFragment: Fragment() {  ...  override fun onViewCreated(view: View, sa
       
       <guid>https://satoshun.github.io/2018/12/livedata_helper/</guid>
       <description>LiveDataの値を更新したい時、MutableLiveDataを使うのが一般的だと思います。
-class MainViewModel {  val hoge = MutableLiveData&amp;lt;Int&amp;gt;() } この書き方だと、外のクラスから値を更新することが可能です。
-val viewModel = MainViewModel()  // ok viewModel.hoge.postValue(10000) 外のクラスからは更新出来ないようにするためにはLiveDataに型変換する必要があります。
+class MainViewModel { val hoge = MutableLiveData&amp;lt;Int&amp;gt;() } この書き方だと、外のクラスから値を更新することが可能です。
+val viewModel = MainViewModel() // ok viewModel.hoge.postValue(10000) 外のクラスからは更新出来ないようにするためにはLiveDataに型変換する必要があります。
 例えば次のように書きます。
-class MainViewModel {  private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;()  val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換 } こうすることで、外のクラスからはMutableLiveDataが直接見えなくなり、明示的に型変換をしない限りLiveDataの値を更新できなくなります。
+class MainViewModel { private val _hoge = MutableLiveData&amp;lt;Int&amp;gt;() val hoge: LiveData&amp;lt;Int&amp;gt; = _hoge // ここでLiveDataに型変換 } こうすることで、外のクラスからはMutableLiveDataが直接見えなくなり、明示的に型変換をしない限りLiveDataの値を更新できなくなります。
 ただこの書き方はフィールドの定義が増えるのでとてもめんどくさいです。 なので、それの解決策を以下で紹介します。
 その1 まずコードをのせます。
-abstract class ViewModel2 {  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) {  postValue(value)  }   protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) {  setValue(value)  } } // ViewModel2と同じパッケージに定義 public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; {  @Override  protected void postValue(T value) {  super.</description>
+abstract class ViewModel2 { protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.postValue(value: T) { postValue(value) } protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&amp;lt;T&amp;gt;.setValue(value: T) { setValue(value) } } // ViewModel2と同じパッケージに定義 public class ViewModelLiveData2&amp;lt;T&amp;gt; extends LiveData&amp;lt;T&amp;gt; { @Override protected void postValue(T value) { super.</description>
     </item>
     
     <item>
@@ -46,12 +49,12 @@ abstract class ViewModel2 {  protected fun &amp;lt;T&amp;gt; ViewModelLiveData2&
       <pubDate>Wed, 06 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>https://satoshun.github.io/2017/12/livedata-postvalue-unsafe/</guid>
-      <description>結論  LiveData.postValueを短い間に複数回コールすると最後の値しかObseverに流れてこないことがある  背景 RxJavaのSubjectの代替としてMutableLiveData(postValueとsetValueがpublicになっている)を使っている部分があり、短い間に2回コールされたとき、全ての値が流れて欲しかったが何故か1回しか叩かれていなかった。 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。
+      <description>結論 LiveData.postValueを短い間に複数回コールすると最後の値しかObseverに流れてこないことがある 背景 RxJavaのSubjectの代替としてMutableLiveData(postValueとsetValueがpublicになっている)を使っている部分があり、短い間に2回コールされたとき、全ての値が流れて欲しかったが何故か1回しか叩かれていなかった。 どこに原因があるか調査したところ、どうもpostValueメソッドの仕様(LiveDataクラス全体の仕様?)的に短い間に複数回コールされた場合は、最後にpostValueした値のみをpostするようになっていた。
 実装詳細 LiveDataのpostValueのコードは以下のようになっています(v1.0.0)
-protected void postValue(T value) {  boolean postTask;  synchronized (mDataLock) {  postTask = mPendingData == NOT_SET;  mPendingData = value;  }  if (!postTask) {  return;  }  ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable); } postValueメソッドでは
-  mPendingDataフィールドにObserverに渡すデータをセットする   メインスレッドでmPostValueRunnableを実行する (ただしmPendingDataにまだ以前のデータが残っていたら、以前のデータを更新する)  といったことをやっています。
+protected void postValue(T value) { boolean postTask; synchronized (mDataLock) { postTask = mPendingData == NOT_SET; mPendingData = value; } if (!postTask) { return; } ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable); } postValueメソッドでは
+mPendingDataフィールドにObserverに渡すデータをセットする メインスレッドでmPostValueRunnableを実行する (ただしmPendingDataにまだ以前のデータが残っていたら、以前のデータを更新する) といったことをやっています。
 このコードを見て分かる通り、前にセットしたmPendingDataがObserverに渡される前に、新しい値で上書きされる可能性があることが分かります。 よって、短い間に複数回のpostValueをコールすると最後の値のみしかObserverに流れてこない可能性があります。
-まとめ  RxJavaのSubjectのように、全ての値を流す動作を意図しているとハマる そもそもLiveDataは最新のViewの状態を保持する用途だと思うので、短い間に複数回コールされたら、最後の値のみを流すのは正しい。LiveDataは悪くない。悪いのは俺。  </description>
+まとめ RxJavaのSubjectのように、全ての値を流す動作を意図しているとハマる そもそもLiveDataは最新のViewの状態を保持する用途だと思うので、短い間に複数回コールされたら、最後の値のみを流すのは正しい。LiveDataは悪くない。悪いのは俺。 </description>
     </item>
     
   </channel>

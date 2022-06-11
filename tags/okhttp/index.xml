@@ -19,7 +19,7 @@
 checkNotNullを使うかどうか could also be code no preference myself
 Kotlinの標準ライブラリに、checkNotNullがあります。 これは、値がnullならIllegalStateException例外を投げるものです。
 以下のコードは同じ意味を持ちます。
-val state = someState ?: throw IllegalStateException(&amp;#34;State must be set beforehand&amp;#34;)  val state = checkNotNull(someState) { &amp;#34;State must be set beforehand&amp;#34; } ただ、no preference myselfと言っている通り、使うかどうかはプロジェクトで分かれそうです。 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。
+val state = someState ?: throw IllegalStateException(&amp;#34;State must be set beforehand&amp;#34;) val state = checkNotNull(someState) { &amp;#34;State must be set beforehand&amp;#34; } ただ、no preference myselfと言っている通り、使うかどうかはプロジェクトで分かれそうです。 事前に使うかどうかを、決めておくと揉めなく良さそうだと思いました。
 命名はto***が慣用的 idiomatic naming would be toUrl on the Kotlin side
 OkHttpでは、HttpUrlをURLに変換するためのメソッドとしてfun url(): URLが定義されています。しかし、fun toUrl(): URLのほうがKotlinっぽいよと指摘がありました。
 確かに、言われてみるとAtoBクラス変換のメソッド名は、to***が多い気がします。ただし、今回は下位互換を保つために、一旦この修正は入りませんでした。
@@ -35,8 +35,8 @@ constを使うと、Compile Time Constantsとなり、付けない場合に比�
       <guid>https://satoshun.github.io/2017/08/rx-okhttp-401/</guid>
       <description>(この記事はRxJavaとOkHttpを知っている前提で進めていきます。またこの記事はRxJavaすごーいしたいだけの記事です。401のハンドリングのところは、RxJavaを使いたいだけのユースケースというか1例になります。)
 この記事のサンプルコードは ここ(Github)にあります。
- API周りの開発をしていて、401のときの処理をどうするかという永遠の課題があると思います。 クライアント側で頑張るとしたら以下の感じになるかなと思います。
- OkHttpのAuthenticatorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク OkHttpのInterceptorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク 各処理(例えばRxJavaのTransformerとか)に401用の処理を埋め込んで、retryを掛ける。  などがあるかなと(OkHttp、RxJavaを使うことを前提とする)
+API周りの開発をしていて、401のときの処理をどうするかという永遠の課題があると思います。 クライアント側で頑張るとしたら以下の感じになるかなと思います。
+OkHttpのAuthenticatorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク OkHttpのInterceptorを使い、そこで401のときのハンドリングをする。公式ドキュメントのリンク 各処理(例えばRxJavaのTransformerとか)に401用の処理を埋め込んで、retryを掛ける。 などがあるかなと(OkHttp、RxJavaを使うことを前提とする)
 このブログではOkHttpのAuthenticatorを使う方法で401の処理をいい感じにしたいと思います。
 またrefresh tokenは非同期、APIリクエストが必要であるとします。擬似コードはこんな感じです。
 fun refreshToken(): Observable&amp;lt;String&amp;gt; { return Observable.just(Credentials.basic(&amp;#34;sato&amp;#34;, &amp;#34;passwordhoge&amp;#34;)) .doOnNext { println(&amp;#34;GET credential: $it&amp;#34;) } // Log出力 .delay(2000, TimeUnit.MILLISECONDS) } 時間が掛かるんだなあくらいに思って下さい。
@@ -44,7 +44,7 @@ fun refreshToken(): Observable&amp;lt;String&amp;gt; { return Observable.just(Cr
 ただここで1つ問題があります。それは、APIリクエストは並列に行われるということです。ということは、何も考えないとrefresh tokenが複数回叩かれてしまいます。なのでrefresh tokenをしているときは、後続の401はそれを待つようにしないといけません。
 愚直に表現するなら、refresh tokenをしていますよフラグをどこかに立てておいて、それがtrueなら待つ。falseならrefersh tokenをして、結果を待つといった処理になります。 並列にリクエストが行われるとしたら、マルチスレッドからコールされるのでsynchorizeなどの制御をする必要があり、めっちゃムズい。
 RxJavaを使ってみる 上記の縛りをRxJavaのpublish + refCountを使うとめっちゃいい感じに表現できます。
-private val authenticator: Authenticator = object : Authenticator {   // ここがポイント。publishとrefCountを使う。  private val tokenStream = refreshToken().publish().refCount()   // これだと駄目  // private val tokenStream = refreshToken()   // ここは並列に呼ばれる  override fun authenticate(route: Route, response: Response): Request?</description>
+private val authenticator: Authenticator = object : Authenticator { // ここがポイント。publishとrefCountを使う。 private val tokenStream = refreshToken().publish().refCount() // これだと駄目 // private val tokenStream = refreshToken() // ここは並列に呼ばれる override fun authenticate(route: Route, response: Response): Request?</description>
     </item>
     
   </channel>

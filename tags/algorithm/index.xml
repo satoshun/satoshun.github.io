@@ -17,7 +17,7 @@
       <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
-package main  import &amp;#34;fmt&amp;#34;  type fibonacci int  func (self fibonacci) value() chan int {  ch := make(chan int, 1)  a, b := 0, 1  index := 0  go func() {  defer close(ch)  for {  if int(self) &amp;lt; index {  break  }  a, b = b, a+b  index++  ch &amp;lt;- a  }  }()   return ch }  func main() {  var i fibonacci  i = 10  for v := range i.</description>
+package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
     
   </channel>

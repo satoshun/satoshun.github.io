@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 06 Mar 2022 12:12:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/compose/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Jun 2022 03:03:47 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/compose/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dev版のJetpack Composeを使って、新しいKotlinに対応する</title>
+      <link>https://satoshun.github.io/2022/06/jetpack-compose-dev-compiler/</link>
+      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/06/jetpack-compose-dev-compiler/</guid>
+      <description>Jetpack Composeは、特定のKotlinのバージョンと結びついており、Kotlinをアップデートするには、対応するJetpack Composeのバージョンに合わせる必要があります。 しかし、Jetpack Composeは、やや遅れて最新のKotlinへのサポートが入るので、すぐに最新のKotlinを試せない現状があります。
+ただ、devバージョンのJetpack Compose Compilerを指定することで、Kotlinを新しいバージョンに上げることが出来ます。
+devバージョンのJetpack Compose Compilerは、下記のリンクから探すことができます。
+https://androidx.dev/storage/compose-compiler/repository 例えば、Kotlin 1.7.0に対応した、Jetpack Compose Compilerは次のように使うことができます。
+// build.gradle repositories { maven { url &amp;#34;https://androidx.dev/storage/compose-compiler/repository/&amp;#34; } } // app/build.gradle android { composeOptions { kotlinCompilerExtensionVersion &amp;#34;1.2.0-dev-k1.7.0-53370d83bb1&amp;#34; } } これで、Kotlinを1.7.0に上げることが出来ます。
+注意 前述したリンクにも書いてあるんですが、devバージョンなので不具合がある可能性が高いです。なので、あくまでテスト、サンプルでのみ使ったほうが無難だと思います。</description>
+    </item>
+    
     <item>
       <title>Jetpack Compose: debugInspectorInfoを使って、デバッグを少し楽にする</title>
       <link>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</link>
@@ -17,10 +31,10 @@
       <description>Android Studioで、Layout Inspector を使うことで、レイアウトの配置や、実際にどのような値がセットされているかの詳細を見る事ができます。
 Jetpack Composeでは、そのLayout Inspectorに情報を渡すことができます。
 どのように渡すかを Modifier.border を例にして説明します。まず、Modifier.borderを次のように使ってみます。
-Surface(  modifier = Modifier  .border(width = 2.dp, color = Color.Cyan) ) { ... } そして、Layout Inspectorで、このSurfaceの中身を見てみます。
- modifierの中に、borderがあり、詳細な情報があることが分かります。
+Surface( modifier = Modifier .border(width = 2.dp, color = Color.Cyan) ) { ... } そして、Layout Inspectorで、このSurfaceの中身を見てみます。
+modifierの中に、borderがあり、詳細な情報があることが分かります。
 では次に、Modifier.border ではどのようにして、Layout Inspectorに値をセットしているかを見ていきます。
-fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier = composed(  factory = { ... },  inspectorInfo = debugInspectorInfo {  name = &amp;#34;border&amp;#34;  properties[&amp;#34;width&amp;#34;] = width  if (brush is SolidColor) {  properties[&amp;#34;color&amp;#34;] = brush.</description>
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier = composed( factory = { ... }, inspectorInfo = debugInspectorInfo { name = &amp;#34;border&amp;#34; properties[&amp;#34;width&amp;#34;] = width if (brush is SolidColor) { properties[&amp;#34;color&amp;#34;] = brush.value value = brush.value } else { properties[&amp;#34;brush&amp;#34;] = brush } properties[&amp;#34;shape&amp;#34;] = shape } ) composedメソッドの、inspectorInfo引数から、debugInspectorInfoメソッドを介してなんか色々やっていることが分かります。 debugInspectorInfoメソッドは、InspectorInfoをレシーバーとして受け取ることができ、InspectorInfoを介してnameとpropertiesをセットすることができます。コードを見ると、nameに&amp;quot;border&amp;quot;、propertiesに&amp;quot;width&amp;quot;などをセットしていることが分かります。 これを実行すると、上の画像のようにLayout Inspector上に情報を出力することができます。</description>
     </item>
     
     <item>
@@ -32,13 +46,13 @@ fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier = composed(
       <description>(この記事は、ほぼ、Testify のREADMEに書いてあることをやっているだけです)
 Testify を使って、Jetpack Composeのスクリーンショットテストをしてみます。
 セットアップ READMEに記してある通り、build.gradleに下記の設定を追加します。
-dependencies {  classpath &amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34; }  apply plugin: &amp;#39;com.shopify.testify&amp;#39; これで完了です。
+dependencies { classpath &amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34; } apply plugin: &amp;#39;com.shopify.testify&amp;#39; これで完了です。
 テストを書いてみる JUnit4ベースのScreenshotRule と、ScreenshotInstrumentation アノテーションを使います。
-class AppActivityTest {  @get:Rule val rule = ScreenshotRule(TestActivity::class.java)   @ScreenshotInstrumentation  @Test  fun test() {  rule.activity.runOnUiThread {  rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント  }  Thread.sleep(500) // 一応  rule.assertSame()  } } こんな感じでテストを記述できます。ScreenshotRule を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
+class AppActivityTest { @get:Rule val rule = ScreenshotRule(TestActivity::class.java) @ScreenshotInstrumentation @Test fun test() { rule.activity.runOnUiThread { rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント } Thread.sleep(500) // 一応 rule.assertSame() } } こんな感じでテストを記述できます。ScreenshotRule を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
 次にテストの実行をします。まず下準備として、baseとなる画像を生成します。
 ./gradlew screenshotRecord これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。
 次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。
-./gradlew screenshotTest ------------------------------------------------------------ Run the Testify screenshot tests ------------------------------------------------------------ com.</description>
+./gradlew screenshotTest ------------------------------------------------------------ Run the Testify screenshot tests ------------------------------------------------------------ com.github.satoshun.example.AppActivityTest:. Time: 2.264 OK (1 test) 失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。</description>
     </item>
     
     <item>
@@ -62,9 +76,9 @@ Copyright 2014 Google Inc. All rights reserved. Licensed under the Apache Licens
       <description>この記事では、PreviewParameterアノテーションを使って複数のプレビューを出す方法について説明します。
 Previewアノテーションについて Jetpack Composeでは、@Previewを使うことでプレビューを表示することが出来ます。
 例えば、TestScreenのプレビューは次のように定義することが出来ます。
-@Composable fun TestScreen(  user: User,  count: Int ) {  ... }  @Preview(&amp;#34;test screen&amp;#34;) @Composable fun PreviewTestScreen() {  TestScreen(user = User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;), count = 10) } ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、@Previewを複数定義することですが、@PreviewParameterを使うことでよりスマートに書くことが出来ます。
+@Composable fun TestScreen( user: User, count: Int ) { ... } @Preview(&amp;#34;test screen&amp;#34;) @Composable fun PreviewTestScreen() { TestScreen(user = User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;), count = 10) } ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、@Previewを複数定義することですが、@PreviewParameterを使うことでよりスマートに書くことが出来ます。
 具体的には、次のように書くことが出来ます。
-class PreviewUserProvider : PreviewParameterProvider&amp;lt;User&amp;gt; {  override val values: Sequence&amp;lt;User&amp;gt;  get() = sequenceOf(  User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;),  User(id = &amp;#34;2&amp;#34;, name = &amp;#34;スズキ&amp;#34;)  ) }  @Preview(&amp;#34;test screen parameter&amp;#34;) @Composable fun PreviewParameterTestScreen(  @PreviewParameter(PreviewUserProvider::class) user: User ) {  TestScreen(user = user, count = 10) } 最初に、PreviewParameterProviderインターフェースを実装します。PreviewParameterProviderでは、プレビューしたいインスタンス（パラメータ）を定義してあげます。 実装したクラスを @PreviewParameter(PreviewUserProvider::class) と指定することで、プレビューを複数出すことが出来ます。</description>
+class PreviewUserProvider : PreviewParameterProvider&amp;lt;User&amp;gt; { override val values: Sequence&amp;lt;User&amp;gt; get() = sequenceOf( User(id = &amp;#34;1&amp;#34;, name = &amp;#34;tom&amp;#34;), User(id = &amp;#34;2&amp;#34;, name = &amp;#34;スズキ&amp;#34;) ) } @Preview(&amp;#34;test screen parameter&amp;#34;) @Composable fun PreviewParameterTestScreen( @PreviewParameter(PreviewUserProvider::class) user: User ) { TestScreen(user = user, count = 10) } 最初に、PreviewParameterProviderインターフェースを実装します。PreviewParameterProviderでは、プレビューしたいインスタンス（パラメータ）を定義してあげます。 実装したクラスを @PreviewParameter(PreviewUserProvider::class) と指定することで、プレビューを複数出すことが出来ます。</description>
     </item>
     
     <item>
@@ -76,15 +90,20 @@ class PreviewUserProvider : PreviewParameterProvider&amp;lt;User&amp;gt; {  over
       <description>こんにちわっふる🍰
 今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。
 前提・課題 一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。
-@Composable fun MyView(someData: Data) {  ... } これがシンプル かつ 分かりやすい方法です。 しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。
+@Composable fun MyView(someData: Data) { ... } これがシンプル かつ 分かりやすい方法です。 しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。
 ここで、Ambientを使うとすっきりと書くことが出来ます。
 Ambientを使う まず、最初にAmbientの定義をします。Ambientの定義はambientOfメソッドから行えます。
 今回は例として、ExampleViewModelをAmbientで定義して、コンポーネントから使用します。
 まず、定義を行います。
 val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;() これで定義は完了です。ambientOfメソッドを呼び出すだけです。
 次に、これをコンポーネントから使ってみます。
-val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()  @Composable fun ExampleApp() {  val viewModel = ExampleViewModel()   Providers(exampleViewModelAmbient provides viewModel) {  MyView()  } }  @Composable private fun MyView() {  val viewModel = exampleViewModelAmbient.current  ... } これで完了です。コードを説明してきます。
- Providers(exampleViewModelAmbient provides viewModel)</description>
+val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;() @Composable fun ExampleApp() { val viewModel = ExampleViewModel() Providers(exampleViewModelAmbient provides viewModel) { MyView() } } @Composable private fun MyView() { val viewModel = exampleViewModelAmbient.current ... } これで完了です。コードを説明してきます。
+Providers(exampleViewModelAmbient provides viewModel)
+Ambientに対して値を注入しています。この場合、定義したexampleViewModelAmbientに、ExampleViewModelのインスタンスを注入、セットしています。
+val viewModel = exampleViewModelAmbient.current
+注入した値は .current から取得することが出来ます。この場合、上記で生成したExampleViewModelのインスタンスの値を取得することが出来ます。
+ambientOfで定義して、Providersで値をセットすることで、コンポーネントに値を渡すことが可能になります。
+注意点 注意としては、Providersで囲っていない場合にエラーになる点です。例えば、次のように書くことは出来ません。</description>
     </item>
     
     <item>
@@ -97,11 +116,11 @@ val exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()  @Comp
 state まず、stateメソッドの紹介をします。
 stateメソッドを使うと値を監視することができ、値が変更されたときに自動で再構成（recomposition）してくれます。
 次のように、Viewの状態を表すのに便利に使えます。
-@Composable fun MyCheckbox() {  // 初期値false  var checked by state { false }   Checkbox(  checked = checked,  onCheckedChange = {  // stateで定義した値を更新すると、自動でUIの再構成（recomposition)が走る  checked = it  }  ) } state { 初期値 }って感じで定義して、その値を更新するとUIの再構成をしてくれます。
+@Composable fun MyCheckbox() { // 初期値false var checked by state { false } Checkbox( checked = checked, onCheckedChange = { // stateで定義した値を更新すると、自動でUIの再構成（recomposition)が走る checked = it } ) } state { 初期値 }って感じで定義して、その値を更新するとUIの再構成をしてくれます。
 この例の場合、Checkboxがクリックされると、checkedの状態が変わり、Viewが再構成されます。
 Model 次にModelです。Modelはアノテーションで定義されています。 Modelアノテーションをつけたクラスのプロパティが監視対象になり、プロパティが更新されたときに自動で再構成してくれます。
 例えば、クリックされたカウントを保持するModelは次のように作ります。
-@Model class Count(  var count: Int = 0 )  @Composable fun MyText() {  // Modelの定義。引数から渡すこともある  val count = Count()   Ripple(bounded = false) {  Clickable(onClick = {  // Modelの値を更新すると、自動で再構成（recomposition)が走る  count.</description>
+@Model class Count( var count: Int = 0 ) @Composable fun MyText() { // Modelの定義。引数から渡すこともある val count = Count() Ripple(bounded = false) { Clickable(onClick = { // Modelの値を更新すると、自動で再構成（recomposition)が走る count.</description>
     </item>
     
   </channel>

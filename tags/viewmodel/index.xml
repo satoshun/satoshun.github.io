@@ -18,11 +18,13 @@
 MVVM + Repositoryを想定しており、UIに反映する部分はLiveDataを考えています。
 環境はandroidx.lifecycle:lifecycle-viewmodel-ktxは2.2.0-rc03、Coroutineは1.3.3です。
 この記事は次の順序で進んでいきます。
- viewModelScopeとは? suspend関数をコールするとき Flowをコール/購読するとき  viewModelScopeとは? androidx.lifecycle:lifecycle-viewmodel-ktxライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。
+viewModelScopeとは? suspend関数をコールするとき Flowをコール/購読するとき viewModelScopeとは? androidx.lifecycle:lifecycle-viewmodel-ktxライブラリには、viewModelScope拡張関数が含まれています。定義は次の通りです。
 /** * [CoroutineScope] tied to this [ViewModel]. * This scope will be canceled when ViewModel will be cleared, i.e [ViewModel.onCleared] is called */ val ViewModel.viewModelScope: CoroutineScope ViewModelのライフサイクルに合わせたCoroutineScopeを取得することが出来ます。 このスコープ上でCoroutineを実行すれば、ViewModelの破棄に合わせて、自動でdisposeしてくれます。
 また、viewModelScopeは、メインスレッド上で実行してくれるため、LiveData.setValueを使い、値を更新します。
-val userLiveData = MutableLiveData(...)  viewModelScope.launch {  val user = userRepository.getUser() // 適当なsuspend関数をコール   userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う  // userLiveData.postValues(user) } viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
-suspend関数をコールするとき ネットワークコールなどのAPIは、suspendで表現することになると思います。 また、Retrofitでは2.</description>
+val userLiveData = MutableLiveData(...) viewModelScope.launch { val user = userRepository.getUser() // 適当なsuspend関数をコール userLiveData.setValue(user) // メインスレッド上で実行されることが保証されているのでsetValueを使う // userLiveData.postValues(user) } viewModelScopeを使っている場合は、postValueメソッドを使うケースは無いと思います。
+suspend関数をコールするとき ネットワークコールなどのAPIは、suspendで表現することになると思います。 また、Retrofitでは2.6.0から、suspendでAPIを定義出来るようになりました。またRoomでもsuspend関数を使うことが可能です。
+なので、Repository層での定義は次のようになります。
+interface UserApi { suspend fun getUser(): User } class UserRepository(private val retrofitService: UserApi) { suspend fun getUser() : User { val user = retrofitService.</description>
     </item>
     
     <item>
@@ -33,10 +35,10 @@ suspend関数をコールするとき ネットワークコールなどのAPIは
       <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</guid>
       <description>ViewModel + SavedStateでDaggerを使う方法を考えてみました。
 前提知識・課題 SavedStateを使う場合、ViewModelにSavedStateHandleインスタンスを渡さなければいけません。
-class MyViewModel(  private val state: SavedStateHandle ) : ViewModel() {  ... } SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
+class MyViewModel( private val state: SavedStateHandle ) : ViewModel() { ... } SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
 生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。
-// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this))  .get(MyViewModel::class.java) コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
-class TestViewModel(  private val state: SavedStateHandle,  private val name: String ) : ViewModel()  class TestViewModelFactory(  owner: SavedStateRegistryOwner,  defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) {  override fun &amp;lt;T : ViewModel&amp;gt; create(  key: String, modelClass: Class&amp;lt;T&amp;gt;,  handle: SavedStateHandle  ): T {  return TestViewModel(handle, &amp;#34;test&amp;#34;) as T  } }  // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this))  .</description>
+// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this)) .get(MyViewModel::class.java) コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
+class TestViewModel( private val state: SavedStateHandle, private val name: String ) : ViewModel() class TestViewModelFactory( owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) { override fun &amp;lt;T : ViewModel&amp;gt; create( key: String, modelClass: Class&amp;lt;T&amp;gt;, handle: SavedStateHandle ): T { return TestViewModel(handle, &amp;#34;test&amp;#34;) as T } } // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this)) .</description>
     </item>
     
     <item>
@@ -47,7 +49,7 @@ class TestViewModel(  private val state: SavedStateHandle,  private val name: St
       <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate/</guid>
       <description>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。
 この記事のソースコードは全て、下記のライセンスに従います。
-/*  * Copyright 2019 The Android Open Source Project  *  * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;);  * you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+/* * Copyright 2019 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
     </item>
     
   </channel>

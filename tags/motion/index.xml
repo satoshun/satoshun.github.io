@@ -15,7 +15,7 @@
       
       <guid>https://satoshun.github.io/2019/04/fab-motion-spec/</guid>
       <description>MotionSpecはAndroid material componentsに定義されている1クラスになります。 MotionSpecを使うことで、次のアニメーション属性をカスタマイズすることができます。
- startOffset duration interpolator repeatCount repeatMode  例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。
+startOffset duration interpolator repeatCount repeatMode 例えば、アニメーションを長くしたいときは、durationの値を長く、アニメーションの開始時間を遅らせたいなら、startOffsetの値を長くします。
 FloatingActionButtonを例に、実際にMotionSpecの値をいじってみます。
 最初にMotionSpec用のanimator XMLを定義する デフォルトのXMLをコピペしてきて、それをベースにカスタマイズするのが良いと思います。
 FloatingActionButton用のXMLはソースコードを読んでいくと、design_fab_show_motion_spec.xmlとdesign_fab_hide_motion_spec.xmlで定義されていることが分かります。MotionSpecは、show/hide用の2種類があり、カスタマイズしたいときは両方とも変更する必要があります。

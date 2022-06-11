@@ -19,11 +19,11 @@
 また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。
 Room in memory? Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。
 使い方は次のようになります。
-Room  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)  .build() in memoryを使う理由としては、
- ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない  になります。
+Room .inMemoryDatabaseBuilder(context, MyDatabase::class.java) .build() in memoryを使う理由としては、
+ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない になります。
 実装に入っていく では、実装の説明をしていきます。
 まずはActionをRoomのEntityとして定義します。
-sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction()  @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
+sealed class AuthorAction @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
     </item>
     
   </channel>

@@ -16,10 +16,10 @@
       <guid>https://satoshun.github.io/2016/08/go-struct-method/</guid>
       <description>Goでは, 宣言したtypeにメソッドを定義することが出来ます.
 典型的な用途としては, structでデータ型を宣言して, それにメソッドを定義する使い方だと思います.
-type Hoge struct { }  func (h Hoge) h1() {  fmt.Println(&amp;#34;called h1&amp;#34;) }  func (h *Hoge) h2() {  fmt.Println(&amp;#34;called h2&amp;#34;) } 通常メソッドを呼ぶ際は, インスタンスを作成し, そのインスタンスを通じてメソッドをコールします.
-h := Hoge{}  h.h1() // output: called h1 h.h2() // output: called h2 このさい, h1, h2メソッドを通じて, 暗黙的にインスタンスも渡されています.
+type Hoge struct { } func (h Hoge) h1() { fmt.Println(&amp;#34;called h1&amp;#34;) } func (h *Hoge) h2() { fmt.Println(&amp;#34;called h2&amp;#34;) } 通常メソッドを呼ぶ際は, インスタンスを作成し, そのインスタンスを通じてメソッドをコールします.
+h := Hoge{} h.h1() // output: called h1 h.h2() // output: called h2 このさい, h1, h2メソッドを通じて, 暗黙的にインスタンスも渡されています.
 暗黙的に渡している部分を, 明示的に渡すと下のようになります.
-h := Hoge{} Hoge.h1(h) // output: called h1 == h.h1() (*Hoge).h2(&amp;amp;h) // output: called h2 == h.h2()  (*Hoge).</description>
+h := Hoge{} Hoge.h1(h) // output: called h1 == h.h1() (*Hoge).h2(&amp;amp;h) // output: called h2 == h.h2() (*Hoge).h1(&amp;amp;h) // output: called h1 == h.</description>
     </item>
     
     <item>
@@ -46,13 +46,13 @@ package main import &amp;#34;fmt&amp;#34; type A struct { } // b is value receiv
       <guid>https://satoshun.github.io/2015/02/ansible-go_deploy/</guid>
       <description>ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.
 下の手順でデプロイを行っています.
- Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動)  実際のPlaybookは以下のようになります.
+Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動) 実際のPlaybookは以下のようになります.
 deploy.yml
 --- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_binary.yml - include: restart.yml 各タスクについて, 説明してきます.
 Linux-amd64用のバイナリ生成 Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.
 やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.
 Makefile
-get:  go get -v  build-amd64: get  GOOS=linux GOARCH=amd64 go build . build.yml
+get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build . build.yml
 --- - name: build src command: make build-amd64 chdir={{ local_home }} local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
     </item>
     
@@ -65,7 +65,7 @@ get:  go get -v  build-amd64: get  GOOS=linux GOARCH=amd64 go build . build.yml
       <description>Java, JavaScript, Go, Python, Bashでfibonacciを書いてみました.
 極力, その言語特有の機能を使って実装するようにしました.
 Go type fibonacci intで, int型にfibonacci用の関数を生やしました. せっかくなので, goroutineも使ってみました.
-package main  import &amp;#34;fmt&amp;#34;  type fibonacci int  func (self fibonacci) value() chan int {  ch := make(chan int, 1)  a, b := 0, 1  index := 0  go func() {  defer close(ch)  for {  if int(self) &amp;lt; index {  break  }  a, b = b, a+b  index++  ch &amp;lt;- a  }  }()   return ch }  func main() {  var i fibonacci  i = 10  for v := range i.</description>
+package main import &amp;#34;fmt&amp;#34; type fibonacci int func (self fibonacci) value() chan int { ch := make(chan int, 1) a, b := 0, 1 index := 0 go func() { defer close(ch) for { if int(self) &amp;lt; index { break } a, b = b, a+b index++ ch &amp;lt;- a } }() return ch } func main() { var i fibonacci i = 10 for v := range i.</description>
     </item>
     
   </channel>

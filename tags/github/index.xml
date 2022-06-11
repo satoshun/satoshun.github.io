@@ -45,9 +45,9 @@ switch type assertion 1つ目は, switch type assertionについてです. switc
       <guid>https://satoshun.github.io/2014/11/go-goji-code-reading/</guid>
       <description>Gojiでは, sinatraライクにURLマッチングをさせることが出来ます. この記事では, URLマッチングさせる部分のソースコードを解説していきます.
 まず, parsePatternメソッドから.
-func parsePattern(p interface{}) Pattern {  switch p.(type) {  case Pattern:  return p.(Pattern)  case *regexp.Regexp:  return parseRegexpPattern(p.(*regexp.Regexp))  case string:  return parseStringPattern(p.(string))  default:  log.Fatalf(&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;+  &amp;#34;regexp.Regexp, or a string.&amp;#34;, p)  }  panic(&amp;#34;log.Fatalf does not return&amp;#34;) } switch p.(type)で, 与えられたパターンの型によって処理を分岐させています. Pattern, *regexp.Regexp, stringの3パターンに対応しています.
+func parsePattern(p interface{}) Pattern { switch p.(type) { case Pattern: return p.(Pattern) case *regexp.Regexp: return parseRegexpPattern(p.(*regexp.Regexp)) case string: return parseStringPattern(p.(string)) default: log.Fatalf(&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;+ &amp;#34;regexp.Regexp, or a string.&amp;#34;, p) } panic(&amp;#34;log.Fatalf does not return&amp;#34;) } switch p.(type)で, 与えられたパターンの型によって処理を分岐させています. Pattern, *regexp.Regexp, stringの3パターンに対応しています.
 今回は, stringの場合, parseStringPatternの処理を見ていきます.
-parseStringPattern 中身 const bc = &amp;#34;/.</description>
+parseStringPattern 中身 const bc = &amp;#34;/.;,&amp;#34; var patternRe = regexp.MustCompile(`[` + bc + `]:([^` + bc + `]+)`) func parseStringPattern(s string) stringPattern { raw := s var wildcard bool if strings.</description>
     </item>
     
   </channel>

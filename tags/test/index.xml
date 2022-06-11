@@ -17,13 +17,13 @@
       <description>(この記事は、ほぼ、Testify のREADMEに書いてあることをやっているだけです)
 Testify を使って、Jetpack Composeのスクリーンショットテストをしてみます。
 セットアップ READMEに記してある通り、build.gradleに下記の設定を追加します。
-dependencies {  classpath &amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34; }  apply plugin: &amp;#39;com.shopify.testify&amp;#39; これで完了です。
+dependencies { classpath &amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34; } apply plugin: &amp;#39;com.shopify.testify&amp;#39; これで完了です。
 テストを書いてみる JUnit4ベースのScreenshotRule と、ScreenshotInstrumentation アノテーションを使います。
-class AppActivityTest {  @get:Rule val rule = ScreenshotRule(TestActivity::class.java)   @ScreenshotInstrumentation  @Test  fun test() {  rule.activity.runOnUiThread {  rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント  }  Thread.sleep(500) // 一応  rule.assertSame()  } } こんな感じでテストを記述できます。ScreenshotRule を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
+class AppActivityTest { @get:Rule val rule = ScreenshotRule(TestActivity::class.java) @ScreenshotInstrumentation @Test fun test() { rule.activity.runOnUiThread { rule.activity.setContent { AppContent() } // AppContent関数は適当なComposeコンポーネント } Thread.sleep(500) // 一応 rule.assertSame() } } こんな感じでテストを記述できます。ScreenshotRule を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。
 次にテストの実行をします。まず下準備として、baseとなる画像を生成します。
 ./gradlew screenshotRecord これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。
 次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。
-./gradlew screenshotTest ------------------------------------------------------------ Run the Testify screenshot tests ------------------------------------------------------------ com.</description>
+./gradlew screenshotTest ------------------------------------------------------------ Run the Testify screenshot tests ------------------------------------------------------------ com.github.satoshun.example.AppActivityTest:. Time: 2.264 OK (1 test) 失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。</description>
     </item>
     
     <item>
@@ -37,10 +37,13 @@ class AppActivityTest {  @get:Rule val rule = ScreenshotRule(TestActivity::class
 Paparazzi? square社がメンテしているライブラリです。これを使うことで、実機を使わずにスナップショットを取ることが出来ます。
 https://github.com/cashapp/paparazzi
 使い方 トップのbuild.gradleにGradleプラグインをセットします。
-buildscript {  repositories {  mavenCentral()  google()  }  dependencies {  classpath &amp;#39;app.cash.paparazzi:paparazzi-gradle-plugin:0.7.0&amp;#39;  } } ライブラリのbuild.gradleにプラグインを適用します。
+buildscript { repositories { mavenCentral() google() } dependencies { classpath &amp;#39;app.cash.paparazzi:paparazzi-gradle-plugin:0.7.0&amp;#39; } } ライブラリのbuild.gradleにプラグインを適用します。
 apply plugin: &amp;#39;app.cash.paparazzi&amp;#39; これで準備は完了です。
 次に、サンプルのレイアウトファイルとして、lib_item.xml を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。
-class LayoutTest {  @get:Rule  var paparazzi = Paparazzi(deviceConfig = DeviceConfig.NEXUS_5)   @Test  fun sample() {  val launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(R.layout.lib_item)  paparazzi.snapshot(view = launch)  } } Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。</description>
+class LayoutTest { @get:Rule var paparazzi = Paparazzi(deviceConfig = DeviceConfig.NEXUS_5) @Test fun sample() { val launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(R.layout.lib_item) paparazzi.snapshot(view = launch) } } Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。
+次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。
+実機を使わずに、スクリーンショットを取ることが出来ました。
+まとめ 結構お手軽に使うことが出来ました。まだAPIが安定していない?そうなので、プロダクションに入れるのは時期尚早かもしれませんが、安定してきたら、試してみるのも良さそうです(こなみかん)</description>
     </item>
     
     <item>
@@ -52,7 +55,7 @@ class LayoutTest {  @get:Rule  var paparazzi = Paparazzi(deviceConfig = DeviceCo
       <description>Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。 まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、AndroidJUnit4ランナーが使えるなど、かなりの部分が共通化出来ます。
 この記事では、ユニットテストでActivity.onActivityResultのテストをどこまでandroid testのように書けるかを検証します。
 テスト対象コード まず最初に、テスト対象コードは次のようになっています。
-class MainActivity : AppCompatActivity() {  ...  override fun onCreate(savedInstanceState: Bundle?) {  ...   button.setOnClickListener {  startActivityForResult(  Intent(this, Sub2Activity::class.java).apply {  putExtra(&amp;#34;fuga&amp;#34;, &amp;#34;hoge&amp;#34;)  },  1  )  }  }   override fun onActivityResult(  requestCode: Int,  resultCode: Int,  data: Intent?  ) {  super.onActivityResult(requestCode, resultCode, data)  if (requestCode == 1) {  if (resultCode == Activity.</description>
+class MainActivity : AppCompatActivity() { ... override fun onCreate(savedInstanceState: Bundle?) { ... button.setOnClickListener { startActivityForResult( Intent(this, Sub2Activity::class.java).apply { putExtra(&amp;#34;fuga&amp;#34;, &amp;#34;hoge&amp;#34;) }, 1 ) } } override fun onActivityResult( requestCode: Int, resultCode: Int, data: Intent? ) { super.onActivityResult(requestCode, resultCode, data) if (requestCode == 1) { if (resultCode == Activity.RESULT_OK) { val value = data!!.getIntExtra(&amp;#34;test&amp;#34;, -1) button.text = value.toString() } } } } class Sub2Activity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?</description>
     </item>
     
     <item>
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity() {  ...  override fun onCreate(savedInst
       <guid>https://satoshun.github.io/2018/12/truth_getting_started/</guid>
       <description>TruthはGoogleが開発をしているテストアサーションライブラリです。
 従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。
- readableにアサーションが書ける デフォルトの失敗メッセージがわかりやすい  それぞれについて説明していきます。
+readableにアサーションが書ける デフォルトの失敗メッセージがわかりやすい それぞれについて説明していきます。
 readableにアサーションが書ける ドキュメントのbenefitにあるサンプルを取り上げ説明します。 http://google.github.io/truth/benefits
 まず従来のJUnitスタイルを使って書きます。
 Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName(); assertFalse(middleName.isPresent()); assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）
@@ -80,7 +83,8 @@ assertThat(googleColors).contains(PINK); &amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN
 hasComponent hasComponentClass hasComponentPackage hasPackage hasAction hasNoAction hasData hasType extras categories hasFlags Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。
 AssertJとの比較 これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison
 現状の主だった差分は次のようになっています。
- Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある TruthはChainスタイルで書くことを想定していない  これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない    多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。</description>
+Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある TruthはChainスタイルで書くことを想定していない これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない 多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。
+まとめ Truthを使うと失敗メッセージがわかりやすくなる、便利!</description>
     </item>
     
     <item>
@@ -92,8 +96,8 @@ AssertJとの比較 これも公式ドキュメントにまとめてあります
       <description>MVP(Model-View-Presenter)アーキテクチャが流行ってますね!
 MVPはテスタブルであることが1つのウリとなっていますが, 実際にPresenterのユニットテストをどのようにして書くかを紹介したいと思います.
 今回のコードは https://github.com/satoshun-example/AndroidTestSample に上げてあるので, 良かったら見て下さい.
-使うツール/ライブラリ  JUnit4 Mockito  今回, テスト書きたい箇所 今回は, MainPresenterクラスをテストします.
-public class MainPresenter implements MainContract.Presenter {   @NonNull  private final UserDataSource dataSource;   @NonNull  private final MainContract.View view;   public MainPresenter(@NonNull UserDataSource dataSource, @NonNull MainContract.View view) {  this.dataSource = dataSource;  this.view = view;  }   @Override  public void start() {  view.showLoadingIndicator();   dataSource.</description>
+使うツール/ライブラリ JUnit4 Mockito 今回, テスト書きたい箇所 今回は, MainPresenterクラスをテストします.
+public class MainPresenter implements MainContract.Presenter { @NonNull private final UserDataSource dataSource; @NonNull private final MainContract.View view; public MainPresenter(@NonNull UserDataSource dataSource, @NonNull MainContract.View view) { this.dataSource = dataSource; this.view = view; } @Override public void start() { view.showLoadingIndicator(); dataSource.getUser(new UserDataSource.Callback() { @Override public void onUserLoaded(@NonNull User user) { view.hideLoadingIndicator(); view.showUser(user); } @Override public void onNotAvailable() { view.hideLoadingIndicator(); view.</description>
     </item>
     
     <item>
@@ -110,8 +114,8 @@ public class MainPresenter implements MainContract.Presenter {   @NonNull  priva
 数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.
 まず, テストケースの構成を考える 本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.
 一般的なテストケースは次の4つの要素に分割できます.
- 事前準備(setup) 実行(exercise) 宣言(assertion) 後処理(teardown)  これだと分かりにくいので, コードで説明すると,
-public class HogeTest {  List&amp;lt;String&amp;gt; lists;   @Before  public void setup() {  // 事前準備(setup)  lists = new ArrayList&amp;lt;&amp;gt;();  lists.add(&amp;#34;1&amp;#34;);  lists.add(&amp;#34;123&amp;#34;);  }   @After  public void teardown() {  // 後処理(teardown)  }   @Test  public void testGet() {  // 実行(exercise)  String actual = lists.</description>
+事前準備(setup) 実行(exercise) 宣言(assertion) 後処理(teardown) これだと分かりにくいので, コードで説明すると,
+public class HogeTest { List&amp;lt;String&amp;gt; lists; @Before public void setup() { // 事前準備(setup) lists = new ArrayList&amp;lt;&amp;gt;(); lists.add(&amp;#34;1&amp;#34;); lists.add(&amp;#34;123&amp;#34;); } @After public void teardown() { // 後処理(teardown) } @Test public void testGet() { // 実行(exercise) String actual = lists.</description>
     </item>
     
   </channel>

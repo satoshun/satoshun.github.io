@@ -20,7 +20,7 @@ ResultはSuccess T | Failure Throwableの2状態のいずれかを表現出来�
 基本的な使い方 使い方を見ていきます。まず、Resultインスタンスの生成は、success、failureメソッドを通して行います。
 val i: Result&amp;lt;Int&amp;gt; = Result.success(10) val t: Result&amp;lt;Int&amp;gt; = Result.failure(IOException()) また、runCatching関数を使うことで、failする可能性があるメソッドをResult型に丸めることも出来ます。runCathinngのほうがよく使うと思います。
 val a = runCatching { doSomeThing() } Resultに対する操作は以下のようにします。
-// successに対して操作 val i = Result.success(10) i.getOrNull() // 10 i.isSuccess // true i.exceptionOrNull() // null i.map { 10 * 10 }.getOrNull() // 100 i.onSuccess { println(&amp;#34;success&amp;#34;) }.onFailure { println(&amp;#34;failure&amp;#34;) } i.recover { 1111 }.getOrNull() // 10  // failureに対して操作 val t = Result.</description>
+// successに対して操作 val i = Result.success(10) i.getOrNull() // 10 i.isSuccess // true i.exceptionOrNull() // null i.map { 10 * 10 }.getOrNull() // 100 i.onSuccess { println(&amp;#34;success&amp;#34;) }.onFailure { println(&amp;#34;failure&amp;#34;) } i.recover { 1111 }.getOrNull() // 10 // failureに対して操作 val t = Result.</description>
     </item>
     
   </channel>

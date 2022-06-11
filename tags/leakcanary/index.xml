@@ -16,7 +16,7 @@
       <guid>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</guid>
       <description>LeakCanaryはメモリリークを発見してくれるライブラリです.
 どうやってメモリリークを検知しているのかが気になったのでまとめ.
-おおまかな流れ  Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされるonActivityDestroyedをリッスンする onActivityDestroyedがコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す 参照先が探せたら, notificationを作成し, メモリリークしていることを通達する notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する  という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.
+おおまかな流れ Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされるonActivityDestroyedをリッスンする onActivityDestroyedがコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す 参照先が探せたら, notificationを作成し, メモリリークしていることを通達する notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.
 onDestroyされたActivityへの参照がなくなっているかをチェックする これにはReferenceQueueを利用します. ReferenceQueueは登録したオブジェクトがGarbage Collectorにより解放されたかどうかを調べるクラスです. これにonDestroyがコールされたActivityを登録し, GCにより解放されたかどうかを検知することでメモリリークを調べることを出来ます.
 ここで, ReferenceQueueがGCを検知しなかったら, どこからの参照が原因でGCが呼ばれないのかを探します.
 どこから参照されているかを探す どこからActivityが参照されているかを探すために, まず現在のheapのdumpを取ります. heapのdumpは Debug.dumpHprofData(/your/file/path);で取れます.

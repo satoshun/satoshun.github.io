@@ -19,10 +19,11 @@
 GitHubでソース管理 CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(https://github.com/satoshun/ghost)
 このリポジトリを, デプロイしていきます.
 デプロイ時の手順 サーバで以下のタスクを行います.
- Gitリポジトリを最新の状態にする(git pull origin master) npm moduleの更新(npm install) gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod) ghostプロセスの再起動(supervisorctl restart ghost)  Playbookは以下になります.
+Gitリポジトリを最新の状態にする(git pull origin master) npm moduleの更新(npm install) gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod) ghostプロセスの再起動(supervisorctl restart ghost) Playbookは以下になります.
 --- - hosts: all user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_source.yml - include: update_package.yml - include: restart.yml 各タスクについて説明していきます.
 Git pullする Gitモジュールがあるので, それを使います.
-- name: Update Git repository git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt; npm moduleの更新 npmモジュールがあるので, それを使います.</description>
+- name: Update Git repository git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt; npm moduleの更新 npmモジュールがあるので, それを使います.
+- name: Update npm module npm: path=&amp;lt;path to project&amp;gt; gruntの実行 commandモジュールを使います.</description>
     </item>
     
     <item>
@@ -33,13 +34,13 @@ Git pullする Gitモジュールがあるので, それを使います.
       <guid>https://satoshun.github.io/2015/02/ansible-go_deploy/</guid>
       <description>ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.
 下の手順でデプロイを行っています.
- Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動)  実際のPlaybookは以下のようになります.
+Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動) 実際のPlaybookは以下のようになります.
 deploy.yml
 --- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_binary.yml - include: restart.yml 各タスクについて, 説明してきます.
 Linux-amd64用のバイナリ生成 Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.
 やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.
 Makefile
-get:  go get -v  build-amd64: get  GOOS=linux GOARCH=amd64 go build . build.yml
+get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build . build.yml
 --- - name: build src command: make build-amd64 chdir={{ local_home }} local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
     </item>
     

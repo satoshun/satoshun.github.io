@@ -19,11 +19,11 @@
 また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。
 Room in memory? Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。
 使い方は次のようになります。
-Room  .inMemoryDatabaseBuilder(context, MyDatabase::class.java)  .build() in memoryを使う理由としては、
- ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない  になります。
+Room .inMemoryDatabaseBuilder(context, MyDatabase::class.java) .build() in memoryを使う理由としては、
+ディスパッチするアクションを永続化する必要はないだろう マイグレーションが必要ない になります。
 実装に入っていく では、実装の説明をしていきます。
 まずはActionをRoomのEntityとして定義します。
-sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction()  @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2(  @PrimaryKey val _id: Long = 0, // always 0  val name: String,  val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
+sealed class AuthorAction @Entity(tableName = &amp;#34;author1&amp;#34;) data class Author1( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() @Entity(tableName = &amp;#34;author2&amp;#34;) data class Author2( @PrimaryKey val _id: Long = 0, // always 0 val name: String, val age: Int ) : AuthorAction() Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、@PrimaryKey(autoGenerate = true)を使っても良いと思います。</description>
     </item>
     
     <item>
@@ -36,13 +36,13 @@ sealed class AuthorAction  @Entity(tableName = &amp;#34;author1&amp;#34;) data c
 この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。
 前置き/前提知識 RoomはGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。
 RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。
-@Dao interface UserDao {  @Query(&amp;#34;SELECT * FROM users&amp;#34;)  fun getUsers(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt; } 返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。
+@Dao interface UserDao { @Query(&amp;#34;SELECT * FROM users&amp;#34;) fun getUsers(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt; } 返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。
 そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。
-// クライアント側のコード userDao.getUsers()  .subscribeOn(Schedulers.io)  .subscribe {  println(it) // ここが対象のテーブルが変更されるたびに評価される。  } テーブルの変更検知はRoomの内部クラスのInvalidationTrackerクラスで行っています。 これからInvalidationTrackerの内部実装を見ていきます。
-InvalidationTrackerの流れ  InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成 obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録 RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認 テーブルが更新されていたら変更通知コールバックを実行  というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。
+// クライアント側のコード userDao.getUsers() .subscribeOn(Schedulers.io) .subscribe { println(it) // ここが対象のテーブルが変更されるたびに評価される。 } テーブルの変更検知はRoomの内部クラスのInvalidationTrackerクラスで行っています。 これからInvalidationTrackerの内部実装を見ていきます。
+InvalidationTrackerの流れ InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成 obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録 RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認 テーブルが更新されていたら変更通知コールバックを実行 というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。
 InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する 最初に各テーブルのバージョンを管理する room_table_modification_logが生成されます。
-CREATE TEMP TABLE room_table_modification_log (  version INTEGER PRIMARY KEY AUTOINCREMENT,  table_id INTEGER ) このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。
-CREATE TEMP TRIGGER IF NOT EXISTS room_table_modification_trigger_users_UPDATE AFTER UPDATE ON users BEGIN  INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); # 0はtable_id END これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリINSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); は room_table_modification_logテーブルに最新のid + 1のrowを追加/更新するものになります。</description>
+CREATE TEMP TABLE room_table_modification_log ( version INTEGER PRIMARY KEY AUTOINCREMENT, table_id INTEGER ) このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。
+CREATE TEMP TRIGGER IF NOT EXISTS room_table_modification_trigger_users_UPDATE AFTER UPDATE ON users BEGIN INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); # 0はtable_id END これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリINSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); は room_table_modification_logテーブルに最新のid + 1のrowを追加/更新するものになります。</description>
     </item>
     
   </channel>
