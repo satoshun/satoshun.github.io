@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 11 Jun 2022 03:03:47 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Sep 2022 03:43:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Androidビルド速度改善雑記 その1</title>
+      <link>https://satoshun.github.io/2022/09/android-build-performance-1/</link>
+      <pubDate>Sat, 17 Sep 2022 03:43:41 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/09/android-build-performance-1/</guid>
+      <description>今回はGradleビルドキャッシュが有効に使われているかについて説明します。 ビルド速度（incremental build）を改善するためには、ビルドキャッシュがいい感じに効いている必要があるからです。
+キャッシュが効いているかを確認するためには、2回同じコマンドを実行すると良いです。
+まず1回目の実行をしてみます。
+&amp;gt; ./gradlew assembleDebug ... 39 actionable tasks: 16 executed, 23 up-to-date この場合は、16タスクが実行されて、23タスクが最新（キャッシュ）となっており、23タスクがキャッシュを使っています。 もう一度同じコマンドを実行したときに、すべてのタスクがキャッシュを使っていれば、いい感じです。
+&amp;gt; ./gradlew assembleDebug ... 39 actionable tasks: 39 up-to-date これが理想ケースです。
+こうなっていない場合には、Gradle Build Scanを使って調査するのが良いと思います。 Build Scanの使い方は簡単で、引数に &amp;ndash;scan をつけるだけです。
+&amp;gt; ./gradlew assembleDebug --scan ... これを実行すると、URLが発行されるので、アクセスしてアクティベートします。
+アクティベートされると、ビルド情報の詳細が見れます。今回は、再実行されているタスクが知りたいので、 PerformanceタブのTask execution を確認します。
+このTasks executedが実行されているタスクになるので、これを確認して、問題があるタスクを調査する感じです。
+メンテされていないプラグインであったり、自前のプラグインを使っている場合、キャッシュが考慮されておらず、タスクが再実行されてしまうなどの不都合がありがちなので、注意してください。 また、version codeなど、BuildConfig系の値をビルド毎に更新している場合にも、再ビルドが発生してしまうので、注意が必要です。</description>
+    </item>
+    
     <item>
       <title>dev版のJetpack Composeを使って、新しいKotlinに対応する</title>
       <link>https://satoshun.github.io/2022/06/jetpack-compose-dev-compiler/</link>

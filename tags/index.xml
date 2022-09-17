@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 11 Jun 2022 03:03:47 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Sep 2022 03:43:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
+      <pubDate>Sat, 17 Sep 2022 03:43:41 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>build</title>
+      <link>https://satoshun.github.io/tags/build/</link>
+      <pubDate>Sat, 17 Sep 2022 03:43:41 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Sat, 17 Sep 2022 03:43:41 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
@@ -63,29 +81,11 @@
     </item>
     
     <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Sun, 10 Apr 2022 07:10:16 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>kotlin</title>
       <link>https://satoshun.github.io/tags/kotlin/</link>
       <pubDate>Sun, 13 Mar 2022 03:33:43 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/kotlin/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>build</title>
-      <link>https://satoshun.github.io/tags/build/</link>
-      <pubDate>Sun, 14 Nov 2021 01:58:16 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/build/</guid>
       <description></description>
     </item>
     

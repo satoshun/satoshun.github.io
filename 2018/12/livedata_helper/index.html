@@ -112,12 +112,12 @@ class MainViewModel {
 <h2 id="その1">その1</h2>
 <p>まずコードをのせます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel2</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(value: T) {
-</span></span><span style="display:flex;"><span>    postValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.postValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    postValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.setValue(value: T) {
-</span></span><span style="display:flex;"><span>    setValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData2</span>&lt;T&gt;.setValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    setValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ViewModel2と同じパッケージに定義
@@ -160,21 +160,21 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <h2 id="その2">その2</h2>
 <p>こちらもまずコードをのせます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModel3</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(value: T) {
-</span></span><span style="display:flex;"><span>    internalPostValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.postValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    internalPostValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.setValue(value: T) {
-</span></span><span style="display:flex;"><span>    internalSetValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt;.setValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    internalSetValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModelLiveData3</span>&lt;T&gt; : LiveData&lt;T&gt;() {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">internalPostValue</span>(value: T) {
-</span></span><span style="display:flex;"><span>    postValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">internalPostValue</span>(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    postValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">internalSetValue</span>(v: T) {
-</span></span><span style="display:flex;"><span>    value = v
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">value</span> = v
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>が定義になります。次に使い方です。</p>
@@ -203,12 +203,12 @@ ViewModel2を継承したクラスからのみLiveDataの値を更新できま�
 <h2 id="補足">補足</h2>
 <p>abstract classをinterfaceにして上記のメソッドをデフォルトメソッドにすると次のように書くことが出来ます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ViewModel2</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(value: T) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.value = value
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.setValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#66d9ef">value</span> = <span style="color:#66d9ef">value</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.postValue(value: T) {
-</span></span><span style="display:flex;"><span>    postValue(value)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">ViewModelLiveData1</span>&lt;T&gt;.postValue(<span style="color:#66d9ef">value</span>: T) {
+</span></span><span style="display:flex;"><span>    postValue(<span style="color:#66d9ef">value</span>)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
