@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 17 Sep 2022 03:43:41 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Sep 2022 06:33:51 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Androidビルド速度改善雑記 その2</title>
+      <link>https://satoshun.github.io/2022/09/android-build-performance-2/</link>
+      <pubDate>Sun, 25 Sep 2022 06:33:51 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/09/android-build-performance-2/</guid>
+      <description>中、大規模なプロジェクトの場合に、マルチモジュール環境に移行するのは一般的だと思います。
+マルチモジュールに移行する1つの利点として、ビルド速度の向上が挙げられます。向上する主な理由としては、
+並列ビルドをより有効に活用出来る キャッシュをより有効に活用出来る などがあります。
+この記事では、全体のビルドに影響を及ぼしているモジュールを特定し、改善することで、並列ビルドを向上させる方法について紹介します。
+全体のビルドに影響を及ぼしているモジュールとは、 「いろいろなモジュールに依存されていて、ビルドが終わっていないモジュール」です。これがあると、他のモジュールのビルドのブロッカーになります。
+例えば、core-uiモジュールがあって、それにFeature A、Bモジュールがそれぞれ依存していると、core-uiモジュールのビルドが終わるまで、Feature A、Bモジュールのビルドを開始することができずに、並列ビルドの恩恵を受けることが出来ません。 解決策としては、core-ui A、Bのように細かくする、Feature A、Bがcore-uiに依存しないようにする、などがあります。
+次に、そのようなモジュールの特定方法ですが、Gradle Build Scanを使うと良いです。 Gradle Build Scanを使い、Timelineタブ → On critical pathにチェックを入れることで、特定できます。
+Criticalと判定されたタスクを修正することで、全体のビルド時間を改善することが期待できます。
+（ただし、無為にモジュールを増やしすぎると、 Configurationなどの時間が増え、ビルド改善できない場合があるので、注意してください。)
+まとめ Gradle Build ScanでCriticalなモジュールを特定する モジュール間の依存関係を見直す モジュールの分割を検討する ただ、無理やりモジュール分割をすると、設計に無理が出たりすると思うので、そういった場合にはやらないほうが無難だと思います。</description>
+    </item>
+    
     <item>
       <title>Androidビルド速度改善雑記 その1</title>
       <link>https://satoshun.github.io/2022/09/android-build-performance-1/</link>
