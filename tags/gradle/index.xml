@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 25 Sep 2022 06:33:51 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Oct 2022 07:49:35 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gradle: Javaのバージョン差異によるビルド速度の変化</title>
+      <link>https://satoshun.github.io/2022/10/gradle-java-version-performance/</link>
+      <pubDate>Mon, 10 Oct 2022 07:49:35 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/10/gradle-java-version-performance/</guid>
+      <description>Javaのバージョンを変更することで、Androidプロジェクトのビルド速度がどのくらい変化するかについて確認してみました。
+環境は次のようにしました。
+Mac M1 Max Gradle: 7.5.1 Java: 11.0.16.1 17.0.4 この環境で、Java11と17でそれぞれ10回 ./gradlew assembleDebug --rerun-tasksを実行します。
+Java11の場合
+BUILD SUCCESSFUL in 2m 36s BUILD SUCCESSFUL in 2m 29s BUILD SUCCESSFUL in 2m 30s BUILD SUCCESSFUL in 2m 28s BUILD SUCCESSFUL in 2m 30s BUILD SUCCESSFUL in 2m 30s BUILD SUCCESSFUL in 2m 30s BUILD SUCCESSFUL in 2m 34s BUILD SUCCESSFUL in 2m 31s BUILD SUCCESSFUL in 2m 32s Java17の場合
+BUILD SUCCESSFUL in 2m 13s BUILD SUCCESSFUL in 2m 15s BUILD SUCCESSFUL in 2m 13s BUILD SUCCESSFUL in 2m 12s BUILD SUCCESSFUL in 2m 16s BUILD SUCCESSFUL in 2m 13s BUILD SUCCESSFUL in 2m 18s BUILD SUCCESSFUL in 2m 15s BUILD SUCCESSFUL in 2m 20s BUILD SUCCESSFUL in 2m 13s 僕の環境の場合には、Java17だとちょっと早くなりました。 使っているPCや、Gradleのバージョン、Androidプロジェクトの構成によって、結果は異なる可能性はありますが、少しでもビルドを早くしたい人は試してみてください。</description>
+    </item>
+    
     <item>
       <title>Androidビルド速度改善雑記 その2</title>
       <link>https://satoshun.github.io/2022/09/android-build-performance-2/</link>
