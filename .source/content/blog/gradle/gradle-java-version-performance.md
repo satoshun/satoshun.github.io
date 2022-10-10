@@ -21,7 +21,7 @@ Javaのバージョンを変更することで、Androidプロジェクトのビ
 
 Java11の場合
 
-```text
+```
 BUILD SUCCESSFUL in 2m 36s
 BUILD SUCCESSFUL in 2m 29s
 BUILD SUCCESSFUL in 2m 30s
@@ -36,7 +36,7 @@ BUILD SUCCESSFUL in 2m 32s
 
 Java17の場合
 
-```text
+```
 BUILD SUCCESSFUL in 2m 13s
 BUILD SUCCESSFUL in 2m 15s
 BUILD SUCCESSFUL in 2m 13s
