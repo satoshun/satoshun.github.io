@@ -121,7 +121,7 @@
 </span></span><span style="display:flex;"><span>  ) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onActivityResult(requestCode, resultCode, <span style="color:#66d9ef">data</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (requestCode <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (resultCode <span style="color:#f92672">==</span> Activity.RESULT_OK) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (resultCode <span style="color:#f92672">==</span> <span style="color:#a6e22e">Activity</span>.RESULT_OK) {
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> value = <span style="color:#66d9ef">data</span><span style="color:#f92672">!!</span>.getIntExtra(<span style="color:#e6db74">&#34;test&#34;</span>, -<span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>        button.text = <span style="color:#66d9ef">value</span>.toString()
 </span></span><span style="display:flex;"><span>      }
@@ -131,12 +131,12 @@
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sub2Activity</span> : AppCompatActivity() {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-</span></span><span style="display:flex;"><span>    setContentView(R.layout.sub_act)
+</span></span><span style="display:flex;"><span>    setContentView(<span style="color:#a6e22e">R</span>.layout.sub_act)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    button.setOnClickListener {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> intent = Intent()
 </span></span><span style="display:flex;"><span>      intent.putExtra(<span style="color:#e6db74">&#34;test&#34;</span>, <span style="color:#ae81ff">10</span>)
-</span></span><span style="display:flex;"><span>      setResult(Activity.RESULT_OK, intent)
+</span></span><span style="display:flex;"><span>      setResult(<span style="color:#a6e22e">Activity</span>.RESULT_OK, intent)
 </span></span><span style="display:flex;"><span>      finish()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
@@ -154,73 +154,73 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> expectCode = <span style="color:#ae81ff">10</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// assertion setResult
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> scenario = <span style="color:#a6e22e">ActivityScenario</span>.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>    scenario.onActivity {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(<span style="color:#a6e22e">R</span>.id.button).performClick()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// assertion resultCode
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> result = scenario.result
-</span></span><span style="display:flex;"><span>    assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
+</span></span><span style="display:flex;"><span>    assertThat(result.resultCode).isEqualTo(<span style="color:#a6e22e">Activity</span>.RESULT_OK)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// assertion intent params
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> bundleSubject = IntentSubject.assertThat(result.resultData).extras()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> bundleSubject = <span style="color:#a6e22e">IntentSubject</span>.assertThat(result.resultData).extras()
 </span></span><span style="display:flex;"><span>    bundleSubject.integer(<span style="color:#e6db74">&#34;test&#34;</span>).isEqualTo(expectCode)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    scenario.close()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    Intents
 </span></span><span style="display:flex;"><span>      .intending(
-</span></span><span style="display:flex;"><span>        IntentMatchers.hasComponent(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">IntentMatchers</span>.hasComponent(
 </span></span><span style="display:flex;"><span>          ComponentName(
-</span></span><span style="display:flex;"><span>            ApplicationProvider.getApplicationContext&lt;Application&gt;(),
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">ApplicationProvider</span>.getApplicationContext&lt;Application&gt;(),
 </span></span><span style="display:flex;"><span>            Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java
 </span></span><span style="display:flex;"><span>          )
 </span></span><span style="display:flex;"><span>        )
 </span></span><span style="display:flex;"><span>      )
 </span></span><span style="display:flex;"><span>      .respondWith(result)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> main = <span style="color:#a6e22e">ActivityScenario</span>.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>    main.onActivity {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(<span style="color:#a6e22e">R</span>.id.button).performClick()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>      <span style="color:#75715e">// assertion intent for startActivity(ForResult)
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">val</span> name = ComponentName(
-</span></span><span style="display:flex;"><span>        ApplicationProvider.getApplicationContext&lt;Application&gt;(),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ApplicationProvider</span>.getApplicationContext&lt;Application&gt;(),
 </span></span><span style="display:flex;"><span>        Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java
 </span></span><span style="display:flex;"><span>      )
-</span></span><span style="display:flex;"><span>      Intents.intended(IntentMatchers.hasComponent(name))
-</span></span><span style="display:flex;"><span>      Intents.intended(IntentMatchers.hasExtra(<span style="color:#e6db74">&#34;fuga&#34;</span>, <span style="color:#e6db74">&#34;hoge&#34;</span>))
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Intents</span>.intended(<span style="color:#a6e22e">IntentMatchers</span>.hasComponent(name))
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Intents</span>.intended(<span style="color:#a6e22e">IntentMatchers</span>.hasExtra(<span style="color:#e6db74">&#34;fuga&#34;</span>, <span style="color:#e6db74">&#34;hoge&#34;</span>))
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>      <span style="color:#75715e">// assertion onActivityResult behaves
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      Espresso
-</span></span><span style="display:flex;"><span>        .onView(ViewMatchers.withId(R.id.button))
-</span></span><span style="display:flex;"><span>        .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
+</span></span><span style="display:flex;"><span>        .onView(<span style="color:#a6e22e">ViewMatchers</span>.withId(<span style="color:#a6e22e">R</span>.id.button))
+</span></span><span style="display:flex;"><span>        .check(<span style="color:#a6e22e">ViewAssertions</span>.matches(<span style="color:#a6e22e">ViewMatchers</span>.withText(expectCode.toString())))
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>上から順番に重要な部分を説明していきます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@get</span>:Rule <span style="color:#66d9ef">val</span> intentsTestRule = IntentsTestRule(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span></code></pre></div><p>これは、Espresso-Intentsを使うときに必要なルールです。<code>Intens.intended</code>、<code>intending</code>を使うために必要なルールになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> scenario = ActivityScenario.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> scenario = <span style="color:#a6e22e">ActivityScenario</span>.launch(Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>scenario.onActivity {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(<span style="color:#a6e22e">R</span>.id.button).performClick()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
 ボタンがクリックされると、Sub2Activityで<code>setResult</code>が発火するようになっています。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> result = scenario.result
-</span></span><span style="display:flex;"><span>assertThat(result.resultCode).isEqualTo(Activity.RESULT_OK)
+</span></span><span style="display:flex;"><span>assertThat(result.resultCode).isEqualTo(<span style="color:#a6e22e">Activity</span>.RESULT_OK)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> bundleSubject = IntentSubject.assertThat(result.resultData).extras()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> bundleSubject = <span style="color:#a6e22e">IntentSubject</span>.assertThat(result.resultData).extras()
 </span></span><span style="display:flex;"><span>bundleSubject.integer(<span style="color:#e6db74">&#34;test&#34;</span>).isEqualTo(expectCode)
 </span></span></code></pre></div><p>ActivityScenarioでは、ActivityResultクラスから結果を取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらの値をTruthを使いチェックします。この場合、<code>setResult</code>で、resultcodeに<code>Activity.RESULT_OK</code>が、resultdataにはキー名<code>test</code>、値10がセットされていることを確認してします。</p>
 <p>ここまでで、Sub2ActivityのsetResultで正しい値をセットしていることがテスト出来ます。</p>
 <p>では次に、MainActivityで上記の値を受け取れることをテストしていきます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Intents
 </span></span><span style="display:flex;"><span>  .intending(
-</span></span><span style="display:flex;"><span>    IntentMatchers.hasComponent(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">IntentMatchers</span>.hasComponent(
 </span></span><span style="display:flex;"><span>      ComponentName(
-</span></span><span style="display:flex;"><span>        ApplicationProvider.getApplicationContext&lt;Application&gt;(),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ApplicationProvider</span>.getApplicationContext&lt;Application&gt;(),
 </span></span><span style="display:flex;"><span>        Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java
 </span></span><span style="display:flex;"><span>      )
 </span></span><span style="display:flex;"><span>    )
@@ -228,20 +228,20 @@
 </span></span><span style="display:flex;"><span>  .respondWith(result)
 </span></span></code></pre></div><p><code>Intents.intending</code>はマッチしたIntentが発行されたときに、onActivityResultに結果を返すAPIになります。
 MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> main = ActivityScenario.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> main = <span style="color:#a6e22e">ActivityScenario</span>.launch(MainActivity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>main.onActivity {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(R.id.button).performClick()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">it</span>.findViewById&lt;View&gt;(<span style="color:#a6e22e">R</span>.id.button).performClick()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> name = ComponentName(
-</span></span><span style="display:flex;"><span>    ApplicationProvider.getApplicationContext&lt;Application&gt;(),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ApplicationProvider</span>.getApplicationContext&lt;Application&gt;(),
 </span></span><span style="display:flex;"><span>    Sub2Activity<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java
 </span></span><span style="display:flex;"><span>  )
-</span></span><span style="display:flex;"><span>  Intents.intended(IntentMatchers.hasComponent(name))
-</span></span><span style="display:flex;"><span>  Intents.intended(IntentMatchers.hasExtra(<span style="color:#e6db74">&#34;fuga&#34;</span>, <span style="color:#e6db74">&#34;hoge&#34;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Intents</span>.intended(<span style="color:#a6e22e">IntentMatchers</span>.hasComponent(name))
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Intents</span>.intended(<span style="color:#a6e22e">IntentMatchers</span>.hasExtra(<span style="color:#e6db74">&#34;fuga&#34;</span>, <span style="color:#e6db74">&#34;hoge&#34;</span>))
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  Espresso
-</span></span><span style="display:flex;"><span>    .onView(ViewMatchers.withId(R.id.button))
-</span></span><span style="display:flex;"><span>    .check(ViewAssertions.matches(ViewMatchers.withText(expectCode.toString())))
+</span></span><span style="display:flex;"><span>    .onView(<span style="color:#a6e22e">ViewMatchers</span>.withId(<span style="color:#a6e22e">R</span>.id.button))
+</span></span><span style="display:flex;"><span>    .check(<span style="color:#a6e22e">ViewAssertions</span>.matches(<span style="color:#a6e22e">ViewMatchers</span>.withText(expectCode.toString())))
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>まずは、クリックイベントを発火し、<code>startActivityForResult</code>をコールします。渡したIntentを<code>Intents.intended</code>で正しいことを確認します。最後に、Espressoを使って、<code>onActivityResult</code>の結果を正しく反映されているかを確認します。</p>
 <p>これで、テスト完了です😃
@@ -250,8 +250,8 @@ MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡す�
 <p>Espressoにはご存知、clickをするためのAPIがあるのですが、うまく動きませんでした。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// not working!!
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Espresso
-</span></span><span style="display:flex;"><span>  .onView(ViewMatchers.withId(R.id.button))
-</span></span><span style="display:flex;"><span>  .perform(ViewActions.click())
+</span></span><span style="display:flex;"><span>  .onView(<span style="color:#a6e22e">ViewMatchers</span>.withId(<span style="color:#a6e22e">R</span>.id.button))
+</span></span><span style="display:flex;"><span>  .perform(<span style="color:#a6e22e">ViewActions</span>.click())
 </span></span></code></pre></div><p>調べたんですが、原因がわかりませんでした😂分かり次第追記します。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>

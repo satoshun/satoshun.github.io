@@ -129,7 +129,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> fragmentFactory: MainFragmentFactory
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-</span></span><span style="display:flex;"><span>    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DaggerAppComponent</span>.create().inject(<span style="color:#66d9ef">this</span>)
 </span></span><span style="display:flex;"><span>    supportFragmentManager.fragmentFactory = fragmentFactory
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
@@ -155,8 +155,8 @@
 </span></span></code></pre></div><p>カスタムのコンストラクタを持ったViewは通常の方法ではインスタンスを生成できませんが、
 <code>LayoutInflater.Factory</code>を使うことで、インスタンスを生成できるようになります。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainLayoutInflaterFactory</span> <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">constructor</span>(
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> factory: MainTextView.Factory
-</span></span><span style="display:flex;"><span>) : LayoutInflater.Factory {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> factory: <span style="color:#a6e22e">MainTextView</span>.Factory
+</span></span><span style="display:flex;"><span>) : <span style="color:#a6e22e">LayoutInflater</span>.Factory {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(name: String, context: Context, attrs: AttributeSet?): View? {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (name <span style="color:#f92672">==</span> MainTextView<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.name) {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> factory.create(context)
@@ -170,7 +170,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> layoutInflaterFactory: MainLayoutInflaterFactory
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-</span></span><span style="display:flex;"><span>    DaggerAppComponent.create().inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DaggerAppComponent</span>.create().inject(<span style="color:#66d9ef">this</span>)
 </span></span><span style="display:flex;"><span>    layoutInflater.factory = layoutInflaterFactory
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)

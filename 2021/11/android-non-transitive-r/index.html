@@ -100,11 +100,11 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// before
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> jp.hoge.sample.R
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(R.layout.hoge_layout) {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(<span style="color:#a6e22e">R</span>.layout.hoge_layout) {
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// after
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(jp.hoge.sample.R.layout.hoge_layout) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(jp.hoge.sample.<span style="color:#a6e22e">R</span>.layout.hoge_layout) {
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>non-transitve Rを有効にすると、各モジュールで、Rファイルのマージ?のようなタスクが行われなくなり、Rの参照先が変わるためです。</p>
 <p>動作自体は上記のコードでも問題なく出来ます。ただ、フルパッケージ指定が気になるなら、import aliasまたは、typealiasを使うことで解決できます。</p>
@@ -112,13 +112,13 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// import alias
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> jp.hoge.sample.R <span style="color:#66d9ef">as</span> SampleR
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(SampleR.layout.hoge_layout) {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(<span style="color:#a6e22e">SampleR</span>.layout.hoge_layout) {
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// typealias
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">typealias</span> SampleRLayout = jp.hoge.sample.R.layout
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">typealias</span> SampleRLayout = jp.hoge.sample.<span style="color:#a6e22e">R</span>.layout
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(SampleRLayout.hoge_layout) {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragment</span>(<span style="color:#a6e22e">SampleRLayout</span>.hoge_layout) {
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>non-transitive R対応はこれで完了です。</p>
 <h2 id="どれくらい速度向上があったか">どれくらい速度向上があったか?</h2>

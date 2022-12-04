@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>napt on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/napt/</link>
+    <description>Recent content in napt on stsnブログ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Sun, 04 Dec 2022 09:40:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/napt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>naptを使って、ビルドを高速化する</title>
+      <link>https://satoshun.github.io/2022/12/napt-build-performance/</link>
+      <pubDate>Sun, 04 Dec 2022 09:40:27 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2022/12/napt-build-performance/</guid>
+      <description>kaptの代替ライブラリのnaptがDagger hiltに対応したので、弊アプリでどれくらいビルド速度が上がるかを簡単に検証しました。 naptについて簡単に説明すると、ビルドを高速化するけど、機能が制限されているkaptっていう感じです。
+実際に、assembleDebug --rerun-tasksコマンドを10回程度実行してそれぞれ比較してみました。
+// Before 2m 6s 2m 46s 2m 4s 2m 47s 2m 20s 2m 47s 2m 3s 2m 46s 2m 5s 2m 14s // After 1m 48s 1m 46s 1m 48s 1m 49s 1m 46s 2m 2s 2m 29s 1m 51s 1m 46s 1m 48s ややビルドが早くなりました。それなりに大規模なプロジェクトの場合には、導入を検討してみるのも良さそうです。
+補足 弊アプリの場合には一部napt置き換えが出来なかったので、kaptを使っている箇所があります まだ、本番にリリースなどしていないので、実際には何か問題がある可能性があります kaptに比べると、一部機能落ちしているのでそこには注意が必要です </description>
+    </item>
+    
+  </channel>
+</rss>

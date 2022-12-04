@@ -120,7 +120,7 @@ show Kotlin Bytecode → Decompileを使い、decompileされたJavaファイル
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityKt</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> static <span style="color:#66d9ef">final</span> void hoge() {
 </span></span><span style="display:flex;"><span>        String var1 = <span style="color:#e6db74">&#34;hogehoge&#34;</span>;
-</span></span><span style="display:flex;"><span>        System.<span style="color:#66d9ef">out</span>.println(var1);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">System</span>.<span style="color:#66d9ef">out</span>.println(var1);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>ただし、ここで重要なのは、inlineをつけたメソッドはインライン化されるため、上記のメソッドは生成されるけど、実際にはコールされない点です。

@@ -107,7 +107,7 @@ Use …">
 </span></span><span style="display:flex;"><span>    container: ViewGroup?,
 </span></span><span style="display:flex;"><span>    savedInstanceState: Bundle?
 </span></span><span style="display:flex;"><span>): View? {
-</span></span><span style="display:flex;"><span>  _binding = ResultProfileBinding.inflate(inflater, container, <span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>  _binding = <span style="color:#a6e22e">ResultProfileBinding</span>.inflate(inflater, container, <span style="color:#66d9ef">false</span>)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> view = binding.root
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> view
 </span></span><span style="display:flex;"><span>}
@@ -142,7 +142,7 @@ Use …">
 また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。</p>
 <h2 id="4-viewsettag-gettagを使った実装を使う">4. View.setTag, getTagを使った実装を使う</h2>
 <p>自動的に解放する部分の実装の話なんですが、setTag、getTagを使った実装でも参照を解放することが可能です。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment(R.layout.main_frag2) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment(<span style="color:#a6e22e">R</span>.layout.main_frag2) {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> binding: MainFrag2Binding <span style="color:#66d9ef">by</span> viewBinding()
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
@@ -151,10 +151,10 @@ Use …">
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(<span style="color:#a6e22e">R</span>.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-</span></span><span style="display:flex;"><span>        binding = DataBindingUtil.bind(view)
-</span></span><span style="display:flex;"><span>        view.setTag(R.id.fragment_binding, binding)
+</span></span><span style="display:flex;"><span>        binding = <span style="color:#a6e22e">DataBindingUtil</span>.bind(view)
+</span></span><span style="display:flex;"><span>        view.setTag(<span style="color:#a6e22e">R</span>.id.fragment_binding, binding)
 </span></span><span style="display:flex;"><span>      }
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> binding<span style="color:#f92672">!!</span>
 </span></span><span style="display:flex;"><span>    }
@@ -168,11 +168,11 @@ Use …">
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReadOnlyProperty</span>&lt;Fragment, T&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getValue</span>(thisRef: Fragment, <span style="color:#66d9ef">property</span>: KProperty&lt;*&gt;): T {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> view = thisRef.view<span style="color:#f92672">!!</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(R.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">var</span> binding = view.getTag(<span style="color:#a6e22e">R</span>.id.fragment_binding) <span style="color:#66d9ef">as</span>? T
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (binding <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> method = T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java.getMethod(<span style="color:#e6db74">&#34;bind&#34;</span>, View<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>        binding = method.invoke(<span style="color:#66d9ef">null</span>, view) <span style="color:#66d9ef">as</span> T
-</span></span><span style="display:flex;"><span>        view.setTag(R.id.fragment_binding, binding)
+</span></span><span style="display:flex;"><span>        view.setTag(<span style="color:#a6e22e">R</span>.id.fragment_binding, binding)
 </span></span><span style="display:flex;"><span>      }
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> binding
 </span></span><span style="display:flex;"><span>    }

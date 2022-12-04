@@ -101,7 +101,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 <h2 id="実際のコード">実際のコード</h2>
 <p>まず、<code>RecyclerView.Adapter</code>のサイズを決める<code>getItemCount</code>メソッドの実装です。
 限りなく大きい値、<code>Int.MAX_VALUE</code>を返します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = <span style="color:#a6e22e">Int</span>.MAX_VALUE
 </span></span></code></pre></div><p>次に、<code>onBindViewHolder</code>メソッドを次のように実装します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
 </span></span><span style="display:flex;"><span>
@@ -113,9 +113,9 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 <p>最終的な、RecyclerView.Adapterは次のようになります。（onCreateViewHolderメソッドは重要でないので、省略しています）</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteAdapter</span>(
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> itemData: List&lt;Data&gt;
-</span></span><span style="display:flex;"><span>) : RecyclerView.Adapter&lt;InfiniteViewHolder&gt;() {
+</span></span><span style="display:flex;"><span>) : <span style="color:#a6e22e">RecyclerView</span>.Adapter&lt;InfiniteViewHolder&gt;() {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = Int.MAX_VALUE
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItemCount</span>(): Int = <span style="color:#a6e22e">Int</span>.MAX_VALUE
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateViewHolder</span>(parent: ViewGroup, viewType: Int) = <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>
@@ -128,7 +128,7 @@ ViewPager2ではRecyclerViewを使うことが出来るの …">
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>with(binding.viewpager) {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> infiniteAdapter = InfiniteAdapter(itemData = mockAdapterData)
 </span></span><span style="display:flex;"><span>  adapter = infiniteAdapter
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> center = Int.MAX_VALUE / <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> center = <span style="color:#a6e22e">Int</span>.MAX_VALUE / <span style="color:#ae81ff">2</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> start = center - (center % mockAdapterData.size)
 </span></span><span style="display:flex;"><span>  setCurrentItem(start, <span style="color:#66d9ef">false</span>)
 </span></span><span style="display:flex;"><span>}

@@ -122,7 +122,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onViewCreated</span>(view: View, savedInstanceState: Bundle?) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onViewCreated(view, savedInstanceState)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    view.findViewById&lt;View&gt;(R.id.route).setOnClickListener {
+</span></span><span style="display:flex;"><span>    view.findViewById&lt;View&gt;(<span style="color:#a6e22e">R</span>.id.route).setOnClickListener {
 </span></span><span style="display:flex;"><span>      moduleRouter.routeToSub1()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
@@ -153,7 +153,7 @@ Part2では、Navigation Componentを使うパターンを考えてみます。�
 </span></span><span style="display:flex;"><span>) : MainModuleRouter {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">routeToSub1</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// NavComponentで自動生成されるコードを用いて遷移
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    controller.navigate(MainFragmentDirections.mainToSub1())
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    controller.navigate(<span style="color:#a6e22e">MainFragmentDirections</span>.mainToSub1())
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>これで実装は完了です。Navigation Componentを使っているため、実装はかなり楽です。</p>

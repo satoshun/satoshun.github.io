@@ -108,18 +108,18 @@
 </span></span><span style="display:flex;"><span>binding.instant.text = instant.epochSecond.toString()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// ZoneId API
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneId = ZoneId.systemDefault()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneId = <span style="color:#a6e22e">ZoneId</span>.systemDefault()
 </span></span><span style="display:flex;"><span>binding.zoneId.text = zoneId.id
 </span></span><span style="display:flex;"><span>println(instant.atZone(zoneId).dayOfMonth)
 </span></span><span style="display:flex;"><span>println(instant.atZone(zoneId).month)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// LocalDate API
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> now = LocalDate.now()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> now = <span style="color:#a6e22e">LocalDate</span>.now()
 </span></span><span style="display:flex;"><span>binding.localDate.text = now.dayOfMonth.toString()
 </span></span><span style="display:flex;"><span>println(now.dayOfMonth)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// ZoneOffset API
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = ZoneOffset.ofHours(<span style="color:#ae81ff">10</span>)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> zoneOffset = <span style="color:#a6e22e">ZoneOffset</span>.ofHours(<span style="color:#ae81ff">10</span>)
 </span></span><span style="display:flex;"><span>println(zoneOffset)
 </span></span></code></pre></div><h2 id="どのようにして実現しているか">どのようにして実現しているか？</h2>
 <p>apkの中身を見たところ、<code>java.time</code>用のバックポートライブラリを準備しておいて、それをapkの中に組み込んでいるようでした。</p>

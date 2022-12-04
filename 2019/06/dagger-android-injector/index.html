@@ -115,7 +115,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 返り値の型変数がAnyになる
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">androidInjector</span>(): AndroidInjector&lt;Any&gt; {
-</span></span><span style="display:flex;"><span>    DaggerAppComponent.factory().create(<span style="color:#66d9ef">this</span>).inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DaggerAppComponent</span>.factory().create(<span style="color:#66d9ef">this</span>).inject(<span style="color:#66d9ef">this</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> androidInjector
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
@@ -129,7 +129,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Inject</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> androidInjector: DispatchingAndroidInjector&lt;Any&gt;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-</span></span><span style="display:flex;"><span>    AndroidInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">AndroidInjection</span>.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
@@ -142,7 +142,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainFragment</span> : Fragment() {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
-</span></span><span style="display:flex;"><span>    AndroidSupportInjection.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">AndroidSupportInjection</span>.inject(<span style="color:#66d9ef">this</span>) <span style="color:#75715e">// ここは一緒
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}

@@ -251,10 +251,10 @@ SavedStateを使う場合、ViewModel …">
 <p>DaggerでViewModelのインスタンスを生成するときに、multibindsを使うパターンがよく使われているので、SavedStateの場合も考えてみました。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@MustBeDocumented</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span>(
-</span></span><span style="display:flex;"><span>  AnnotationTarget.FUNCTION,
-</span></span><span style="display:flex;"><span>  AnnotationTarget.PROPERTY_GETTER
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">AnnotationTarget</span>.FUNCTION,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">AnnotationTarget</span>.PROPERTY_GETTER
 </span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(AnnotationRetention.RUNTIME)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(<span style="color:#a6e22e">AnnotationRetention</span>.RUNTIME)
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@MapKey</span> <span style="color:#66d9ef">annotation</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewModelKey</span>(
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> value: KClass&lt;<span style="color:#66d9ef">out</span> ViewModel&gt;
 </span></span><span style="display:flex;"><span>)

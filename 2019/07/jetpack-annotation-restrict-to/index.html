@@ -176,36 +176,36 @@
 <h2 id="同一モジュール内">同一モジュール内</h2>
 <p>最初に、呼び出される側の定義です。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY_GROUP)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY_GROUP_PREFIX)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.SUBCLASSES)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.SUBCLASSES)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.TESTS)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.TESTS)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>適当にスコープをつけたメソッドを定義しただけです。</p>
 <p>次に呼び出し側です。</p>
 <p>まずは、アプリケーションコードから呼び出してみます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Hoge.library() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// NG
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// NG
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">Hoge</span>.library() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.libraryGroup() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.libraryGroupPrefix() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.subclasses() <span style="color:#75715e">// NG
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.tests() <span style="color:#75715e">// NG
 </span></span></span></code></pre></div><p>SUBCLASSESと、TESTSスコープを付けたときはIDEに怒られました。サブクラスではないし、テストからの呼び出しでも無いので、納得出来ます。</p>
 <p>次に、テストコードから呼び出しになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Hoge.library() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.libraryGroup() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.libraryGroupPrefix() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.subclasses() <span style="color:#75715e">// OK
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Hoge.tests() <span style="color:#75715e">// OK
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">Hoge</span>.library() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.libraryGroup() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.libraryGroupPrefix() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.subclasses() <span style="color:#75715e">// OK
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">Hoge</span>.tests() <span style="color:#75715e">// OK
 </span></span></span></code></pre></div><p>SUBCLASSESスコープのときはNGだと思ったんですけど、全部OKでした。テストのときはlintって走らないんですかね？（無知）</p>
 <h2 id="同一プロジェクト内ライブラリモジュール">同一プロジェクト内、ライブラリモジュール</h2>
 <p>次に、lib1という名前でライブラリモジュールを作り、そこで定義したクラスに、appモジュールからアクセスしてみます。</p>
@@ -214,19 +214,19 @@
 include &#39;:lib1&#39;
 </code></pre><p>まず、lib1に次のクラスを定義します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Hoge2</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">library</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY_GROUP)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroup</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.LIBRARY_GROUP_PREFIX)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">libraryGroupPrefix</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.SUBCLASSES)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.SUBCLASSES)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">subclasses</span>() {}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(RestrictTo.Scope.TESTS)
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(<span style="color:#a6e22e">RestrictTo</span>.<span style="color:#a6e22e">Scope</span>.TESTS)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">tests</span>() {}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>次に、appモジュールからアクセスしてみます。</p>
@@ -255,7 +255,7 @@ include &#39;:lib1&#39;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>
 </span></span></code></pre></div><p>次に、appから呼び出してみます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>ContentFrameLayout(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// NG
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>MediaItem.Builder().build() <span style="color:#75715e">// NG
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">MediaItem</span>.Builder().build() <span style="color:#75715e">// NG
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>DrawableWrapper(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// OK
 </span></span></span></code></pre></div><p>LIBRARY、LIBRARY_GROUPスコープがついたクラスに、アクセスするとIDEに怒られました。これは想像つくと思います。
 しかし、LIBRARY_GROUP_PREFIXは怒られませんでした。これは多分間違った挙動だと思うのでいつか直ると思います。</p>

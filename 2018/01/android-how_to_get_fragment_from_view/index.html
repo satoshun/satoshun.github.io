@@ -141,7 +141,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> activity = context <span style="color:#66d9ef">as</span>? FragmentActivity <span style="color:#f92672">?:</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> allFragments = findAllFragments(activity.supportFragmentManager.fragments)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> root = activity.findViewById&lt;View&gt;(android.R.id.content)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> root = activity.findViewById&lt;View&gt;(android.<span style="color:#a6e22e">R</span>.id.content)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> result: Fragment? = <span style="color:#66d9ef">null</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> current = <span style="color:#66d9ef">this</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (current <span style="color:#f92672">!=</span> root) {

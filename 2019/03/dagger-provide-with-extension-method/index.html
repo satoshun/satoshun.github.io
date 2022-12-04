@@ -95,12 +95,12 @@ class MainActivityModule { …">
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@Module</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivityModule</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 普通の書き方
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainContractView</span>(activity: MainActivity): MainContract.View {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideMainContractView</span>(activity: MainActivity): <span style="color:#a6e22e">MainContract</span>.View {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> activity
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 拡張関数を使った書き方
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MainActivity</span>.provideMainContractView(): MainContract.View {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">MainActivity</span>.provideMainContractView(): <span style="color:#a6e22e">MainContract</span>.View {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}

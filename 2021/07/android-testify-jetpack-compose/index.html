@@ -111,7 +111,7 @@ Testify を使って、Jetpack Composeのスクリーンシ …">
 </span></span><span style="display:flex;"><span>    rule.activity.runOnUiThread {
 </span></span><span style="display:flex;"><span>      rule.activity.setContent { AppContent() } <span style="color:#75715e">// AppContent関数は適当なComposeコンポーネント
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
-</span></span><span style="display:flex;"><span>    Thread.sleep(<span style="color:#ae81ff">500</span>) <span style="color:#75715e">// 一応
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Thread</span>.sleep(<span style="color:#ae81ff">500</span>) <span style="color:#75715e">// 一応
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    rule.assertSame()
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}

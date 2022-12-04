@@ -125,8 +125,8 @@
 <p>そして、最後に<code>PageTransformer</code>を設定します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>viewpager.offscreenPageLimit = <span style="color:#ae81ff">2</span> <span style="color:#75715e">// これは左右のアイテムを描画するために必要
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> pageMarginPx = root.context.resources.getDimensionPixelOffset(R.dimen.page_margin)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> offsetPx = root.context.resources.getDimensionPixelOffset(R.dimen.offset)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> pageMarginPx = root.context.resources.getDimensionPixelOffset(<span style="color:#a6e22e">R</span>.dimen.page_margin)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> offsetPx = root.context.resources.getDimensionPixelOffset(<span style="color:#a6e22e">R</span>.dimen.offset)
 </span></span><span style="display:flex;"><span>viewpager.setPageTransformer { page, position <span style="color:#f92672">-&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> offset = position * (<span style="color:#ae81ff">2</span> * offsetPx + pageMarginPx)
 </span></span><span style="display:flex;"><span>  page.translationX = -offset

@@ -94,14 +94,14 @@
 <p>この記事はRxJava2のsubscribeOnとの挙動の違いを見ていきたいと思います。</p>
 <h2 id="動かしてみる">動かしてみる</h2>
 <p>まずは、Flowから。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>withContext(Dispatchers.Main) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>withContext(<span style="color:#a6e22e">Dispatchers</span>.Main) {
 </span></span><span style="display:flex;"><span>  flowOf(<span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    .map {
 </span></span><span style="display:flex;"><span>      <span style="color:#75715e">// Dispatchers.Defaultで動く
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">it</span>
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    .flowOn(Dispatchers.Default)
+</span></span><span style="display:flex;"><span>    .flowOn(<span style="color:#a6e22e">Dispatchers</span>.Default)
 </span></span><span style="display:flex;"><span>    .map {
 </span></span><span style="display:flex;"><span>      <span style="color:#75715e">// Dispatchers.Mainで動く
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
@@ -121,7 +121,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">it</span>
 </span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  .subscribeOn(Schedulers.io())
+</span></span><span style="display:flex;"><span>  .subscribeOn(<span style="color:#a6e22e">Schedulers</span>.io())
 </span></span><span style="display:flex;"><span>  .map {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Schedulers.io上で動く
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${Thread.currentThread()}</span><span style="color:#e6db74">&#34;</span>)

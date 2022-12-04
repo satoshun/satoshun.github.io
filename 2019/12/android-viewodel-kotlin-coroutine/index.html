@@ -166,9 +166,9 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getUser</span>() : NetWorkResult&lt;User&gt; {
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
 </span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">val</span> user = retrofitService.getUser()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NetWorkResult.Success(user)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NetWorkResult</span>.Success(user)
 </span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (e: Exception) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NetWorkResult.Error(e)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NetWorkResult</span>.Error(e)
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}

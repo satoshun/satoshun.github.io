@@ -120,12 +120,12 @@ limitations under the License.
 </span></span><span style="display:flex;"><span>    topBar: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
 </span></span><span style="display:flex;"><span>    bottomBar: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
 </span></span><span style="display:flex;"><span>    floatingActionButton: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
-</span></span><span style="display:flex;"><span>    floatingActionButtonPosition: FabPosition = FabPosition.End,
+</span></span><span style="display:flex;"><span>    floatingActionButtonPosition: FabPosition = <span style="color:#a6e22e">FabPosition</span>.End,
 </span></span><span style="display:flex;"><span>    isFloatingActionButtonDocked: Boolean = <span style="color:#66d9ef">false</span>,
 </span></span><span style="display:flex;"><span>    drawerContent: <span style="color:#a6e22e">@Composable</span> (() <span style="color:#f92672">-&gt;</span> Unit)? = <span style="color:#66d9ef">null</span>,
-</span></span><span style="display:flex;"><span>    drawerShape: Shape = MaterialTheme.shapes.large,
-</span></span><span style="display:flex;"><span>    drawerElevation: Dp = DrawerConstants.DefaultElevation,
-</span></span><span style="display:flex;"><span>    backgroundColor: Color = MaterialTheme.colors.background,
+</span></span><span style="display:flex;"><span>    drawerShape: Shape = <span style="color:#a6e22e">MaterialTheme</span>.shapes.large,
+</span></span><span style="display:flex;"><span>    drawerElevation: Dp = <span style="color:#a6e22e">DrawerConstants</span>.DefaultElevation,
+</span></span><span style="display:flex;"><span>    backgroundColor: Color = <span style="color:#a6e22e">MaterialTheme</span>.colors.background,
 </span></span><span style="display:flex;"><span>    bodyContent: <span style="color:#a6e22e">@Composable</span> (InnerPadding) <span style="color:#f92672">-&gt;</span> Unit
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><p><code>Scaffold</code>関数の定義はこのようになっています。引数を見ると、topBar、bottomBarからAppbarを、floatingActionButtonからFloatingActionButton、drawerContentからDrawerの指定が出来ます。</p>
@@ -143,13 +143,13 @@ limitations under the License.
 </span></span><span style="display:flex;"><span>  title = { Text(text = <span style="color:#e6db74">&#34;Home&#34;</span>) },
 </span></span><span style="display:flex;"><span>  navigationIcon = {
 </span></span><span style="display:flex;"><span>    IconButton(onClick = { TODO() }) {
-</span></span><span style="display:flex;"><span>      Icon(Icons.Filled.Menu)
+</span></span><span style="display:flex;"><span>      Icon(<span style="color:#a6e22e">Icons</span>.<span style="color:#a6e22e">Filled</span>.Menu)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  },
 </span></span><span style="display:flex;"><span>  actions = {
 </span></span><span style="display:flex;"><span>    IconButton(onClick = { TODO() }) {
 </span></span><span style="display:flex;"><span>      Icon(
-</span></span><span style="display:flex;"><span>        Icons.Outlined.AccountCircle.copy(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Icons</span>.<span style="color:#a6e22e">Outlined</span>.<span style="color:#a6e22e">AccountCircle</span>.copy(
 </span></span><span style="display:flex;"><span>          defaultWidth = <span style="color:#ae81ff">36.</span>dp,
 </span></span><span style="display:flex;"><span>          defaultHeight = <span style="color:#ae81ff">36.</span>dp
 </span></span><span style="display:flex;"><span>        )
@@ -157,19 +157,19 @@ limitations under the License.
 </span></span><span style="display:flex;"><span>      )
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>  backgroundColor = Color.White
+</span></span><span style="display:flex;"><span>  backgroundColor = <span style="color:#a6e22e">Color</span>.White
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><p>まずは<code>title</code>引数から見ていきます。<code>title</code>では、<code>Text</code>関数に文字列Homeを指定します。<code>Text</code>はTextViewのようなものです。文字列を表示する事が出来ます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Text(text = <span style="color:#e6db74">&#34;Home&#34;</span>)
 </span></span></code></pre></div><p>次に、<code>navigationIcon</code>引数。ここでは、メニューアイコンを出力したいので、<code>IconButton</code>関数と<code>Icon</code>関数を使います。<code>IconButton</code>はonClickからのクリックハンドリングや、レイアウトを調整してくれる機能があります。
 <code>IconButton</code>関数と<code>Icon</code>関数を組み合わせることで、いい感じにアイコンを表示することが出来ます。また、Iconの引数に指定している<code>Icons.Filled.Menu</code>はJetpack Compose materialライブラリ側で定義されているアイコンです。基本的なアイコンはライブラリ側で定義されており、今回はそれを使っています。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>IconButton(onClick = { TODO() }) {
-</span></span><span style="display:flex;"><span>  Icon(Icons.Filled.Menu)
+</span></span><span style="display:flex;"><span>  Icon(<span style="color:#a6e22e">Icons</span>.<span style="color:#a6e22e">Filled</span>.Menu)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>次に、<code>actions</code>引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、<code>Icon</code>と<code>IconButton</code>を組み合わせて使います。また、IOSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、<code>defaultWidth</code>と<code>defaultHeight</code>から設定できます。今回は<code>36.dp</code>を設定します。次に、色の変更は<code>tint</code>からします。今回は<code>Color(0xFF1A73E8)</code>を指定し、青っぽい色に設定します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>IconButton(onClick = { TODO() }) {
 </span></span><span style="display:flex;"><span>  Icon(
-</span></span><span style="display:flex;"><span>    Icons.Outlined.AccountCircle.copy(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Icons</span>.<span style="color:#a6e22e">Outlined</span>.<span style="color:#a6e22e">AccountCircle</span>.copy(
 </span></span><span style="display:flex;"><span>      defaultWidth = <span style="color:#ae81ff">36.</span>dp,
 </span></span><span style="display:flex;"><span>      defaultHeight = <span style="color:#ae81ff">36.</span>dp
 </span></span><span style="display:flex;"><span>    )

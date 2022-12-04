@@ -96,7 +96,7 @@ JavaとKotlinを一緒に使っていると、この例外に遭遇すること�
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d: String = Hoge.getName() <span style="color:#75715e">// ここで例外が投げられる
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d: String = <span style="color:#a6e22e">Hoge</span>.getName() <span style="color:#75715e">// ここで例外が投げられる
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>println(d.length) <span style="color:#75715e">// これは実行されない
 </span></span></span></code></pre></div><p>このコードは、<code>val d: String = Hoge.getName()</code>で<code>IllegalStateException</code>を投げます。
 Non-Null型にnullを代入しようとしているからです。</p>

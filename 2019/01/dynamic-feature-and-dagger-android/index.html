@@ -149,7 +149,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModuleChildFragment</span> : Fragment() {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttach</span>(context: Context) {
-</span></span><span style="display:flex;"><span>    AndroidSupportInjection.inject(<span style="color:#66d9ef">this</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">AndroidSupportInjection</span>.inject(<span style="color:#66d9ef">this</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onAttach(context)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
@@ -192,14 +192,14 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-</span></span><span style="display:flex;"><span>    setContentView(R.layout.sub_act)
+</span></span><span style="display:flex;"><span>    setContentView(<span style="color:#a6e22e">R</span>.layout.sub_act)
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">val</span> moduleComponent: ModuleActivityComponent
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">get</span>() = DaggerSubComponent
 </span></span><span style="display:flex;"><span>      .builder()
-</span></span><span style="display:flex;"><span>      .appComponent(App.coreComponent())
+</span></span><span style="display:flex;"><span>      .appComponent(<span style="color:#a6e22e">App</span>.coreComponent())
 </span></span><span style="display:flex;"><span>      .build()
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>

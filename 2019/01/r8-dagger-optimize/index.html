@@ -113,7 +113,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppModule1</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Provides</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService</span>(): AppService {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> retrofit = <span style="color:#a6e22e">Retrofit</span>.Builder()
 </span></span><span style="display:flex;"><span>      <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> retrofit.create()
 </span></span><span style="display:flex;"><span>  }
@@ -124,7 +124,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@JvmStatic</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Provides</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">provideService2</span>(): AppService2 {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> retrofit = Retrofit.Builder()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> retrofit = <span style="color:#a6e22e">Retrofit</span>.Builder()
 </span></span><span style="display:flex;"><span>      <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> retrofit.create()
 </span></span><span style="display:flex;"><span>  }
@@ -138,9 +138,9 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-</span></span><span style="display:flex;"><span>    setContentView(R.layout.activity_main)
+</span></span><span style="display:flex;"><span>    setContentView(<span style="color:#a6e22e">R</span>.layout.activity_main)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> appComponent = DaggerAppComponent.builder().build()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> appComponent = <span style="color:#a6e22e">DaggerAppComponent</span>.builder().build()
 </span></span><span style="display:flex;"><span>    appComponent.inject(<span style="color:#66d9ef">this</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.

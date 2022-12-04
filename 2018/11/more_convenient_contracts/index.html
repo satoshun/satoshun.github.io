@@ -116,9 +116,9 @@ Contractsによりnullでないことが保証されます。</p>
 contractを定義することでより使いやすい関数にすることが出来ます。</p>
 <p>他の例を見てみます。スコープ関数<code>apply</code>の実装は次になります。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@kotlin</span>.<span style="color:#66d9ef">internal</span>.InlineOnly
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">T</span>.apply(block: T.() <span style="color:#f92672">-&gt;</span> Unit): T {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">T</span>.apply(block: <span style="color:#a6e22e">T</span>.() <span style="color:#f92672">-&gt;</span> Unit): T {
 </span></span><span style="display:flex;"><span>    contract {
-</span></span><span style="display:flex;"><span>        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+</span></span><span style="display:flex;"><span>        callsInPlace(block, <span style="color:#a6e22e">InvocationKind</span>.EXACTLY_ONCE)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    block()
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
@@ -141,7 +141,7 @@ contractにより、実行することが可能になりました。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@UseExperimental</span>(ExperimentalContracts<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span> : <span style="color:#a6e22e">Activity</span>&gt; <span style="color:#a6e22e">ActivityScenario</span>&lt;T&gt;.onActivity2(block: (T) <span style="color:#f92672">-&gt;</span> Unit) {
 </span></span><span style="display:flex;"><span>  contract {
-</span></span><span style="display:flex;"><span>    callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+</span></span><span style="display:flex;"><span>    callsInPlace(block, <span style="color:#a6e22e">InvocationKind</span>.EXACTLY_ONCE)
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  onActivity {
 </span></span><span style="display:flex;"><span>    block(<span style="color:#66d9ef">it</span>)

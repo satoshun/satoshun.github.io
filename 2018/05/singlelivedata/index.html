@@ -113,9 +113,9 @@
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// TestActivity.kt
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>testViewModel = ViewModelProviders.of(<span style="color:#66d9ef">this</span>).<span style="color:#66d9ef">get</span>(TestViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>testViewModel = <span style="color:#a6e22e">ViewModelProviders</span>.of(<span style="color:#66d9ef">this</span>).<span style="color:#66d9ef">get</span>(TestViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
 </span></span><span style="display:flex;"><span>testViewModel.errorEvent.observeSingle(activity) {
-</span></span><span style="display:flex;"><span>  Log.d(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#66d9ef">it</span>.toString())
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Log</span>.d(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#66d9ef">it</span>.toString())
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>メリットはサブクラスを作らずに済むところです。</p>
 <h2 id="参考">参考</h2>

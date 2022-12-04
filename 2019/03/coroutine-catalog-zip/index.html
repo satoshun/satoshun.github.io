@@ -93,16 +93,16 @@ launch {
     
     <p>Coroutineで非同期処理を並列に処理したいとします。例外を考慮しないなら単純にasyncで包めば良いです。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>launch {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { MainService.task1() }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { MainService.task2() }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { <span style="color:#a6e22e">MainService</span>.task1() }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { <span style="color:#a6e22e">MainService</span>.task2() }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${task1.await()}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">${task2.await()}</span><span style="color:#e6db74">&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>asyncで包むことで、並列に処理をすることができます。</p>
 <p>次に、各非同期処理が例外を吐く場合を考えてみます。その場合は、呼び出し元で<code>runCatching</code>を使います。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>launch {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { runCatching { MainService.task1() } }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { runCatching { MainService.task2() } }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { runCatching { <span style="color:#a6e22e">MainService</span>.task1() } }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { runCatching { <span style="color:#a6e22e">MainService</span>.task2() } }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> result1 = task1.await()
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> result2 = task2.await()
@@ -112,8 +112,8 @@ launch {
 <hr>
 <p>また、次のように書くことは出来ません。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>launch {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { MainService.task1() }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { MainService.task2() }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task1 = async { <span style="color:#a6e22e">MainService</span>.task1() }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> task2 = async { <span style="color:#a6e22e">MainService</span>.task2() }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">// awaitのタイミングでrunCatchingを使う
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
@@ -124,8 +124,8 @@ launch {
 <p>しかし、<code>supervisorScope</code>を使うと、上記の振る舞いを防ぐことができます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>launch {
 </span></span><span style="display:flex;"><span>  supervisorScope {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task1 = async { MainService.task1() }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task2 = async { MainService.task2() }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task1 = async { <span style="color:#a6e22e">MainService</span>.task1() }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task2 = async { <span style="color:#a6e22e">MainService</span>.task2() }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// supervisorScopeを使っているのでこのタイミングでもおｋ
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
@@ -139,8 +139,8 @@ launch {
 <p>任意の子ジョブがキャンセルされても処理を続けたいとしたら、前述のsupervisorScopeを使う必要があります。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>launch {
 </span></span><span style="display:flex;"><span>  supervisorScope {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task1 = async { MainService.task1() }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task2 = async { MainService.task2() }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task1 = async { <span style="color:#a6e22e">MainService</span>.task1() }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> task2 = async { <span style="color:#a6e22e">MainService</span>.task2() }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result1 = runCatching { task1.await() }
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result2 = runCatching { task2.await() }

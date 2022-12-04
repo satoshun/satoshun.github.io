@@ -94,7 +94,7 @@
 <p>どのように渡すかを <code>Modifier.border</code> を例にして説明します。まず、<code>Modifier.border</code>を次のように使ってみます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>Surface(
 </span></span><span style="display:flex;"><span>    modifier = Modifier
-</span></span><span style="display:flex;"><span>      .border(width = <span style="color:#ae81ff">2.</span>dp, color = Color.Cyan)
+</span></span><span style="display:flex;"><span>      .border(width = <span style="color:#ae81ff">2.</span>dp, color = <span style="color:#a6e22e">Color</span>.Cyan)
 </span></span><span style="display:flex;"><span>) { <span style="color:#f92672">..</span>. }
 </span></span></code></pre></div><p>そして、Layout Inspectorで、このSurfaceの中身を見てみます。</p>
 <figure><img src="/blog/android/jetpack/compose/inspector-result.png"/>

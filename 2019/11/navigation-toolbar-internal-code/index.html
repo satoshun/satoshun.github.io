@@ -114,14 +114,14 @@
 </ul>
 <h2 id="前提基本">前提/基本</h2>
 <p>NavigationにActionbarを紐付けるのは、次のようにします。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> navController = findNavController(R.id.nav_host_fragment)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> navController = findNavController(<span style="color:#a6e22e">R</span>.id.nav_host_fragment)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> configuration = AppBarConfiguration(navController.graph)
 </span></span><span style="display:flex;"><span>setupActionBarWithNavController(navController, configuration)
 </span></span></code></pre></div><p>これが、どんな感じで、処理されていくかを見ていきます。</p>
 <h2 id="appbarconfigurationクラス">AppBarConfigurationクラス</h2>
 <p>naivgation graphなどの情報から、AppBarがどのように振る舞うかを決めるクラスです。
 ここでは、navigate upが失敗した時のハンドリング、DrawerLayoutを設定できます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>AppBarConfiguration.Builder
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">AppBarConfiguration</span>.Builder
 </span></span><span style="display:flex;"><span>    setDrawerLayout
 </span></span><span style="display:flex;"><span>    setFallbackOnNavigateUpListener
 </span></span><span style="display:flex;"><span>    build
@@ -206,7 +206,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 <p><code>AbstractAppBarOnDestinationChangedListener</code>は長いので、重要な部分だけを抜粋します。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AbstractAppBarOnDestinationChangedListener</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">implements</span> NavController<span style="color:#f92672">.</span><span style="color:#a6e22e">OnDestinationChangedListener</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> 　　<span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">　　</span><span style="color:#f92672">...</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onDestinationChanged</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> NavController controller<span style="color:#f92672">,</span>
@@ -219,7 +219,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 </span></span><span style="display:flex;"><span>            Pattern fillInPattern <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\{(.+?)\\}&#34;</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>            Matcher matcher <span style="color:#f92672">=</span> fillInPattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>label<span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                String argName <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                String argName <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>arguments <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> arguments<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>argName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>                    matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">appendReplacement</span><span style="color:#f92672">(</span>title<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//noinspection ConstantConditions
@@ -235,7 +235,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> isTopLevelDestination <span style="color:#f92672">=</span> NavigationUI<span style="color:#f92672">.</span><span style="color:#a6e22e">matchDestinations</span><span style="color:#f92672">(</span>destination<span style="color:#f92672">,</span>
 </span></span><span style="display:flex;"><span>                mTopLevelDestinations<span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            setNavigationIcon<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            setNavigationIcon<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>            setActionBarUpIndicator<span style="color:#f92672">(</span>drawerLayout <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> isTopLevelDestination<span style="color:#f92672">);</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
@@ -251,7 +251,7 @@ iconがあるなら<code>setDisplayHomeAsUpEnabled</code>がtrueになり、up�
 </span></span><span style="display:flex;"><span>        setNavigationIcon<span style="color:#f92672">(</span>mArrowDrawable<span style="color:#f92672">,</span> showAsDrawerIndicator
 </span></span><span style="display:flex;"><span>                <span style="color:#f92672">?</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_open_drawer_description</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#f92672">:</span> R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nav_app_bar_navigate_up_description</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> endValue <span style="color:#f92672">=</span> showAsDrawerIndicator <span style="color:#f92672">?</span> 0f <span style="color:#f92672">:</span> 1f<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">float</span> endValue <span style="color:#f92672">=</span> showAsDrawerIndicator <span style="color:#f92672">?</span> <span style="color:#ae81ff">0f</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1f</span><span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>animate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">float</span> startValue <span style="color:#f92672">=</span> mArrowDrawable<span style="color:#f92672">.</span><span style="color:#a6e22e">getProgress</span><span style="color:#f92672">();</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mAnimator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
