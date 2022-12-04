@@ -4,7 +4,6 @@ title = "naptを使って、ビルドを高速化する"
 tags = ["android", "build", "napt"]
 blogimport = true
 type = "post"
-draft = true
 +++
 
 kaptの代替ライブラリの[napt](https://github.com/sergei-lapin/napt)がDagger hiltに対応したので、弊アプリでどれくらいビルド速度が上がるかを簡単に検証しました。
@@ -12,7 +11,7 @@ naptについて簡単に説明すると、ビルドを高速化するけど、�
 
 実際に、`assembleDebug --rerun-tasks`コマンドを10回程度実行してそれぞれ比較してみました。
 
-```text
+```code
 // Before
 2m 6s
 2m 46s
@@ -26,7 +25,7 @@ naptについて簡単に説明すると、ビルドを高速化するけど、�
 2m 14s
 ```
 
-```text
+```code
 // After
 1m 48s
 1m 46s
@@ -40,8 +39,7 @@ naptについて簡単に説明すると、ビルドを高速化するけど、�
 1m 48s
 ```
 
-ややビルドが早くなりました。kapt -> naptへの置き換えもほぼ苦なく出来ました。
-それなりに大規模なプロジェクトの場合には、導入を検討してみるのも良さそうです。
+ややビルドが早くなりました。それなりに大規模なプロジェクトの場合には、導入を検討してみるのも良さそうです。
 
 ## 補足
 
