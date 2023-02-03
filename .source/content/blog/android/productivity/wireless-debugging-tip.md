@@ -1,19 +1,25 @@
 +++
-date = ""
+date = "Fri Feb  3 06:39:59 UTC 2023"
 title = "Android: Wireless debuggingでうまく繋がらない時にadb connectを使う"
 tags = ["android"]
 blogimport = true
 type = "post"
-draft = true
+draft = false
 +++
 
 Android Studioを再起動したり、何かいろいろとやっているとWireless debuggingが上手く繋がらないことがあります。
-そのときにはadb connectコマンドでターミナルから直接接続してあげると、上手くつながってくれます。
+そういう場合にはadb connectコマンドから直接接続してあげると、上手くつながってくれることがあります。
 
-
-```text
-adb connect ip_address:port
+```
+> adb connect ip_address:port
 ```
 
-IPアドレスは、端末のワイヤレスデバッグ画面から確認することができます。
+IPアドレス、ポート番号は、端末のワイヤレスデバッグ画面から確認することができます。
 
+{{< figure src="/blog/android/productivity/wireless-debugging.jpeg" width="300">}}
+
+この場合、172.22.185.228:41583 がIPアドレス、ポート番号になります。
+
+```
+> adb connect 172.22.185.228:41583
+```
