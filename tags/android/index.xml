@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 04 Dec 2022 09:40:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 03 Feb 2023 06:39:59 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: Wireless debuggingでうまく繋がらない時にadb connectを使う</title>
+      <link>https://satoshun.github.io/2023/02/wireless-debugging-tip/</link>
+      <pubDate>Fri, 03 Feb 2023 06:39:59 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2023/02/wireless-debugging-tip/</guid>
+      <description>Android Studioを再起動したり、何かいろいろとやっているとWireless debuggingが上手く繋がらないことがあります。 そういう場合にはadb connectコマンドから直接接続してあげると、上手くつながってくれることがあります。
+&amp;gt; adb connect ip_address:port IPアドレス、ポート番号は、端末のワイヤレスデバッグ画面から確認することができます。
+この場合、172.22.185.228:41583 がIPアドレス、ポート番号になります。
+&amp;gt; adb connect 172.22.185.228:41583 </description>
+    </item>
+    
     <item>
       <title>naptを使って、ビルドを高速化する</title>
       <link>https://satoshun.github.io/2022/12/napt-build-performance/</link>
