@@ -7,16 +7,15 @@ type = "post"
 draft = true
 +++
 
-Jetpack Composeが普及すると共に、Jetpack ComposeをUIの構築だけではなく、プレゼンテーション層でも使う動きがにわかに出てきています。
+Jetpack Composeが普及すると共に、Jetpack ComposeをUIの構築だけではなく、プレゼンテーション層でも使う動きが出てきています。
 
-技術的な背景としては、[A Jetpack Compose by any other name](https://jakewharton.com/a-jetpack-compose-by-any-other-name/)で詳しく解説されていますが、
-Jetpack Composeは Compiler/Runtime、UIの2つで構成されており、前者のCompilerは状態管理に適しており、プレゼンテーション層でも使おうという流れです。
+背景として、[A Jetpack Compose by any other name](https://jakewharton.com/a-jetpack-compose-by-any-other-name/)で詳しく解説されていますが、
+Jetpack Composeは Compiler/Runtime、UIの2つで構成されており、前者のCompilerは状態管理に適しています。その状態管理の部分がプレゼンテーション層でも有効に使えそうなので、徐々に広がりを見せています。
 またCash App社が[molecule](https://github.com/cashapp/molecule)ライブラリを公開したことも大きな要因としてあると思います。
 
-Compose Compilerを使うメリットとしては、複数streamをプレゼンテーション層で扱うときに、combineXXXなどで束ねて使うと思うんですが、
-streamが増えると、とたんにエラー処理などが複雑になるという問題があります。
-Compose Compilerを使うことで手続き的なコードに変換することができるため、複雑になりすぎる問題を解決することが出来ます。
-Kotlin Coroutineが流行った理由と同じような流れだと思います。
+具体的に、Compose Compilerをプレゼンテーション層で使うメリットとしては、複数のストリームを扱うときに現れます。例えばCoroutine Flowの場合には、combineXXXメソッドなどで複数のストリームを束ねて、UiStateなどに変換する使い方が1つあるんですが、
+ストリームが多くなると、とたんにエラー処理などが複雑になるという問題があります。
+ここで、Compose Compilerを使うことで手続き的なコードに変換することができるため、複雑になりすぎる問題を解決することが出来ます。Kotlin Coroutineのサスペンド関数のようなメリットを受けることが出来ます。
 
 また、まだexperimentalですが、[Circuit](https://slackhq.github.io/circuit/)ライブラリも公開されており、このライブラリではmoleculeよりもいろいろなものを提供しており、
 こう書いてくださいというところまで提供されています。
