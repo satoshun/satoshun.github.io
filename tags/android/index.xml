@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 03 Feb 2023 06:39:59 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Mar 2023 14:23:54 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android: Eng modeの紹介</title>
+      <link>https://satoshun.github.io/2023/03/android-build-engmode/</link>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/2023/03/android-build-engmode/</guid>
+      <description>Netflix + Gradle, A Journey in Developer Productivityの発表で、Eng modeの解説をしていて、いいテクニックだと思ったのでそれの紹介です。
+Eng modeとは、Eng modeフラグを作り、それがtrueのときに不必要な機能をoffにして、ビルドを高速化しようというテクニックです。
+Netflixでは次の機能をoff、または調整しているらしいです。
+incremental buildの最適化 不要なプラグイン(jacocoなど) Variantの削除 app bundlesの削除 これらを調整することで、Gradleのconfiguration time、ビルドの短縮をし、開発の効率化をすることが出来ます。 Variantsが多い、プラグインをめちゃくちゃ入れているような大規模なプロジェクトだと効果がありそうです。
+より詳しくは、スライドか、もしくは動画を見てください。
+参考 https://speakerdeck.com/eboudrant/netflix-plus-gradle-a-journey-in-developer-productivity https://www.droidcon.com/2022/09/29/netflix-gradle-a-journey-in-developer-productivity-2/ </description>
+    </item>
+    
     <item>
       <title>Android: Wireless debuggingでうまく繋がらない時にadb connectを使う</title>
       <link>https://satoshun.github.io/2023/02/wireless-debugging-tip/</link>

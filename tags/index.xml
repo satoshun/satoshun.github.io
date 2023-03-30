@@ -7,11 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 03 Feb 2023 06:39:59 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Mar 2023 14:23:54 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Fri, 03 Feb 2023 06:39:59 +0000</pubDate>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
@@ -20,9 +20,18 @@
     <item>
       <title>build</title>
       <link>https://satoshun.github.io/tags/build/</link>
-      <pubDate>Sun, 04 Dec 2022 09:40:27 +0000</pubDate>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
+      
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
@@ -32,15 +41,6 @@
       <pubDate>Sun, 04 Dec 2022 09:40:27 +0000</pubDate>
       
       <guid>https://satoshun.github.io/tags/napt/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Mon, 10 Oct 2022 07:49:35 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
       <description></description>
     </item>
     
