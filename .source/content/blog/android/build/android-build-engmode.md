@@ -9,7 +9,9 @@ draft = false
 
 [Netflix + Gradle, A Journey in Developer Productivity](https://speakerdeck.com/eboudrant/netflix-plus-gradle-a-journey-in-developer-productivity?slide=17)の発表で、Eng modeの解説をしていて、いいテクニックだと思ったのでそれの紹介です。
 
-Eng modeとは、Eng modeフラグを作り、それがtrueのときに不必要な機能をoffにして、ビルドを高速化しようというテクニックです。具体的には次の機能をoff、または調整しているらしいです。
+Eng modeとは、Eng modeフラグを作り、それがtrueのときに不必要な機能をoffにして、ビルドを高速化しようというテクニックです。
+
+Netflixでは次の機能をoff、または調整しているらしいです。
 
 - incremental buildの最適化
 - 不要なプラグイン(jacocoなど)
@@ -17,5 +19,11 @@ Eng modeとは、Eng modeフラグを作り、それがtrueのときに不必要
 - app bundlesの削除
 
 これらを調整することで、Gradleのconfiguration time、ビルドの短縮をし、開発の効率化をすることが出来ます。
+Variantsが多い、プラグインをめちゃくちゃ入れているような大規模なプロジェクトだと効果がありそうです。
 
 より詳しくは、[スライド](https://speakerdeck.com/eboudrant/netflix-plus-gradle-a-journey-in-developer-productivity?slide=17)か、もしくは[動画](https://www.droidcon.com/2022/09/29/netflix-gradle-a-journey-in-developer-productivity-2/)を見てください。
+
+### 参考
+
+- https://speakerdeck.com/eboudrant/netflix-plus-gradle-a-journey-in-developer-productivity
+- https://www.droidcon.com/2022/09/29/netflix-gradle-a-journey-in-developer-productivity-2/
