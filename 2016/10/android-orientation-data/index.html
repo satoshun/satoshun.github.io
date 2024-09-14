@@ -37,10 +37,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -96,53 +96,53 @@
 <p>まず, データを保持するFragmentを定義します.</p>
 <p>最初にonCreateで, setRetainInstance(true)をコールします.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    setRetainInstance<span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span>(Bundle savedInstanceState) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">onCreate</span>(savedInstanceState);
+</span></span><span style="display:flex;"><span>    setRetainInstance(<span style="color:#66d9ef">true</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    refresh<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    refresh();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>次に, refreshでデータを取得します. ここではRxJava2 + Retrofitを使っています.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refresh</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    disposables<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    disposables<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>provideGithubAPI<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">getRepositories</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;satoshun&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribeOn</span><span style="color:#f92672">(</span>Schedulers<span style="color:#f92672">.</span><span style="color:#a6e22e">computation</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">observeOn</span><span style="color:#f92672">(</span>AndroidSchedulers<span style="color:#f92672">.</span><span style="color:#a6e22e">mainThread</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>                    data <span style="color:#f92672">-&gt;</span> subject<span style="color:#f92672">.</span><span style="color:#a6e22e">onNext</span><span style="color:#f92672">(</span>data<span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>                    e <span style="color:#f92672">-&gt;</span> subject<span style="color:#f92672">.</span><span style="color:#a6e22e">onError</span><span style="color:#f92672">(</span>e<span style="color:#f92672">)));</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refresh</span>() {
+</span></span><span style="display:flex;"><span>    disposables.<span style="color:#a6e22e">clear</span>();
+</span></span><span style="display:flex;"><span>    disposables.<span style="color:#a6e22e">add</span>(provideGithubAPI()
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">getRepositories</span>(<span style="color:#e6db74">&#34;satoshun&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">subscribeOn</span>(Schedulers.<span style="color:#a6e22e">computation</span>())
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">observeOn</span>(AndroidSchedulers.<span style="color:#a6e22e">mainThread</span>())
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">subscribe</span>(
+</span></span><span style="display:flex;"><span>                    data <span style="color:#f92672">-&gt;</span> subject.<span style="color:#a6e22e">onNext</span>(data),
+</span></span><span style="display:flex;"><span>                    e <span style="color:#f92672">-&gt;</span> subject.<span style="color:#a6e22e">onError</span>(e)));
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>APIコールをして, 取得したデータをBehaviorSubject(subject)に与えます.</p>
 <p>最後にobservableメソッドを定義し, データソース(subject)を他のオブジェクトからアクセス出来るようにします.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Observable<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Repo<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">observable</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> subject<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Observable<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Repo<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">observable</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> subject;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Fragmentのフルソースコードは<a href="https://github.com/satoshun-example/AndroidRetainData/blob/master/app/src/main/java/com/github/satoshun/example/retain/RetainFragment.java">ここ</a>にあります.</p>
 <p>次に, Activityの準備をします. ActivityのonCreateでデータFragmentを使うようにするだけです.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    dataFrag <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>RetainFragment<span style="color:#f92672">)</span> getSupportFragmentManager<span style="color:#f92672">().</span><span style="color:#a6e22e">findFragmentByTag</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;data&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>dataFrag <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        dataFrag <span style="color:#f92672">=</span> RetainFragment<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        getSupportFragmentManager<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">beginTransaction</span><span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>dataFrag<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;data&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ここで, データFragmentからデータを取得する!!
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    disposables<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>dataFrag<span style="color:#f92672">.</span><span style="color:#a6e22e">observable</span><span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>                        data <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                            binding<span style="color:#f92672">.</span><span style="color:#a6e22e">swipe</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshing</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                            repoAdapter<span style="color:#f92672">.</span><span style="color:#a6e22e">addRepos</span><span style="color:#f92672">(</span>data<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">},</span>
-</span></span><span style="display:flex;"><span>                        e <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                            binding<span style="color:#f92672">.</span><span style="color:#a6e22e">swipe</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshing</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                            Log<span style="color:#f92672">.</span><span style="color:#a6e22e">e</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;onDataSource&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}));</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span>(Bundle savedInstanceState) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.<span style="color:#a6e22e">onCreate</span>(savedInstanceState);
+</span></span><span style="display:flex;"><span>    dataFrag <span style="color:#f92672">=</span> (RetainFragment) getSupportFragmentManager().<span style="color:#a6e22e">findFragmentByTag</span>(<span style="color:#e6db74">&#34;data&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (dataFrag <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        dataFrag <span style="color:#f92672">=</span> RetainFragment.<span style="color:#a6e22e">newInstance</span>();
+</span></span><span style="display:flex;"><span>        getSupportFragmentManager()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">beginTransaction</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">add</span>(dataFrag, <span style="color:#e6db74">&#34;data&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">commit</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ここで, データFragmentからデータを取得する!!</span>
+</span></span><span style="display:flex;"><span>    disposables.<span style="color:#a6e22e">add</span>(dataFrag.<span style="color:#a6e22e">observable</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">subscribe</span>(
+</span></span><span style="display:flex;"><span>                        data <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>                            binding.<span style="color:#a6e22e">swipe</span>.<span style="color:#a6e22e">setRefreshing</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>                            repoAdapter.<span style="color:#a6e22e">addRepos</span>(data);
+</span></span><span style="display:flex;"><span>                        },
+</span></span><span style="display:flex;"><span>                        e <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>                            binding.<span style="color:#a6e22e">swipe</span>.<span style="color:#a6e22e">setRefreshing</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>                            Log.<span style="color:#a6e22e">e</span>(<span style="color:#e6db74">&#34;onDataSource&#34;</span>, e.<span style="color:#a6e22e">getMessage</span>());
+</span></span><span style="display:flex;"><span>                        }));
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Activityのフルソースコードは<a href="https://github.com/satoshun-example/AndroidRetainData/blob/master/app/src/main/java/com/github/satoshun/example/retain/MainActivity.java">ここ</a>にあります.</p>
 <p>これで, データFragmentで取得したデータを使いまわせます!</p>
 <h2 id="まとめ">まとめ</h2>

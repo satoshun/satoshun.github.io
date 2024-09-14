@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>camerax on stsnブログ</title>
+    <title>Camerax on stsnブログ</title>
     <link>https://satoshun.github.io/tags/camerax/</link>
-    <description>Recent content in camerax on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Camerax on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 06 May 2019 05:47:14 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/camerax/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 May 2019 05:47:14 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/camerax/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CameraX: CameraView触ってみた</title>
       <link>https://satoshun.github.io/2019/05/camerax-camera-view/</link>
       <pubDate>Mon, 06 May 2019 05:47:14 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/05/camerax-camera-view/</guid>
-      <description>CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。
-内部の実装であったり、細かい部分はpsideさんの「CameraXのコードがきたので気合い入れて読んでみた」が詳しいです。
-環境構築 CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。
-androidx { name = &amp;#34;Jetpack Camera View Library&amp;#34; - publish = false + publish = true mavenVersion = LibraryVersions.CAMERA mavenGroup = LibraryGroups.CAMERA inceptionYear = &amp;#34;2019&amp;#34; } 使い方 CameraViewは普通のViewのように使うことができます。
-&amp;lt;androidx.constraintlayout.widget.ConstraintLayout ...&amp;gt; &amp;lt;androidx.camera.view.CameraView android:layout_width=&amp;#34;0dp&amp;#34; android:layout_height=&amp;#34;0dp&amp;#34; app:layout_constraintBottom_toBottomOf=&amp;#34;parent&amp;#34; app:layout_constraintEnd_toEndOf=&amp;#34;parent&amp;#34; app:layout_constraintStart_toStartOf=&amp;#34;parent&amp;#34; app:layout_constraintTop_toTopOf=&amp;#34;parent&amp;#34; /&amp;gt; &amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt; 次に初期化をします。
-cameraView.bindToLifecycle(this) // thisはLifecycleOwner LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。 CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。
-これだけでカメラ機能が使えるようになります！とても簡単！!
-以下、CameraViewで現状使えるAPIについて紹介します。
-CameraViewで使えるAPI達 モードの変更 CameraViewでは次の3つのモードがあります。
-Image: 写真を取る Video: ビデオを取る Mixed: 両方。ただし、動かない端末もあるらしい 次のように使います。
-// Image cameraView.captureMode = CameraView.CaptureMode.IMAGE cameraView.takePicture(...) // Video cameraView.</description>
+      <description>&lt;p&gt;CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。&lt;/p&gt;&#xA;&lt;p&gt;内部の実装であったり、細かい部分はpsideさんの「&lt;a href=&#34;https://p-side.net/posts/2019-05-05-camerax/&#34;&gt;CameraXのコードがきたので気合い入れて読んでみた&lt;/a&gt;」が詳しいです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;&#xA;&lt;p&gt;CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; androidx {&#xA;     name = &amp;#34;Jetpack Camera View Library&amp;#34;&#xA;-    publish = false&#xA;+    publish = true&#xA;     mavenVersion = LibraryVersions.CAMERA&#xA;     mavenGroup = LibraryGroups.CAMERA&#xA;     inceptionYear = &amp;#34;2019&amp;#34;&#xA; }&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;&#xA;&lt;p&gt;CameraViewは普通のViewのように使うことができます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.camera.view.CameraView&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintBottom_toBottomOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintEnd_toEndOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintStart_toStartOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintTop_toTopOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

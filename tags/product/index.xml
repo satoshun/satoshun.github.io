@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>product on stsnブログ</title>
+    <title>Product on stsnブログ</title>
     <link>https://satoshun.github.io/tags/product/</link>
-    <description>Recent content in product on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Product on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 20 Jul 2019 02:57:15 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/product/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Jul 2019 02:57:15 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/product/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GitHubのNotificationsで、androidxライブラリのリリースの通知を受け取れるリポジトリを作りました</title>
       <link>https://satoshun.github.io/2019/07/androidx-releases/</link>
       <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/07/androidx-releases/</guid>
-      <description>androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。 androidx-releasesにそれぞれのリポジトリがあります。
-例えば、Appcompatのリリースを検知したかったら、次の画像のように、androidx-releases/appcompatのNotificationsのReleases Onlyをチェックします。
-この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。
-まとめ 作ってみたものの、これが便利なのかは良く分かってないです:D 他のandroidxライブラリのリリースの通知を受けたいなら、androidx-releasesから登録を。 何か他に欲しいandroidxリポジトリがあったら教えてください😃 </description>
+      <description>&lt;p&gt;androidxのライブラリのリリースをGitHubのReleases onlyを使って検知するためのリポジトリを作りました。&#xA;&lt;a href=&#34;https://github.com/androidx-releases&#34;&gt;androidx-releases&lt;/a&gt;にそれぞれのリポジトリがあります。&lt;/p&gt;&#xA;&lt;p&gt;例えば、Appcompatのリリースを検知したかったら、次の画像のように、&lt;a href=&#34;https://github.com/androidx-releases/appcompat&#34;&gt;androidx-releases/appcompat&lt;/a&gt;のNotificationsのReleases Onlyをチェックします。&lt;/p&gt;&#xA;&lt;br /&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/product/androidx-releases-1.png&#34; width=&#34;50%&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;br /&gt;&#xA;&lt;p&gt;この状態で、Appcompatに新しいリリースがあったら、GitHubに登録してあるメールアドレスにメールが届きます。&lt;/p&gt;&#xA;&lt;br /&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/product/androidx-releases-2.png&#34; width=&#34;70%&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;br /&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;作ってみたものの、これが便利なのかは良く分かってないです:D&lt;/li&gt;&#xA;&lt;li&gt;他のandroidxライブラリのリリースの通知を受けたいなら、&lt;a href=&#34;https://github.com/androidx-releases&#34;&gt;androidx-releases&lt;/a&gt;から登録を。&lt;/li&gt;&#xA;&lt;li&gt;何か他に欲しいandroidxリポジトリがあったら教えてください😃&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
-    
   </channel>
 </rss>

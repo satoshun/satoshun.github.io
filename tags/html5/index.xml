@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>html5 on stsnブログ</title>
+    <title>Html5 on stsnブログ</title>
     <link>https://satoshun.github.io/tags/html5/</link>
-    <description>Recent content in html5 on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Html5 on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 14 Mar 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/html5/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 14 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/html5/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTML5: Shadow DOMについて</title>
       <link>https://satoshun.github.io/2015/03/shadow_dom/</link>
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/03/shadow_dom/</guid>
-      <description>Web Componentsの機能の一つ Shadow DOMについて説明します.
-Shadow DOMとは? 外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.
-Shadow DOMの誕生背景 なぜShadow DOMが出てきたかについて説明します.
-CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,
-.hoge { font-size: 30px; } と書くと, hogeをclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分でhogeクラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます. 仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.
-フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.
-使い方 Shadow DOMを作るにはcreateShadowRootAPIを使います. 以下, Shadow DOM版Hello Worldです.
-&amp;lt;div id=&amp;#34;shadow&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; function insertShadow() { // Shadow DOMの作成 var shadow = document.querySelector(&amp;#39;#shadow&amp;#39;).createShadowRoot(); shadow.textContent = &amp;#39;Hello world&amp;#39;; } insertShadow(); &amp;lt;/script&amp;gt; Shadow DOMが挿入され, Hello Worldと表示されます.
-上の例ではShadow DOMの良さが全く現れていないので, もう1つ例をあげます.</description>
+      <description>&lt;p&gt;Web Componentsの機能の一つ Shadow DOMについて説明します.&lt;/p&gt;&#xA;&lt;h2 id=&#34;shadow-domとは&#34;&gt;Shadow DOMとは?&lt;/h2&gt;&#xA;&lt;p&gt;外部から影響を受けない, 外部に影響を与えない隔離された要素です. 「カプセル化されたHTML要素」みたいな感じです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;shadow-domの誕生背景&#34;&gt;Shadow DOMの誕生背景&lt;/h2&gt;&#xA;&lt;p&gt;なぜShadow DOMが出てきたかについて説明します.&lt;/p&gt;&#xA;&lt;p&gt;CSS, JavaScriptは, 全要素に対して影響が及ぶという性質があります.(グローバルに影響を与える) ある箇所を修正したら, 予期せぬ箇所にも影響が出てしまうことがよく起こりますが, これはバグを生み出しやすくとてもよくないです. 例をあげると,&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hoge&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;font-size&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;px&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;と書くと, &lt;code&gt;hoge&lt;/code&gt;をclass属性に持つ要素の文字サイズが30pxになります. 偶然にも他の部分で&lt;code&gt;hoge&lt;/code&gt;クラスセレクターを使っていたとしたらそのセレクターにも影響を与えてしまいます.&#xA;仮に, 他の人が作ったコンテンツが隔離されて使用できれば, 同じセレクターを使ったとしても, 問題がなくなります.&lt;/p&gt;&#xA;&lt;p&gt;フロント側が年々複雑になったことにより, スタイルシート, JavaScriptが肥大化した結果, コンテンツを互いに隔離したいという要望が高まり, Shadow DOMが誕生しました.&lt;/p&gt;&#xA;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;&#xA;&lt;p&gt;Shadow DOMを作るには&lt;code&gt;createShadowRoot&lt;/code&gt;APIを使います. 以下, Shadow DOM版Hello Worldです.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;shadow&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;insertShadow&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Shadow DOMの作成&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;shadow&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;querySelector&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#shadow&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;createShadowRoot&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;shadow&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;textContent&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Hello world&amp;#39;&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;insertShadow&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

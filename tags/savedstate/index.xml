@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>savedstate on stsnブログ</title>
+    <title>Savedstate on stsnブログ</title>
     <link>https://satoshun.github.io/tags/savedstate/</link>
-    <description>Recent content in savedstate on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Savedstate on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 25 May 2019 10:38:15 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/savedstate/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 May 2019 10:38:15 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/savedstate/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ViewModel SavedState &#43; Dagger</title>
       <link>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</link>
       <pubDate>Sat, 25 May 2019 10:38:15 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate-dagger/</guid>
-      <description>ViewModel + SavedStateでDaggerを使う方法を考えてみました。
-前提知識・課題 SavedStateを使う場合、ViewModelにSavedStateHandleインスタンスを渡さなければいけません。
-class MyViewModel( private val state: SavedStateHandle ) : ViewModel() { ... } SavedStateHandleインスタンスを作るために、SavedStateVMFactoryもしくは、AbstractSavedStateVMFactoryを使う必要があります。
-生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。
-// thisはFragmentActivity ViewModelProvider(this, MyViewModel(this)) .get(MyViewModel::class.java) コンストラクタの引数がSavedStateHandle以外にもあるなら、AbstractSavedStateVMFactoryを拡張します。
-class TestViewModel( private val state: SavedStateHandle, private val name: String ) : ViewModel() class TestViewModelFactory( owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null ) : AbstractSavedStateVMFactory(owner, defaultArgs) { override fun &amp;lt;T : ViewModel&amp;gt; create( key: String, modelClass: Class&amp;lt;T&amp;gt;, handle: SavedStateHandle ): T { return TestViewModel(handle, &amp;#34;test&amp;#34;) as T } } // 以下、生成コード ViewModelProvider(this, TestViewModelFactory(this)) .</description>
+      <description>&lt;p&gt;ViewModel + SavedStateでDaggerを使う方法を考えてみました。&lt;/p&gt;&#xA;&lt;h2 id=&#34;前提知識課題&#34;&gt;前提知識・課題&lt;/h2&gt;&#xA;&lt;p&gt;SavedStateを使う場合、ViewModelに&lt;code&gt;SavedStateHandle&lt;/code&gt;インスタンスを渡さなければいけません。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyViewModel&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; state: SavedStateHandle&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : ViewModel() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;SavedStateHandleインスタンスを作るために、&lt;code&gt;SavedStateVMFactory&lt;/code&gt;もしくは、&lt;code&gt;AbstractSavedStateVMFactory&lt;/code&gt;を使う必要があります。&lt;/p&gt;&#xA;&lt;p&gt;生成したいViewModelのコンストラクタの引数がSavedStateHandleのみなら、SavedStateVMFactoryを使います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// thisはFragmentActivity&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;ViewModelProvider(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;, MyViewModel(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;))&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .&lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;(MyViewModel&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;コンストラクタの引数がSavedStateHandle以外にもあるなら、&lt;code&gt;AbstractSavedStateVMFactory&lt;/code&gt;を拡張します。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>雑メモ: ViewModel SavedStateのコードリーディング</title>
       <link>https://satoshun.github.io/2019/05/viewmodel-savedstate/</link>
       <pubDate>Tue, 21 May 2019 23:59:53 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/05/viewmodel-savedstate/</guid>
-      <description>ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。
-この記事のソースコードは全て、下記のライセンスに従います。
-/* * Copyright 2019 The Android Open Source Project * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</description>
+      <description>&lt;p&gt;ViewModelのSavedStateがどのように実現しているのか、内部でどのように動作しているのか気になったので、ソースコードを読んでみました。&lt;/p&gt;&#xA;&lt;p&gt;この記事のソースコードは全て、下記のライセンスに従います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;/*&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Copyright 2019 The Android Open Source Project&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; *&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * you may not use this file except in compliance with the License.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * You may obtain a copy of the License at&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; *&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; *      http://www.apache.org/licenses/LICENSE-2.0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; *&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Unless required by applicable law or agreed to in writing, software&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * See the License for the specific language governing permissions and&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * limitations under the License.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; */&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

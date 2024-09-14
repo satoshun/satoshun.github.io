@@ -36,10 +36,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -107,30 +107,30 @@
 <p>Pull to Refreshをした時に, イベントが発生するのでListenerを記述します.</p>
 <p>実装例です. <code>setOnRefreshListener</code>でListenerを登録します.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> SwipeRefreshLayout mSwipe<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> SwipeRefreshLayout mSwipe;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>  mSwipe <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SwipeRefreshLayout<span style="color:#f92672">)</span> findViewById<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">refresh</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Callback登録
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnRefreshListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> SwipeRefreshLayout<span style="color:#f92672">.</span><span style="color:#a6e22e">OnRefreshListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span>(Bundle savedInstanceState) {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  mSwipe <span style="color:#f92672">=</span> (SwipeRefreshLayout) findViewById(R.<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">refresh</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Callback登録</span>
+</span></span><span style="display:flex;"><span>  mSwipe.<span style="color:#a6e22e">setOnRefreshListener</span>(<span style="color:#66d9ef">new</span> SwipeRefreshLayout.<span style="color:#a6e22e">OnRefreshListener</span>() {
 </span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onRefresh</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onRefresh</span>() {
 </span></span><span style="display:flex;"><span>          <span style="color:#75715e">/* ここに適当な処理を書く */</span>
-</span></span><span style="display:flex;"><span>          mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshing</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>          mSwipe.<span style="color:#a6e22e">setRefreshing</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>ListViewを引っ張ると, <code>setOnRefreshListener</code>メソッドがコールされます.
 <code>setOnRefreshListener</code>の最後に, <code>setRefreshing(false)</code>をコールします. これは, 更新アニメーションをOffにするものです.</p>
 <h2 id="アニメーションの色を変える">アニメーションの色を変える</h2>
 <p>上のバーに出てくるアニメーションの色を変えることが出来ます.</p>
 <p><code>setColorScheme</code>を使います.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>mSwipe<span style="color:#f92672">.</span><span style="color:#a6e22e">setColorScheme</span><span style="color:#f92672">(</span>android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_blue_bright</span><span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_green_light</span><span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_orange_light</span><span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    android<span style="color:#f92672">.</span><span style="color:#a6e22e">R</span><span style="color:#f92672">.</span><span style="color:#a6e22e">color</span><span style="color:#f92672">.</span><span style="color:#a6e22e">holo_red_light</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>mSwipe.<span style="color:#a6e22e">setColorScheme</span>(android.<span style="color:#a6e22e">R</span>.<span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">holo_blue_bright</span>,
+</span></span><span style="display:flex;"><span>    android.<span style="color:#a6e22e">R</span>.<span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">holo_green_light</span>,
+</span></span><span style="display:flex;"><span>    android.<span style="color:#a6e22e">R</span>.<span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">holo_orange_light</span>,
+</span></span><span style="display:flex;"><span>    android.<span style="color:#a6e22e">R</span>.<span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">holo_red_light</span>);
 </span></span></code></pre></div><p>これで, 4色でアニメーションが行われます.</p>
 <h2 id="まとめ">まとめ</h2>
 <p>簡単にGmailライクなリフレッシュアニメーションが作れました.</p>

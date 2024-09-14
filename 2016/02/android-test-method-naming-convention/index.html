@@ -37,10 +37,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -108,31 +108,31 @@
 <li>後処理(teardown)</li>
 </ol>
 <p>これだと分かりにくいので, コードで説明すると,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeTest</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> lists<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeTest</span> {
+</span></span><span style="display:flex;"><span>  List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> lists;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Before</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    lists <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-</span></span><span style="display:flex;"><span>    lists<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    lists<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;123&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    lists <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    lists.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;1&#34;</span>);
+</span></span><span style="display:flex;"><span>    lists.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;123&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@After</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 後処理(teardown)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 後処理(teardown)</span>
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    String actual <span style="color:#f92672">=</span> lists<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testGet</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    String actual <span style="color:#f92672">=</span> lists.<span style="color:#a6e22e">get</span>(0);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>actual<span style="color:#f92672">).</span><span style="color:#a6e22e">isEqualTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(actual).<span style="color:#a6e22e">isEqualTo</span>(<span style="color:#e6db74">&#34;1&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>という感じになります. JUnit4ではこのようにテストを構築します.</p>
 <h2 id="テストケースtestgetという名前">テストケース<code>testGet</code>という名前</h2>
 <p>前述の例では, テストケースの名前を<code>testGet</code>にしています. 果たして, これで意味が伝わるでしょうか?
@@ -141,58 +141,58 @@
 <p>では, どのような情報を含めれば良いのか? それを次の例で説明していきます.</p>
 <h2 id="やや複雑な例">やや複雑な例</h2>
 <p><code>Request</code>クラスの内容に応じて, HTTPでデータを取ってくる<code>HTTPConnection</code>クラスを考えます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HTTPConnectionTest</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  HTTPConnection httpConnection<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HTTPConnectionTest</span> {
+</span></span><span style="display:flex;"><span>  HTTPConnection httpConnection;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Before</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    httpConnection <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTTPConnection<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    httpConnection <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HTTPConnection();
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@After</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 後処理(teardown)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 後処理(teardown)</span>
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://valid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    Response response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(validRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isTrue</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>inValidRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(inValidRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isFalse</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>上記テストで問題なのは, <code>execute</code>で正常, 異常の2つのことをテストしている所です.
 一般的に, 1つのテストケースでは, 1つのことをテストすべきなので, 修正します.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://valid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    Response response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(validRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isTrue</span>();
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>inValidRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request inValidRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(inValidRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isFalse</span>();
+</span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>これで, 1つのテストケースで1つのことをテストするようになり, 大分綺麗になりました.</p>
 <h2 id="ここでテストのメソッド名を考える">ここでテストのメソッド名を考える</h2>
 <p>このトピックがこの記事で一番伝えたい事です.</p>
@@ -200,24 +200,24 @@
 この2つのテストメソッドは, executeメソッドの, 正常, 異常系をテストしていることは伝わります.
 しかし, <strong>どういう条件下でこの振る舞いをするか</strong>の情報が抜けています. よって, その情報を付与する必要があります.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok_200URL</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://valid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>validRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isTrue</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ok_200URL</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request validRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://valid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    Response response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(validRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isTrue</span>();
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng_404URL</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Request notFoundRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    response <span style="color:#f92672">=</span> httpConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>notFoundRequest<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">isOk</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">isFalse</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute_ng_404URL</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 事前準備(setup)</span>
+</span></span><span style="display:flex;"><span>    Request notFoundRequest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Request(<span style="color:#e6db74">&#34;http://invalid-url.com&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 実行(exercise)</span>
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> httpConnection.<span style="color:#a6e22e">execute</span>(notFoundRequest);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 宣言(assertion)</span>
+</span></span><span style="display:flex;"><span>    assertThat(response.<span style="color:#a6e22e">isOk</span>()).<span style="color:#a6e22e">isFalse</span>();
+</span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p><code>execute_ok_200URL</code>, <code>execute_ng_404URL</code>とし, 前提条件をテストメソッド名に含めました.
 これで, 「200のURLならOK」, 「404のURLならNG」を返すことが, メソッド名から推測することが出来ます.</p>
 <p>これを一般化すると. <code>テスト対象メソッド_期待される振る舞い_前提条件</code>という命名規則になります. これを, ルール化することで, テストコードの可読性が上がり, 全体的に統一感のあるテストが作成できると思います.</p>

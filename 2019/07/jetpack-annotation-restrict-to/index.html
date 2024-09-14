@@ -39,10 +39,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -117,19 +117,19 @@
 </span></span></code></pre></div><p>今回の検証に用いたコードは <a href="https://github.com/satoshun-android-example/RestrictTo">satoshun/RestrictTo</a> にあります。</p>
 <h2 id="scopeの一覧">Scopeの一覧</h2>
 <p>RestrictToの定義は以下のようになっています。（コメント等は削除してます。）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Scope<span style="color:#f92672">[]</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> RestrictTo {
+</span></span><span style="display:flex;"><span>    Scope<span style="color:#f92672">[]</span> <span style="color:#a6e22e">value</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">enum</span> Scope <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        LIBRARY<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>        LIBRARY_GROUP<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>        LIBRARY_GROUP_PREFIX<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">enum</span> Scope {
+</span></span><span style="display:flex;"><span>        LIBRARY,
+</span></span><span style="display:flex;"><span>        LIBRARY_GROUP,
+</span></span><span style="display:flex;"><span>        LIBRARY_GROUP_PREFIX,
 </span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Deprecated</span>
-</span></span><span style="display:flex;"><span>        GROUP_ID<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>        TESTS<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>        SUBCLASSES<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        GROUP_ID,
+</span></span><span style="display:flex;"><span>        TESTS,
+</span></span><span style="display:flex;"><span>        SUBCLASSES,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>GROUP_IDはdeprecatedとのことなので、それ以外のLIBRARY、 LIBRARY_GROUP、 LIBRARY_GROUP_PREFIX、 TESTS、 SUBCLASSESの挙動について見ていきます。</p>
 <h2 id="各スコープについて">各スコープについて</h2>
 <p>次のように説明があります。</p>
@@ -137,13 +137,13 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * Restrict usage to code within the same library (e.g. the same
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * gradle group ID and artifact ID).
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
-</span></span><span style="display:flex;"><span>LIBRARY<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>LIBRARY,
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * Restrict usage to code within the same group of libraries.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * This corresponds to the gradle group ID.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
-</span></span><span style="display:flex;"><span>LIBRARY_GROUP<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>LIBRARY_GROUP,
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * Restrict usage to code within packages whose groups share
@@ -157,12 +157,12 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * shares the prefix &#34;com.&#34; and not all the way until the
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * last &#34;.&#34;.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
-</span></span><span style="display:flex;"><span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>LIBRARY_GROUP_PREFIX,
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * Restrict usage to tests.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
-</span></span><span style="display:flex;"><span>TESTS<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>TESTS,
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * Restrict usage to subclasses of the enclosing class.
@@ -170,7 +170,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * &lt;strong&gt;Note:&lt;/strong&gt; This scope should not be used to annotate
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * packages.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
-</span></span><span style="display:flex;"><span>SUBCLASSES<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>SUBCLASSES,
 </span></span></code></pre></div><p>名前から何となく想起できると思います。LIBRARY系のスコープはやや複雑に感じました。</p>
 <p>次から、実際の挙動を見ていきます。</p>
 <h2 id="同一モジュール内">同一モジュール内</h2>
@@ -239,20 +239,20 @@ include &#39;:lib1&#39;
 <h2 id="サードパーティライブラリの場合">サードパーティライブラリの場合</h2>
 <p>androidx内で定義されているスコープが付いたクラスに、appモジュールからアクセスしてみます。</p>
 <p>まずは、ライブラリモジュール内の定義から。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY<span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestrictTo</span>(LIBRARY)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ContentFrameLayout</span> <span style="color:#66d9ef">extends</span> FrameLayout
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">---</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MediaItem</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MediaItem</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@RestrictTo</span>(LIBRARY_GROUP)
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">---</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RestrictTo</span><span style="color:#f92672">(</span>LIBRARY_GROUP_PREFIX<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable<span style="color:#f92672">.</span><span style="color:#a6e22e">Callback</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RestrictTo</span>(LIBRARY_GROUP_PREFIX)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DrawableWrapper</span> <span style="color:#66d9ef">extends</span> Drawable <span style="color:#66d9ef">implements</span> Drawable.<span style="color:#a6e22e">Callback</span>
 </span></span></code></pre></div><p>次に、appから呼び出してみます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>ContentFrameLayout(<span style="color:#f92672">..</span>.) <span style="color:#75715e">// NG
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">MediaItem</span>.Builder().build() <span style="color:#75715e">// NG

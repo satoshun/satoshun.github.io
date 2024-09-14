@@ -37,10 +37,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -93,35 +93,35 @@
 <h2 id="リレーショナルデータベースモデルrdbについて">リレーショナルデータベースモデル(RDB)について</h2>
 <p>最初にリレーションについて説明します. リレーションは見出し(heading)と本体(body)からなります. 見出しは, SQLでいうところの属性に相当します. 例えば, 生徒なら下のようなデータを持つと考えられます.</p>
 <table>
-<thead>
-<tr>
-<th>学生番号</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>田中</td>
-<td>17</td>
-</tr>
-<tr>
-<td>002</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>004</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">学生番号</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">田中</td>
+          <td style="text-align: left">17</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">004</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>上記表がリレーションの一例になります. <code>{学生番号, 名前, 年齢}</code>が見出し, <code>{{001, 田中, 17}, {002, 多田野, 19}, {003, 木下, 19}, {004, 西岡, 18}}</code>が本体になります. ここで<code>{}</code>を使っているのは, リレーショナルにおける見出し, 本体はそれぞれタプルで表現されるためです. そのため各要素には順序が存在せず, 重複が許されません(重複があっても意味がない).</p>
 <p>ここで集合という言葉が出てきましたが, RDBは<strong>集合論</strong> に基づいた理論です. データを集合で表現し, 集合演算を行いデータを操作します.</p>
@@ -138,40 +138,40 @@
 <p>上記演算を使うことで, 適切なデータを取得することが出来ます.</p>
 <p>次に, <strong>候補キー</strong> について説明します. 候補キーはタプルを一意に特定することが出来る<strong>見出しの最小の属性組</strong> になります. 例えば, 生徒の通勤手段を表現するリレーションがあるとします.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>上記リレーションの場合, {学生番号, 通勤手段}が候補キーになります. その2つの属性を指定することで, 一意にタプルを選択することが可能なためです.(候補キーには@をつけています)</p>
 <p>また, 候補キーに似た概念にスーパーキーがあります. 上記で候補キーは「見出しの最小の属性組」と説明しました. しかし, スーパーキーは「最小」でなくて良く, タプルを特定できれば, いくつ見出しを含んでもかまいません. {学生番号, 通勤手段, 名前}, {学生番号, 通勤手段, 名前, 年齢}などがスーパーキーになります. 実際にリレーションを作るときは, どの属性組が候補キーになるかを考慮することが大切です.</p>
@@ -189,71 +189,71 @@
 </ol>
 <p>例えば, 下のリレーションは第1正規形ではありません.</p>
 <table>
-<thead>
-<tr>
-<th>学生番号</th>
-<th>通勤手段</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車,バス</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">学生番号</th>
+          <th style="text-align: left">通勤手段</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車,バス</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>なぜなら, 通勤手段が一意に定まらないためです. なので, 下のように変換して上げる必要があります.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>これで, {学生番号, 通勤手段}を指定することで, 一意にタプルが指定できるようになりました.</p>
 <h3 id="余談-nullについて">余談: NULLについて</h3>
@@ -262,307 +262,307 @@
 <p>最初に関数従属について説明します. 候補キーの真部分集合T1から, 非キー属性(候補キー以外の属性)T2が一意に求まるときに, T2はT1に関数従属しているといいます. 第2正規形は, 関数従属を取り除く作業になります.</p>
 <p>実際に第2正規化を行って説明します. まず最初に, 関数従属があると何が問題かについて説明します.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>一見, 問題がなさそうなリレーションに見えます. しかしある操作をすると, 問題があることが分かります. 例えば, 2行目の多田野をTDNに更新します.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-<td>TDN</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+          <td style="text-align: left">TDN</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>学生番号001の学生の名前が{多田野, TDN}になってしまいました. これは明らかにおかしいです. これは, 非キー属性{名前}は, {学生番号}に従属しているためです. 分かりやすくいうと, リレーション内にデータの重複があるとためです. なので, リレーションを分割します.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-<td>19</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>名前</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>多田野</td>
-</tr>
-<tr>
-<td>002</td>
-<td>木下</td>
-</tr>
-<tr>
-<td>003</td>
-<td>西岡</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">名前</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">多田野</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">木下</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">西岡</td>
+      </tr>
+  </tbody>
 </table>
 <p>また年齢も, {学生番号}に関数従属しているので分割します.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>@通勤手段</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>電車</td>
-</tr>
-<tr>
-<td>001</td>
-<td>バス</td>
-</tr>
-<tr>
-<td>002</td>
-<td>電車</td>
-</tr>
-<tr>
-<td>003</td>
-<td>自転車</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">@通勤手段</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">電車</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">バス</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">電車</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">自転車</td>
+      </tr>
+  </tbody>
 </table>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>名前</th>
-<th>年齢</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>多田野</td>
-<td>19</td>
-</tr>
-<tr>
-<td>002</td>
-<td>木下</td>
-<td>19</td>
-</tr>
-<tr>
-<td>003</td>
-<td>西岡</td>
-<td>18</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+      </tr>
+  </tbody>
 </table>
 <p>これで第2正規形の完成です. これで関数従属によるデータの重複, データ不整合を防ぐことが出来ます.</p>
 <h2 id="第3正規形">第3正規形</h2>
 <p>最初に推移的関数従属について説明します. 候補キーT1から, 非キー属性T2が決まり, さらに非キー属性T3が決まるとします. その時, T3は推移的従属性があると言います. T3は, T1, T2から推移的に従属しているためです. 第3正規形では推移的従属性を取り除く作業になります.</p>
 <p>実際に第3正規化を行い説明します. 下のリレーションがあるとします.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>名前</th>
-<th>年齢</th>
-<th>授業名</th>
-<th>講師名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>多田野</td>
-<td>19</td>
-<td>数学</td>
-<td>遠野</td>
-</tr>
-<tr>
-<td>002</td>
-<td>木下</td>
-<td>19</td>
-<td>国語</td>
-<td>谷岡</td>
-</tr>
-<tr>
-<td>003</td>
-<td>西岡</td>
-<td>18</td>
-<td>数学</td>
-<td>遠野</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+          <th style="text-align: left">授業名</th>
+          <th style="text-align: left">講師名</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">数学</td>
+          <td style="text-align: left">遠野</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">国語</td>
+          <td style="text-align: left">谷岡</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+          <td style="text-align: left">数学</td>
+          <td style="text-align: left">遠野</td>
+      </tr>
+  </tbody>
 </table>
 <p>これも一見良さそうですが問題があります. 学生番号001の講師名を英語に更新してみます.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>名前</th>
-<th>年齢</th>
-<th>授業名</th>
-<th>講師名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>多田野</td>
-<td>19</td>
-<td>数学</td>
-<td>田所</td>
-</tr>
-<tr>
-<td>002</td>
-<td>木下</td>
-<td>19</td>
-<td>国語</td>
-<td>谷岡</td>
-</tr>
-<tr>
-<td>003</td>
-<td>西岡</td>
-<td>18</td>
-<td>数学</td>
-<td>遠野</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+          <th style="text-align: left">授業名</th>
+          <th style="text-align: left">講師名</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">数学</td>
+          <td style="text-align: left">田所</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">国語</td>
+          <td style="text-align: left">谷岡</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+          <td style="text-align: left">数学</td>
+          <td style="text-align: left">遠野</td>
+      </tr>
+  </tbody>
 </table>
 <p>数学の教師が{田所, 遠野}の2人になってしまいました. これは問題があります.(同じ授業には同じ講師が出る暗黙的ルールがあるとします)
 これは問題です. これは, 講師名は, 授業名から一意に求めることが出来る, {学生番号} =&gt; {授業名} =&gt; {講師名}の推移的従属性があるためです. なので, リレーションを分割します.</p>
 <table>
-<thead>
-<tr>
-<th>@学生番号</th>
-<th>名前</th>
-<th>年齢</th>
-<th>授業名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>001</td>
-<td>多田野</td>
-<td>19</td>
-<td>数学</td>
-</tr>
-<tr>
-<td>002</td>
-<td>木下</td>
-<td>19</td>
-<td>国語</td>
-</tr>
-<tr>
-<td>003</td>
-<td>西岡</td>
-<td>18</td>
-<td>数学</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@学生番号</th>
+          <th style="text-align: left">名前</th>
+          <th style="text-align: left">年齢</th>
+          <th style="text-align: left">授業名</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">001</td>
+          <td style="text-align: left">多田野</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">数学</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">002</td>
+          <td style="text-align: left">木下</td>
+          <td style="text-align: left">19</td>
+          <td style="text-align: left">国語</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">003</td>
+          <td style="text-align: left">西岡</td>
+          <td style="text-align: left">18</td>
+          <td style="text-align: left">数学</td>
+      </tr>
+  </tbody>
 </table>
 <table>
-<thead>
-<tr>
-<th>@授業名</th>
-<th>講師名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数学</td>
-<td>遠野</td>
-</tr>
-<tr>
-<td>国語</td>
-<td>谷岡</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">@授業名</th>
+          <th style="text-align: left">講師名</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">数学</td>
+          <td style="text-align: left">遠野</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">国語</td>
+          <td style="text-align: left">谷岡</td>
+      </tr>
+  </tbody>
 </table>
 <p>これで, 推移的関数従属がなくなり, 第3正規形を満たしました.</p>
 <h2 id="まとめ">まとめ</h2>

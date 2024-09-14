@@ -1,56 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>database on stsnブログ</title>
+    <title>Database on stsnブログ</title>
     <link>https://satoshun.github.io/tags/database/</link>
-    <description>Recent content in database on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Database on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 19 Apr 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Apr 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>データベース: RDBと第1~3正規形について</title>
       <link>https://satoshun.github.io/2015/04/normalization/</link>
       <pubDate>Sun, 19 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/04/normalization/</guid>
-      <description>正規形は, リレーショナルデータベース設計における理論の1つです. 正規化を行うことで, データの重複をなくし, 効率良くデータを保持することが出来ます.
-この記事では, リレーショナルデータベースについて説明し, 第1-3正規化について説明します.(BCNF, 第4-6正規化は次の記事で説明します)
-リレーショナルデータベースモデル(RDB)について 最初にリレーションについて説明します. リレーションは見出し(heading)と本体(body)からなります. 見出しは, SQLでいうところの属性に相当します. 例えば, 生徒なら下のようなデータを持つと考えられます.
-学生番号 名前 年齢 001 田中 17 002 多田野 19 003 木下 19 004 西岡 18 上記表がリレーションの一例になります. {学生番号, 名前, 年齢}が見出し, {{001, 田中, 17}, {002, 多田野, 19}, {003, 木下, 19}, {004, 西岡, 18}}が本体になります. ここで{}を使っているのは, リレーショナルにおける見出し, 本体はそれぞれタプルで表現されるためです. そのため各要素には順序が存在せず, 重複が許されません(重複があっても意味がない).
-ここで集合という言葉が出てきましたが, RDBは集合論 に基づいた理論です. データを集合で表現し, 集合演算を行いデータを操作します.
-データの表現の仕方が分かったので, 次にどのようにしてデータを操作するかについて説明します. SQLでいうところの, SELECT, INSERT, JOINなどのクエリに当たります. それらはクエリは, RDBの世界では集合演算で説明することができます.(OUTER JOINなど一部定義されていないものもあります)
-集合演算の有名なものには以下があります.
-直積(デカルト積): SQLのFROMに相当. あるリレーションT1とT2のタプルを組み合わせたリレーションを返す 差: 片方のリレーションにのみ含まれるリレーションを返す 積: T1, T2, 両方のリレーションに含まれるリレーションを返す 和: T1, T2のリレーションに含まれるタプルを含んだリレーションを返す 射影: SQLのSELECT hoge のhoge部分に相当.</description>
+      <description>&lt;p&gt;正規形は, リレーショナルデータベース設計における理論の1つです. 正規化を行うことで, データの重複をなくし, 効率良くデータを保持することが出来ます.&lt;/p&gt;&#xA;&lt;p&gt;この記事では, リレーショナルデータベースについて説明し, 第1-3正規化について説明します.(BCNF, 第4-6正規化は次の記事で説明します)&lt;/p&gt;&#xA;&lt;h2 id=&#34;リレーショナルデータベースモデルrdbについて&#34;&gt;リレーショナルデータベースモデル(RDB)について&lt;/h2&gt;&#xA;&lt;p&gt;最初にリレーションについて説明します. リレーションは見出し(heading)と本体(body)からなります. 見出しは, SQLでいうところの属性に相当します. 例えば, 生徒なら下のようなデータを持つと考えられます.&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;学生番号&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;名前&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;年齢&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;001&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;田中&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;17&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;002&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;多田野&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;19&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;003&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;木下&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;19&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;004&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;西岡&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;18&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;上記表がリレーションの一例になります. &lt;code&gt;{学生番号, 名前, 年齢}&lt;/code&gt;が見出し, &lt;code&gt;{{001, 田中, 17}, {002, 多田野, 19}, {003, 木下, 19}, {004, 西岡, 18}}&lt;/code&gt;が本体になります. ここで&lt;code&gt;{}&lt;/code&gt;を使っているのは, リレーショナルにおける見出し, 本体はそれぞれタプルで表現されるためです. そのため各要素には順序が存在せず, 重複が許されません(重複があっても意味がない).&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>データベース: 履歴データについて</title>
       <link>https://satoshun.github.io/2015/04/history_data/</link>
       <pubDate>Thu, 09 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/04/history_data/</guid>
-      <description>RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.
-履歴データとは? スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.
-フラグを付ける 最初に一番オーソドックス?な, フラグをつけて管理する方法です.
-productsテーブル
-id name price active 1 卵 200 0 2 卵 250 1 3 肉 100 1 activeなデータを取得するときは, SELECT * FROM products WHERE active = 1; とします.
-この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.
-activeフラグはカーディナリティが低く効率が悪い テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない 単純で分かりやすいですが, あまり使わないほうが良い方法のようです.
-範囲を指定する 次は範囲を指定する方法です.
-productsテーブル
-id name price start_date end_date 1 卵 200 2015-03-22 2015-04-06 2 卵 250 2015-04-07 9999-01-01 3 肉 100 2015-02-01 9999-01-01 activeなデータを取得するときは, SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date; とします.</description>
+      <description>&lt;p&gt;RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;履歴データとは&#34;&gt;履歴データとは?&lt;/h2&gt;&#xA;&lt;p&gt;スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;フラグを付ける&#34;&gt;フラグを付ける&lt;/h2&gt;&#xA;&lt;p&gt;最初に一番オーソドックス?な, フラグをつけて管理する方法です.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;id&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;name&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;price&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;active&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;卵&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;200&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;0&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;2&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;卵&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;250&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;3&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;肉&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;100&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE active = 1;&lt;/code&gt; とします.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>[ERROR] InnoDB: Cannot allocate memory for the buffer pool の対処法</title>
       <link>https://satoshun.github.io/2015/04/mysql_memory_error/</link>
       <pubDate>Tue, 07 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/04/mysql_memory_error/</guid>
-      <description>上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.
-## swap領域の確認 $ swapon -s Filename Type Size Used Priority ## swap領域の確保 $ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k ## swap領域の作成 $ sudo mkswap /swapfile ## swap領域の割り当て $ sudo swapon /swapfile $ swapon -s Filename Type Size Used Priority /swapfile file 1048572 4320 -1 $ free total used free shared buffers cached Mem: 760132 689248 70884 4672 7740 48944 -/+ buffers/cache: 632564 127568 Swap: 1048572 88556 960016 ## 再起動時にもswapを割り当てるように設定 $ sudo vi /etc/fstab これでおｋ.</description>
+      <description>&lt;p&gt;上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;## swap領域の確認&#xA;$ swapon -s&#xA;Filename                Type        Size    Used    Priority&#xA;&#xA;## swap領域の確保&#xA;$ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k&#xA;&#xA;## swap領域の作成&#xA;$ sudo mkswap /swapfile&#xA;&#xA;## swap領域の割り当て&#xA;$ sudo swapon /swapfile&#xA;&#xA;$ swapon -s&#xA;Filename                Type        Size    Used    Priority&#xA;/swapfile                               file        1048572 4320    -1&#xA;&#xA;$ free&#xA;             total       used       free     shared    buffers     cached&#xA;Mem:        760132     689248      70884       4672       7740      48944&#xA;-/+ buffers/cache:     632564     127568&#xA;Swap:      1048572      88556     960016&#xA;&#xA;## 再起動時にもswapを割り当てるように設定&#xA;$ sudo vi /etc/fstab&#xA;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

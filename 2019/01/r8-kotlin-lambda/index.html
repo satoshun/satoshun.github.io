@@ -42,10 +42,10 @@ Kotlinでは関数型がファーストクラ …">
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -109,69 +109,69 @@ Kotlinでは関数型がファーストクラ …">
 </span></span><span style="display:flex;"><span>    body()
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">..</span>.
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// コンパイル後
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">((</span>Function0<span style="color:#f92672">)</span> LambdaTestKt$main$1<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">((</span>Function0<span style="color:#f92672">)</span> LambdaTestKt$main$2<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">((</span>Function0<span style="color:#f92672">)</span> LambdaTestKt$main$3<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// コンパイル後</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>((Function0) LambdaTestKt$main$1.<span style="color:#a6e22e">INSTANCE</span>);
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>((Function0) LambdaTestKt$main$2.<span style="color:#a6e22e">INSTANCE</span>);
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>((Function0) LambdaTestKt$main$3.<span style="color:#a6e22e">INSTANCE</span>);
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$1</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> LambdaTestKt$main$1 INSTANCE <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LambdaTestKt$main$1<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$1</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> LambdaTestKt$main$1 INSTANCE <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LambdaTestKt$main$1();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt$main$1<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    LambdaTestKt$main$1() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(0);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">invoke</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Kotlin lambda1&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">invoke</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Kotlin lambda1&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$2</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$3</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$2</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LambdaTestKt$main$3</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0<span style="color:#f92672">&lt;</span>Unit<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><code>LambdaTestKt$main$1</code>、<code>$2</code>、<code>$3</code>が生成されていることが分かります。ラムダを使う箇所を増やすと$2、$3&hellip;とクラスが増えていきます。</p>
 <p>この問題に対し、R8ではLambdaGroupというテクニックを使い最適化をします。</p>
 <p>R8を使って、上記のコードをコンパイルすると次のようになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">(-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE$0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">(-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE$1</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    LambdaTestKt<span style="color:#f92672">.</span><span style="color:#a6e22e">lambdaTest1</span><span style="color:#f92672">(-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE$2</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>(<span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.<span style="color:#a6e22e">INSTANCE$0</span>);
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>(<span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.<span style="color:#a6e22e">INSTANCE$1</span>);
+</span></span><span style="display:flex;"><span>    LambdaTestKt.<span style="color:#a6e22e">lambdaTest1</span>(<span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI.<span style="color:#a6e22e">INSTANCE$2</span>);
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0 <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$0 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#75715e">/* synthetic */</span> <span style="color:#66d9ef">int</span> $id$<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI</span> <span style="color:#66d9ef">extends</span> Lambda <span style="color:#66d9ef">implements</span> Function0 {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$0 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(0);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(1);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI INSTANCE$2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(2);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#75715e">/* synthetic */</span> <span style="color:#66d9ef">int</span> $id$;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI<span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">$id$</span> <span style="color:#f92672">=</span> i<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#f92672">-</span>$$LambdaGroup$ks$BpS7w8o_KOkdSUy0gHGt84S7irI(<span style="color:#66d9ef">int</span> i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$id$</span> <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>(0);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">$id$</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Kotlin lambda1&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Kotlin lambda2&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Kotlin lambda3&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> Object <span style="color:#a6e22e">invoke</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$id$</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Kotlin lambda1&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit.<span style="color:#a6e22e">INSTANCE</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> 1) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Kotlin lambda2&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit.<span style="color:#a6e22e">INSTANCE</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> 2) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Kotlin lambda3&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Unit.<span style="color:#a6e22e">INSTANCE</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>最適化しない場合では、それぞれのラムダに対して、専用のクラスが1つずつ定義されていました。最適化された後では1つのクラス、LambadGroupにまとまっていることが分かります。
 このクラスでは、それぞれのラムダインスタンスにidを持たせることで、どのラムダかを分類することが出来ます。</p>
 <p>この最適化により、クラス数、メソッド数を抑えることが出来ます。</p>

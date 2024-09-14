@@ -39,10 +39,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -110,17 +110,17 @@ SNAPSHOTの使い方は、<a href="http://rahulrav.com/blog/using_snapshot_build
 Fragmentのライフサイクルが取得出来るので、適切なライフサイクルを使うことが出来ます。</p>
 <h2 id="内部実装">内部実装</h2>
 <p>シンプルな作りになっており、ViewのタグにActivityやFragmentのLifecycleOwnerを登録しています。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewTreeLifecycleOwner</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> LifecycleOwner lifecycleOwner<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    view<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">view_tree_lifecycle_owner</span><span style="color:#f92672">,</span> lifecycleOwner<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewTreeLifecycleOwner</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">@NonNull</span> View view, <span style="color:#a6e22e">@Nullable</span> LifecycleOwner lifecycleOwner) {
+</span></span><span style="display:flex;"><span>    view.<span style="color:#a6e22e">setTag</span>(R.<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">view_tree_lifecycle_owner</span>, lifecycleOwner);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Nullable</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> LifecycleOwner <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    LifecycleOwner found <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>LifecycleOwner<span style="color:#f92672">)</span> view<span style="color:#f92672">.</span><span style="color:#a6e22e">getTag</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">view_tree_lifecycle_owner</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> LifecycleOwner <span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">@NonNull</span> View view) {
+</span></span><span style="display:flex;"><span>    LifecycleOwner found <span style="color:#f92672">=</span> (LifecycleOwner) view.<span style="color:#a6e22e">getTag</span>(R.<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">view_tree_lifecycle_owner</span>);
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>じゃあsetはどこから行われるかというと、ライブラリ側で自動的に行われます。なので、明示的にsetを呼び出す必要は特にありません。
 具体的には、FragmentとComponentActivityを継承していればViewを生成したタイミングで、自動でセットしてくれます。</p>
 <p>ただし、試したSNAPSHOTだとAppCompatActivityの継承の場合、自動でLifecycleOwnerが登録されていませんでした。

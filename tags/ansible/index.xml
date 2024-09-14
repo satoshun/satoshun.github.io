@@ -1,48 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ansible on stsnブログ</title>
+    <title>Ansible on stsnブログ</title>
     <link>https://satoshun.github.io/tags/ansible/</link>
-    <description>Recent content in ansible on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Ansible on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Feb 2015 02:08:23 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AnsibleでGhostアプリをデプロイ</title>
       <link>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</link>
       <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/02/ansible-deploy_ghost/</guid>
-      <description>VPSにGhostを, Ansibleでデプロイしている話.
-サーバー側で使っているソフトウェアは, supervisor, nodeです.
-GitHubでソース管理 CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(https://github.com/satoshun/ghost)
-このリポジトリを, デプロイしていきます.
-デプロイ時の手順 サーバで以下のタスクを行います.
-Gitリポジトリを最新の状態にする(git pull origin master) npm moduleの更新(npm install) gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod) ghostプロセスの再起動(supervisorctl restart ghost) Playbookは以下になります.
---- - hosts: all user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_source.yml - include: update_package.yml - include: restart.yml 各タスクについて説明していきます.
-Git pullする Gitモジュールがあるので, それを使います.
-- name: Update Git repository git: repo=&amp;lt;git url&amp;gt; dest=&amp;lt;path to project&amp;gt; npm moduleの更新 npmモジュールがあるので, それを使います.
-- name: Update npm module npm: path=&amp;lt;path to project&amp;gt; gruntの実行 commandモジュールを使います.</description>
+      <description>&lt;p&gt;VPSに&lt;a href=&#34;http://ghost.org&#34;&gt;Ghost&lt;/a&gt;を, Ansibleでデプロイしている話.&lt;/p&gt;&#xA;&lt;p&gt;サーバー側で使っているソフトウェアは, supervisor, nodeです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;githubでソース管理&#34;&gt;GitHubでソース管理&lt;/h2&gt;&#xA;&lt;p&gt;CSS, HTMLを少し弄りたいので, Ghostをforkし, それを編集してデプロイしています.(&lt;a href=&#34;https://github.com/satoshun/ghost&#34;&gt;https://github.com/satoshun/ghost&lt;/a&gt;)&lt;/p&gt;&#xA;&lt;p&gt;このリポジトリを, デプロイしていきます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;デプロイ時の手順&#34;&gt;デプロイ時の手順&lt;/h2&gt;&#xA;&lt;p&gt;サーバで以下のタスクを行います.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Gitリポジトリを最新の状態にする(git pull origin master)&lt;/li&gt;&#xA;&lt;li&gt;npm moduleの更新(npm install)&lt;/li&gt;&#xA;&lt;li&gt;gruntの実行(grunt init &amp;amp;&amp;amp; grunt prod)&lt;/li&gt;&#xA;&lt;li&gt;ghostプロセスの再起動(supervisorctl restart ghost)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Playbookは以下になります.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;---&#xA;- hosts: all&#xA;  user: &amp;#34;{{ user }}&amp;#34;&#xA;  tasks:&#xA;    - include: update_source.yml&#xA;    - include: update_package.yml&#xA;    - include: restart.yml&#xA;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
     <item>
       <title>AnsibleでGoアプリをデプロイ</title>
       <link>https://satoshun.github.io/2015/02/ansible-go_deploy/</link>
       <pubDate>Sun, 22 Feb 2015 01:08:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/02/ansible-go_deploy/</guid>
-      <description>ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.
-下の手順でデプロイを行っています.
-Macでコンパイルして, Linux-amd64用のバイナリ生成(注意1) バイナリをサーバにデプロイ(コピー) アプリのリスタート(supervisorで再起動) 実際のPlaybookは以下のようになります.
-deploy.yml
---- - hosts: local connection: local tasks: - include: build.yml - hosts: app user: &amp;#34;{{ user }}&amp;#34; tasks: - include: update_binary.yml - include: restart.yml 各タスクについて, 説明してきます.
-Linux-amd64用のバイナリ生成 Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.
-やり方はいろいろあると思うのですが, Makefileを作成して, それをAnsibleから叩くようにして実装しました. Makefileを作る必要ないと思います.
-Makefile
-get: go get -v build-amd64: get GOOS=linux GOARCH=amd64 go build . build.yml
---- - name: build src command: make build-amd64 chdir={{ local_home }} local_homeは変数で, Makefileがあるディレクトリを定義しています.</description>
+      <description>&lt;p&gt;ローカルでバイナリを作成し, デプロイするような, Ansible Playbookを書きました. Supervisorでプロセスの管理を行っています.&lt;/p&gt;&#xA;&lt;p&gt;下の手順でデプロイを行っています.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Macでコンパイルして, Linux-amd64用のバイナリ生成(&lt;strong&gt;&lt;a href=&#34;#caution1&#34;&gt;注意1&lt;/a&gt;&lt;/strong&gt;)&lt;/li&gt;&#xA;&lt;li&gt;バイナリをサーバにデプロイ(コピー)&lt;/li&gt;&#xA;&lt;li&gt;アプリのリスタート(supervisorで再起動)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;実際のPlaybookは以下のようになります.&lt;/p&gt;&#xA;&lt;p&gt;deploy.yml&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;---&#xA;- hosts: local&#xA;  connection: local&#xA;  tasks:&#xA;    - include: build.yml&#xA;&#xA;&#xA;- hosts: app&#xA;  user: &amp;#34;{{ user }}&amp;#34;&#xA;  tasks:&#xA;    - include: update_binary.yml&#xA;    - include: restart.yml&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;各タスクについて, 説明してきます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;linux-amd64用のバイナリ生成&#34;&gt;Linux-amd64用のバイナリ生成&lt;/h2&gt;&#xA;&lt;p&gt;Goはデフォルトで, クロスコンパイル出来る機能を持っているので, その機能を使います.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

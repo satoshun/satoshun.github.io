@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>leakcanary on stsnブログ</title>
+    <title>Leakcanary on stsnブログ</title>
     <link>https://satoshun.github.io/tags/leakcanary/</link>
-    <description>Recent content in leakcanary on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Leakcanary on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 16 Oct 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/leakcanary/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Oct 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/leakcanary/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LeakCanary: ソースコードリーディング</title>
       <link>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</link>
       <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2016/10/android-leakcanary-code-reading/</guid>
-      <description>LeakCanaryはメモリリークを発見してくれるライブラリです.
-どうやってメモリリークを検知しているのかが気になったのでまとめ.
-おおまかな流れ Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされるonActivityDestroyedをリッスンする onActivityDestroyedがコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す 参照先が探せたら, notificationを作成し, メモリリークしていることを通達する notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.
-onDestroyされたActivityへの参照がなくなっているかをチェックする これにはReferenceQueueを利用します. ReferenceQueueは登録したオブジェクトがGarbage Collectorにより解放されたかどうかを調べるクラスです. これにonDestroyがコールされたActivityを登録し, GCにより解放されたかどうかを検知することでメモリリークを調べることを出来ます.
-ここで, ReferenceQueueがGCを検知しなかったら, どこからの参照が原因でGCが呼ばれないのかを探します.
-どこから参照されているかを探す どこからActivityが参照されているかを探すために, まず現在のheapのdumpを取ります. heapのdumpは Debug.dumpHprofData(/your/file/path);で取れます.
-それを https://github.com/square/hahaを使ってどこからActivityが参照されているかを探索します. HAHAは, hprofファイルから木構造を作成し, 各オブジェクトがどのような参照関係になっているかを表現します. HAHAを使い, Activityを起点とし, それの親の参照, 親の参照, &amp;hellip;と探索することでrootの参照を探します.
-あとは, 4, 5でrootの参照を通知します.
-まとめ ざっくりとLeakCanaryの説明をしました. HAHAはhprofの読み込みをいい感じにしてくれるだけなので, 肝はReferenceQueueだと思います.
-ReferenceQueueはなかなか使う機会は無いと思いますが, 覚えておくといつか得するかもしれません(適当)</description>
+      <description>&lt;p&gt;LeakCanaryはメモリリークを発見してくれるライブラリです.&lt;/p&gt;&#xA;&lt;p&gt;どうやってメモリリークを検知しているのかが気になったのでまとめ.&lt;/p&gt;&#xA;&lt;h2 id=&#34;おおまかな流れ&#34;&gt;おおまかな流れ&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Application#registerActivityLifecycleCallbacksを使い, ActivityのonDestroyされたときにコールされる&lt;code&gt;onActivityDestroyed&lt;/code&gt;をリッスンする&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;onActivityDestroyed&lt;/code&gt;がコールされたら, onDestroyされたActivityへの参照がなくなっているかをチェックする&lt;/li&gt;&#xA;&lt;li&gt;refrenceが残っていたら(メモリリーク!), どこから参照されているかを探す&lt;/li&gt;&#xA;&lt;li&gt;参照先が探せたら, notificationを作成し, メモリリークしていることを通達する&lt;/li&gt;&#xA;&lt;li&gt;notificationがクリックされたら, どこが原因でメモリリークが発生しているかを表示する&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;という流れになっています. 肝は2, 3だと思うのでそこがどのように実装されているかを説明します.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ondestroyされたactivityへの参照がなくなっているかをチェックする&#34;&gt;onDestroyされたActivityへの参照がなくなっているかをチェックする&lt;/h2&gt;&#xA;&lt;p&gt;これには&lt;code&gt;ReferenceQueue&lt;/code&gt;を利用します.&#xA;&lt;code&gt;ReferenceQueue&lt;/code&gt;は登録したオブジェクトがGarbage Collectorにより解放されたかどうかを調べるクラスです.&#xA;これにonDestroyがコールされたActivityを登録し, GCにより解放されたかどうかを検知することでメモリリークを調べることを出来ます.&lt;/p&gt;&#xA;&lt;p&gt;ここで, &lt;code&gt;ReferenceQueue&lt;/code&gt;がGCを検知しなかったら, どこからの参照が原因でGCが呼ばれないのかを探します.&lt;/p&gt;&#xA;&lt;h2 id=&#34;どこから参照されているかを探す&#34;&gt;どこから参照されているかを探す&lt;/h2&gt;&#xA;&lt;p&gt;どこからActivityが参照されているかを探すために, まず現在のheapのdumpを取ります. heapのdumpは &lt;code&gt;Debug.dumpHprofData(/your/file/path);&lt;/code&gt;で取れます.&lt;/p&gt;&#xA;&lt;p&gt;それを &lt;code&gt;https://github.com/square/haha&lt;/code&gt;を使ってどこからActivityが参照されているかを探索します.&#xA;HAHAは, hprofファイルから木構造を作成し, 各オブジェクトがどのような参照関係になっているかを表現します.&#xA;HAHAを使い, Activityを起点とし, それの親の参照, 親の参照, &amp;hellip;と探索することでrootの参照を探します.&lt;/p&gt;&#xA;&lt;p&gt;あとは, 4, 5でrootの参照を通知します.&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;p&gt;ざっくりとLeakCanaryの説明をしました. HAHAはhprofの読み込みをいい感じにしてくれるだけなので, 肝は&lt;code&gt;ReferenceQueue&lt;/code&gt;だと思います.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;ReferenceQueue&lt;/code&gt;はなかなか使う機会は無いと思いますが, 覚えておくといつか得するかもしれません(適当)&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

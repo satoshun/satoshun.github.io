@@ -1,52 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>poem on stsnブログ</title>
+    <title>Poem on stsnブログ</title>
     <link>https://satoshun.github.io/tags/poem/</link>
-    <description>Recent content in poem on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Poem on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 05 May 2018 03:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/poem/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 May 2018 03:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/poem/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>型の声</title>
       <link>https://satoshun.github.io/2018/05/type_feeling/</link>
       <pubDate>Sat, 05 May 2018 03:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/05/type_feeling/</guid>
-      <description>Javaなどのクラスベースの言語でコードを書くときに、実装が最初に思い浮かぶ人は型の声を聞けていません。
-まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。 振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。
-型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。
-人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。
-to be continued.</description>
+      <description>&lt;p&gt;Javaなどのクラスベースの言語でコードを書くときに、実装が最初に思い浮かぶ人は型の声を聞けていません。&lt;/p&gt;&#xA;&lt;p&gt;まず、オブジェクト指向言語のメリットを考えましょう。メリットの1つに実装ではなく、振る舞いに対して依存できるというものがあります。ポリモーフィズムと呼ばれるテクニックです。&#xA;振る舞いは抽象、実装は具象と考えられます。具象は確定することです。未来はこの瞬間に決まります。抽象は保留することです。約束された未来は待っていません。しかし、期待した未来は作り出すことが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;型は確定ではなく、それぞれの場面で期待している未来を作り出すものです。そうすることで、柔軟性を得ることが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;人は弱い生き物です。未来を確定させたくなります。しかし、未来を確定させることはあなたの傲慢です。恐れずに型の声を聞き、抽象に注目してください。そうすれば型とつながり、世界とつながれます。あなたのコードに柔軟性、拡張性、そして無限の可能性がやどります。あなたは一人ではありません。&lt;/p&gt;&#xA;&lt;br /&gt;&#xA;&lt;p&gt;to be continued.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Kotlin: ローカルで明示的に型を宣言することについて</title>
       <link>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</link>
       <pubDate>Mon, 16 Apr 2018 22:50:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/04/about_writing_type_in_kotlin/</guid>
-      <description>ポエムです。
-結論 基本的にローカルで明示的に型を宣言するのは好ましくない
-問題 Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。
-val userName = dataSource.getUserName() 型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。
-Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。
-まとめ ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする </description>
+      <description>&lt;p&gt;ポエムです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;&#xA;&lt;p&gt;基本的にローカルで明示的に型を宣言するのは好ましくない&lt;/p&gt;&#xA;&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;&#xA;&lt;p&gt;Kotlinではval(var)で変数定義することができ、型宣言を省略することが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; userName = dataSource.getUserName()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;型宣言するのと、省略するのどちらが良いのか考えると、多くの場合、型宣言をしないほうが優れていると思います。なぜかというと、型宣言が必要ということは、型宣言をしないと人間が理解できないほど複雑なコードを書いていることを意味するからです。適切なメソッド、適切なクラスが欠けている可能性があります。&lt;/p&gt;&#xA;&lt;p&gt;Kotlinにおいて型宣言を書くことはコメントを書くことに等しいと思います。多くの場合は冗長です。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ローカルで型宣言が欲しくなるコードがあったら、それは複雑すぎるコードの匂いがする&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
-    
     <item>
       <title>ActivityやFragmentにコメントを書くことについて</title>
       <link>https://satoshun.github.io/2018/04/about_writing_comment/</link>
       <pubDate>Thu, 05 Apr 2018 00:10:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/04/about_writing_comment/</guid>
-      <description>ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。
-例えば以下のようなActivityがあるとします。
-class HogeActivity : Activity() { ... ... private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } } これを見た時、「なんで loginCount &amp;lt;= 100にしているの? 100回以上ログインしてるんだからヘビーユーザやん?」 って思う可能性があるのでコメントを追加したくなります。
-class HogeActivity : Activity() { private fun isHeavyUser(loginCount: Int, firstAccess: Boolean) : Boolean() { // 100回以上ログインした場合は超ヘビーユーザなので100以上はheavy userではない return firstAccess || (loginCount &amp;gt;= 10 &amp;amp;&amp;amp; loginCount &amp;lt;= 100) } } 「超ヘビーユーザっていうのがいて、それにヘビーユーザは含まれていないのね。」というのがコメントから理解できます。
-ただ、自分の考えでは上記のコードは根本的に間違っていると思っていて、そもそもActivityでコメントが必要なほど複雑なことをしているのが問題だと思います。 なんでActivityで複雑なことをしてはいけないかというと、ActivtyはContextにアクセスできたりと、なんでも出来るからです。なんでも出来る層でいろいろやってしまうと、 いわゆるfat activity問題が起こってしまいます。</description>
+      <description>&lt;p&gt;ポエムです。最近(2018年4月現在)思っていることなので、今後考えが変わる可能性は大いにあります。&lt;/p&gt;&#xA;&lt;p&gt;例えば以下のようなActivityがあるとします。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HogeActivity&lt;/span&gt; : Activity() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isHeavyUser&lt;/span&gt;(loginCount: Int, firstAccess: Boolean) : Boolean() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; firstAccess &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; (loginCount &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; loginCount &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

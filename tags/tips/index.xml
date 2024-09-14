@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>tips on stsnブログ</title>
+    <title>Tips on stsnブログ</title>
     <link>https://satoshun.github.io/tags/tips/</link>
-    <description>Recent content in tips on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Tips on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 16 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Feb 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>お手軽にローカルにサーバを立てる</title>
       <link>https://satoshun.github.io/2016/02/python-cgihttpserver/</link>
       <pubDate>Tue, 16 Feb 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2016/02/python-cgihttpserver/</guid>
-      <description>サクッとローカルにサーバを立てるためのコマンドを紹介します. Python2系が入っていれば, 下記コマンドでローカルにサーバを立てることが出来ます.
-$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... ブラウザで, http://localhost:8000にアクセス出来るようになりました.
-ちょっとコマンドが長いので, 僕は, 上記コマンドをaliasに登録しています.
-alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
-ちなみに, デフォルトではポート8000でサーバが立つのですが, 指定することも出来ます.
-$ ser 10000 Serving HTTP on 0.0.0.0 port 10000 ... これで, いつでも簡単にserでローカルにサーバを立てることが出来るようになりました.</description>
+      <description>&lt;p&gt;サクッとローカルにサーバを立てるためのコマンドを紹介します.&#xA;Python2系が入っていれば, 下記コマンドでローカルにサーバを立てることが出来ます.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ python -m CGIHTTPServer&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port &lt;span style=&#34;color:#ae81ff&#34;&gt;8000&lt;/span&gt; ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ブラウザで, &lt;code&gt;http://localhost:8000&lt;/code&gt;にアクセス出来るようになりました.&lt;/p&gt;&#xA;&lt;p&gt;ちょっとコマンドが長いので, 僕は, 上記コマンドをaliasに登録しています.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;alias ser&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;python -m CGIHTTPServer&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで, &lt;code&gt;ser&lt;/code&gt;でサーバが立つようになりました.&lt;/p&gt;&#xA;&lt;p&gt;ちなみに, デフォルトではポート8000でサーバが立つのですが, 指定することも出来ます.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ser &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt; ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
     <item>
       <title>tips: 気軽にローカルにサーバを立てる</title>
       <link>https://satoshun.github.io/2015/02/tips-ser/</link>
       <pubDate>Sun, 22 Feb 2015 02:40:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/02/tips-ser/</guid>
-      <description>サクッとローカルサーバを立てるためのTipsを紹介します.
-下記コマンドは, Pythonが入っていれば, 問題なく動きます.
-$ python -m CGIHTTPServer Serving HTTP on 0.0.0.0 port 8000 ... 僕は, 上記コマンドをaliasに登録しています.
-alias ser=&amp;#39;python -m CGIHTTPServer&amp;#39; これで, serでサーバが立つようになりました.
-ちなみに, Portを指定することも出来ます.
-$ ser Serving HTTP on 0.0.0.0 port 8000 ... $ ser 8001 Serving HTTP on 0.0.0.0 port 8001 ... 簡単にローカルサーバを立てることが出来るようになりました.</description>
+      <description>&lt;p&gt;サクッとローカルサーバを立てるためのTipsを紹介します.&lt;/p&gt;&#xA;&lt;p&gt;下記コマンドは, Pythonが入っていれば, 問題なく動きます.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ python -m CGIHTTPServer&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port &lt;span style=&#34;color:#ae81ff&#34;&gt;8000&lt;/span&gt; ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;僕は, 上記コマンドをaliasに登録しています.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;alias ser&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;python -m CGIHTTPServer&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで, serでサーバが立つようになりました.&lt;/p&gt;&#xA;&lt;p&gt;ちなみに, Portを指定することも出来ます.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ser&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port &lt;span style=&#34;color:#ae81ff&#34;&gt;8000&lt;/span&gt; ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ser &lt;span style=&#34;color:#ae81ff&#34;&gt;8001&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port &lt;span style=&#34;color:#ae81ff&#34;&gt;8001&lt;/span&gt; ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

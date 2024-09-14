@@ -3,24 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2023-03-30T14:23:54+00:00</lastmod>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
   </url><url>
-    <loc>https://satoshun.github.io/2023/03/android-build-engmode/</loc>
-    <lastmod>2023-03-30T14:23:54+00:00</lastmod>
+    <loc>https://satoshun.github.io/2024/09/android-impression-at-scale/</loc>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/architecture/</loc>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2024-09-14T14:41:37+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2023/03/android-build-engmode/</loc>
     <lastmod>2023-03-30T14:23:54+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/build/</loc>
     <lastmod>2023-03-30T14:23:54+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/gradle/</loc>
-    <lastmod>2023-03-30T14:23:54+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2023-03-30T14:23:54+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2023-03-30T14:23:54+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2023/02/wireless-debugging-tip/</loc>
@@ -350,6 +356,9 @@
     <loc>https://satoshun.github.io/2019/08/viewpager2-like-a-carousel/</loc>
     <lastmod>2019-08-29T13:29:06+00:00</lastmod>
   </url><url>
+    <loc>https://satoshun.github.io/presentation/</loc>
+    <lastmod>2019-08-25T06:35:02+00:00</lastmod>
+  </url><url>
     <loc>https://satoshun.github.io/2019/08/flow-buffer/</loc>
     <lastmod>2019-08-04T03:16:20+00:00</lastmod>
   </url><url>
@@ -393,9 +402,6 @@
     <lastmod>2019-06-19T00:48:27+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/android-architecture/</loc>
-    <lastmod>2019-06-09T12:04:27+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/architecture/</loc>
     <lastmod>2019-06-09T12:04:27+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</loc>
@@ -513,9 +519,6 @@
     <lastmod>2019-02-07T13:19:13+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/presentation/</loc>
-    <lastmod>2019-02-07T13:19:13+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/presentation/</loc>
     <lastmod>2019-02-07T13:19:13+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/proguard/</loc>

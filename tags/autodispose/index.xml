@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>autodispose on stsnブログ</title>
+    <title>Autodispose on stsnブログ</title>
     <link>https://satoshun.github.io/tags/autodispose/</link>
-    <description>Recent content in autodispose on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Autodispose on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 04 May 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/autodispose/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 04 May 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/autodispose/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RxJava: AutoDisposeで自動的にdisposeする</title>
       <link>https://satoshun.github.io/2017/05/rx-autodispose/</link>
       <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2017/05/rx-autodispose/</guid>
-      <description>非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.
-RxJavaでは, Disposableからキャンセルの処理を行います.
-Disposable d; public void onCreate() { d = myObservable .map(a -&amp;gt; b) .subscribe(); } public void onPause() { d.dispose(); } このコードだと, ストリームの定義と, キャンセルのコードが離れ過ぎているため, 可読性が低いです.
-AutoDisposeを使うことで, コード離れすぎ問題を解決することが出来ます.
-public void onCreate() { myObservable .to(new ObservableScoper&amp;lt;&amp;gt;(this)) .subscribe(); } このような感じで, ストリームの定義の中にAutoDisposeが提供しているScoperを埋め込むことで自動的にdisposeしてくれます.
-また, Scoperは, カスタムで柔軟に定義することが出来ます. 例えば,
-Activityのライフサイクル Fragmentのライフサイクル RecyclerViewのライフサイクル など, こちら側で実装することが出来ます(実装の手間は少し掛かります)
-これで, Disposableをマニュアルで呼び出すことから解放されます!
-Error Proneと組み合わせると最強 とはいえ, そもそもScopeをストリームに埋め込むのを忘れる問題があります(だって人間だもの)
-そこで, Googleが出したError Proneを組み合わせることで埋め込むのを忘れる問題を解決出来ます.
-Error ProneはJavaの間違った使い方を教えてくれる Linterのようなものです. これを使うと,
-public void onCreate() { myObservable .map(a -&amp;gt; b) .</description>
+      <description>&lt;p&gt;非同期処理を開始した後に, Activityのライフサイクルなどに連動して非同期処理をキャンセルする必要があります.&lt;/p&gt;&#xA;&lt;p&gt;RxJavaでは, Disposableからキャンセルの処理を行います.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Disposable d;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; myObservable&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;map&lt;/span&gt;(a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribe&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onPause&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    d.&lt;span style=&#34;color:#a6e22e&#34;&gt;dispose&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>aac on stsnブログ</title>
+    <title>Aac on stsnブログ</title>
     <link>https://satoshun.github.io/tags/aac/</link>
-    <description>Recent content in aac on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Aac on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/aac/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 May 2018 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/aac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android: 拡張関数でLiveDataのSingle Eventを扱う</title>
       <link>https://satoshun.github.io/2018/05/singlelivedata/</link>
       <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/05/singlelivedata/</guid>
-      <description>LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。 適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。
-定義は以下のようになります。
-fun &amp;lt;T&amp;gt; singleLiveData(): MutableLiveData&amp;lt;T&amp;gt; { // skip用の初期値を入れておく return MutableLiveData&amp;lt;T&amp;gt;().also { it.value = null } } fun &amp;lt;T&amp;gt; LiveData&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) -&amp;gt; Unit)) { // 最初の値は常にskipすることで、キャッシュを無視する val firstIgnore = AtomicBoolean(true) this.observe(owner, Observer { if (firstIgnore.getAndSet(false)) return@Observer observer(it) }) } 使う時はこんな感じで使います。
-// TestViewModel.kt class TestViewModel: ViewModel() { val errorEvent = singleLiveData&amp;lt;String&amp;gt;() } // TestActivity.kt testViewModel = ViewModelProviders.of(this).get(TestViewModel::class.java) testViewModel.errorEvent.observeSingle(activity) { Log.d(&amp;#34;one&amp;#34;, it.toString()) } メリットはサブクラスを作らずに済むところです。
-参考 https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java https://medium.com/@star_zero/singleliveevent-livedata-with-multi-observers-384e17c60a16 </description>
+      <description>&lt;p&gt;LiveDataは最新の値をキャッシュするため、エラー値の取扱などに困ることがあります。&#xA;適当なクラスを作るのもいいのですが、拡張関数で表現することも出来るのでその紹介です。&lt;/p&gt;&#xA;&lt;p&gt;定義は以下のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;singleLiveData&lt;/span&gt;(): MutableLiveData&amp;lt;T&amp;gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// skip用の初期値を入れておく&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; MutableLiveData&amp;lt;T&amp;gt;().also { &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt; = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt; }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;LiveData&lt;/span&gt;&amp;lt;T&amp;gt;.observeSingle(owner: LifecycleOwner, observer: ((T?) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit)) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 最初の値は常にskipすることで、キャッシュを無視する&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; firstIgnore = AtomicBoolean(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.observe(owner, Observer {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (firstIgnore.getAndSet(&lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;)) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Observer&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    observer(&lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  })&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

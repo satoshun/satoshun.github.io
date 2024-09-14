@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go on stsnブログ</title>
+    <title>Go on stsnブログ</title>
     <link>https://satoshun.github.io/tags/go/</link>
-    <description>Recent content in go on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Go on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 22 Feb 2015 04:11:23 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Feb 2015 04:11:23 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go: GojiにPRした話</title>
       <link>https://satoshun.github.io/2015/02/go-pr_goji/</link>
       <pubDate>Sun, 22 Feb 2015 04:11:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/02/go-pr_goji/</guid>
-      <description>Goにハマりつつあります. 最近家ではGo or Androidって感じです.
-最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, GojiにPRをしたのでその話.
-Goji? Goji is a minimalistic web framework that values composability and simplicity です. SinatraのようなMicro Frameworkになっています.
-どこにPRしたか? バグではなくて, こっちのほうがGoライクにだよ!と思ったのでPRをしました. 計2回PRしたので, それぞれ紹介します.
-switch type assertion 1つ目は, switch type assertionについてです. switch文の冒頭にある, type assertionの結果を使うようにしました.
---- a/web/pattern.go +++ b/web/pattern.go @@ -32,13 +32,13 @@ type Pattern interface { } func parsePattern(p interface{}) Pattern { - switch p.(type) { + switch v := p.(type) { case Pattern: - return p.(Pattern) + return v case *regexp.</description>
+      <description>&lt;p&gt;Goにハマりつつあります. 最近家ではGo or Androidって感じです.&lt;/p&gt;&#xA;&lt;p&gt;最近, GoのWEBフレームのソースコードをちょいちょい読んでいて, GojiにPRをしたのでその話.&lt;/p&gt;&#xA;&lt;h2 id=&#34;goji&#34;&gt;Goji?&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;Goji is a minimalistic web framework that values composability and simplicity&lt;/code&gt; です. SinatraのようなMicro Frameworkになっています.&lt;/p&gt;&#xA;&lt;h2 id=&#34;どこにprしたか&#34;&gt;どこにPRしたか?&lt;/h2&gt;&#xA;&lt;p&gt;バグではなくて, こっちのほうがGoライクにだよ!と思ったのでPRをしました.&#xA;計2回PRしたので, それぞれ紹介します.&lt;/p&gt;&#xA;&lt;h2 id=&#34;switch-type-assertion&#34;&gt;switch type assertion&lt;/h2&gt;&#xA;&lt;p&gt;1つ目は, switch type assertionについてです.&#xA;switch文の冒頭にある, type assertionの結果を使うようにしました.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;--- a/web/pattern.go&#xA;+++ b/web/pattern.go&#xA;@@ -32,13 +32,13 @@ type Pattern interface {&#xA; }&#xA;&#xA; func parsePattern(p interface{}) Pattern {&#xA;-       switch p.(type) {&#xA;+       switch v := p.(type) {&#xA;        case Pattern:&#xA;-               return p.(Pattern)&#xA;+               return v&#xA;        case *regexp.Regexp:&#xA;-               return parseRegexpPattern(p.(*regexp.Regexp))&#xA;+               return parseRegexpPattern(v)&#xA;        case string:&#xA;-               return parseStringPattern(p.(string))&#xA;+               return parseStringPattern(v)&#xA;        default:&#xA;                log.Fatalf(&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;+&#xA;                        &amp;#34;regexp.Regexp, or a string.&amp;#34;, p)&#xA;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
     <item>
       <title>Go: Goji patternマッチ部分のコードリーディング</title>
       <link>https://satoshun.github.io/2014/11/go-goji-code-reading/</link>
       <pubDate>Sun, 09 Nov 2014 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2014/11/go-goji-code-reading/</guid>
-      <description>Gojiでは, sinatraライクにURLマッチングをさせることが出来ます. この記事では, URLマッチングさせる部分のソースコードを解説していきます.
-まず, parsePatternメソッドから.
-func parsePattern(p interface{}) Pattern { switch p.(type) { case Pattern: return p.(Pattern) case *regexp.Regexp: return parseRegexpPattern(p.(*regexp.Regexp)) case string: return parseStringPattern(p.(string)) default: log.Fatalf(&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;+ &amp;#34;regexp.Regexp, or a string.&amp;#34;, p) } panic(&amp;#34;log.Fatalf does not return&amp;#34;) } switch p.(type)で, 与えられたパターンの型によって処理を分岐させています. Pattern, *regexp.Regexp, stringの3パターンに対応しています.
-今回は, stringの場合, parseStringPatternの処理を見ていきます.
-parseStringPattern 中身 const bc = &amp;#34;/.;,&amp;#34; var patternRe = regexp.MustCompile(`[` + bc + `]:([^` + bc + `]+)`) func parseStringPattern(s string) stringPattern { raw := s var wildcard bool if strings.</description>
+      <description>&lt;p&gt;Gojiでは, sinatraライクにURLマッチングをさせることが出来ます.&#xA;この記事では, URLマッチングさせる部分のソースコードを解説していきます.&lt;/p&gt;&#xA;&lt;p&gt;まず, parsePatternメソッドから.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parsePattern&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt;{}) &lt;span style=&#34;color:#a6e22e&#34;&gt;Pattern&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt;.(&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Pattern&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt;.(&lt;span style=&#34;color:#a6e22e&#34;&gt;Pattern&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Regexp&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parseRegexpPattern&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Regexp&lt;/span&gt;))&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parseStringPattern&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt;.(&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;))&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown pattern type %v. Expected a web.Pattern, &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;regexp.Regexp, or a string.&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;p&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  panic(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log.Fatalf does not return&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

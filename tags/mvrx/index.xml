@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mvrx on stsnブログ</title>
+    <title>Mvrx on stsnブログ</title>
     <link>https://satoshun.github.io/tags/mvrx/</link>
-    <description>Recent content in mvrx on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Mvrx on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 05 May 2019 05:05:09 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/mvrx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 May 2019 05:05:09 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/mvrx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MvRxの雑な感想</title>
       <link>https://satoshun.github.io/2019/05/mvrx-architecture/</link>
       <pubDate>Sun, 05 May 2019 05:05:09 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
-      <description>雑多なことを書いただけのブログになります。内容はあまりないよう〜。
-MvRxはAirbnbが開発をしているOSSフレームワークです。
-特徴としては
-Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている AACをRxJavaであったり、便利関数、クラス群で補佐している感じ 多くの部分でReactのAPIを参考にしてる State、renderなど Epoxyと相性が良い 一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う 副作用がない（減らしたい） ボイラープレートなコードを減らすことが期待できます😃
-個人的に気になった部分、好きなとこ StateでView状態を管理するところ Stateを定義することのメリットは以下かなと思ってます。
-Stateを見れば、Viewの構成要素が分かる MVPアーキテクチャのViewインターフェースのような役割を果たす 状態の管理が楽 Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる Viewからロジックを取ることが出来る もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
-Uninitialized Loading Success Fail の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
-プロジェクトに、Asyncだけ取り入れるのもアリだと思います。
-Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う
-invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも やっぱりSingle Eventの取り扱いって大変なんやなって とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない 参考 Tivi プロジェクトも大きく、Coroutineなども使っている これ見れば、なんとなく肌感は分かると思います </description>
+      <description>&lt;p&gt;雑多なことを書いただけのブログになります。内容はあまりないよう〜。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/airbnb/MvRx&#34;&gt;MvRx&lt;/a&gt;はAirbnbが開発をしているOSSフレームワークです。&lt;/p&gt;&#xA;&lt;p&gt;特徴としては&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kotlinファースト&lt;/li&gt;&#xA;&lt;li&gt;RxJavaを使っている&lt;/li&gt;&#xA;&lt;li&gt;AAC（Android Architecture Components）をベースにしている&#xA;&lt;ul&gt;&#xA;&lt;li&gt;AACをRxJavaであったり、便利関数、クラス群で補佐している感じ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;多くの部分でReactのAPIを参考にしてる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;State、renderなど&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/airbnb/epoxy&#34;&gt;Epoxy&lt;/a&gt;と相性が良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一緒に使うことを推奨している&lt;/li&gt;&#xA;&lt;li&gt;ReactのComponentのように振る舞わうことが出来る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;副作用がない（減らしたい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;ボイラープレートなコードを減らすことが期待できます😃&lt;/p&gt;&#xA;&lt;h2 id=&#34;個人的に気になった部分好きなとこ&#34;&gt;個人的に気になった部分、好きなとこ&lt;/h2&gt;&#xA;&lt;h3 id=&#34;stateでview状態を管理するところ&#34;&gt;StateでView状態を管理するところ&lt;/h3&gt;&#xA;&lt;p&gt;Stateを定義することのメリットは以下かなと思ってます。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Stateを見れば、Viewの構成要素が分かる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MVPアーキテクチャのViewインターフェースのような役割を果たす&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;状態の管理が楽&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Viewからロジックを取ることが出来る&#xA;&lt;ul&gt;&#xA;&lt;li&gt;もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;asyncがすごい良い&#34;&gt;Asyncがすごい良い&lt;/h3&gt;&#xA;&lt;p&gt;MvRxではAsyncというsealed classが定義されていて、&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

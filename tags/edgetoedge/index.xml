@@ -1,43 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>edgetoedge on stsnブログ</title>
+    <title>Edgetoedge on stsnブログ</title>
     <link>https://satoshun.github.io/tags/edgetoedge/</link>
-    <description>Recent content in edgetoedge on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Edgetoedge on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/edgetoedge/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Jan 2020 04:40:11 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/edgetoedge/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>fitsSystemWindowsの話をつらつらと</title>
       <link>https://satoshun.github.io/2020/01/android-fitssystemwindows/</link>
       <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2020/01/android-fitssystemwindows/</guid>
-      <description>fitsSystemWindowsについてマスターしつつあるので、つらつらと学んだことをまとめておきます。
-SystemUiVisibilityの詳細な設定については説明を割愛するのでご了承ください。
-そもそもfitsSystemWindowsとは? Android端末には、status bar、navigation barなどのSystem UIと総称されるViewがあります。 デフォルトでは、System UIにコンテンツの要素が被ることはありません。そこには制約があります。 しかし、SystemUiVisibilityの設定を変えることで、コンテンツの要素をSystem UIの裏側描くことが可能になります。
-右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。
-ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?
-右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。
-このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。
-&amp;lt;LinearLayout android:fitsSystemWindows=&amp;#34;true&amp;#34;&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt; 見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。
-paddingTopと、paddingBottomに値が指定されていることが分かります。これはfitsSystemWindowsのデフォルトの振る舞いによるものです。
-fitsSystemWindowsはデフォルトで、paddingTopにstatus barの高さを、paddingBottomにnavigation barの高さを設定します。それにより、コンテンツがSystem UIに被らないようになります。
-まとめると「fitsSystemWindowsはSystem UIの高さに応じてpaddingに値をセットする」振る舞いをします。
-しかし、これはデフォルトの動作で、fitsSystemWindowsの動作を変更することが出来ます。
-AppBarLayoutはfitsSystemWindowsのデフォルトの動作を変更しているViewなので、AppBarLayoutにfitsSystemWindowsをつけた場合にどのように動作するかを見てみます。
-AppBarLayoutのfitsSystemWindowsの解釈 fitsSystemWindowsをAppBarLayoutに設定します。
-&amp;lt;LinearLayout&amp;gt; &amp;lt;com.google.android.material.appbar.AppBarLayout android:fitsSystemWindows=&amp;#34;true&amp;#34; /&amp;gt; ... &amp;lt;/LinearLayout&amp;gt; 見た目はおかしくないのですが、paddingが変更されていません。じゃあどこが変わったかというと、heightの値が変わっています。
-省略するのですが、fitsSystemWindowsを指定しない場合のAppBarLayoutの高さは154でした。上記の図の220という数字は 154(元の高さ) + 66(status barの高さ) = 220です。
-AppBarLayoutはpaddingTopを設定するのではなく、高さを調整することでSystem UI上の見た目を調整しています。
-このように、Viewによってはカスタムの振る舞いを提供しています。他には有名どころだと、CoordinatorLayout、DrawerLayoutも特別な振る舞いを提供しています。
-最後にどのようにして、カスタムの振る舞いを実装するかを説明します。
-fitsSystemWindowsのカスタマイズ View.setOnApplyWindowInsetsListenerから、OnApplyWindowInsetsListenerを設定しておくと、デフォルトのfitsSystemWindowsの振る舞いではなく、設定したOnApplyWindowInsetsListenerのほうがコールバックされます。
-OnApplyWindowInsetsListenerには、WindowInsetsが渡ってきます。この中にはSystem UIのサイズと、WindowInsetsが消費されたかどうかを表すフラグがあります。
-例えば、status barの2倍のサイズのpaddingTopを設定して、これ以降のViewにSystem WindowInsetsを渡したくないときは次のようにします。
-binding.appbar.setOnApplyWindowInsetsListener { v, insets -&amp;gt; binding.appbar.updatePadding(top = insets.</description>
+      <description>&lt;p&gt;fitsSystemWindowsについてマスターしつつあるので、つらつらと学んだことをまとめておきます。&lt;/p&gt;&#xA;&lt;p&gt;SystemUiVisibilityの詳細な設定については説明を割愛するのでご了承ください。&lt;/p&gt;&#xA;&lt;h2 id=&#34;そもそもfitssystemwindowsとは&#34;&gt;そもそもfitsSystemWindowsとは?&lt;/h2&gt;&#xA;&lt;p&gt;Android端末には、status bar、navigation barなどのSystem UIと総称されるViewがあります。&#xA;デフォルトでは、System UIにコンテンツの要素が被ることはありません。そこには制約があります。&#xA;しかし、SystemUiVisibilityの設定を変えることで、コンテンツの要素をSystem UIの裏側描くことが可能になります。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/ui/merge.png&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;右の図がSystemUiVisibilityの設定を変更したものです。画像がstatus bar、navigation barの背後に描画されていることが分かります。&lt;/p&gt;&#xA;&lt;p&gt;ここからが本題です。上記の画像の場合は、画像をめいいっぱいに広げて表示しても違和感がありません。しかし、AppBarLayoutといったToolbarの場合はどうなるでしょうか?&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/ui/merge2.png&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;右の図のAppBarLayoutが、status barに食い込んでしまっていることが分かります。SystemUiVisibilityの設定を変えている場合、status barの高さを考慮する必要があることが分かります。&lt;/p&gt;&#xA;&lt;p&gt;このときに、fitsSystemWindowsを使うとSystem UIに被らないようにコンテンツを配置することが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;com.google.android.material.appbar.AppBarLayout&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ...&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/ui/fits1.png&#34; width=&#34;300&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;見た目が元に戻りました。fitsSystemWindowsをつけると、どのViewの要素が変化するかをLayout Inspectorで確認します。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

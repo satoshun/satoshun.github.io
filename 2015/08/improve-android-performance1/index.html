@@ -35,10 +35,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -88,45 +88,45 @@
     
     <p>enumの典型的な使い方として, 月(month)や, ネットワークプロコトルなどの, 特定の種類を列挙するために使用されます.</p>
 <p>列挙型としてのenumは, 以下のように書くことが出来ます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> Month <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    JANUARY<span style="color:#f92672">,</span> FEBRUARY<span style="color:#f92672">,</span> MARCH<span style="color:#f92672">,</span> APRIL<span style="color:#f92672">,</span> MAY<span style="color:#f92672">,</span> JUNE<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    JULY<span style="color:#f92672">,</span> AUGUST<span style="color:#f92672">,</span> SEPTEMBER<span style="color:#f92672">,</span> OCTOBER<span style="color:#f92672">,</span> NOVEMBER<span style="color:#f92672">,</span> DECEMBER
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> Month {
+</span></span><span style="display:flex;"><span>    JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
+</span></span><span style="display:flex;"><span>    JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/** 指定した月が何日まであるかを返す */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span><span style="color:#f92672">(</span>Month month<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span>(Month month) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>また, enumではなく定数を使うとしたら以下のように書くことが出来ます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FEBRUARY <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MARCH <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> APRIL <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> NOVEMBER <span style="color:#f92672">=</span> <span style="color:#ae81ff">11</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DECEMBER <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> 1;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FEBRUARY <span style="color:#f92672">=</span> 2;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MARCH <span style="color:#f92672">=</span> 3;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> APRIL <span style="color:#f92672">=</span> 4;
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> NOVEMBER <span style="color:#f92672">=</span> 11;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> DECEMBER <span style="color:#f92672">=</span> 12;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/** 指定した月が何日まであるかを返す */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> month<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span>(<span style="color:#66d9ef">int</span> month) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>定数を使うバージョンだと, <code>getDate(int)</code>のため, 予期せぬ値が入ってきてしまう可能性があります. enumの場合は, <code>getDate(Month)</code>のため, type-safeを提供してくれます. これは, 大きなメリットです.</p>
 <p>しかし, enumは, 定数を使うバージョンと比較すると, apkサイズが大きくなってしまうデメリットがあります. Androidではメモリリソースはとても貴重なため, enumを使うのは極力避けたほうが良いです.</p>
 <p>Androidでは, IntDef(StringDef) annotationを使うことで, type-safeに定数を使うことが出来ます.</p>
 <p>上記のMonthのコードをIntDef annotationを使い, 書き換えてみます.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Monthに代入することが出来る定数を宣言
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">@IntDef</span><span style="color:#f92672">({</span>JANUARY<span style="color:#f92672">,</span> FEBRUARY<span style="color:#f92672">,</span> MARCH<span style="color:#f92672">,</span> APRIL<span style="color:#f92672">,</span> <span style="color:#f92672">...})</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Month <span style="color:#f92672">{};</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FEBRUARY <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MARCH <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> APRIL <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Monthに代入することが出来る定数を宣言</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@IntDef</span>({JANUARY, FEBRUARY, MARCH, APRIL, ...})
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(RetentionPolicy.<span style="color:#a6e22e">SOURCE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Month {};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> JANUARY <span style="color:#f92672">=</span> 1;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> FEBRUARY <span style="color:#f92672">=</span> 2;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MARCH <span style="color:#f92672">=</span> 3;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> APRIL <span style="color:#f92672">=</span> 4;
+</span></span><span style="display:flex;"><span>...
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Month</span> <span style="color:#66d9ef">int</span> month<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getDate</span>(<span style="color:#a6e22e">@Month</span> <span style="color:#66d9ef">int</span> month) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">////</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Month annotationをIntDefで定義し, <code>getDate(@Month int)</code>と書くことでtype-safeにgetDateメソッドを宣言することが出来ます.
 この書き方は, 「enumのtype-safe」と「定数のパフォーマンス」を満たしています.</p>
 <h2 id="まとめ">まとめ</h2>

@@ -42,10 +42,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -95,12 +95,12 @@
     
     <p>マルチモジュール構成のメリットに差分ビルドの効率化というものがあります。しかし、モノシリックなappモジュールから、マルチモジュール構成に変更していく過程ではappモジュールがでかいままなので、差分ビルドによる恩恵が受けにくいという問題があります。（最終段階まで進めばappモジュールは十分に小さくなるので、差分ビルドの恩恵を受けられます）</p>
 <p>例えば、以下のモジュール構成を考えます。</p>
-<figure><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000" width="400"/>
+<figure><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0mYXQcxO-RfvcY4rbSMcI8QPI8nnAZRYuk81cA-Ycv9VdwTf1TAC90DKufEQb0Bq40000" width="400">
 </figure>
 
 <p>頑張って2つのモジュールを切り出しました。ただし、これではどこのモジュールを変更してもかなりのビルド時間がかかります。なぜなら、Gradleでは依存関係にあるモジュールが変更されたときに、自分自身も（ある程度?）再ビルドされるためです。なので、上記のモジュール構成だと、どこのモジュールを修正しても、常に大きいappモジュールが再ビルドされてしまうため、ビルド時間がかかってしまいます。</p>
 <p>そこで、間に中間モジュールを挟むテクニックを紹介します。このテクニックを使うと以下のようになります。</p>
-<figure><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00" width="400"/>
+<figure><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLusJ3boOwrBnlxdg_evk9ApiyjoCzBpIjHY7xSkEznum8OkVnnO_VZnfR4WeB7pOiUD-rutBpqSVEUnyshOnKIYnM0miXQGGPEcunDOMPnQHAA9KrR7pTFCyIc5AZI45Ef4GwbHbnSN41NAEYcv9VdwTf1BE82aN0Xi87e8a1z3gbvAS000G00" width="400">
 </figure>
 
 <p>途中に適当なモジュールを挟むことで、サブ1、サブ2が変更されたときにappモジュールの再ビルドを防ぐことができます。</p>

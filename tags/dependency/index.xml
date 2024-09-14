@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>dependency on stsnブログ</title>
+    <title>Dependency on stsnブログ</title>
     <link>https://satoshun.github.io/tags/dependency/</link>
-    <description>Recent content in dependency on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Dependency on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 13 Dec 2018 11:16:06 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/dependency/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Dec 2018 14:56:44 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/dependency/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GradleのMatching repositories to dependenciesを使ってライブラリのダウンロード先を指定する</title>
       <link>https://satoshun.github.io/2018/12/gradle_deps_match/</link>
       <pubDate>Thu, 13 Dec 2018 11:16:06 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/12/gradle_deps_match/</guid>
-      <description>JitPackからライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。 詳しくは次のリンクを参照してください。A Confusing Dependency
-従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に Matching repositories to dependencies が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）
-まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、cloudflareのSDKを依存関係に入れることを目指します。 また、今回の検証にはGradle 5.1-rc-1を使いました。サンプルコードはここにあります
-まずは従来の書き方です。
-// topのbuild.gradle allprojects { repositories { ... maven { url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34; } } } --- // projectのbuild.gradle dependencies { ... implementation &amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34; } これだと全てのライブラリに対して、repositoriesで指定したhttps://storage.googleapis.com/cloudflare-maven/public/へチェックをしにいきます。このUrlはcloudflareのライブラリにしか使われないことが想定されるので、他のライブラリに対してはダウンロード制限をかけたいところです。
-次に新機能を使った書き方です。
-// topのbuild.gradle allprojects { repositories { ... maven { url &amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34; content { // group idがcom.cloudflareのライブラリだけこのURLが有効になる includeGroup &amp;#34;com.cloudflare&amp;#34; } } } } --- // projectのbuild.gradleは一緒 dependencies { ... implementation &amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34; } 新しくcontentブロックが追加されました。ここで、このURLがどのライブラリで有効になって欲しいかを記述することが出来ます。今回のURLはcom.</description>
+      <description>&lt;p&gt;&lt;code&gt;JitPack&lt;/code&gt;からライブラリをインストールしたかったところ、JCenterからライブラリをインストールしてしまう事件がありました。&#xA;詳しくは次のリンクを参照してください。&lt;a href=&#34;https://blog.autsoft.hu/a-confusing-dependency/&#34;&gt;A Confusing Dependency&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;従来のGradle4系ではおそらく、上記の問題を解決することは出来ない、もしくは非常に困難でした。しかし新しくGradle5.1に &lt;a href=&#34;https://docs.gradle.org/5.1-rc-1/userguide/declaring_repositories.html#sec::matching_repositories_to_dependencies&#34;&gt;Matching repositories to dependencies&lt;/a&gt; が導入され、上記の問題を解決できます。（Gradle5.1はまだrcです）&lt;/p&gt;&#xA;&lt;p&gt;まず最初に従来の書き方を説明して、次に新機能を使った書き方を紹介します。今回は例として、&lt;code&gt;cloudflare&lt;/code&gt;のSDKを依存関係に入れることを目指します。&#xA;また、今回の検証にはGradle 5.1-rc-1を使いました。&lt;a href=&#34;https://github.com/satoshun-android-example/GradleDependencyMatchingExample&#34;&gt;サンプルコードはここにあります&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;まずは従来の書き方です。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// topのbuild.gradle&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;allprojects &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    repositories &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        maven &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            url &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://storage.googleapis.com/cloudflare-maven/public/&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;---&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// projectのbuild.gradle&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    implementation &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;com.cloudflare:cloudflare-mobile-sdk:2.1.0@aar&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

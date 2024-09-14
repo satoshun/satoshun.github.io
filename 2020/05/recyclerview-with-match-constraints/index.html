@@ -39,10 +39,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -132,21 +132,21 @@
 </span></span></code></pre></div><p>500個全部に対して、最初にバインドが走るのは非効率なので良くないです😂</p>
 <h2 id="なんでか">なんでか?</h2>
 <p>LinearLayoutManagerでは、内部で<code>mInfinite</code> っていうフィールドを持っていて、これは次の関数によって生成されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">resolveIsInfinite</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> mOrientationHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getMode</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> View<span style="color:#f92672">.</span><span style="color:#a6e22e">MeasureSpec</span><span style="color:#f92672">.</span><span style="color:#a6e22e">UNSPECIFIED</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&amp;&amp;</span> mOrientationHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getEnd</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">resolveIsInfinite</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> mOrientationHelper.<span style="color:#a6e22e">getMode</span>() <span style="color:#f92672">==</span> View.<span style="color:#a6e22e">MeasureSpec</span>.<span style="color:#a6e22e">UNSPECIFIED</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&amp;&amp;</span> mOrientationHelper.<span style="color:#a6e22e">getEnd</span>() <span style="color:#f92672">==</span> 0;
+</span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>細かいところまで追えてないのですが、今回のレイアウトの場合、上記の関数がtrueを返していました。</p>
 <p>この値がtrueだと、どういうことが起こるかっていうと、RecyclerViewにアイテムを詰めるタイミングで一気に全部アイテムを詰めようと試みます。
 具体的には、次のコードになります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">(</span>RecyclerView<span style="color:#f92672">.</span><span style="color:#a6e22e">Recycler</span> recycler<span style="color:#f92672">,</span> LayoutState layoutState<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>    RecyclerView<span style="color:#f92672">.</span><span style="color:#a6e22e">State</span> state<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> stopOnFocusable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// mInfintieがtrueなので、このwhileが最後まで行くことが可能になる
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>layoutState<span style="color:#f92672">.</span><span style="color:#a6e22e">mInfinite</span> <span style="color:#f92672">||</span> remainingSpace <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> layoutState<span style="color:#f92672">.</span><span style="color:#a6e22e">hasMore</span><span style="color:#f92672">(</span>state<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fill</span>(RecyclerView.<span style="color:#a6e22e">Recycler</span> recycler, LayoutState layoutState,
+</span></span><span style="display:flex;"><span>    RecyclerView.<span style="color:#a6e22e">State</span> state, <span style="color:#66d9ef">boolean</span> stopOnFocusable) {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// mInfintieがtrueなので、このwhileが最後まで行くことが可能になる</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> ((layoutState.<span style="color:#a6e22e">mInfinite</span> <span style="color:#f92672">||</span> remainingSpace <span style="color:#f92672">&gt;</span> 0) <span style="color:#f92672">&amp;&amp;</span> layoutState.<span style="color:#a6e22e">hasMore</span>(state)) {
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>前述の<code>mInfinite</code>がtrueだと、whileが<code>remainingSpace</code>の値に関係なく、最後まで行くことが可能になります。
 結果、今回の場合では全アイテムをファーストビューのタイミングでバインドします。</p>
 <h2 id="どう直すか">どう直すか?</h2>

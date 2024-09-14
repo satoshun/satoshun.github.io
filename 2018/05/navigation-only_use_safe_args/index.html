@@ -39,10 +39,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -118,56 +118,56 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fragment&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/navigation&gt;</span>
 </span></span></code></pre></div><p>とnavigationを記述すると、</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragmentArgs</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HogeFragmentArgs</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> 1;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">HogeFragmentArgs</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">HogeFragmentArgs</span>() {
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> HogeFragmentArgs <span style="color:#a6e22e">fromBundle</span><span style="color:#f92672">(</span>Bundle bundle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      result<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> bundle<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> HogeFragmentArgs <span style="color:#a6e22e">fromBundle</span>(Bundle bundle) {
+</span></span><span style="display:flex;"><span>    HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (bundle.<span style="color:#a6e22e">containsKey</span>(<span style="color:#e6db74">&#34;step&#34;</span>)) {
+</span></span><span style="display:flex;"><span>      result.<span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> bundle.<span style="color:#a6e22e">getInt</span>(<span style="color:#e6db74">&#34;step&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> step<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> step;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">toBundle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Bundle __outBundle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    __outBundle<span style="color:#f92672">.</span><span style="color:#a6e22e">putInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> __outBundle<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Bundle <span style="color:#a6e22e">toBundle</span>() {
+</span></span><span style="display:flex;"><span>    Bundle __outBundle <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Bundle();
+</span></span><span style="display:flex;"><span>    __outBundle.<span style="color:#a6e22e">putInt</span>(<span style="color:#e6db74">&#34;step&#34;</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">step</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> __outBundle;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Builder</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> step <span style="color:#f92672">=</span> 1;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span>HogeFragmentArgs original<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> original<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span>(HogeFragmentArgs original) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> original.<span style="color:#a6e22e">step</span>;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Builder</span>() {
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> HogeFragmentArgs <span style="color:#a6e22e">build</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>      result<span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> HogeFragmentArgs <span style="color:#a6e22e">build</span>() {
+</span></span><span style="display:flex;"><span>      HogeFragmentArgs result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HogeFragmentArgs();
+</span></span><span style="display:flex;"><span>      result.<span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">step</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> result;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">setStep</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> step<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> step<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Builder <span style="color:#a6e22e">setStep</span>(<span style="color:#66d9ef">int</span> step) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">step</span> <span style="color:#f92672">=</span> step;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> step<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getStep</span>() {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> step;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>上記のクラスが生成されます。これを使うことでtypesafeを実現出来ます。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#75715e">// 呼び出し側
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">HogeFragmentArgs</span>.Builder()

@@ -1,62 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>isucon on stsnブログ</title>
+    <title>Isucon on stsnブログ</title>
     <link>https://satoshun.github.io/tags/isucon/</link>
-    <description>Recent content in isucon on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Isucon on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 07 Oct 2019 22:51:53 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/isucon/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Oct 2019 22:51:53 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/isucon/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ISUCON9 決勝参加ログ</title>
       <link>https://satoshun.github.io/2019/10/isucon2019-final/</link>
       <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/10/isucon2019-final/</guid>
-      <description>ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D
-やったことと、反省点を簡単にまとめておきます。選択言語はGoです。
-やったこと 最初の1時間くらい 適当にブラウザから、サイトを触ってみる アプリコード読む 何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい /api/train/searchのN+1の削除、クエリ最適化 /api/train/searchでベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない /api/train/seatsのN+1の削除、クエリ最適化 計測の結果、次の2番目のボトルネックだった こっちは割とスムーズに出来た seat_masterなどのインメモリ化 insertがないテーブルをインメモリにすればいいんちゃうと思ってやった いろいろINDEX貼ったりとか 反省点 ほんまに練習不足 Docker分かんなすぎてハゲそうだった N+1とかもっとスムーズに解決しないとね 全体的な流れを把握しようとしなかったので、もう駄目 局所的に攻めても、なかなかスコア上がんないんだよね 来年 優勝します💁 </description>
+      <description>&lt;p&gt;ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D&lt;/p&gt;&#xA;&lt;p&gt;やったことと、反省点を簡単にまとめておきます。選択言語はGoです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;やったこと&#34;&gt;やったこと&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;最初の1時間くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;適当にブラウザから、サイトを触ってみる&lt;/li&gt;&#xA;&lt;li&gt;アプリコード読む&#xA;&lt;ul&gt;&#xA;&lt;li&gt;何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;のN+1の削除、クエリ最適化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;でベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/seats&lt;/code&gt;のN+1の削除、クエリ最適化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;計測の結果、次の2番目のボトルネックだった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;こっちは割とスムーズに出来た&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;seat_masterなどのインメモリ化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;insertがないテーブルをインメモリにすればいいんちゃうと思ってやった&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;いろいろINDEX貼ったりとか&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;反省点&#34;&gt;反省点&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ほんまに練習不足&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Docker分かんなすぎてハゲそうだった&lt;/li&gt;&#xA;&lt;li&gt;N+1とかもっとスムーズに解決しないとね&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;全体的な流れを把握しようとしなかったので、もう駄目&#xA;&lt;ul&gt;&#xA;&lt;li&gt;局所的に攻めても、なかなかスコア上がんないんだよね&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;来年&#34;&gt;来年&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;優勝します💁&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
-    
     <item>
       <title>ISUCON9 予選ログ</title>
       <link>https://satoshun.github.io/2019/09/isucon2019-qualify/</link>
       <pubDate>Wed, 11 Sep 2019 02:14:03 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/09/isucon2019-qualify/</guid>
-      <description>ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D
-僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。
-ちなみに言語はGoです。
-僕がやったこと 朝 寝坊しました ISUCON起床失敗
-&amp;mdash; Sato Shun🧁 (@stsn_jp) September 7, 2019 12:00くらいまで アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた スコアほぼ変わらず。それはそう 12:00から /users/transactions.jsonが遅そうだったので、そこを潰す USERの取得などがN+1クエリだったので、それを IN句に置き換え 道中、外部APIを叩いてるところがボトルネックっぽいことに気づく ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです） 16:30くらい /new_items/:root_category_id.json、/new_items.jsonのN+1クエリログを倒す ここらへんで確か8000~9000くらい 17:30くらい 他の人のPRみたり、静的ファイルをNginxから返すようにしてた ここらへんで10000~くらい 最後らへん ログを出力しないようにしたり修正 ここらへんで最終スコアの11,860くらい こんな感じ
-反省点 3台構成に出来なかった 練習不足で時間が足りなかったんやなって キャンペーンモードを忘れていた READMEはちゃんと読もうな ログインにボトルネックがあることに気づかなかった pprofしていこうな SQLの書き方が記憶から失われていた 頑張っていこうな 寝坊しない それは無理かもしれない まとめ 本線頑張るぞ〜😃 </description>
+      <description>&lt;p&gt;ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D&lt;/p&gt;&#xA;&lt;p&gt;僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。&lt;/p&gt;&#xA;&lt;p&gt;ちなみに言語はGoです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;僕がやったこと&#34;&gt;僕がやったこと&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;朝&#xA;&lt;ul&gt;&#xA;&lt;li&gt;寝坊しました&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ISUCON起床失敗&lt;/p&gt;&amp;mdash; Sato Shun🧁 (@stsn_jp) &lt;a href=&#34;https://twitter.com/stsn_jp/status/1170138234036207616?ref_src=twsrc%5Etfw&#34;&gt;September 7, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;12:00くらいまで&#xA;&lt;ul&gt;&#xA;&lt;li&gt;アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;スコアほぼ変わらず。それはそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;12:00から&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/users/transactions.json&lt;/code&gt;が遅そうだったので、そこを潰す&#xA;&lt;ul&gt;&#xA;&lt;li&gt;USERの取得などがN+1クエリだったので、それを &lt;code&gt;IN&lt;/code&gt;句に置き換え&lt;/li&gt;&#xA;&lt;li&gt;道中、外部APIを叩いてるところがボトルネックっぽいことに気づく&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;16:30くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/new_items/:root_category_id.json&lt;/code&gt;、&lt;code&gt;/new_items.json&lt;/code&gt;のN+1クエリログを倒す&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで確か8000~9000くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;17:30くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;他の人のPRみたり、静的ファイルをNginxから返すようにしてた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで10000~くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;最後らへん&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ログを出力しないようにしたり修正&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで最終スコアの11,860くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;こんな感じ&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>ISUCON6予選で悲しくも負けてしまいました</title>
       <link>https://satoshun.github.io/2016/09/isucon6/</link>
       <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2016/09/isucon6/</guid>
-      <description>ISUCON6予選で悲しくも負けてしまいました こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.
-ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.
-今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.
-基本的なメンバーのスペック Golangで勝負しました. 最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.
-メンバーの簡単な役割分担は以下の感じです.
-僕(アプリ: Golang) メンバーその1(インフラ+アプリ) メンバーその2(インフラ+アプリ) 僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています. とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.
-最初の2時間くらい とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.
-プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.
-そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.
-12時くらいの段階 テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.
-re := regexp.MustCompile(&amp;#34;(&amp;#34; + strings.Join(keywords, &amp;#34;|&amp;#34;) + &amp;#34;)&amp;#34;) keywordsは7,000以上なのでここが明らかにボトルネック.
-そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.
-その結果 Aho Corasick というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで Aho Corasick のライブラリがないかを死ぬ気でググる.
-その結果, https://github.com/anknown/ahocorasick を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.
-13:30くらい 何かよく分かんないけど動いた! そしてスコアは15,000くらいになる!
-これでhtmlifyは大丈夫だと思い, keywordをredisでリストで保持して, MySQLのクエリを減らす作業に入る.
-これがミスでした. htmlifyのコストがまだ高く, ここをもう少し重点的にやるべきだった.</description>
+      <description>&lt;h1 id=&#34;isucon6予選で悲しくも負けてしまいました&#34;&gt;ISUCON6予選で悲しくも負けてしまいました&lt;/h1&gt;&#xA;&lt;p&gt;こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.&lt;/p&gt;&#xA;&lt;p&gt;ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.&lt;/p&gt;&#xA;&lt;p&gt;今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;基本的なメンバーのスペック&#34;&gt;基本的なメンバーのスペック&lt;/h2&gt;&#xA;&lt;p&gt;Golangで勝負しました.&#xA;最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.&lt;/p&gt;&#xA;&lt;p&gt;メンバーの簡単な役割分担は以下の感じです.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;僕(アプリ: Golang)&lt;/li&gt;&#xA;&lt;li&gt;メンバーその1(インフラ+アプリ)&lt;/li&gt;&#xA;&lt;li&gt;メンバーその2(インフラ+アプリ)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています.&#xA;とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;最初の2時間くらい&#34;&gt;最初の2時間くらい&lt;/h2&gt;&#xA;&lt;p&gt;とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.&lt;/p&gt;&#xA;&lt;p&gt;プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.&lt;/p&gt;&#xA;&lt;p&gt;そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.&lt;/p&gt;&#xA;&lt;h2 id=&#34;12時くらいの段階&#34;&gt;12時くらいの段階&lt;/h2&gt;&#xA;&lt;p&gt;テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;re&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MustCompile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;keywords&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;|&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;)&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

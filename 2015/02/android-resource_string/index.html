@@ -36,10 +36,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -92,11 +92,11 @@
 <h2 id="基本的な使い方">基本的な使い方</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app_name&#34;</span><span style="color:#f92672">&gt;</span>Application<span style="color:#f92672">&lt;/string&gt;</span>
 </span></span></code></pre></div><p>のように記述して使います. アプリケーション側では, 下のように取得します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getString(R.<span style="color:#a6e22e">string</span>.<span style="color:#a6e22e">app_name</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>or
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">app_name</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>context.<span style="color:#a6e22e">getString</span>(R.<span style="color:#a6e22e">string</span>.<span style="color:#a6e22e">app_name</span>);
 </span></span></code></pre></div><p>特に, 説明はいらないと思います.</p>
 <h2 id="arrayの定義">arrayの定義</h2>
 <p>strings.xmlでは単純なkey-valueだけでなく, arrayも定義することができます.</p>
@@ -108,11 +108,11 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;item&gt;</span>卓球<span style="color:#f92672">&lt;/item&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/string-array&gt;</span>
 </span></span></code></pre></div><p>アプリケーション側では下のように取得します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getResources<span style="color:#f92672">().</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getResources().<span style="color:#a6e22e">getStringArray</span>(R.<span style="color:#a6e22e">array</span>.<span style="color:#a6e22e">sports</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>or
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span><span style="color:#a6e22e">getResources</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getStringArray</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">array</span><span style="color:#f92672">.</span><span style="color:#a6e22e">sports</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>context.<span style="color:#a6e22e">getResources</span>().<span style="color:#a6e22e">getStringArray</span>(R.<span style="color:#a6e22e">array</span>.<span style="color:#a6e22e">sports</span>)
 </span></span></code></pre></div><p>Contextから直接取得することが出来ないので, 一旦Resourcesを取得し, そこからarrayを取り出します.</p>
 <h2 id="値展開">値展開</h2>
 <p>strings.xmlでは, 文字列展開することが出来ます. printf formatのように使います.</p>
@@ -121,9 +121,9 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- %1: 引数1, %2: 引数2, $s: 文字列 --&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;string</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;hogestr&#34;</span><span style="color:#f92672">&gt;</span>%1$s %2$d %1$s<span style="color:#f92672">&lt;/string&gt;</span>
 </span></span></code></pre></div><p>アプリケーション側では, 下のように指定します.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hoge</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">));</span> <span style="color:#75715e">// Hello 100
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>getString<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">string</span><span style="color:#f92672">.</span><span style="color:#a6e22e">hogestr</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">));</span> <span style="color:#75715e">// value 100 value
-</span></span></span></code></pre></div><p><code>%1$s</code> は「第1引数の文字列」をここに展開しろ. <code>%2$d</code>は「第2引数の数字」をここに展開しろ. という意味になります</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>getString(R.<span style="color:#a6e22e">string</span>.<span style="color:#a6e22e">hoge</span>, 100)); <span style="color:#75715e">// Hello 100</span>
+</span></span><span style="display:flex;"><span>getString(R.<span style="color:#a6e22e">string</span>.<span style="color:#a6e22e">hogestr</span>, <span style="color:#e6db74">&#34;value&#34;</span>, 100)); <span style="color:#75715e">// value 100 value</span>
+</span></span></code></pre></div><p><code>%1$s</code> は「第1引数の文字列」をここに展開しろ. <code>%2$d</code>は「第2引数の数字」をここに展開しろ. という意味になります</p>
 <h2 id="plurals">plurals</h2>
 <p>あまり使ったことはないですが, pluralsという要素があります.</p>
 <p>これは, quantity stringsと呼ばれ, 数字(量)の大きさに応じて, 文字列を変化させることが出来ます. switch分岐が出来るイメージです.</p>

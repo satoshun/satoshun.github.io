@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>codestyle on stsnブログ</title>
+    <title>Codestyle on stsnブログ</title>
     <link>https://satoshun.github.io/tags/codestyle/</link>
-    <description>Recent content in codestyle on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Codestyle on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 19 Jun 2019 00:48:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/codestyle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jun 2019 00:48:27 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/codestyle/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kotlinのwildcard importと拡張関数</title>
       <link>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</link>
       <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/06/kotlin-wildcard-import-extension-method/</guid>
-      <description>Kotlinの公式?ではwildcard importを多様しているなって思っていました。
-Roman Elizarovさんが、Extension-oriented design中でちらっとメリットについて話していました。
-You might notice that our Kotlin code usually uses wildcard imports like import com.example.*. It is handy in Kotlin, because importing just a class in Kotlin is rarely enough. All the useful, convenient, utility functions are typically defined in the same package but outside of the class as extension functions.
-まとめると、Javaとは違い、Kotlinでは拡張関数があります。拡張関数の多くは、クラスと同じパッケージに定義されますが、拡張関数なのでクラスの外側に配置されます。wildcard importでは外側に配置された、拡張関数もまとめてimportすることが出来るため便利です。
-という理由らしいです。
-雑談: wildcard importのデメリット 名前衝突が起きやすい どのような依存があるのかが分かりにくい レビューのしずらさ 無駄なクラスへの依存が生まれる </description>
+      <description>&lt;p&gt;Kotlinの公式?ではwildcard importを多様しているなって思っていました。&lt;/p&gt;&#xA;&lt;p&gt;Roman Elizarovさんが、&lt;a href=&#34;https://medium.com/@elizarov/extension-oriented-design-13f4f27deaee&#34;&gt;Extension-oriented design&lt;/a&gt;中でちらっとメリットについて話していました。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;You might notice that our Kotlin code usually uses wildcard imports like import com.example.*. It is handy in Kotlin, because importing just a class in Kotlin is rarely enough. All the useful, convenient, utility functions are typically defined in the same package but outside of the class as extension functions.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;まとめると、Javaとは違い、Kotlinでは拡張関数があります。拡張関数の多くは、クラスと同じパッケージに定義されますが、拡張関数なのでクラスの外側に配置されます。wildcard importでは外側に配置された、拡張関数もまとめてimportすることが出来るため便利です。&lt;/p&gt;&#xA;&lt;p&gt;という理由らしいです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;雑談-wildcard-importのデメリット&#34;&gt;雑談: wildcard importのデメリット&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;名前衝突が起きやすい&lt;/li&gt;&#xA;&lt;li&gt;どのような依存があるのかが分かりにくい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;レビューのしずらさ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;無駄なクラスへの依存が生まれる&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
-    
   </channel>
 </rss>

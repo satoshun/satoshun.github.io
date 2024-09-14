@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>androidstudio on stsnブログ</title>
+    <title>Androidstudio on stsnブログ</title>
     <link>https://satoshun.github.io/tags/androidstudio/</link>
-    <description>Recent content in androidstudio on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Androidstudio on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 29 Oct 2019 01:32:36 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/androidstudio/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Oct 2019 01:32:36 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/androidstudio/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android Studio: Firebaseなどのクラッシュログから関数ジャンプできるようにする</title>
       <link>https://satoshun.github.io/2019/10/analyze-stack-trace/</link>
       <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/10/analyze-stack-trace/</guid>
-      <description>Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)で、便利な機能があったので、それの紹介です。
-テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。
-まず、 Firebaseからクラッシュログをコピーします。
-次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。
-そうすると、Android Studio上で、関数ジャンプが出来るようになります！</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://youtu.be/rjlhSDhFwzM?t=1043&#34;&gt;Android Studio: Debugging Tips n&amp;rsquo; Tricks (Android Dev Summit &amp;lsquo;19)&lt;/a&gt;で、便利な機能があったので、それの紹介です。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;テキスト形式のクラッシュログを、Android Studio上で関数ジャンプ出来るようになります。 Firebaseのクラッシュログを例にして説明してきます。&lt;/p&gt;&#xA;&lt;p&gt;まず、 Firebaseからクラッシュログをコピーします。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/agp/android-studio/firebase-crash-log.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;次に、Android StudioのAnalyze Stack Trace or Thread Dumpを使い、さきほどコピーしたクラッシュログをペーストします。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/agp/android-studio/firebase-crash-log-android-studio.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;そうすると、Android Studio上で、関数ジャンプが出来るようになります！&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/agp/android-studio/firebase-crash-log-result.png&#34;&gt;&#xA;&lt;/figure&gt;</description>
     </item>
-    
   </channel>
 </rss>

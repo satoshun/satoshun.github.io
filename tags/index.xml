@@ -4,1017 +4,794 @@
     <title>Tags on stsnブログ</title>
     <link>https://satoshun.github.io/tags/</link>
     <description>Recent content in Tags on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 30 Mar 2023 14:23:54 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 14 Sep 2024 14:41:37 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>android</title>
+      <title>Android</title>
       <link>https://satoshun.github.io/tags/android/</link>
-      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
-      
+      <pubDate>Sat, 14 Sep 2024 14:41:37 +0000</pubDate>
       <guid>https://satoshun.github.io/tags/android/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>build</title>
-      <link>https://satoshun.github.io/tags/build/</link>
-      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/build/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gradle</title>
-      <link>https://satoshun.github.io/tags/gradle/</link>
-      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/gradle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>napt</title>
-      <link>https://satoshun.github.io/tags/napt/</link>
-      <pubDate>Sun, 04 Dec 2022 09:40:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/napt/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>compose</title>
-      <link>https://satoshun.github.io/tags/compose/</link>
-      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/compose/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jetpack</title>
-      <link>https://satoshun.github.io/tags/jetpack/</link>
-      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/jetpack/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>development</title>
-      <link>https://satoshun.github.io/tags/development/</link>
-      <pubDate>Sun, 22 May 2022 12:53:30 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>multimodule</title>
-      <link>https://satoshun.github.io/tags/multimodule/</link>
-      <pubDate>Sun, 22 May 2022 12:53:30 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/multimodule/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dagger</title>
-      <link>https://satoshun.github.io/tags/dagger/</link>
-      <pubDate>Sun, 24 Apr 2022 06:16:34 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/dagger/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin</title>
-      <link>https://satoshun.github.io/tags/kotlin/</link>
-      <pubDate>Sun, 13 Mar 2022 03:33:43 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/kotlin/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kmm</title>
-      <link>https://satoshun.github.io/tags/kmm/</link>
-      <pubDate>Sun, 05 Sep 2021 03:00:44 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/kmm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ci</title>
-      <link>https://satoshun.github.io/tags/ci/</link>
-      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>githubactions</title>
-      <link>https://satoshun.github.io/tags/githubactions/</link>
-      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/githubactions/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>https://satoshun.github.io/tags/test/</link>
-      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>agp</title>
-      <link>https://satoshun.github.io/tags/agp/</link>
-      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/agp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>coroutine</title>
-      <link>https://satoshun.github.io/tags/coroutine/</link>
-      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/coroutine/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flow</title>
-      <link>https://satoshun.github.io/tags/flow/</link>
-      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/flow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>emulator</title>
-      <link>https://satoshun.github.io/tags/emulator/</link>
-      <pubDate>Sat, 13 Jun 2020 08:38:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/emulator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>activity</title>
-      <link>https://satoshun.github.io/tags/activity/</link>
-      <pubDate>Thu, 11 Jun 2020 10:47:24 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/activity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>recyclerview</title>
-      <link>https://satoshun.github.io/tags/recyclerview/</link>
-      <pubDate>Fri, 15 May 2020 13:25:48 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/recyclerview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>constraintlayout</title>
-      <link>https://satoshun.github.io/tags/constraintlayout/</link>
-      <pubDate>Thu, 30 Apr 2020 04:38:16 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/constraintlayout/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>di</title>
-      <link>https://satoshun.github.io/tags/di/</link>
-      <pubDate>Tue, 17 Mar 2020 09:33:04 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/di/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lifecycle</title>
-      <link>https://satoshun.github.io/tags/lifecycle/</link>
-      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/lifecycle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bom</title>
-      <link>https://satoshun.github.io/tags/bom/</link>
-      <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/bom/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ui</title>
-      <link>https://satoshun.github.io/tags/ui/</link>
-      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/ui/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>view</title>
-      <link>https://satoshun.github.io/tags/view/</link>
-      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/view/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>edgetoedge</title>
-      <link>https://satoshun.github.io/tags/edgetoedge/</link>
-      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/edgetoedge/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>fragment</title>
-      <link>https://satoshun.github.io/tags/fragment/</link>
-      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/fragment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>portofolio</title>
-      <link>https://satoshun.github.io/tags/portofolio/</link>
-      <pubDate>Sat, 28 Dec 2019 13:05:58 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/portofolio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>imageview</title>
-      <link>https://satoshun.github.io/tags/imageview/</link>
-      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/imageview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>materialcomponents</title>
-      <link>https://satoshun.github.io/tags/materialcomponents/</link>
-      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>shape</title>
-      <link>https://satoshun.github.io/tags/shape/</link>
-      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/shape/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>viewmodel</title>
-      <link>https://satoshun.github.io/tags/viewmodel/</link>
-      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/viewmodel/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>navigation</title>
-      <link>https://satoshun.github.io/tags/navigation/</link>
-      <pubDate>Sat, 30 Nov 2019 06:14:19 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/navigation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>groupie</title>
-      <link>https://satoshun.github.io/tags/groupie/</link>
-      <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/groupie/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>androidstudio</title>
-      <link>https://satoshun.github.io/tags/androidstudio/</link>
-      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/androidstudio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>desugar</title>
-      <link>https://satoshun.github.io/tags/desugar/</link>
-      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/desugar/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>viewpager2</title>
-      <link>https://satoshun.github.io/tags/viewpager2/</link>
-      <pubDate>Sun, 13 Oct 2019 05:23:44 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/viewpager2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>isucon</title>
-      <link>https://satoshun.github.io/tags/isucon/</link>
-      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/isucon/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>server</title>
-      <link>https://satoshun.github.io/tags/server/</link>
-      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/server/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>product</title>
-      <link>https://satoshun.github.io/tags/product/</link>
-      <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/product/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>text</title>
-      <link>https://satoshun.github.io/tags/text/</link>
-      <pubDate>Mon, 15 Jul 2019 03:09:15 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/text/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>annotation</title>
-      <link>https://satoshun.github.io/tags/annotation/</link>
-      <pubDate>Wed, 03 Jul 2019 12:30:11 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/annotation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>retrofit</title>
-      <link>https://satoshun.github.io/tags/retrofit/</link>
-      <pubDate>Tue, 02 Jul 2019 13:46:54 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/retrofit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rxjava</title>
-      <link>https://satoshun.github.io/tags/rxjava/</link>
-      <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/rxjava/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rxjava3</title>
-      <link>https://satoshun.github.io/tags/rxjava3/</link>
-      <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/rxjava3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>codestyle</title>
-      <link>https://satoshun.github.io/tags/codestyle/</link>
-      <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/codestyle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android-architecture</title>
-      <link>https://satoshun.github.io/tags/android-architecture/</link>
-      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
-      
-      <guid>https://satoshun.github.io/tags/android-architecture/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>architecture</title>
+      <title>Architecture</title>
       <link>https://satoshun.github.io/tags/architecture/</link>
-      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
-      
+      <pubDate>Sat, 14 Sep 2024 14:41:37 +0000</pubDate>
       <guid>https://satoshun.github.io/tags/architecture/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>io19</title>
+      <title>Build</title>
+      <link>https://satoshun.github.io/tags/build/</link>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/build/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gradle</title>
+      <link>https://satoshun.github.io/tags/gradle/</link>
+      <pubDate>Thu, 30 Mar 2023 14:23:54 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/gradle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Napt</title>
+      <link>https://satoshun.github.io/tags/napt/</link>
+      <pubDate>Sun, 04 Dec 2022 09:40:27 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/napt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Compose</title>
+      <link>https://satoshun.github.io/tags/compose/</link>
+      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/compose/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Jetpack</title>
+      <link>https://satoshun.github.io/tags/jetpack/</link>
+      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/jetpack/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Development</title>
+      <link>https://satoshun.github.io/tags/development/</link>
+      <pubDate>Sun, 22 May 2022 12:53:30 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/development/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multimodule</title>
+      <link>https://satoshun.github.io/tags/multimodule/</link>
+      <pubDate>Sun, 22 May 2022 12:53:30 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/multimodule/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dagger</title>
+      <link>https://satoshun.github.io/tags/dagger/</link>
+      <pubDate>Sun, 24 Apr 2022 06:16:34 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/dagger/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kotlin</title>
+      <link>https://satoshun.github.io/tags/kotlin/</link>
+      <pubDate>Sun, 13 Mar 2022 03:33:43 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kmm</title>
+      <link>https://satoshun.github.io/tags/kmm/</link>
+      <pubDate>Sun, 05 Sep 2021 03:00:44 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/kmm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ci</title>
+      <link>https://satoshun.github.io/tags/ci/</link>
+      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/ci/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Githubactions</title>
+      <link>https://satoshun.github.io/tags/githubactions/</link>
+      <pubDate>Sun, 29 Aug 2021 13:18:37 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/githubactions/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>https://satoshun.github.io/tags/test/</link>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/test/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agp</title>
+      <link>https://satoshun.github.io/tags/agp/</link>
+      <pubDate>Sat, 10 Apr 2021 01:13:45 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/agp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coroutine</title>
+      <link>https://satoshun.github.io/tags/coroutine/</link>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/coroutine/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Flow</title>
+      <link>https://satoshun.github.io/tags/flow/</link>
+      <pubDate>Sat, 30 Jan 2021 07:20:42 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/flow/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Emulator</title>
+      <link>https://satoshun.github.io/tags/emulator/</link>
+      <pubDate>Sat, 13 Jun 2020 08:38:48 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/emulator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Activity</title>
+      <link>https://satoshun.github.io/tags/activity/</link>
+      <pubDate>Thu, 11 Jun 2020 10:47:24 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/activity/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Recyclerview</title>
+      <link>https://satoshun.github.io/tags/recyclerview/</link>
+      <pubDate>Fri, 15 May 2020 13:25:48 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/recyclerview/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Constraintlayout</title>
+      <link>https://satoshun.github.io/tags/constraintlayout/</link>
+      <pubDate>Thu, 30 Apr 2020 04:38:16 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/constraintlayout/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Di</title>
+      <link>https://satoshun.github.io/tags/di/</link>
+      <pubDate>Tue, 17 Mar 2020 09:33:04 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/di/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lifecycle</title>
+      <link>https://satoshun.github.io/tags/lifecycle/</link>
+      <pubDate>Sun, 23 Feb 2020 01:50:36 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/lifecycle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bom</title>
+      <link>https://satoshun.github.io/tags/bom/</link>
+      <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/bom/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ui</title>
+      <link>https://satoshun.github.io/tags/ui/</link>
+      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/ui/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>View</title>
+      <link>https://satoshun.github.io/tags/view/</link>
+      <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/view/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Edgetoedge</title>
+      <link>https://satoshun.github.io/tags/edgetoedge/</link>
+      <pubDate>Sun, 26 Jan 2020 04:40:11 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/edgetoedge/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fragment</title>
+      <link>https://satoshun.github.io/tags/fragment/</link>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/fragment/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Portofolio</title>
+      <link>https://satoshun.github.io/tags/portofolio/</link>
+      <pubDate>Sat, 28 Dec 2019 13:05:58 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/portofolio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Imageview</title>
+      <link>https://satoshun.github.io/tags/imageview/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/imageview/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Materialcomponents</title>
+      <link>https://satoshun.github.io/tags/materialcomponents/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/materialcomponents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Shape</title>
+      <link>https://satoshun.github.io/tags/shape/</link>
+      <pubDate>Tue, 24 Dec 2019 00:40:05 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/shape/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Viewmodel</title>
+      <link>https://satoshun.github.io/tags/viewmodel/</link>
+      <pubDate>Sun, 15 Dec 2019 07:15:43 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/viewmodel/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Navigation</title>
+      <link>https://satoshun.github.io/tags/navigation/</link>
+      <pubDate>Sat, 30 Nov 2019 06:14:19 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/navigation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Groupie</title>
+      <link>https://satoshun.github.io/tags/groupie/</link>
+      <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/groupie/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Androidstudio</title>
+      <link>https://satoshun.github.io/tags/androidstudio/</link>
+      <pubDate>Tue, 29 Oct 2019 01:32:36 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/androidstudio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Desugar</title>
+      <link>https://satoshun.github.io/tags/desugar/</link>
+      <pubDate>Sat, 26 Oct 2019 02:21:55 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/desugar/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Viewpager2</title>
+      <link>https://satoshun.github.io/tags/viewpager2/</link>
+      <pubDate>Sun, 13 Oct 2019 05:23:44 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/viewpager2/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Isucon</title>
+      <link>https://satoshun.github.io/tags/isucon/</link>
+      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/isucon/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Server</title>
+      <link>https://satoshun.github.io/tags/server/</link>
+      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/server/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Product</title>
+      <link>https://satoshun.github.io/tags/product/</link>
+      <pubDate>Sat, 20 Jul 2019 02:57:15 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/product/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Text</title>
+      <link>https://satoshun.github.io/tags/text/</link>
+      <pubDate>Mon, 15 Jul 2019 03:09:15 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/text/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Annotation</title>
+      <link>https://satoshun.github.io/tags/annotation/</link>
+      <pubDate>Wed, 03 Jul 2019 12:30:11 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/annotation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Retrofit</title>
+      <link>https://satoshun.github.io/tags/retrofit/</link>
+      <pubDate>Tue, 02 Jul 2019 13:46:54 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/retrofit/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rxjava</title>
+      <link>https://satoshun.github.io/tags/rxjava/</link>
+      <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/rxjava/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rxjava3</title>
+      <link>https://satoshun.github.io/tags/rxjava3/</link>
+      <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/rxjava3/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Codestyle</title>
+      <link>https://satoshun.github.io/tags/codestyle/</link>
+      <pubDate>Wed, 19 Jun 2019 00:48:27 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/codestyle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Android-Architecture</title>
+      <link>https://satoshun.github.io/tags/android-architecture/</link>
+      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
+      <guid>https://satoshun.github.io/tags/android-architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Io19</title>
       <link>https://satoshun.github.io/tags/io19/</link>
       <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/io19/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>savedstate</title>
+      <title>Savedstate</title>
       <link>https://satoshun.github.io/tags/savedstate/</link>
       <pubDate>Sat, 25 May 2019 10:38:15 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/savedstate/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>databinding</title>
+      <title>Databinding</title>
       <link>https://satoshun.github.io/tags/databinding/</link>
       <pubDate>Thu, 16 May 2019 00:33:48 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/databinding/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>camerax</title>
+      <title>Camerax</title>
       <link>https://satoshun.github.io/tags/camerax/</link>
       <pubDate>Mon, 06 May 2019 05:47:14 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/camerax/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>mvrx</title>
+      <title>Mvrx</title>
       <link>https://satoshun.github.io/tags/mvrx/</link>
       <pubDate>Sun, 05 May 2019 05:05:09 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/mvrx/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>motion</title>
+      <title>Motion</title>
       <link>https://satoshun.github.io/tags/motion/</link>
       <pubDate>Tue, 30 Apr 2019 05:59:41 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/motion/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>factory</title>
+      <title>Factory</title>
       <link>https://satoshun.github.io/tags/factory/</link>
       <pubDate>Sun, 07 Apr 2019 06:04:22 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/factory/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>ktx</title>
+      <title>Ktx</title>
       <link>https://satoshun.github.io/tags/ktx/</link>
       <pubDate>Thu, 04 Apr 2019 00:46:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/ktx/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>okhttp</title>
+      <title>Okhttp</title>
       <link>https://satoshun.github.io/tags/okhttp/</link>
       <pubDate>Sun, 24 Mar 2019 02:36:27 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/okhttp/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>github</title>
+      <title>Github</title>
       <link>https://satoshun.github.io/tags/github/</link>
       <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/github/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>pr</title>
+      <title>Pr</title>
       <link>https://satoshun.github.io/tags/pr/</link>
       <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/pr/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>rxandroid</title>
+      <title>Rxandroid</title>
       <link>https://satoshun.github.io/tags/rxandroid/</link>
       <pubDate>Sat, 02 Mar 2019 13:21:05 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/rxandroid/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>espresso</title>
+      <title>Espresso</title>
       <link>https://satoshun.github.io/tags/espresso/</link>
       <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/espresso/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>robolectric</title>
+      <title>Robolectric</title>
       <link>https://satoshun.github.io/tags/robolectric/</link>
       <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/robolectric/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>presentation</title>
+      <title>Presentation</title>
       <link>https://satoshun.github.io/tags/presentation/</link>
       <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/presentation/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>proguard</title>
+      <title>Proguard</title>
       <link>https://satoshun.github.io/tags/proguard/</link>
       <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/proguard/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>r8</title>
+      <title>R8</title>
       <link>https://satoshun.github.io/tags/r8/</link>
       <pubDate>Thu, 07 Feb 2019 13:19:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/r8/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>flux</title>
+      <title>Flux</title>
       <link>https://satoshun.github.io/tags/flux/</link>
       <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/flux/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>room</title>
+      <title>Room</title>
       <link>https://satoshun.github.io/tags/room/</link>
       <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/room/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>dynamicmodule</title>
+      <title>Dynamicmodule</title>
       <link>https://satoshun.github.io/tags/dynamicmodule/</link>
       <pubDate>Wed, 16 Jan 2019 12:10:36 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/dynamicmodule/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>dalvik</title>
+      <title>Dalvik</title>
       <link>https://satoshun.github.io/tags/dalvik/</link>
       <pubDate>Sat, 05 Jan 2019 02:15:50 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/dalvik/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>dexdump</title>
+      <title>Dexdump</title>
       <link>https://satoshun.github.io/tags/dexdump/</link>
       <pubDate>Sat, 05 Jan 2019 02:15:50 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/dexdump/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>book</title>
+      <title>Book</title>
       <link>https://satoshun.github.io/tags/book/</link>
       <pubDate>Fri, 28 Dec 2018 05:27:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/book/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>coding</title>
+      <title>Coding</title>
       <link>https://satoshun.github.io/tags/coding/</link>
       <pubDate>Fri, 28 Dec 2018 05:27:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/coding/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>oop</title>
+      <title>Oop</title>
       <link>https://satoshun.github.io/tags/oop/</link>
       <pubDate>Tue, 25 Dec 2018 03:00:39 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/oop/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>library</title>
+      <title>Library</title>
       <link>https://satoshun.github.io/tags/library/</link>
       <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/library/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>livedata</title>
+      <title>Livedata</title>
       <link>https://satoshun.github.io/tags/livedata/</link>
       <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/livedata/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>dependency</title>
+      <title>Dependency</title>
       <link>https://satoshun.github.io/tags/dependency/</link>
       <pubDate>Thu, 13 Dec 2018 11:16:06 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/dependency/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>truth</title>
+      <title>Truth</title>
       <link>https://satoshun.github.io/tags/truth/</link>
       <pubDate>Wed, 12 Dec 2018 00:21:12 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/truth/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>ktstdlib</title>
+      <title>Ktstdlib</title>
       <link>https://satoshun.github.io/tags/ktstdlib/</link>
       <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/ktstdlib/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>contracts</title>
+      <title>Contracts</title>
       <link>https://satoshun.github.io/tags/contracts/</link>
       <pubDate>Sun, 11 Nov 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/contracts/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>unittest</title>
+      <title>Unittest</title>
       <link>https://satoshun.github.io/tags/unittest/</link>
       <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/unittest/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>gson</title>
+      <title>Gson</title>
       <link>https://satoshun.github.io/tags/gson/</link>
       <pubDate>Mon, 17 Sep 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/gson/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>aac</title>
+      <title>Aac</title>
       <link>https://satoshun.github.io/tags/aac/</link>
       <pubDate>Sat, 19 May 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/aac/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>poem</title>
+      <title>Poem</title>
       <link>https://satoshun.github.io/tags/poem/</link>
       <pubDate>Sat, 05 May 2018 03:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/poem/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>autodispose</title>
+      <title>Autodispose</title>
       <link>https://satoshun.github.io/tags/autodispose/</link>
       <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/autodispose/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>repository</title>
+      <title>Repository</title>
       <link>https://satoshun.github.io/tags/repository/</link>
       <pubDate>Wed, 23 Nov 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/repository/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>leakcanary</title>
+      <title>Leakcanary</title>
       <link>https://satoshun.github.io/tags/leakcanary/</link>
       <pubDate>Sun, 16 Oct 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/leakcanary/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>golang</title>
+      <title>Golang</title>
       <link>https://satoshun.github.io/tags/golang/</link>
       <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/golang/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>linux</title>
+      <title>Linux</title>
       <link>https://satoshun.github.io/tags/linux/</link>
       <pubDate>Sun, 17 Jul 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/linux/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>python</title>
+      <title>Python</title>
       <link>https://satoshun.github.io/tags/python/</link>
       <pubDate>Tue, 16 Feb 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/python/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>tips</title>
+      <title>Tips</title>
       <link>https://satoshun.github.io/tags/tips/</link>
       <pubDate>Tue, 16 Feb 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/tips/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>design_pattern</title>
+      <title>Design_pattern</title>
       <link>https://satoshun.github.io/tags/design_pattern/</link>
       <pubDate>Fri, 12 Jun 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/design_pattern/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>psychology</title>
+      <title>Psychology</title>
       <link>https://satoshun.github.io/tags/psychology/</link>
       <pubDate>Mon, 08 Jun 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/psychology/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>reactive</title>
+      <title>Reactive</title>
       <link>https://satoshun.github.io/tags/reactive/</link>
       <pubDate>Fri, 22 May 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/reactive/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>java</title>
+      <title>Java</title>
       <link>https://satoshun.github.io/tags/java/</link>
       <pubDate>Sat, 25 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/java/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>database</title>
+      <title>Database</title>
       <link>https://satoshun.github.io/tags/database/</link>
       <pubDate>Sun, 19 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/database/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>rdb</title>
+      <title>Rdb</title>
       <link>https://satoshun.github.io/tags/rdb/</link>
       <pubDate>Sun, 19 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/rdb/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>mysql</title>
+      <title>Mysql</title>
       <link>https://satoshun.github.io/tags/mysql/</link>
       <pubDate>Thu, 09 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/mysql/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>db</title>
+      <title>Db</title>
       <link>https://satoshun.github.io/tags/db/</link>
       <pubDate>Wed, 18 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/db/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>api</title>
+      <title>Api</title>
       <link>https://satoshun.github.io/tags/api/</link>
       <pubDate>Sun, 15 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/api/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>web</title>
+      <title>Web</title>
       <link>https://satoshun.github.io/tags/web/</link>
       <pubDate>Sun, 15 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/web/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>frontend</title>
+      <title>Frontend</title>
       <link>https://satoshun.github.io/tags/frontend/</link>
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/frontend/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>html5</title>
+      <title>Html5</title>
       <link>https://satoshun.github.io/tags/html5/</link>
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/html5/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>code</title>
+      <title>Code</title>
       <link>https://satoshun.github.io/tags/code/</link>
       <pubDate>Sun, 22 Feb 2015 04:53:36 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/code/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>go</title>
+      <title>Go</title>
       <link>https://satoshun.github.io/tags/go/</link>
       <pubDate>Sun, 22 Feb 2015 04:11:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/go/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>css</title>
+      <title>Css</title>
       <link>https://satoshun.github.io/tags/css/</link>
       <pubDate>Sun, 22 Feb 2015 02:32:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/css/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>ansible</title>
+      <title>Ansible</title>
       <link>https://satoshun.github.io/tags/ansible/</link>
       <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/ansible/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>system</title>
+      <title>System</title>
       <link>https://satoshun.github.io/tags/system/</link>
       <pubDate>Sun, 22 Feb 2015 02:08:23 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/system/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>algorithm</title>
+      <title>Algorithm</title>
       <link>https://satoshun.github.io/tags/algorithm/</link>
       <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/algorithm/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>javascript</title>
+      <title>Javascript</title>
       <link>https://satoshun.github.io/tags/javascript/</link>
       <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/javascript/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>shell</title>
+      <title>Shell</title>
       <link>https://satoshun.github.io/tags/shell/</link>
       <pubDate>Sun, 22 Feb 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/shell/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>sublimetext</title>
+      <title>Sublimetext</title>
       <link>https://satoshun.github.io/tags/sublimetext/</link>
       <pubDate>Thu, 08 May 2014 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/tags/sublimetext/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

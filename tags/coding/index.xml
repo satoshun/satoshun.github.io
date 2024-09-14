@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>coding on stsnブログ</title>
+    <title>Coding on stsnブログ</title>
     <link>https://satoshun.github.io/tags/coding/</link>
-    <description>Recent content in coding on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Coding on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Fri, 28 Dec 2018 05:27:13 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/coding/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Dec 2018 05:27:13 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/coding/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>感想: コーディングを支える技術</title>
       <link>https://satoshun.github.io/2018/12/coding_tech/</link>
       <pubDate>Fri, 28 Dec 2018 05:27:13 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/12/coding_tech/</guid>
-      <description>「コーディングを支える技術」を読んだのでざっくりと感想。
-比較、歴史から学ぶ
-その機能はなにかの問題を解決するために導入されている 歴史から紐解くことでなぜそれが必要かが理解できる 言語によってどの問題を解決したいのかが違う Python: 同じようなコードになるような言語 C++: 高速に動作することを目指している エラー処理の進化
-globalなエラーハンドリングはgotoと変わらない try catch finallyのように構造化されたエラー処理が誕生した Javaでは検査型例外、必ずerrorを処理しなければいけない設計 アドレスを覚えるのは人間には大変
-人間はメソッド、変数を介することでアドレスを忘れることが出来た 結果、メソッド名、変数名をいかにしてわかりやすくするかが重要になってきた 基本的には何をするかというよりかは、何をさせないかで進化している
-クラスによるポリモーフィズム 関数ポインタを直接触らないように gotoの禁止 構造化、モジュール化できなくなるので </description>
+      <description>&lt;p&gt;「コーディングを支える技術」を読んだのでざっくりと感想。&lt;/p&gt;&#xA;&lt;p&gt;比較、歴史から学ぶ&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;その機能はなにかの問題を解決するために導入されている&#xA;&lt;ul&gt;&#xA;&lt;li&gt;歴史から紐解くことでなぜそれが必要かが理解できる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;言語によってどの問題を解決したいのかが違う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Python: 同じようなコードになるような言語&lt;/li&gt;&#xA;&lt;li&gt;C++: 高速に動作することを目指している&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;エラー処理の進化&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;globalなエラーハンドリングはgotoと変わらない&lt;/li&gt;&#xA;&lt;li&gt;try catch finallyのように構造化されたエラー処理が誕生した&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Javaでは検査型例外、必ずerrorを処理しなければいけない設計&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;アドレスを覚えるのは人間には大変&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;人間はメソッド、変数を介することでアドレスを忘れることが出来た&#xA;&lt;ul&gt;&#xA;&lt;li&gt;結果、メソッド名、変数名をいかにしてわかりやすくするかが重要になってきた&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;基本的には何をするかというよりかは、何をさせないかで進化している&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;クラスによるポリモーフィズム&#xA;&lt;ul&gt;&#xA;&lt;li&gt;関数ポインタを直接触らないように&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;gotoの禁止&#xA;&lt;ul&gt;&#xA;&lt;li&gt;構造化、モジュール化できなくなるので&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
-    
   </channel>
 </rss>

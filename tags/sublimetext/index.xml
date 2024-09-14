@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>sublimetext on stsnブログ</title>
+    <title>Sublimetext on stsnブログ</title>
     <link>https://satoshun.github.io/tags/sublimetext/</link>
-    <description>Recent content in sublimetext on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Sublimetext on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 08 May 2014 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/sublimetext/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/sublimetext/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>subproコマンド: Sublime Projectのプロジェクト管理</title>
       <link>https://satoshun.github.io/2014/05/subpro/</link>
       <pubDate>Thu, 08 May 2014 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2014/05/subpro/</guid>
-      <description>subproコマンド Sublime Textのプロジェクトをterminalで管理するためのコマンドを作りました．
-結構便利だと思うので，使ってくれたら嬉しいです． https://github.com/satoshun/subpro
-インストール homebrewでインストール出来ます．
-$ brew tap satoshun/commands $ brew install subpro $ brew install subpro-completion .bashrcに下のコードを追加してください．
-if [ -f `brew --prefix`/etc/bash_completion.d/subpro_completion ]; then source `brew --prefix`/etc/bash_completion.d/subpro_completion fi 使い方 プロジェクト作成 # 基本構文 subpro create [group] [プロジェクトのディレクトリ] # 例 $ ls martini $ subpro create golang martini ## create martini project into golang directory and open project. 作成したプロジェクトを開く # 基本構文 subpro [プロジェクト名] # 例 $ subpro martini ## open martini project with sublime text プロジェクト一覧 # 例 $ subpro [tab] Display all 131 possibilities?</description>
+      <description>&lt;h2 id=&#34;subproコマンド&#34;&gt;subproコマンド&lt;/h2&gt;&#xA;&lt;p&gt;Sublime Textのプロジェクトをterminalで管理するためのコマンドを作りました．&lt;/p&gt;&#xA;&lt;p&gt;結構便利だと思うので，使ってくれたら嬉しいです． &lt;a href=&#34;https://github.com/satoshun/subpro&#34;&gt;https://github.com/satoshun/subpro&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;&#xA;&lt;p&gt;homebrewでインストール出来ます．&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ brew tap satoshun/commands&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ brew install subpro&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ brew install subpro-completion&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;.bashrcに下のコードを追加してください．&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; -f &lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;brew --prefix&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/etc/bash_completion.d/subpro_completion &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    source &lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;brew --prefix&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/etc/bash_completion.d/subpro_completion&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;使い方&#34;&gt;使い方&lt;/h3&gt;&#xA;&lt;h4 id=&#34;プロジェクト作成&#34;&gt;プロジェクト作成&lt;/h4&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 基本構文&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;subpro create &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;group&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;プロジェクトのディレクトリ&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 例&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;martini&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ subpro create golang martini&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## create martini project into golang directory and open project.&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

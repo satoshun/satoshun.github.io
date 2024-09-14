@@ -1,41 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>truth on stsnブログ</title>
+    <title>Truth on stsnブログ</title>
     <link>https://satoshun.github.io/tags/truth/</link>
-    <description>Recent content in truth on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Truth on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 12 Dec 2018 00:21:12 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/truth/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 Dec 2018 00:21:12 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/truth/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Truthのメリット、特徴について</title>
       <link>https://satoshun.github.io/2018/12/truth_getting_started/</link>
       <pubDate>Wed, 12 Dec 2018 00:21:12 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/12/truth_getting_started/</guid>
-      <description>TruthはGoogleが開発をしているテストアサーションライブラリです。
-従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。
-readableにアサーションが書ける デフォルトの失敗メッセージがわかりやすい それぞれについて説明していきます。
-readableにアサーションが書ける ドキュメントのbenefitにあるサンプルを取り上げ説明します。 http://google.github.io/truth/benefits
-まず従来のJUnitスタイルを使って書きます。
-Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName(); assertFalse(middleName.isPresent()); assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）
-これがTruthを使うと次のようになります。
-Optional&amp;lt;String&amp;gt; middleName = user.getMiddleName(); assertThat(middleName).isAbsent(); assertThatはTruthに定義されているメソッドです。middleNameがabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。
-上記のisAbsentはOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。 例えばIterableには、containsAnyInやisEmptyなどが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。
-失敗メッセージがわかりやすい こちらもbenefitにあるサンプルを取り上げます。
-まずは従来にJUnitスタイルから。
-assertTrue(googleColors.contains(PINK)); この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。 失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。
-次にTruthスタイルです。
-assertThat(googleColors).contains(PINK); &amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&amp;gt; should have contained &amp;lt;PINK&amp;gt; のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。
-以上がTruthのメリットになります。
-補足 Truth-Androidライブラリ JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。 例えば、Intentには以下のアサーションメソッドを使うことが出来ます。
-hasComponent hasComponentClass hasComponentPackage hasPackage hasAction hasNoAction hasData hasType extras categories hasFlags Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。
-AssertJとの比較 これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison
-現状の主だった差分は次のようになっています。
-Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある TruthはChainスタイルで書くことを想定していない これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない 多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。
-まとめ Truthを使うと失敗メッセージがわかりやすくなる、便利!</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://google.github.io/truth/&#34;&gt;Truth&lt;/a&gt;はGoogleが開発をしているテストアサーションライブラリです。&lt;/p&gt;&#xA;&lt;p&gt;従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;readableにアサーションが書ける&lt;/li&gt;&#xA;&lt;li&gt;デフォルトの失敗メッセージがわかりやすい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;それぞれについて説明していきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;readableにアサーションが書ける&#34;&gt;readableにアサーションが書ける&lt;/h2&gt;&#xA;&lt;p&gt;ドキュメントのbenefitにあるサンプルを取り上げ説明します。&#xA;&lt;a href=&#34;http://google.github.io/truth/benefits&#34;&gt;http://google.github.io/truth/benefits&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;まず従来のJUnitスタイルを使って書きます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertFalse(middleName.&lt;span style=&#34;color:#a6e22e&#34;&gt;isPresent&lt;/span&gt;());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）&lt;/p&gt;&#xA;&lt;p&gt;これがTruthを使うと次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(middleName).&lt;span style=&#34;color:#a6e22e&#34;&gt;isAbsent&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertThatはTruthに定義されているメソッドです。&lt;code&gt;middleName&lt;/code&gt;がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。&lt;/p&gt;&#xA;&lt;p&gt;上記の&lt;code&gt;isAbsent&lt;/code&gt;はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。&#xA;例えばIterableには、&lt;code&gt;containsAnyIn&lt;/code&gt;や&lt;code&gt;isEmpty&lt;/code&gt;などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;失敗メッセージがわかりやすい&#34;&gt;失敗メッセージがわかりやすい&lt;/h2&gt;&#xA;&lt;p&gt;こちらもbenefitにあるサンプルを取り上げます。&lt;/p&gt;&#xA;&lt;p&gt;まずは従来にJUnitスタイルから。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertTrue(googleColors.&lt;span style=&#34;color:#a6e22e&#34;&gt;contains&lt;/span&gt;(PINK));&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

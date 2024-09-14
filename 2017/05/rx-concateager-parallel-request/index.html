@@ -41,10 +41,10 @@ RxJavaにはconcatEagerと, concatオペレータがあります.  …">
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -104,18 +104,18 @@ concatEagerはconcatと違い, 並列にObservableは処理するけど, 返し�
 <li>concatEager: 並列にObservableを処理し, 返してくる順番は保証されている</li>
 </ul>
 <p>コードで説明すると,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// o1 ----&gt; |
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// o2       |------&gt;|
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//          |       |
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  s ------o1------o2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">concat</span><span style="color:#f92672">(</span>o1<span style="color:#f92672">,</span> o2<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span> <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// o1 -----------&gt;|
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// o2 --&gt;---------|-|
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//                | |
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//  s ------------o1-o2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">concatEager</span><span style="color:#f92672">(</span>o1<span style="color:#f92672">,</span> o2<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span> <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// o1 ----&gt; |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// o2       |------&gt;|</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//          |       |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  s ------o1------o2</span>
+</span></span><span style="display:flex;"><span>Observable.<span style="color:#a6e22e">concat</span>(o1, o2)
+</span></span><span style="display:flex;"><span> .<span style="color:#a6e22e">subscribe</span>();
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// o1 -----------&gt;|</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// o2 --&gt;---------|-|</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//                | |</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  s ------------o1-o2</span>
+</span></span><span style="display:flex;"><span>Observable.<span style="color:#a6e22e">concatEager</span>(o1, o2)
+</span></span><span style="display:flex;"><span> .<span style="color:#a6e22e">subscribe</span>();
 </span></span></code></pre></div><p>みたいな感じになります.
 繰り返しになりますが ,concatEagerは同時に与えたObservableを解釈し, 順番を守ってくれます.</p>
 

@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mysql on stsnブログ</title>
+    <title>Mysql on stsnブログ</title>
     <link>https://satoshun.github.io/tags/mysql/</link>
-    <description>Recent content in mysql on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Mysql on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 09 Apr 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Apr 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>データベース: 履歴データについて</title>
       <link>https://satoshun.github.io/2015/04/history_data/</link>
       <pubDate>Thu, 09 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/04/history_data/</guid>
-      <description>RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.
-履歴データとは? スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.
-フラグを付ける 最初に一番オーソドックス?な, フラグをつけて管理する方法です.
-productsテーブル
-id name price active 1 卵 200 0 2 卵 250 1 3 肉 100 1 activeなデータを取得するときは, SELECT * FROM products WHERE active = 1; とします.
-この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.
-activeフラグはカーディナリティが低く効率が悪い テーブルサイズが時間ともに肥大化し, 検索効率が下がる恐れがある activeの更新は, アプリ側 もしくは, トリガーで制御しなければいけない 単純で分かりやすいですが, あまり使わないほうが良い方法のようです.
-範囲を指定する 次は範囲を指定する方法です.
-productsテーブル
-id name price start_date end_date 1 卵 200 2015-03-22 2015-04-06 2 卵 250 2015-04-07 9999-01-01 3 肉 100 2015-02-01 9999-01-01 activeなデータを取得するときは, SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date; とします.</description>
+      <description>&lt;p&gt;RDBで履歴データを保持する方法についてまとめました. そもそも履歴データは, リレーショナルモデルとは相性が悪いので, これが正解!みたいなものはないです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;履歴データとは&#34;&gt;履歴データとは?&lt;/h2&gt;&#xA;&lt;p&gt;スーパーの商品の値段のように, 時間の経過とともに属性の値が変化していくデータがあります. そのようなデータを履歴データと呼びます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;フラグを付ける&#34;&gt;フラグを付ける&lt;/h2&gt;&#xA;&lt;p&gt;最初に一番オーソドックス?な, フラグをつけて管理する方法です.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;products&lt;/code&gt;テーブル&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;id&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;name&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;price&lt;/th&gt;&#xA;          &lt;th style=&#34;text-align: left&#34;&gt;active&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;卵&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;200&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;0&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;2&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;卵&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;250&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;3&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;肉&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;100&lt;/td&gt;&#xA;          &lt;td style=&#34;text-align: left&#34;&gt;1&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;activeなデータを取得するときは, &lt;code&gt;SELECT * FROM products WHERE active = 1;&lt;/code&gt; とします.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>[ERROR] InnoDB: Cannot allocate memory for the buffer pool の対処法</title>
       <link>https://satoshun.github.io/2015/04/mysql_memory_error/</link>
       <pubDate>Tue, 07 Apr 2015 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2015/04/mysql_memory_error/</guid>
-      <description>上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.
-## swap領域の確認 $ swapon -s Filename Type Size Used Priority ## swap領域の確保 $ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k ## swap領域の作成 $ sudo mkswap /swapfile ## swap領域の割り当て $ sudo swapon /swapfile $ swapon -s Filename Type Size Used Priority /swapfile file 1048572 4320 -1 $ free total used free shared buffers cached Mem: 760132 689248 70884 4672 7740 48944 -/+ buffers/cache: 632564 127568 Swap: 1048572 88556 960016 ## 再起動時にもswapを割り当てるように設定 $ sudo vi /etc/fstab これでおｋ.</description>
+      <description>&lt;p&gt;上記のエラーが出たらメモリ不足なので, スワップ領域を作るのが良いと思います.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;## swap領域の確認&#xA;$ swapon -s&#xA;Filename                Type        Size    Used    Priority&#xA;&#xA;## swap領域の確保&#xA;$ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1024k&#xA;&#xA;## swap領域の作成&#xA;$ sudo mkswap /swapfile&#xA;&#xA;## swap領域の割り当て&#xA;$ sudo swapon /swapfile&#xA;&#xA;$ swapon -s&#xA;Filename                Type        Size    Used    Priority&#xA;/swapfile                               file        1048572 4320    -1&#xA;&#xA;$ free&#xA;             total       used       free     shared    buffers     cached&#xA;Mem:        760132     689248      70884       4672       7740      48944&#xA;-/+ buffers/cache:     632564     127568&#xA;Swap:      1048572      88556     960016&#xA;&#xA;## 再起動時にもswapを割り当てるように設定&#xA;$ sudo vi /etc/fstab&#xA;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>library on stsnブログ</title>
+    <title>Library on stsnブログ</title>
     <link>https://satoshun.github.io/tags/library/</link>
-    <description>Recent content in library on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Library on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 23 Dec 2018 09:14:43 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/library/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Dec 2018 09:14:43 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/library/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Coroutine &#43; AutoDisposeを作ってみた</title>
       <link>https://satoshun.github.io/2018/12/coroutine_autodispose/</link>
       <pubDate>Sun, 23 Dec 2018 09:14:43 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/12/coroutine_autodispose/</guid>
-      <description>Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、ContinuationInterceptorを使えば上手くいきそうです。
-ContinuationInterceptorとは? ContinuationInterceptorは次のようなインターフェースです。
-/** * Marks coroutine context element that intercepts coroutine continuations. * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and * intercepts all coroutine continuations with [interceptContinuation] invocations. */ @SinceKotlin(&amp;#34;1.3&amp;#34;) public interface ContinuationInterceptor : CoroutineContext.Element { public fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; public fun releaseInterceptedContinuation(continuation: Continuation&amp;lt;*&amp;gt;) ... } interceptContinuationからContinuationを受け取ることができ、Continuationは自身のCoroutineContextを持っているので、そこからJobを取得することが出来ます。それを利用することでAndroid Lifecycleと協調して動くContinuationInterceptorを実装することが出来ます。
-class LifecycleContinuationInterceptor( private val lifecycle: Lifecycle ) : ContinuationInterceptor { override val key: CoroutineContext.Key&amp;lt;*&amp;gt; get() = ContinuationInterceptor override fun &amp;lt;T&amp;gt; interceptContinuation(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt; { // ContinuationからJobを取得 val job = continuation.</description>
+      <description>&lt;p&gt;Coroutine + AutoDisposeの実装について考えてみました。結論から言うと、&lt;code&gt;ContinuationInterceptor&lt;/code&gt;を使えば上手くいきそうです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;continuationinterceptorとは&#34;&gt;ContinuationInterceptorとは?&lt;/h2&gt;&#xA;&lt;p&gt;ContinuationInterceptorは次のようなインターフェースです。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/**&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * Marks coroutine context element that intercepts coroutine continuations.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * The coroutines framework uses [ContinuationInterceptor.Key] to retrieve the interceptor and&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * intercepts all coroutine continuations with [interceptContinuation] invocations.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; */&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@SinceKotlin&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1.3&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ContinuationInterceptor&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;CoroutineContext&lt;/span&gt;.Element {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;interceptContinuation&lt;/span&gt;(continuation: Continuation&amp;lt;T&amp;gt;): Continuation&amp;lt;T&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;releaseInterceptedContinuation&lt;/span&gt;(continuation: Continuation&amp;lt;*&amp;gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

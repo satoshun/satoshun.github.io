@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>view on stsnブログ</title>
+    <title>View on stsnブログ</title>
     <link>https://satoshun.github.io/tags/view/</link>
-    <description>Recent content in view on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in View on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 11 Feb 2020 14:02:02 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/view/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 11 Feb 2020 14:02:02 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/view/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>doOnNextLayout、doOnLayout、doOnPreDrawの違いと、Coroutineでこれらを動かしてみる</title>
       <link>https://satoshun.github.io/2020/02/android-doonxxx/</link>
       <pubDate>Tue, 11 Feb 2020 14:02:02 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2020/02/android-doonxxx/</guid>
-      <description>タイトルにあるメソッドはJetpack core-ktxに定義されています。
-doOnNextLayout doOnLayout doOnPreDraw これらを雰囲気で使っていたので、軽く調べてみました。
-doOnNextLayout これは、指定したViewがレイアウトされたときに実行されます。 なので、measure、layoutの後にコールバックされます。
-注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。
-doOnLayout doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。
-inline fun View.doOnLayout(crossinline action: (view: View) -&amp;gt; Unit) { if (ViewCompat.isLaidOut(this) &amp;amp;&amp;amp; !isLayoutRequested) { action(this) } else { doOnNextLayout { action(it) } } } doOnPreDraw 描画される前に実行されます。よって、このタイミングではmeasure、layoutは完了していて、描画するぞっていうタイミングでコールバックされます。
-doOnNextLayoutと違うところは、goneでもコールされる点なのかなと思います。 Viewがgoneの場合、doOnNextLayoutはコールされないですが、doOnPreDrawではコールされます。
-コルーチンと一緒に使う chrisbanes/tiviが凄く参考になります。
-PreDrawをCoroutineと協調して動くようにしたいなら、次のようになります。
-/* * Copyright 2019 Google LLC * * Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;); * you may not use this file except in compliance with the License.</description>
+      <description>&lt;p&gt;タイトルにあるメソッドはJetpack core-ktxに定義されています。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/reference/kotlin/androidx/core/view/package-summary#doonnextlayout&#34;&gt;doOnNextLayout&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/reference/kotlin/androidx/core/view/package-summary#doonlayout&#34;&gt;doOnLayout&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/reference/kotlin/androidx/core/view/package-summary#doonpredraw&#34;&gt;doOnPreDraw&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;これらを雰囲気で使っていたので、軽く調べてみました。&lt;/p&gt;&#xA;&lt;h2 id=&#34;doonnextlayout&#34;&gt;doOnNextLayout&lt;/h2&gt;&#xA;&lt;p&gt;これは、指定したViewがレイアウトされたときに実行されます。&#xA;なので、measure、layoutの後にコールバックされます。&lt;/p&gt;&#xA;&lt;p&gt;注意としては、「既にレイアウト済み かつ 再レイアウトが行われない時」はコールバックされません。&lt;/p&gt;&#xA;&lt;h2 id=&#34;doonlayout&#34;&gt;doOnLayout&lt;/h2&gt;&#xA;&lt;p&gt;doOnNextLayoutと似ているのですが、異なる点は、「レイアウト済み かつ 再レイアウトの要求がない」場合には、即時実行されます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;inline&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt;.doOnLayout(&lt;span style=&#34;color:#66d9ef&#34;&gt;crossinline&lt;/span&gt; action: (view: View) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewCompat&lt;/span&gt;.isLaidOut(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!is&lt;/span&gt;LayoutRequested) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        action(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        doOnNextLayout {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            action(&lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

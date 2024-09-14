@@ -40,10 +40,10 @@ u2020 …">
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -129,31 +129,31 @@ u2020はDagger1を使っていますが, Dagger2においても同様に使え�
 <p>DebugAppContainerは簡単にいえば, <code>DrawerLayout</code>を1つ実装し, その中に「データをモックに変更する」, 「social機能を有効にする」などを設定出来るViewをおいています.</p>
 <h2 id="mockモードの定義">Mockモードの定義</h2>
 <p>u2020ではMockモードがあり, Mockデータを表示機能があります.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DebugDataModule</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DebugDataModule</span> {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  ...
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#a6e22e">@Singleton</span> <span style="color:#a6e22e">@ApiEndpoint</span>
-</span></span><span style="display:flex;"><span>  StringPreference <span style="color:#a6e22e">provideEndpointPreference</span><span style="color:#f92672">(</span>SharedPreferences preferences<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StringPreference<span style="color:#f92672">(</span>preferences<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;debug_endpoint&#34;</span><span style="color:#f92672">,</span> ApiEndpoints<span style="color:#f92672">.</span><span style="color:#a6e22e">MOCK_MODE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">url</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  StringPreference <span style="color:#a6e22e">provideEndpointPreference</span>(SharedPreferences preferences) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StringPreference(preferences, <span style="color:#e6db74">&#34;debug_endpoint&#34;</span>, ApiEndpoints.<span style="color:#a6e22e">MOCK_MODE</span>.<span style="color:#a6e22e">url</span>);
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#a6e22e">@Singleton</span> <span style="color:#a6e22e">@IsMockMode</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">provideIsMockMode</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@ApiEndpoint</span> StringPreference endpoint<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ApiEndpoints<span style="color:#f92672">.</span><span style="color:#a6e22e">isMockMode</span><span style="color:#f92672">(</span>endpoint<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Provides</span> <span style="color:#a6e22e">@Singleton</span> <span style="color:#a6e22e">@IsMockMode</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">provideIsMockMode</span>(<span style="color:#a6e22e">@ApiEndpoint</span> StringPreference endpoint) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ApiEndpoints.<span style="color:#a6e22e">isMockMode</span>(endpoint.<span style="color:#a6e22e">get</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>上記のコードを見て分かる通り, デバッグビルドの時はMockモードが有効になります. デバッグ時にサーバがなくて困る時がありますが, u2020では, assets/内にデバッグ用のモックデータを入れておくことで,
 サーバ問題を解決しています. retrofitの<code>MockRestAdapter</code>を組み合わせ, mockからデータを取得しています.</p>
 <h2 id="activityのlifecycleのログを取る">activityのlifecycleのログを取る</h2>
 <p>Applicationクラスには, <code>registerActivityLifecycleCallbacks</code>メソッドがあり, このメソッドにActivityLifecycleCallbacksインターフェースの実装を登録することで, アプリ内で動いているActivityのライフサイクルのタイミング(onStart, onResume, &hellip;)でイベントを受け取ることが出来ます.
 <code>ActivityLifecycleCallbackss</code>インターフェースの定義は以下になります.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityCreated</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">,</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityStarted</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityResumed</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityPaused</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityStopped</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivitySaveInstanceState</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">,</span> Bundle outState<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityDestroyed</span><span style="color:#f92672">(</span>Activity activity<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityCreated</span>(Activity activity, Bundle savedInstanceState) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityStarted</span>(Activity activity) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityResumed</span>(Activity activity) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityPaused</span>(Activity activity) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityStopped</span>(Activity activity) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivitySaveInstanceState</span>(Activity activity, Bundle outState) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onActivityDestroyed</span>(Activity activity) {}
 </span></span></code></pre></div><p>u2020では,　<a href="https://github.com/JakeWharton/u2020/blob/master/src/internalDebug/java/com/jakewharton/u2020/ui/debug/SocketActivityHierarchyServer.java">SocketActivityHierarchyServer</a>クラスをデバッグ, Activityが正しく振舞っているかを確認しています.</p>
 <p>一元的にActivityのlifecycleログを取れるので, デバッグ時にはとても有効な機能だと思います.(u2020を見るまでは存在を知らなかった&hellip;)</p>
 <h2 id="まとめ">まとめ</h2>

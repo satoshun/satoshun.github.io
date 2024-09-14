@@ -1,52 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>android-architecture on stsnブログ</title>
+    <title>Android-Architecture on stsnブログ</title>
     <link>https://satoshun.github.io/tags/android-architecture/</link>
-    <description>Recent content in android-architecture on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Android-Architecture on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 09 Jun 2019 12:04:27 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/android-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jun 2019 12:04:27 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/android-architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ・感想</title>
       <link>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</link>
       <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
-      <description>以下の動画のまとめです。
-Build a Modular Android App Architecture (Google I/O&#39;19)
-なぜモジュール化をするか? スケール モジュール化することで、開発者が独立して開発出来るようになる
-人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効 保守性 例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる
-何をしているのか、何をしたいのかが理解しにくい 長いレイアウトファイル名になりがち ビルド時間の短縮 変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる
-CIの高速化 再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる
-androidx/dependencyTrackerを使うといい感じにテストが出来る（らしい） APKサイズの縮小 App Bundle、Dynamic Deliveryの恩恵を受けられる
-モジュール どのようにモジュール分けをするか?
-1. Feature（機能）ごとに分ける ライブラリモジュールとDynamic Featureモジュールの2種類がある。
-ライブラリモジュール com.android.libraryを指定する Dynamic Featureモジュール onDemand trueとfalseがある Paidのような一部のユーザが使う機能の場合はtrueが良い Onboardingのように、後でいらなくなる機能の場合はfalseが良い Plaidでは以下のようなモジュール構成にした。
-dribbleと、designernewsがDynamic Featureモジュールになっている。
-2. Layer（層、階層）ごとに分ける Plaidでは以下のように分けた。
-Web Servicesの知識はUIはいらないので、implementationを指定する そうすることで、UIがDTOやRetrofitの知識を知らないですむ Entitiesの知識はUIが必要なので、apiを指定する ただし、この場合、DAOsの知識までUIが知ってしまうので微妙 そこでCommon Value Objectsの導入 こうすることで、UIがDAOの知識を知らずに済む
-Fakes for tests モックよりも優れた方法 fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる （モックはその場、その場で作られがちという意味？） Featureモジュールの利点 カプセル化 Dynamic Delivery Layerごとに分ける利点 サードパーティライブラリの依存を独立 構造をもたらす Dynamic Deliveryの課題 Featureモジュール間のNavigationをどうするか?</description>
+      <description>&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&#39;19)&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;&#xA;&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;&#xA;&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;&#xA;&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;&#xA;&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;&#xA;&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;&#xA;&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;&#xA;&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;&#xA;&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;&#xA;&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;&#xA;&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;&#xA;&lt;h3 id=&#34;1-feature機能ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;&#xA;&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ライブラリモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Dynamic Featureモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;onDemand trueとfalseがある&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;&#xA;&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>MvRxの雑な感想</title>
       <link>https://satoshun.github.io/2019/05/mvrx-architecture/</link>
       <pubDate>Sun, 05 May 2019 05:05:09 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
-      <description>雑多なことを書いただけのブログになります。内容はあまりないよう〜。
-MvRxはAirbnbが開発をしているOSSフレームワークです。
-特徴としては
-Kotlinファースト RxJavaを使っている AAC（Android Architecture Components）をベースにしている AACをRxJavaであったり、便利関数、クラス群で補佐している感じ 多くの部分でReactのAPIを参考にしてる State、renderなど Epoxyと相性が良い 一緒に使うことを推奨している ReactのComponentのように振る舞わうことが出来る ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う 副作用がない（減らしたい） ボイラープレートなコードを減らすことが期待できます😃
-個人的に気になった部分、好きなとこ StateでView状態を管理するところ Stateを定義することのメリットは以下かなと思ってます。
-Stateを見れば、Viewの構成要素が分かる MVPアーキテクチャのViewインターフェースのような役割を果たす 状態の管理が楽 Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる Viewからロジックを取ることが出来る もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる Asyncがすごい良い MvRxではAsyncというsealed classが定義されていて、
-Uninitialized Loading Success Fail の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。
-プロジェクトに、Asyncだけ取り入れるのもアリだと思います。
-Single Eventの処理をどうするのか State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う
-invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも やっぱりSingle Eventの取り扱いって大変なんやなって とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない 参考 Tivi プロジェクトも大きく、Coroutineなども使っている これ見れば、なんとなく肌感は分かると思います </description>
+      <description>&lt;p&gt;雑多なことを書いただけのブログになります。内容はあまりないよう〜。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/airbnb/MvRx&#34;&gt;MvRx&lt;/a&gt;はAirbnbが開発をしているOSSフレームワークです。&lt;/p&gt;&#xA;&lt;p&gt;特徴としては&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kotlinファースト&lt;/li&gt;&#xA;&lt;li&gt;RxJavaを使っている&lt;/li&gt;&#xA;&lt;li&gt;AAC（Android Architecture Components）をベースにしている&#xA;&lt;ul&gt;&#xA;&lt;li&gt;AACをRxJavaであったり、便利関数、クラス群で補佐している感じ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;多くの部分でReactのAPIを参考にしてる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;State、renderなど&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/airbnb/epoxy&#34;&gt;Epoxy&lt;/a&gt;と相性が良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一緒に使うことを推奨している&lt;/li&gt;&#xA;&lt;li&gt;ReactのComponentのように振る舞わうことが出来る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;副作用がない（減らしたい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;ボイラープレートなコードを減らすことが期待できます😃&lt;/p&gt;&#xA;&lt;h2 id=&#34;個人的に気になった部分好きなとこ&#34;&gt;個人的に気になった部分、好きなとこ&lt;/h2&gt;&#xA;&lt;h3 id=&#34;stateでview状態を管理するところ&#34;&gt;StateでView状態を管理するところ&lt;/h3&gt;&#xA;&lt;p&gt;Stateを定義することのメリットは以下かなと思ってます。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Stateを見れば、Viewの構成要素が分かる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MVPアーキテクチャのViewインターフェースのような役割を果たす&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;状態の管理が楽&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Viewからロジックを取ることが出来る&#xA;&lt;ul&gt;&#xA;&lt;li&gt;もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;asyncがすごい良い&#34;&gt;Asyncがすごい良い&lt;/h3&gt;&#xA;&lt;p&gt;MvRxではAsyncというsealed classが定義されていて、&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

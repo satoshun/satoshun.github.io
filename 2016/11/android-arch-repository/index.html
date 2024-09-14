@@ -38,10 +38,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -101,17 +101,17 @@
 <h2 id="rxjavaとともに">RxJavaとともに</h2>
 <p>RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@NonNull</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span> <span style="color:#66d9ef">public</span> Observable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> localDataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span>id<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">onErrorResumeNext</span><span style="color:#f92672">(</span>remoteDataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getUser</span><span style="color:#f92672">(</span>id<span style="color:#f92672">))</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">doOnNext</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Action1<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">call</span><span style="color:#f92672">(</span>User user<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            localDataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">saveUser</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">})</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribeOn</span><span style="color:#f92672">(</span>Schedulers<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">observeOn</span><span style="color:#f92672">(</span>AndroidSchedulers<span style="color:#f92672">.</span><span style="color:#a6e22e">mainThread</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span> <span style="color:#66d9ef">public</span> Observable<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUser</span>(<span style="color:#66d9ef">int</span> id) {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> localDataSource.<span style="color:#a6e22e">getUser</span>(id)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">onErrorResumeNext</span>(remoteDataSource.<span style="color:#a6e22e">getUser</span>(id))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">doOnNext</span>(<span style="color:#66d9ef">new</span> Action1<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">call</span>(User user) {
+</span></span><span style="display:flex;"><span>            localDataSource.<span style="color:#a6e22e">saveUser</span>(user);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">subscribeOn</span>(Schedulers.<span style="color:#a6e22e">io</span>())
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">observeOn</span>(AndroidSchedulers.<span style="color:#a6e22e">mainThread</span>());
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります.
 クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.</p>
 <h2 id="まとめ">まとめ</h2>

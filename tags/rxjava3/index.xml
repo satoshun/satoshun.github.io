@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rxjava3 on stsnブログ</title>
+    <title>Rxjava3 on stsnブログ</title>
     <link>https://satoshun.github.io/tags/rxjava3/</link>
-    <description>Recent content in rxjava3 on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Rxjava3 on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 24 Jun 2019 13:52:14 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/rxjava3/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jun 2019 12:38:16 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/rxjava3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RxJava 3.xの開発が本格的に始まりました</title>
       <link>https://satoshun.github.io/2019/06/rxjava3-preview/</link>
       <pubDate>Mon, 24 Jun 2019 13:52:14 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2019/06/rxjava3-preview/</guid>
-      <description>現状での差異をまとめておきます。
-RxJava2との差異 READMEから README.md
-RxJava2 との差分は以下のようになっています。
-fixed API mistakes and many limits of RxJava 2 RxJava2のいくつかのAPIのミス、制限を直している intended to be a replacement for RxJava 2 with relatively few binary incompatible changes APIに多少の変更があり、バイナリ互換がない test and diagnostic support via test schedulers, test consumers and plugin hooks テストのサポートの充実 3.x different docsから 3.x different docs
-asメソッドとtoメソッド toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。
-// Obsevable.java public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Observable&amp;lt;T&amp;gt;, R&amp;gt; converter) // Single.java public final &amp;lt;R&amp;gt; R to(Function&amp;lt;? super Single&amp;lt;T&amp;gt;, R&amp;gt; convert 同じFunction型を引数に取るので、共通のクラスを作ることが出来ない。</description>
+      <description>&lt;p&gt;現状での差異をまとめておきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;rxjava2との差異&#34;&gt;RxJava2との差異&lt;/h2&gt;&#xA;&lt;h3 id=&#34;readmeから&#34;&gt;READMEから&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/ReactiveX/RxJava/blob/3.x/README.md&#34;&gt;README.md&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;RxJava2 との差分は以下のようになっています。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;fixed API mistakes and many limits of RxJava 2&#xA;&lt;ul&gt;&#xA;&lt;li&gt;RxJava2のいくつかのAPIのミス、制限を直している&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;intended to be a replacement for RxJava 2 with relatively few binary incompatible changes&#xA;&lt;ul&gt;&#xA;&lt;li&gt;APIに多少の変更があり、バイナリ互換がない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;test and diagnostic support via test schedulers, test consumers and plugin hooks&#xA;&lt;ul&gt;&#xA;&lt;li&gt;テストのサポートの充実&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;3x-different-docsから&#34;&gt;3.x different docsから&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/ReactiveX/RxJava/blob/3.x/docs/What&#39;s-different-in-3.0.md&#34;&gt;3.x different docs&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h4 id=&#34;asメソッドとtoメソッド&#34;&gt;asメソッドとtoメソッド&lt;/h4&gt;&#xA;&lt;p&gt;toメソッドはFunction型を引数から取っていた。しかし、あらゆるReactive型でFunction型を受け取っていたので、共通のConverterを作ることが出来なかった。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

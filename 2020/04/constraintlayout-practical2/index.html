@@ -42,10 +42,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -94,7 +94,7 @@
     <span class="post-date">Created at Thu, Apr 30, 2020</span>
     
     <p>今回の記事では次の4つのレイアウトを、ConstraintLayoutで組みたいと思います。</p>
-<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-1.png" width="400"/>
+<figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-1.png" width="400">
 </figure>
 
 <p>ポイントは以下の２つです。</p>
@@ -161,7 +161,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;12dp&#34;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image3&#34;</span> <span style="color:#f92672">/&gt;</span>
-</span></span></code></pre></div><figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-2.png" width="300"/>
+</span></span></code></pre></div><figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-2.png" width="300">
 </figure>
 
 <p>1枚目、2枚目、3枚目、4枚目がそれぞれ少しずつ被っているのが分かると思います。</p>
@@ -208,7 +208,7 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@id/image3&#34;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">app:layout_goneMarginStart=</span><span style="color:#e6db74">&#34;56dp&#34;</span> <span style="color:#f92672">/&gt;</span>
-</span></span></code></pre></div><figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-3.png" width="400"/>
+</span></span></code></pre></div><figure><img src="/blog/android/jetpack/constraintlayout/constraint-practical2-3.png" width="400">
 </figure>
 
 <p>画像がない状態を<code>layout_goneMarginStart</code>で表現しているのがポイントです。「1番左の画像がなかったら、2番目の画像のmarginStartを調整」、「2番目の画像がなかったら、3番目の画像のmarginStartを調整」といった具合です。</p>

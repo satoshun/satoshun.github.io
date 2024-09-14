@@ -38,10 +38,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -118,31 +118,31 @@ e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateEx
 </code></pre><p>ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃</p>
 <h2 id="クライアント側の対応">クライアント側の対応</h2>
 <p>これに伴い、一部APIがdeprecatedになります。例えば、<code>main_act.xml</code>は次のようにAPIが変更されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActBinding</span> <span style="color:#66d9ef">extends</span> ViewDataBinding <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActBinding</span> <span style="color:#66d9ef">extends</span> ViewDataBinding {
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@NonNull</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Nullable</span> ViewGroup root<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span>(<span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Nullable</span> ViewGroup root,
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">boolean</span> attachToRoot
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  )
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@NonNull</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Deprecated</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Nullable</span> ViewGroup root<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> attachToRoot<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object component
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span>(<span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">@Nullable</span> ViewGroup root, <span style="color:#66d9ef">boolean</span> attachToRoot, <span style="color:#a6e22e">@Nullable</span> Object component
+</span></span><span style="display:flex;"><span>  )
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@NonNull</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span>(<span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@NonNull</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Deprecated</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object component<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">inflate</span>(<span style="color:#a6e22e">@NonNull</span> LayoutInflater inflater, <span style="color:#a6e22e">@Nullable</span> Object component)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">bind</span>(<span style="color:#a6e22e">@NonNull</span> View view)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Deprecated</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> View view<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> Object component<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MainActBinding <span style="color:#a6e22e">bind</span>(<span style="color:#a6e22e">@NonNull</span> View view, <span style="color:#a6e22e">@Nullable</span> Object component)
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。</p>
 <h2 id="補足">補足</h2>
 <p>AGPのアップデートは気軽に出来ないので、

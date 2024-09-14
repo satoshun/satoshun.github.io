@@ -37,10 +37,10 @@ HTTPを介してイベントのデー …">
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -114,26 +114,26 @@ HTTPを介してイベントのデー …">
 JSONのパースには<a href="https://github.com/google/gson">Gson</a>, データの処理には<a href="https://github.com/ReactiveX/RxJava">RxJava</a>を使いました.</p>
 <p>例えば, connpass APIは以下のように定義しました.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">/** Get data from Conpass  */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Connpass</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/v1/event&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ymd&#34;</span><span style="color:#f92672">)</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Connpass</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;/v1/event&#34;</span>)
+</span></span><span style="display:flex;"><span>    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;ymd&#34;</span>) List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/v1/event&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;keyword&#34;</span><span style="color:#f92672">)</span> String keyword<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ymd&#34;</span><span style="color:#f92672">)</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@GET</span>(<span style="color:#e6db74">&#34;/v1/event&#34;</span>)
+</span></span><span style="display:flex;"><span>    Observable<span style="color:#f92672">&lt;</span>ConnpassResponse<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">search</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;keyword&#34;</span>) String keyword,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;ymd&#34;</span>) List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> ymds);
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>keywordとymdを指定してリクエストを生成します. 「2015/12/31のAndroidのイベント」のように使う想定です.
 Retrofitを使うと, このようにinterfaceとして, APIを定義することが出来ます.
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/network/Connpass.java#L10</a>)</p>
 <p>次に, RxJavaの説明をします. RxJava(Observable)を使うと, 非同期にデータが扱いやすくなります. またデータのマージ(merge)や, フィルタリング(filter)などを簡単に行うことが出来ます.
 今回は, 3つのAPI(connpass, Atnd, Zusaar)が終わるのを待ってから処理を開始したかったので, 以下のように書きました.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Observable<span style="color:#f92672">.</span><span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>  connpass<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()),</span>
-</span></span><span style="display:flex;"><span>  atnd<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()),</span>
-</span></span><span style="display:flex;"><span>  zusaar<span style="color:#f92672">.</span><span style="color:#a6e22e">search</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">,</span> generateYmd<span style="color:#f92672">()))</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span><span style="color:#a6e22e">subscribe</span><span style="color:#f92672">(...)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Observable.<span style="color:#a6e22e">merge</span>(
+</span></span><span style="display:flex;"><span>  connpass.<span style="color:#a6e22e">search</span>(keyword, generateYmd()),
+</span></span><span style="display:flex;"><span>  atnd.<span style="color:#a6e22e">search</span>(keyword, generateYmd()),
+</span></span><span style="display:flex;"><span>  zusaar.<span style="color:#a6e22e">search</span>(keyword, generateYmd()))
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">subscribe</span>(...)
 </span></span></code></pre></div><p><code>Observable.merge</code>は複数のObservableを1つのObservableにまとめるAPIです. これで, 3つのAPIが終了するまでwaitすることが出来ます.
 あとは, これをsubscribeして, データを取得します.(<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/domain/EventInteractor.java#L41</a>)</p>
 <h2 id="data-bindingライブラリを使う">Data-Bindingライブラリを使う</h2>
@@ -142,28 +142,28 @@ AngularJSのデータバインディングをイメージして貰えると良�
 書くコード量が減り, とても便利なライブラリでした. (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/res/layout/adapter_event.xml</a>)</p>
 <p>また, 推奨された使い方かどうかはわからないですが, ViewHolderパターンとして使うことも出来ます.
 ViewHolderパターンは, Adapter#getViewでコストが掛かる処理(View#findViewByIdなど)をcacheするパターンです.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventAdapter</span> <span style="color:#66d9ef">extends</span> BaseAdapter <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventAdapter</span> <span style="color:#66d9ef">extends</span> BaseAdapter {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">      .. ....
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> View <span style="color:#a6e22e">getView</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> position<span style="color:#f92672">,</span> View convertView<span style="color:#f92672">,</span> ViewGroup parent<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        View view <span style="color:#f92672">=</span> convertView<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>view <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            AdapterEventBinding binding <span style="color:#f92672">=</span> AdapterEventBinding<span style="color:#f92672">.</span><span style="color:#a6e22e">inflate</span><span style="color:#f92672">(</span>inflater<span style="color:#f92672">,</span> parent<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            view <span style="color:#f92672">=</span> binding<span style="color:#f92672">.</span><span style="color:#a6e22e">getRoot</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            view<span style="color:#f92672">.</span><span style="color:#a6e22e">setTag</span><span style="color:#f92672">(</span>binding<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> View <span style="color:#a6e22e">getView</span>(<span style="color:#66d9ef">int</span> position, View convertView, ViewGroup parent) {
+</span></span><span style="display:flex;"><span>        View view <span style="color:#f92672">=</span> convertView;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (view <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            AdapterEventBinding binding <span style="color:#f92672">=</span> AdapterEventBinding.<span style="color:#a6e22e">inflate</span>(inflater, parent, <span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>            view <span style="color:#f92672">=</span> binding.<span style="color:#a6e22e">getRoot</span>();
+</span></span><span style="display:flex;"><span>            view.<span style="color:#a6e22e">setTag</span>(binding);
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        AdapterEventBinding binding <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>AdapterEventBinding<span style="color:#f92672">)</span> view<span style="color:#f92672">.</span><span style="color:#a6e22e">getTag</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        Event event <span style="color:#f92672">=</span> getItem<span style="color:#f92672">(</span>position<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setEvent</span><span style="color:#f92672">(</span>event<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        binding<span style="color:#f92672">.</span><span style="color:#a6e22e">setDateFormat</span><span style="color:#f92672">(</span>DATE_FORMAT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        AdapterEventBinding binding <span style="color:#f92672">=</span> (AdapterEventBinding) view.<span style="color:#a6e22e">getTag</span>();
+</span></span><span style="display:flex;"><span>        Event event <span style="color:#f92672">=</span> getItem(position);
+</span></span><span style="display:flex;"><span>        binding.<span style="color:#a6e22e">setEvent</span>(event);
+</span></span><span style="display:flex;"><span>        binding.<span style="color:#a6e22e">setDateFormat</span>(DATE_FORMAT);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> view<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> view;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>AdapterEventBindingをViewHolderの代わりに使っています.
 (<a href="https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34">https://github.com/satoshun/AndroidEvents/blob/master/app/src/main/java/com/github/satoshun/events/ui/adapter/EventAdapter.java#L34</a>)
 なかなか良いと思います.</p>

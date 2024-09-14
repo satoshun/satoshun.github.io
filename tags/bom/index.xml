@@ -1,35 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>bom on stsnブログ</title>
+    <title>Bom on stsnブログ</title>
     <link>https://satoshun.github.io/tags/bom/</link>
-    <description>Recent content in bom on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Bom on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Tue, 18 Feb 2020 13:08:10 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/bom/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Feb 2020 13:08:10 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/bom/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gradle: BOMを使って依存を指定する</title>
       <link>https://satoshun.github.io/2020/02/gradle-bom-android/</link>
       <pubDate>Tue, 18 Feb 2020 13:08:10 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2020/02/gradle-bom-android/</guid>
-      <description>Gradleの5から、Bill Of Materials(BOM)が使えるようになりました。これが、結構いいものだと思ったので紹介します。
-ついでにdependabotの話もちょっとします。
-BOM? BOMを使うことで、 複数のライブラリのバージョンを省略することが出来ます。
-ドキュメントの例にはspring-bootが挙げられています。
-dependencies { // import a BOM implementation platform(&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;) // define dependencies without versions implementation &amp;#39;com.google.code.gson:gson&amp;#39; implementation &amp;#39;dom4j:dom4j&amp;#39; } gson、dom4jのバージョンを省略していることが分かると思います。
-Androidでよく使うライブラリでBOMに対応しているライブラリには、例えば次があります。
-OkHttp Kotlin Coroutine Firebase 例えば、OkHttpならこんな感じで書けます。
-dependencies { implementation platform(&amp;#34;com.squareup.okhttp3:okhttp-bom:4.4.0&amp;#34;) implementation &amp;#34;com.squareup.okhttp3:okhttp&amp;#34; implementation &amp;#34;com.squareup.okhttp3:logging-interceptor&amp;#34; } BOMを使うことで、関連ライブラリをまとめてアップデートすることが出来るのでとても便利です。
-dependabot? 直接はBOMに関係ないんですけど、最近、dependabotが便利だと自分の中で話題になっていて、これはライブラリのアップデートを自動でやってくれるbotになります。
-例えば、こんな感じのPRを作ってくれます。
-Bump versions.retrofit from 2.7.0 to 2.7.1
-それでdependabotって、versions.retrofit = &#39;2.7.1&#39;って感じで、変数で定義すると検知できないって思っていたんですけど、 いろいろ試してみたら、普通に出来ました:D
-BOMとdependabotは相性いいぞ！！って書こうと思ったんですけど、変数の場合でもアップデートを検知してくれたので、特に関係なかったです😅
-とはいえ、わざわざ自前で変数定義する必要はなくなるので、BOMは便利です！
-まとめ BOMはいいぞ〜 dependabotはいいぞ〜 </description>
+      <description>&lt;p&gt;Gradleの5から、Bill Of Materials(BOM)が使えるようになりました。これが、結構いいものだと思ったので紹介します。&lt;/p&gt;&#xA;&lt;p&gt;ついでに&lt;a href=&#34;https://dependabot.com/&#34;&gt;dependabot&lt;/a&gt;の話もちょっとします。&lt;/p&gt;&#xA;&lt;h2 id=&#34;bom&#34;&gt;BOM?&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://docs.gradle.org/5.0/userguide/managing_transitive_dependencies.html#sec:bom_import&#34;&gt;BOM&lt;/a&gt;を使うことで、 複数のライブラリのバージョンを省略することが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;ドキュメントの例にはspring-bootが挙げられています。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// import a BOM&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  implementation &lt;span style=&#34;color:#a6e22e&#34;&gt;platform&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// define dependencies without versions&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  implementation &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;com.google.code.gson:gson&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  implementation &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dom4j:dom4j&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

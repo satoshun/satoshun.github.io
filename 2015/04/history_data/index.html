@@ -37,10 +37,10 @@
 
   
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/main.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/poole.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/syntax.css">
-  <link rel="stylesheet" href="https://satoshun.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/main.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/poole.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/syntax.css">
+  <link rel="stylesheet" href="https://satoshun.github.io//css/hyde.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   
@@ -95,34 +95,34 @@
 <p>最初に一番オーソドックス?な, フラグをつけて管理する方法です.</p>
 <p><code>products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>active</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>卵</td>
-<td>200</td>
-<td>0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>卵</td>
-<td>250</td>
-<td>1</td>
-</tr>
-<tr>
-<td>3</td>
-<td>肉</td>
-<td>100</td>
-<td>1</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">active</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left">0</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">250</td>
+          <td style="text-align: left">1</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">肉</td>
+          <td style="text-align: left">100</td>
+          <td style="text-align: left">1</td>
+      </tr>
+  </tbody>
 </table>
 <p>activeなデータを取得するときは, <code>SELECT * FROM products WHERE active = 1;</code> とします.</p>
 <p>この方法の利点はパッと見に分かりやすいことだと思います. しかし, この方法はバッドノウハウだとされています. 理由を以下にあげます.</p>
@@ -136,38 +136,38 @@
 <p>次は範囲を指定する方法です.</p>
 <p><code>products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-<th>end_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>卵</td>
-<td>200</td>
-<td>2015-03-22</td>
-<td>2015-04-06</td>
-</tr>
-<tr>
-<td>2</td>
-<td>卵</td>
-<td>250</td>
-<td>2015-04-07</td>
-<td>9999-01-01</td>
-</tr>
-<tr>
-<td>3</td>
-<td>肉</td>
-<td>100</td>
-<td>2015-02-01</td>
-<td>9999-01-01</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+          <th style="text-align: left">end_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left">2015-03-22</td>
+          <td style="text-align: left">2015-04-06</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">250</td>
+          <td style="text-align: left">2015-04-07</td>
+          <td style="text-align: left">9999-01-01</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">肉</td>
+          <td style="text-align: left">100</td>
+          <td style="text-align: left">2015-02-01</td>
+          <td style="text-align: left">9999-01-01</td>
+      </tr>
+  </tbody>
 </table>
 <p>activeなデータを取得するときは, <code>SELECT * FROM products WHERE NOW() BETWEEN start_date AND end_date;</code> とします.</p>
 <p>この方法も分かりやすいのですが, バッドノウハウです.</p>
@@ -181,147 +181,147 @@
 <p>テーブル分割をする方法です. RDBっぽい解決方法です.</p>
 <p><code>products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2</td>
-<td>卵</td>
-<td>250</td>
-<td>2015-04-06</td>
-</tr>
-<tr>
-<td>3</td>
-<td>肉</td>
-<td>100</td>
-<td>2015-04-01</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">250</td>
+          <td style="text-align: left">2015-04-06</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">肉</td>
+          <td style="text-align: left">100</td>
+          <td style="text-align: left">2015-04-01</td>
+      </tr>
+  </tbody>
 </table>
 <p><code>old_products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>卵</td>
-<td>200</td>
-<td>2015-03-01</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left">2015-03-01</td>
+      </tr>
+  </tbody>
 </table>
 <p>この方法の場合, 頻繁に参照するであろう<code>products</code>テーブルのサイズが小さくなるので検索パフォーマンスが安定します. しかし,  <code>products</code>テーブルから, <code>old_products</code>テーブルに移すロジックを, アプリ側 or トリガーで制御する必要があります.</p>
 <h2 id="upcomingテーブルを使う">upcomingテーブルを使う</h2>
 <p>上記の方法の拡張版です. 過去のデータだけでなく, 未来のデータを<code>upcoming_products</code>テーブルに入れる方法です. テーブルの更新を自動的にやりたいときに有効です.</p>
 <p><code>products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2</td>
-<td>卵</td>
-<td>250</td>
-<td>2015-04-06</td>
-</tr>
-<tr>
-<td>3</td>
-<td>肉</td>
-<td>100</td>
-<td>2015-04-01</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">250</td>
+          <td style="text-align: left">2015-04-06</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">肉</td>
+          <td style="text-align: left">100</td>
+          <td style="text-align: left">2015-04-01</td>
+      </tr>
+  </tbody>
 </table>
 <p><code>old_products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>卵</td>
-<td>200</td>
-<td>2015-03-01</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left">2015-03-01</td>
+      </tr>
+  </tbody>
 </table>
 <p><code>upcoming_products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>price</th>
-<th>start_date</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>4</td>
-<td>肉</td>
-<td>200</td>
-<td>2015-05-12</td>
-</tr>
-<tr>
-<td>5</td>
-<td>卵</td>
-<td>400</td>
-<td>2015-05-13</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+          <th style="text-align: left">name</th>
+          <th style="text-align: left">price</th>
+          <th style="text-align: left">start_date</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left">肉</td>
+          <td style="text-align: left">200</td>
+          <td style="text-align: left">2015-05-12</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left">卵</td>
+          <td style="text-align: left">400</td>
+          <td style="text-align: left">2015-05-13</td>
+      </tr>
+  </tbody>
 </table>
 <p>バッチ処理を行い, <code>upcoming_products</code>テーブルの <code>start_date</code> が有効になったら, <code>products</code>テーブルに移動します.</p>
 <h2 id="外部キー制約への対応">外部キー制約への対応</h2>
 <p>上記のようなルールでテーブル分割をすると, <code>products.id</code>を外部キーに指定し, 運用することが困難になります(頻繁に<code>old_products</code>テーブルに移動されるため). そこで, マスターテーブルを作ってしまう方法があります.</p>
 <p><code>master_products</code>テーブル</p>
 <table>
-<thead>
-<tr>
-<th>id</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-</tr>
-<tr>
-<td>4</td>
-</tr>
-<tr>
-<td>5</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">id</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">4</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">5</td>
+      </tr>
+  </tbody>
 </table>
 <p><code>master_products.id</code>テーブルを外部キーに指定して運用します. これで外部キーの問題が解決出来ました.</p>
 <h2 id="まとめ">まとめ</h2>

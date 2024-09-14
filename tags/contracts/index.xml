@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>contracts on stsnブログ</title>
+    <title>Contracts on stsnブログ</title>
     <link>https://satoshun.github.io/tags/contracts/</link>
-    <description>Recent content in contracts on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Contracts on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 11 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/contracts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/contracts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kotlin: Contracts &#43; 拡張関数でより便利に</title>
       <link>https://satoshun.github.io/2018/11/more_convenient_contracts/</link>
       <pubDate>Sun, 11 Nov 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/11/more_convenient_contracts/</guid>
-      <description>Kotlin 1.3.0からContractsが実装されました。 Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。
-例えば、isNullOrEmptyメソッドがfalse返すなら、 Contractsによりnullでないことが保証されます。
-val a: String? = ... if (!a.isNullOrEmpty()) { println(a.length) // !!が必要ない } Contractsがない時代だと呼び出し元でisNullOrEmptyがどんな振る舞いをするかを知るすべがなかったので、 !!をつける必要があったのですが、Contractsによりnullでないことが保証できるので、!!を省略できます。
-isNullOrEmptyの実装は次のようになります。
-@kotlin.internal.InlineOnly public inline fun CharSequence?.isNullOrEmpty(): Boolean { contract { returns(false) implies (this@isNullOrEmpty != null) } return this == null || this.length == 0 } contractはDSL（関数）として定義されています。 これを呼び出し、そのブロックの中でこの関数が満たす振る舞いを定義する事ができます。
-isNullOrEmptyの場合はreturns(false) implies (this@isNullOrEmpty != null)が契約として定義されています。
-これは、「returns(false): falseを返すなら (this@isNullOrEmpty != null): 自分自身がnullじゃない」という意味になります。 なので呼び出し元ではfalseが返ってきたら、nullではないことが保証されるので、smartcastにより!!をつける必要がなくなるわけです。
-なので、例えばT.isEmpty(t: T?): Booleanのようなメソッドがあり、ついでにnullチェックもこの関数の中でやっているようなときは、 contractを定義することでより使いやすい関数にすることが出来ます。
-他の例を見てみます。スコープ関数applyの実装は次になります。
-@kotlin.internal.InlineOnly public inline fun &amp;lt;T&amp;gt; T.apply(block: T.() -&amp;gt; Unit): T { contract { callsInPlace(block, InvocationKind.</description>
+      <description>&lt;p&gt;Kotlin 1.3.0からContractsが実装されました。&#xA;Contractsを使うことで、関数がどのような振る舞いをするか、どういう効果をもたらすかを定義（契約）することが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;例えば、&lt;code&gt;isNullOrEmpty&lt;/code&gt;メソッドがfalse返すなら、&#xA;Contractsによりnullでないことが保証されます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; a: String? = &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (!a.isNullOrEmpty()) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println(a.length) &lt;span style=&#34;color:#75715e&#34;&gt;// !!が必要ない&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Contractsがない時代だと呼び出し元で&lt;code&gt;isNullOrEmpty&lt;/code&gt;がどんな振る舞いをするかを知るすべがなかったので、&#xA;&lt;code&gt;!!&lt;/code&gt;をつける必要があったのですが、Contractsによりnullでないことが保証できるので、&lt;code&gt;!!&lt;/code&gt;を省略できます。&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;isNullOrEmpty&lt;/code&gt;の実装は次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@kotlin&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt;.InlineOnly&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;inline&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;CharSequence&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;?.&lt;/span&gt;isNullOrEmpty(): Boolean {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    contract {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        returns(&lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;) implies (&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@isNullOrEmpty&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.length &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>

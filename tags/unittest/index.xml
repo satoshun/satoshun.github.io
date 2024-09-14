@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>unittest on stsnブログ</title>
+    <title>Unittest on stsnブログ</title>
     <link>https://satoshun.github.io/tags/unittest/</link>
-    <description>Recent content in unittest on stsnブログ</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Unittest on stsnブログ</description>
+    <generator>Hugo</generator>
     <language>ja</language>
     <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 14 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://satoshun.github.io/tags/unittest/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Dec 2018 03:06:20 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/unittest/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>UnitテストでViewModelのonClearedをテストする</title>
       <link>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</link>
       <pubDate>Sun, 14 Oct 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://satoshun.github.io/2018/10/unittest-viewodel_oncleared/</guid>
-      <description>ふとAACのViewModelのonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。
-環境は
-&amp;#34;junit:junit:4.12&amp;#34; &amp;#34;androidx.test:rules:1.1.1&amp;#34; &amp;#34;androidx.test:runner:1.1.1&amp;#34; &amp;#34;androidx.test.ext:junit:1.1.0&amp;#34; &amp;#34;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;#34; &amp;#34;org.robolectric:robolectric:4.1&amp;#34; になります。
-また、サンプルコードは satoshun-android-example/Testsにあるので、参考してください😊
-1. ViewModelStoreを使う ViewModelProviders.of(activity).get(class)からViewModelを取得したときに、取得したViewModelはViewModelStoreにキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。
-@RunWith(AndroidJUnit4::class) class BaseViewModelTest { @get:Rule val activityRule = ActivityTestRule(FragmentActivity::class.java) @Test fun `dispose a coroutine when finished lifecycle of ViewModel`() { activityRule.activity.viewModelStore.clear() // ViewModelが開放される } } このテストはコード的には簡単ですが、ViewModelStoreがViewModelを管理していることを知っている、内部実装の詳細まで知っているため、テストとしてふさわしくない可能性があります。
-なので、素直にonDestroyをコールするテストも書いてみます。
-2. Instrumentation.callActivityOnDestroyを使う Instrumentationクラスを使うことでActivityのライフサイクルをコントロールすることが出来ます。 InstrumentationはInstrumentationRegistryクラスから取得することができ、次のように書くことで、onDestroyをコールすることができます。
-@Test fun `dispose a coroutine when finished lifecycle of ViewModel 2`() { // onDestroyがコールされViewModelが開放される InstrumentationRegistry.getInstrumentation().callActivityOnDestroy(activityRule.activity) } ActivityのonDestroyがコールされ、ViewModelのonClearedもコールされます！
-以下追記
-3. ActivityScenarioを使う 新しく追加されたActivityScenarioを使うとよりすっきりとonDestroyを表現することが出来ます。
-@Test fun `dispose a coroutine when finished lifecycle of ViewModel 3`() { val scenario = ActivityScenario.</description>
+      <description>&lt;p&gt;ふとAACの&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModel&#34;&gt;ViewModel&lt;/a&gt;のonClearedメソッドをテストしたくなったので、 3つのやりかたを紹介します。&lt;/p&gt;&#xA;&lt;p&gt;環境は&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;#34;junit:junit:4.12&amp;#34;&#xA;&amp;#34;androidx.test:rules:1.1.1&amp;#34;&#xA;&amp;#34;androidx.test:runner:1.1.1&amp;#34;&#xA;&amp;#34;androidx.test.ext:junit:1.1.0&amp;#34;&#xA;&amp;#34;com.nhaarman:mockito-kotlin-kt1.1:1.5.0&amp;#34;&#xA;&amp;#34;org.robolectric:robolectric:4.1&amp;#34;&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;になります。&lt;/p&gt;&#xA;&lt;p&gt;また、サンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/Tests&#34;&gt;satoshun-android-example/Tests&lt;/a&gt;にあるので、参考してください😊&lt;/p&gt;&#xA;&lt;h3 id=&#34;1-viewmodelstoreを使う&#34;&gt;1. ViewModelStoreを使う&lt;/h3&gt;&#xA;&lt;p&gt;&lt;code&gt;ViewModelProviders.of(activity).get(class)&lt;/code&gt;からViewModelを取得したときに、取得したViewModelは&lt;a href=&#34;https://developer.android.com/reference/androidx/lifecycle/ViewModelStore&#34;&gt;ViewModelStore&lt;/a&gt;にキャッシュされます。このViewModelStoreはFragmentActivityから取得できるので、次のように書くことでViewModelのonClearedをテストすることが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@RunWith&lt;/span&gt;(AndroidJUnit4&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;BaseViewModelTest&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; activityRule = ActivityTestRule(FragmentActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;`dispose a coroutine when finished lifecycle of ViewModel`&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    activityRule.activity.viewModelStore.clear() &lt;span style=&#34;color:#75715e&#34;&gt;// ViewModelが開放される&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pr</description>
     </item>
-    
   </channel>
 </rss>
