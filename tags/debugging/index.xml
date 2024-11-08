@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debugging on stsnブログ</title>
+    <link>https://satoshun.github.io/tags/debugging/</link>
+    <description>Recent content in Debugging on stsnブログ</description>
+    <generator>Hugo</generator>
+    <language>ja</language>
+    <copyright>Sato Shun</copyright>
+    <lastBuildDate>Fri, 08 Nov 2024 10:27:21 +0000</lastBuildDate>
+    <atom:link href="https://satoshun.github.io/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jetpack Composeライブ編集(Live Edit)でPrintデバッグをする</title>
+      <link>https://satoshun.github.io/2024/11/android-compose-live-edit/</link>
+      <pubDate>Fri, 08 Nov 2024 10:27:21 +0000</pubDate>
+      <guid>https://satoshun.github.io/2024/11/android-compose-live-edit/</guid>
+      <description>&lt;p&gt;Jetpack Composeには、実機にリアルタイムで変更内容を反映する「ライブ編集（Live Edit）」という機能があります。&#xA;ライブ編集のメイン機能はUIの調整なのですが、printなどのログ出力コードも追加可能で、デバッグにも活用する事ができます。&lt;/p&gt;&#xA;&lt;p&gt;なので、Composable関数周りでデバッグを行いたい場合は、以下の手順がおすすめです。&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;ライブ編集 + Printを用いて値をログに出力する&lt;/li&gt;&#xA;&lt;li&gt;これで特定できなかったら、デバッガーを起動する&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;UIの値を確認したい時などに便利なので、ぜひ活用してみてください。&lt;/p&gt;&#xA;&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/develop/ui/compose/tooling/iterative-development?hl=ja&#34;&gt;https://developer.android.com/develop/ui/compose/tooling/iterative-development&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>
