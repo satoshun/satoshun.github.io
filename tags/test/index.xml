@@ -1,55 +1,659 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Test on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/test/</link>
-    <description>Recent content in Test on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 18 Jul 2021 07:44:46 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2021 Sato Shun</copyright>
+    <updated>Sun, 18 Jul 2021 07:44:46 UTC</updated>
+    
+    
     <item>
       <title>Testifyを使って、Jetpack Composeのスクリーンショットテストをする</title>
       <link>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</link>
-      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</guid>
-      <description>&lt;p&gt;(この記事は、ほぼ、&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; のREADMEに書いてあることをやっているだけです)&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; を使って、Jetpack Composeのスクリーンショットテストをしてみます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;セットアップ&#34;&gt;セットアップ&lt;/h2&gt;&#xA;&lt;p&gt;READMEに記してある通り、build.gradleに下記の設定を追加します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;com.shopify.testify&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。&lt;/p&gt;&#xA;&lt;h2 id=&#34;テストを書いてみる&#34;&gt;テストを書いてみる&lt;/h2&gt;&#xA;&lt;p&gt;JUnit4ベースの&lt;code&gt;ScreenshotRule&lt;/code&gt; と、&lt;code&gt;ScreenshotInstrumentation&lt;/code&gt; アノテーションを使います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppActivityTest&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; rule = ScreenshotRule(TestActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ScreenshotInstrumentation&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rule.activity.runOnUiThread {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      rule.activity.setContent { AppContent() } &lt;span style=&#34;color:#75715e&#34;&gt;// AppContent関数は適当なComposeコンポーネント&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Thread&lt;/span&gt;.sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// 一応&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    rule.assertSame()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じでテストを記述できます。&lt;code&gt;ScreenshotRule&lt;/code&gt; を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。&lt;/p&gt;&#xA;&lt;p&gt;次にテストの実行をします。まず下準備として、baseとなる画像を生成します。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotRecord&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。&lt;/p&gt;&#xA;&lt;p&gt;次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotTest&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------&#xA;Run the Testify screenshot tests&#xA;------------------------------------------------------------&#xA;&#xA;&#xA;com.github.satoshun.example.AppActivityTest:.&#xA;&#xA;Time: 2.264&#xA;&#xA;OK (1 test)&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;(この記事は、ほぼ、&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; のREADMEに書いてあることをやっているだけです)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; を使って、Jetpack Composeのスクリーンショットテストをしてみます。&lt;/p&gt;
+&lt;h2 id=&#34;セットアップ&#34;&gt;セットアップ&lt;/h2&gt;
+&lt;p&gt;READMEに記してある通り、build.gradleに下記の設定を追加します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;com.shopify.testify&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。&lt;/p&gt;
+&lt;h2 id=&#34;テストを書いてみる&#34;&gt;テストを書いてみる&lt;/h2&gt;
+&lt;p&gt;JUnit4ベースの&lt;code&gt;ScreenshotRule&lt;/code&gt; と、&lt;code&gt;ScreenshotInstrumentation&lt;/code&gt; アノテーションを使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppActivityTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; rule = ScreenshotRule(TestActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ScreenshotInstrumentation&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rule.activity.runOnUiThread {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      rule.activity.setContent { AppContent() } &lt;span style=&#34;color:#75715e&#34;&gt;// AppContent関数は適当なComposeコンポーネント
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Thread&lt;/span&gt;.sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// 一応
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    rule.assertSame()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じでテストを記述できます。&lt;code&gt;ScreenshotRule&lt;/code&gt; を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。&lt;/p&gt;
+&lt;p&gt;次にテストの実行をします。まず下準備として、baseとなる画像を生成します。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotRecord
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。&lt;/p&gt;
+&lt;p&gt;次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotTest
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:.
+
+Time: 2.264
+
+OK (1 test)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:
+Error in test(com.github.satoshun.example.AppActivityTest):
+com.shopify.testify.internal.exception.ScreenshotIsDifferentException:
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;無事に失敗しました。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;Jetpack Compose時代には、Layout時代に比べて、コンポーネントの生成に必要なパラメータが関数に明示的に切り出されていたり、
+関数の組み合わせによる、少し複雑なコンポーネントのテストがしやすくなると思います。
+そうなったときには、Testifyのようなローカルのみで完結させることが出来る、テストライブラリをとりあえず試してみるのはいいのかなと思いました。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Paparazziを使って、実機を使わずにスナップショットを取る</title>
       <link>https://satoshun.github.io/2021/02/paparazzi-snapshot-testing/</link>
-      <pubDate>Sun, 28 Feb 2021 07:53:27 +0000</pubDate>
+      <pubDate>Sun, 28 Feb 2021 07:53:27 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2021/02/paparazzi-snapshot-testing/</guid>
-      <description>&lt;p&gt;今回は、&lt;a href=&#34;https://github.com/cashapp/paparazzi&#34;&gt;Paparazzi&lt;/a&gt; の使い方について紹介します。&lt;/p&gt;&#xA;&lt;p&gt;また、今回の記事のサンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/paparazzi&#34;&gt;github/satoshun/paparazzi&lt;/a&gt; にあります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;paparazzi&#34;&gt;Paparazzi?&lt;/h2&gt;&#xA;&lt;p&gt;square社がメンテしているライブラリです。これを使うことで、実機を使わずにスナップショットを取ることが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/cashapp/paparazzi&#34;&gt;https://github.com/cashapp/paparazzi&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;&#xA;&lt;p&gt;トップのbuild.gradleにGradleプラグインをセットします。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;buildscript &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  repositories &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mavenCentral&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    google&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app.cash.paparazzi:paparazzi-gradle-plugin:0.7.0&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ライブラリのbuild.gradleにプラグインを適用します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app.cash.paparazzi&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで準備は完了です。&lt;/p&gt;&#xA;&lt;p&gt;次に、サンプルのレイアウトファイルとして、&lt;code&gt;lib_item.xml&lt;/code&gt; を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;LayoutTest&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; paparazzi = Paparazzi(deviceConfig = &lt;span style=&#34;color:#a6e22e&#34;&gt;DeviceConfig&lt;/span&gt;.NEXUS_5)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sample&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.lib_item)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    paparazzi.snapshot(view = launch)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。&lt;/p&gt;&#xA;&lt;p&gt;次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/test/paparazzi-sample-screenshot.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;実機を使わずに、スクリーンショットを取ることが出来ました。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;p&gt;結構お手軽に使うことが出来ました。まだAPIが安定していない?そうなので、プロダクションに入れるのは時期尚早かもしれませんが、安定してきたら、試してみるのも良さそうです(こなみかん)&lt;/p&gt;</description>
+      <description>&lt;p&gt;今回は、&lt;a href=&#34;https://github.com/cashapp/paparazzi&#34;&gt;Paparazzi&lt;/a&gt; の使い方について紹介します。&lt;/p&gt;
+&lt;p&gt;また、今回の記事のサンプルコードは &lt;a href=&#34;https://github.com/satoshun-android-example/paparazzi&#34;&gt;github/satoshun/paparazzi&lt;/a&gt; にあります。&lt;/p&gt;
+&lt;h2 id=&#34;paparazzi&#34;&gt;Paparazzi?&lt;/h2&gt;
+&lt;p&gt;square社がメンテしているライブラリです。これを使うことで、実機を使わずにスナップショットを取ることが出来ます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/cashapp/paparazzi&#34;&gt;https://github.com/cashapp/paparazzi&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;p&gt;トップのbuild.gradleにGradleプラグインをセットします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;buildscript &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  repositories &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mavenCentral&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    google&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app.cash.paparazzi:paparazzi-gradle-plugin:0.7.0&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ライブラリのbuild.gradleにプラグインを適用します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app.cash.paparazzi&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで準備は完了です。&lt;/p&gt;
+&lt;p&gt;次に、サンプルのレイアウトファイルとして、&lt;code&gt;lib_item.xml&lt;/code&gt; を準備したので、これをPaparazziを使ってスナップショットを取る例を紹介します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;LayoutTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; paparazzi = Paparazzi(deviceConfig = &lt;span style=&#34;color:#a6e22e&#34;&gt;DeviceConfig&lt;/span&gt;.NEXUS_5)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sample&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; launch = paparazzi.inflate&amp;lt;LinearLayout&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.lib_item)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    paparazzi.snapshot(view = launch)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Paparazziには、Junit4 Ruleが定義されています。引数には、デバイス情報を指定します。今回は、Nexus5を指定しました。&lt;/p&gt;
+&lt;p&gt;次に、Paparazziクラスに定義されている、inflate、snapshotメソッドをコールします。これでテストを実行すると、次のようなスナップショット(png)が作成されます。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/test/paparazzi-sample-screenshot.png&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;実機を使わずに、スクリーンショットを取ることが出来ました。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;結構お手軽に使うことが出来ました。まだAPIが安定していない?そうなので、プロダクションに入れるのは時期尚早かもしれませんが、安定してきたら、試してみるのも良さそうです(こなみかん)&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Robolectric &#43; JetpackでActivityのonActivityResultメソッドをテストする</title>
       <link>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</link>
-      <pubDate>Sat, 23 Feb 2019 02:47:59 +0000</pubDate>
+      <pubDate>Sat, 23 Feb 2019 02:47:59 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/02/androidx-onactivityresult-testing/</guid>
-      <description>&lt;p&gt;Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。&#xA;まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、&lt;code&gt;AndroidJUnit4&lt;/code&gt;ランナーが使えるなど、かなりの部分が共通化出来ます。&lt;/p&gt;&#xA;&lt;p&gt;この記事では、ユニットテストで&lt;code&gt;Activity.onActivityResult&lt;/code&gt;のテストをどこまでandroid testのように書けるかを検証します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;テスト対象コード&#34;&gt;テスト対象コード&lt;/h2&gt;&#xA;&lt;p&gt;まず最初に、テスト対象コードは次のようになっています。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    button.setOnClickListener {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      startActivityForResult(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Intent(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;, Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java).apply {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          putExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fuga&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hoge&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        },&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onActivityResult&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    requestCode: Int,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    resultCode: Int,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;: Intent?&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onActivityResult(requestCode, resultCode, &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (requestCode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (resultCode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; value = &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;.getIntExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;, -&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        button.text = &lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;.toString()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Sub2Activity&lt;/span&gt; : AppCompatActivity() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    setContentView(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.sub_act)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    button.setOnClickListener {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; intent = Intent()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      intent.putExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      setResult(&lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK, intent)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      finish()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これはMainActivityで&lt;code&gt;startActivityForResult&lt;/code&gt;がコールされ、Sub2Activityで&lt;code&gt;setResult&lt;/code&gt;で値をセットし、MainActivityの&lt;code&gt;onActivityResult&lt;/code&gt;で結果を受け取るサンプルコードになります。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Robolectric4.xからユニットテスト環境で、android testと（ほぼ?）同じテストコードを動かすことが可能になりました。
+まだ、完全に互換性があるとはいえませんが、Espressoライブラリが動く、&lt;code&gt;AndroidJUnit4&lt;/code&gt;ランナーが使えるなど、かなりの部分が共通化出来ます。&lt;/p&gt;
+&lt;p&gt;この記事では、ユニットテストで&lt;code&gt;Activity.onActivityResult&lt;/code&gt;のテストをどこまでandroid testのように書けるかを検証します。&lt;/p&gt;
+&lt;h2 id=&#34;テスト対象コード&#34;&gt;テスト対象コード&lt;/h2&gt;
+&lt;p&gt;まず最初に、テスト対象コードは次のようになっています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    button.setOnClickListener {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      startActivityForResult(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Intent(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;, Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java).apply {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          putExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fuga&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hoge&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onActivityResult&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    requestCode: Int,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    resultCode: Int,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;: Intent?
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onActivityResult(requestCode, resultCode, &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (requestCode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (resultCode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; value = &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;.getIntExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;, -&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        button.text = &lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;.toString()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Sub2Activity&lt;/span&gt; : AppCompatActivity() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    setContentView(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.sub_act)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    button.setOnClickListener {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; intent = Intent()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      intent.putExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      setResult(&lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK, intent)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      finish()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これはMainActivityで&lt;code&gt;startActivityForResult&lt;/code&gt;がコールされ、Sub2Activityで&lt;code&gt;setResult&lt;/code&gt;で値をセットし、MainActivityの&lt;code&gt;onActivityResult&lt;/code&gt;で結果を受け取るサンプルコードになります。&lt;/p&gt;
+&lt;p&gt;では、テストを書いていきます。&lt;/p&gt;
+&lt;h2 id=&#34;テストコード&#34;&gt;テストコード&lt;/h2&gt;
+&lt;p&gt;以下が、今回書いたテストコードになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@RunWith&lt;/span&gt;(AndroidJUnit4&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivityTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; intentsTestRule = IntentsTestRule(MainActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onActivityResultTest&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; expectCode = &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// assertion setResult
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; scenario = &lt;span style=&#34;color:#a6e22e&#34;&gt;ActivityScenario&lt;/span&gt;.launch(Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    scenario.onActivity {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;.findViewById&amp;lt;View&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button).performClick()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// assertion resultCode
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; result = scenario.result
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(result.resultCode).isEqualTo(&lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// assertion intent params
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; bundleSubject = &lt;span style=&#34;color:#a6e22e&#34;&gt;IntentSubject&lt;/span&gt;.assertThat(result.resultData).extras()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bundleSubject.integer(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;).isEqualTo(expectCode)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    scenario.close()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Intents
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .intending(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasComponent(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          ComponentName(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;ApplicationProvider&lt;/span&gt;.getApplicationContext&amp;lt;Application&amp;gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .respondWith(result)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; main = &lt;span style=&#34;color:#a6e22e&#34;&gt;ActivityScenario&lt;/span&gt;.launch(MainActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    main.onActivity {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;.findViewById&amp;lt;View&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button).performClick()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// assertion intent for startActivity(ForResult)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name = ComponentName(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;ApplicationProvider&lt;/span&gt;.getApplicationContext&amp;lt;Application&amp;gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;Intents&lt;/span&gt;.intended(&lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasComponent(name))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;Intents&lt;/span&gt;.intended(&lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fuga&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hoge&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// assertion onActivityResult behaves
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      Espresso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .onView(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewMatchers&lt;/span&gt;.withId(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .check(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewAssertions&lt;/span&gt;.matches(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewMatchers&lt;/span&gt;.withText(expectCode.toString())))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上から順番に重要な部分を説明していきます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; intentsTestRule = IntentsTestRule(MainActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは、Espresso-Intentsを使うときに必要なルールです。&lt;code&gt;Intens.intended&lt;/code&gt;、&lt;code&gt;intending&lt;/code&gt;を使うために必要なルールになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; scenario = &lt;span style=&#34;color:#a6e22e&#34;&gt;ActivityScenario&lt;/span&gt;.launch(Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;scenario.onActivity {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;.findViewById&amp;lt;View&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button).performClick()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ActivityScenarioはActivityを起動するためのクラスです。これはSub2Activityを起動して、ボタンをクリックするという意味になります。
+ボタンがクリックされると、Sub2Activityで&lt;code&gt;setResult&lt;/code&gt;が発火するようになっています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; result = scenario.result
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(result.resultCode).isEqualTo(&lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.RESULT_OK)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; bundleSubject = &lt;span style=&#34;color:#a6e22e&#34;&gt;IntentSubject&lt;/span&gt;.assertThat(result.resultData).extras()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bundleSubject.integer(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test&amp;#34;&lt;/span&gt;).isEqualTo(expectCode)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ActivityScenarioでは、ActivityResultクラスから結果を取得することが出来ます。このクラスにはresultCodeと、resultDataがセットされており、それらの値をTruthを使いチェックします。この場合、&lt;code&gt;setResult&lt;/code&gt;で、resultcodeに&lt;code&gt;Activity.RESULT_OK&lt;/code&gt;が、resultdataにはキー名&lt;code&gt;test&lt;/code&gt;、値10がセットされていることを確認してします。&lt;/p&gt;
+&lt;p&gt;ここまでで、Sub2ActivityのsetResultで正しい値をセットしていることがテスト出来ます。&lt;/p&gt;
+&lt;p&gt;では次に、MainActivityで上記の値を受け取れることをテストしていきます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Intents
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .intending(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasComponent(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      ComponentName(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;ApplicationProvider&lt;/span&gt;.getApplicationContext&amp;lt;Application&amp;gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .respondWith(result)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;Intents.intending&lt;/code&gt;はマッチしたIntentが発行されたときに、onActivityResultに結果を返すAPIになります。
+MainActivityのonActivityResultに、先ほどのSub2Activityの結果を渡すという意味になります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; main = &lt;span style=&#34;color:#a6e22e&#34;&gt;ActivityScenario&lt;/span&gt;.launch(MainActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;main.onActivity {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;.findViewById&amp;lt;View&amp;gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button).performClick()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name = ComponentName(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;ApplicationProvider&lt;/span&gt;.getApplicationContext&amp;lt;Application&amp;gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Sub2Activity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;Intents&lt;/span&gt;.intended(&lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasComponent(name))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;Intents&lt;/span&gt;.intended(&lt;span style=&#34;color:#a6e22e&#34;&gt;IntentMatchers&lt;/span&gt;.hasExtra(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fuga&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hoge&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Espresso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    .onView(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewMatchers&lt;/span&gt;.withId(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    .check(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewAssertions&lt;/span&gt;.matches(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewMatchers&lt;/span&gt;.withText(expectCode.toString())))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;まずは、クリックイベントを発火し、&lt;code&gt;startActivityForResult&lt;/code&gt;をコールします。渡したIntentを&lt;code&gt;Intents.intended&lt;/code&gt;で正しいことを確認します。最後に、Espressoを使って、&lt;code&gt;onActivityResult&lt;/code&gt;の結果を正しく反映されているかを確認します。&lt;/p&gt;
+&lt;p&gt;これで、テスト完了です😃
+2つのActivityに関連するonActivityResultのテストが無事に出来ました！！&lt;/p&gt;
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+&lt;p&gt;Espressoにはご存知、clickをするためのAPIがあるのですが、うまく動きませんでした。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// not working!!
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Espresso
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .onView(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewMatchers&lt;/span&gt;.withId(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.button))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .perform(&lt;span style=&#34;color:#a6e22e&#34;&gt;ViewActions&lt;/span&gt;.click())
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;調べたんですが、原因がわかりませんでした😂分かり次第追記します。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;上記のテストくらいなら、ユニットテストで書ける。すごい😃
+&lt;ul&gt;
+&lt;li&gt;onActivityResultみたいな、クラス間のつながりが弱い部分は意図せず壊れやすいので、テストを書いておくと安心かも😋&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今回の検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/Tests/blob/master/app/src/test/java/com/github/satoshun/example/tests/lifecycle/MainActivityTest.kt&#34;&gt;satoshun-android-example/Tests&lt;/a&gt;にあります。&lt;/p&gt;
+&lt;p&gt;もっと良い書き方を知っているよと言う人は教えて頂けるととても嬉しいです😃😃😃&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Truthのメリット、特徴について</title>
       <link>https://satoshun.github.io/2018/12/truth_getting_started/</link>
-      <pubDate>Wed, 12 Dec 2018 00:21:12 +0000</pubDate>
+      <pubDate>Wed, 12 Dec 2018 00:21:12 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/12/truth_getting_started/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://google.github.io/truth/&#34;&gt;Truth&lt;/a&gt;はGoogleが開発をしているテストアサーションライブラリです。&lt;/p&gt;&#xA;&lt;p&gt;従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;readableにアサーションが書ける&lt;/li&gt;&#xA;&lt;li&gt;デフォルトの失敗メッセージがわかりやすい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;それぞれについて説明していきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;readableにアサーションが書ける&#34;&gt;readableにアサーションが書ける&lt;/h2&gt;&#xA;&lt;p&gt;ドキュメントのbenefitにあるサンプルを取り上げ説明します。&#xA;&lt;a href=&#34;http://google.github.io/truth/benefits&#34;&gt;http://google.github.io/truth/benefits&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;まず従来のJUnitスタイルを使って書きます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertFalse(middleName.&lt;span style=&#34;color:#a6e22e&#34;&gt;isPresent&lt;/span&gt;());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）&lt;/p&gt;&#xA;&lt;p&gt;これがTruthを使うと次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(middleName).&lt;span style=&#34;color:#a6e22e&#34;&gt;isAbsent&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertThatはTruthに定義されているメソッドです。&lt;code&gt;middleName&lt;/code&gt;がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。&lt;/p&gt;&#xA;&lt;p&gt;上記の&lt;code&gt;isAbsent&lt;/code&gt;はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。&#xA;例えばIterableには、&lt;code&gt;containsAnyIn&lt;/code&gt;や&lt;code&gt;isEmpty&lt;/code&gt;などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;失敗メッセージがわかりやすい&#34;&gt;失敗メッセージがわかりやすい&lt;/h2&gt;&#xA;&lt;p&gt;こちらもbenefitにあるサンプルを取り上げます。&lt;/p&gt;&#xA;&lt;p&gt;まずは従来にJUnitスタイルから。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertTrue(googleColors.&lt;span style=&#34;color:#a6e22e&#34;&gt;contains&lt;/span&gt;(PINK));&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。&#xA;失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。&lt;/p&gt;&#xA;&lt;p&gt;次にTruthスタイルです。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(googleColors).&lt;span style=&#34;color:#a6e22e&#34;&gt;contains&lt;/span&gt;(PINK);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;&amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&amp;gt; should have contained &amp;lt;PINK&amp;gt;&lt;/code&gt; のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。&lt;/p&gt;&#xA;&lt;p&gt;以上がTruthのメリットになります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;&#xA;&lt;h3 id=&#34;truth-androidライブラリ&#34;&gt;Truth-Androidライブラリ&lt;/h3&gt;&#xA;&lt;p&gt;JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。&#xA;例えば、Intentには以下のアサーションメソッドを使うことが出来ます。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;hasComponent&#xA;hasComponentClass&#xA;hasComponentPackage&#xA;hasPackage&#xA;hasAction&#xA;hasNoAction&#xA;hasData&#xA;hasType&#xA;extras&#xA;categories&#xA;hasFlags&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。&lt;/p&gt;&#xA;&lt;h3 id=&#34;assertjとの比較&#34;&gt;AssertJとの比較&lt;/h3&gt;&#xA;&lt;p&gt;これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison&lt;/p&gt;&#xA;&lt;p&gt;現状の主だった差分は次のようになっています。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある&lt;/li&gt;&#xA;&lt;li&gt;TruthはChainスタイルで書くことを想定していない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Truthを使うと失敗メッセージがわかりやすくなる、便利!&lt;/li&gt;&#xA;&lt;li&gt;AssertJを使っているなら乗り換えるメリットはないかも&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;&lt;a href=&#34;http://google.github.io/truth/&#34;&gt;Truth&lt;/a&gt;はGoogleが開発をしているテストアサーションライブラリです。&lt;/p&gt;
+&lt;p&gt;従来のJUnitスタイルのアサーションに比べ、大きく2つの利点があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;readableにアサーションが書ける&lt;/li&gt;
+&lt;li&gt;デフォルトの失敗メッセージがわかりやすい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;それぞれについて説明していきます。&lt;/p&gt;
+&lt;h2 id=&#34;readableにアサーションが書ける&#34;&gt;readableにアサーションが書ける&lt;/h2&gt;
+&lt;p&gt;ドキュメントのbenefitにあるサンプルを取り上げ説明します。
+&lt;a href=&#34;http://google.github.io/truth/benefits&#34;&gt;http://google.github.io/truth/benefits&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;まず従来のJUnitスタイルを使って書きます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertFalse(middleName.&lt;span style=&#34;color:#a6e22e&#34;&gt;isPresent&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertFalse、isPresentを使っており、否定のアサーションなので直感的でなく理解するのに少し時間がかかります。（個人差はあります）&lt;/p&gt;
+&lt;p&gt;これがTruthを使うと次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Optional&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; middleName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; user.&lt;span style=&#34;color:#a6e22e&#34;&gt;getMiddleName&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(middleName).&lt;span style=&#34;color:#a6e22e&#34;&gt;isAbsent&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;assertThatはTruthに定義されているメソッドです。&lt;code&gt;middleName&lt;/code&gt;がabsent、値が存在しないことをテストしていることが、JUnitスタイルより強く伝わります。&lt;/p&gt;
+&lt;p&gt;上記の&lt;code&gt;isAbsent&lt;/code&gt;はOptionalのために用意されたアサーションメソッドです。assertThatに渡した引数に適したアサーションを使うことが出来ます。
+例えばIterableには、&lt;code&gt;containsAnyIn&lt;/code&gt;や&lt;code&gt;isEmpty&lt;/code&gt;などが用意されています。型ごとに一般的なテストで行うであろうアサーションが用意されており、readableにconciseに書くことが出来ます。&lt;/p&gt;
+&lt;h2 id=&#34;失敗メッセージがわかりやすい&#34;&gt;失敗メッセージがわかりやすい&lt;/h2&gt;
+&lt;p&gt;こちらもbenefitにあるサンプルを取り上げます。&lt;/p&gt;
+&lt;p&gt;まずは従来にJUnitスタイルから。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertTrue(googleColors.&lt;span style=&#34;color:#a6e22e&#34;&gt;contains&lt;/span&gt;(PINK));
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この場合、失敗メッセージは特にありません。「trueを表明してる部分にfalseが来た」程度のものしかなく、原因特定するのが大変です。
+失敗メッセージをカスタムすることは出来ますが、すべてのアサーションに対して定義するのは骨が折れます。&lt;/p&gt;
+&lt;p&gt;次にTruthスタイルです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;assertThat(googleColors).&lt;span style=&#34;color:#a6e22e&#34;&gt;contains&lt;/span&gt;(PINK);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;&amp;lt;[BLUE, RED, YELLOW, BLUE, GREEN, RED]&amp;gt; should have contained &amp;lt;PINK&amp;gt;&lt;/code&gt; のようなメッセージが出ます。インスタンス情報や、こうなるべきというメッセージが含まれており原因特定がしやすくなっています。デフォルトの段階でかなり見やすい、わかりやすい失敗メッセージを出力してくれます。&lt;/p&gt;
+&lt;p&gt;以上がTruthのメリットになります。&lt;/p&gt;
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+&lt;h3 id=&#34;truth-androidライブラリ&#34;&gt;Truth-Androidライブラリ&lt;/h3&gt;
+&lt;p&gt;JetPackにTruth + Android用のライブラリが追加されました。これを使うことでBundle、IntentなどのAndroid固有のクラスのテストが書きやすくなります。
+例えば、Intentには以下のアサーションメソッドを使うことが出来ます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;hasComponent
+hasComponentClass
+hasComponentPackage
+hasPackage
+hasAction
+hasNoAction
+hasData
+hasType
+extras
+categories
+hasFlags
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Intentの中身を確認する便利メソッドが定義されています。Truth-Androidを使うことで、よりAndroid環境でテストが書きやすくなることが期待出来ます。&lt;/p&gt;
+&lt;h3 id=&#34;assertjとの比較&#34;&gt;AssertJとの比較&lt;/h3&gt;
+&lt;p&gt;これも公式ドキュメントにまとめてあります。http://google.github.io/truth/comparison&lt;/p&gt;
+&lt;p&gt;現状の主だった差分は次のようになっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Truhtはまだ1.0.0になっていないのでAPIが変わる可能性がある&lt;/li&gt;
+&lt;li&gt;TruthはChainスタイルで書くことを想定していない
+&lt;ul&gt;
+&lt;li&gt;これは現状のTruth哲学だが、AssertJのようなChainスタイルも普及してきたので、どちらが便利かはわからない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;多少の差異はあれど、AssertJとTruthはとても似ているライブラリです。どちらか一方を使っているなら、乗り換えるメリットはおそらくないだろうという旨の内容です。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Truthを使うと失敗メッセージがわかりやすくなる、便利!&lt;/li&gt;
+&lt;li&gt;AssertJを使っているなら乗り換えるメリットはないかも&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Android: MVPのPresenterの非同期周りのユニットテストの書き方</title>
       <link>https://satoshun.github.io/2016/07/android-test-mvp/</link>
-      <pubDate>Sun, 31 Jul 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 31 Jul 2016 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2016/07/android-test-mvp/</guid>
-      <description>&lt;p&gt;MVP(Model-View-Presenter)アーキテクチャが流行ってますね!&lt;/p&gt;&#xA;&lt;p&gt;MVPはテスタブルであることが1つのウリとなっていますが, 実際にPresenterのユニットテストをどのようにして書くかを紹介したいと思います.&lt;/p&gt;&#xA;&lt;p&gt;今回のコードは &lt;a href=&#34;https://github.com/satoshun-example/AndroidTestSample&#34;&gt;https://github.com/satoshun-example/AndroidTestSample&lt;/a&gt; に上げてあるので, 良かったら見て下さい.&lt;/p&gt;&#xA;&lt;h2 id=&#34;使うツールライブラリ&#34;&gt;使うツール/ライブラリ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;JUnit4&lt;/li&gt;&#xA;&lt;li&gt;Mockito&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;今回-テスト書きたい箇所&#34;&gt;今回, テスト書きたい箇所&lt;/h2&gt;&#xA;&lt;p&gt;今回は, &lt;code&gt;MainPresenter&lt;/code&gt;クラスをテストします.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainPresenter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;Presenter&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; UserDataSource dataSource;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; view;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainPresenter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; UserDataSource dataSource, &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; view) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;dataSource&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataSource;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;view&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; view;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showLoadingIndicator&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        dataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; UserDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;Callback&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onUserLoaded&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showUser&lt;/span&gt;(user);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onNotAvailable&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        });&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainContract&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showUser&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showLoadingIndicator&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Presenter&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;UserDataSource&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Callback&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onUserLoaded&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onNotAvailable&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; Callback callback);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;UserDataSource&lt;/code&gt;はモデルだと思って下さい.&lt;/p&gt;</description>
+      <description>&lt;p&gt;MVP(Model-View-Presenter)アーキテクチャが流行ってますね!&lt;/p&gt;
+&lt;p&gt;MVPはテスタブルであることが1つのウリとなっていますが, 実際にPresenterのユニットテストをどのようにして書くかを紹介したいと思います.&lt;/p&gt;
+&lt;p&gt;今回のコードは &lt;a href=&#34;https://github.com/satoshun-example/AndroidTestSample&#34;&gt;https://github.com/satoshun-example/AndroidTestSample&lt;/a&gt; に上げてあるので, 良かったら見て下さい.&lt;/p&gt;
+&lt;h2 id=&#34;使うツールライブラリ&#34;&gt;使うツール/ライブラリ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;JUnit4&lt;/li&gt;
+&lt;li&gt;Mockito&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;今回-テスト書きたい箇所&#34;&gt;今回, テスト書きたい箇所&lt;/h2&gt;
+&lt;p&gt;今回は, &lt;code&gt;MainPresenter&lt;/code&gt;クラスをテストします.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainPresenter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;Presenter&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; UserDataSource dataSource;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; view;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainPresenter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; UserDataSource dataSource, &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; view) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;dataSource&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dataSource;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;view&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; view;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showLoadingIndicator&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        dataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; UserDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;Callback&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onUserLoaded&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showUser&lt;/span&gt;(user);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onNotAvailable&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                view.&lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainContract&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showUser&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showLoadingIndicator&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hideLoadingIndicator&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Presenter&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;UserDataSource&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Callback&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onUserLoaded&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; User user);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onNotAvailable&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; Callback callback);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;UserDataSource&lt;/code&gt;はモデルだと思って下さい.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;UserPresenter&lt;/code&gt;は, &lt;code&gt;UserDataSource&lt;/code&gt;, &lt;code&gt;MainContract.View&lt;/code&gt;をコンストラクタから受け取り, 2つのクラスを適切にコミュニケーションさせるクラスとなります.&lt;/p&gt;
+&lt;p&gt;今回の場合, &lt;code&gt;UserPresenter#start&lt;/code&gt;がコールされた時, &lt;code&gt;UserDataSource&lt;/code&gt;からデータを非同期に取得し, &lt;code&gt;View&lt;/code&gt;に値を返すクラスとなっています.&lt;/p&gt;
+&lt;h2 id=&#34;非同期なapiをどうユニットテストで表現するか&#34;&gt;非同期なAPIをどうユニットテストで表現するか&lt;/h2&gt;
+&lt;p&gt;僕の言語能力では説明が難しいので, 最初にテストコードを紹介します.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainPresenterTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Rule&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; MockitoRule mockitoRule &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; MockitoJUnit.&lt;span style=&#34;color:#a6e22e&#34;&gt;rule&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Mock&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; UserDataSource dataSource;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Mock&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; MainContract.&lt;span style=&#34;color:#a6e22e&#34;&gt;View&lt;/span&gt; view;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Captor&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; ArgumentCaptor&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;UserDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;Callback&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; callbackCaptor;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showUser_successNetworkAccess&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        MainPresenter presenter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; MainPresenter(dataSource, view);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        User dummyUser &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; User(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dummy&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dummy&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        presenter.&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        verify(dataSource).&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(callbackCaptor.&lt;span style=&#34;color:#a6e22e&#34;&gt;capture&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        callbackCaptor.&lt;span style=&#34;color:#a6e22e&#34;&gt;getValue&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;onUserLoaded&lt;/span&gt;(dummyUser);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        verify(view, times(1)).&lt;span style=&#34;color:#a6e22e&#34;&gt;showUser&lt;/span&gt;(dummyUser);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser_failureNetworkAccess&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        MainPresenter presenter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; MainPresenter(dataSource, view);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        presenter.&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        verify(dataSource).&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(callbackCaptor.&lt;span style=&#34;color:#a6e22e&#34;&gt;capture&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        callbackCaptor.&lt;span style=&#34;color:#a6e22e&#34;&gt;getValue&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;onNotAvailable&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        verify(view, times(1)).&lt;span style=&#34;color:#a6e22e&#34;&gt;showNoUser&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;※ JUnit4, Mockitoを使っています.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;verify(dataSource).getUser(callbackCaptor.capture());&lt;/code&gt;でCallbackオブジェクトを取得し, 取得したCallbackオブジェクトのonUserLoaded or onNotAvailableメソッドをコールすることで, 非同期APIが成功 or 失敗を表現します.&lt;/p&gt;
+&lt;p&gt;そして, 成功した場合はshowUserメソッドがコールされるはずなので, &lt;code&gt;verify(view, times(1)).showUser(dummyUser);&lt;/code&gt;と表現します. (times(1)はなくても大丈夫です. 僕は1回しか呼ばれていないことを強調するために書くのが好ましいと思っています)&lt;/p&gt;
+&lt;p&gt;これで, MainPresenterの非同期API周りのテストが書けました!&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;今回は, Presenterのユニットテストの書き方について紹介しました.
+ここをこうしたほうが良いよとか, お前のユニットテストの書き方は間違っている! というのがありましたらぜひ教えて下さい(/ω・＼)&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Android: テストメソッドの命名規則について</title>
       <link>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</link>
-      <pubDate>Fri, 12 Feb 2016 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Feb 2016 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2016/02/android-test-method-naming-convention/</guid>
-      <description>&lt;p&gt;ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.&lt;/p&gt;&#xA;&lt;p&gt;ユニットテストの場合は, メソッドレベルでリグレッションが起きていないことを,&#xA;機能/受け入れテストの場合は, ユーザの行動レベルでリグレッションが起きていないことを保証するために必要になります.&lt;/p&gt;&#xA;&lt;p&gt;今回の記事では, Androidにおけるユニットテスト(各テストメソッド)の命名規則の話をします. しかし, 他の言語/プラットフォームの場合でも同様の考え方を出来ると思います.&lt;/p&gt;&#xA;&lt;h2 id=&#34;用語定義&#34;&gt;用語定義&lt;/h2&gt;&#xA;&lt;p&gt;アプリコード: アプリケーション本体のコード&lt;/p&gt;&#xA;&lt;h2 id=&#34;なぜテストケースの命名規則を気にする必要があるか&#34;&gt;なぜテストケースの命名規則を気にする必要があるか?&lt;/h2&gt;&#xA;&lt;p&gt;Androidアプリを作っていて, アプリコードはリファクタリングや, 新機能の追加などで頻繁に目を通しますが,&#xA;テストコードは1度書いたら, そのテストが失敗するまで放置するパターンが多いなと感じています(何にしてもアプリコードほどは目を通さない)&lt;/p&gt;&#xA;&lt;p&gt;数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.&lt;/p&gt;&#xA;&lt;h2 id=&#34;まず-テストケースの構成を考える&#34;&gt;まず, テストケースの構成を考える&lt;/h2&gt;&#xA;&lt;p&gt;本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.&lt;/p&gt;&#xA;&lt;p&gt;一般的なテストケースは次の4つの要素に分割できます.&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;事前準備(setup)&lt;/li&gt;&#xA;&lt;li&gt;実行(exercise)&lt;/li&gt;&#xA;&lt;li&gt;宣言(assertion)&lt;/li&gt;&#xA;&lt;li&gt;後処理(teardown)&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;これだと分かりにくいので, コードで説明すると,&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HogeTest&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; lists;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Before&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setup&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;123&amp;#34;&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@After&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;teardown&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 後処理(teardown)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testGet&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    String actual &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(0);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(actual).&lt;span style=&#34;color:#a6e22e&#34;&gt;isEqualTo&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;という感じになります. JUnit4ではこのようにテストを構築します.&lt;/p&gt;</description>
+      <description>&lt;p&gt;ソフトウェアの世界ではAndroidに限らず, テストを書くというのは非常に重要です.&lt;/p&gt;
+&lt;p&gt;ユニットテストの場合は, メソッドレベルでリグレッションが起きていないことを,
+機能/受け入れテストの場合は, ユーザの行動レベルでリグレッションが起きていないことを保証するために必要になります.&lt;/p&gt;
+&lt;p&gt;今回の記事では, Androidにおけるユニットテスト(各テストメソッド)の命名規則の話をします. しかし, 他の言語/プラットフォームの場合でも同様の考え方を出来ると思います.&lt;/p&gt;
+&lt;h2 id=&#34;用語定義&#34;&gt;用語定義&lt;/h2&gt;
+&lt;p&gt;アプリコード: アプリケーション本体のコード&lt;/p&gt;
+&lt;h2 id=&#34;なぜテストケースの命名規則を気にする必要があるか&#34;&gt;なぜテストケースの命名規則を気にする必要があるか?&lt;/h2&gt;
+&lt;p&gt;Androidアプリを作っていて, アプリコードはリファクタリングや, 新機能の追加などで頻繁に目を通しますが,
+テストコードは1度書いたら, そのテストが失敗するまで放置するパターンが多いなと感じています(何にしてもアプリコードほどは目を通さない)&lt;/p&gt;
+&lt;p&gt;数週間前に書いたテストコードなんて忘れてしまうので, テストコードにはいろいろな情報をコメントなどで残しておく必要があります.&lt;/p&gt;
+&lt;h2 id=&#34;まず-テストケースの構成を考える&#34;&gt;まず, テストケースの構成を考える&lt;/h2&gt;
+&lt;p&gt;本題に入る前に, テストケースがどのような要素で構成されているかを説明をします.&lt;/p&gt;
+&lt;p&gt;一般的なテストケースは次の4つの要素に分割できます.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;事前準備(setup)&lt;/li&gt;
+&lt;li&gt;実行(exercise)&lt;/li&gt;
+&lt;li&gt;宣言(assertion)&lt;/li&gt;
+&lt;li&gt;後処理(teardown)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;これだと分かりにくいので, コードで説明すると,&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HogeTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; lists;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Before&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setup&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;123&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@After&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;teardown&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 後処理(teardown)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testGet&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    String actual &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lists.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(0);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(actual).&lt;span style=&#34;color:#a6e22e&#34;&gt;isEqualTo&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;という感じになります. JUnit4ではこのようにテストを構築します.&lt;/p&gt;
+&lt;h2 id=&#34;テストケースtestgetという名前&#34;&gt;テストケース&lt;code&gt;testGet&lt;/code&gt;という名前&lt;/h2&gt;
+&lt;p&gt;前述の例では, テストケースの名前を&lt;code&gt;testGet&lt;/code&gt;にしています. 果たして, これで意味が伝わるでしょうか?
+&lt;code&gt;testGet&lt;/code&gt;から分かることは, 「getメソッドをテストしている」ことだけであって, getメソッドの&lt;strong&gt;何を&lt;/strong&gt;テストしているのかが伝わってきません.
+なので, その情報をメソッド名, もしくはコメントに含める必要があります.&lt;/p&gt;
+&lt;p&gt;では, どのような情報を含めれば良いのか? それを次の例で説明していきます.&lt;/p&gt;
+&lt;h2 id=&#34;やや複雑な例&#34;&gt;やや複雑な例&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Request&lt;/code&gt;クラスの内容に応じて, HTTPでデータを取ってくる&lt;code&gt;HTTPConnection&lt;/code&gt;クラスを考えます.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HTTPConnectionTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  HTTPConnection httpConnection;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Before&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setup&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    httpConnection &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HTTPConnection();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@After&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;teardown&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 後処理(teardown)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request validRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://valid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Response response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(validRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isTrue&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request inValidRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://invalid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(inValidRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isFalse&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上記テストで問題なのは, &lt;code&gt;execute&lt;/code&gt;で正常, 異常の2つのことをテストしている所です.
+一般的に, 1つのテストケースでは, 1つのことをテストすべきなので, 修正します.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;execute_ok&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request validRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://valid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Response response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(validRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isTrue&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;execute_ng&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request inValidRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://invalid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(inValidRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isFalse&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで, 1つのテストケースで1つのことをテストするようになり, 大分綺麗になりました.&lt;/p&gt;
+&lt;h2 id=&#34;ここでテストのメソッド名を考える&#34;&gt;ここでテストのメソッド名を考える&lt;/h2&gt;
+&lt;p&gt;このトピックがこの記事で一番伝えたい事です.&lt;/p&gt;
+&lt;p&gt;前述の例では, &lt;code&gt;execute_ok&lt;/code&gt;, &lt;code&gt;execute_ng&lt;/code&gt;の2つのテストメソッドを作成しました.
+この2つのテストメソッドは, executeメソッドの, 正常, 異常系をテストしていることは伝わります.
+しかし, &lt;strong&gt;どういう条件下でこの振る舞いをするか&lt;/strong&gt;の情報が抜けています. よって, その情報を付与する必要があります.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;execute_ok_200URL&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request validRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://valid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Response response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(validRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isTrue&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;execute_ng_404URL&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 事前準備(setup)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Request notFoundRequest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Request(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://invalid-url.com&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 実行(exercise)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; httpConnection.&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;(notFoundRequest);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 宣言(assertion)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assertThat(response.&lt;span style=&#34;color:#a6e22e&#34;&gt;isOk&lt;/span&gt;()).&lt;span style=&#34;color:#a6e22e&#34;&gt;isFalse&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;execute_ok_200URL&lt;/code&gt;, &lt;code&gt;execute_ng_404URL&lt;/code&gt;とし, 前提条件をテストメソッド名に含めました.
+これで, 「200のURLならOK」, 「404のURLならNG」を返すことが, メソッド名から推測することが出来ます.&lt;/p&gt;
+&lt;p&gt;これを一般化すると. &lt;code&gt;テスト対象メソッド_期待される振る舞い_前提条件&lt;/code&gt;という命名規則になります. これを, ルール化することで, テストコードの可読性が上がり, 全体的に統一感のあるテストが作成できると思います.&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;今回はテストメソッドの命名規則について紹介しました. 個人的に開発をして思うのは, アプリコードはともかくとして, テストコードを読むのは結構苦痛だなということです.
+特に, 読みにくいテストコード(数ヶ月前の自分が書いたテストコード)は全部消したくなる衝動に駆られます. しかし, そうは言っても当然, 保守/運用/改善はしていかないといけないため, 何からしらの対策を立てなければいけません.&lt;/p&gt;
+&lt;p&gt;今回の記事のように, &lt;code&gt;テスト対象メソッド_期待される振る舞い_前提条件&lt;/code&gt; のようなルールを決めることで, テストコードの統一性を保つことが出来れば, 少し幸せになれるのかなと思います.&lt;/p&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

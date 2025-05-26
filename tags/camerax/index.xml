@@ -1,20 +1,114 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Camerax on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/camerax/</link>
-    <description>Recent content in Camerax on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 06 May 2019 05:47:14 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/camerax/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Mon, 06 May 2019 05:47:14 UTC</updated>
+    
+    
     <item>
       <title>CameraX: CameraView触ってみた</title>
       <link>https://satoshun.github.io/2019/05/camerax-camera-view/</link>
-      <pubDate>Mon, 06 May 2019 05:47:14 +0000</pubDate>
+      <pubDate>Mon, 06 May 2019 05:47:14 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/05/camerax-camera-view/</guid>
-      <description>&lt;p&gt;CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。&lt;/p&gt;&#xA;&lt;p&gt;内部の実装であったり、細かい部分はpsideさんの「&lt;a href=&#34;https://p-side.net/posts/2019-05-05-camerax/&#34;&gt;CameraXのコードがきたので気合い入れて読んでみた&lt;/a&gt;」が詳しいです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;&#xA;&lt;p&gt;CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; androidx {&#xA;     name = &amp;#34;Jetpack Camera View Library&amp;#34;&#xA;-    publish = false&#xA;+    publish = true&#xA;     mavenVersion = LibraryVersions.CAMERA&#xA;     mavenGroup = LibraryGroups.CAMERA&#xA;     inceptionYear = &amp;#34;2019&amp;#34;&#xA; }&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;&#xA;&lt;p&gt;CameraViewは普通のViewのように使うことができます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.camera.view.CameraView&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintBottom_toBottomOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintEnd_toEndOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintStart_toStartOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintTop_toTopOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に初期化をします。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.bindToLifecycle(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// thisはLifecycleOwner&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。&#xA;CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。&lt;/p&gt;&#xA;&lt;p&gt;これだけでカメラ機能が使えるようになります！とても簡単！!&lt;/p&gt;&#xA;&lt;p&gt;以下、CameraViewで現状使えるAPIについて紹介します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;cameraviewで使えるapi達&#34;&gt;CameraViewで使えるAPI達&lt;/h2&gt;&#xA;&lt;h3 id=&#34;モードの変更&#34;&gt;モードの変更&lt;/h3&gt;&#xA;&lt;p&gt;CameraViewでは次の3つのモードがあります。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Image: 写真を取る&lt;/li&gt;&#xA;&lt;li&gt;Video: ビデオを取る&lt;/li&gt;&#xA;&lt;li&gt;Mixed: 両方。ただし、動かない端末もあるらしい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;次のように使います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Image&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cameraView.captureMode = &lt;span style=&#34;color:#a6e22e&#34;&gt;CameraView&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureMode&lt;/span&gt;.IMAGE&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.takePicture(&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Video&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cameraView.captureMode = &lt;span style=&#34;color:#a6e22e&#34;&gt;CameraView&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureMode&lt;/span&gt;.VIDEO&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.startRecording(&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.stopRecording()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;scaletypeの設定&#34;&gt;ScaleTypeの設定&lt;/h3&gt;&#xA;&lt;p&gt;Scaleを設定することができます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;CameraXのコードが公開されていたので、その中にあったCameraViewを触ってみました。まだ、alphaであることからAPIは大きく変わる可能性があります。&lt;/p&gt;
+&lt;p&gt;内部の実装であったり、細かい部分はpsideさんの「&lt;a href=&#34;https://p-side.net/posts/2019-05-05-camerax/&#34;&gt;CameraXのコードがきたので気合い入れて読んでみた&lt;/a&gt;」が詳しいです。&lt;/p&gt;
+&lt;h2 id=&#34;環境構築&#34;&gt;環境構築&lt;/h2&gt;
+&lt;p&gt;CameraViewはまだ公開されていないため、ソースコードからビルドする必要があります。また、設定でpublishフラグがfalseになっているので、trueにしてビルドします。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; androidx {
+     name = &amp;#34;Jetpack Camera View Library&amp;#34;
+-    publish = false
++    publish = true
+     mavenVersion = LibraryVersions.CAMERA
+     mavenGroup = LibraryGroups.CAMERA
+     inceptionYear = &amp;#34;2019&amp;#34;
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;p&gt;CameraViewは普通のViewのように使うことができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.constraintlayout.widget.ConstraintLayout&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;androidx.camera.view.CameraView&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0dp&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintBottom_toBottomOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintEnd_toEndOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintStart_toStartOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;app:layout_constraintTop_toTopOf=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;parent&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/androidx.constraintlayout.widget.ConstraintLayout&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に初期化をします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.bindToLifecycle(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// thisはLifecycleOwner
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;LifecycleOwnerとCameraViewを結びつけることでLifecycleに合わせて自動でリソースを調整してくれます。
+CameraViewはLifecycle-Aware Componentとなっています。非常に扱いやすそうです。&lt;/p&gt;
+&lt;p&gt;これだけでカメラ機能が使えるようになります！とても簡単！!&lt;/p&gt;
+&lt;p&gt;以下、CameraViewで現状使えるAPIについて紹介します。&lt;/p&gt;
+&lt;h2 id=&#34;cameraviewで使えるapi達&#34;&gt;CameraViewで使えるAPI達&lt;/h2&gt;
+&lt;h3 id=&#34;モードの変更&#34;&gt;モードの変更&lt;/h3&gt;
+&lt;p&gt;CameraViewでは次の3つのモードがあります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Image: 写真を取る&lt;/li&gt;
+&lt;li&gt;Video: ビデオを取る&lt;/li&gt;
+&lt;li&gt;Mixed: 両方。ただし、動かない端末もあるらしい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;次のように使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Image
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cameraView.captureMode = &lt;span style=&#34;color:#a6e22e&#34;&gt;CameraView&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureMode&lt;/span&gt;.IMAGE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.takePicture(&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Video
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cameraView.captureMode = &lt;span style=&#34;color:#a6e22e&#34;&gt;CameraView&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureMode&lt;/span&gt;.VIDEO
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.startRecording(&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.stopRecording()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;scaletypeの設定&#34;&gt;ScaleTypeの設定&lt;/h3&gt;
+&lt;p&gt;Scaleを設定することができます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CENTER_CROP&lt;/li&gt;
+&lt;li&gt;CENTER_INSIDE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;次のように使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.scaleType = &lt;span style=&#34;color:#a6e22e&#34;&gt;CameraView&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ScaleType&lt;/span&gt;.CENTER_INSIDE
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;lensfacingの切り替え&#34;&gt;LensFacingの切り替え&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.toggleCamera()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// or
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.setCameraByLensFacing(&lt;span style=&#34;color:#a6e22e&#34;&gt;CameraX&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;LensFacing&lt;/span&gt;.FRONT)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.setCameraByLensFacing(&lt;span style=&#34;color:#a6e22e&#34;&gt;CameraX&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;LensFacing&lt;/span&gt;.BACK)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;flashモードの設定&#34;&gt;Flashモードの設定&lt;/h3&gt;
+&lt;p&gt;撮影時にフラッシュを有効にすることができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.flash = &lt;span style=&#34;color:#a6e22e&#34;&gt;FlashMode&lt;/span&gt;.ON
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.flash = &lt;span style=&#34;color:#a6e22e&#34;&gt;FlashMode&lt;/span&gt;.OFF
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;torchの有効無効&#34;&gt;torchの有効/無効&lt;/h3&gt;
+&lt;p&gt;背面ライトを有効にすることができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.enableTorch(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.enableTorch(&lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;zoomの設定&#34;&gt;zoomの設定&lt;/h3&gt;
+&lt;p&gt;コードから変えることができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.zoomLevel = &lt;span style=&#34;color:#ae81ff&#34;&gt;3f&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.zoomLevel = &lt;span style=&#34;color:#ae81ff&#34;&gt;10f&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;また、CameraViewはpinch-in-outでのzoomの変更にも対応しています。&lt;/p&gt;
+&lt;h3 id=&#34;focus&#34;&gt;focus&lt;/h3&gt;
+&lt;p&gt;指定した部分にfocusを合わせることができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cameraView.focus(&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;CameraViewは柔軟性がない代わりに、簡単にカメラの機能を使うことが出来る
+&lt;ul&gt;
+&lt;li&gt;とはいえ、基本的な機能は揃っていそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最後に、CameraViewを実装した結果になります。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/2_s_ijtuGJSuwaJlLbsBXZ1QMTrJDjaqCM4I4ZmJQexItcrj9TgHIsh7g_VgR0nhTf-kYZ00kRDILJEsfjkd57CDK_f-d835KBsdaYdJQ0w55gsA1iCze5mC5Sm_HxDmtgHT7Asm8RUjPmYgxuI22TmFuEhP0gzxqR4ZPAroobBb0itTuZZX2Gi3X7JMfCm31wNMYSUleaBBwm9X7V3edWVCERxyLXUSoTs4ewZ-J05OMozhe0r6Wx1TsJx_5-wc4k4yrex08x4osdIiZVGJHI4W_hrlcIBL131nwHzm29djjrYLiaeb-UnKnP1kdum0NPEDIMQyvCgs3R3BR_BjoeqhLV6CadhPT2PH-AFkH4jXDKXbCC-BNRmJFbeubUtg6ATOCSXNV_Zc0i8qjzqzQFQ-kHlknUgn592eQECQYSNxS4m340CXqy_xP0DnU-o6WjE5ay4gJuYH8kR1eGflOG8sgyvoNlxaFmIXZpreBQJaXfqImK9tncglYIwVQnxEL8uMxZ_31Rc2--SVsKNCDCl625teKj28EaedQ0lzjvXlFAge4OKz-dMmMRiz12TTIfq6TFGB3TPLmjtpV1Su6VbQ0peovn6AvKgAOW2XM7JxVUmZU20GI4jtKyBMGppf4hsTY624sFnaSwoBr_7RshaOZ6f4JFykCBE4P2AvC549faCde3pnGhsQ2_ZFwA7ESpMN1hsgI7gUjFzaeSc0iLYVIw=w600-h1067-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+</description>
     </item>
+    
+    
   </channel>
 </rss>

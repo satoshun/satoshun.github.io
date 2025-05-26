@@ -1,20 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Text on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/text/</link>
-    <description>Recent content in Text on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 15 Jul 2019 03:09:15 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/text/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Mon, 15 Jul 2019 03:09:15 UTC</updated>
+    
+    
     <item>
       <title>Material Components: MaterialTextViewでlineHeightがTextAppearanceから指定出来るようになりました</title>
       <link>https://satoshun.github.io/2019/07/material-textview/</link>
-      <pubDate>Mon, 15 Jul 2019 03:09:15 +0000</pubDate>
+      <pubDate>Mon, 15 Jul 2019 03:09:15 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/07/material-textview/</guid>
-      <description>&lt;p&gt;従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。&lt;/p&gt;&#xA;&lt;p&gt;それが、&lt;a href=&#34;https://github.com/material-components/material-components-android/releases/tag/1.1.0-alpha08&#34;&gt;material-component 1.1.0-alpha08&lt;/a&gt;にMaterialTextViewが爆誕し、lineHeightがTextAppearanceから指定出来るようになりました🎉&lt;/p&gt;&#xA;&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;&#xA;&lt;p&gt;まずはstyleを定義します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;style&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TextAppearance.LineHeight&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;item&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lineHeight&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;20sp&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/item&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、TextViewから指定します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;TextView&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wrap_content&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wrap_content&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:text=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;テスト&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:textAppearance=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;@style/TextAppearance.LineHeight&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です😃&lt;/p&gt;&#xA;&lt;p&gt;MaterialTextViewをXMLから直接指定してもいいのですが、AppCompatActivityを使っていれば、自動的にMaterialTextViewがinflateされるようになっています。&#xA;詳しくは&lt;a href=&#34;https://github.com/material-components/material-components-android/commit/d7a92485f818a63d110536d70e7040b1eadfb3aa#diff-b6219f955dbe45d238cdd3b1b43f46b8R103&#34;&gt;MaterialComponentsViewInflater.java&lt;/a&gt;をご覧下さい。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;material-component 1.1.0-alpha08にアップデートすると、自動的にMaterialTextViewが使われ、TextAppearanceからlineHeightが指定できる😃&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;従来のTextView（AppCompatTextView）では、lineHeightの指定をTextAppearanceから出来ませんでした。&lt;/p&gt;
+&lt;p&gt;それが、&lt;a href=&#34;https://github.com/material-components/material-components-android/releases/tag/1.1.0-alpha08&#34;&gt;material-component 1.1.0-alpha08&lt;/a&gt;にMaterialTextViewが爆誕し、lineHeightがTextAppearanceから指定出来るようになりました🎉&lt;/p&gt;
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+&lt;p&gt;まずはstyleを定義します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;style&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TextAppearance.LineHeight&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;item&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lineHeight&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;20sp&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/item&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、TextViewから指定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;TextView&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wrap_content&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:layout_height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wrap_content&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:text=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;テスト&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;android:textAppearance=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;@style/TextAppearance.LineHeight&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です😃&lt;/p&gt;
+&lt;p&gt;MaterialTextViewをXMLから直接指定してもいいのですが、AppCompatActivityを使っていれば、自動的にMaterialTextViewがinflateされるようになっています。
+詳しくは&lt;a href=&#34;https://github.com/material-components/material-components-android/commit/d7a92485f818a63d110536d70e7040b1eadfb3aa#diff-b6219f955dbe45d238cdd3b1b43f46b8R103&#34;&gt;MaterialComponentsViewInflater.java&lt;/a&gt;をご覧下さい。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;material-component 1.1.0-alpha08にアップデートすると、自動的にMaterialTextViewが使われ、TextAppearanceからlineHeightが指定できる😃&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

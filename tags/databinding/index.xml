@@ -1,41 +1,327 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Databinding on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/databinding/</link>
-    <description>Recent content in Databinding on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 16 May 2019 00:33:48 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/databinding/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Thu, 16 May 2019 00:33:48 UTC</updated>
+    
+    
     <item>
       <title>Data Binding 3.5と3.6のまとめ/感想</title>
       <link>https://satoshun.github.io/2019/05/databinding-3dot5/</link>
-      <pubDate>Thu, 16 May 2019 00:33:48 +0000</pubDate>
+      <pubDate>Thu, 16 May 2019 00:33:48 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
-      <description>&lt;p&gt;Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。&#xA;動画だと&lt;a href=&#34;https://youtu.be/Qxj2eBmXLHg?t=243&#34;&gt;ここらへん&lt;/a&gt;になります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;改善系&#34;&gt;改善系&lt;/h2&gt;&#xA;&lt;h3 id=&#34;ビルドの高速化&#34;&gt;ビルドの高速化!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;20%くらいビルドが早くなった&lt;/li&gt;&#xA;&lt;li&gt;distributed build cache対応&lt;/li&gt;&#xA;&lt;li&gt;Incremental annotation processing対応&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;android.databinding.incremental=true&lt;/code&gt; を設定にすると使えます&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;android-studioとの連携強化&#34;&gt;Android Studioとの連携強化!!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Live Class Generation&#xA;&lt;ul&gt;&#xA;&lt;li&gt;XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;リファクタリング系&#xA;&lt;ul&gt;&#xA;&lt;li&gt;フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;errorメッセージの改善&#34;&gt;Errorメッセージの改善!!!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;h2 id=&#34;新規系&#34;&gt;新規系&lt;/h2&gt;&#xA;&lt;h3 id=&#34;view-binding&#34;&gt;View Binding&lt;/h3&gt;&#xA;&lt;p&gt;簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）&lt;/p&gt;&#xA;&lt;h4 id=&#34;メリット&#34;&gt;メリット&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;コンパイルが早くなる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Data Bindingより機能が少なくなるのでそれはそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt;で囲う必要がなくなった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;これ個人的には好きでなかったので嬉しい。ネストが減る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;デメリット&#34;&gt;デメリット&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;セクションがなくなる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;モデルの値とViewのマッピングはコード側ですることになりそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;多分BindingAdapterは使えない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;これもコード側ですることになりそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;双方向バインディングとか使えない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ/感想&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Live Class Generation便利すぎワロリン&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;View Bindingはとても良さそう&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kotlin syntheticの代わりに使ってもよさそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。
+動画だと&lt;a href=&#34;https://youtu.be/Qxj2eBmXLHg?t=243&#34;&gt;ここらへん&lt;/a&gt;になります。&lt;/p&gt;
+&lt;h2 id=&#34;改善系&#34;&gt;改善系&lt;/h2&gt;
+&lt;h3 id=&#34;ビルドの高速化&#34;&gt;ビルドの高速化!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;20%くらいビルドが早くなった&lt;/li&gt;
+&lt;li&gt;distributed build cache対応&lt;/li&gt;
+&lt;li&gt;Incremental annotation processing対応
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;android.databinding.incremental=true&lt;/code&gt; を設定にすると使えます&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;android-studioとの連携強化&#34;&gt;Android Studioとの連携強化!!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation
+&lt;ul&gt;
+&lt;li&gt;XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;リファクタリング系
+&lt;ul&gt;
+&lt;li&gt;フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;errorメッセージの改善&#34;&gt;Errorメッセージの改善!!!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no&#34; width=&#34;600&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;新規系&#34;&gt;新規系&lt;/h2&gt;
+&lt;h3 id=&#34;view-binding&#34;&gt;View Binding&lt;/h3&gt;
+&lt;p&gt;簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no&#34; width=&#34;600&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）&lt;/p&gt;
+&lt;h4 id=&#34;メリット&#34;&gt;メリット&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;コンパイルが早くなる
+&lt;ul&gt;
+&lt;li&gt;Data Bindingより機能が少なくなるのでそれはそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt;で囲う必要がなくなった
+&lt;ul&gt;
+&lt;li&gt;これ個人的には好きでなかったので嬉しい。ネストが減る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;デメリット&#34;&gt;デメリット&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;セクションがなくなる
+&lt;ul&gt;
+&lt;li&gt;モデルの値とViewのマッピングはコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多分BindingAdapterは使えない
+&lt;ul&gt;
+&lt;li&gt;これもコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;双方向バインディングとか使えない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ/感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation便利すぎワロリン&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;View Bindingはとても良さそう
+&lt;ul&gt;
+&lt;li&gt;Kotlin syntheticの代わりに使ってもよさそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>DataBindingとActivityのコンストラクタ Layout Id指定を一緒に使う</title>
       <link>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</link>
-      <pubDate>Thu, 04 Apr 2019 00:46:00 +0000</pubDate>
+      <pubDate>Thu, 04 Apr 2019 00:46:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/04/jetpack-coroutine-support/</guid>
-      <description>&lt;p&gt;JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/activity#1.0.0-alpha06&#34;&gt;Activity Version 1.0.0-alpha06&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/fragment#1.1.0-alpha06&#34;&gt;Fragment Version 1.1.0-alpha06&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;これは、次のように使うことが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt; : Fragment(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_frag)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。&lt;/p&gt;&#xA;&lt;h3 id=&#34;activityの場合&#34;&gt;Activityの場合&lt;/h3&gt;&#xA;&lt;p&gt;まずはActvityの例です。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 拡張関数を定義しておく&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;ViewDataBinding&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ComponentActivity&lt;/span&gt;.bindView(): T =&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;DataBindingUtil&lt;/span&gt;.bind(getContentView())&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.getContentView(): View =&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  findViewById&amp;lt;ViewGroup&amp;gt;(android.&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.content)[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// MainActivity.kt&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding: MainActBinding&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binding = bindView()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;また、Activityの場合に限り、by lazyと組み合わせることも可能です。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; lazy { bindView&amp;lt;MainActBinding&amp;gt;() }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;fragmentの場合&#34;&gt;Fragmentの場合&lt;/h3&gt;&#xA;&lt;p&gt;次にFragmentの例になります。&lt;/p&gt;</description>
+      <description>&lt;p&gt;JetpackのActivityとFragmentのコンストラクタに、Layout Idが指定できるようになりました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/activity#1.0.0-alpha06&#34;&gt;Activity Version 1.0.0-alpha06&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/jetpack/androidx/releases/fragment#1.1.0-alpha06&#34;&gt;Fragment Version 1.1.0-alpha06&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これは、次のように使うことが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt; : Fragment(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_frag)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Activityの場合は、setConentViewが。Fragmentの場合はonCreateViewがそれぞれ省略することが出来ます。&lt;/p&gt;
+&lt;p&gt;ここからが本題です。これをDataBindingと一緒に使うなら、次のようになるかなと思います。&lt;/p&gt;
+&lt;h3 id=&#34;activityの場合&#34;&gt;Activityの場合&lt;/h3&gt;
+&lt;p&gt;まずはActvityの例です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 拡張関数を定義しておく
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;ViewDataBinding&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ComponentActivity&lt;/span&gt;.bindView(): T =
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;DataBindingUtil&lt;/span&gt;.bind(getContentView())&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Activity&lt;/span&gt;.getContentView(): View =
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  findViewById&amp;lt;ViewGroup&amp;gt;(android.&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.content)[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// MainActivity.kt
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding: MainActBinding
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binding = bindView()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;また、Activityの場合に限り、by lazyと組み合わせることも可能です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; : AppCompatActivity(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_act) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; lazy { bindView&amp;lt;MainActBinding&amp;gt;() }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;fragmentの場合&#34;&gt;Fragmentの場合&lt;/h3&gt;
+&lt;p&gt;次にFragmentの例になります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 拡張関数を定義しておく
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;ViewDataBinding&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Fragment&lt;/span&gt;.bindView(): T = &lt;span style=&#34;color:#a6e22e&#34;&gt;DataBindingUtil&lt;/span&gt;.bind(view&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// MainFragment.kt
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt; : Fragment(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_frag) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding: MainFragBinding
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onViewCreated&lt;/span&gt;(view: View, savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binding = bindView()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Kotlinの拡張関数でやるなら、こんな感じになると思ってます。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コンストラクタにLayoud Idが指定できるようになり、それを使いたいなら、DataBindingの取得の仕方が少し変わりそう
+&lt;ul&gt;
+&lt;li&gt;Layout Id指定は必須ではないので、必ずしも使う必要はないと思います&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;KotlinのDelegationを使えば、もっといい感じに書けるかもしれない&lt;/li&gt;
+&lt;li&gt;サンプルは&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingContentLayoutIdExample&#34;&gt;satoshun/DataBindingContentLayoutIdExample&lt;/a&gt;にあります😃&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;内容におかしい点や、もっとこうしたほうがいいよって！！いうのがあればTwitterなどから教えてもらえればとても嬉しいです😊&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Data Bindingのエラーログが3.4.0-alpha07から見やすくなる</title>
       <link>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</link>
-      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/12/databinding_decrease_error_log/</guid>
-      <description>&lt;p&gt;Data BindingとDagger2などのアノテーションプロセッサー系のライブラリを組わせて使うとエラーログが膨大になる問題があります。&lt;/p&gt;&#xA;&lt;p&gt;それが&lt;code&gt;3.4.0-alpha07&lt;/code&gt;以降で改善される見込みです🎉&lt;/p&gt;&#xA;&lt;p&gt;詳細はここにあります。https://issuetracker.google.com/issues/116541301&lt;/p&gt;&#xA;&lt;p&gt;この記事ではサンプルコードをベースに、エラーログの変化がどのように変わったかを紹介し、実際にアプリ側のコードをどのように変更するかについて説明します。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingApiDeprecateExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります😃&lt;/p&gt;&#xA;&lt;h2 id=&#34;エラーログの変化&#34;&gt;エラーログの変化&lt;/h2&gt;&#xA;&lt;p&gt;まずどのようなエラーログが出力されるかを見ていきます。&#xA;適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。&lt;/p&gt;&#xA;&lt;p&gt;まずはData Binding 3.2.1から。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin&#xA;e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol&#xA;  protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,&#xA;                             ^&#xA;  symbol:   class DataBindingComponent&#xA;  location: class MainAct79Binding&#xA;e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:31: error: cannot find symbol&#xA;      boolean attachToRoot, @Nullable DataBindingComponent component) {&#xA;                                      ^&#xA;...&#xA;...&#xA;...&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Data Binding周りのエラーログが無限に出ます。悲しい😂&lt;/p&gt;&#xA;&lt;p&gt;次に3.4.0-alpha07です。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin&#xA;e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation&#xA;@error.NonExistentClass()&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃&lt;/p&gt;&#xA;&lt;h2 id=&#34;クライアント側の対応&#34;&gt;クライアント側の対応&lt;/h2&gt;&#xA;&lt;p&gt;これに伴い、一部APIがdeprecatedになります。例えば、&lt;code&gt;main_act.xml&lt;/code&gt;は次のようにAPIが変更されます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActBinding&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; ViewDataBinding {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; ViewGroup root,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; attachToRoot&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; ViewGroup root, &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; attachToRoot, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;bind&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; View view)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;bind&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; View view, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Data BindingとDagger2などのアノテーションプロセッサー系のライブラリを組わせて使うとエラーログが膨大になる問題があります。&lt;/p&gt;
+&lt;p&gt;それが&lt;code&gt;3.4.0-alpha07&lt;/code&gt;以降で改善される見込みです🎉&lt;/p&gt;
+&lt;p&gt;詳細はここにあります。https://issuetracker.google.com/issues/116541301&lt;/p&gt;
+&lt;p&gt;この記事ではサンプルコードをベースに、エラーログの変化がどのように変わったかを紹介し、実際にアプリ側のコードをどのように変更するかについて説明します。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingApiDeprecateExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります😃&lt;/p&gt;
+&lt;h2 id=&#34;エラーログの変化&#34;&gt;エラーログの変化&lt;/h2&gt;
+&lt;p&gt;まずどのようなエラーログが出力されるかを見ていきます。
+適当にサンプルコードを修正し、Dagger周りのコードでエラーを出して確認してみます。&lt;/p&gt;
+&lt;p&gt;まずはData Binding 3.2.1から。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin
+e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:17: error: cannot find symbol
+  protected MainAct79Binding(DataBindingComponent _bindingComponent, View _root,
+                             ^
+  symbol:   class DataBindingComponent
+  location: class MainAct79Binding
+e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/generated/data_binding_base_class_source_out/debug/dataBindingGenBaseClassesDebug/out/com/github/satoshun/example/sample/databinding/MainAct79Binding.java:31: error: cannot find symbol
+      boolean attachToRoot, @Nullable DataBindingComponent component) {
+                                      ^
+...
+...
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Data Binding周りのエラーログが無限に出ます。悲しい😂&lt;/p&gt;
+&lt;p&gt;次に3.4.0-alpha07です。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; Task :app:kaptGenerateStubsDebugKotlin
+e: /Users/stsn/git/github.com/satoshun-android-example/DataBindingApiDeprecateExample/app/build/tmp/kapt3/stubs/debug/com/github/satoshun/example/sample/MainActivityBuilder.java:6: error: incompatible types: NonExistentClass cannot be converted to Annotation
+@error.NonExistentClass()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ちゃんと問題があるコード箇所のみでエラーログが出ました！！Data Binding周りのエラーは出ていません！！嬉しい😃&lt;/p&gt;
+&lt;h2 id=&#34;クライアント側の対応&#34;&gt;クライアント側の対応&lt;/h2&gt;
+&lt;p&gt;これに伴い、一部APIがdeprecatedになります。例えば、&lt;code&gt;main_act.xml&lt;/code&gt;は次のようにAPIが変更されます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActBinding&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; ViewDataBinding {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; ViewGroup root,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; attachToRoot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; ViewGroup root, &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; attachToRoot, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;inflate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; LayoutInflater inflater, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;bind&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; View view)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Deprecated&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; MainActBinding &lt;span style=&#34;color:#a6e22e&#34;&gt;bind&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt; View view, &lt;span style=&#34;color:#a6e22e&#34;&gt;@Nullable&lt;/span&gt; Object component)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使う側の作業としては、上記のdeprecatedになったAPIを置き換える必要があります。ただ、すぐに消えるわけではないので、急いで置き換える必要はないと思います。&lt;/p&gt;
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+&lt;p&gt;AGPのアップデートは気軽に出来ないので、
+Data Bindingのバージョンだけをアップデートしようと思ったんですが、エラーが出てしまい出来ませんでした。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kapt &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;androidx.databinding:databinding-compiler:3.4.0-alpha07&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ERROR: Data Binding annotation processor version needs to match the Android Gradle Plugin version. You can remove the kapt dependency androidx.databinding:databinding-compiler:3.4.0-alpha07 and Android Gradle Plugin will inject the right version.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;AGPとData Bindingのバージョンは紐付いているため、片方だけをアップデートしようとしても無理なようです。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;AGPのアップデートをすればData Bindingのツラミの1つであったエラーログから解放される（かも）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/satoshun-android-example/DataBindingApiDeprecateExample&#34;&gt;サンプルコードはここ&lt;/a&gt;にあります😃&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Happy Data Binding Life🎉🎉🎉&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Android: Data Bindingを使っていると本当のエラーログが出ない話 &#43; 対処法</title>
       <link>https://satoshun.github.io/2018/04/android_improve-error-log/</link>
-      <pubDate>Thu, 12 Apr 2018 07:10:00 +0000</pubDate>
+      <pubDate>Thu, 12 Apr 2018 07:10:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/04/android_improve-error-log/</guid>
-      <description>&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;&#xA;&lt;p&gt;Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。&lt;/p&gt;&#xA;&lt;p&gt;理由としては、Data Bindingの生成が失敗すると、&lt;code&gt;MainActivityBinding&lt;/code&gt;みたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。&#xA;デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)&lt;/p&gt;&#xA;&lt;h2 id=&#34;解決法&#34;&gt;解決法&lt;/h2&gt;&#xA;&lt;p&gt;全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kapt &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    javacOptions &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        option&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-Xmaxerrs&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。&lt;/p&gt;&#xA;&lt;p&gt;これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。&lt;/p&gt;&#xA;&lt;p&gt;before(一部ログ修正しています)&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;...&#xA;// 長いエラーログ&#xA;...&#xA;...&#xA;  symbol:   class DataBindingComponent&#xA;  location: class ActivityMainBinding&#xA;e: ActivityMainBinding.java:91: error: cannot find symbol&#xA;      @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {&#xA;                                                                ^&#xA;  symbol:   class DataBindingComponent&#xA;  location: class ActivityMainBinding&#xA;e: ActivityMainBinding.java:102: error: cannot find symbol&#xA;      @Nullable DataBindingComponent component) {&#xA;                ^&#xA;  symbol:   class DataBindingComponent&#xA;  location: class ActivityMainBinding&#xA;:app:kaptProductDebugKotlin FAILED&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;after&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+&lt;p&gt;Android開発でData Bindingを使っていて、さらにDaggerなどのkaptを必要とするライブラリを使っていると、エラーログが非常に見にくい or エラーログに本当の問題が出てこないことがあります。&lt;/p&gt;
+&lt;p&gt;理由としては、Data Bindingの生成が失敗すると、&lt;code&gt;MainActivityBinding&lt;/code&gt;みたいなクラスが生成されないので、いたるところでBinding クラスの参照エラーが出ます。
+デフォルトではエラーを100行?しか出さないようになっているため、参照エラーだけでデフォルトのエラー行数を超えてしまい、本当のエラーが出力されないケースがあります。(大規模なプロジェクトだと起こりがちだと思います)&lt;/p&gt;
+&lt;h2 id=&#34;解決法&#34;&gt;解決法&lt;/h2&gt;
+&lt;p&gt;全てのエラーログが欲しい時は、build.gradleに以下の記述をすれば良いです&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kapt &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    javacOptions &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        option&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-Xmaxerrs&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは、エラーの行数を増やすための設定です。5000はとりあえずでかい値を入れておけば大丈夫だろうという考えです。&lt;/p&gt;
+&lt;p&gt;これを入れたことで、弊プロダクトではSupport libraryを27.1.1に上げることに苦労していたのですが、解決することが出来ました。&lt;/p&gt;
+&lt;p&gt;before(一部ログ修正しています)&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;...
+// 長いエラーログ
+...
+...
+  symbol:   class DataBindingComponent
+  location: class ActivityMainBinding
+e: ActivityMainBinding.java:91: error: cannot find symbol
+      @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
+                                                                ^
+  symbol:   class DataBindingComponent
+  location: class ActivityMainBinding
+e: ActivityMainBinding.java:102: error: cannot find symbol
+      @Nullable DataBindingComponent component) {
+                ^
+  symbol:   class DataBindingComponent
+  location: class ActivityMainBinding
+:app:kaptProductDebugKotlin FAILED
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;after&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;...
+// 長いエラーログ
+...
+...
+e: :96: error: incompatible types: possible lossy conversion from long to int
+    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
+                                                ^
+e::96: error: incompatible types: possible lossy conversion from long to int
+    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
+                                                     ^
+e: :96: error: incompatible types: possible lossy conversion from long to int
+    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
+                                                           ^
+e: .java:96: error: incompatible types: possible lossy conversion from long to int
+    @android.support.annotation.IntDef(value = {-1L, 500L, 20002L, 20004L})
+                                                                   ^
+:app:kaptProductDebugKotlin FAILED
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;beforeではDataBindingの参照エラーしか出ていないんですが、afterではIntDefでのエラーログが出ていることが分かります。
+これが本当に欲しかったエラーログで、これを修正することで無事解決することが出来ました。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Binding便利だけどやっぱつれぇわ&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

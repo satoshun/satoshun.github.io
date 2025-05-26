@@ -1,27 +1,155 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Room on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/room/</link>
-    <description>Recent content in Room on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 24 Jan 2019 00:43:33 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/room/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Thu, 24 Jan 2019 00:43:33 UTC</updated>
+    
+    
     <item>
       <title>FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない</title>
       <link>https://satoshun.github.io/2019/01/room-with-flux/</link>
-      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/01/room-with-flux/</guid>
-      <description>&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;&#xA;&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;&#xA;&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;&#xA;&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;&#xA;&lt;p&gt;使い方は次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Room&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .inMemoryDatabaseBuilder(context, MyDatabase&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .build()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;&#xA;&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;になります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;&#xA;&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;&#xA;&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;sealed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthorAction&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author1&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author1&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author2&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author2&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;</description>
+      <description>&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;
+&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;
+&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;
+&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;
+&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;
+&lt;p&gt;使い方は次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Room
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .inMemoryDatabaseBuilder(context, MyDatabase&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .build()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;
+&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;になります。&lt;/p&gt;
+&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;
+&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;
+&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;sealed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthorAction&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author1&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author1&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author2&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author2&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;
+&lt;p&gt;次にDaoを定義します。これはFluxでいうところのDispatcherになります。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;@Dao
+interface AuthorDispatcher {
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)
+
+  // Storeに相当する
+  @Query(&amp;#34;select * FROM author1 WHERE _id = 0&amp;#34;)
+  fun author(): LiveData&amp;lt;Author1?&amp;gt;
+
+  // Storeに相当する
+  @Query(
+    &amp;#34;&amp;#34;&amp;#34;
+    select author1.name as name1, author2.name as name2
+    FROM author1
+     INNER JOIN author2
+    WHERE author1._id = 0 AND author2._id = 0
+    &amp;#34;&amp;#34;&amp;#34;
+  )
+  fun mappedAuthor(): LiveData&amp;lt;MappedAuthor?&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;となります。&lt;code&gt;@Insert&lt;/code&gt;でアクションをdispatchメソッドを、&lt;code&gt;@Query&lt;/code&gt;でsubscribeメソッドを実装しています。&lt;/p&gt;
+&lt;p&gt;これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！&lt;/p&gt;
+&lt;h2 id=&#34;まとめ考察&#34;&gt;まとめ/考察&lt;/h2&gt;
+&lt;p&gt;RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Storeに書いていたロジックをSQLに任せることが出来る
+&lt;ul&gt;
+&lt;li&gt;Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ほげほげDispactherクラスがアプリ内に蔓延する&lt;/li&gt;
+&lt;li&gt;コードが冗長😂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
+FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
+&lt;p&gt;検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RoomDispatcherExample&#34;&gt;RoomDispatcherExample&lt;/a&gt;にあります。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Android: Roomにおけるデータ変更通知の仕組みについて(InvalidationTracker)</title>
       <link>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</link>
-      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 26 Nov 2017 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2017/11/jetpack-room-invalidationtracker/</guid>
-      <description>&lt;p&gt;こんにちはʕ•ӫ̫͡•ʔ&lt;/p&gt;&#xA;&lt;p&gt;この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;前置き前提知識&#34;&gt;前置き/前提知識&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/room.html#db-migration&#34;&gt;Room&lt;/a&gt;はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。&lt;/p&gt;&#xA;&lt;p&gt;RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Dao&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;UserDao&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Query&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT * FROM users&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUsers&lt;/span&gt;(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。&lt;/p&gt;&#xA;&lt;p&gt;そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// クライアント側のコード&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;userDao.getUsers()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .subscribeOn(&lt;span style=&#34;color:#a6e22e&#34;&gt;Schedulers&lt;/span&gt;.io)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .subscribe {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     println(&lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// ここが対象のテーブルが変更されるたびに評価される。&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;テーブルの変更検知はRoomの内部クラスの&lt;code&gt;InvalidationTracker&lt;/code&gt;クラスで行っています。&#xA;これから&lt;code&gt;InvalidationTracker&lt;/code&gt;の内部実装を見ていきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;invalidationtrackerの流れ&#34;&gt;InvalidationTrackerの流れ&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成&lt;/li&gt;&#xA;&lt;li&gt;obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録&lt;/li&gt;&#xA;&lt;li&gt;RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認&lt;/li&gt;&#xA;&lt;li&gt;テーブルが更新されていたら変更通知コールバックを実行&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。&lt;/p&gt;&#xA;&lt;h3 id=&#34;invalidationtrackerstarttrackingtableメソッドによりtriggerを生成する&#34;&gt;InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する&lt;/h3&gt;&#xA;&lt;p&gt;最初に各テーブルのバージョンを管理する &lt;code&gt;room_table_modification_log&lt;/code&gt;が生成されます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CREATE&lt;/span&gt; TEMP &lt;span style=&#34;color:#66d9ef&#34;&gt;TABLE&lt;/span&gt; room_table_modification_log (&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;version&lt;/span&gt; INTEGER &lt;span style=&#34;color:#66d9ef&#34;&gt;PRIMARY&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;KEY&lt;/span&gt; AUTOINCREMENT,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    table_id INTEGER&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CREATE&lt;/span&gt; TEMP &lt;span style=&#34;color:#66d9ef&#34;&gt;TRIGGER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IF&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NOT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;EXISTS&lt;/span&gt; room_table_modification_trigger_users_UPDATE &lt;span style=&#34;color:#66d9ef&#34;&gt;AFTER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;UPDATE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; users&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;BEGIN&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;INSERT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;OR&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;REPLACE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;INTO&lt;/span&gt; room_table_modification_log &lt;span style=&#34;color:#66d9ef&#34;&gt;VALUES&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#f92672&#34;&gt;#&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;は&lt;/span&gt;table_id&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;END&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリ&lt;code&gt;INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); &lt;/code&gt;は &lt;code&gt;room_table_modification_log&lt;/code&gt;テーブルに最新のid + 1のrowを追加/更新するものになります。&lt;/p&gt;</description>
+      <description>&lt;p&gt;こんにちはʕ•ӫ̫͡•ʔ&lt;/p&gt;
+&lt;p&gt;この記事ではどのようにしてRoomがテーブルの変更を検知し、LiveDataなどからデータの変更をオブザーバーに通知しているかについて説明します。&lt;/p&gt;
+&lt;h2 id=&#34;前置き前提知識&#34;&gt;前置き/前提知識&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/architecture/room.html#db-migration&#34;&gt;Room&lt;/a&gt;はGoogleが提供しているSQLiteをいい感じに扱うためのライブラリです。&lt;/p&gt;
+&lt;p&gt;RoomにはDao(Data access object)と呼ばれるインターフェース/抽象クラスがあり、そこを起点にクエリを実行します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Dao&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;UserDao&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Query&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT * FROM users&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUsers&lt;/span&gt;(): Flowable&amp;lt;List&amp;lt;User&amp;gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;返り値として、observableデータ型を取ることができ、RoomではLiveDataとRxJava2の型(Flowableとか)などのobservable型サポートしています。&lt;/p&gt;
+&lt;p&gt;そして、LiveDataまたはFlowableで返り値を定義すると対象のテーブルがInsertなどで変更されたときに、変更通知を受け取ることが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// クライアント側のコード
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;userDao.getUsers()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .subscribeOn(&lt;span style=&#34;color:#a6e22e&#34;&gt;Schedulers&lt;/span&gt;.io)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .subscribe {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     println(&lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// ここが対象のテーブルが変更されるたびに評価される。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;テーブルの変更検知はRoomの内部クラスの&lt;code&gt;InvalidationTracker&lt;/code&gt;クラスで行っています。
+これから&lt;code&gt;InvalidationTracker&lt;/code&gt;の内部実装を見ていきます。&lt;/p&gt;
+&lt;h2 id=&#34;invalidationtrackerの流れ&#34;&gt;InvalidationTrackerの流れ&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;InvalidationTracker#startTrackingTableメソッドでTrigger(SQL)を生成&lt;/li&gt;
+&lt;li&gt;obsevableが生成されたら、対応するInvalidationTracker.Observer(変更通知用コールバック)をInvalidationTrackerに登録&lt;/li&gt;
+&lt;li&gt;RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認&lt;/li&gt;
+&lt;li&gt;テーブルが更新されていたら変更通知コールバックを実行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;というのが大まかな流れになります。2はobserver(変更通知用コールバック)を登録するだけ、4は登録したコールバックにデータを流すだけです。なので1, 3について詳しく見ていきます。&lt;/p&gt;
+&lt;h3 id=&#34;invalidationtrackerstarttrackingtableメソッドによりtriggerを生成する&#34;&gt;InvalidationTracker#startTrackingTableメソッドによりTriggerを生成する&lt;/h3&gt;
+&lt;p&gt;最初に各テーブルのバージョンを管理する &lt;code&gt;room_table_modification_log&lt;/code&gt;が生成されます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CREATE&lt;/span&gt; TEMP &lt;span style=&#34;color:#66d9ef&#34;&gt;TABLE&lt;/span&gt; room_table_modification_log (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;version&lt;/span&gt; INTEGER &lt;span style=&#34;color:#66d9ef&#34;&gt;PRIMARY&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;KEY&lt;/span&gt; AUTOINCREMENT,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    table_id INTEGER
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このクエリの意味することは、テーブル操作があったときに、対象のテーブルのversionを更新するようにすることで、version変更されていたら更新を検知することが出来ます。このversionを更新するためにRoomではSQLにある機能の1つTriggerを使っています。具体的には次のTriggerを利用しています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CREATE&lt;/span&gt; TEMP &lt;span style=&#34;color:#66d9ef&#34;&gt;TRIGGER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IF&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NOT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;EXISTS&lt;/span&gt; room_table_modification_trigger_users_UPDATE &lt;span style=&#34;color:#66d9ef&#34;&gt;AFTER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;UPDATE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; users
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;BEGIN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;INSERT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;OR&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;REPLACE&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;INTO&lt;/span&gt; room_table_modification_log &lt;span style=&#34;color:#66d9ef&#34;&gt;VALUES&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#f92672&#34;&gt;#&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;は&lt;/span&gt;table_id
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;END&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは一見複雑に見えますがものすごい単純で、usersテーブルがUPDATEされたら上記のクエリがフックされて実行されるだけです。上のクエリ&lt;code&gt;INSERT OR REPLACE INTO room_table_modification_log VALUES (null, 0); &lt;/code&gt;は &lt;code&gt;room_table_modification_log&lt;/code&gt;テーブルに最新のid + 1のrowを追加/更新するものになります。&lt;/p&gt;
+&lt;p&gt;上のTriggerはUPDATEですが、その他にDELETE、INSERT用のTriggerも実行されます。これらのTriggerによりテーブルの変更(Update, Insert, Delete)を検知し、前回のversionを新しいものに更新します。&lt;/p&gt;
+&lt;h3 id=&#34;roomdataendtransactionのタイミングで各テーブルが更新されたかを確認する&#34;&gt;RoomData#endTransactionのタイミングで各テーブルが更新されたかを確認する&lt;/h3&gt;
+&lt;p&gt;Triggerによりversionを更新できたので、次にその更新したテーブルを前回の状態と比較し、差分があるなら発火してあげる必要があります。それは &lt;code&gt;RoomData#endTransaction&lt;/code&gt;のタイミングで行っています。&lt;/p&gt;
+&lt;p&gt;endTransactionのタイミングで&lt;code&gt;InvalidationTracker#refreshVersionsAsync&lt;/code&gt;をコールし、&lt;code&gt;room_table_modification_log&lt;/code&gt;テーブルに変更があったら、InvalidationTrackerに登録にした&lt;code&gt;InvalidationTracker.Observer&lt;/code&gt;に対してデータ変更のコールバックをします。これにより生成されたobservable(FlowableとかLiveDataとかとか)に対して変更通知をすることが出来ます。&lt;/p&gt;
+&lt;p&gt;これがRoomにおけるおおまかな変更検知/通知の仕組みになります。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;SQLのTriggerを使っているところが個人的には意外というか、こんな実装があるんだと感心した&lt;/li&gt;
+&lt;li&gt;上手く説明できた気がしないので、より詳細はInvalidationTrackerの実装を読んで下さい(゜レ゜)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

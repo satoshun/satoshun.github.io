@@ -1,20 +1,149 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Dynamicmodule on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/dynamicmodule/</link>
-    <description>Recent content in Dynamicmodule on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Wed, 16 Jan 2019 12:10:36 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/dynamicmodule/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Wed, 16 Jan 2019 12:10:36 UTC</updated>
+    
+    
     <item>
       <title>Dynamic Feature ModuleでDagger Androidを使う</title>
       <link>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</link>
-      <pubDate>Wed, 16 Jan 2019 12:10:36 +0000</pubDate>
+      <pubDate>Wed, 16 Jan 2019 12:10:36 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/01/dynamic-feature-and-dagger-android/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7&#34;&gt;Dependency injection in a multi module project&lt;/a&gt;を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。&lt;/p&gt;&#xA;&lt;p&gt;結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。&lt;/p&gt;&#xA;&lt;p&gt;また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。&lt;/p&gt;&#xA;&lt;p&gt;検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;satoshun-android-example/DynamicFeatureDaggerExample&lt;/a&gt;にあります😊&lt;/p&gt;&#xA;&lt;h2 id=&#34;前提知識&#34;&gt;前提知識&lt;/h2&gt;&#xA;&lt;p&gt;通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。&#xA;ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00&#34; width=&#34;300&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40&#34; width=&#34;300&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。&lt;/p&gt;&#xA;&lt;p&gt;ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;&#xA;&lt;p&gt;Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。&#xA;実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。&lt;/p&gt;&#xA;&lt;p&gt;では、実装を始めます。&lt;/p&gt;&#xA;&lt;p&gt;最初に、SubActivityをDaggerApplicationのように振る舞わさせるために&lt;code&gt;ModuleRootActivity&lt;/code&gt;クラスを定義します。&#xA;それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleRootActivity&lt;/span&gt; : AppCompatActivity(),&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  HasModuleInjector {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; injector: ModuleActivityInjector&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    injector = moduleComponent.moduleInjector&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    injector.activity.inject(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; moduleComponent: ModuleActivityComponent&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;supportFragmentInjector&lt;/span&gt;(): AndroidInjector&amp;lt;Fragment&amp;gt; =&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    fragmentInjector&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleActivityInjector&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;constructor&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; activity: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleActivityComponent&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; moduleInjector: ModuleActivityInjector&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HasModuleInjector&lt;/span&gt; : HasSupportFragmentInjector&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleChildFragment&lt;/span&gt; : Fragment() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onAttach&lt;/span&gt;(context: Context) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;AndroidSupportInjection&lt;/span&gt;.inject(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onAttach(context)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@keyboardsurfer/dependency-injection-in-a-multi-module-project-1a09511c14b7&#34;&gt;Dependency injection in a multi module project&lt;/a&gt;を見て、Dynamic FeatureをDagger Androidで実現するにはどうするかを考えてみました。&lt;/p&gt;
+&lt;p&gt;結論からいうと、いくつかのbaseクラスを定義することで対応できそうです。&lt;/p&gt;
+&lt;p&gt;また、この記事ではDynamic Feature Module、Dagger Androidをある程度知っている前提で進めていきます。&lt;/p&gt;
+&lt;p&gt;検証に用いたコードは&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;satoshun-android-example/DynamicFeatureDaggerExample&lt;/a&gt;にあります😊&lt;/p&gt;
+&lt;h2 id=&#34;前提知識&#34;&gt;前提知識&lt;/h2&gt;
+&lt;p&gt;通常のDagger AndroidはApplicationクラスでComponentを保持して、そこからSubcomponentを派生させる形になります。
+ここでのポイントは、Applficationでトップに位置するComponentを保持/作成するという点です。これはappモジュールが全てのFeatureモジュールを知っていることを意味します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;figure&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLukc_oixbB7pUkUx9lxjErCvxEtip5bPoVMv2VbvfNeX2TM53mk7dHuwOTZvkNFcxUyxXvTQn2Oh42K1XPrUEchO-RfnbYKrbSccI8gTG8Xr8ZBYukeDaAkYdvvNcwTX3TQ090DGwfUIb0Fm00&#34; width=&#34;300&#34;&gt;
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;p&gt;この前提をもとに、Dynamic Featureを考えます。Dynamic FeatureではApplicationでトップに位置するComponentを保持/作成することが出来ません。なぜなら、appモジュールは各Featureモジュールのことを知れないためです。Dynamic Moduleでは通常のモジュール構成と違い、appとFeature Module間の依存関係が逆転します。結果、Applicationでトップに位置するComponentを保持/作成することが出来ません。&lt;/p&gt;
+&lt;hr&gt;
+&lt;figure&gt;&lt;img src=&#34;https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuU8goIp9ILLmgSnBpCrCLd1BJImfBKfztBZkoRwvJzVEU3fxCnTNSdvkGNvUQbw9GdHYGS7ZvaMFctOyRbxwk7dFu-RLiGg9nGf0OMHLZvksFcwUPeXDPN5faY6cKYCSIesukBX0EXHqK_BBytJjm1Q1n544k1nIyrA0dW40&#34; width=&#34;300&#34;&gt;
+&lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;p&gt;そこでDynamic Featureでは、appモジュールでトップに位置するComponentを保持するのはやめて、各Feature Module内でそれぞれのComponentを保持するのが良いことが分かります。&lt;/p&gt;
+&lt;p&gt;ここまでが前提知識で、次にDynamic Feature + Dagger Androidの実装について説明します。&lt;/p&gt;
+&lt;h2 id=&#34;実装&#34;&gt;実装&lt;/h2&gt;
+&lt;p&gt;Feature Subモジュールがあり、このSubモジュールのエントリポイント（トップに位置するクラス）としてSubActivityが定義されているとします。
+実装の方針としては、このSubActivityをDaggerApplicationのように振る舞わさせることを目指します。なぜなら、このFeatureモジュールのトップに位置するクラスがSubActivityなので、これをDaggerApplicationのように扱うことができれば、Dagger Androidの世界に上手く落とし込むことが出来ると考えたからです。&lt;/p&gt;
+&lt;p&gt;では、実装を始めます。&lt;/p&gt;
+&lt;p&gt;最初に、SubActivityをDaggerApplicationのように振る舞わさせるために&lt;code&gt;ModuleRootActivity&lt;/code&gt;クラスを定義します。
+それに合わせて、いくつかの付随したクラスも定義しておきます。これがbaseクラス群になります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleRootActivity&lt;/span&gt; : AppCompatActivity(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  HasModuleInjector {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; fragmentInjector: DispatchingAndroidInjector&amp;lt;Fragment&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; injector: ModuleActivityInjector
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    injector = moduleComponent.moduleInjector
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    injector.activity.inject(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; moduleComponent: ModuleActivityComponent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;supportFragmentInjector&lt;/span&gt;(): AndroidInjector&amp;lt;Fragment&amp;gt; =
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    fragmentInjector
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleActivityInjector&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;constructor&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; activity: DispatchingAndroidInjector&amp;lt;Activity&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleActivityComponent&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; moduleInjector: ModuleActivityInjector
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HasModuleInjector&lt;/span&gt; : HasSupportFragmentInjector
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ModuleChildFragment&lt;/span&gt; : Fragment() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onAttach&lt;/span&gt;(context: Context) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;AndroidSupportInjection&lt;/span&gt;.inject(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onAttach(context)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、このbaseクラス群を使い、SubActivityとDagger Componentを実装をします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@ModuleScope&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  dependencies = [CoreComponent&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;], &lt;span style=&#34;color:#75715e&#34;&gt;// 共通で使うComponent
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  modules = [
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    AndroidSupportInjectionModule&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SubBuilder&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubComponent&lt;/span&gt; : ModuleActivityComponent {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt;.Builder
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Builder&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;appComponent&lt;/span&gt;(module: CoreComponent): Builder
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;(): Sub1Component
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Module&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  includes = [SubActivityModule&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubBuilder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubActivityModule&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ContributesAndroidInjector&lt;/span&gt;(modules = [SubFragmentsModule&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;contributeSubActivity&lt;/span&gt;(): SubActivity
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubFragmentsModule&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ContributesAndroidInjector&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;contributeSubFragment&lt;/span&gt;(): SubFragment
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubActivity&lt;/span&gt; : ModuleRootActivity() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;(savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onCreate(savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    setContentView(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.sub_act)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; moduleComponent: ModuleActivityComponent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;() = DaggerSubComponent
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .builder()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .appComponent(&lt;span style=&#34;color:#a6e22e&#34;&gt;App&lt;/span&gt;.coreComponent())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .build()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SubFragment&lt;/span&gt; : ModuleChildFragment() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lateinit&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;ModuleRootActivity&lt;/code&gt;で、Featureモジュール内で使うComponentを保持し、各Fragmentで保持したComponentを参照することで、ActivityをDaggerApplicationのように振る舞わさせる事ができます。ComponentやModuleの定義は従来のDagger Androidの書き方とほぼ一緒です。&lt;/p&gt;
+&lt;p&gt;これで、Dynamic Featureモジュール + Dagger Androidを実現することが出来ます😃&lt;/p&gt;
+&lt;p&gt;細かい部分はサンプルを見ていただけたらと思います。&lt;a href=&#34;https://github.com/satoshun-android-example/DynamicFeatureDaggerExample&#34;&gt;DynamicFeatureDaggerExample&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;メモ1-1つのfeature-module内で複数activityがある場合&#34;&gt;メモ1: 1つのFeature Module内で複数Activityがある場合&lt;/h2&gt;
+&lt;p&gt;このパターンは考慮出来ていないです😂
+おそらく、頑張ってApplicationクラス内でstaticで保持するか、もしくは、CoreComponentでScopedで管理するのが良いと思っています。&lt;/p&gt;
+&lt;h2 id=&#34;メモ2-configuration-change対応&#34;&gt;メモ2: Configuration Change対応&lt;/h2&gt;
+&lt;p&gt;Feature Root ComponentはActivityではなく、AACのViewModelで保持したほうが良いかも知れないです。&lt;/p&gt;
+&lt;h2 id=&#34;メモ3-そもそもdagger-androidを使う必要あるのか&#34;&gt;メモ3: そもそもDagger Androidを使う必要あるのか?&lt;/h2&gt;
+&lt;p&gt;Scopeをガンガン使いたい時、すでにDagger Androidを導入している場合は使ってもいいかも。
+ただPlaidのように、Dagger Androidを使わないほうがコードが複雑にならなそうなので、使わないほうが基本良いと思います。（今後心変わりする可能性は大いにあります）&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;では、Happy Dagger Life 😊😊😊&lt;/p&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

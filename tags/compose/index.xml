@@ -1,62 +1,471 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Compose on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/compose/</link>
-    <description>Recent content in Compose on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 11 Jun 2022 03:03:47 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/compose/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2022 Sato Shun</copyright>
+    <updated>Sat, 11 Jun 2022 03:03:47 UTC</updated>
+    
+    
     <item>
       <title>dev版のJetpack Composeを使って、新しいKotlinに対応する</title>
       <link>https://satoshun.github.io/2022/06/jetpack-compose-dev-compiler/</link>
-      <pubDate>Sat, 11 Jun 2022 03:03:47 +0000</pubDate>
+      <pubDate>Sat, 11 Jun 2022 03:03:47 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2022/06/jetpack-compose-dev-compiler/</guid>
-      <description>&lt;p&gt;Jetpack Composeは、特定のKotlinのバージョンと結びついており、Kotlinをアップデートするには、対応するJetpack Composeのバージョンに合わせる必要があります。&#xA;しかし、Jetpack Composeは、やや遅れて最新のKotlinへのサポートが入るので、すぐに最新のKotlinを試せない現状があります。&lt;/p&gt;&#xA;&lt;p&gt;ただ、devバージョンのJetpack Compose Compilerを指定することで、Kotlinを新しいバージョンに上げることが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;devバージョンのJetpack Compose Compilerは、下記のリンクから探すことができます。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://androidx.dev/storage/compose-compiler/repository&#34;&gt;https://androidx.dev/storage/compose-compiler/repository&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;例えば、Kotlin 1.7.0に対応した、Jetpack Compose Compilerは次のように使うことができます。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;// build.gradle&#xA;repositories {&#xA;  maven { url &amp;#34;https://androidx.dev/storage/compose-compiler/repository/&amp;#34; }&#xA;}&#xA;&#xA;// app/build.gradle&#xA;android {&#xA;  composeOptions {&#xA;    kotlinCompilerExtensionVersion &amp;#34;1.2.0-dev-k1.7.0-53370d83bb1&amp;#34;&#xA;  }&#xA;}&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これで、Kotlinを1.7.0に上げることが出来ます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;注意&#34;&gt;注意&lt;/h2&gt;&#xA;&lt;p&gt;前述したリンクにも書いてあるんですが、devバージョンなので不具合がある可能性が高いです。なので、あくまでテスト、サンプルでのみ使ったほうが無難だと思います。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Jetpack Composeは、特定のKotlinのバージョンと結びついており、Kotlinをアップデートするには、対応するJetpack Composeのバージョンに合わせる必要があります。
+しかし、Jetpack Composeは、やや遅れて最新のKotlinへのサポートが入るので、すぐに最新のKotlinを試せない現状があります。&lt;/p&gt;
+&lt;p&gt;ただ、devバージョンのJetpack Compose Compilerを指定することで、Kotlinを新しいバージョンに上げることが出来ます。&lt;/p&gt;
+&lt;p&gt;devバージョンのJetpack Compose Compilerは、下記のリンクから探すことができます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://androidx.dev/storage/compose-compiler/repository&#34;&gt;https://androidx.dev/storage/compose-compiler/repository&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例えば、Kotlin 1.7.0に対応した、Jetpack Compose Compilerは次のように使うことができます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;// build.gradle
+repositories {
+  maven { url &amp;#34;https://androidx.dev/storage/compose-compiler/repository/&amp;#34; }
+}
+
+// app/build.gradle
+android {
+  composeOptions {
+    kotlinCompilerExtensionVersion &amp;#34;1.2.0-dev-k1.7.0-53370d83bb1&amp;#34;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これで、Kotlinを1.7.0に上げることが出来ます。&lt;/p&gt;
+&lt;h2 id=&#34;注意&#34;&gt;注意&lt;/h2&gt;
+&lt;p&gt;前述したリンクにも書いてあるんですが、devバージョンなので不具合がある可能性が高いです。なので、あくまでテスト、サンプルでのみ使ったほうが無難だと思います。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Jetpack Compose: debugInspectorInfoを使って、デバッグを少し楽にする</title>
       <link>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</link>
-      <pubDate>Sun, 06 Mar 2022 12:12:41 +0000</pubDate>
+      <pubDate>Sun, 06 Mar 2022 12:12:41 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2022/03/compose-debug-inspector-info/</guid>
-      <description>&lt;p&gt;Android Studioで、&lt;a href=&#34;https://developer.android.com/studio/debug/layout-inspector&#34;&gt;Layout Inspector&lt;/a&gt; を使うことで、レイアウトの配置や、実際にどのような値がセットされているかの詳細を見る事ができます。&lt;/p&gt;&#xA;&lt;p&gt;Jetpack Composeでは、そのLayout Inspectorに情報を渡すことができます。&lt;/p&gt;&#xA;&lt;p&gt;どのように渡すかを &lt;code&gt;Modifier.border&lt;/code&gt; を例にして説明します。まず、&lt;code&gt;Modifier.border&lt;/code&gt;を次のように使ってみます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Surface(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    modifier = Modifier&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .border(width = &lt;span style=&#34;color:#ae81ff&#34;&gt;2.&lt;/span&gt;dp, color = &lt;span style=&#34;color:#a6e22e&#34;&gt;Color&lt;/span&gt;.Cyan)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) { &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;. }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;そして、Layout Inspectorで、このSurfaceの中身を見てみます。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/compose/inspector-result.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;modifierの中に、borderがあり、詳細な情報があることが分かります。&lt;/p&gt;&#xA;&lt;p&gt;では次に、&lt;code&gt;Modifier.border&lt;/code&gt; ではどのようにして、Layout Inspectorに値をセットしているかを見ていきます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Modifier&lt;/span&gt;.border(width: Dp, brush: Brush, shape: Shape): Modifier = composed(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    factory = { &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;. },&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inspectorInfo = debugInspectorInfo {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;border&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;] = width&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (brush &lt;span style=&#34;color:#66d9ef&#34;&gt;is&lt;/span&gt; SolidColor) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;color&amp;#34;&lt;/span&gt;] = brush.&lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt; = brush.&lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;brush&amp;#34;&lt;/span&gt;] = brush&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;shape&amp;#34;&lt;/span&gt;] = shape&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;composed&lt;/code&gt;メソッドの、inspectorInfo引数から、&lt;code&gt;debugInspectorInfo&lt;/code&gt;メソッドを介してなんか色々やっていることが分かります。&#xA;&lt;code&gt;debugInspectorInfo&lt;/code&gt;メソッドは、&lt;code&gt;InspectorInfo&lt;/code&gt;をレシーバーとして受け取ることができ、&lt;code&gt;InspectorInfo&lt;/code&gt;を介してnameとpropertiesをセットすることができます。コードを見ると、nameに&amp;quot;border&amp;quot;、propertiesに&amp;quot;width&amp;quot;などをセットしていることが分かります。&#xA;これを実行すると、上の画像のようにLayout Inspector上に情報を出力することができます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Android Studioで、&lt;a href=&#34;https://developer.android.com/studio/debug/layout-inspector&#34;&gt;Layout Inspector&lt;/a&gt; を使うことで、レイアウトの配置や、実際にどのような値がセットされているかの詳細を見る事ができます。&lt;/p&gt;
+&lt;p&gt;Jetpack Composeでは、そのLayout Inspectorに情報を渡すことができます。&lt;/p&gt;
+&lt;p&gt;どのように渡すかを &lt;code&gt;Modifier.border&lt;/code&gt; を例にして説明します。まず、&lt;code&gt;Modifier.border&lt;/code&gt;を次のように使ってみます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Surface(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    modifier = Modifier
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      .border(width = &lt;span style=&#34;color:#ae81ff&#34;&gt;2.&lt;/span&gt;dp, color = &lt;span style=&#34;color:#a6e22e&#34;&gt;Color&lt;/span&gt;.Cyan)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) { &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;. }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;そして、Layout Inspectorで、このSurfaceの中身を見てみます。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/compose/inspector-result.png&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;modifierの中に、borderがあり、詳細な情報があることが分かります。&lt;/p&gt;
+&lt;p&gt;では次に、&lt;code&gt;Modifier.border&lt;/code&gt; ではどのようにして、Layout Inspectorに値をセットしているかを見ていきます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Modifier&lt;/span&gt;.border(width: Dp, brush: Brush, shape: Shape): Modifier = composed(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    factory = { &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;. },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inspectorInfo = debugInspectorInfo {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;border&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;] = width
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (brush &lt;span style=&#34;color:#66d9ef&#34;&gt;is&lt;/span&gt; SolidColor) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;color&amp;#34;&lt;/span&gt;] = brush.&lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt; = brush.&lt;span style=&#34;color:#66d9ef&#34;&gt;value&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;brush&amp;#34;&lt;/span&gt;] = brush
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        properties[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;shape&amp;#34;&lt;/span&gt;] = shape
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;composed&lt;/code&gt;メソッドの、inspectorInfo引数から、&lt;code&gt;debugInspectorInfo&lt;/code&gt;メソッドを介してなんか色々やっていることが分かります。
+&lt;code&gt;debugInspectorInfo&lt;/code&gt;メソッドは、&lt;code&gt;InspectorInfo&lt;/code&gt;をレシーバーとして受け取ることができ、&lt;code&gt;InspectorInfo&lt;/code&gt;を介してnameとpropertiesをセットすることができます。コードを見ると、nameに&amp;quot;border&amp;quot;、propertiesに&amp;quot;width&amp;quot;などをセットしていることが分かります。
+これを実行すると、上の画像のようにLayout Inspector上に情報を出力することができます。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;Modifierを拡張するようなメソッドを書くときは、Layout Inspectorへ値を渡すことで、少しデバッグが容易になるかも。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Testifyを使って、Jetpack Composeのスクリーンショットテストをする</title>
       <link>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</link>
-      <pubDate>Sun, 18 Jul 2021 07:44:46 +0000</pubDate>
+      <pubDate>Sun, 18 Jul 2021 07:44:46 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2021/07/android-testify-jetpack-compose/</guid>
-      <description>&lt;p&gt;(この記事は、ほぼ、&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; のREADMEに書いてあることをやっているだけです)&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; を使って、Jetpack Composeのスクリーンショットテストをしてみます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;セットアップ&#34;&gt;セットアップ&lt;/h2&gt;&#xA;&lt;p&gt;READMEに記してある通り、build.gradleに下記の設定を追加します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;com.shopify.testify&amp;#39;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。&lt;/p&gt;&#xA;&lt;h2 id=&#34;テストを書いてみる&#34;&gt;テストを書いてみる&lt;/h2&gt;&#xA;&lt;p&gt;JUnit4ベースの&lt;code&gt;ScreenshotRule&lt;/code&gt; と、&lt;code&gt;ScreenshotInstrumentation&lt;/code&gt; アノテーションを使います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppActivityTest&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; rule = ScreenshotRule(TestActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ScreenshotInstrumentation&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rule.activity.runOnUiThread {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      rule.activity.setContent { AppContent() } &lt;span style=&#34;color:#75715e&#34;&gt;// AppContent関数は適当なComposeコンポーネント&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Thread&lt;/span&gt;.sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// 一応&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    rule.assertSame()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じでテストを記述できます。&lt;code&gt;ScreenshotRule&lt;/code&gt; を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。&lt;/p&gt;&#xA;&lt;p&gt;次にテストの実行をします。まず下準備として、baseとなる画像を生成します。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotRecord&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。&lt;/p&gt;&#xA;&lt;p&gt;次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotTest&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------&#xA;Run the Testify screenshot tests&#xA;------------------------------------------------------------&#xA;&#xA;&#xA;com.github.satoshun.example.AppActivityTest:.&#xA;&#xA;Time: 2.264&#xA;&#xA;OK (1 test)&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;(この記事は、ほぼ、&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; のREADMEに書いてあることをやっているだけです)&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Shopify/android-testify%5D&#34;&gt;Testify&lt;/a&gt; を使って、Jetpack Composeのスクリーンショットテストをしてみます。&lt;/p&gt;
+&lt;h2 id=&#34;セットアップ&#34;&gt;セットアップ&lt;/h2&gt;
+&lt;p&gt;READMEに記してある通り、build.gradleに下記の設定を追加します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dependencies &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  classpath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;com.shopify.testify:plugin:1.1.0-beta2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apply plugin: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;com.shopify.testify&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。&lt;/p&gt;
+&lt;h2 id=&#34;テストを書いてみる&#34;&gt;テストを書いてみる&lt;/h2&gt;
+&lt;p&gt;JUnit4ベースの&lt;code&gt;ScreenshotRule&lt;/code&gt; と、&lt;code&gt;ScreenshotInstrumentation&lt;/code&gt; アノテーションを使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppActivityTest&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@get&lt;/span&gt;:Rule &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; rule = ScreenshotRule(TestActivity&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@ScreenshotInstrumentation&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rule.activity.runOnUiThread {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      rule.activity.setContent { AppContent() } &lt;span style=&#34;color:#75715e&#34;&gt;// AppContent関数は適当なComposeコンポーネント
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Thread&lt;/span&gt;.sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;500&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;// 一応
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    rule.assertSame()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じでテストを記述できます。&lt;code&gt;ScreenshotRule&lt;/code&gt; を使って、適当なActivityを起動する。それに、Jetpack Composeコンポーネントをセットする感じです。&lt;/p&gt;
+&lt;p&gt;次にテストの実行をします。まず下準備として、baseとなる画像を生成します。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotRecord
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これでスクリーンショット(pngファイル)がローカルにコピーされるので、Gitなどにコミットしておきます。&lt;/p&gt;
+&lt;p&gt;次に、スクリーンショットテストを行います。今回は、連続でコマンドを実行しているので成功します。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./gradlew screenshotTest
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:.
+
+Time: 2.264
+
+OK (1 test)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;失敗したケースも見てみたいので、AppContent関数の中身を変えて実行してみます。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------------------------------------
+Run the Testify screenshot tests
+------------------------------------------------------------
+
+
+com.github.satoshun.example.AppActivityTest:
+Error in test(com.github.satoshun.example.AppActivityTest):
+com.shopify.testify.internal.exception.ScreenshotIsDifferentException:
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;無事に失敗しました。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;Jetpack Compose時代には、Layout時代に比べて、コンポーネントの生成に必要なパラメータが関数に明示的に切り出されていたり、
+関数の組み合わせによる、少し複雑なコンポーネントのテストがしやすくなると思います。
+そうなったときには、Testifyのようなローカルのみで完結させることが出来る、テストライブラリをとりあえず試してみるのはいいのかなと思いました。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Jetpack Compose: IOSchedをJetpack Composeで書く part1</title>
       <link>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</link>
-      <pubDate>Sun, 12 Jul 2020 05:14:48 +0000</pubDate>
+      <pubDate>Sun, 12 Jul 2020 05:14:48 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2020/07/compose-iosched-scaffold/</guid>
-      <description>&lt;p&gt;この記事では、Jetpack Composeを学ぶために、公式の &lt;a href=&#34;https://github.com/google/iosched&#34;&gt;IoSched&lt;/a&gt; のUIをJetpack Composeに書き換えていく記事になります。&#xA;完全に見た目を同一にするという所まではやらずに、大体一緒の見た目で妥協するのでご了承下さい。&lt;/p&gt;&#xA;&lt;p&gt;Part1では、ホーム画面のAppbarを作るところまでをやります。&lt;/p&gt;&#xA;&lt;p&gt;また、この記事のコードのライセンスはGoogle I/Oアプリと同等です。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Copyright 2014 Google Inc. All rights reserved.&#xA;&#xA;Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;);&#xA;you may not use this file except in compliance with the License.&#xA;You may obtain a copy of the License at&#xA;&#xA;    http://www.apache.org/licenses/LICENSE-2.0&#xA;&#xA;Unless required by applicable law or agreed to in writing, software&#xA;distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS,&#xA;WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xA;See the License for the specific language governing permissions and&#xA;limitations under the License.&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;ioschedのappbar&#34;&gt;IOSchedのAppbar&lt;/h2&gt;&#xA;&lt;p&gt;まず最初に、IOSchedのスクショになります。これをComposeに置き換えていきます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;この記事では、Jetpack Composeを学ぶために、公式の &lt;a href=&#34;https://github.com/google/iosched&#34;&gt;IoSched&lt;/a&gt; のUIをJetpack Composeに書き換えていく記事になります。
+完全に見た目を同一にするという所まではやらずに、大体一緒の見た目で妥協するのでご了承下さい。&lt;/p&gt;
+&lt;p&gt;Part1では、ホーム画面のAppbarを作るところまでをやります。&lt;/p&gt;
+&lt;p&gt;また、この記事のコードのライセンスはGoogle I/Oアプリと同等です。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Copyright 2014 Google Inc. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the &amp;#34;License&amp;#34;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &amp;#34;AS IS&amp;#34; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;ioschedのappbar&#34;&gt;IOSchedのAppbar&lt;/h2&gt;
+&lt;p&gt;まず最初に、IOSchedのスクショになります。これをComposeに置き換えていきます。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/compose/iosched-appbar.png&#34; width=&#34;50%&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;drawermenuなどを実装していく&#34;&gt;Drawer、Menuなどを実装していく&lt;/h2&gt;
+&lt;p&gt;Jetpack Composeでは、&lt;code&gt;Scaffold&lt;/code&gt;関数を使うことで前述の画像のような、基本的な画面を作ることが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Scaffold&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    scaffoldState: ScaffoldState = remember { ScaffoldState() },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    topBar: &lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt; (() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit)? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bottomBar: &lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt; (() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit)? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    floatingActionButton: &lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt; (() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit)? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    floatingActionButtonPosition: FabPosition = &lt;span style=&#34;color:#a6e22e&#34;&gt;FabPosition&lt;/span&gt;.End,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    isFloatingActionButtonDocked: Boolean = &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    drawerContent: &lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt; (() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit)? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    drawerShape: Shape = &lt;span style=&#34;color:#a6e22e&#34;&gt;MaterialTheme&lt;/span&gt;.shapes.large,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    drawerElevation: Dp = &lt;span style=&#34;color:#a6e22e&#34;&gt;DrawerConstants&lt;/span&gt;.DefaultElevation,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    backgroundColor: Color = &lt;span style=&#34;color:#a6e22e&#34;&gt;MaterialTheme&lt;/span&gt;.colors.background,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bodyContent: &lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt; (InnerPadding) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; Unit
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;Scaffold&lt;/code&gt;関数の定義はこのようになっています。引数を見ると、topBar、bottomBarからAppbarを、floatingActionButtonからFloatingActionButton、drawerContentからDrawerの指定が出来ます。&lt;/p&gt;
+&lt;p&gt;まずは、topBar引数から、上部にAppbarを設定してみます。Appbarを構築するために&lt;code&gt;TopAppBar&lt;/code&gt;が定義されているので、これを使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Scaffold(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  topBar = {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    TopAppBar(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;TopAppBar&lt;/code&gt;関数を使うと、画面上部にAppbarをレイアウト出来ます。今回はタイトルを&lt;code&gt;title&lt;/code&gt;引数から、ナビゲーションアイコンを&lt;code&gt;navigationIcon&lt;/code&gt;引数から、アカウントアイコンを&lt;code&gt;actions&lt;/code&gt;引数からそれぞれ設定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;TopAppBar(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  title = { Text(text = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Home&amp;#34;&lt;/span&gt;) },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  navigationIcon = {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    IconButton(onClick = { TODO() }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      Icon(&lt;span style=&#34;color:#a6e22e&#34;&gt;Icons&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Filled&lt;/span&gt;.Menu)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  actions = {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    IconButton(onClick = { TODO() }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      Icon(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;Icons&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Outlined&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;AccountCircle&lt;/span&gt;.copy(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          defaultWidth = &lt;span style=&#34;color:#ae81ff&#34;&gt;36.&lt;/span&gt;dp,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          defaultHeight = &lt;span style=&#34;color:#ae81ff&#34;&gt;36.&lt;/span&gt;dp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        tint = Color(&lt;span style=&#34;color:#ae81ff&#34;&gt;0xFF1A73E8&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  backgroundColor = &lt;span style=&#34;color:#a6e22e&#34;&gt;Color&lt;/span&gt;.White
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;まずは&lt;code&gt;title&lt;/code&gt;引数から見ていきます。&lt;code&gt;title&lt;/code&gt;では、&lt;code&gt;Text&lt;/code&gt;関数に文字列Homeを指定します。&lt;code&gt;Text&lt;/code&gt;はTextViewのようなものです。文字列を表示する事が出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Text(text = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Home&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、&lt;code&gt;navigationIcon&lt;/code&gt;引数。ここでは、メニューアイコンを出力したいので、&lt;code&gt;IconButton&lt;/code&gt;関数と&lt;code&gt;Icon&lt;/code&gt;関数を使います。&lt;code&gt;IconButton&lt;/code&gt;はonClickからのクリックハンドリングや、レイアウトを調整してくれる機能があります。
+&lt;code&gt;IconButton&lt;/code&gt;関数と&lt;code&gt;Icon&lt;/code&gt;関数を組み合わせることで、いい感じにアイコンを表示することが出来ます。また、Iconの引数に指定している&lt;code&gt;Icons.Filled.Menu&lt;/code&gt;はJetpack Compose materialライブラリ側で定義されているアイコンです。基本的なアイコンはライブラリ側で定義されており、今回はそれを使っています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;IconButton(onClick = { TODO() }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Icon(&lt;span style=&#34;color:#a6e22e&#34;&gt;Icons&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Filled&lt;/span&gt;.Menu)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に、&lt;code&gt;actions&lt;/code&gt;引数。ここでは、TopAppBar上のその他のactionを指定することが出来ます。今回は、右上にアカウントアイコンを表示したいので、&lt;code&gt;Icon&lt;/code&gt;と&lt;code&gt;IconButton&lt;/code&gt;を組み合わせて使います。また、IOSchedのアイコンサイズに合わせるために、サイズは36dp、色は#FF1A73E8を指定します。サイズの変更は、&lt;code&gt;defaultWidth&lt;/code&gt;と&lt;code&gt;defaultHeight&lt;/code&gt;から設定できます。今回は&lt;code&gt;36.dp&lt;/code&gt;を設定します。次に、色の変更は&lt;code&gt;tint&lt;/code&gt;からします。今回は&lt;code&gt;Color(0xFF1A73E8)&lt;/code&gt;を指定し、青っぽい色に設定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;IconButton(onClick = { TODO() }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Icon(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;Icons&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Outlined&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;AccountCircle&lt;/span&gt;.copy(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      defaultWidth = &lt;span style=&#34;color:#ae81ff&#34;&gt;36.&lt;/span&gt;dp,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      defaultHeight = &lt;span style=&#34;color:#ae81ff&#34;&gt;36.&lt;/span&gt;dp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    tint = Color(&lt;span style=&#34;color:#ae81ff&#34;&gt;0xFF1A73E8&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;最終的に、次のようになります。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/compose/iosched-sample-appbar.png&#34; width=&#34;50%&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;おおよそIOSchedのAppbarと同じ見た目になりました😃&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Scaffold&lt;/code&gt;を使うと、Appbarなどを設定することが出来る&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Icons.Filled.Menu&lt;/code&gt;などの、material iconはライブラリ側で定義されている&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TopAppBar&lt;/code&gt;、&lt;code&gt;IconButton&lt;/code&gt;、&lt;code&gt;Icon&lt;/code&gt;などを使うとAppbarを構築出来る&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Jetpack Compose: PreviewParameterアノテーションを使っていろいろなプレビューを作る</title>
       <link>https://satoshun.github.io/2020/07/compose-preview/</link>
-      <pubDate>Wed, 08 Jul 2020 11:36:04 +0000</pubDate>
+      <pubDate>Wed, 08 Jul 2020 11:36:04 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2020/07/compose-preview/</guid>
-      <description>&lt;p&gt;この記事では、&lt;code&gt;PreviewParameter&lt;/code&gt;アノテーションを使って複数のプレビューを出す方法について説明します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;previewアノテーションについて&#34;&gt;Previewアノテーションについて&lt;/h2&gt;&#xA;&lt;p&gt;Jetpack Composeでは、&lt;code&gt;@Preview&lt;/code&gt;を使うことでプレビューを表示することが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;例えば、TestScreenのプレビューは次のように定義することが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestScreen&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  user: User,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  count: Int&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Preview&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test screen&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewTestScreen&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  TestScreen(user = User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tom&amp;#34;&lt;/span&gt;), count = &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、&lt;code&gt;@Preview&lt;/code&gt;を複数定義することですが、&lt;code&gt;@PreviewParameter&lt;/code&gt;を使うことでよりスマートに書くことが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;具体的には、次のように書くことが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewUserProvider&lt;/span&gt; : PreviewParameterProvider&amp;lt;User&amp;gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; values: Sequence&amp;lt;User&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;() = sequenceOf(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tom&amp;#34;&lt;/span&gt;),&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;スズキ&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Preview&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test screen parameter&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewParameterTestScreen&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PreviewParameter&lt;/span&gt;(PreviewUserProvider&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;) user: User&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  TestScreen(user = user, count = &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;最初に、&lt;code&gt;PreviewParameterProvider&lt;/code&gt;インターフェースを実装します。&lt;code&gt;PreviewParameterProvider&lt;/code&gt;では、プレビューしたいインスタンス（パラメータ）を定義してあげます。&#xA;実装したクラスを &lt;code&gt;@PreviewParameter(PreviewUserProvider::class)&lt;/code&gt; と指定することで、プレビューを複数出すことが出来ます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;この記事では、&lt;code&gt;PreviewParameter&lt;/code&gt;アノテーションを使って複数のプレビューを出す方法について説明します。&lt;/p&gt;
+&lt;h2 id=&#34;previewアノテーションについて&#34;&gt;Previewアノテーションについて&lt;/h2&gt;
+&lt;p&gt;Jetpack Composeでは、&lt;code&gt;@Preview&lt;/code&gt;を使うことでプレビューを表示することが出来ます。&lt;/p&gt;
+&lt;p&gt;例えば、TestScreenのプレビューは次のように定義することが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestScreen&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  user: User,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  count: Int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Preview&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test screen&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewTestScreen&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  TestScreen(user = User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tom&amp;#34;&lt;/span&gt;), count = &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ここで、いろいろなUserインスタンスでプレビューを表示したいとします。愚直にやるなら、&lt;code&gt;@Preview&lt;/code&gt;を複数定義することですが、&lt;code&gt;@PreviewParameter&lt;/code&gt;を使うことでよりスマートに書くことが出来ます。&lt;/p&gt;
+&lt;p&gt;具体的には、次のように書くことが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewUserProvider&lt;/span&gt; : PreviewParameterProvider&amp;lt;User&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; values: Sequence&amp;lt;User&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;() = sequenceOf(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tom&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      User(id = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;, name = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;スズキ&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Preview&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test screen parameter&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PreviewParameterTestScreen&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PreviewParameter&lt;/span&gt;(PreviewUserProvider&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;) user: User
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  TestScreen(user = user, count = &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;最初に、&lt;code&gt;PreviewParameterProvider&lt;/code&gt;インターフェースを実装します。&lt;code&gt;PreviewParameterProvider&lt;/code&gt;では、プレビューしたいインスタンス（パラメータ）を定義してあげます。
+実装したクラスを &lt;code&gt;@PreviewParameter(PreviewUserProvider::class)&lt;/code&gt; と指定することで、プレビューを複数出すことが出来ます。&lt;/p&gt;
+&lt;p&gt;これで、様々なパラメータでプレビューを出すことが出来ました。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;XML時代の時は、こういうことは出来なかったと思うので、面白い機能だなと思いました😃&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Jetpack Compose: Ambientを使ってインスタンスを注入、取得する</title>
       <link>https://satoshun.github.io/2020/03/compose-ambient/</link>
-      <pubDate>Thu, 05 Mar 2020 10:38:47 +0000</pubDate>
+      <pubDate>Thu, 05 Mar 2020 10:38:47 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2020/03/compose-ambient/</guid>
-      <description>&lt;p&gt;こんにちわっふる🍰&lt;/p&gt;&#xA;&lt;p&gt;今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。&lt;/p&gt;&#xA;&lt;h2 id=&#34;前提課題&#34;&gt;前提・課題&lt;/h2&gt;&#xA;&lt;p&gt;一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyView&lt;/span&gt;(someData: Data) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これがシンプル かつ 分かりやすい方法です。&#xA;しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。&lt;/p&gt;&#xA;&lt;p&gt;ここで、Ambientを使うとすっきりと書くことが出来ます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;ambientを使う&#34;&gt;Ambientを使う&lt;/h2&gt;&#xA;&lt;p&gt;まず、最初にAmbientの定義をします。Ambientの定義は&lt;code&gt;ambientOf&lt;/code&gt;メソッドから行えます。&lt;/p&gt;&#xA;&lt;p&gt;今回は例として、ExampleViewModelをAmbientで定義して、コンポーネントから使用します。&lt;/p&gt;&#xA;&lt;p&gt;まず、定義を行います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで定義は完了です。&lt;code&gt;ambientOf&lt;/code&gt;メソッドを呼び出すだけです。&lt;/p&gt;&#xA;&lt;p&gt;次に、これをコンポーネントから使ってみます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExampleApp&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = ExampleViewModel()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Providers(exampleViewModelAmbient provides viewModel) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    MyView()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyView&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = exampleViewModelAmbient.current&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。コードを説明してきます。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;code&gt;Providers(exampleViewModelAmbient provides viewModel)&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Ambientに対して値を注入しています。この場合、定義した&lt;code&gt;exampleViewModelAmbient&lt;/code&gt;に、ExampleViewModelのインスタンスを注入、セットしています。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;code&gt;val viewModel = exampleViewModelAmbient.current&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;注入した値は &lt;code&gt;.current&lt;/code&gt; から取得することが出来ます。この場合、上記で生成したExampleViewModelのインスタンスの値を取得することが出来ます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;こんにちわっふる🍰&lt;/p&gt;
+&lt;p&gt;今回は、ComposeにあるAmbientを説明したいと思います。この記事はdev06で検証しています。&lt;/p&gt;
+&lt;h2 id=&#34;前提課題&#34;&gt;前提・課題&lt;/h2&gt;
+&lt;p&gt;一般的に、Composableなコンポーネントにデータを渡すとき、関数の引数から渡します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyView&lt;/span&gt;(someData: Data) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これがシンプル かつ 分かりやすい方法です。
+しかし、中間に多くのComposableなコンポーネントがある場合、全てのコンポーネントの引数でデータを受け取り、さらに渡す必要があります。これは少々面倒で冗長です。&lt;/p&gt;
+&lt;p&gt;ここで、Ambientを使うとすっきりと書くことが出来ます。&lt;/p&gt;
+&lt;h2 id=&#34;ambientを使う&#34;&gt;Ambientを使う&lt;/h2&gt;
+&lt;p&gt;まず、最初にAmbientの定義をします。Ambientの定義は&lt;code&gt;ambientOf&lt;/code&gt;メソッドから行えます。&lt;/p&gt;
+&lt;p&gt;今回は例として、ExampleViewModelをAmbientで定義して、コンポーネントから使用します。&lt;/p&gt;
+&lt;p&gt;まず、定義を行います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで定義は完了です。&lt;code&gt;ambientOf&lt;/code&gt;メソッドを呼び出すだけです。&lt;/p&gt;
+&lt;p&gt;次に、これをコンポーネントから使ってみます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; exampleViewModelAmbient = ambientOf&amp;lt;ExampleViewModel&amp;gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExampleApp&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = ExampleViewModel()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Providers(exampleViewModelAmbient provides viewModel) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    MyView()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyView&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = exampleViewModelAmbient.current
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これで完了です。コードを説明してきます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;code&gt;Providers(exampleViewModelAmbient provides viewModel)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Ambientに対して値を注入しています。この場合、定義した&lt;code&gt;exampleViewModelAmbient&lt;/code&gt;に、ExampleViewModelのインスタンスを注入、セットしています。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;code&gt;val viewModel = exampleViewModelAmbient.current&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;注入した値は &lt;code&gt;.current&lt;/code&gt; から取得することが出来ます。この場合、上記で生成したExampleViewModelのインスタンスの値を取得することが出来ます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;code&gt;ambientOf&lt;/code&gt;で定義して、Providersで値をセットすることで、コンポーネントに値を渡すことが可能になります。&lt;/p&gt;
+&lt;h2 id=&#34;注意点&#34;&gt;注意点&lt;/h2&gt;
+&lt;p&gt;注意としては、Providersで囲っていない場合にエラーになる点です。例えば、次のように書くことは出来ません。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExampleApp&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = ExampleViewModel()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Providers(exampleViewModelAmbient provides viewModel) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// ランタイムエラーになる!
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  MyView()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;直感的な挙動だと思います。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;また、複数のProvidersで囲った場合は、直近のProvidersが有効になります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExampleApp&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel = ExampleViewModel()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Providers(exampleViewModelAmbient provides viewModel) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; viewModel2 = ExampleViewModel()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Providers(exampleViewModelAmbient provides viewModel2) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// viewModel2が渡される
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      MyView()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ambientを使うことで、多くの中間コンポーネントがある場合に楽が出来る
+&lt;ul&gt;
+&lt;li&gt;とはいえ、一般的なデータの渡し方は引数から&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ライブラリから、ContextAmbient、CoroutineContextAmbientなどが提供されているので、それらの実装、書き方を参考にするのも良いと思います。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;なにか間違っている点や、疑問があればTwitterなどからご指摘いただければ幸いです😃&lt;/p&gt;
+&lt;p&gt;ではでは。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Jetpack Compose: Modelとstate</title>
       <link>https://satoshun.github.io/2020/02/compose-model-state/</link>
-      <pubDate>Sat, 29 Feb 2020 23:32:01 +0000</pubDate>
+      <pubDate>Sat, 29 Feb 2020 23:32:01 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2020/02/compose-model-state/</guid>
-      <description>&lt;p&gt;Jetpack Composeのデータ監視方法について紹介します。&lt;/p&gt;&#xA;&lt;h2 id=&#34;state&#34;&gt;state&lt;/h2&gt;&#xA;&lt;p&gt;まず、stateメソッドの紹介をします。&lt;/p&gt;&#xA;&lt;p&gt;stateメソッドを使うと値を監視することができ、値が変更されたときに自動で再構成（recomposition）してくれます。&lt;/p&gt;&#xA;&lt;p&gt;次のように、Viewの状態を表すのに便利に使えます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyCheckbox&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 初期値false&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; checked &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; state { &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt; }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Checkbox(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    checked = checked,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    onCheckedChange = {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// stateで定義した値を更新すると、自動でUIの再構成（recomposition)が走る&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      checked = &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;state { 初期値 }&lt;/code&gt;って感じで定義して、その値を更新するとUIの再構成をしてくれます。&lt;/p&gt;&#xA;&lt;p&gt;この例の場合、Checkboxがクリックされると、checkedの状態が変わり、Viewが再構成されます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;model&#34;&gt;Model&lt;/h2&gt;&#xA;&lt;p&gt;次にModelです。Modelはアノテーションで定義されています。&#xA;Modelアノテーションをつけたクラスのプロパティが監視対象になり、プロパティが更新されたときに自動で再構成してくれます。&lt;/p&gt;&#xA;&lt;p&gt;例えば、クリックされたカウントを保持するModelは次のように作ります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Model&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Count&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; count: Int = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyText&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// Modelの定義。引数から渡すこともある&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; count = Count()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Ripple(bounded = &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Clickable(onClick = {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// Modelの値を更新すると、自動で再構成（recomposition)が走る&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      count.count &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      Container {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 構成、再構成が走るとtextが更新される&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        Text(text = count.count.toString())&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じで使います。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Jetpack Composeのデータ監視方法について紹介します。&lt;/p&gt;
+&lt;h2 id=&#34;state&#34;&gt;state&lt;/h2&gt;
+&lt;p&gt;まず、stateメソッドの紹介をします。&lt;/p&gt;
+&lt;p&gt;stateメソッドを使うと値を監視することができ、値が変更されたときに自動で再構成（recomposition）してくれます。&lt;/p&gt;
+&lt;p&gt;次のように、Viewの状態を表すのに便利に使えます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyCheckbox&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 初期値false
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; checked &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; state { &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Checkbox(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    checked = checked,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    onCheckedChange = {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// stateで定義した値を更新すると、自動でUIの再構成（recomposition)が走る
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      checked = &lt;span style=&#34;color:#66d9ef&#34;&gt;it&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;state { 初期値 }&lt;/code&gt;って感じで定義して、その値を更新するとUIの再構成をしてくれます。&lt;/p&gt;
+&lt;p&gt;この例の場合、Checkboxがクリックされると、checkedの状態が変わり、Viewが再構成されます。&lt;/p&gt;
+&lt;h2 id=&#34;model&#34;&gt;Model&lt;/h2&gt;
+&lt;p&gt;次にModelです。Modelはアノテーションで定義されています。
+Modelアノテーションをつけたクラスのプロパティが監視対象になり、プロパティが更新されたときに自動で再構成してくれます。&lt;/p&gt;
+&lt;p&gt;例えば、クリックされたカウントを保持するModelは次のように作ります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Count&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; count: Int = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Composable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyText&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// Modelの定義。引数から渡すこともある
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; count = Count()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Ripple(bounded = &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Clickable(onClick = {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#75715e&#34;&gt;// Modelの値を更新すると、自動で再構成（recomposition)が走る
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;      count.count &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      Container {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 構成、再構成が走るとtextが更新される
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        Text(text = count.count.toString())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;こんな感じで使います。&lt;/p&gt;
+&lt;p&gt;Modelのプロパティ、今回の場合はcountプロパティの値が変わると、自動で再構成されます。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;値を変更するだけで、勝手にUIを再構成してくれるので便利〜&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/reference/kotlin/androidx/compose/package-summary#state(kotlin.Function2,%20kotlin.Function0)&#34;&gt;state&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/reference/kotlin/androidx/compose/Model&#34;&gt;Model&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

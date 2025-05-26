@@ -89,8 +89,7 @@ AsyncTask was intended to enable proper and …">
     
     <p>javadocコメントとコミットログは次のようになっています。</p>
 <blockquote>
-<p>AsyncTask was intended to enable proper and easy use of the UI thread. However, the most common use case was for integrating into UI, and that would cause Context leaks, missed callbacks, or crashes on configuration changes. It also has inconsistent behavior on different versions of the platform, swallows exceptions from {@code doInBackground}, and does not provide much utility over using {@link Executor}s directly.</p>
-</blockquote>
+<p>AsyncTask was intended to enable proper and easy use of the UI thread. However, the most common use case was for integrating into UI, and that would cause Context leaks, missed callbacks, or crashes on configuration changes. It also has inconsistent behavior on different versions of the platform, swallows exceptions from {@code doInBackground}, and does not provide much utility over using {@link Executor}s directly.</p></blockquote>
 <p><a href="https://android-review.googlesource.com/c/platform/frameworks/base/+/1156409">https://android-review.googlesource.com/c/platform/frameworks/base/+/1156409</a></p>
 <p>AsyncTaskの目的は、UIスレッドを簡単に扱うためのものだけど、Contextのリークや、configuration changeなどでクラッシュしてしまうのでそもそも目的を達成していない。また、Androidのバージョンごとに振る舞いに一貫性がないのも問題だと。ただでさえ、非同期プログラミングは難しいのに、バージョンごとに振る舞いが異なっていたらしんどさ倍増って話だと言う話です。</p>
 <p>もう少し詳しく見ていきます。</p>

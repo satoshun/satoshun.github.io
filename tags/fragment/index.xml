@@ -1,27 +1,194 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Fragment on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/fragment/</link>
-    <description>Recent content in Fragment on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 18 Jan 2020 14:14:14 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/fragment/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2020 Sato Shun</copyright>
+    <updated>Sat, 18 Jan 2020 13:09:08 UTC</updated>
+    
+    
     <item>
       <title>FragmentでViewの参照を持つとメモリリークする話と実装</title>
       <link>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</link>
-      <pubDate>Sat, 18 Jan 2020 13:09:08 +0000</pubDate>
+      <pubDate>Sat, 18 Jan 2020 13:09:08 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2020/01/fragment-view-memory-leak/</guid>
-      <description>&lt;p&gt;View Bindingのドキュメントが更新され、onDestroyViewのタイミングで保持しているBindingの参照を解放する節が追記されました。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/view-binding#fragments&#34;&gt;Use view binding in fragments&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Fragment自体のライフサイクルのほうが、FragmentのViewのライフサイクルより長いので、FragmentでBindingの参照を保持するとリークしてしまうためです。&lt;/p&gt;&#xA;&lt;p&gt;この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-ondestoryviewで解放する&#34;&gt;1. onDestoryViewで解放する&lt;/h2&gt;&#xA;&lt;p&gt;公式ドキュメントに載っている方法です。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// onCreatedViewで初期化&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; _binding: ResultProfileBinding? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;() = _binding&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreateView&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inflater: LayoutInflater,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    container: ViewGroup?,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    savedInstanceState: Bundle?&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;): View? {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  _binding = &lt;span style=&#34;color:#a6e22e&#34;&gt;ResultProfileBinding&lt;/span&gt;.inflate(inflater, container, &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; view = binding.root&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; view&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onDestroyView&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  _binding = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-aacサンプルで使っているautoclearedvalueを使う&#34;&gt;2. AACサンプルで使っているAutoClearedValueを使う&lt;/h2&gt;&#xA;&lt;p&gt;takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;blockquote class=&#34;twitter-tweet&#34; data-conversation=&#34;none&#34; data-theme=&#34;dark&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました &lt;a href=&#34;https://t.co/IUNmeQLzfB&#34;&gt;https://t.co/IUNmeQLzfB&lt;/a&gt;&lt;/p&gt;&amp;mdash; takahirom (@new_runnable) &lt;a href=&#34;https://twitter.com/new_runnable/status/1217980925008465920?ref_src=twsrc%5Etfw&#34;&gt;January 17, 2020&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;次のように使います。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// onCreatedViewで初期化する&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; autoCleared&amp;lt;RepoFragmentBinding&amp;gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; adapter &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; autoCleared&amp;lt;RepoFragmentAdapter&amp;gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;AutoClearedValueは、&lt;code&gt;viewLifecycleOwnerLiveData&lt;/code&gt;を購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。&lt;/p&gt;</description>
+      <description>&lt;p&gt;View Bindingのドキュメントが更新され、onDestroyViewのタイミングで保持しているBindingの参照を解放する節が追記されました。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://developer.android.com/topic/libraries/view-binding#fragments&#34;&gt;Use view binding in fragments&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Fragment自体のライフサイクルのほうが、FragmentのViewのライフサイクルより長いので、FragmentでBindingの参照を保持するとリークしてしまうためです。&lt;/p&gt;
+&lt;p&gt;この記事では、メモリリークをしないために、どのような実装が考えられるかを紹介していきます。&lt;/p&gt;
+&lt;h2 id=&#34;1-ondestoryviewで解放する&#34;&gt;1. onDestoryViewで解放する&lt;/h2&gt;
+&lt;p&gt;公式ドキュメントに載っている方法です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// onCreatedViewで初期化
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; _binding: ResultProfileBinding? = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;get&lt;/span&gt;() = _binding&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreateView&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inflater: LayoutInflater,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    container: ViewGroup?,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    savedInstanceState: Bundle?
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;): View? {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  _binding = &lt;span style=&#34;color:#a6e22e&#34;&gt;ResultProfileBinding&lt;/span&gt;.inflate(inflater, container, &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; view = binding.root
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; view
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onDestroyView&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  _binding = &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;onDestroyViewで参照を解放するコードを書きます。シンプルですが、冗長なのかなと思います。&lt;/p&gt;
+&lt;h2 id=&#34;2-aacサンプルで使っているautoclearedvalueを使う&#34;&gt;2. AACサンプルで使っているAutoClearedValueを使う&lt;/h2&gt;
+&lt;p&gt;takahiromさんにTwitterで教えてもらったんですが、AACサンプルではDelegationを使って、自動で参照を解放しているようです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-conversation=&#34;none&#34; data-theme=&#34;dark&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;DroiKaigiでは、Adapterとか持ちたい場合もあるので、AACのサンプルにあるAutoCleardValueにしてみました &lt;a href=&#34;https://t.co/IUNmeQLzfB&#34;&gt;https://t.co/IUNmeQLzfB&lt;/a&gt;&lt;/p&gt;&amp;mdash; takahirom (@new_runnable) &lt;a href=&#34;https://twitter.com/new_runnable/status/1217980925008465920?ref_src=twsrc%5Etfw&#34;&gt;January 17, 2020&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;hr&gt;
+&lt;p&gt;次のように使います。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// onCreatedViewで初期化する
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; autoCleared&amp;lt;RepoFragmentBinding&amp;gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; adapter &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; autoCleared&amp;lt;RepoFragmentAdapter&amp;gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;AutoClearedValueは、&lt;code&gt;viewLifecycleOwnerLiveData&lt;/code&gt;を購読しており、onDestroyViewのタイミングで、自動的に参照を解放してくれます。また、ReycyclerView.Adapterでも同様に使うことが出来ます。&lt;/p&gt;
+&lt;p&gt;詳細な実装は&lt;a href=&#34;https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt&#34;&gt;AutoClearedValue.kt&lt;/a&gt;を見てください。&lt;/p&gt;
+&lt;h2 id=&#34;3-databinding-ktxを使う&#34;&gt;3. DataBinding-Ktxを使う&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/wada811/DataBinding-ktx&#34;&gt;DataBinding-ktx&lt;/a&gt;を使うことで、valで定義することが可能になります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding: ViewBindingFragmentBinding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; viewBinding()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreateView&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  inflater: LayoutInflater,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  container: ViewGroup?,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  savedInstanceState: Bundle?
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;): View? {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; binding.root
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;内部で、リフレクションを用いており、ViewBindingの場合でも&lt;code&gt;binding.root&lt;/code&gt;とbindingにアクセスするだけで、自動的にBindingインスタンスを生成してくれます。
+また、AutoClearedValueと同様に、viewLifecycleOwnerLiveDataを購読しており、自動で参照を解放してくれます。&lt;/p&gt;
+&lt;h2 id=&#34;4-viewsettag-gettagを使った実装を使う&#34;&gt;4. View.setTag, getTagを使った実装を使う&lt;/h2&gt;
+&lt;p&gt;自動的に解放する部分の実装の話なんですが、setTag、getTagを使った実装でも参照を解放することが可能です。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt; : Fragment(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.layout.main_frag2) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; binding: MainFrag2Binding &lt;span style=&#34;color:#66d9ef&#34;&gt;by&lt;/span&gt; viewBinding()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// ViewDataBinding.kt
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;ViewDataBinding&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Fragment&lt;/span&gt;.viewBinding(): ReadOnlyProperty&amp;lt;Fragment, T&amp;gt; =
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;object&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;: &lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadOnlyProperty&lt;/span&gt;&amp;lt;Fragment, T&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getValue&lt;/span&gt;(thisRef: Fragment, &lt;span style=&#34;color:#66d9ef&#34;&gt;property&lt;/span&gt;: KProperty&amp;lt;*&amp;gt;): T {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; view = thisRef.view&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding = view.getTag(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.fragment_binding) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt;? T
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (binding &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        binding = &lt;span style=&#34;color:#a6e22e&#34;&gt;DataBindingUtil&lt;/span&gt;.bind(view)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        view.setTag(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.fragment_binding, binding)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; binding&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://gist.github.com/satoshun/0185c4231983016f6afa4d8f8c423cd9&#34;&gt;Gist/サンプルコード&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;viewLifecycleOwnerLiveDataを使わないパターンの実装になります。また、このコードではFragmentのコンストラクタからレイアウトIDを渡すことを想定しています。
+コンストラクタからIDを渡すことで、onCreateViewを省略することが出来ます。&lt;/p&gt;
+&lt;p&gt;この例では、DataBindingを想定していますが、ViewBindingで使う場合には、リフレクションを用いるか、もしくはファクトリを渡す必要があります。&lt;/p&gt;
+&lt;p&gt;リフレクションを使う場合は、次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;inline&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &amp;lt;&lt;span style=&#34;color:#66d9ef&#34;&gt;reified&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt; : &lt;span style=&#34;color:#a6e22e&#34;&gt;ViewBinding&lt;/span&gt;&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Fragment&lt;/span&gt;.viewBinding(): ReadOnlyProperty&amp;lt;Fragment, T&amp;gt; =
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;object&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;: &lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadOnlyProperty&lt;/span&gt;&amp;lt;Fragment, T&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getValue&lt;/span&gt;(thisRef: Fragment, &lt;span style=&#34;color:#66d9ef&#34;&gt;property&lt;/span&gt;: KProperty&amp;lt;*&amp;gt;): T {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; view = thisRef.view&lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; binding = view.getTag(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.fragment_binding) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt;? T
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (binding &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; method = T&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java.getMethod(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bind&amp;#34;&lt;/span&gt;, View&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        binding = method.invoke(&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;, view) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; T
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        view.setTag(&lt;span style=&#34;color:#a6e22e&#34;&gt;R&lt;/span&gt;.id.fragment_binding, binding)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; binding
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;個人的な感想&#34;&gt;個人的な感想&lt;/h2&gt;
+&lt;p&gt;AACサンプルで使っているAutoClearedValueを使うのが良いのではと思っています。なぜかっていうと、RecyclerView.AdapterなどのBinding以外でも使うことが出来るからです。より汎用的だと思います。&lt;/p&gt;
+&lt;p&gt;とはいえ、bindingを保持する変数をvalにしたいよねって話であったり、コンストラクタからレイアウトID渡したいよねっていう話があると思うので、そのときは3、4の方法を参考にするのが良いと思います。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;FragmentでViewの参照を持つBindingを保持するとメモリリークする
+&lt;ul&gt;
+&lt;li&gt;解放しておくとより丁寧&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AutoClearedValueが汎用的に使える&lt;/li&gt;
+&lt;li&gt;Bindingの参照をvalにしたいなら、DataBinding-Ktxか、4の方法を参考にすると良さそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;追記&#34;&gt;追記&lt;/h2&gt;
+&lt;p&gt;wada811さんから、DataBinding-ktxではonCreatedViewでの初期化が必須との指摘を頂き、修正しました。ご指摘ありがとうございます😄&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-conversation=&#34;none&#34; data-theme=&#34;dark&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;DataBinding-ktx ですが、onCreateView での初期化は必須ですー&lt;/p&gt;&amp;mdash; wada811 (@wada811) &lt;a href=&#34;https://twitter.com/wada811/status/1218534139088891905?ref_src=twsrc%5Etfw&#34;&gt;January 18, 2020&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>FragmentとgetViewLifecycleの話</title>
       <link>https://satoshun.github.io/2018/12/view_lifecycle/</link>
-      <pubDate>Fri, 21 Dec 2018 07:08:34 +0000</pubDate>
+      <pubDate>Fri, 21 Dec 2018 07:08:34 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/12/view_lifecycle/</guid>
-      <description>&lt;p&gt;この記事ではFragmentでLiveDataにObserverを登録するときは&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;を使うと良いという話をします。&lt;/p&gt;&#xA;&lt;p&gt;まず、Fragmentのおおまかなライフサイクルは次のようになっています。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;onAttach&lt;/li&gt;&#xA;&lt;li&gt;onCreate&#xA;&lt;ul&gt;&#xA;&lt;li&gt;onCreateView&lt;/li&gt;&#xA;&lt;li&gt;onViewCreated&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&amp;hellip;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;onDestoryView&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;onDestroy&lt;/li&gt;&#xA;&lt;li&gt;onDetach&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;ここで重要なのは、&lt;code&gt;onDestroy&lt;/code&gt;が呼ばれることなく、複数回&lt;code&gt;onCreateView&lt;/code&gt;が呼ばれる可能性がある点です。&lt;/p&gt;&#xA;&lt;p&gt;例えば、次のコードは間違っている可能性があります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt;: Fragment() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onViewCreated&lt;/span&gt;(view: View, savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onViewCreated(view, savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        viewModel.&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;.observe(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;, Observer {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。&#xA;このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。&#xA;しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。&lt;/p&gt;&#xA;&lt;p&gt;前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。&#xA;よって、FragmentにはView用のLifecycleが用意されています。それが、&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;です。&lt;/p&gt;&#xA;&lt;p&gt;前述のコードは次のように書くことが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt;: Fragment() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onViewCreated&lt;/span&gt;(view: View, savedInstanceState: Bundle?) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onViewCreated(view, savedInstanceState)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// ViewのLifecycleOwnerを渡す&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        viewModel.&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;.observe(viewLifecycleOwner, Observer {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！&lt;/p&gt;&#xA;&lt;h2 id=&#34;補足1&#34;&gt;補足1&lt;/h2&gt;&#xA;&lt;p&gt;Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。&#xA;それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;補足2&#34;&gt;補足2&lt;/h2&gt;&#xA;&lt;p&gt;Observerの重複登録問題はattach/detachを繰り返す場合におこります。&#xA;サンプルコードは次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    delay(&lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    supportFragmentManager.commitNow {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (fragment.isDetached) attach(fragment)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; detach(fragment)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;　  }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <description>&lt;p&gt;この記事ではFragmentでLiveDataにObserverを登録するときは&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;を使うと良いという話をします。&lt;/p&gt;
+&lt;p&gt;まず、Fragmentのおおまかなライフサイクルは次のようになっています。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;onAttach&lt;/li&gt;
+&lt;li&gt;onCreate
+&lt;ul&gt;
+&lt;li&gt;onCreateView&lt;/li&gt;
+&lt;li&gt;onViewCreated
+&lt;ul&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;onDestoryView&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;onDestroy&lt;/li&gt;
+&lt;li&gt;onDetach&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ここで重要なのは、&lt;code&gt;onDestroy&lt;/code&gt;が呼ばれることなく、複数回&lt;code&gt;onCreateView&lt;/code&gt;が呼ばれる可能性がある点です。&lt;/p&gt;
+&lt;p&gt;例えば、次のコードは間違っている可能性があります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt;: Fragment() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onViewCreated&lt;/span&gt;(view: View, savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onViewCreated(view, savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        viewModel.&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;.observe(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;, Observer {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;なぜなら、LiveDataに渡したthis（LifecycleOwner）は、自身のライフサイクルに駆動するためです。
+このObserverが開放されるタイミングは、Fragment#onDestroyがコールされたタイミングになります。
+しかし前述したとおり、Fragment#onDestroyがコールされずに、複数回onCreateViewがコールされる可能性があるため、前のObserverが開放されずに残ってしまいます。&lt;/p&gt;
+&lt;p&gt;前述のコードのObserverはFragment本体のLifecycleに駆動されるのではなく、FragmentのViewに駆動するため、この問題が起こります。
+よって、FragmentにはView用のLifecycleが用意されています。それが、&lt;code&gt;Fragment#getViewLifecycle&lt;/code&gt;です。&lt;/p&gt;
+&lt;p&gt;前述のコードは次のように書くことが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainFragment&lt;/span&gt;: Fragment() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onViewCreated&lt;/span&gt;(view: View, savedInstanceState: Bundle?) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;.onViewCreated(view, savedInstanceState)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// ViewのLifecycleOwnerを渡す
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        viewModel.&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt;.observe(viewLifecycleOwner, Observer {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このように書くことで、ObserverがViewのライフサイクルに駆動するため、複数のObserverが登録される問題を回避することが出来ます！！&lt;/p&gt;
+&lt;h2 id=&#34;補足1&#34;&gt;補足1&lt;/h2&gt;
+&lt;p&gt;Observerが開放されるタイミングはonDestroyがコールされるタイミングとは別にもう1つあります。
+それは、Observerへの参照がなくなったタイミングです。内部的にObserverはWeakReferenceで保持されており、参照が無くなったタイミングでGCされます。&lt;/p&gt;
+&lt;h2 id=&#34;補足2&#34;&gt;補足2&lt;/h2&gt;
+&lt;p&gt;Observerの重複登録問題はattach/detachを繰り返す場合におこります。
+サンプルコードは次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    delay(&lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    supportFragmentManager.commitNow {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (fragment.isDetached) attach(fragment)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; detach(fragment)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;　  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
+    
+    
   </channel>
 </rss>

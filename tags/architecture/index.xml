@@ -1,62 +1,667 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Architecture on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/architecture/</link>
-    <description>Recent content in Architecture on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sat, 14 Sep 2024 14:41:37 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2024 Sato Shun</copyright>
+    <updated>Sat, 14 Sep 2024 14:41:37 UTC</updated>
+    
+    
     <item>
       <title>Android at Scale(with Circuit)の感想</title>
       <link>https://satoshun.github.io/2024/09/android-impression-at-scale/</link>
-      <pubDate>Sat, 14 Sep 2024 14:41:37 +0000</pubDate>
+      <pubDate>Sat, 14 Sep 2024 14:41:37 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2024/09/android-impression-at-scale/</guid>
-      <description>&lt;p&gt;John Buhananさんの、&lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;Android at Scale with Circuit&lt;/a&gt; がとても良い記事だったので雑記。&lt;/p&gt;&#xA;&lt;p&gt;上記の記事では、大規模なプロジェクトにおいて、どのようにマルチモジュールを構成するかについての解説をしています。&lt;/p&gt;&#xA;&lt;p&gt;その中で、個人的に、&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;各featureモジュール単位でアプリが実行できるようにする&lt;/li&gt;&#xA;&lt;li&gt;feature(library)モジュールは、public/internal/appで構築されて、各モジュールはpublicのみに依存するようにする&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;の部分が刺さったので、それについて雑感を述べていきます。また、本記事では、技術詳細は省いているので、より詳細は元記事を読んでもらえると嬉しいです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;各featureモジュール単位でアプリが実行できるようにする&#34;&gt;各featureモジュール単位でアプリが実行できるようにする&lt;/h2&gt;&#xA;&lt;p&gt;一般的なプロジェクトでは、全機能が入ったアプリを作ることしか出来ないと思うんですが、ここでは1部の機能だけを持ったアプリを作れるようにすることを提案しています。&lt;/p&gt;&#xA;&lt;p&gt;割と前から、この考え自体はandroid界隈で囁かれていたんですが、個人的にはコード複雑になりそうだと感じたので、導入するのはしんどそうだなと思っていました。しかし、記事内ではCircuitライブラリ、Dagger Hilt、モジュール構成などを工夫することで、シンプルな構成での1部機能アプリの作成を可能にしています。&lt;/p&gt;&#xA;&lt;p&gt;詳細は &lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;元記事&lt;/a&gt; 内に書かれているんですが、DI周りを少し説明すると、Daggerのマルチバンディングを使うことで実現可能です。例えば、Account機能の宣言イメージは次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// CircuitライブラリのDIコード&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Module&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@InstallIn&lt;/span&gt;(SingletonComponent&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AccountFactoryModule&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Binds&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@IntoSet&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bindAccountFactory&lt;/span&gt;(accountFactory: AccountFactory): &lt;span style=&#34;color:#a6e22e&#34;&gt;Ui&lt;/span&gt;.Factory&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Account機能を使いたいときは、上記の宣言を依存に含めてあげれば、Account機能が注入されます。逆に、この宣言を依存に含めなければ、Account機能を外すことができるため、「Accountモジュールの依存を外せる = Accountモジュールのビルドを省略」することが出来ます。&lt;/p&gt;&#xA;&lt;p&gt;例えば、10個の機能があるアプリだったら、9個の機能モジュールの依存を外せて、さらにその9個が依存しているモジュールの依存も省略できるので、かなりのビルド短縮が見込めます。&lt;/p&gt;&#xA;&lt;p&gt;さらに、dropbox/focusライブラリを使うことで、読み込むモジュール数を減らすことが出来ます。これは不必要なモジュールをアンロードしてくれるライブラリで、イメージとしてはsetting.gradleのincludeを自動生成してくれるようなライブラリになっています。これにより、Gradle Configurationの改善や、IDEのパフォーマンス改善が期待できます。&lt;/p&gt;&#xA;&lt;p&gt;まとめると、モジュール構成などを工夫して機能ごとにアプリを作成出来るようにすることで、ビルド速度が改善できる。dropbox/focusを使うことで、IDEのパフォーマンスなども改善ができる。ツールやライブラリも整ってきたので、コードも複雑にならない。っていう感じです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;各featureモジュールはpublicinternalappで構築されて各モジュールはpublicのみに依存する&#34;&gt;各featureモジュールは、public/internal/appで構築されて、各モジュールはpublicのみに依存する&lt;/h2&gt;&#xA;&lt;p&gt;じゃあ実際にどのようにモジュールを構成すれば良いのかっていう話なんですが、&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;public: CircuitのScreenクラスのみが入っている (navigationコードだけ)&lt;/li&gt;&#xA;&lt;li&gt;internal: CircuitのPresenter、UIなど、実画面の実装と、publicで定義したScreenと結びつける用のDIが入っている&lt;/li&gt;&#xA;&lt;li&gt;app: 起動に必要なDIが定義されている。これを含めることで、この機能をエントリーポイントとして実行することができる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;っていう感じで構成されています。画面間を遷移するためにはnavigationをいい感じに実装する必要があるんですが、Circuitでは、Screen (Intentみたいなイメージ) を使ってnavigationします。各画面から遷移するときは、Screenの情報があれば良いので、Screenのみが含まれたpublicモジュールを機能ごとに作って、各featureモジュールがpublicのみに依存するようにすることで、最低限のモジュール間依存でnavigationを構築することができます。&lt;/p&gt;&#xA;&lt;p&gt;そして、実行時にテストしたい機能のみに依存することで、最小限の依存で機能単位で実行することが可能になります。例えば、Account機能のテストをしたかったら、feature:account:app モジュールを使うような感じです。&lt;/p&gt;&#xA;&lt;p&gt;まとめると、各機能モジュール間の依存を最小限にすることで、機能ごとの実行を容易に出来て、そのためにpublic/internal/appっていう粒度でモジュールを分割するといいよっていう感じです。&lt;/p&gt;&#xA;&lt;p&gt;また、記事内ではCircuitを使っているんですが、Circuitを使わずに、何かしらの抽象的なnavigationシステムを構築すれば、似たようなことが実現できると思います。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;&#xA;&lt;p&gt;色々と書いたのですが、ざっくりとした話しかしていないので、細かい部分については、ぜひ元記事の方を読んで頂けると幸いです。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/JamesBuhanan/Songify&#34;&gt;https://github.com/JamesBuhanan/Songify&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;John Buhananさんの、&lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;Android at Scale with Circuit&lt;/a&gt; がとても良い記事だったので雑記。&lt;/p&gt;
+&lt;p&gt;上記の記事では、大規模なプロジェクトにおいて、どのようにマルチモジュールを構成するかについての解説をしています。&lt;/p&gt;
+&lt;p&gt;その中で、個人的に、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;各featureモジュール単位でアプリが実行できるようにする&lt;/li&gt;
+&lt;li&gt;feature(library)モジュールは、public/internal/appで構築されて、各モジュールはpublicのみに依存するようにする&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;の部分が刺さったので、それについて雑感を述べていきます。また、本記事では、技術詳細は省いているので、より詳細は元記事を読んでもらえると嬉しいです。&lt;/p&gt;
+&lt;h2 id=&#34;各featureモジュール単位でアプリが実行できるようにする&#34;&gt;各featureモジュール単位でアプリが実行できるようにする&lt;/h2&gt;
+&lt;p&gt;一般的なプロジェクトでは、全機能が入ったアプリを作ることしか出来ないと思うんですが、ここでは1部の機能だけを持ったアプリを作れるようにすることを提案しています。&lt;/p&gt;
+&lt;p&gt;割と前から、この考え自体はandroid界隈で囁かれていたんですが、個人的にはコード複雑になりそうだと感じたので、導入するのはしんどそうだなと思っていました。しかし、記事内ではCircuitライブラリ、Dagger Hilt、モジュール構成などを工夫することで、シンプルな構成での1部機能アプリの作成を可能にしています。&lt;/p&gt;
+&lt;p&gt;詳細は &lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;元記事&lt;/a&gt; 内に書かれているんですが、DI周りを少し説明すると、Daggerのマルチバンディングを使うことで実現可能です。例えば、Account機能の宣言イメージは次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// CircuitライブラリのDIコード
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@InstallIn&lt;/span&gt;(SingletonComponent&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AccountFactoryModule&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Binds&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@IntoSet&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bindAccountFactory&lt;/span&gt;(accountFactory: AccountFactory): &lt;span style=&#34;color:#a6e22e&#34;&gt;Ui&lt;/span&gt;.Factory
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Account機能を使いたいときは、上記の宣言を依存に含めてあげれば、Account機能が注入されます。逆に、この宣言を依存に含めなければ、Account機能を外すことができるため、「Accountモジュールの依存を外せる = Accountモジュールのビルドを省略」することが出来ます。&lt;/p&gt;
+&lt;p&gt;例えば、10個の機能があるアプリだったら、9個の機能モジュールの依存を外せて、さらにその9個が依存しているモジュールの依存も省略できるので、かなりのビルド短縮が見込めます。&lt;/p&gt;
+&lt;p&gt;さらに、dropbox/focusライブラリを使うことで、読み込むモジュール数を減らすことが出来ます。これは不必要なモジュールをアンロードしてくれるライブラリで、イメージとしてはsetting.gradleのincludeを自動生成してくれるようなライブラリになっています。これにより、Gradle Configurationの改善や、IDEのパフォーマンス改善が期待できます。&lt;/p&gt;
+&lt;p&gt;まとめると、モジュール構成などを工夫して機能ごとにアプリを作成出来るようにすることで、ビルド速度が改善できる。dropbox/focusを使うことで、IDEのパフォーマンスなども改善ができる。ツールやライブラリも整ってきたので、コードも複雑にならない。っていう感じです。&lt;/p&gt;
+&lt;h2 id=&#34;各featureモジュールはpublicinternalappで構築されて各モジュールはpublicのみに依存する&#34;&gt;各featureモジュールは、public/internal/appで構築されて、各モジュールはpublicのみに依存する&lt;/h2&gt;
+&lt;p&gt;じゃあ実際にどのようにモジュールを構成すれば良いのかっていう話なんですが、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;public: CircuitのScreenクラスのみが入っている (navigationコードだけ)&lt;/li&gt;
+&lt;li&gt;internal: CircuitのPresenter、UIなど、実画面の実装と、publicで定義したScreenと結びつける用のDIが入っている&lt;/li&gt;
+&lt;li&gt;app: 起動に必要なDIが定義されている。これを含めることで、この機能をエントリーポイントとして実行することができる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;っていう感じで構成されています。画面間を遷移するためにはnavigationをいい感じに実装する必要があるんですが、Circuitでは、Screen (Intentみたいなイメージ) を使ってnavigationします。各画面から遷移するときは、Screenの情報があれば良いので、Screenのみが含まれたpublicモジュールを機能ごとに作って、各featureモジュールがpublicのみに依存するようにすることで、最低限のモジュール間依存でnavigationを構築することができます。&lt;/p&gt;
+&lt;p&gt;そして、実行時にテストしたい機能のみに依存することで、最小限の依存で機能単位で実行することが可能になります。例えば、Account機能のテストをしたかったら、feature:account:app モジュールを使うような感じです。&lt;/p&gt;
+&lt;p&gt;まとめると、各機能モジュール間の依存を最小限にすることで、機能ごとの実行を容易に出来て、そのためにpublic/internal/appっていう粒度でモジュールを分割するといいよっていう感じです。&lt;/p&gt;
+&lt;p&gt;また、記事内ではCircuitを使っているんですが、Circuitを使わずに、何かしらの抽象的なnavigationシステムを構築すれば、似たようなことが実現できると思います。&lt;/p&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+&lt;p&gt;色々と書いたのですが、ざっくりとした話しかしていないので、細かい部分については、ぜひ元記事の方を読んで頂けると幸いです。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&#34;&gt;https://www.johnbuhanan.dev/android-at-scale-with-circuit/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/JamesBuhanan/Songify&#34;&gt;https://github.com/JamesBuhanan/Songify&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ・感想</title>
       <link>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</link>
-      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
+      <pubDate>Sun, 09 Jun 2019 12:04:27 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
-      <description>&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&#39;19)&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;&#xA;&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;&#xA;&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;&#xA;&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;&#xA;&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;&#xA;&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;&#xA;&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;&#xA;&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;&#xA;&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;&#xA;&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;&#xA;&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;&#xA;&lt;h3 id=&#34;1-feature機能ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;&#xA;&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ライブラリモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Dynamic Featureモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;onDemand trueとfalseがある&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;&#xA;&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;dribbleと、designernewsがDynamic Featureモジュールになっている。&lt;/p&gt;&#xA;&lt;h3 id=&#34;2-layer層階層ごとに分ける&#34;&gt;2. Layer（層、階層）ごとに分ける&lt;/h3&gt;&#xA;&lt;p&gt;Plaidでは以下のように分けた。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Web Servicesの知識はUIはいらないので、implementationを指定する&#xA;&lt;ul&gt;&#xA;&lt;li&gt;そうすることで、UIがDTOやRetrofitの知識を知らないですむ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Entitiesの知識はUIが必要なので、apiを指定する&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ただし、この場合、DAOsの知識までUIが知ってしまうので微妙&#xA;&lt;ul&gt;&#xA;&lt;li&gt;そこでCommon Value Objectsの導入&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;こうすることで、UIがDAOの知識を知らずに済む&lt;/p&gt;&#xA;&lt;h3 id=&#34;fakes-for-tests&#34;&gt;Fakes for tests&lt;/h3&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;モックよりも優れた方法&#xA;&lt;ul&gt;&#xA;&lt;li&gt;fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;（モックはその場、その場で作られがちという意味？）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;featureモジュールの利点&#34;&gt;Featureモジュールの利点&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;カプセル化&lt;/li&gt;&#xA;&lt;li&gt;Dynamic Delivery&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;layerごとに分ける利点&#34;&gt;Layerごとに分ける利点&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;サードパーティライブラリの依存を独立&lt;/li&gt;&#xA;&lt;li&gt;構造をもたらす&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;dynamic-deliveryの課題&#34;&gt;Dynamic Deliveryの課題&lt;/h3&gt;&#xA;&lt;p&gt;Featureモジュール間のNavigationをどうするか?&lt;/p&gt;</description>
+      <description>&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&#39;19)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;
+&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;
+&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;
+&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;
+&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;
+&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;
+&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;
+&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;
+&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;
+&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;
+&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;
+&lt;h3 id=&#34;1-feature機能ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;
+&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ライブラリモジュール
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Dynamic Featureモジュール
+&lt;ul&gt;
+&lt;li&gt;onDemand trueとfalseがある
+&lt;ul&gt;
+&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;
+&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;dribbleと、designernewsがDynamic Featureモジュールになっている。&lt;/p&gt;
+&lt;h3 id=&#34;2-layer層階層ごとに分ける&#34;&gt;2. Layer（層、階層）ごとに分ける&lt;/h3&gt;
+&lt;p&gt;Plaidでは以下のように分けた。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Web Servicesの知識はUIはいらないので、implementationを指定する
+&lt;ul&gt;
+&lt;li&gt;そうすることで、UIがDTOやRetrofitの知識を知らないですむ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Entitiesの知識はUIが必要なので、apiを指定する
+&lt;ul&gt;
+&lt;li&gt;ただし、この場合、DAOsの知識までUIが知ってしまうので微妙
+&lt;ul&gt;
+&lt;li&gt;そこでCommon Value Objectsの導入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;こうすることで、UIがDAOの知識を知らずに済む&lt;/p&gt;
+&lt;h3 id=&#34;fakes-for-tests&#34;&gt;Fakes for tests&lt;/h3&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;モックよりも優れた方法
+&lt;ul&gt;
+&lt;li&gt;fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる
+&lt;ul&gt;
+&lt;li&gt;（モックはその場、その場で作られがちという意味？）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;featureモジュールの利点&#34;&gt;Featureモジュールの利点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;カプセル化&lt;/li&gt;
+&lt;li&gt;Dynamic Delivery&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;layerごとに分ける利点&#34;&gt;Layerごとに分ける利点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;サードパーティライブラリの依存を独立&lt;/li&gt;
+&lt;li&gt;構造をもたらす&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dynamic-deliveryの課題&#34;&gt;Dynamic Deliveryの課題&lt;/h3&gt;
+&lt;p&gt;Featureモジュール間のNavigationをどうするか?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;appから、Dynamic Featureモジュールへの依存を持てない
+&lt;ul&gt;
+&lt;li&gt;（これはDynamic Deliveryの制約のため）&lt;/li&gt;
+&lt;li&gt;文字列、リフレクションでstartActivityするしかない&lt;/li&gt;
+&lt;li&gt;Fragmentも同様&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今後、Navigationライブラリで自然に書けるようになるらしい😃&lt;/p&gt;
+&lt;h2 id=&#34;データベース&#34;&gt;データベース&lt;/h2&gt;
+&lt;h3 id=&#34;1つのデータベースのみ持つ&#34;&gt;1つのデータベースのみ持つ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;コネクションの管理が楽&lt;/li&gt;
+&lt;li&gt;テーブルのシェアが簡単&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;モジュール間に依存が生まれる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;モジュールごとに1つのデータベースを持つ&#34;&gt;モジュールごとに1つのデータベースを持つ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;モジュール間の依存が疎になる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;データベースのコネクション管理がめんどい&lt;/li&gt;
+&lt;li&gt;繰り返しのコードが生まれやすい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;hybridアプローチ&#34;&gt;hybridアプローチ&lt;/h3&gt;
+&lt;p&gt;特にルールを決めずに、データベースモジュールを作っていく&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;Flexible&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;Fiexible
+&lt;ul&gt;
+&lt;li&gt;どこに、どのDAO、Entityを置けば良いのかの判断を常に迫られる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/gTSq0TPmgz2B2iyb_qidLaq-G8VSSnmSOI_VDez7Mu0UBASB5h7PIRDKWMJPrH40XGxFCw3QDenkSgiD6f4D2U5EhBAK_OEayUdIVtH5hX53vvUQM7Q-4AiJHx0NDt-4iRjCjaTeIlJs16YyeZpEt6iIvgp9HrAD_cr7vE5myFyRzeJnaHSU_vzZULGICVIWBmgxKFAcHUKDdiHRHUMuncyewUxZGc_O5t3xlQvXUanCQxVh6NXvBQZXxhFpqYRMwPiSTTNmIGz8BFFnX5JqHZAdKULHDZDV8FjeT6KtQXFjPQMMrEm6c_Sdka9aHgH5c4U76VbhF9lJd1xnn0i_jeVhbBXZ4Ylhwuem8trNGg0L2-JSphGwz2dlud0oS39CwN3spcRFEXkyQ3F6AjaW0omnmWYh1S3r2p_W9Wd3Yxyy3H7egkYyHdYmdqU76m5s0y9pCL3VWaiGvLZFr61Z0NVABPVW9O_dDS5jroA8OV4yJn_q6kMEQ_QgYz5uCatq_a86gXcWFRBipdZfhqMCZCMvJ8apGzKzrIyDuiM-3GMk_IZLR4ybtgdpFoxIEdXhCPHpUnWiCPQ6xsH3Od2P485MLbKLdZWDp76NB36DZRhlPAs33Z5h-ItZfm1mKok05rXrzibepyocRNr2rUKnOoyaHtsaxKek=w2160-h1202-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;マルチモジュール対応Room絶賛開発中らしい😃&lt;/p&gt;
+&lt;h3 id=&#34;android-free-modules&#34;&gt;Android free modules&lt;/h3&gt;
+&lt;p&gt;multi platformにする場合&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kotlin nativeとか
+&lt;ul&gt;
+&lt;li&gt;ちゃんとユースケースを持っているなら、multi platformは良い選択&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;テストの高速化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;確かにテストは早くなるが、テストのためだけにAndroid freeにするのは冗長
+&lt;ul&gt;
+&lt;li&gt;Robolectricで十分&lt;/li&gt;
+&lt;li&gt;Android Frameworkの再開発は無駄e&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;最小限の依存関係でモジュールを構成する&lt;/li&gt;
+&lt;li&gt;関心事の分離
+&lt;ul&gt;
+&lt;li&gt;ビジネスロジックがUIに依存しない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;抽象化
+&lt;ul&gt;
+&lt;li&gt;抽象化は非常に便利だが、複雑になりがちなので、抽象化により得れる利点を常に考える&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;これらのモジュール化のやりかたは、あくまでオプション
+&lt;ul&gt;
+&lt;li&gt;ユーザはマルチモジュールなコードだからって5つ星はくれない&lt;/li&gt;
+&lt;li&gt;あくまでユーザが一番大事&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ・感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Dynamic DeliveryはNavigationに対応が入ってきたあたりで導入検討したいなって思った
+&lt;ul&gt;
+&lt;li&gt;まだノウハウが少ない印象なので&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Fakeのためのモジュールはいいアイデアだなって思った
+&lt;ul&gt;
+&lt;li&gt;テストで、モックはあまり使わない流れなのかもしれない
+&lt;ul&gt;
+&lt;li&gt;確かにモックをカジュアルに使いすぎると何をテストしているか分からなくなるときがある&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;やっぱ関心ごとの分離って大事なんやなって
+&lt;ul&gt;
+&lt;li&gt;層、モジュールでうまく強制、表現したい&lt;/li&gt;
+&lt;li&gt;サードパーティライブラリへの依存が、特定のモジュールに押し込めるのは良さ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>MvRxの雑な感想</title>
       <link>https://satoshun.github.io/2019/05/mvrx-architecture/</link>
-      <pubDate>Sun, 05 May 2019 05:05:09 +0000</pubDate>
+      <pubDate>Sun, 05 May 2019 05:05:09 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/05/mvrx-architecture/</guid>
-      <description>&lt;p&gt;雑多なことを書いただけのブログになります。内容はあまりないよう〜。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/airbnb/MvRx&#34;&gt;MvRx&lt;/a&gt;はAirbnbが開発をしているOSSフレームワークです。&lt;/p&gt;&#xA;&lt;p&gt;特徴としては&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kotlinファースト&lt;/li&gt;&#xA;&lt;li&gt;RxJavaを使っている&lt;/li&gt;&#xA;&lt;li&gt;AAC（Android Architecture Components）をベースにしている&#xA;&lt;ul&gt;&#xA;&lt;li&gt;AACをRxJavaであったり、便利関数、クラス群で補佐している感じ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;多くの部分でReactのAPIを参考にしてる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;State、renderなど&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/airbnb/epoxy&#34;&gt;Epoxy&lt;/a&gt;と相性が良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一緒に使うことを推奨している&lt;/li&gt;&#xA;&lt;li&gt;ReactのComponentのように振る舞わうことが出来る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;副作用がない（減らしたい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;ボイラープレートなコードを減らすことが期待できます😃&lt;/p&gt;&#xA;&lt;h2 id=&#34;個人的に気になった部分好きなとこ&#34;&gt;個人的に気になった部分、好きなとこ&lt;/h2&gt;&#xA;&lt;h3 id=&#34;stateでview状態を管理するところ&#34;&gt;StateでView状態を管理するところ&lt;/h3&gt;&#xA;&lt;p&gt;Stateを定義することのメリットは以下かなと思ってます。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Stateを見れば、Viewの構成要素が分かる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MVPアーキテクチャのViewインターフェースのような役割を果たす&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;状態の管理が楽&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Viewからロジックを取ることが出来る&#xA;&lt;ul&gt;&#xA;&lt;li&gt;もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;asyncがすごい良い&#34;&gt;Asyncがすごい良い&lt;/h3&gt;&#xA;&lt;p&gt;MvRxではAsyncというsealed classが定義されていて、&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Uninitialized&lt;/li&gt;&#xA;&lt;li&gt;Loading&lt;/li&gt;&#xA;&lt;li&gt;Success&lt;/li&gt;&#xA;&lt;li&gt;Fail&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。&lt;/p&gt;&#xA;&lt;p&gt;プロジェクトに、Asyncだけ取り入れるのもアリだと思います。&lt;/p&gt;&#xA;&lt;h3 id=&#34;single-eventの処理をどうするのか&#34;&gt;Single Eventの処理をどうするのか&lt;/h3&gt;&#xA;&lt;p&gt;State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも&#xA;&lt;ul&gt;&#xA;&lt;li&gt;やっぱりSingle Eventの取り扱いって大変なんやなって&lt;/li&gt;&#xA;&lt;li&gt;とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/chrisbanes/tivi&#34;&gt;Tivi&lt;/a&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;プロジェクトも大きく、Coroutineなども使っている&lt;/li&gt;&#xA;&lt;li&gt;これ見れば、なんとなく肌感は分かると思います&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;雑多なことを書いただけのブログになります。内容はあまりないよう〜。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/airbnb/MvRx&#34;&gt;MvRx&lt;/a&gt;はAirbnbが開発をしているOSSフレームワークです。&lt;/p&gt;
+&lt;p&gt;特徴としては&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kotlinファースト&lt;/li&gt;
+&lt;li&gt;RxJavaを使っている&lt;/li&gt;
+&lt;li&gt;AAC（Android Architecture Components）をベースにしている
+&lt;ul&gt;
+&lt;li&gt;AACをRxJavaであったり、便利関数、クラス群で補佐している感じ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多くの部分でReactのAPIを参考にしてる
+&lt;ul&gt;
+&lt;li&gt;State、renderなど&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/airbnb/epoxy&#34;&gt;Epoxy&lt;/a&gt;と相性が良い
+&lt;ul&gt;
+&lt;li&gt;一緒に使うことを推奨している&lt;/li&gt;
+&lt;li&gt;ReactのComponentのように振る舞わうことが出来る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ViewModelが保持しているState（状態）に対して、Viewがpure functionのように振る舞う
+&lt;ul&gt;
+&lt;li&gt;副作用がない（減らしたい）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ボイラープレートなコードを減らすことが期待できます😃&lt;/p&gt;
+&lt;h2 id=&#34;個人的に気になった部分好きなとこ&#34;&gt;個人的に気になった部分、好きなとこ&lt;/h2&gt;
+&lt;h3 id=&#34;stateでview状態を管理するところ&#34;&gt;StateでView状態を管理するところ&lt;/h3&gt;
+&lt;p&gt;Stateを定義することのメリットは以下かなと思ってます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Stateを見れば、Viewの構成要素が分かる
+&lt;ul&gt;
+&lt;li&gt;MVPアーキテクチャのViewインターフェースのような役割を果たす&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;状態の管理が楽
+&lt;ul&gt;
+&lt;li&gt;Androidでは、configuration changes時の状態の保持が難しいが、Stateだけをケアすれば良い
+&lt;ul&gt;
+&lt;li&gt;MvRxの流儀に習って、正しく実装すればよしなに状態の管理をしてくれる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Viewからロジックを取ることが出来る
+&lt;ul&gt;
+&lt;li&gt;もちろん実装次第なのですが、StateでViewの状態を表現するようにすれば、Viewはマッピングするだけで良くなる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;asyncがすごい良い&#34;&gt;Asyncがすごい良い&lt;/h3&gt;
+&lt;p&gt;MvRxではAsyncというsealed classが定義されていて、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Uninitialized&lt;/li&gt;
+&lt;li&gt;Loading&lt;/li&gt;
+&lt;li&gt;Success&lt;/li&gt;
+&lt;li&gt;Fail&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;の4状態を表現することができます。画面の初期値は上記4状態で、大体のケースはケア出来ると思います。&lt;/p&gt;
+&lt;p&gt;プロジェクトに、Asyncだけ取り入れるのもアリだと思います。&lt;/p&gt;
+&lt;h3 id=&#34;single-eventの処理をどうするのか&#34;&gt;Single Eventの処理をどうするのか&lt;/h3&gt;
+&lt;p&gt;State内で保持すると、毎回発火してしまうので、Stateとは違う、他のstreamで表現することになると思う&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;invalidateメソッドではなく、直接ViewModelに定義したフィールドを、observeすることになるので、他のページと比較したときに違和感があるかも
+&lt;ul&gt;
+&lt;li&gt;やっぱりSingle Eventの取り扱いって大変なんやなって&lt;/li&gt;
+&lt;li&gt;とはいえ、sealed classで定義すれば、同じように見えることが出来ると思うので、大きな話ではない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/chrisbanes/tivi&#34;&gt;Tivi&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;プロジェクトも大きく、Coroutineなども使っている&lt;/li&gt;
+&lt;li&gt;これ見れば、なんとなく肌感は分かると思います&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>FluxのDispatcherをRoomのin memoryで実装するのは、冗長なコードが多くなるので良くない</title>
       <link>https://satoshun.github.io/2019/01/room-with-flux/</link>
-      <pubDate>Thu, 24 Jan 2019 00:43:33 +0000</pubDate>
+      <pubDate>Thu, 24 Jan 2019 00:43:33 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/01/room-with-flux/</guid>
-      <description>&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;&#xA;&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;&#xA;&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;&#xA;&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;&#xA;&lt;p&gt;使い方は次のようになります。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Room&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .inMemoryDatabaseBuilder(context, MyDatabase&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .build()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;&#xA;&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;になります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;&#xA;&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;&#xA;&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;sealed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthorAction&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author1&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author1&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author2&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author2&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;</description>
+      <description>&lt;p&gt;FluxのDispatcherをRoom in memoryで実装すれば最高なのでは?と思い、ちょっと試してみました。&lt;/p&gt;
+&lt;p&gt;結論から申しますと冗長なコードが多く、良くないと感じました。EventBusや、他のライブラリを使って実装したほうが良いと思います😂&lt;/p&gt;
+&lt;p&gt;また、オリジナルFluxは「Dispatcherがアプリ内で1つだけ存在する」という原則があったと思いますが、それを破っています。Fluxですらない可能性があります。&lt;/p&gt;
+&lt;h2 id=&#34;room-in-memory&#34;&gt;Room in memory?&lt;/h2&gt;
+&lt;p&gt;Roomではin memoryでデータベースを作ることが出来ます。正確に言えば、SQLiteの機能をRoomのAPIとして開放しています。&lt;/p&gt;
+&lt;p&gt;使い方は次のようになります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Room
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .inMemoryDatabaseBuilder(context, MyDatabase&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt;.java)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  .build()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;in memoryを使う理由としては、&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ディスパッチするアクションを永続化する必要はないだろう&lt;/li&gt;
+&lt;li&gt;マイグレーションが必要ない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;になります。&lt;/p&gt;
+&lt;h2 id=&#34;実装に入っていく&#34;&gt;実装に入っていく&lt;/h2&gt;
+&lt;p&gt;では、実装の説明をしていきます。&lt;/p&gt;
+&lt;p&gt;まずはActionをRoomのEntityとして定義します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;sealed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AuthorAction&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author1&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author1&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Entity&lt;/span&gt;(tableName = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;author2&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Author2&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;@PrimaryKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; _id: Long = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;// always 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; name: String,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;val&lt;/span&gt; age: Int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) : AuthorAction()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Primary keyは常に一定にして、アクションは0 or 1つしか存在しないようにしておきます。仮にアクションの履歴が欲しいなら、&lt;code&gt;@PrimaryKey(autoGenerate = true)&lt;/code&gt;を使っても良いと思います。&lt;/p&gt;
+&lt;p&gt;次にDaoを定義します。これはFluxでいうところのDispatcherになります。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;@Dao
+interface AuthorDispatcher {
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author1)
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun dispatch(author: Author2)
+
+  // Storeに相当する
+  @Query(&amp;#34;select * FROM author1 WHERE _id = 0&amp;#34;)
+  fun author(): LiveData&amp;lt;Author1?&amp;gt;
+
+  // Storeに相当する
+  @Query(
+    &amp;#34;&amp;#34;&amp;#34;
+    select author1.name as name1, author2.name as name2
+    FROM author1
+     INNER JOIN author2
+    WHERE author1._id = 0 AND author2._id = 0
+    &amp;#34;&amp;#34;&amp;#34;
+  )
+  fun mappedAuthor(): LiveData&amp;lt;MappedAuthor?&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;となります。&lt;code&gt;@Insert&lt;/code&gt;でアクションをdispatchメソッドを、&lt;code&gt;@Query&lt;/code&gt;でsubscribeメソッドを実装しています。&lt;/p&gt;
+&lt;p&gt;これで、FluxのDispatcherに似た何かをRoomで表現することが出来ます！&lt;/p&gt;
+&lt;h2 id=&#34;まとめ考察&#34;&gt;まとめ/考察&lt;/h2&gt;
+&lt;p&gt;RoomでDispatcher的なのを作る方法と、EventBusなどを使ったアプローチの違いは以下になります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Storeに書いていたロジックをSQLに任せることが出来る
+&lt;ul&gt;
+&lt;li&gt;Transactionを上手く使えば、マルチスレッド環境でもそれっぽく動きそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ほげほげDispactherクラスがアプリ内に蔓延する&lt;/li&gt;
+&lt;li&gt;コードが冗長😂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;工夫すれば、もう少しキレイに書けるとは思いますが、ただEventBusや、Coroutineを使ったアプローチには敵わないと思っています。
+FluxのDispatcherの代替としては辛いですが、他の用途、例えばRepositoryの実装などには使える余地があると思うので、そういったところで思い出していただけたら幸いです😊&lt;/p&gt;
+&lt;p&gt;検証に用いたサンプルコードは&lt;a href=&#34;https://github.com/satoshun-android-example/RoomDispatcherExample&#34;&gt;RoomDispatcherExample&lt;/a&gt;にあります。&lt;/p&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>感想: オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方</title>
       <link>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</link>
-      <pubDate>Tue, 25 Dec 2018 03:00:39 +0000</pubDate>
+      <pubDate>Tue, 25 Dec 2018 03:00:39 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/12/object_oriented_practical_guide/</guid>
-      <description>&lt;p&gt;オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。&lt;/p&gt;&#xA;&lt;p&gt;継承とコンポジションはトレードオフ&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;継承は自動的にaメッセージを委譲する&#xA;&lt;ul&gt;&#xA;&lt;li&gt;便利だが依存関係は強い&lt;/li&gt;&#xA;&lt;li&gt;親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;継承は階層構造を生み出す&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ポリモーフィズムを実現する&lt;/li&gt;&#xA;&lt;li&gt;これまた便利だが依存関係は強い&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;コンポジションは自動的に委譲しない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;必要に応じて集約クラスで操る必要がある&lt;/li&gt;&#xA;&lt;li&gt;依存は継承より少ない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;単一責任について&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;あたりまえだけど守らないといけない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;無駄な責務があると再利用できない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;達成することで再利用可能な素晴らしいクラスが出来る&lt;/li&gt;&#xA;&lt;li&gt;責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;ダックタイピング&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る&lt;/li&gt;&#xA;&lt;li&gt;ロールを満たすことにより要件を満たす&lt;/li&gt;&#xA;&lt;li&gt;実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;依存関係について&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;依存関係の向きを考えるのは大切&#xA;&lt;ul&gt;&#xA;&lt;li&gt;例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い&#xA;&lt;ul&gt;&#xA;&lt;li&gt;さらに進めるとDI，コンストラクタの外から注入する&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;依存関係逆転の法則&#xA;&lt;ul&gt;&#xA;&lt;li&gt;低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成&#xA;&lt;ul&gt;&#xA;&lt;li&gt;domain層などの他の層に依存したくない層で有効&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;柔軟なインターフェース&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;オブジェクトを信じるようなインターフェース&#xA;&lt;ul&gt;&#xA;&lt;li&gt;どのようにするかではなく、何をするかをメソッド名にする。宣言的に&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;安定していなければいけない&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;オブジェクト指向設計実践ガイド ~Rubyでわかる 進化しつづける柔軟なアプリケーションの育て方を読んだのでざっくりと感想。&lt;/p&gt;
+&lt;p&gt;継承とコンポジションはトレードオフ&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;継承は自動的にaメッセージを委譲する
+&lt;ul&gt;
+&lt;li&gt;便利だが依存関係は強い&lt;/li&gt;
+&lt;li&gt;親クラスが変更されたときに、自動的に子クラスにも影響があることを意味する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;継承は階層構造を生み出す
+&lt;ul&gt;
+&lt;li&gt;ポリモーフィズムを実現する&lt;/li&gt;
+&lt;li&gt;これまた便利だが依存関係は強い&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;コンポジションは自動的に委譲しない
+&lt;ul&gt;
+&lt;li&gt;必要に応じて集約クラスで操る必要がある&lt;/li&gt;
+&lt;li&gt;依存は継承より少ない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;単一責任について&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;あたりまえだけど守らないといけない
+&lt;ul&gt;
+&lt;li&gt;無駄な責務があると再利用できない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;達成することで再利用可能な素晴らしいクラスが出来る&lt;/li&gt;
+&lt;li&gt;責任の依存先が不明なときは一旦privateとかに切り出しておいて未来に託す&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ダックタイピング&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ダックにより、具体的なGearクラスからロールへのマインドシフトが出来る&lt;/li&gt;
+&lt;li&gt;ロールを満たすことにより要件を満たす&lt;/li&gt;
+&lt;li&gt;実装には依存しない、メッセージを送るだけで良い世界はOOPの真骨頂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;依存関係について&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;依存関係の向きを考えるのは大切
+&lt;ul&gt;
+&lt;li&gt;例えばコンストラクタ内で依存するのと、インスタンスメソッドだと距離が違う。コンストラクタ内で依存したほうが良い
+&lt;ul&gt;
+&lt;li&gt;さらに進めるとDI，コンストラクタの外から注入する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;依存関係逆転の法則
+&lt;ul&gt;
+&lt;li&gt;低レイヤーに依存するのではなく、インターフェースに依存しておいて、あとから実装を注入することで達成
+&lt;ul&gt;
+&lt;li&gt;domain層などの他の層に依存したくない層で有効&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;柔軟なインターフェース&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;オブジェクトを信じるようなインターフェース
+&lt;ul&gt;
+&lt;li&gt;どのようにするかではなく、何をするかをメソッド名にする。宣言的に&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;安定していなければいけない&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>感想: Androidアプリ設計パターン入門</title>
       <link>https://satoshun.github.io/2018/03/android-architecture-started/</link>
-      <pubDate>Fri, 02 Mar 2018 00:28:00 +0000</pubDate>
+      <pubDate>Fri, 02 Mar 2018 00:28:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2018/03/android-architecture-started/</guid>
-      <description>&lt;p&gt;Androidアプリ設計パターン入門を読んだのでざっくりと感想。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://peaks.cc/books/architecture_patterns&#34;&gt;https://peaks.cc/books/architecture_patterns&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;MVP&#xA;&lt;ul&gt;&#xA;&lt;li&gt;PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう&#xA;&lt;ul&gt;&#xA;&lt;li&gt;PresenterでView、Modelが何を出来るかを知らなければならない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Contractみたいなインタフェースを切るのは好き&#xA;&lt;ul&gt;&#xA;&lt;li&gt;それを見ただけで何をそのページでやっているのかが掴めるので&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;MVVM&#xA;&lt;ul&gt;&#xA;&lt;li&gt;個人的にはMVPより好き&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ViewModelがViewの参照を持たなくて良いので少しスッキリする&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Flux&#xA;&lt;ul&gt;&#xA;&lt;li&gt;単一方向データフローは凄い良いと思う&#xA;&lt;ul&gt;&#xA;&lt;li&gt;単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い&lt;/li&gt;&#xA;&lt;li&gt;FluxもAACとの相性は良いと思う&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;負債の話&#xA;&lt;ul&gt;&#xA;&lt;li&gt;負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;メモ&#xA;&lt;ul&gt;&#xA;&lt;li&gt;データ層の抽象化に関してはRepository的なものを作るで良さそう&lt;/li&gt;&#xA;&lt;li&gt;データ側はRx、UI側に反映する時はLiveDataが良さそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Androidアプリ設計パターン入門を読んだのでざっくりと感想。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://peaks.cc/books/architecture_patterns&#34;&gt;https://peaks.cc/books/architecture_patterns&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;MVP
+&lt;ul&gt;
+&lt;li&gt;PresenterがViewとModelへの仲介役なので、Presenterはどうしてもfatになりそう
+&lt;ul&gt;
+&lt;li&gt;PresenterでView、Modelが何を出来るかを知らなければならない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Contractみたいなインタフェースを切るのは好き
+&lt;ul&gt;
+&lt;li&gt;それを見ただけで何をそのページでやっているのかが掴めるので&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;PresenterはContextを知らなく良い、Pure Javaなのでテスタブルだし綺麗になりそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;MVVM
+&lt;ul&gt;
+&lt;li&gt;個人的にはMVPより好き
+&lt;ul&gt;
+&lt;li&gt;ViewModelがViewの参照を持たなくて良いので少しスッキリする
+&lt;ul&gt;
+&lt;li&gt;ただViewへの参照がないだけで、LiveDataなりObservableFieldに値を書き出すので実質的にはViewがどんなことをしたいか知っているから同等といえば同等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Viewへの参照を持たないので、AACのViewModelへの適合性は高いと思う
+&lt;ul&gt;
+&lt;li&gt;DataBindingのObservableFieldとかを使わない前提。使うとViewへの参照を持ってメモリリークしちゃう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Flux
+&lt;ul&gt;
+&lt;li&gt;単一方向データフローは凄い良いと思う
+&lt;ul&gt;
+&lt;li&gt;単一方向はFluxだけに限らないけど、Fluxを象徴する1つの特徴&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ViewModelとかPresenterって処理が集中する傾向にあると感じていて、FluxだとStore、ActionCreatorって形で切り出せるから良い&lt;/li&gt;
+&lt;li&gt;FluxもAACとの相性は良いと思う&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;負債の話
+&lt;ul&gt;
+&lt;li&gt;負債に対する解決策の1つとしてReact Nativeを出すのは発想として凄いと思ったし、そういう解決方法もあるのかと思った&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;メモ
+&lt;ul&gt;
+&lt;li&gt;データ層の抽象化に関してはRepository的なものを作るで良さそう&lt;/li&gt;
+&lt;li&gt;データ側はRx、UI側に反映する時はLiveDataが良さそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Android: Repository層についてあれこれ</title>
       <link>https://satoshun.github.io/2016/11/android-arch-repository/</link>
-      <pubDate>Wed, 23 Nov 2016 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 23 Nov 2016 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2016/11/android-arch-repository/</guid>
-      <description>&lt;p&gt;参考: &lt;a href=&#34;https://github.com/googlesamples/android-architecture/tree/todo-mvp&#34;&gt;https://github.com/googlesamples/android-architecture/tree/todo-mvp&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;repository層とは&#34;&gt;Repository層とは?&lt;/h2&gt;&#xA;&lt;p&gt;data層を抽象する層. Repositoryではアプリのキャッシュポリシーを担当する.&#xA;キャッシュはメモリ, ディスクのどちらかに保存するかに依存しないようにする. そこの実装はdata層に任せる.&lt;/p&gt;&#xA;&lt;p&gt;具体的には, Repositoryは, remote dataオブジェクトと, local dataオブジェクトの2つのオブジェクトに依存するようにし,&#xA;どこにキャッシュされるかはlocal dataオブジェクトに従う.&#xA;こうすることで, Repositoryはどこにデータが保存されているかを気にしなくて良い. あくまでRepositoryはどこのdataオブジェクトからデータを取ってくるのかを決定する.&lt;/p&gt;&#xA;&lt;p&gt;また, Repositoryは基本的にApplicationのライフサイクルに連動し, SingletonでActivity間でデータの共有を効率的に行える.&#xA;例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)&lt;/p&gt;&#xA;&lt;h2 id=&#34;rxjavaとともに&#34;&gt;RxJavaとともに&lt;/h2&gt;&#xA;&lt;p&gt;RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Observable&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;User&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; id) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; localDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(id)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;onErrorResumeNext&lt;/span&gt;(remoteDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(id))&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;doOnNext&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Action1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;User&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;(User user) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            localDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;saveUser&lt;/span&gt;(user);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribeOn&lt;/span&gt;(Schedulers.&lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;())&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;observeOn&lt;/span&gt;(AndroidSchedulers.&lt;span style=&#34;color:#a6e22e&#34;&gt;mainThread&lt;/span&gt;());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります.&#xA;クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;p&gt;ざっくりと書きました. キャッシュの抽象化(Repository層) + RxJavaは非常に強力で, とても良いパターンだと思っています.&#xA;クライアント(ContrllerやPresenter)のコードもきれいになり, またActivity間のデータの共有もスムーズに行うことができるので(最悪キャッシュがリリースされていてもRemoteから取得してくれる),&#xA;Androidの開発に向いているパターンでもあると思います.&lt;/p&gt;</description>
+      <description>&lt;p&gt;参考: &lt;a href=&#34;https://github.com/googlesamples/android-architecture/tree/todo-mvp&#34;&gt;https://github.com/googlesamples/android-architecture/tree/todo-mvp&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;repository層とは&#34;&gt;Repository層とは?&lt;/h2&gt;
+&lt;p&gt;data層を抽象する層. Repositoryではアプリのキャッシュポリシーを担当する.
+キャッシュはメモリ, ディスクのどちらかに保存するかに依存しないようにする. そこの実装はdata層に任せる.&lt;/p&gt;
+&lt;p&gt;具体的には, Repositoryは, remote dataオブジェクトと, local dataオブジェクトの2つのオブジェクトに依存するようにし,
+どこにキャッシュされるかはlocal dataオブジェクトに従う.
+こうすることで, Repositoryはどこにデータが保存されているかを気にしなくて良い. あくまでRepositoryはどこのdataオブジェクトからデータを取ってくるのかを決定する.&lt;/p&gt;
+&lt;p&gt;また, Repositoryは基本的にApplicationのライフサイクルに連動し, SingletonでActivity間でデータの共有を効率的に行える.
+例えば, Activity Aで取得したデータはRepositoryのキャッシュポリシーに従いキャッシュをし, Activity Bでは, キャッシュポリシーに従い即座にデータを取得できる可能性がある.(ポリシーによっては毎回remoteからデータ取得する可能性もある)&lt;/p&gt;
+&lt;h2 id=&#34;rxjavaとともに&#34;&gt;RxJavaとともに&lt;/h2&gt;
+&lt;p&gt;RepositoryはRxJava(Observable)との相性が良いと思っています. 例えば以下のようにコールバック関数無く書けるからです.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@NonNull&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Observable&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;User&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; id) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; localDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(id)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;onErrorResumeNext&lt;/span&gt;(remoteDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUser&lt;/span&gt;(id))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;doOnNext&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Action1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;User&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;(User user) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            localDataSource.&lt;span style=&#34;color:#a6e22e&#34;&gt;saveUser&lt;/span&gt;(user);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribeOn&lt;/span&gt;(Schedulers.&lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .&lt;span style=&#34;color:#a6e22e&#34;&gt;observeOn&lt;/span&gt;(AndroidSchedulers.&lt;span style=&#34;color:#a6e22e&#34;&gt;mainThread&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上のソースコードは, localDataSourceからデータを取得できなければ, remoteDataSourceに取得しに行くコードになります.
+クライアントでは, local, remoteの違いを気にしなくて良いというのが一番の利点です.&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;ざっくりと書きました. キャッシュの抽象化(Repository層) + RxJavaは非常に強力で, とても良いパターンだと思っています.
+クライアント(ContrllerやPresenter)のコードもきれいになり, またActivity間のデータの共有もスムーズに行うことができるので(最悪キャッシュがリリースされていてもRemoteから取得してくれる),
+Androidの開発に向いているパターンでもあると思います.&lt;/p&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

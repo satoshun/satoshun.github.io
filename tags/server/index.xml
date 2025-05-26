@@ -1,34 +1,314 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Server on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/server/</link>
-    <description>Recent content in Server on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Mon, 07 Oct 2019 22:51:53 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/server/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Mon, 07 Oct 2019 22:51:53 UTC</updated>
+    
+    
     <item>
       <title>ISUCON9 決勝参加ログ</title>
       <link>https://satoshun.github.io/2019/10/isucon2019-final/</link>
-      <pubDate>Mon, 07 Oct 2019 22:51:53 +0000</pubDate>
+      <pubDate>Mon, 07 Oct 2019 22:51:53 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/10/isucon2019-final/</guid>
-      <description>&lt;p&gt;ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D&lt;/p&gt;&#xA;&lt;p&gt;やったことと、反省点を簡単にまとめておきます。選択言語はGoです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;やったこと&#34;&gt;やったこと&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;最初の1時間くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;適当にブラウザから、サイトを触ってみる&lt;/li&gt;&#xA;&lt;li&gt;アプリコード読む&#xA;&lt;ul&gt;&#xA;&lt;li&gt;何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;のN+1の削除、クエリ最適化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;でベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;/api/train/seats&lt;/code&gt;のN+1の削除、クエリ最適化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;計測の結果、次の2番目のボトルネックだった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;こっちは割とスムーズに出来た&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;seat_masterなどのインメモリ化&#xA;&lt;ul&gt;&#xA;&lt;li&gt;insertがないテーブルをインメモリにすればいいんちゃうと思ってやった&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;いろいろINDEX貼ったりとか&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;反省点&#34;&gt;反省点&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ほんまに練習不足&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Docker分かんなすぎてハゲそうだった&lt;/li&gt;&#xA;&lt;li&gt;N+1とかもっとスムーズに解決しないとね&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;全体的な流れを把握しようとしなかったので、もう駄目&#xA;&lt;ul&gt;&#xA;&lt;li&gt;局所的に攻めても、なかなかスコア上がんないんだよね&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;来年&#34;&gt;来年&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;優勝します💁&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;ISUCON9の決勝に出場してきました。最終スコアは再起動試験失敗の、参考スコアは3,611でした:D&lt;/p&gt;
+&lt;p&gt;やったことと、反省点を簡単にまとめておきます。選択言語はGoです。&lt;/p&gt;
+&lt;h2 id=&#34;やったこと&#34;&gt;やったこと&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;最初の1時間くらい
+&lt;ul&gt;
+&lt;li&gt;適当にブラウザから、サイトを触ってみる&lt;/li&gt;
+&lt;li&gt;アプリコード読む
+&lt;ul&gt;
+&lt;li&gt;何か無駄なログ多いなぁ〜と思ったけど、今思えばヒントだったっぽい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;のN+1の削除、クエリ最適化
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/api/train/search&lt;/code&gt;でベンチマークがタイムアウトしていたので、ここを解決するのが最優先だと思った
+&lt;ul&gt;
+&lt;li&gt;ただ、実装が上手く行かなくて最初のスコアが出るのが遅すぎた。INDEX貼るとか、簡単な方法を考えたほうが良かったかもしれない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/api/train/seats&lt;/code&gt;のN+1の削除、クエリ最適化
+&lt;ul&gt;
+&lt;li&gt;計測の結果、次の2番目のボトルネックだった
+&lt;ul&gt;
+&lt;li&gt;こっちは割とスムーズに出来た&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;seat_masterなどのインメモリ化
+&lt;ul&gt;
+&lt;li&gt;insertがないテーブルをインメモリにすればいいんちゃうと思ってやった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;いろいろINDEX貼ったりとか&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;反省点&#34;&gt;反省点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ほんまに練習不足
+&lt;ul&gt;
+&lt;li&gt;Docker分かんなすぎてハゲそうだった&lt;/li&gt;
+&lt;li&gt;N+1とかもっとスムーズに解決しないとね&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;全体的な流れを把握しようとしなかったので、もう駄目
+&lt;ul&gt;
+&lt;li&gt;局所的に攻めても、なかなかスコア上がんないんだよね&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;来年&#34;&gt;来年&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;優勝します💁&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>ISUCON9 予選ログ</title>
       <link>https://satoshun.github.io/2019/09/isucon2019-qualify/</link>
-      <pubDate>Wed, 11 Sep 2019 02:14:03 +0000</pubDate>
+      <pubDate>Wed, 11 Sep 2019 02:14:03 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/09/isucon2019-qualify/</guid>
-      <description>&lt;p&gt;ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D&lt;/p&gt;&#xA;&lt;p&gt;僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。&lt;/p&gt;&#xA;&lt;p&gt;ちなみに言語はGoです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;僕がやったこと&#34;&gt;僕がやったこと&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;朝&#xA;&lt;ul&gt;&#xA;&lt;li&gt;寝坊しました&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ISUCON起床失敗&lt;/p&gt;&amp;mdash; Sato Shun🧁 (@stsn_jp) &lt;a href=&#34;https://twitter.com/stsn_jp/status/1170138234036207616?ref_src=twsrc%5Etfw&#34;&gt;September 7, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;12:00くらいまで&#xA;&lt;ul&gt;&#xA;&lt;li&gt;アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;スコアほぼ変わらず。それはそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;12:00から&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/users/transactions.json&lt;/code&gt;が遅そうだったので、そこを潰す&#xA;&lt;ul&gt;&#xA;&lt;li&gt;USERの取得などがN+1クエリだったので、それを &lt;code&gt;IN&lt;/code&gt;句に置き換え&lt;/li&gt;&#xA;&lt;li&gt;道中、外部APIを叩いてるところがボトルネックっぽいことに気づく&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;16:30くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;/new_items/:root_category_id.json&lt;/code&gt;、&lt;code&gt;/new_items.json&lt;/code&gt;のN+1クエリログを倒す&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで確か8000~9000くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;17:30くらい&#xA;&lt;ul&gt;&#xA;&lt;li&gt;他の人のPRみたり、静的ファイルをNginxから返すようにしてた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで10000~くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;最後らへん&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ログを出力しないようにしたり修正&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ここらへんで最終スコアの11,860くらい&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;こんな感じ&lt;/p&gt;&#xA;&lt;h2 id=&#34;反省点&#34;&gt;反省点&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;3台構成に出来なかった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;練習不足で時間が足りなかったんやなって&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;キャンペーンモードを忘れていた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;READMEはちゃんと読もうな&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;ログインにボトルネックがあることに気づかなかった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;pprofしていこうな&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;SQLの書き方が記憶から失われていた&#xA;&lt;ul&gt;&#xA;&lt;li&gt;頑張っていこうな&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;寝坊しない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;それは無理かもしれない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;本線頑張るぞ〜😃&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;ISUCON9にチームSsstohで会社の友達と参加してきました。最終スコアは11,860で、無事に本線に出場出来ることになりました:D&lt;/p&gt;
+&lt;p&gt;僕がやったことをつらつらと反省とともに、ログに残して置こうと思います。&lt;/p&gt;
+&lt;p&gt;ちなみに言語はGoです。&lt;/p&gt;
+&lt;h2 id=&#34;僕がやったこと&#34;&gt;僕がやったこと&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;朝
+&lt;ul&gt;
+&lt;li&gt;寝坊しました&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ISUCON起床失敗&lt;/p&gt;&amp;mdash; Sato Shun🧁 (@stsn_jp) &lt;a href=&#34;https://twitter.com/stsn_jp/status/1170138234036207616?ref_src=twsrc%5Etfw&#34;&gt;September 7, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;ul&gt;
+&lt;li&gt;12:00くらいまで
+&lt;ul&gt;
+&lt;li&gt;アプリケーションコード読んだり、alpの結果見たり、スロークエリログに対してIndexを適当に貼ってみたりしてた
+&lt;ul&gt;
+&lt;li&gt;スコアほぼ変わらず。それはそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;12:00から
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/users/transactions.json&lt;/code&gt;が遅そうだったので、そこを潰す
+&lt;ul&gt;
+&lt;li&gt;USERの取得などがN+1クエリだったので、それを &lt;code&gt;IN&lt;/code&gt;句に置き換え&lt;/li&gt;
+&lt;li&gt;道中、外部APIを叩いてるところがボトルネックっぽいことに気づく&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ここらへんの修正で、確かスコアが5000~6000くらい（他の人の修正も入っているので、これだけではないです）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;16:30くらい
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/new_items/:root_category_id.json&lt;/code&gt;、&lt;code&gt;/new_items.json&lt;/code&gt;のN+1クエリログを倒す
+&lt;ul&gt;
+&lt;li&gt;ここらへんで確か8000~9000くらい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;17:30くらい
+&lt;ul&gt;
+&lt;li&gt;他の人のPRみたり、静的ファイルをNginxから返すようにしてた
+&lt;ul&gt;
+&lt;li&gt;ここらへんで10000~くらい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最後らへん
+&lt;ul&gt;
+&lt;li&gt;ログを出力しないようにしたり修正
+&lt;ul&gt;
+&lt;li&gt;ここらへんで最終スコアの11,860くらい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;こんな感じ&lt;/p&gt;
+&lt;h2 id=&#34;反省点&#34;&gt;反省点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;3台構成に出来なかった
+&lt;ul&gt;
+&lt;li&gt;練習不足で時間が足りなかったんやなって&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;キャンペーンモードを忘れていた
+&lt;ul&gt;
+&lt;li&gt;READMEはちゃんと読もうな&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ログインにボトルネックがあることに気づかなかった
+&lt;ul&gt;
+&lt;li&gt;pprofしていこうな&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SQLの書き方が記憶から失われていた
+&lt;ul&gt;
+&lt;li&gt;頑張っていこうな&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;寝坊しない
+&lt;ul&gt;
+&lt;li&gt;それは無理かもしれない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;本線頑張るぞ〜😃&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>ISUCON6予選で悲しくも負けてしまいました</title>
       <link>https://satoshun.github.io/2016/09/isucon6/</link>
-      <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 10 Sep 2016 00:00:00 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2016/09/isucon6/</guid>
-      <description>&lt;h1 id=&#34;isucon6予選で悲しくも負けてしまいました&#34;&gt;ISUCON6予選で悲しくも負けてしまいました&lt;/h1&gt;&#xA;&lt;p&gt;こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.&lt;/p&gt;&#xA;&lt;p&gt;ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.&lt;/p&gt;&#xA;&lt;p&gt;今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.&lt;/p&gt;&#xA;&lt;h2 id=&#34;基本的なメンバーのスペック&#34;&gt;基本的なメンバーのスペック&lt;/h2&gt;&#xA;&lt;p&gt;Golangで勝負しました.&#xA;最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.&lt;/p&gt;&#xA;&lt;p&gt;メンバーの簡単な役割分担は以下の感じです.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;僕(アプリ: Golang)&lt;/li&gt;&#xA;&lt;li&gt;メンバーその1(インフラ+アプリ)&lt;/li&gt;&#xA;&lt;li&gt;メンバーその2(インフラ+アプリ)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています.&#xA;とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.&lt;/p&gt;&#xA;&lt;h2 id=&#34;最初の2時間くらい&#34;&gt;最初の2時間くらい&lt;/h2&gt;&#xA;&lt;p&gt;とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.&lt;/p&gt;&#xA;&lt;p&gt;プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.&lt;/p&gt;&#xA;&lt;p&gt;そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.&lt;/p&gt;&#xA;&lt;h2 id=&#34;12時くらいの段階&#34;&gt;12時くらいの段階&lt;/h2&gt;&#xA;&lt;p&gt;テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;re&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MustCompile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;keywords&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;|&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;)&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;keywordsは7,000以上なのでここが明らかにボトルネック.&lt;/p&gt;&#xA;&lt;p&gt;そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.&lt;/p&gt;&#xA;&lt;p&gt;その結果 &lt;code&gt;Aho Corasick&lt;/code&gt; というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで &lt;code&gt;Aho Corasick&lt;/code&gt; のライブラリがないかを死ぬ気でググる.&lt;/p&gt;&#xA;&lt;p&gt;その結果, &lt;a href=&#34;https://github.com/anknown/ahocorasick&#34;&gt;https://github.com/anknown/ahocorasick&lt;/a&gt; を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1330くらい&#34;&gt;13:30くらい&lt;/h2&gt;&#xA;&lt;p&gt;何かよく分かんないけど動いた! そしてスコアは15,000くらいになる!&lt;/p&gt;&#xA;&lt;p&gt;これでhtmlifyは大丈夫だと思い, keywordをredisでリストで保持して, MySQLのクエリを減らす作業に入る.&lt;/p&gt;&#xA;&lt;p&gt;これがミスでした. htmlifyのコストがまだ高く, ここをもう少し重点的にやるべきだった.&lt;/p&gt;&#xA;&lt;h2 id=&#34;1530くらい&#34;&gt;15:30くらい&lt;/h2&gt;&#xA;&lt;p&gt;keywordをリストで持つようにしたもののスコアは15,000のまま動かず.&lt;/p&gt;&#xA;&lt;p&gt;ここで, メンバーがhtmlifyがまだ遅いことを突き止めてTrie木をキャッシュすることを考える&lt;/p&gt;&#xA;&lt;h2 id=&#34;1630くらい&#34;&gt;16:30くらい&lt;/h2&gt;&#xA;&lt;p&gt;Trie木をキャッシュする. keywordが更新, 削除されるタイミングでTrie木を作り直す(invalidate)のを実装.&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;isucon6予選で悲しくも負けてしまいました&#34;&gt;ISUCON6予選で悲しくも負けてしまいました&lt;/h1&gt;
+&lt;p&gt;こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.&lt;/p&gt;
+&lt;p&gt;ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.&lt;/p&gt;
+&lt;p&gt;今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.&lt;/p&gt;
+&lt;h2 id=&#34;基本的なメンバーのスペック&#34;&gt;基本的なメンバーのスペック&lt;/h2&gt;
+&lt;p&gt;Golangで勝負しました.
+最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.&lt;/p&gt;
+&lt;p&gt;メンバーの簡単な役割分担は以下の感じです.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;僕(アプリ: Golang)&lt;/li&gt;
+&lt;li&gt;メンバーその1(インフラ+アプリ)&lt;/li&gt;
+&lt;li&gt;メンバーその2(インフラ+アプリ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています.
+とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.&lt;/p&gt;
+&lt;h2 id=&#34;最初の2時間くらい&#34;&gt;最初の2時間くらい&lt;/h2&gt;
+&lt;p&gt;とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.&lt;/p&gt;
+&lt;p&gt;プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.&lt;/p&gt;
+&lt;p&gt;そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.&lt;/p&gt;
+&lt;h2 id=&#34;12時くらいの段階&#34;&gt;12時くらいの段階&lt;/h2&gt;
+&lt;p&gt;テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;re&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MustCompile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;keywords&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;|&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;)&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;keywordsは7,000以上なのでここが明らかにボトルネック.&lt;/p&gt;
+&lt;p&gt;そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.&lt;/p&gt;
+&lt;p&gt;その結果 &lt;code&gt;Aho Corasick&lt;/code&gt; というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで &lt;code&gt;Aho Corasick&lt;/code&gt; のライブラリがないかを死ぬ気でググる.&lt;/p&gt;
+&lt;p&gt;その結果, &lt;a href=&#34;https://github.com/anknown/ahocorasick&#34;&gt;https://github.com/anknown/ahocorasick&lt;/a&gt; を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.&lt;/p&gt;
+&lt;h2 id=&#34;1330くらい&#34;&gt;13:30くらい&lt;/h2&gt;
+&lt;p&gt;何かよく分かんないけど動いた! そしてスコアは15,000くらいになる!&lt;/p&gt;
+&lt;p&gt;これでhtmlifyは大丈夫だと思い, keywordをredisでリストで保持して, MySQLのクエリを減らす作業に入る.&lt;/p&gt;
+&lt;p&gt;これがミスでした. htmlifyのコストがまだ高く, ここをもう少し重点的にやるべきだった.&lt;/p&gt;
+&lt;h2 id=&#34;1530くらい&#34;&gt;15:30くらい&lt;/h2&gt;
+&lt;p&gt;keywordをリストで持つようにしたもののスコアは15,000のまま動かず.&lt;/p&gt;
+&lt;p&gt;ここで, メンバーがhtmlifyがまだ遅いことを突き止めてTrie木をキャッシュすることを考える&lt;/p&gt;
+&lt;h2 id=&#34;1630くらい&#34;&gt;16:30くらい&lt;/h2&gt;
+&lt;p&gt;Trie木をキャッシュする. keywordが更新, 削除されるタイミングでTrie木を作り直す(invalidate)のを実装.&lt;/p&gt;
+&lt;p&gt;結果, 75,000点くらいを叩き出す. この時点ではいい感じの順位に入っており, 予選突破いけるんじゃないかとそわそわし始める.&lt;/p&gt;
+&lt;p&gt;これがミスでした. ここでそわそわして, 残りの時間適切な実装が出来ずスコアがここで止まってしまった.&lt;/p&gt;
+&lt;h2 id=&#34;1730くらい&#34;&gt;17:30くらい&lt;/h2&gt;
+&lt;p&gt;MySQLのstarを取ってくる部分のクエリ効率化などの実装をしたものの, 間に合わず. このあたりで再起動テストに入る.&lt;/p&gt;
+&lt;p&gt;運良く? このあたりのベンチで99,000を出したものの, 最後は76,000で着地しました.&lt;/p&gt;
+&lt;h2 id=&#34;まとめ反省&#34;&gt;まとめ/反省&lt;/h2&gt;
+&lt;p&gt;個人的にやりたかったのは&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;トップページのキャッシュ&lt;/li&gt;
+&lt;li&gt;UnixSocket化(最後時間がなかった)&lt;/li&gt;
+&lt;li&gt;MySQLのstarを取ってくる部分のクエリ効率化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらが時間内に実装出来れば100,000以上いけたと思います.&lt;/p&gt;
+&lt;p&gt;練習だったら多分ここまでいけたと思うんですけど, 本番の重圧か, ここまでいけませんでした.&lt;/p&gt;
+&lt;p&gt;あと, 心構えとしては&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;予選突破できそうだからと慌ててはいけない&lt;/li&gt;
+&lt;li&gt;最初スコアが出なくも慌ててはいけない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;慌てないことが大切だなと思いました.&lt;/p&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+&lt;p&gt;最後に出題して頂いたはてなさん, ピクシブさん本当にありがとうございました.&lt;/p&gt;
+&lt;p&gt;非常に楽しい時間を過ごせました(^o^)&lt;/p&gt;
+&lt;p&gt;あと, 何かここが知りたいみたいなことがあったら, twitterとかコメントどしどし下さい.&lt;/p&gt;
+&lt;h1 id=&#34;isucon6予選で悲しくも負けてしまいました-1&#34;&gt;ISUCON6予選で悲しくも負けてしまいました&lt;/h1&gt;
+&lt;p&gt;こんにちは. ISUCON6に3人チーム「ウルド」として出場したのですが, 悲しくも予選落ちをしてしまいました.&lt;/p&gt;
+&lt;p&gt;ベストスコアは99,000点, 最終スコアは76,000点で, ベストスコアなら予選を突破できていただけに非常に悔しく思っています.&lt;/p&gt;
+&lt;p&gt;今回は, 予選で何をしたかと反省を書きたいと思います. 反省ブログです.&lt;/p&gt;
+&lt;h2 id=&#34;基本的なメンバーのスペック-1&#34;&gt;基本的なメンバーのスペック&lt;/h2&gt;
+&lt;p&gt;Golangで勝負しました.
+最初の実装では正規表現をバリバリに使っていて, スコアが0の状態だったのでPythonにしようか悩んだのですが, 最終的には言語の差はほぼ出ないだろうとの予測でGolangで勝負することにしました.&lt;/p&gt;
+&lt;p&gt;メンバーの簡単な役割分担は以下の感じです.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;僕(アプリ: Golang)&lt;/li&gt;
+&lt;li&gt;メンバーその1(インフラ+アプリ)&lt;/li&gt;
+&lt;li&gt;メンバーその2(インフラ+アプリ)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;僕がアプリを中心に直して, 2人にはボトルネックの検出や, 全体的な流れを見てもらう感じになっています.
+とはいえ, かっちりこの役割というわけではなく, 時間に応じて役割を切り分けながらという感じで柔軟にいけたかなと思ってます.&lt;/p&gt;
+&lt;h2 id=&#34;最初の2時間くらい-1&#34;&gt;最初の2時間くらい&lt;/h2&gt;
+&lt;p&gt;とにかくGoの初期実装がスコア0なので, そこから脱却するためにいろいろと細かいところをチューニングしたのですが効果が出ず.&lt;/p&gt;
+&lt;p&gt;プロファイリングしてみると, アプリプロセスがCPUを使い果たしていてパフォーマンスが出ていない模様.&lt;/p&gt;
+&lt;p&gt;そしてなんやかんやと, メンバーが正規表現をバリバリ使っている「htmlify」の部分が遅いことを突き止めてくれたのでそこを中心に勝負することに.&lt;/p&gt;
+&lt;h2 id=&#34;12時くらいの段階-1&#34;&gt;12時くらいの段階&lt;/h2&gt;
+&lt;p&gt;テキストに対してキーワードリンクを挿入する箇所で, 正規表現のorを使っている箇所を発見.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;re&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;regexp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MustCompile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;(&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;keywords&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;|&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;)&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;keywordsは7,000以上なのでここが明らかにボトルネック.&lt;/p&gt;
+&lt;p&gt;そういえば, 昔naoyaさんのブログではてなのキーワードリンクがスケールしなくなったときに, 何かアルゴリズムを使って解決したみたいな記事があったことを思い出して死ぬ気でググる.&lt;/p&gt;
+&lt;p&gt;その結果 &lt;code&gt;Aho Corasick&lt;/code&gt; というアルゴリズムを発見. これ使えばいけるんじゃね? ということでGolangで &lt;code&gt;Aho Corasick&lt;/code&gt; のライブラリがないかを死ぬ気でググる.&lt;/p&gt;
+&lt;p&gt;その結果, &lt;a href=&#34;https://github.com/anknown/ahocorasick&#34;&gt;https://github.com/anknown/ahocorasick&lt;/a&gt; を発見. よく分かんないけどこれを死ぬ気でアプリに適応させる.&lt;/p&gt;
+&lt;h2 id=&#34;1330くらい-1&#34;&gt;13:30くらい&lt;/h2&gt;
+&lt;p&gt;何かよく分かんないけど動いた! そしてスコアは15,000くらいになる!&lt;/p&gt;
+&lt;p&gt;これでhtmlifyは大丈夫だと思い, keywordをredisでリストで保持して, MySQLのクエリを減らす作業に入る.&lt;/p&gt;
+&lt;p&gt;これがミスでした. htmlifyのコストがまだ高く, ここをもう少し重点的にやるべきだった.&lt;/p&gt;
+&lt;h2 id=&#34;1530くらい-1&#34;&gt;15:30くらい&lt;/h2&gt;
+&lt;p&gt;keywordをリストで持つようにしたもののスコアは15,000のまま動かず.&lt;/p&gt;
+&lt;p&gt;ここで, メンバーがhtmlifyがまだ遅いことを突き止めてTrie木をキャッシュすることを考える&lt;/p&gt;
+&lt;h2 id=&#34;1630くらい-1&#34;&gt;16:30くらい&lt;/h2&gt;
+&lt;p&gt;Trie木をキャッシュする. keywordが更新, 削除されるタイミングでTrie木を作り直す(invalidate)のを実装.&lt;/p&gt;
+&lt;p&gt;結果, 75,000点くらいを叩き出す. この時点ではいい感じの順位に入っており, 予選突破いけるんじゃないかとそわそわし始める.&lt;/p&gt;
+&lt;p&gt;これがミスでした. ここでそわそわして, 残りの時間適切な実装が出来ずスコアがここで止まってしまった.&lt;/p&gt;
+&lt;h2 id=&#34;1730くらい-1&#34;&gt;17:30くらい&lt;/h2&gt;
+&lt;p&gt;MySQLのstarを取ってくる部分のクエリ効率化などの実装をしたものの, 間に合わず. このあたりで再起動テストに入る.&lt;/p&gt;
+&lt;p&gt;運良く? このあたりのベンチで99,000を出したものの, 最後は76,000で着地しました.&lt;/p&gt;
+&lt;h2 id=&#34;まとめ反省-1&#34;&gt;まとめ/反省&lt;/h2&gt;
+&lt;p&gt;個人的にやりたかったのは&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;トップページのキャッシュ&lt;/li&gt;
+&lt;li&gt;UnixSocket化(最後時間がなかった)&lt;/li&gt;
+&lt;li&gt;MySQLのstarを取ってくる部分のクエリ効率化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらが時間内に実装出来れば100,000以上いけたと思います.&lt;/p&gt;
+&lt;p&gt;練習だったら多分ここまでいけたと思うんですけど, 本番の重圧か, ここまでいけませんでした.&lt;/p&gt;
+&lt;p&gt;あと, 心構えとしては&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;予選突破できそうだからと慌ててはいけない&lt;/li&gt;
+&lt;li&gt;最初スコアが出なくも慌ててはいけない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;慌てないことが大切だなと思いました.&lt;/p&gt;
+&lt;h2 id=&#34;最後に-1&#34;&gt;最後に&lt;/h2&gt;
+&lt;p&gt;最後に出題して頂いたはてなさん, ピクシブさん本当にありがとうございました.&lt;/p&gt;
+&lt;p&gt;非常に楽しい時間を過ごせました(^o^)&lt;/p&gt;
+&lt;p&gt;あと, 何かここが知りたいみたいなことがあったら, twitterとかコメントどしどし下さい.&lt;/p&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

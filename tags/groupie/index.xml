@@ -1,20 +1,153 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Groupie on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/groupie/</link>
-    <description>Recent content in Groupie on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Thu, 21 Nov 2019 12:35:25 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/groupie/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Thu, 21 Nov 2019 12:35:25 UTC</updated>
+    
+    
     <item>
       <title>Android: Groupieの内部でやっている差分更新周りの話</title>
       <link>https://satoshun.github.io/2019/11/groupie-diffutil/</link>
-      <pubDate>Thu, 21 Nov 2019 12:35:25 +0000</pubDate>
+      <pubDate>Thu, 21 Nov 2019 12:35:25 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/11/groupie-diffutil/</guid>
-      <description>&lt;p&gt;Groupieには&lt;code&gt;GroupAdapter#update&lt;/code&gt;メソッドという便利なメソッドがあります。&lt;/p&gt;&#xA;&lt;p&gt;この記事では&lt;code&gt;update&lt;/code&gt;メソッドをコールした時に、どのように差分更新されるかを、簡単な説明と実際に動かしてみて見ていきます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;そもそもrecyclerviewの差分更新って何よ&#34;&gt;そもそもRecyclerViewの差分更新って何よ&lt;/h2&gt;&#xA;&lt;p&gt;RecyclerViewでは、DiffUtil.Callbackクラスを実装することで、前のAdapterの状態と、新しいAdapterの状態の差分を計算することが出来ます。その計算結果をもとに、RecyclerViewでは効率的にViewを更新してくれます。またいい感じにアニメーションを実行してくれます。&lt;/p&gt;&#xA;&lt;p&gt;Groupieでは、内部で&lt;code&gt;DiffUtil.Callback&lt;/code&gt;を実装した&lt;code&gt;DiffCallback&lt;/code&gt;クラスがあり、そのクラスをもとに差分更新が行われます。&lt;/p&gt;&#xA;&lt;h2 id=&#34;diffcallbackクラスの実装を見ていく&#34;&gt;DiffCallbackクラスの実装を見ていく&lt;/h2&gt;&#xA;&lt;p&gt;まずは&lt;code&gt;areItemsTheSame&lt;/code&gt;メソッドから。&lt;code&gt;areItemsTheSame&lt;/code&gt;メソッドは、Itemが同一かどうかを判定します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;areItemsTheSame&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; oldItemPosition, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; newItemPosition) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item oldItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(oldGroups, oldItemPosition);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item newItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(newGroups, newItemPosition);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; newItem.&lt;span style=&#34;color:#a6e22e&#34;&gt;isSameAs&lt;/span&gt;(oldItem);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;まず、1つ前のItemと新しいItemを取ってきて、&lt;code&gt;newItem.isSameAs(oldItem);&lt;/code&gt;をコールしています。&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;isSameAs&lt;/code&gt;メソッドは次の定義になっています。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isSameAs&lt;/span&gt;(Item other) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (getViewType() &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; other.&lt;span style=&#34;color:#a6e22e&#34;&gt;getViewType&lt;/span&gt;()) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; getId() &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; other.&lt;span style=&#34;color:#a6e22e&#34;&gt;getId&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。&lt;/p&gt;&#xA;&lt;p&gt;Idは、Itemクラスのコンストラクタから与えることが出来ます。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Item&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;long&lt;/span&gt; id) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; id;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。&#xA;例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;次に、&lt;code&gt;areContentsTheSame&lt;/code&gt;メソッド。&lt;code&gt;areContentsTheSame&lt;/code&gt;メソッドは、このItemの内容が同じかどうかを判定します。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;areContentsTheSame&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; oldItemPosition, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; newItemPosition) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item oldItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(oldGroups, oldItemPosition);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item newItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(newGroups, newItemPosition);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; newItem.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasSameContentAs&lt;/span&gt;(oldItem);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;1つ前のItemと新しいItemを取ってきて、&lt;code&gt;newItem.hasSameContentAs(oldItem);&lt;/code&gt;をコールしています。&lt;/p&gt;</description>
+      <description>&lt;p&gt;Groupieには&lt;code&gt;GroupAdapter#update&lt;/code&gt;メソッドという便利なメソッドがあります。&lt;/p&gt;
+&lt;p&gt;この記事では&lt;code&gt;update&lt;/code&gt;メソッドをコールした時に、どのように差分更新されるかを、簡単な説明と実際に動かしてみて見ていきます。&lt;/p&gt;
+&lt;h2 id=&#34;そもそもrecyclerviewの差分更新って何よ&#34;&gt;そもそもRecyclerViewの差分更新って何よ&lt;/h2&gt;
+&lt;p&gt;RecyclerViewでは、DiffUtil.Callbackクラスを実装することで、前のAdapterの状態と、新しいAdapterの状態の差分を計算することが出来ます。その計算結果をもとに、RecyclerViewでは効率的にViewを更新してくれます。またいい感じにアニメーションを実行してくれます。&lt;/p&gt;
+&lt;p&gt;Groupieでは、内部で&lt;code&gt;DiffUtil.Callback&lt;/code&gt;を実装した&lt;code&gt;DiffCallback&lt;/code&gt;クラスがあり、そのクラスをもとに差分更新が行われます。&lt;/p&gt;
+&lt;h2 id=&#34;diffcallbackクラスの実装を見ていく&#34;&gt;DiffCallbackクラスの実装を見ていく&lt;/h2&gt;
+&lt;p&gt;まずは&lt;code&gt;areItemsTheSame&lt;/code&gt;メソッドから。&lt;code&gt;areItemsTheSame&lt;/code&gt;メソッドは、Itemが同一かどうかを判定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;areItemsTheSame&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; oldItemPosition, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; newItemPosition) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item oldItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(oldGroups, oldItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item newItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(newGroups, newItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; newItem.&lt;span style=&#34;color:#a6e22e&#34;&gt;isSameAs&lt;/span&gt;(oldItem);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;まず、1つ前のItemと新しいItemを取ってきて、&lt;code&gt;newItem.isSameAs(oldItem);&lt;/code&gt;をコールしています。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;isSameAs&lt;/code&gt;メソッドは次の定義になっています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isSameAs&lt;/span&gt;(Item other) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (getViewType() &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; other.&lt;span style=&#34;color:#a6e22e&#34;&gt;getViewType&lt;/span&gt;()) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; getId() &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; other.&lt;span style=&#34;color:#a6e22e&#34;&gt;getId&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ItemのviewTypeが等しい かつ Idが等しい場合にtrueを返します。&lt;/p&gt;
+&lt;p&gt;Idは、Itemクラスのコンストラクタから与えることが出来ます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Item&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;long&lt;/span&gt; id) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; id;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;なので、GroupAdapterがupdateされる可能性があるなら、適切なIdを渡すのが良いです。
+例えば、Userクラス的なものがあって、運良くUserを一意に判定できるidが定義されていたら、それを渡すと良いと思います。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;次に、&lt;code&gt;areContentsTheSame&lt;/code&gt;メソッド。&lt;code&gt;areContentsTheSame&lt;/code&gt;メソッドは、このItemの内容が同じかどうかを判定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;areContentsTheSame&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; oldItemPosition, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; newItemPosition) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item oldItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(oldGroups, oldItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item newItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(newGroups, newItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; newItem.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasSameContentAs&lt;/span&gt;(oldItem);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;1つ前のItemと新しいItemを取ってきて、&lt;code&gt;newItem.hasSameContentAs(oldItem);&lt;/code&gt;をコールしています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hasSameContentAs&lt;/span&gt;(Item other) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;equals&lt;/span&gt;(other);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;デフォルトでは、&lt;code&gt;Object#equals&lt;/code&gt;メソッドをコールしているので、同一のインスタンスかどうかで、Itemの内容が同じかどうかを判定しています。
+Itemのインスタンスが変わったらfalseを返し、Itemの内容が変わっても、同一インスタンスならtrueを返します。&lt;/p&gt;
+&lt;p&gt;なので、基本的には&lt;code&gt;hasSameContentAs&lt;/code&gt;ないし、&lt;code&gt;equals&lt;/code&gt;メソッドをoverrideしたほうが良いです。&lt;/p&gt;
+&lt;p&gt;Kotlinなら、data classで定義するのも手です。equalsを自動で実装してくれるからです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HogeItem&lt;/span&gt;(model, id) : Item&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.&amp;gt;(id) &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;p&gt;最後に、&lt;code&gt;getChangePayload&lt;/code&gt;メソッド。&lt;code&gt;getChangePayload&lt;/code&gt;メソッドは、Itemの差分を計算して、payloadを求めます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Object &lt;span style=&#34;color:#a6e22e&#34;&gt;getChangePayload&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; oldItemPosition, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; newItemPosition) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item oldItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(oldGroups, oldItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Item newItem &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GroupUtils.&lt;span style=&#34;color:#a6e22e&#34;&gt;getItem&lt;/span&gt;(newGroups, newItemPosition);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; oldItem.&lt;span style=&#34;color:#a6e22e&#34;&gt;getChangePayload&lt;/span&gt;(newItem);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;1つ前のItemと新しいItemを取ってきて、&lt;code&gt;newItem.getChangePayload(oldItem);&lt;/code&gt;をコールしています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Object &lt;span style=&#34;color:#a6e22e&#34;&gt;getChangePayload&lt;/span&gt;(Item newItem) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;デフォルトでは、nullを返しており、payloadの計算は行われません。ここでいい感じにpayloadを計算してあげると、効率よく差分更新が出来ます。&lt;/p&gt;
+&lt;h2 id=&#34;ケースごとに動作を見てみる&#34;&gt;ケースごとに動作を見てみる&lt;/h2&gt;
+&lt;p&gt;今までのを踏まえて、いろいろなケースでどのように動作するかを見ていきます。&lt;/p&gt;
+&lt;h3 id=&#34;違うid--インスタンスを毎回生成する&#34;&gt;違うid &amp;amp;&amp;amp; インスタンスを毎回生成する&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Adapter&lt;/span&gt; : GroupAdapter&amp;lt;GroupieViewHolder&amp;gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    update(listOf(BasicItem())) &lt;span style=&#34;color:#75715e&#34;&gt;// 毎回新しく生成する &amp;amp;&amp;amp; idは毎回違う
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;BasicItem&lt;/span&gt; : Item&amp;lt;GroupieViewHolder&amp;gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/recyclerview/device-2019-11-21-111037.gif&#34; width=&#34;30%&#34; height=&#34;250&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Itemが点滅しているのが分かります。これは、Idが毎回異なるので、&lt;code&gt;areItemsTheSame&lt;/code&gt;がfalseを返すためです。この場合、Viewは再利用されません。&lt;/p&gt;
+&lt;h3 id=&#34;同じid--インスタンスを毎回生成する--equalsなどを実装しない&#34;&gt;同じid &amp;amp;&amp;amp; インスタンスを毎回生成する &amp;amp;&amp;amp; equalsなどを実装しない&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Adapter&lt;/span&gt; : GroupAdapter&amp;lt;GroupieViewHolder&amp;gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    update(listOf(BasicItem(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))) &lt;span style=&#34;color:#75715e&#34;&gt;// 毎回新しく生成する &amp;amp;&amp;amp; idは固定
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;BasicItem&lt;/span&gt;(id: Long) : Item&amp;lt;GroupieViewHolder&amp;gt;(id)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/recyclerview/device-2019-11-21-112018.gif&#34; width=&#34;30%&#34; height=&#34;250&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;この場合も、Itemが点滅しているのが分かります。これは、equalsメソッドなどを実装していないので、&lt;code&gt;areContentsTheSame&lt;/code&gt;がfalseを返すためです。
+&lt;code&gt;areContentsTheSame&lt;/code&gt;がfalse かつ payloads周りの実装がない かつ RecyclerView.ItemAnimator周りの設定を変えていない場合は、1つ前のViewが再利用されません。&lt;/p&gt;
+&lt;h3 id=&#34;同じid--インスタンスを毎回生成する--equalsを実装してtrueを返す&#34;&gt;同じid &amp;amp;&amp;amp; インスタンスを毎回生成する &amp;amp;&amp;amp; equalsを実装して、trueを返す&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;class Adapter : GroupAdapter&amp;lt;GroupieViewHolder&amp;gt;() {
+  fun update() {
+    update(listOf(BasicItem(3))) // 毎回新しく生成する &amp;amp;&amp;amp; idは固定
+  }
+}
+
+// dataクラスなのでequalsが実装される
+data class BasicItem(private val id: Long) : Item&amp;lt;GroupieViewHolder&amp;gt;(id)
+&lt;/code&gt;&lt;/pre&gt;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/recyclerview/device-2019-11-21-113425.gif&#34; width=&#34;30%&#34; height=&#34;250&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;この場合は、Itemが点滅していないのが分かります。これは、&lt;code&gt;areItemsTheSame&lt;/code&gt;と&lt;code&gt;areContentsTheSame&lt;/code&gt;がtrueを返すので、Viewが再利用されるためです。またItemにはbindメソッドがあるんですが、bindメソッドもコールされません。なぜなら、&lt;code&gt;areContentsTheSame&lt;/code&gt;がtrueなので、Viewの中身を更新する必要がないためです。&lt;/p&gt;
+&lt;p&gt;多くの処理をスキップ、再利用することが出来ます。&lt;/p&gt;
+&lt;h3 id=&#34;同じidを渡す--インスタンスを毎回生成する--getchangepayloadを実装する&#34;&gt;同じidを渡す &amp;amp;&amp;amp; インスタンスを毎回生成する &amp;amp;&amp;amp; getChangePayloadを実装する&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Adapter&lt;/span&gt; : GroupAdapter&amp;lt;GroupieViewHolder&amp;gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    update(listOf(BasicItem(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))) &lt;span style=&#34;color:#75715e&#34;&gt;// 毎回新しく生成する &amp;amp;&amp;amp; idは固定
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;BasicItem&lt;/span&gt;(id: Long) : Item&amp;lt;GroupieViewHolder&amp;gt;(id) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getChangePayload&lt;/span&gt;(newItem: Item&amp;lt;*&amp;gt;): Any? {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; newItem.id &lt;span style=&#34;color:#75715e&#34;&gt;// 今回はサンプルなので適当な実装
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;figure&gt;&lt;img src=&#34;https://satoshun.github.io/blog/android/jetpack/recyclerview/device-2019-11-21-114407.gif&#34; width=&#34;30%&#34; height=&#34;250&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;この場合も、Itemが点滅していないのが分かります。これは、&lt;code&gt;areContentsTheSame&lt;/code&gt;はfalseを返しているのですが、payload（以前との差分）を計算しているため、1つ前のViewが再利用されるためです。この場合、bindメソッドはコールされます。なぜなら、&lt;code&gt;areContentsTheSame&lt;/code&gt;がfalseなので、Viewの中身を更新する必要があるためです。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Groupie（RecyclerView）で効率的に差分更新をしたいなら、以下の3点を考慮する必要があります
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;areItemsTheSame&lt;/code&gt;メソッド: Itemのidに一意な値を渡す&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;areContentsTheSame&lt;/code&gt;メソッド: data classにする または equalsメソッドの実装 または &lt;code&gt;hasSameContentAs&lt;/code&gt;メソッドを実装する&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getChangePayload&lt;/code&gt;メソッド: 古いItemと新しいItemのどこが差分なのかを計算して、適切なpayloadを返す&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;本文中では触れてないんですが、RecyclerViewがデフォルトで使う、DefaultItemAnimatorの設定を変えることで、ここらへんの挙動を変えることが出来ます
+&lt;ul&gt;
+&lt;li&gt;例えば、supportsChangeAnimationsをfalseすると、&lt;code&gt;getChangePayload&lt;/code&gt;を実装していなくても、Viewが再利用されるようになります&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>

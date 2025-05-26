@@ -1,27 +1,341 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Io19 on stsnブログ</title>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
     <link>https://satoshun.github.io/tags/io19/</link>
-    <description>Recent content in Io19 on stsnブログ</description>
-    <generator>Hugo</generator>
     <language>ja</language>
-    <copyright>Sato Shun</copyright>
-    <lastBuildDate>Sun, 09 Jun 2019 12:04:27 +0000</lastBuildDate>
-    <atom:link href="https://satoshun.github.io/tags/io19/index.xml" rel="self" type="application/rss+xml" />
+    
+    <copyright>2019 Sato Shun</copyright>
+    <updated>Sun, 09 Jun 2019 12:04:27 UTC</updated>
+    
+    
     <item>
       <title>Google I/O&#39;19: Build a Modular Android App Architectureのまとめ・感想</title>
       <link>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</link>
-      <pubDate>Sun, 09 Jun 2019 12:04:27 +0000</pubDate>
+      <pubDate>Sun, 09 Jun 2019 12:04:27 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/06/build-a-modular-android-app-architecture/</guid>
-      <description>&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&#39;19)&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;&#xA;&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;&#xA;&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;&#xA;&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;&#xA;&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;&#xA;&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;&#xA;&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;&#xA;&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;&#xA;&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;&#xA;&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;&#xA;&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;&#xA;&lt;h3 id=&#34;1-feature機能ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;&#xA;&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ライブラリモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Dynamic Featureモジュール&#xA;&lt;ul&gt;&#xA;&lt;li&gt;onDemand trueとfalseがある&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;&#xA;&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;dribbleと、designernewsがDynamic Featureモジュールになっている。&lt;/p&gt;&#xA;&lt;h3 id=&#34;2-layer層階層ごとに分ける&#34;&gt;2. Layer（層、階層）ごとに分ける&lt;/h3&gt;&#xA;&lt;p&gt;Plaidでは以下のように分けた。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Web Servicesの知識はUIはいらないので、implementationを指定する&#xA;&lt;ul&gt;&#xA;&lt;li&gt;そうすることで、UIがDTOやRetrofitの知識を知らないですむ&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Entitiesの知識はUIが必要なので、apiを指定する&#xA;&lt;ul&gt;&#xA;&lt;li&gt;ただし、この場合、DAOsの知識までUIが知ってしまうので微妙&#xA;&lt;ul&gt;&#xA;&lt;li&gt;そこでCommon Value Objectsの導入&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;こうすることで、UIがDAOの知識を知らずに済む&lt;/p&gt;&#xA;&lt;h3 id=&#34;fakes-for-tests&#34;&gt;Fakes for tests&lt;/h3&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no&#34; width=&#34;500&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;モックよりも優れた方法&#xA;&lt;ul&gt;&#xA;&lt;li&gt;fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;（モックはその場、その場で作られがちという意味？）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;featureモジュールの利点&#34;&gt;Featureモジュールの利点&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;カプセル化&lt;/li&gt;&#xA;&lt;li&gt;Dynamic Delivery&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;layerごとに分ける利点&#34;&gt;Layerごとに分ける利点&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;サードパーティライブラリの依存を独立&lt;/li&gt;&#xA;&lt;li&gt;構造をもたらす&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;dynamic-deliveryの課題&#34;&gt;Dynamic Deliveryの課題&lt;/h3&gt;&#xA;&lt;p&gt;Featureモジュール間のNavigationをどうするか?&lt;/p&gt;</description>
+      <description>&lt;p&gt;以下の動画のまとめです。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=PZBg5DIzNww&#34;&gt;Build a Modular Android App Architecture (Google I/O&#39;19)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;なぜモジュール化をするか&#34;&gt;なぜモジュール化をするか?&lt;/h2&gt;
+&lt;h3 id=&#34;スケール&#34;&gt;スケール&lt;/h3&gt;
+&lt;p&gt;モジュール化することで、開発者が独立して開発出来るようになる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;人数が増えてきた時、アプリが大きくなってきた時にモジュール化は有効&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;保守性&#34;&gt;保守性&lt;/h3&gt;
+&lt;p&gt;例えば、モノリシックアプリだとレイアウトファイルを1つのディレクトリに持つことになる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;何をしているのか、何をしたいのかが理解しにくい&lt;/li&gt;
+&lt;li&gt;長いレイアウトファイル名になりがち&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ビルド時間の短縮&#34;&gt;ビルド時間の短縮&lt;/h3&gt;
+&lt;p&gt;変更があったモジュール + その依存関係にあるモジュールが再ビルドされるため、ビルド時間が短くなる&lt;/p&gt;
+&lt;h3 id=&#34;ciの高速化&#34;&gt;CIの高速化&lt;/h3&gt;
+&lt;p&gt;再ビルドが必要なモジュールのみテストをすれば良いので、テスト時間が短くなる&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/buildSrc/src/main/kotlin/androidx/build/dependencyTracker/&#34;&gt;androidx/dependencyTracker&lt;/a&gt;を使うといい感じにテストが出来る（らしい）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;apkサイズの縮小&#34;&gt;APKサイズの縮小&lt;/h3&gt;
+&lt;p&gt;App Bundle、Dynamic Deliveryの恩恵を受けられる&lt;/p&gt;
+&lt;h2 id=&#34;モジュール&#34;&gt;モジュール&lt;/h2&gt;
+&lt;p&gt;どのようにモジュール分けをするか?&lt;/p&gt;
+&lt;h3 id=&#34;1-feature機能ごとに分ける&#34;&gt;1. Feature（機能）ごとに分ける&lt;/h3&gt;
+&lt;p&gt;ライブラリモジュールとDynamic Featureモジュールの2種類がある。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ライブラリモジュール
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;com.android.library&lt;/code&gt;を指定する&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Dynamic Featureモジュール
+&lt;ul&gt;
+&lt;li&gt;onDemand trueとfalseがある
+&lt;ul&gt;
+&lt;li&gt;Paidのような一部のユーザが使う機能の場合はtrueが良い&lt;/li&gt;
+&lt;li&gt;Onboardingのように、後でいらなくなる機能の場合はfalseが良い&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Plaidでは以下のようなモジュール構成にした。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/qwNff93mQNWP8E8yIOdnxHlB7VxeyatfnF6mB5UV8OM79kqVVVy4bH1syJsrv3Y2ABqIkebCB2ASKv1-vyLt0dPas4mIbO9CkTt1CZ7wUJ78nPRp35B0guWwfdZ0B3qEtge5wTLi-tCVpT2akRMPHBHV34dGIJ1kiI-PUiRIhy_NXtz4LCyrk5ib1AeXa2K0DPkCW4GLF-IfFMbNrffNOjy7YG1_8CUBRQplKTKrk2s_6F7keIBlgfPCk8i_ZwOImb7S-6SHMKtPF5gAjZtaSKeDkDee7-otF9ca671scd8gRoZteWpBtZBdbYcarckAZB3Kr8b2ZW187r_CSwZIyC17TdKoAu5z6lgaEoOE_dR-XAn5mnrIY8MrjqqF3o6muIL2kZZ2zd3dmyJvb3PopvKSb2H8UvMg3nyIQifrVii3RWMebioPyvdbiB8sRfLtsYHaF3X_2gj8FMk3YayCGY99FgGUsyOngHJgthm8CE7lFU6GavE008tozIL6HKKIDgs1kPJ3RlpDwNCcBG__lEUNCoZqbsQjN0Wo6lv3URK7xv3ZOzj-eBpaeN6oZQCs6OK7W6SEtZ5-vlP8CYxCMpxSqIjI1cepS6NOO3-IjcCTIQA7JxYjkPswTCIOi6Ur5tU56GMSR9wXN08ePlt3ELR1_CRsKA3e=w720-h404-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;dribbleと、designernewsがDynamic Featureモジュールになっている。&lt;/p&gt;
+&lt;h3 id=&#34;2-layer層階層ごとに分ける&#34;&gt;2. Layer（層、階層）ごとに分ける&lt;/h3&gt;
+&lt;p&gt;Plaidでは以下のように分けた。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/eKPc5MsRrRbOjCXfIJnVppLjpevSWsz4e13QVgu8wAmd1AI2An-aVSerQ1Wz0DuALe6RCP3JPHkkJh1mBZx-9N2lwJj2i4aBoCrIqztFu2CLyZXu6QZBEC5AuO5FzXD90hqMMV8J12g0Sn9WjVMUQHA4RxREdVaSmNwXRt0OBfIVG_4UYdnp8SDJJ8OOKPsDqBX3cOhopNBWEK2B6Of-VwkN25G3IRrV952EnleuGaFbsxrGXkGTv64oAbnB6aw71alRN4JO3HUbXlJY54XZOXtJV3wMHu1NWOqUF9sM5GsEtcMQn_fdKsfkynN3UIZ-QTRNI2PKefKKV7X-aPZp6Jg_OAm9WoGA-VktrPj9dQRpx1EPvT6av3KfChS_x0_oCdIeJpXwLBObooQMmRpiJzKJCb112Pnq4s3XhDOcK9n08kOQZgOHOOFx_jC-CjhUEMRmK3j-XQBNmmJjqLdzBksgpajJqpbl8QS7B6snoEXPRa7AoVIfhPNRQurFi5880dhTx0JrFYEm1yeHzHYTHqW7bXpjjtAYWW5MQJ6HDwSOpphlZiR1z6AnJK3DTiM5K7Q1-p27e802TcjF8O3yhFq4XDLl6IqZ_99TFoxcNcocxFCd2FlYcBcD1lOsXcIwpXOMRDapFTv7Tx8UBhzeeijqGc512lTI=w720-h402-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/_81GbLd7eZJQvhnKKjlzv08wTjRKtzqt_IZPQNf1BlYcUmCvBv1B4kD6Pjw5b0MfQfPMke62kIzaXW7AjRON695kLYHQKHkk_-03L7IynQHKNggkWh9L5BZWafVz2nEz4f8Bn_mFDjuo2FT8iK6Ho4HI8L3d67qQh7N-Ljj-5G7glOklHSEQMGLOPzLRr7bH_b_jogHxLZS48_hWkeeFLqsBFscsiPXMjuyz5mjfCv9z-ZgvKa45LL8vkqe6jMWaBH2bGhkMJChHCD8fMbPaVDN-eNaSq5hvU6XcmAexyYMqM72exG2fuzxj2aGDPFCtZ3v9_8g5RMHVTb4wG4yG87epXC2XDRG9TJ3P6hAUl4IEgX0bJScukdHZMJDB7zqVJXgP_WSrHzkcecQEaj5cFLnZlCaS4TDXF-4g9gD4dOgA7RyE2nusWN0fWIgd7BC5JzdjIOU8Z9M8IoMB_wFjw8y0y8lshQCQJSgmgS0sg-GUihaICY0SuV_CRNuLSYwcJhUgA7-a1fXHnfg5dUOJt7nDyAfAsocbLxv1p35c9bgFkyDQMMqDB0dcljZgyl8mAjcMIXv_XbmhZohbYKdFVHqT_IZ6m3q94GGZk3tpFB-FFNf023I_6HS3vqeWgEXA4ukB86FZdiCmeHVBbWuqyWvYLKZXITx-=w979-h593-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Web Servicesの知識はUIはいらないので、implementationを指定する
+&lt;ul&gt;
+&lt;li&gt;そうすることで、UIがDTOやRetrofitの知識を知らないですむ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Entitiesの知識はUIが必要なので、apiを指定する
+&lt;ul&gt;
+&lt;li&gt;ただし、この場合、DAOsの知識までUIが知ってしまうので微妙
+&lt;ul&gt;
+&lt;li&gt;そこでCommon Value Objectsの導入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/nfbY2Dd1jEsPoFt75QM0ikteiUp7vVYGhMWJvx0nCaRgEw_WKMR3c0MABc_UOr3pLDAZnq6s6rBgNQpwF1jD7C7WR_o2ipG8_IYodL_94C8rLYaY-gP6uIgEajxxC9RC7d4vRWn6cRhT4s-ZFcwJPvnHwH3WFYMmXRNu_OnHQMSWzY6oBnjQe-LzH_km1C38s18qLcLgvdMWbJvqJLfOjOqUQrv485RI4M-R5VWfEbTAgrZ7H7XFBvZ1WVwMizg4IpWEIDWfJvO788FiavN8ipD0LS6FCYIfcyfNcmng92uFgp7wtifaSKVLl1_DnLS3rkU-QB2nJr9l_if46OjLzCMeZ33JOLRbBYxGmch0NGD_ruyQSpmK3bceTHkZ-tzaNX-6ZxY-QJsjT3OdfcI5uJnnO_4vJWRwUQ07p9FJJ8-LqAuI2rjFpS3gh3aw9F4xhGb3LPB_RynE2wQFdw7ntOj_yJR6oakRxKk2JrE-0DiTH-5BrItd0QCngLvf-7oyDqR08LidmheYrMm4WIFTiMWW5QKceMotv6Q1Sxj5jpvW_vsIiNZ7gWwtx5Xk1MljhKYdb6q900RAZozhiAIYuYtgGlvt8yBE4cA7xdjlRD4my4F3CBNneEWt-3ZtYk7TQ3OeCgEtgySEP6zQQvIqIEhSQlCEdWy8=w2160-h1210-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;こうすることで、UIがDAOの知識を知らずに済む&lt;/p&gt;
+&lt;h3 id=&#34;fakes-for-tests&#34;&gt;Fakes for tests&lt;/h3&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/hkjj2f7NohLfThmJNQienXwvchycNGrieetXpGITrD1Lyupjz_0HHbZBdRNDpO2rR2f8RRhBB2hfqX4FkHnv7-UpRehP6Kry0vZE-upK7MjZcINGpEzCCR9mB-H_LjQ2jgQGTpn3rsvMJEoLfKp2B1GNoULlj9aLucM0_gs9nHiN1MIMHRL4AhwQHVdk6ai8yyYtu7T8LBf-vBvFNX2e8nCbuvMNclYZvSukJwLpyGX8LX5bmtTnSuuUzJvPtvCR041-tFqZd2ju44eHkeE5YrU8ZYGn3y62ojO-4A91rj8-g8tIJ3okmISj4U4qYMKRUs6CjnKYBX4bQz42ZF1jdrBMKvP3wCqfwJ4OmAkCA6lpVWWKBFZijStGF2_S2UnmXeQn5PcjyeeAqiExz644SMNifNidRglSEEVq19OARawWvp_U40MjG2Jyj3M0jxixF4qVm_cJdehDBQ_mJpUnPngzeqFfYZ-pIeC_bc4D8bzfeqv7IhVvXd_cLDsGCNlt6VpuvkMbOAVShoxg-mejMLtSA_bSOAuTalT3clfTQWJJyzPNvHW7te5sczXVdIthtqvSnsStJCItNbdcuPpDDScCKLzqHVBIWj2NT1McfivRzECx2P_AYEWkCkPgDLESKYFUz-ORoJJeLhseWuqdz2VWU-NtXyus=w2160-h1202-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;モックよりも優れた方法
+&lt;ul&gt;
+&lt;li&gt;fakeはRepository（対象のクラス）がどのように振る舞うかを理解した上で作られる
+&lt;ul&gt;
+&lt;li&gt;（モックはその場、その場で作られがちという意味？）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;featureモジュールの利点&#34;&gt;Featureモジュールの利点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;カプセル化&lt;/li&gt;
+&lt;li&gt;Dynamic Delivery&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;layerごとに分ける利点&#34;&gt;Layerごとに分ける利点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;サードパーティライブラリの依存を独立&lt;/li&gt;
+&lt;li&gt;構造をもたらす&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dynamic-deliveryの課題&#34;&gt;Dynamic Deliveryの課題&lt;/h3&gt;
+&lt;p&gt;Featureモジュール間のNavigationをどうするか?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;appから、Dynamic Featureモジュールへの依存を持てない
+&lt;ul&gt;
+&lt;li&gt;（これはDynamic Deliveryの制約のため）&lt;/li&gt;
+&lt;li&gt;文字列、リフレクションでstartActivityするしかない&lt;/li&gt;
+&lt;li&gt;Fragmentも同様&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今後、Navigationライブラリで自然に書けるようになるらしい😃&lt;/p&gt;
+&lt;h2 id=&#34;データベース&#34;&gt;データベース&lt;/h2&gt;
+&lt;h3 id=&#34;1つのデータベースのみ持つ&#34;&gt;1つのデータベースのみ持つ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;コネクションの管理が楽&lt;/li&gt;
+&lt;li&gt;テーブルのシェアが簡単&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;モジュール間に依存が生まれる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;モジュールごとに1つのデータベースを持つ&#34;&gt;モジュールごとに1つのデータベースを持つ&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;モジュール間の依存が疎になる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;データベースのコネクション管理がめんどい&lt;/li&gt;
+&lt;li&gt;繰り返しのコードが生まれやすい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;hybridアプローチ&#34;&gt;hybridアプローチ&lt;/h3&gt;
+&lt;p&gt;特にルールを決めずに、データベースモジュールを作っていく&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pros
+&lt;ul&gt;
+&lt;li&gt;Flexible&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;cons
+&lt;ul&gt;
+&lt;li&gt;Fiexible
+&lt;ul&gt;
+&lt;li&gt;どこに、どのDAO、Entityを置けば良いのかの判断を常に迫られる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/gTSq0TPmgz2B2iyb_qidLaq-G8VSSnmSOI_VDez7Mu0UBASB5h7PIRDKWMJPrH40XGxFCw3QDenkSgiD6f4D2U5EhBAK_OEayUdIVtH5hX53vvUQM7Q-4AiJHx0NDt-4iRjCjaTeIlJs16YyeZpEt6iIvgp9HrAD_cr7vE5myFyRzeJnaHSU_vzZULGICVIWBmgxKFAcHUKDdiHRHUMuncyewUxZGc_O5t3xlQvXUanCQxVh6NXvBQZXxhFpqYRMwPiSTTNmIGz8BFFnX5JqHZAdKULHDZDV8FjeT6KtQXFjPQMMrEm6c_Sdka9aHgH5c4U76VbhF9lJd1xnn0i_jeVhbBXZ4Ylhwuem8trNGg0L2-JSphGwz2dlud0oS39CwN3spcRFEXkyQ3F6AjaW0omnmWYh1S3r2p_W9Wd3Yxyy3H7egkYyHdYmdqU76m5s0y9pCL3VWaiGvLZFr61Z0NVABPVW9O_dDS5jroA8OV4yJn_q6kMEQ_QgYz5uCatq_a86gXcWFRBipdZfhqMCZCMvJ8apGzKzrIyDuiM-3GMk_IZLR4ybtgdpFoxIEdXhCPHpUnWiCPQ6xsH3Od2P485MLbKLdZWDp76NB36DZRhlPAs33Z5h-ItZfm1mKok05rXrzibepyocRNr2rUKnOoyaHtsaxKek=w2160-h1202-no&#34; width=&#34;500&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;マルチモジュール対応Room絶賛開発中らしい😃&lt;/p&gt;
+&lt;h3 id=&#34;android-free-modules&#34;&gt;Android free modules&lt;/h3&gt;
+&lt;p&gt;multi platformにする場合&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kotlin nativeとか
+&lt;ul&gt;
+&lt;li&gt;ちゃんとユースケースを持っているなら、multi platformは良い選択&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;テストの高速化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;確かにテストは早くなるが、テストのためだけにAndroid freeにするのは冗長
+&lt;ul&gt;
+&lt;li&gt;Robolectricで十分&lt;/li&gt;
+&lt;li&gt;Android Frameworkの再開発は無駄e&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;最小限の依存関係でモジュールを構成する&lt;/li&gt;
+&lt;li&gt;関心事の分離
+&lt;ul&gt;
+&lt;li&gt;ビジネスロジックがUIに依存しない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;抽象化
+&lt;ul&gt;
+&lt;li&gt;抽象化は非常に便利だが、複雑になりがちなので、抽象化により得れる利点を常に考える&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;これらのモジュール化のやりかたは、あくまでオプション
+&lt;ul&gt;
+&lt;li&gt;ユーザはマルチモジュールなコードだからって5つ星はくれない&lt;/li&gt;
+&lt;li&gt;あくまでユーザが一番大事&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ・感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Dynamic DeliveryはNavigationに対応が入ってきたあたりで導入検討したいなって思った
+&lt;ul&gt;
+&lt;li&gt;まだノウハウが少ない印象なので&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Fakeのためのモジュールはいいアイデアだなって思った
+&lt;ul&gt;
+&lt;li&gt;テストで、モックはあまり使わない流れなのかもしれない
+&lt;ul&gt;
+&lt;li&gt;確かにモックをカジュアルに使いすぎると何をテストしているか分からなくなるときがある&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;やっぱ関心ごとの分離って大事なんやなって
+&lt;ul&gt;
+&lt;li&gt;層、モジュールでうまく強制、表現したい&lt;/li&gt;
+&lt;li&gt;サードパーティライブラリへの依存が、特定のモジュールに押し込めるのは良さ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
+    
     <item>
       <title>Data Binding 3.5と3.6のまとめ/感想</title>
       <link>https://satoshun.github.io/2019/05/databinding-3dot5/</link>
-      <pubDate>Thu, 16 May 2019 00:33:48 +0000</pubDate>
+      <pubDate>Thu, 16 May 2019 00:33:48 UTC</pubDate>
+      
       <guid>https://satoshun.github.io/2019/05/databinding-3dot5/</guid>
-      <description>&lt;p&gt;Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。&#xA;動画だと&lt;a href=&#34;https://youtu.be/Qxj2eBmXLHg?t=243&#34;&gt;ここらへん&lt;/a&gt;になります。&lt;/p&gt;&#xA;&lt;h2 id=&#34;改善系&#34;&gt;改善系&lt;/h2&gt;&#xA;&lt;h3 id=&#34;ビルドの高速化&#34;&gt;ビルドの高速化!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;20%くらいビルドが早くなった&lt;/li&gt;&#xA;&lt;li&gt;distributed build cache対応&lt;/li&gt;&#xA;&lt;li&gt;Incremental annotation processing対応&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;android.databinding.incremental=true&lt;/code&gt; を設定にすると使えます&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;android-studioとの連携強化&#34;&gt;Android Studioとの連携強化!!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Live Class Generation&#xA;&lt;ul&gt;&#xA;&lt;li&gt;XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;リファクタリング系&#xA;&lt;ul&gt;&#xA;&lt;li&gt;フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;errorメッセージの改善&#34;&gt;Errorメッセージの改善!!!&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;h2 id=&#34;新規系&#34;&gt;新規系&lt;/h2&gt;&#xA;&lt;h3 id=&#34;view-binding&#34;&gt;View Binding&lt;/h3&gt;&#xA;&lt;p&gt;簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。&lt;/p&gt;&#xA;&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no&#34; width=&#34;600&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）&lt;/p&gt;&#xA;&lt;h4 id=&#34;メリット&#34;&gt;メリット&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;コンパイルが早くなる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Data Bindingより機能が少なくなるのでそれはそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt;で囲う必要がなくなった&#xA;&lt;ul&gt;&#xA;&lt;li&gt;これ個人的には好きでなかったので嬉しい。ネストが減る&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h4 id=&#34;デメリット&#34;&gt;デメリット&lt;/h4&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;セクションがなくなる&#xA;&lt;ul&gt;&#xA;&lt;li&gt;モデルの値とViewのマッピングはコード側ですることになりそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;多分BindingAdapterは使えない&#xA;&lt;ul&gt;&#xA;&lt;li&gt;これもコード側ですることになりそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;双方向バインディングとか使えない&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。&lt;/p&gt;&#xA;&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ/感想&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Live Class Generation便利すぎワロリン&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;View Bindingはとても良さそう&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Kotlin syntheticの代わりに使ってもよさそう&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Google I/O 2019でDataBindingについて少し話されていたので感想とまとめを。
+動画だと&lt;a href=&#34;https://youtu.be/Qxj2eBmXLHg?t=243&#34;&gt;ここらへん&lt;/a&gt;になります。&lt;/p&gt;
+&lt;h2 id=&#34;改善系&#34;&gt;改善系&lt;/h2&gt;
+&lt;h3 id=&#34;ビルドの高速化&#34;&gt;ビルドの高速化!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;20%くらいビルドが早くなった&lt;/li&gt;
+&lt;li&gt;distributed build cache対応&lt;/li&gt;
+&lt;li&gt;Incremental annotation processing対応
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;android.databinding.incremental=true&lt;/code&gt; を設定にすると使えます&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;android-studioとの連携強化&#34;&gt;Android Studioとの連携強化!!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation
+&lt;ul&gt;
+&lt;li&gt;XMLを変更したら、コンパイルせずともクラス、フィールドにアクセスすることが出来る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;リファクタリング系
+&lt;ul&gt;
+&lt;li&gt;フィールド名の変更リファクタリングなどをしたときに、XML、コードの両方に反映される&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;errorメッセージの改善&#34;&gt;Errorメッセージの改善!!!&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;DataBinding用のエラーセクションが出来たことで、どこでエラーが出たか特定しやすくなった&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/9sMrM9zLYG96Vg2Mlt7KON2audHhb2hPcryUDkkp9E0s2Q2oVKd94EsoxxvxZwhAfkORXabT2-V2lnxDlEF7gMoTWMmJ0AmIPjyp-o54bFdqoN7u4KQlNqwz6ufqT8xKx7JvKJoJc-cyaH-3IOujqq-m7V0h5QYeN1W2JAeon_fDv-vqPRqzHydPvW2zv8NEuboWPOCQFSqABPj61OEI0kLstUwClb6E6_1CAjtenJfmhUjG2_gBbNakPao6BnSb4-1_BHeZnpkUMPzWyip4I0bRtnAIZcCjt797Sk90o8e87H0y_JdGUu-crJ2LVL5QvJ8Sz2WKkFcs1AxaLnn4PfRYzooeh70hJAjFPXuR9tkonL5PjyT96EqgOhmQlmzmXaj6NEwYjmOc7VE8KDFXSvLUm1K5GlyaU1j8vUWhnNKvPPpfFn26XnIcTD0j2-YE_RhR4nP40LNS1XxCsFOJBpOWZCK69JwAp3flmULDQpmkJkeSp99T_suxdxlRDrPZnTb4gNAs6Bd0IMsalfJpOQWpAPQebqNkuan_BjytvzQl3sR0KPi73AafkfzcNQbPjsMXxMJNqbyMaxZFwDIIw5WLLm7GoOsU8PX8d1sadYbwTHVYpx9M_nqTcBLns-henpEBj89wDXy3tXg-xF2DyGNScK2blikn=w2160-h1620-no&#34; width=&#34;600&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;新規系&#34;&gt;新規系&lt;/h2&gt;
+&lt;h3 id=&#34;view-binding&#34;&gt;View Binding&lt;/h3&gt;
+&lt;p&gt;簡易版Data Bindingのような立ち位置で、findViewByIdを省略 + コンパイルセーフ + コンパイルを高速にすることを目的に作られました。3.6で入るみたいです。&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;https://lh3.googleusercontent.com/WfZyK356KdBHf5gHL1PExSKTXXo5_lEKhsvoDhrlRgSWH40Qa4Y6hhw_08w3Wm46KAoFAf26_cAhtDIzDja3OKxf7cVTju9UwNp-JAvaTDJrlI2gWHSmTkePpGB8Vl8pxzdmAcjuuJ1EzUW_h67sFEULzQE-a1ro96x03jAC5FCjWSArhx2f5jz9cqSPdhieW_zk1glrdLqHUogvoeJCoLbtaDy2KFnwQkwJDWPkWDfBs3Q2CxrkI6-Fom1fmpHIFMZ4NjUVU4TKfbDqYWCALnvB5G17HXy0YvFjYnSDLtWn4nUMH2rZWnh0R9JJU5fIVBDtncuZkqhp-AZUJBrInCsvV-8vIaUeBr6ZoUPTd9Ja4qz0ooODr7VOJDGBFPP4qHpNIzQwxWzCgYlsRU4l8i9dxMCKq0bLfTxZcIGBYYm-Bed8AGiUyPnsS_7HTMkuWu_NPGn-cTOTIFJ6n9vSdm2uR0IIJWXW8fS6s_q0S9eSZJYW6zeJBXOxdP4ot2FSaZDL8pmwbxivfaWTA_R3XraQizWG788EvVkpFvF2Xree28fR6qKP1zlKS2mSrooQCsQ-xNkoLWnTkNkLC8j9USiSRFrhDl0Mu9LmJckzPSq52FmaX8ClbXt8_H2vML3tmwqY8FQ92ZTmP9WNHDFr12jP96uX_3jKsraXa8btthUlzCHe58dIWeSlKU7GOqh1hr8k4GGcxZYvJVzjydsGIY-mqQ=w2160-h1620-no&#34; width=&#34;600&#34;&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Data Bindingと比較したときの、メリット、デメリット以下になります。（ただし、まだalphaも出ていない段階なのでI/O動画から見る限りの感想です）&lt;/p&gt;
+&lt;h4 id=&#34;メリット&#34;&gt;メリット&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;コンパイルが早くなる
+&lt;ul&gt;
+&lt;li&gt;Data Bindingより機能が少なくなるのでそれはそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;layout&amp;gt;&lt;/code&gt;で囲う必要がなくなった
+&lt;ul&gt;
+&lt;li&gt;これ個人的には好きでなかったので嬉しい。ネストが減る&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;デメリット&#34;&gt;デメリット&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;data&amp;gt;&lt;/code&gt;セクションがなくなる
+&lt;ul&gt;
+&lt;li&gt;モデルの値とViewのマッピングはコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多分BindingAdapterは使えない
+&lt;ul&gt;
+&lt;li&gt;これもコード側ですることになりそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;双方向バインディングとか使えない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;おそらくなんですけど、Data Binding、View Bindingは1つにプロジェクトに混在させることが出来るので、基本View Bindingで、双方向使いたいときはData Bindingみたいな使い方も出来るはずです。&lt;/p&gt;
+&lt;h2 id=&#34;まとめ感想&#34;&gt;まとめ/感想&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;今、3.5-beta01を使っているんですが、肌感、かなり良くなっています😃
+&lt;ul&gt;
+&lt;li&gt;Live Class Generation便利すぎワロリン&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;View Bindingはとても良さそう
+&lt;ul&gt;
+&lt;li&gt;Kotlin syntheticの代わりに使ってもよさそう&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
+    
+    
   </channel>
 </rss>
