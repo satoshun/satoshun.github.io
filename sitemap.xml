@@ -2,22 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://satoshun.github.io/tags/android/</loc>
-    <lastmod>2024-11-08T10:27:21+00:00</lastmod>
+    <loc>https://satoshun.github.io/tags/ai/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/2025/05/ai-code-reading/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/blog/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/poem/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/</loc>
+    <lastmod>2025-05-26T13:04:40+00:00</lastmod>
+  </url><url>
+    <loc>https://satoshun.github.io/tags/android/</loc>
     <lastmod>2024-11-08T10:27:21+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/tags/debugging/</loc>
     <lastmod>2024-11-08T10:27:21+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2024/11/android-compose-live-edit/</loc>
-    <lastmod>2024-11-08T10:27:21+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/</loc>
-    <lastmod>2024-11-08T10:27:21+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/</loc>
     <lastmod>2024-11-08T10:27:21+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2024/09/android-impression-at-scale/</loc>
@@ -709,9 +718,6 @@
   </url><url>
     <loc>https://satoshun.github.io/2018/05/coroutinebinding-intro/</loc>
     <lastmod>2018-05-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://satoshun.github.io/tags/poem/</loc>
-    <lastmod>2018-05-05T03:00:00+00:00</lastmod>
   </url><url>
     <loc>https://satoshun.github.io/2018/05/type_feeling/</loc>
     <lastmod>2018-05-05T03:00:00+00:00</lastmod>

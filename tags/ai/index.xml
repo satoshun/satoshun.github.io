@@ -1,0 +1,29 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>stsnブログ</title>
+      <generator uri="https://hugo.spf13.com">Hugo</generator>
+    <link>https://satoshun.github.io/tags/ai/</link>
+    <language>ja</language>
+    
+    <copyright>2025 Sato Shun</copyright>
+    <updated>Mon, 26 May 2025 13:04:40 UTC</updated>
+    
+    
+    <item>
+      <title>AI時代にはコードリーディングがより大切になりそうだという話</title>
+      <link>https://satoshun.github.io/2025/05/ai-code-reading/</link>
+      <pubDate>Mon, 26 May 2025 13:04:40 UTC</pubDate>
+      
+      <guid>https://satoshun.github.io/2025/05/ai-code-reading/</guid>
+      <description>&lt;p&gt;(ポエムです)&lt;/p&gt;
+&lt;p&gt;近年、AIを活用したソフトウェア開発が急速に進められています。GitHub CopilotやCursorなどのツールにより、ゼロからコードを生成することが可能になり、開発環境は大きく変わりつつあります。この流れの中で、特に重要だと感じているのがコードリーディングのスキルです。&lt;/p&gt;
+&lt;p&gt;なぜコードリーディングのスキルが重要になってくるのかについて解説します。
+従来の開発では、自分自身で0からコードを書いていたので、徐々にコードを理解しながら開発を進めていくことが可能でした。しかし、AIがコードを生成する場合だと、生成されたコードを早く理解する能力、すなわちコードリーディングの能力がより大切になり、生成されたコードの意図やロジックを正確に読み取り、必要に応じて改善するスキルが不可欠となります。&lt;/p&gt;
+&lt;h3 id=&#34;まとめ&#34;&gt;まとめ&lt;/h3&gt;
+&lt;p&gt;AI時代の到来により、コードを読む力がより重要なスキルになったと思います。これからは、AIが生成したコードを的確に読み解き、改善する能力を意識して身につけることが大切だと思います。&lt;/p&gt;
+</description>
+    </item>
+    
+    
+  </channel>
+</rss>
